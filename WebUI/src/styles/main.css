@@ -1,0 +1,236 @@
+#app {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  background: var(--color-bg-base);
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 42px;
+  background: var(--color-panel-bg);
+  border-bottom: 1px solid var(--color-panel-border);
+  padding: 0 16px;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.brand-title {
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  color: var(--color-accent);
+}
+
+.nav-menu-bar {
+  display: flex;
+  gap: 4px;
+}
+
+.menu-btn {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  transition: all 0.15s ease;
+}
+
+.menu-btn:hover {
+  background: var(--color-panel-surface);
+  color: var(--color-text-main);
+}
+
+.mode-selector {
+  display: flex;
+  background: var(--color-bg-base);
+  padding: 2px;
+  border-radius: 6px;
+  border: 1px solid var(--color-panel-border);
+}
+
+.mode-tab {
+  padding: 4px 14px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 4px;
+  color: var(--color-text-muted);
+  transition: all 0.2s ease;
+}
+
+.mode-tab.active {
+  background: var(--color-accent);
+  color: #000;
+  box-shadow: 0 0 10px rgba(var(--color-accent-rgb), 0.4);
+}
+
+/* Main Content Workspace */
+.main-workspace {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 16px;
+  overflow-y: auto;
+}
+
+.hero-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-panel-bg);
+  border: 1px solid var(--color-panel-border);
+  border-radius: var(--chassis-radius);
+  padding: 20px;
+}
+
+.lcd-container {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-lcd-bg);
+  border: 2px solid rgba(0, 0, 0, 0.6);
+  border-radius: 4px;
+  padding: 8px 14px;
+  font-family: var(--font-lcd);
+  color: var(--color-lcd-text);
+  box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.8);
+  min-width: 280px;
+}
+
+.lcd-line-1 {
+  font-size: 14px;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.lcd-line-2 {
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+/* Quick Synth Controls */
+.synth-controls-preview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.module-card {
+  background: var(--color-panel-surface);
+  border: 1px solid var(--color-panel-border);
+  border-radius: var(--panel-radius);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.module-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  letter-spacing: 0.5px;
+}
+
+.control-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Keyboard footer */
+.keyboard-footer {
+  height: 120px;
+  background: var(--color-panel-bg);
+  border-top: 1px solid var(--color-panel-border);
+  display: flex;
+  flex-direction: column;
+  padding: 6px 16px 12px 16px;
+  gap: 6px;
+}
+
+.keyboard-octave-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.octave-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.oct-btn {
+  background: var(--color-panel-surface);
+  border: 1px solid var(--color-panel-border);
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.oct-led {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #333;
+}
+
+.oct-led.blink {
+  background: var(--color-led-active);
+  animation: blinkLed 1s infinite;
+}
+
+.oct-led.solid {
+  background: var(--color-led-active);
+  box-shadow: 0 0 6px var(--color-led-glow);
+}
+
+@keyframes blinkLed {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+
+.keys-strip {
+  flex: 1;
+  display: flex;
+  background: #111;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.white-key {
+  flex: 1;
+  background: #f8f8f8;
+  border-right: 1px solid #ccc;
+  cursor: pointer;
+  position: relative;
+}
+
+.white-key:hover, .white-key.active {
+  background: #e0f0ff;
+}
+
+.black-key {
+  width: 60%;
+  height: 60%;
+  background: #222;
+  position: absolute;
+  top: 0;
+  right: -30%;
+  z-index: 2;
+  cursor: pointer;
+}
+
+.black-key:hover, .black-key.active {
+  background: var(--color-accent);
+}

@@ -1,0 +1,26 @@
+{
+  "name": "abdms2000",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Virtual Korg MS2000 & microKORG Hybrid Synthesizer",
+  "scripts": {
+    "generate": "node Scripts/registry_generator.js",
+    "bundle": "node Scripts/build_webui.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": [
+    "synth",
+    "korg",
+    "ms2000",
+    "microkorg",
+    "juce8",
+    "webview2",
+    "wasm"
+  ],
+  "author": "ajabadia",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "vitest": "^1.6.0"
+  }
+}

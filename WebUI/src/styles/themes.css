@@ -1,0 +1,51 @@
+:root {
+  /* Default: MS2000 Blue Theme */
+  --color-bg-base: #0a1118;
+  --color-panel-bg: #102130;
+  --color-panel-surface: #172d42;
+  --color-panel-border: rgba(0, 195, 255, 0.2);
+  --color-accent: #00c3ff;
+  --color-accent-rgb: 0, 195, 255;
+  --color-accent-hover: #38d3ff;
+  --color-text-main: #f0f7ff;
+  --color-text-muted: #7e9bb5;
+  --color-lcd-bg: #1c3322;
+  --color-lcd-text: #54ff72;
+  --color-led-active: #ff3344;
+  --color-led-glow: rgba(255, 51, 68, 0.6);
+  --font-lcd: 'Courier New', monospace;
+  --chassis-radius: 6px;
+  --panel-radius: 4px;
+}
+
+[data-theme="microkorg"] {
+  --color-bg-base: #14110e;
+  --color-panel-bg: #1f1b16;
+  --color-panel-surface: #2b251f;
+  --color-panel-border: rgba(212, 175, 55, 0.25);
+  --color-accent: #d4af37;
+  --color-accent-rgb: 212, 175, 55;
+  --color-accent-hover: #e5c158;
+  --color-text-main: #fcf8ee;
+  --color-text-muted: #a69888;
+  --color-lcd-bg: #180808;
+  --color-lcd-text: #ff2222;
+  --color-led-active: #ff2222;
+  --color-led-glow: rgba(255, 34, 34, 0.7);
+}
+
+[data-theme="advanced"] {
+  --color-bg-base: #08080c;
+  --color-panel-bg: #101018;
+  --color-panel-surface: #181824;
+  --color-panel-border: rgba(255, 0, 127, 0.25);
+  --color-accent: #ff007f;
+  --color-accent-rgb: 255, 0, 127;
+  --color-accent-hover: #ff3399;
+  --color-text-main: #ffffff;
+  --color-text-muted: #8c8ca0;
+  --color-lcd-bg: #0d1117;
+  --color-lcd-text: #00ffff;
+  --color-led-active: #00ffff;
+  --color-led-glow: rgba(0, 255, 255, 0.7);
+}

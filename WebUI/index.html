@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ABDMS2000 Synthesizer</title>
+  <link rel="stylesheet" href="src/styles/base.css">
+  <link rel="stylesheet" href="src/styles/themes.css">
+  <link rel="stylesheet" href="src/styles/main.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Top Navbar -->
+    <header class="navbar">
+      <div class="nav-left">
+        <span class="brand-title">ABDMS2000</span>
+        <nav class="nav-menu-bar">
+          <button class="menu-btn">File</button>
+          <button class="menu-btn">Edit</button>
+          <button class="menu-btn">View</button>
+          <button class="menu-btn">Settings</button>
+          <button class="menu-btn">Help</button>
+        </nav>
+      </div>
+
+      <div class="mode-selector">
+        <button class="mode-tab active" data-mode="ms2000">MS2000</button>
+        <button class="mode-tab" data-mode="microkorg">microKORG</button>
+        <button class="mode-tab" data-mode="advanced">ADVANCED</button>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="main-workspace">
+      <section class="hero-panel">
+        <div class="lcd-container">
+          <div class="lcd-line-1">A.01 Init Program</div>
+          <div class="lcd-line-2">VA Saw + MultiFilter</div>
+        </div>
+
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <button class="menu-btn" style="border: 1px solid var(--color-panel-border);">Compare A/B</button>
+          <button class="menu-btn" style="border: 1px solid var(--color-panel-border);">🎲 Random</button>
+          <button id="btn-panic" class="menu-btn" style="background: #ff3344; color: #fff; font-weight: bold;">PANIC</button>
+        </div>
+      </section>
+
+      <section class="synth-controls-preview">
+        <div class="module-card">
+          <div class="module-title">OSC 1 (VA / DWGS)</div>
+          <div class="control-row">
+            <span>Waveform</span>
+            <span style="color: var(--color-accent); font-weight: bold;">Sawtooth</span>
+          </div>
+          <div class="control-row">
+            <span>Ctrl 1 (PWM)</span>
+            <span>0</span>
+          </div>
+        </div>
+
+        <div class="module-card">
+          <div class="module-title">Filter Multimode</div>
+          <div class="control-row">
+            <span>Type</span>
+            <span style="color: var(--color-accent); font-weight: bold;">LPF 24dB</span>
+          </div>
+          <div class="control-row">
+            <span>Cutoff</span>
+            <span>20.0 kHz</span>
+          </div>
+        </div>
+
+        <div class="module-card">
+          <div class="module-title">Envelopes & Amp</div>
+          <div class="control-row">
+            <span>Attack</span>
+            <span>1 ms</span>
+          </div>
+          <div class="control-row">
+            <span>Release</span>
+            <span>120 ms</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Virtual Keyboard Footer -->
+    <footer class="keyboard-footer">
+      <div class="keyboard-octave-bar">
+        <div class="octave-controls">
+          <button id="btn-oct-down" class="oct-btn">OCT -</button>
+          <div id="led-oct-down" class="oct-led"></div>
+          <span style="font-weight: 600; font-size: 11px;">OCTAVE</span>
+          <div id="led-oct-up" class="oct-led"></div>
+          <button id="btn-oct-up" class="oct-btn">OCT +</button>
+        </div>
+        <span style="font-size: 11px; color: var(--color-text-muted);">Virtual 2-Octave Preview</span>
+      </div>
+
+      <div class="keys-strip">
+        <!-- Octave 1 -->
+        <div class="white-key" data-note="48"><div class="black-key" data-note="49"></div></div>
+        <div class="white-key" data-note="50"><div class="black-key" data-note="51"></div></div>
+        <div class="white-key" data-note="52"></div>
+        <div class="white-key" data-note="53"><div class="black-key" data-note="54"></div></div>
+        <div class="white-key" data-note="55"><div class="black-key" data-note="56"></div></div>
+        <div class="white-key" data-note="57"><div class="black-key" data-note="58"></div></div>
+        <div class="white-key" data-note="59"></div>
+        <!-- Octave 2 -->
+        <div class="white-key" data-note="60"><div class="black-key" data-note="61"></div></div>
+        <div class="white-key" data-note="62"><div class="black-key" data-note="63"></div></div>
+        <div class="white-key" data-note="64"></div>
+        <div class="white-key" data-note="65"><div class="black-key" data-note="66"></div></div>
+        <div class="white-key" data-note="67"><div class="black-key" data-note="68"></div></div>
+        <div class="white-key" data-note="69"><div class="black-key" data-note="70"></div></div>
+        <div class="white-key" data-note="71"></div>
+        <div class="white-key" data-note="72"></div>
+      </div>
+    </footer>
+  </div>
+
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>

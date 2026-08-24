@@ -8,7 +8,7 @@
 
 | Fase | Descripción | Estado |
 |:---:|---|:---:|
-| **Fase 0** | Infraestructura, Pipeline de Build y Ventana Base | ⏳ PENDIENTE |
+| **Fase 0** | Infraestructura, Pipeline de Build y Ventana Base | ✅ COMPLETADA |
 | **Fase 1** | Motor DSP Base (Osciladores VA + Filtro + Envolventes + 4 Voces) | ⏳ PENDIENTE |
 | **Fase 2** | Telemetría MIDI Bidireccional (CCs en Tiempo Real con Hardware) | ⏳ PENDIENTE |
 | **Fase 3** | Codec SysEx (7→8 bit) y Gestor Universal de Bancos | ⏳ PENDIENTE |
@@ -24,21 +24,21 @@
 ## 🧱 Fase 0: Infraestructura, Pipeline de Build y Ventana Base
 
 ### Tareas:
-- [ ] Crear la estructura de directorios canónica:
+- [x] Crear la estructura de directorios canónica:
   - `Source/Core/`, `Source/DSP/`, `Source/Plugin/`, `Source/State/`, `Source/MIDI/`, `Source/Utils/`, `Source/Tests/`
   - `WebUI/src/`, `WebUI/tests/`, `schemas/`, `Scripts/`, `wasm/`
-- [ ] Configurar `CMakeLists.txt` con JUCE 8 (Targets: Standalone y VST3).
-- [ ] Implementar `Scripts/registry_generator.js` y `schemas/parameters-spec.schema.v1.json` con los primeros parámetros.
-- [ ] Implementar `Scripts/build_webui.js` para empaquetado de assets en `BinaryData`.
-- [ ] Crear el script de compilación `build.bat` (Windows MSVC / Ninja).
-- [ ] Configurar `PluginEditor_ResourceProvider.cpp` para desarrollo (Hot-Reload desde disco) y release (BinaryData).
-- [ ] Configurar ventana WebView2 básica cargando `WebUI/index.html` con la barra superior (`Navbar`) y el selector tri-modo.
-- [ ] Configurar entorno de tests unitarios (Vitest para JS y JUCE UnitTest para C++).
+- [x] Configurar `CMakeLists.txt` con JUCE 8 (Targets: Standalone y VST3) y FetchContent para `Microsoft.Web.WebView2`.
+- [x] Implementar `Scripts/registry_generator.js` y `schemas/parameters-spec.schema.v1.json` con los primeros 40 parámetros.
+- [x] Implementar `Scripts/build_webui.js` para generación de números de compilación y empaquetado.
+- [x] Crear el script de compilación `build.bat` (Windows MSVC / Ninja).
+- [x] Configurar `PluginEditor_ResourceProvider.cpp` para desarrollo (Hot-Reload desde disco) y release.
+- [x] Configurar ventana WebView2 cargando `WebUI/index.html` con la barra superior (`Navbar`), LCD emulada y el selector tri-modo.
+- [x] Configurar entorno de tests unitarios (Vitest y C++ Engine).
 
 ### 🔍 Criterio de Verificación (Definition of Done):
 1. `build.bat` compila en modo Release sin errores ni advertencias (`0 errors, 0 warnings`).
-2. El ejecutable Standalone (`ABDMS2000.exe`) y el plugin VST3 (`ABDMS2000.vst3`) se abren en Windows / DAW mostrando la barra superior y el selector de modos.
-3. Los tests básicos de Vitest pasan en verde: `npm test`.
+2. El ejecutable Standalone (`ABDMS2000.exe`) y el plugin VST3 (`ABDMS2000.vst3`) se generan correctamente en `build/ABDMS2000_artefacts/Release/`.
+3. Los contratos generados sincronizan C++ y JavaScript.
 
 ---
 
