@@ -38,7 +38,27 @@ juce_add_plugin(ABDMS2000
     PLUGIN_CODE Ms2k
     FORMATS Standalone VST3
     PRODUCT_NAME "ABDMS2000"
+    NEEDS_WEBVIEW2 TRUE
 )
+
+# --- WebUI Binary Assets ---
+file(GLOB_RECURSE WEBUI_ASSETS 
+    "WebUI/src/*" 
+    "WebUI/icons/*" 
+    "WebUI/*.html" 
+    "WebUI/*.js" 
+    "WebUI/*.webmanifest" 
+    "WebUI/*.css" 
+    "WebUI/*.png" 
+    "WebUI/*.svg" 
+    "WebUI/*.json"
+)
+juce_add_binary_data(WebUIAssets 
+    HEADER_NAME "WebUIAssets.h" 
+    NAMESPACE "WebUIAssets" 
+    SOURCES ${WEBUI_ASSETS}
+)
+target_link_libraries(ABDMS2000 PRIVATE WebUIAssets)
 
 # Source Files
 target_sources(ABDMS2000 PRIVATE
@@ -98,9 +118,10 @@ if(WIN32 AND DEFINED webview2_SOURCE_DIR)
 endif()
 
 # Compile Definitions for WebView2
-target_compile_definitions(ABDMS2000 PRIVATE
+target_compile_definitions(ABDMS2000 PUBLIC
     JUCE_WEB_BROWSER=1
     JUCE_USE_WIN_WEBVIEW2=1
+    JUCE_USE_WIN_WEBVIEW2_WITH_STATIC_LINKING=1
     JUCE_SILENCE_XCODE_15_LINKER_WARNING=1
     JUCE_REPORT_APP_USAGE=0
     JUCE_VST3_CAN_REPLACE_VST2=0

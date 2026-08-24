@@ -4,16 +4,6 @@
 
 namespace ABDMS2000 {
 
-class WebUIResourceProvider {
-public:
-    WebUIResourceProvider();
-    ~WebUIResourceProvider() = default;
-
-    std::optional<juce::WebBrowserComponent::Resource> getResource(const juce::String& url);
-
-private:
-    juce::File devRootDirectory_;
-    bool isDevMode_{true};
-};
+std::optional<juce::WebBrowserComponent::Resource> pluginResourceProvider(const juce::String& url);
 
 } // namespace ABDMS2000

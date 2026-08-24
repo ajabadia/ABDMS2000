@@ -1,71 +1,112 @@
 #include "PluginEditor_ResourceProvider.h"
+#include <juce_core/juce_core.h>
+#include "WebUIAssets.h"
 
 namespace ABDMS2000 {
 
-static juce::String getMimeTypeForExtension(const juce::String& ext)
+static juce::String getMimeTypeForFilename(const juce::String& filename)
 {
-    if (ext == ".html" || ext == ".htm") return "text/html";
-    if (ext == ".css") return "text/css";
-    if (ext == ".js" || ext == ".mjs") return "application/javascript";
-    if (ext == ".json") return "application/json";
-    if (ext == ".png") return "image/png";
-    if (ext == ".jpg" || ext == ".jpeg") return "image/jpeg";
-    if (ext == ".svg") return "image/svg+xml";
-    if (ext == ".ttf") return "font/ttf";
-    if (ext == ".woff2") return "font/woff2";
-    if (ext == ".wasm") return "application/wasm";
+    if (filename.endsWithIgnoreCase(".html")) return "text/html";
+    if (filename.endsWithIgnoreCase(".css"))  return "text/css";
+    if (filename.endsWithIgnoreCase(".js") || filename.endsWithIgnoreCase(".mjs")) return "application/javascript";
+    if (filename.endsWithIgnoreCase(".png"))  return "image/png";
+    if (filename.endsWithIgnoreCase(".jpg") || filename.endsWithIgnoreCase(".jpeg")) return "image/jpeg";
+    if (filename.endsWithIgnoreCase(".svg"))  return "image/svg+xml";
+    if (filename.endsWithIgnoreCase(".ttf"))  return "font/ttf";
+    if (filename.endsWithIgnoreCase(".woff")) return "font/woff";
+    if (filename.endsWithIgnoreCase(".woff2")) return "font/woff2";
+    if (filename.endsWithIgnoreCase(".json")) return "application/json";
+    if (filename.endsWithIgnoreCase(".webmanifest")) return "application/manifest+json";
     return "application/octet-stream";
 }
 
-WebUIResourceProvider::WebUIResourceProvider()
+std::optional<juce::WebBrowserComponent::Resource> pluginResourceProvider(const juce::String& url)
 {
-    devRootDirectory_ = juce::File("D:/desarrollos/ABDSynths/ABDMS2000/WebUI");
-    if (!devRootDirectory_.exists())
+    // Development mode: derive paths from source tree
+    juce::File thisFile(__FILE__);
+    juce::File projectDir = thisFile.getParentDirectory() // Source/Plugin/
+                                    .getParentDirectory() // Source/
+                                    .getParentDirectory(); // ABDMS2000/
+    juce::File webUiDir = projectDir.getChildFile("WebUI");
+
+    juce::String path = url;
+
+    // Strip scheme and host if present (e.g. juce://backend/path -> /path)
+    if (path.startsWith("juce://"))
     {
-        auto currentExeDir = juce::File::getSpecialLocation(juce::File::currentExecutableFile).getParentDirectory();
-        devRootDirectory_ = currentExeDir.getChildFile("../../../../../WebUI");
-        if (!devRootDirectory_.exists())
+        int hostEndIndex = path.indexOf(7, "/");
+        if (hostEndIndex != -1)
+            path = path.substring(hostEndIndex);
+        else
+            path = "/"; // juce://backend -> /
+    }
+    else if (path.startsWith("https://juce.backend")) path = path.substring(20);
+    else if (path.startsWith("http://localhost"))     path = path.substring(16);
+    else if (path.startsWith("https://localhost"))    path = path.substring(17);
+
+    if (path == "/" || path.isEmpty()) path = "/index.html";
+    if (path.startsWith("/")) path = path.substring(1);
+
+    // URL-decode the path (handles spaces encoded as %20, etc.)
+    juce::String decodedPath = juce::URL::removeEscapeChars(path);
+
+    if (decodedPath == "juce.js" || decodedPath.endsWith("/juce.js"))
+    {
+        return std::nullopt; // Let JUCE WebBrowserComponent serve its built-in frontend script
+    }
+
+    // 1. Try loading from disk (Development Mode / Local Source)
+    juce::File file = webUiDir.getChildFile(decodedPath.replace("/", "\\"));
+    bool fileExists = file.existsAsFile();
+
+    if (!fileExists)
+    {
+        juce::File fallbackFile = projectDir.getChildFile(decodedPath.replace("/", "\\"));
+        if (fallbackFile.existsAsFile())
         {
-            devRootDirectory_ = currentExeDir.getChildFile("WebUI");
+            file = fallbackFile;
+            fileExists = true;
         }
     }
-}
 
-std::optional<juce::WebBrowserComponent::Resource> WebUIResourceProvider::getResource(const juce::String& url)
-{
-    juce::String cleanUrl = url;
-    if (cleanUrl.startsWithChar('/'))
-        cleanUrl = cleanUrl.substring(1);
-    if (cleanUrl.isEmpty() || cleanUrl == "/")
-        cleanUrl = "index.html";
-
-    int queryIndex = cleanUrl.indexOfChar('?');
-    if (queryIndex != -1) cleanUrl = cleanUrl.substring(0, queryIndex);
-    int hashIndex = cleanUrl.indexOfChar('#');
-    if (hashIndex != -1) cleanUrl = cleanUrl.substring(0, hashIndex);
-
-    juce::File targetFile = devRootDirectory_.getChildFile(cleanUrl);
-    if (!targetFile.existsAsFile())
+    if (fileExists)
     {
-        targetFile = juce::File("D:/desarrollos/ABDSynths/ABDMS2000/WebUI").getChildFile(cleanUrl);
+        juce::MemoryBlock mb;
+        file.loadFileAsData(mb);
+        std::vector<std::byte> data(mb.getSize());
+        std::memcpy(data.data(), mb.getData(), mb.getSize());
+        return juce::WebBrowserComponent::Resource { std::move(data), getMimeTypeForFilename(file.getFileName()).toStdString() };
     }
 
-    if (targetFile.existsAsFile())
+    // 2. Fallback to BinaryData (Release / Distribution Mode)
+    juce::String resourceName = decodedPath.replace("/", "_")
+                                           .replace(".", "_")
+                                           .replace("-", "_")
+                                           .replace(" ", "_");
+
+    int binSize = 0;
+    const char* binData = WebUIAssets::getNamedResource(resourceName.toRawUTF8(), binSize);
+
+    // Numeric name mangling fallback
+    if (binData == nullptr && decodedPath.length() > 0)
     {
-        juce::MemoryBlock block;
-        targetFile.loadFileAsData(block);
-
-        std::vector<std::byte> data(block.getSize());
-        std::memcpy(data.data(), block.getData(), block.getSize());
-
-        juce::String ext = targetFile.getFileExtension().toLowerCase();
-        juce::String mimeType = getMimeTypeForExtension(ext);
-
-        return juce::WebBrowserComponent::Resource{
-            std::move(data),
-            mimeType.toStdString()
-        };
+        juce::String filename = decodedPath.fromLastOccurrenceOf("/", false, false);
+        if (filename.isEmpty()) filename = decodedPath;
+        juce::String flattenedName = filename.replace(".", "_").replace("-", "_").replace(" ", "_");
+        if (juce::CharacterFunctions::isDigit(flattenedName[0]))
+            flattenedName = "_" + flattenedName;
+        binData = WebUIAssets::getNamedResource(flattenedName.toRawUTF8(), binSize);
     }
+
+    if (binData != nullptr)
+    {
+        std::vector<std::byte> bytes(binSize);
+        std::memcpy(bytes.data(), binData, (size_t)binSize);
+        return juce::WebBrowserComponent::Resource { std::move(bytes), getMimeTypeForFilename(decodedPath).toStdString() };
+    }
+
+    // Log missing file for debug
+    juce::Logger::writeToLog("[ResourceProvider] ERROR: File not found on disk or BinaryData for path: " + decodedPath);
 
     return std::nullopt;
 }

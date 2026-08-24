@@ -18,8 +18,9 @@ public:
     void timerCallback() override;
 
 private:
+    void setupWebBrowserBindings();
+
     ABDMS2000AudioProcessor& audioProcessor_;
-    WebUIResourceProvider resourceProvider_;
     std::unique_ptr<juce::WebBrowserComponent> webView_;
     std::unique_ptr<BridgeActions> bridge_;
 
