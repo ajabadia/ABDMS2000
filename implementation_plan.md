@@ -1003,6 +1003,17 @@ Siguiendo las reglas de oro de `guia_maestra_wasm_juce.md` y `README_WASM_COMPIL
 - **Atajos de Teclado Globales:** `Ctrl+N` (Nuevo parche), `Ctrl+O` (Abrir .syx/.json), `Ctrl+S` (Guardar), `Ctrl+Z` / `Ctrl+Y` (Deshacer/Rehacer), `Ctrl+R` (Randomizar), `Ctrl+I` (Init patch).
 - **Diálogo About Modal:** Muestra la arquitectura del sinte, autores, créditos y el número de compilación dinámico generado por `Scripts/build_webui.js` (`BUILD_INFO.version` + `BUILD_INFO.buildNumber`).
 
+### 9.9 Botón de Inicialización de Audio Web/WASM y Teclado Virtual Multi-Touch
+
+- **Requisito de Autoplay y Políticas de Audio en Navegadores (Estándar ABDCZ101 / ABDEep):**
+  - Los navegadores modernos bloquean la reproducción de `AudioContext` / WASM hasta que el usuario interactúa explícitamente con un gesto de clic en el documento.
+  - Se integra el botón `#btn-audio-init` (`START AUDIO` / `AUDIO ON`) en la barra superior con indicador LED de estado reactivo:
+    - Al pulsar, instancia o reanuda el `window.AudioContext` suspendido y activa el pipeline de síntesis Web/WASM.
+    - El LED cambia dinámicamente a color cyan brillante con efecto de resplandor (*glow*) y el texto conmuta a `AUDIO ON`.
+- **Teclado Virtual de 2 Octavas con Teclas Negras Anidadas (Rock-Solid Layout):**
+  - Estructura semántica DOM donde las teclas negras (`.black-key`) residen anidadas dentro de su tecla blanca correspondiente (`.white-key`) con posicionamiento absoluto en `right: -30%`, `width: 60%`, `height: 62%` y `z-index: 100`.
+  - Soporte triple para **Ratón**, **Touch Multi-Touch** en dispositivos táctiles (`touchstart`, `touchend`, `touchcancel`) y **Teclado QWERTY** polifónico (filas Z-M y Q-I) con transposición de octavas mediante botones `[ OCT - ]` y `[ OCT + ]` y LEDs de estado de tres niveles (apagado, parpadeo suave, luz fija).
+
 ---
 
 ## 10. Plan de Testing y Lista de Control de Calidad (Plugin Quality Checklist)

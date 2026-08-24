@@ -12,7 +12,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 42px;
+  height: 44px;
   background: var(--color-panel-bg);
   border-bottom: 1px solid var(--color-panel-border);
   padding: 0 16px;
@@ -25,11 +25,58 @@
   gap: 16px;
 }
 
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .brand-title {
   font-weight: 700;
   font-size: 15px;
   letter-spacing: 0.5px;
   color: var(--color-accent);
+}
+
+/* WASM / Web Audio Button */
+.audio-init-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--color-panel-surface);
+  border: 1px solid var(--color-panel-border);
+  color: var(--color-text-muted);
+  padding: 5px 12px;
+  border-radius: var(--border-radius-sm);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease;
+}
+
+.audio-init-btn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.audio-init-btn.active {
+  background: rgba(0, 240, 255, 0.12);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.audio-led {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #555;
+  transition: all 0.2s ease;
+}
+
+.audio-init-btn.active .audio-led {
+  background: var(--color-accent);
+  box-shadow: 0 0 8px var(--color-accent);
 }
 
 .mode-selector {
@@ -102,6 +149,12 @@
   opacity: 0.85;
 }
 
+.quick-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 /* Quick Synth Controls */
 .synth-controls-preview {
   display: grid;
@@ -136,14 +189,21 @@
 
 /* Keyboard Container */
 .keyboard-container {
-  height: 140px;
+  height: 155px;
   background: var(--color-panel-bg);
   border-top: 1px solid var(--color-panel-border);
   display: flex;
   flex-direction: column;
-  padding: 6px 16px 10px 16px;
+  padding: 8px 16px 12px 16px;
   gap: 6px;
   flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.keyboard-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .octave-controls {
@@ -190,25 +250,33 @@
 .piano-keys {
   flex: 1;
   display: flex;
-  background: #111;
+  background: #000;
   border-radius: 4px;
-  overflow: hidden;
+  overflow: visible;
   position: relative;
-  border: 1px solid #333;
+  border: 1px solid #222;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
 }
 
 .white-key {
   flex: 1;
-  background: linear-gradient(to bottom, #f0f0f0 0%, #ffffff 80%, #eaeaea 100%);
-  border-right: 1px solid #bbb;
+  background: linear-gradient(to bottom, #eeeeee 0%, #ffffff 75%, #dddddd 100%);
+  border-right: 1px solid #2b2b2b;
+  border-bottom: 2px solid #1a1a1a;
   cursor: pointer;
   position: relative;
-  border-radius: 0 0 3px 3px;
+  border-radius: 0 0 4px 4px;
   user-select: none;
+  overflow: visible !important;
+  box-shadow: inset 0 -3px 3px rgba(0,0,0,0.15);
+}
+
+.white-key:last-child {
+  border-right: none;
 }
 
 .white-key:hover {
-  background: linear-gradient(to bottom, #e2effa 0%, #f0f8ff 80%, #d8eaf8 100%);
+  background: linear-gradient(to bottom, #e2effa 0%, #f0f8ff 75%, #d8eaf8 100%);
 }
 
 .white-key.active {
@@ -217,21 +285,23 @@
 }
 
 .black-key {
-  width: 60%;
-  height: 60%;
-  background: linear-gradient(to bottom, #111 0%, #2a2a2a 85%, #1a1a1a 100%);
   position: absolute;
   top: 0;
   right: -30%;
-  z-index: 5;
+  width: 60%;
+  height: 62%;
+  background: linear-gradient(to bottom, #000000 0%, #202020 85%, #111111 100%);
+  border: 1px solid #0a0a0a;
+  border-top: none;
+  z-index: 100;
   cursor: pointer;
   border-radius: 0 0 3px 3px;
-  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.6);
+  box-shadow: 2px 3px 6px rgba(0, 0, 0, 0.7);
   user-select: none;
 }
 
 .black-key:hover {
-  background: #444;
+  background: linear-gradient(to bottom, #252525 0%, #3a3a3a 85%, #222222 100%);
 }
 
 .black-key.active {

@@ -4,12 +4,14 @@ import { PARAM_LOOKUP } from './contracts/registry.gen.js';
 
 let currentOctave = 0;
 let currentTheme = 'ms2000';
+let isAudioActive = false;
 
 document.addEventListener('DOMContentLoaded', () => {
   console.log(`[ABDMS2000 App Init] Version: ${BUILD_INFO.version} (Build ${BUILD_INFO.buildNumber})`);
 
   setupThemeSelector();
   setupNavbarMenus();
+  setupAudioInitButton();
   setupKeyboard();
   setupButtons();
   setupAboutModal();
@@ -47,11 +49,10 @@ function setupNavbarMenus() {
   menuButtons.forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
-      const menuType = btn.dataset.menu;
-      const targetDropdown = document.getElementById(`menu-${menuType}`);
+      const menuId = btn.dataset.menu;
+      const targetDropdown = document.getElementById(menuId);
       const isAlreadyOpen = targetDropdown && targetDropdown.classList.contains('show');
 
-      // Close all other dropdowns
       closeAllDropdowns();
 
       if (targetDropdown && !isAlreadyOpen) {
@@ -60,13 +61,12 @@ function setupNavbarMenus() {
       }
     });
 
-    // Hover to switch open dropdown when another is already active
     btn.addEventListener('mouseenter', () => {
       const anyOpen = Array.from(dropdowns).some(d => d.classList.contains('show'));
       if (anyOpen) {
         closeAllDropdowns();
-        const menuType = btn.dataset.menu;
-        const targetDropdown = document.getElementById(`menu-${menuType}`);
+        const menuId = btn.dataset.menu;
+        const targetDropdown = document.getElementById(menuId);
         if (targetDropdown) {
           targetDropdown.classList.add('show');
           btn.classList.add('active');
@@ -75,21 +75,22 @@ function setupNavbarMenus() {
     });
   });
 
-  // Close menus when clicking outside
-  document.addEventListener('click', (e) => {
-    if (!e.target.closest('.nav-menu-bar')) {
+  // Dropdown item actions
+  const menuItems = document.querySelectorAll('.dropdown-item');
+  menuItems.forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const action = item.dataset.action;
       closeAllDropdowns();
-    }
+      if (action) handleMenuAction(action);
+    });
   });
 
-  // Handle dropdown actions
-  const dropdownItems = document.querySelectorAll('.dropdown-item');
-  dropdownItems.forEach(item => {
-    item.addEventListener('click', () => {
-      const action = item.dataset.action;
-      handleMenuAction(action);
+  // Click outside closes menus
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.menu-item-container')) {
       closeAllDropdowns();
-    });
+    }
   });
 }
 
@@ -99,68 +100,61 @@ function closeAllDropdowns() {
 }
 
 function handleMenuAction(action) {
-  console.log('[Menu Action]:', action);
+  console.log(`[Menu Action Triggered]: ${action}`);
   switch (action) {
-    case 'new-patch':
-    case 'init-sound':
-      bridge.allNotesOff();
-      updateLcdText('A.01 Init Program', 'VA Saw + MultiFilter');
+    case 'open-about':
+      openAboutModal();
       break;
-
-    case 'save-patch':
-      alert('Save Patch: Saved to local store.');
-      break;
-
-    case 'randomize':
-      updateLcdText('A.01 Random Patch', 'DWGS + BandPass');
-      break;
-
     case 'skin-ms2000':
       setTheme('ms2000');
       break;
-
     case 'skin-microkorg':
       setTheme('microkorg');
       break;
-
-    case 'skin-advanced':
+    case 'skin-cyberpunk':
       setTheme('advanced');
       break;
-
-    case 'zoom-100':
-      document.body.style.transform = 'scale(1.0)';
-      document.body.style.transformOrigin = 'top left';
+    case 'new-patch':
+    case 'factory-reset':
+      console.log('[Preset Reset to Default]');
       break;
-
-    case 'zoom-125':
-      document.body.style.transform = 'scale(1.25)';
-      document.body.style.transformOrigin = 'top left';
+    case 'randomize-patch':
+    case 'randomize':
+      console.log('[Randomize Parameters]');
       break;
-
-    case 'zoom-150':
-      document.body.style.transform = 'scale(1.5)';
-      document.body.style.transformOrigin = 'top left';
-      break;
-
-    case 'github-repo':
-      window.open('https://github.com/ajabadia/ABDMS2000', '_blank');
-      break;
-
-    case 'about':
-      openAboutModal();
-      break;
-
-    default:
-      console.log(`Action ${action} triggered.`);
+    case 'panic':
+      bridge.allNotesOff();
+      document.querySelectorAll('.white-key, .black-key').forEach(k => k.classList.remove('active'));
       break;
   }
 }
 
-function updateLcdText(line1, line2) {
-  const l1 = document.getElementById('lcd-line-1');
-  const l2 = document.getElementById('lcd-line-2');
-  if (l1) l1.textContent = line1;
-  if (l2) l2.textContent = line2;
+function setupAudioInitButton() {
+  const btn = document.getElementById('btn-audio-init');
+  if (!btn) return;
+
+  btn.addEventListener('click', async () => {
+    try {
+      // Resume browser AudioContext if running in Web/WASM
+      if (window.AudioContext || window.webkitAudioContext) {
+        if (!window.__audioCtx) {
+          const AudioCtxClass = window.AudioContext || window.webkitAudioContext;
+          window.__audioCtx = new AudioCtxClass();
+        }
+        if (window.__audioCtx.state === 'suspended') {
+          await window.__audioCtx.resume();
+        }
+      }
+
+      isAudioActive = true;
+      btn.classList.add('active');
+      const textSpan = btn.querySelector('.audio-text');
+      if (textSpan) textSpan.textContent = 'AUDIO ON';
+      console.log('[Web Audio Initialized]');
+    } catch (err) {
+      console.warn('[Web Audio Init Warning]:', err);
+    }
+  });
 }
 
 function setupAboutModal() {
@@ -197,53 +191,71 @@ function openAboutModal() {
 
 function setupKeyboard() {
   const pianoContainer = document.getElementById('piano-keyboard');
-  if (pianoContainer && pianoContainer.children.length === 0) {
-    // Generate 2 Octaves (C3 = 48 to B4 = 71)
-    const notes = [
-      { n: 48, isBlack: false }, { n: 49, isBlack: true },
-      { n: 50, isBlack: false }, { n: 51, isBlack: true },
-      { n: 52, isBlack: false },
-      { n: 53, isBlack: false }, { n: 54, isBlack: true },
-      { n: 55, isBlack: false }, { n: 56, isBlack: true },
-      { n: 57, isBlack: false }, { n: 58, isBlack: true },
-      { n: 59, isBlack: false },
-      { n: 60, isBlack: false }, { n: 61, isBlack: true },
-      { n: 62, isBlack: false }, { n: 63, isBlack: true },
-      { n: 64, isBlack: false },
-      { n: 65, isBlack: false }, { n: 66, isBlack: true },
-      { n: 67, isBlack: false }, { n: 68, isBlack: true },
-      { n: 69, isBlack: false }, { n: 70, isBlack: true },
-      { n: 71, isBlack: false },
-      { n: 72, isBlack: false }
-    ];
+  if (!pianoContainer || pianoContainer.children.length > 0) return;
 
-    notes.forEach(noteObj => {
-      const key = document.createElement('div');
-      key.className = noteObj.isBlack ? 'black-key' : 'white-key';
-      key.dataset.note = noteObj.n;
+  // 2-Octave White Key map (C3 = 48 to C5 = 72) with corresponding accidental sharp notes
+  const whiteKeyDefs = [
+    { note: 48, sharp: 49 }, // C3 -> C#3
+    { note: 50, sharp: 51 }, // D3 -> D#3
+    { note: 52, sharp: null }, // E3
+    { note: 53, sharp: 54 }, // F3 -> F#3
+    { note: 55, sharp: 56 }, // G3 -> G#3
+    { note: 57, sharp: 58 }, // A3 -> A#3
+    { note: 59, sharp: null }, // B3
+    { note: 60, sharp: 61 }, // C4 -> C#4
+    { note: 62, sharp: 63 }, // D4 -> D#4
+    { note: 64, sharp: null }, // E4
+    { note: 65, sharp: 66 }, // F4 -> F#4
+    { note: 67, sharp: 68 }, // G4 -> G#4
+    { note: 69, sharp: 70 }, // A4 -> A#4
+    { note: 71, sharp: null }, // B4
+    { note: 72, sharp: null }  // C5
+  ];
 
-      key.addEventListener('mousedown', () => {
-        key.classList.add('active');
-        bridge.noteOn(noteObj.n + currentOctave * 12, 0.85);
-      });
+  const bindKeyEvents = (elem, midiNote) => {
+    const playNote = (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      elem.classList.add('active');
+      bridge.noteOn(midiNote + currentOctave * 12, 0.85);
+    };
 
-      key.addEventListener('mouseup', () => {
-        key.classList.remove('active');
-        bridge.noteOff(noteObj.n + currentOctave * 12, 0.0);
-      });
+    const stopNote = (e) => {
+      e.stopPropagation();
+      elem.classList.remove('active');
+      bridge.noteOff(midiNote + currentOctave * 12, 0.0);
+    };
 
-      key.addEventListener('mouseleave', () => {
-        if (key.classList.contains('active')) {
-          key.classList.remove('active');
-          bridge.noteOff(noteObj.n + currentOctave * 12, 0.0);
-        }
-      });
-
-      pianoContainer.appendChild(key);
+    elem.addEventListener('mousedown', playNote);
+    elem.addEventListener('mouseup', stopNote);
+    elem.addEventListener('mouseleave', () => {
+      if (elem.classList.contains('active')) stopNote({ stopPropagation: () => {} });
     });
-  }
 
-  // Octave buttons
+    // Touch support for mobile / tablets
+    elem.addEventListener('touchstart', playNote, { passive: false });
+    elem.addEventListener('touchend', stopNote, { passive: false });
+    elem.addEventListener('touchcancel', stopNote, { passive: false });
+  };
+
+  whiteKeyDefs.forEach(def => {
+    const whiteKey = document.createElement('div');
+    whiteKey.className = 'white-key';
+    whiteKey.dataset.note = def.note;
+    bindKeyEvents(whiteKey, def.note);
+
+    if (def.sharp !== null) {
+      const blackKey = document.createElement('div');
+      blackKey.className = 'black-key';
+      blackKey.dataset.note = def.sharp;
+      bindKeyEvents(blackKey, def.sharp);
+      whiteKey.appendChild(blackKey);
+    }
+
+    pianoContainer.appendChild(whiteKey);
+  });
+
+  // Octave Shift Buttons & LEDs
   const octDown = document.getElementById('oct-down');
   const octUp = document.getElementById('oct-up');
   const ledDown = document.getElementById('led-down');
@@ -286,7 +298,7 @@ function setupButtons() {
 
   const randomBtn = document.getElementById('btn-random');
   randomBtn?.addEventListener('click', () => {
-    handleMenuAction('randomize');
+    handleMenuAction('randomize-patch');
   });
 
   const compareBtn = document.getElementById('btn-compare');
@@ -296,22 +308,49 @@ function setupButtons() {
 }
 
 function setupKeyboardShortcuts() {
+  // QWERTY Key mapping (White keys: Z, S, X, D, C, V, G, B, H, N, J, M)
+  const keyMap = {
+    'z': 48, 's': 49, 'x': 50, 'd': 51, 'c': 52,
+    'v': 53, 'g': 54, 'b': 55, 'h': 56, 'n': 57, 'j': 58, 'm': 59,
+    'q': 60, '2': 61, 'w': 62, '3': 63, 'e': 64,
+    'r': 65, '5': 66, 't': 67, '6': 68, 'y': 69, '7': 70, 'u': 71, 'i': 72
+  };
+
+  const activeHeldKeys = new Set();
+
   document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
     if (e.key === 'Escape') {
       closeAllDropdowns();
-      document.getElementById('about-modal')?.classList.add('hidden');
+      const modal = document.getElementById('about-modal');
+      if (modal) {
+        modal.style.setProperty('display', 'none', 'important');
+        modal.classList.add('hidden');
+      }
+      return;
     }
 
-    if (e.ctrlKey || e.metaKey) {
-      switch (e.key.toLowerCase()) {
-        case 'n': e.preventDefault(); handleMenuAction('new-patch'); break;
-        case 'o': e.preventDefault(); handleMenuAction('open-patch'); break;
-        case 's': e.preventDefault(); handleMenuAction('save-patch'); break;
-        case 'z': e.preventDefault(); handleMenuAction('undo'); break;
-        case 'y': e.preventDefault(); handleMenuAction('redo'); break;
-        case 'r': e.preventDefault(); handleMenuAction('randomize'); break;
-        case 'i': e.preventDefault(); handleMenuAction('init-sound'); break;
-      }
+    const key = e.key.toLowerCase();
+    if (keyMap[key] && !activeHeldKeys.has(key)) {
+      activeHeldKeys.add(key);
+      const midiNote = keyMap[key] + currentOctave * 12;
+      bridge.noteOn(midiNote, 0.85);
+
+      const keyElem = document.querySelector(`[data-note="${keyMap[key]}"]`);
+      keyElem?.classList.add('active');
+    }
+  });
+
+  document.addEventListener('keyup', (e) => {
+    const key = e.key.toLowerCase();
+    if (keyMap[key] && activeHeldKeys.has(key)) {
+      activeHeldKeys.delete(key);
+      const midiNote = keyMap[key] + currentOctave * 12;
+      bridge.noteOff(midiNote, 0.0);
+
+      const keyElem = document.querySelector(`[data-note="${keyMap[key]}"]`);
+      keyElem?.classList.remove('active');
     }
   });
 }
