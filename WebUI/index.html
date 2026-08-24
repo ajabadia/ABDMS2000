@@ -6,6 +6,7 @@
   <title>ABDMS2000 Synthesizer</title>
   <link rel="stylesheet" href="src/styles/base.css">
   <link rel="stylesheet" href="src/styles/themes.css">
+  <link rel="stylesheet" href="src/styles/menu.css">
   <link rel="stylesheet" href="src/styles/main.css">
 </head>
 <body>
@@ -15,11 +16,73 @@
       <div class="nav-left">
         <span class="brand-title">ABDMS2000</span>
         <nav class="nav-menu-bar">
-          <button class="menu-btn">File</button>
-          <button class="menu-btn">Edit</button>
-          <button class="menu-btn">View</button>
-          <button class="menu-btn">Settings</button>
-          <button class="menu-btn">Help</button>
+          <!-- File Menu -->
+          <div class="menu-item-container">
+            <button class="menu-btn" data-menu="file">File</button>
+            <div class="dropdown-menu" id="menu-file">
+              <button class="dropdown-item" data-action="new-patch"><span>New Patch</span><span class="dropdown-kbd">Ctrl+N</span></button>
+              <button class="dropdown-item" data-action="open-patch"><span>Open Patch (.syx / .json)...</span><span class="dropdown-kbd">Ctrl+O</span></button>
+              <button class="dropdown-item" data-action="save-patch"><span>Save Patch</span><span class="dropdown-kbd">Ctrl+S</span></button>
+              <div class="dropdown-separator"></div>
+              <button class="dropdown-item" data-action="export-sysex"><span>Export SysEx (.syx)</span></button>
+              <button class="dropdown-item" data-action="export-json"><span>Export JSON (.json)</span></button>
+              <div class="dropdown-separator"></div>
+              <button class="dropdown-item" data-action="bank-manager"><span>Bank Manager...</span><span class="dropdown-kbd">Ctrl+B</span></button>
+            </div>
+          </div>
+
+          <!-- Edit Menu -->
+          <div class="menu-item-container">
+            <button class="menu-btn" data-menu="edit">Edit</button>
+            <div class="dropdown-menu" id="menu-edit">
+              <button class="dropdown-item" data-action="undo"><span>Undo</span><span class="dropdown-kbd">Ctrl+Z</span></button>
+              <button class="dropdown-item" data-action="redo"><span>Redo</span><span class="dropdown-kbd">Ctrl+Y</span></button>
+              <div class="dropdown-separator"></div>
+              <button class="dropdown-item" data-action="copy-patch"><span>Copy Patch</span><span class="dropdown-kbd">Ctrl+C</span></button>
+              <button class="dropdown-item" data-action="paste-patch"><span>Paste Patch</span><span class="dropdown-kbd">Ctrl+V</span></button>
+              <div class="dropdown-separator"></div>
+              <button class="dropdown-item" data-action="randomize"><span>Randomize Parameters</span><span class="dropdown-kbd">Ctrl+R</span></button>
+              <button class="dropdown-item" data-action="init-sound"><span>Init Sound (Default)</span><span class="dropdown-kbd">Ctrl+I</span></button>
+            </div>
+          </div>
+
+          <!-- View Menu -->
+          <div class="menu-item-container">
+            <button class="menu-btn" data-menu="view">View</button>
+            <div class="dropdown-menu" id="menu-view">
+              <button class="dropdown-item" data-action="zoom-100"><span>Zoom 100%</span></button>
+              <button class="dropdown-item" data-action="zoom-125"><span>Zoom 125%</span></button>
+              <button class="dropdown-item" data-action="zoom-150"><span>Zoom 150%</span></button>
+              <div class="dropdown-separator"></div>
+              <button class="dropdown-item" data-action="skin-ms2000"><span>Skin: Korg MS2000</span></button>
+              <button class="dropdown-item" data-action="skin-microkorg"><span>Skin: microKORG</span></button>
+              <button class="dropdown-item" data-action="skin-advanced"><span>Skin: ABD Ultra (Advanced)</span></button>
+            </div>
+          </div>
+
+          <!-- Settings / Options Menu -->
+          <div class="menu-item-container">
+            <button class="menu-btn" data-menu="settings">Settings</button>
+            <div class="dropdown-menu" id="menu-settings">
+              <button class="dropdown-item" data-action="midi-settings"><span>MIDI Configuration...</span></button>
+              <button class="dropdown-item" data-action="sysex-device-id"><span>SysEx Device ID (0x58 / 0x5E)...</span></button>
+              <button class="dropdown-item" data-action="advanced-params"><span>Advanced Parameters (Side Panel)...</span></button>
+              <div class="dropdown-separator"></div>
+              <button class="dropdown-item" data-action="open-web-server"><span>Start Web Dev Server (Port 8384)</span></button>
+            </div>
+          </div>
+
+          <!-- Help Menu -->
+          <div class="menu-item-container">
+            <button class="menu-btn" data-menu="help">Help</button>
+            <div class="dropdown-menu" id="menu-help">
+              <button class="dropdown-item" data-action="lcd-menu-map"><span>MS2000 Menu Reference</span></button>
+              <button class="dropdown-item" data-action="midi-chart"><span>MIDI Implementation Chart</span></button>
+              <div class="dropdown-separator"></div>
+              <button class="dropdown-item" data-action="github-repo"><span>GitHub Repository</span></button>
+              <button class="dropdown-item" data-action="about"><span>About ABDMS2000...</span></button>
+            </div>
+          </div>
         </nav>
       </div>
 
@@ -34,13 +97,13 @@
     <main class="main-workspace">
       <section class="hero-panel">
         <div class="lcd-container">
-          <div class="lcd-line-1">A.01 Init Program</div>
-          <div class="lcd-line-2">VA Saw + MultiFilter</div>
+          <div class="lcd-line-1" id="lcd-line-1">A.01 Init Program</div>
+          <div class="lcd-line-2" id="lcd-line-2">VA Saw + MultiFilter</div>
         </div>
 
         <div style="display: flex; gap: 10px; align-items: center;">
-          <button class="menu-btn" style="border: 1px solid var(--color-panel-border);">Compare A/B</button>
-          <button class="menu-btn" style="border: 1px solid var(--color-panel-border);">🎲 Random</button>
+          <button id="btn-compare" class="menu-btn" style="border: 1px solid var(--color-panel-border);">Compare A/B</button>
+          <button id="btn-random" class="menu-btn" style="border: 1px solid var(--color-panel-border);">🎲 Random</button>
           <button id="btn-panic" class="menu-btn" style="background: #ff3344; color: #fff; font-weight: bold;">PANIC</button>
         </div>
       </section>
@@ -59,7 +122,7 @@
         </div>
 
         <div class="module-card">
-          <div class="module-title">Filter Multimode</div>
+          <div class="module-title">FILTER MULTIMODE</div>
           <div class="control-row">
             <span>Type</span>
             <span style="color: var(--color-accent); font-weight: bold;">LPF 24dB</span>
@@ -71,7 +134,7 @@
         </div>
 
         <div class="module-card">
-          <div class="module-title">Envelopes & Amp</div>
+          <div class="module-title">ENVELOPES & AMP</div>
           <div class="control-row">
             <span>Attack</span>
             <span>1 ms</span>
@@ -84,39 +147,37 @@
       </section>
     </main>
 
-    <!-- Virtual Keyboard Footer -->
-    <footer class="keyboard-footer">
-      <div class="keyboard-octave-bar">
-        <div class="octave-controls">
-          <button id="btn-oct-down" class="oct-btn">OCT -</button>
-          <div id="led-oct-down" class="oct-led"></div>
-          <span style="font-weight: 600; font-size: 11px;">OCTAVE</span>
-          <div id="led-oct-up" class="oct-led"></div>
-          <button id="btn-oct-up" class="oct-btn">OCT +</button>
+    <!-- Virtual Keyboard Area -->
+    <footer class="keyboard-container">
+      <div class="octave-controls">
+        <button id="oct-down" class="menu-btn" style="border: 1px solid var(--color-panel-border);">OCT -</button>
+        <div class="octave-leds">
+          <span class="oct-led" id="led-down"></span>
+          <span class="oct-label">OCTAVE</span>
+          <span class="oct-led" id="led-up"></span>
         </div>
-        <span style="font-size: 11px; color: var(--color-text-muted);">Virtual 2-Octave Preview</span>
+        <button id="oct-up" class="menu-btn" style="border: 1px solid var(--color-panel-border);">OCT +</button>
       </div>
 
-      <div class="keys-strip">
-        <!-- Octave 1 -->
-        <div class="white-key" data-note="48"><div class="black-key" data-note="49"></div></div>
-        <div class="white-key" data-note="50"><div class="black-key" data-note="51"></div></div>
-        <div class="white-key" data-note="52"></div>
-        <div class="white-key" data-note="53"><div class="black-key" data-note="54"></div></div>
-        <div class="white-key" data-note="55"><div class="black-key" data-note="56"></div></div>
-        <div class="white-key" data-note="57"><div class="black-key" data-note="58"></div></div>
-        <div class="white-key" data-note="59"></div>
-        <!-- Octave 2 -->
-        <div class="white-key" data-note="60"><div class="black-key" data-note="61"></div></div>
-        <div class="white-key" data-note="62"><div class="black-key" data-note="63"></div></div>
-        <div class="white-key" data-note="64"></div>
-        <div class="white-key" data-note="65"><div class="black-key" data-note="66"></div></div>
-        <div class="white-key" data-note="67"><div class="black-key" data-note="68"></div></div>
-        <div class="white-key" data-note="69"><div class="black-key" data-note="70"></div></div>
-        <div class="white-key" data-note="71"></div>
-        <div class="white-key" data-note="72"></div>
+      <div class="piano-keys" id="piano-keyboard">
+        <!-- 2 Octaves generated via app.js -->
       </div>
     </footer>
+
+    <!-- About Modal Dialog -->
+    <div id="about-modal" class="modal-overlay hidden">
+      <div class="modal-box">
+        <h3>ABDMS2000</h3>
+        <div class="modal-sub">Virtual Analog / DWGS Synthesizer Emulator</div>
+        <div class="modal-content">
+          <p><strong>Architecture:</strong> Tri-Mode (Korg MS2000, microKORG, ABD Ultra)</p>
+          <p><strong>Engine:</strong> PolyBLEP VA + DWGS 64 Waves + 16-Band Vocoder</p>
+          <p><strong>Build Version:</strong> <span id="about-build-version">2026.08.24</span></p>
+          <p><strong>Developed by:</strong> ajabadia &amp; Antigravity Pair Programming</p>
+        </div>
+        <button id="about-close-btn" class="modal-close-btn">CERRAR</button>
+      </div>
+    </div>
   </div>
 
   <script type="module" src="src/app.js"></script>

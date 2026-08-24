@@ -968,6 +968,41 @@ Siguiendo las reglas de oro de `guia_maestra_wasm_juce.md` y `README_WASM_COMPIL
 3. **Proveedor de Recursos Multi-Ruta con Hot-Reload (`PluginEditor_ResourceProvider.cpp`):**
    El proveedor de recursos busca en caliente la carpeta `WebUI/` tanto en la ruta absoluta de desarrollo como en la ruta relativa al ejecutable (`exeDir/WebUI` o `exeDir/../../../../../WebUI`), garantizando que la interfaz cargue siempre tanto en Standalone como dentro de cualquier DAW host (VST3).
 
+### 9.7 Árbol Canónico de Menús LCD del Korg MS2000 (Referencia: `DOCS/korg_ms2000_menu_map.md`)
+
+> [!NOTE]
+> Todos los parámetros editables del hardware Korg MS2000 / microKORG (incluyendo los accesibles exclusivamente por pantalla LCD) quedan registrados y tipados en el `ParameterRegistry` para su acceso directo desde la interfaz gráfica y el panel deslizante lateral (*Advanced Panel*).
+
+* **Parte 1 (Voz y Sintetizador):**
+  * `VOICE`: Voice Assign (`Mono`, `Poly`, `Unison`), Trigger Mode (`Single`, `Multi`), Voice Mode (`Single`, `Split`, `Dual`), Unison Detune (`0..99`), Unison Spread (`0..127`).
+  * `PITCH`: Transpose (`-24..+24`), Tune (`-50..+50`), Portamento (`0..127`), Vibrato Intensity (`-63..+63`), Pitch Bend Range (`-12..+12`).
+  * `OSC 1`: Wave (`Saw`, `Pulse`, `Triangle`, `Sine`, `Vox`, `DWGS`, `Noise`, `Audio In`), OSC1 Ctrl 1 (`0..127`), OSC1 Ctrl 2 (`DWGS 0..63` / Mod Source).
+  * `OSC 2`: Wave (`Saw`, `Square`, `Triangle`), Modulation Mode (`Off`, `Ring`, `Sync`, `Ring+Sync`), Semitone (`-24..+24`), Tune (`-50..+50`).
+  * `MIXER`: OSC1 Level (`0..127`), OSC2 Level (`0..127`), Noise/Audio In Level (`0..127`).
+
+* **Parte 2 (Filtro, Amplificador, Envolventes y Virtual Patch):**
+  * `VCF`: Type (`24LPF`, `12LPF`, `12BPF`, `12HPF`), Cutoff (`0..127`), Resonance (`0..127`), EG1 Intensity (`-63..+63`), KBD Track (`-63..+63`).
+  * `VCA / AMP`: Amp Level (`0..127`), Panpot (`L64..CNT..R63`), Distortion (`Off/On`), KBD Track (`-63..+63`).
+  * `EG1 & EG2`: Attack (`0..127`, 1ms a 11s), Decay (`0..127`, 2ms a 20s), Sustain (`0..127`), Release (`0..127`, 2ms a 20s).
+  * `LFO1 & LFO2`: Wave (`Saw`, `Square`, `Triangle/Sine`, `S&H`), Tempo Sync (`Off/On`), Speed / Sync Division.
+  * `VIRTUAL PATCH (1 a 4)`: Source (`EG1`, `EG2`, `LFO1`, `LFO2`, `Velocity`, `Kbd Track`, `Pitch Bend`, `Mod Wheel`), Destination (`Pitch`, `OSC2 Pitch`, `OSC1 Ctrl1`, `Cutoff`, `Amp`, `Pan`, `LFO2 Freq`), Intensity (`-63..+63`).
+
+* **Parte 3 (Efectos FX, EQ y Vocoder):**
+  * `MOD FX`: Type (`Chorus/Flanger`, `Ensemble`, `Phaser`), LFO Speed (`0..127`), Depth (`0..127`), Feedback (`0..127`).
+  * `DELAY FX`: Type (`Stereo`, `Cross`, `L/R`), Tempo Sync (`Off/On`), Time / Sync Div (`0..127`), Depth (`0..127`), Feedback (`0..127`).
+  * `EQUALIZER`: Low EQ Freq (`160Hz`, `250Hz`, `400Hz`, `600Hz`), Low EQ Gain (`-12..+12 dB`), High EQ Freq (`4kHz`, `6kHz`, `8kHz`, `12kHz`), High EQ Gain (`-12..+12 dB`).
+  * `VOCODER`: Select (`Internal/External`), Formant Shift (`-2..+2`), VCO Level (`0..127`), Audio In Level (`0..127`), Gate Sense (`0..127`), HPF Level (`0..127`), HPF Gate (`Disable/Enable`).
+
+* **Parte 4 (Secuenciador de Modulación y Ajustes Globales):**
+  * `MOD SEQUENCE (Pistas A, B, C)`: Destination Param, Motion (`Step/Smooth`), Length (`1..16`), Mode (`Forward`, `Backward`, `Bounce`, `Random`), Step Values 1..16 (`0..127`).
+  * `GLOBAL`: Master Tune (`430.0..450.0 Hz`), MIDI Clock (`Internal`, `External`, `Auto`), MIDI Local Control (`Off/On`), Memory Protect (`Off/On`).
+
+### 9.8 Barra Superior Navbar, Submenús Desplegables, Atajos y Diálogo About
+
+- **Barra Superior (`Navbar`):** Menús `File`, `Edit`, `View`, `Settings`, `Help` con submenús desplegables animados, soporte para clic/hover y cierre al pulsar fuera o `Escape`.
+- **Atajos de Teclado Globales:** `Ctrl+N` (Nuevo parche), `Ctrl+O` (Abrir .syx/.json), `Ctrl+S` (Guardar), `Ctrl+Z` / `Ctrl+Y` (Deshacer/Rehacer), `Ctrl+R` (Randomizar), `Ctrl+I` (Init patch).
+- **Diálogo About Modal:** Muestra la arquitectura del sinte, autores, créditos y el número de compilación dinámico generado por `Scripts/build_webui.js` (`BUILD_INFO.version` + `BUILD_INFO.buildNumber`).
+
 ---
 
 ## 10. Plan de Testing y Lista de Control de Calidad (Plugin Quality Checklist)

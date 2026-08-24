@@ -1,0 +1,167 @@
+/* ─── Menu Bar & Dropdown System ─── */
+.nav-menu-bar {
+  display: flex;
+  gap: 4px;
+  position: relative;
+  z-index: 1000;
+}
+
+.menu-item-container {
+  position: relative;
+}
+
+.menu-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--color-text-dim);
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.menu-btn:hover,
+.menu-btn.active {
+  background: var(--color-accent-dim);
+  color: var(--color-accent);
+  border-color: var(--color-panel-border);
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 220px;
+  background: var(--color-panel-bg);
+  border: 1px solid var(--color-panel-border);
+  border-radius: var(--border-radius-md);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7);
+  padding: 6px;
+  z-index: 2000;
+  backdrop-filter: blur(8px);
+}
+
+.dropdown-menu.show {
+  display: block;
+  animation: menuFadeIn 0.15s cubic-bezier(0, 0, 0.2, 1);
+}
+
+@keyframes menuFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dropdown-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  color: var(--color-text-main);
+  padding: 7px 10px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.8rem;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.dropdown-item:hover {
+  background: var(--color-accent-dim);
+  color: var(--color-accent);
+}
+
+.dropdown-separator {
+  height: 1px;
+  background: var(--color-panel-border);
+  margin: 5px 4px;
+}
+
+.dropdown-kbd {
+  font-family: var(--font-lcd);
+  font-size: 0.7rem;
+  color: var(--color-text-dim);
+  border: 1px solid var(--color-panel-border);
+  border-radius: 3px;
+  padding: 1px 5px;
+  background: var(--color-bg);
+}
+
+/* Modal Dialog (About / Settings) */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(6px);
+}
+
+.modal-overlay.hidden {
+  display: none;
+}
+
+.modal-box {
+  background: var(--color-panel-bg);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--border-radius-md);
+  padding: 24px;
+  max-width: 440px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+  animation: modalPop 0.2s cubic-bezier(0, 0, 0.2, 1);
+}
+
+@keyframes modalPop {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modal-box h3 {
+  color: var(--color-accent);
+  font-size: 1.25rem;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.modal-sub {
+  color: var(--color-text-dim);
+  font-size: 0.82rem;
+  margin-bottom: 14px;
+}
+
+.modal-content {
+  color: var(--color-text-main);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  text-align: left;
+  background: var(--color-bg);
+  padding: 12px;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--color-panel-border);
+}
+
+.modal-close-btn {
+  background: var(--color-accent);
+  color: #000;
+  border: none;
+  font-weight: 700;
+  padding: 8px 24px;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.modal-close-btn:hover {
+  opacity: 0.9;
+}
