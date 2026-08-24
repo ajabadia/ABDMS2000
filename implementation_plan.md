@@ -924,19 +924,49 @@ Siguiendo las reglas de oro de `guia_maestra_wasm_juce.md` y `README_WASM_COMPIL
 | `build.bat` | Compila Standalone y VST3 para Windows (MSVC / Ninja) | `node Scripts/registry_generator.js`<br>`node Scripts/build_webui.js`<br>`cmake -B build -S . -DCMAKE_BUILD_TYPE=Release`<br>`cmake --build build --config Release` |
 | `wasm/build_wasm.bat` | Compila el motor DSP en WebAssembly (AudioWorklet) | `emcmake cmake -B build_wasm -S wasm`<br>`cmake --build build_wasm --config Release`<br>`-s SINGLE_FILE=1 -s MALLOC=emmalloc` |
 
-### 9.4 Empaquetado de Assets y Estilos (Single Source of Truth)
+### 9.6 Plantilla Canónica de Carga WebView2 en JUCE 8 (Solución de Integración WebUI en Windows)
 
-- **Modo Desarrollo (Hot Reload):** El `PluginEditor_ResourceProvider.cpp` sirve los archivos directamente desde la carpeta `WebUI/` en el disco duro, permitiendo editar HTML/CSS/JS y ver cambios en tiempo real sin recompilar C++.
-- **Modo Release (Producción):** El script `Scripts/build_webui.js` minifica y empaqueta la carpeta `WebUI/` en un archivo binario `.cpp` embebido mediante JUCE `BinaryData`. El plugin resultante es **100% autónomo (un solo archivo `.vst3` o `.exe`)** sin dependencias externas.
+> [!IMPORTANT]
+> **Diagnóstico del Error "Se canceló la navegación a la página web":**  
+> Cuando JUCE 8 en Windows inicializa `juce::WebBrowserComponent`, si no encuentra el runtime de WebView2 o las librerías del loader, **hace un fallback silencioso al control ActiveX legado de Internet Explorer (MSHTML)**. Como MSHTML no soporta esquemas URI virtuales (`https://juce.internal/` de `getResourceProviderRoot()`), la carga de la WebUI falla mostrando el error de navegación cancelada de Internet Explorer.
 
-### 9.5 Rutas de Almacenamiento de Bancos y Parches
+#### Receta Canónica para la Plantilla General (JUCE 8 + WebView2):
 
-| Entorno | Ruta de Almacenamiento | Formatos Soportados |
-|---|---|---|
-| **Windows** | `%APPDATA%\ABDSynths\ABDMS2000\Banks\` | `.syx` (Korg estándar), `.json` (ABD canónico), `.prg` |
-| **macOS** | `~/Library/Application Support/ABDSynths/ABDMS2000/Banks/` | `.syx`, `.json`, `.prg` |
-| **Web / PWA** | `IndexedDB` (Base de datos local en navegador) | `.json`, `.syx` |
-| **Fallback de Fábrica** | Embebido en C++ (`Source/State/FactoryPresets.cpp`) y `WebUI/public/presets/` | Carga automática en memoria al iniciar si no hay bancos en disco |
+1. **Descarga Automática de Cabeceras y Binarios vía CMake `FetchContent`:**
+   En `CMakeLists.txt`, descargar el paquete oficial NuGet de Microsoft WebView2 sin obligar al usuario a instalar dependencias externas:
+   ```cmake
+   if(WIN32)
+       include(FetchContent)
+       FetchContent_Declare(
+           webview2
+           URL https://www.nuget.org/api/v2/package/Microsoft.Web.WebView2/1.0.2592.51
+           DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+       )
+       FetchContent_MakeAvailable(webview2)
+   endif()
+   ```
+
+2. **Enlace Estático del Loader (`WebView2LoaderStatic.lib`):**
+   Para evitar tener que distribuir `WebView2Loader.dll` junto al ejecutable o plugin VST3, enlazar directamente la librería estática y `version.lib`:
+   ```cmake
+   if(WIN32 AND DEFINED webview2_SOURCE_DIR)
+       target_include_directories(${PROJECT_NAME} PRIVATE
+           ${webview2_SOURCE_DIR}/build/native/include
+       )
+       target_link_libraries(${PROJECT_NAME} PRIVATE
+           ${webview2_SOURCE_DIR}/build/native/x64/WebView2LoaderStatic.lib
+           version.lib
+       )
+   endif()
+
+   target_compile_definitions(${PROJECT_NAME} PRIVATE
+       JUCE_WEB_BROWSER=1
+       JUCE_USE_WIN_WEBVIEW2=1
+   )
+   ```
+
+3. **Proveedor de Recursos Multi-Ruta con Hot-Reload (`PluginEditor_ResourceProvider.cpp`):**
+   El proveedor de recursos busca en caliente la carpeta `WebUI/` tanto en la ruta absoluta de desarrollo como en la ruta relativa al ejecutable (`exeDir/WebUI` o `exeDir/../../../../../WebUI`), garantizando que la interfaz cargue siempre tanto en Standalone como dentro de cualquier DAW host (VST3).
 
 ---
 

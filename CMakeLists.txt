@@ -15,7 +15,7 @@ else()
     find_package(JUCE 8 CONFIG REQUIRED)
 endif()
 
-# On Windows, fetch Microsoft.Web.WebView2 headers for WebView2 support
+# On Windows, fetch Microsoft.Web.WebView2 headers and static loader
 if(WIN32)
     include(FetchContent)
     FetchContent_Declare(
@@ -88,6 +88,14 @@ target_link_libraries(ABDMS2000 PRIVATE
     juce::juce_recommended_lto_flags
     juce::juce_recommended_warning_flags
 )
+
+# On Windows, statically link WebView2Loader and version.lib
+if(WIN32 AND DEFINED webview2_SOURCE_DIR)
+    target_link_libraries(ABDMS2000 PRIVATE
+        ${webview2_SOURCE_DIR}/build/native/x64/WebView2LoaderStatic.lib
+        version.lib
+    )
+endif()
 
 # Compile Definitions for WebView2
 target_compile_definitions(ABDMS2000 PRIVATE

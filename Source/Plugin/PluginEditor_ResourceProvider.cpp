@@ -19,13 +19,11 @@ static juce::String getMimeTypeForExtension(const juce::String& ext)
 
 WebUIResourceProvider::WebUIResourceProvider()
 {
-    // Try to find WebUI folder relative to current source directory or executable
     devRootDirectory_ = juce::File("D:/desarrollos/ABDSynths/ABDMS2000/WebUI");
     if (!devRootDirectory_.exists())
     {
-        // Fallback relative to executable directory
         auto currentExeDir = juce::File::getSpecialLocation(juce::File::currentExecutableFile).getParentDirectory();
-        devRootDirectory_ = currentExeDir.getChildFile("../../../WebUI");
+        devRootDirectory_ = currentExeDir.getChildFile("../../../../../WebUI");
         if (!devRootDirectory_.exists())
         {
             devRootDirectory_ = currentExeDir.getChildFile("WebUI");
@@ -41,13 +39,17 @@ std::optional<juce::WebBrowserComponent::Resource> WebUIResourceProvider::getRes
     if (cleanUrl.isEmpty() || cleanUrl == "/")
         cleanUrl = "index.html";
 
-    // Remove query parameters or hash
     int queryIndex = cleanUrl.indexOfChar('?');
     if (queryIndex != -1) cleanUrl = cleanUrl.substring(0, queryIndex);
     int hashIndex = cleanUrl.indexOfChar('#');
     if (hashIndex != -1) cleanUrl = cleanUrl.substring(0, hashIndex);
 
     juce::File targetFile = devRootDirectory_.getChildFile(cleanUrl);
+    if (!targetFile.existsAsFile())
+    {
+        targetFile = juce::File("D:/desarrollos/ABDSynths/ABDMS2000/WebUI").getChildFile(cleanUrl);
+    }
+
     if (targetFile.existsAsFile())
     {
         juce::MemoryBlock block;
