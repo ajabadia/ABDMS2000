@@ -1,0 +1,899 @@
+
+<!DOCTYPE html>
+
+<head>
+    <title>Korg MS-2000 version 2.0 by grymmjack on maxforlive.com</title>
+    <meta charset="UTF-8" />
+    <meta name="description" content="The Free Library of Max for Live Devices" />
+    <meta name="keywords" content="Ableton, Cycling 74, Max, Max/MSP, Max for Live" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/css/styles.css?v=1.0.1" />
+    <script type='text/javascript' src="/global.js"></script>
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header>
+    <!-- <div class="divider"></div> -->
+    <div class="wide-internal-header">
+        <div class="header-top">
+            <nav>
+                <ul class='header-navigation-start'>
+                    <li><a href="/index.php" id="headertitle">Max for Live</a></li>
+                    <li><a href="/library/index.php">Library</a></li>
+                    <li><a href="/help.php">Help</a></li>
+                                    </ul>
+            </nav>
+
+            <form class='search-form' name="form1" method="get" action="/library/index.php" enctype="multipart/form-data">
+                <input type="hidden" name="by" value="any">
+                <button class='search-icon-container'>
+                    <svg viewbox="0 0 15 15" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M10 6.5C10 8.433 8.433 10 6.5 10C4.567 10 3 8.433 3 6.5C3 4.567 4.567 3 6.5 3C8.433 3 10 4.567 10 6.5ZM9.30884 10.0159C8.53901 10.6318 7.56251 11 6.5 11C4.01472 11 2 8.98528 2 6.5C2 4.01472 4.01472 2 6.5 2C8.98528 2 11 4.01472 11 6.5C11 7.56251 10.6318 8.53901 10.0159 9.30884L12.8536 12.1464L12.1464 12.8536L9.30884 10.0159Z" fill="black"/>
+                    </svg>
+                </button>
+                <input type="text" placeholder="Search" name="q" size="40">	
+            </form>
+            
+            <nav>
+                <ul class='header-navigation-end'>
+                                    <li><a href="/login.php" class="">Log in or register</a></li>
+                                </ul>
+            </nav>      
+        </div>
+
+        <nav class="category-navigation">
+            <a class='device-type-pill' href="/library/index.php?type=instrument" class="thumb">Instruments</a>
+            <a class='device-type-pill' href="/library/index.php?type=audio" class="thumb">Audio Effects</a>
+            <a class='device-type-pill' href="/library/index.php?type=midi" class="thumb">MIDI Effects</a>
+            <a class='device-type-pill' href="/library/index.php?type=midi-generators" class="thumb">MIDI Generators</a>
+            <a class='device-type-pill' href="/library/index.php?type=midi-transformations" class="thumb">MIDI Transformations</a>
+        </nav>
+    </div>
+
+    <div class="narrow-internal-header">
+        <div class="top-row">
+            <a href="/index.php" id="headertitle">Max for Live</a>
+            <input type="checkbox" id='header-toggle' style="display:none">
+            <label for="header-toggle" class='header-hamburger'>
+                <svg class='icon icon-hamburger' width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 18L20 18"  />
+                    <path d="M4 12L20 12"  />
+                    <path d="M4 6L20 6" />
+                </svg>
+                <svg class="icon icon-x" width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 4L20 20"  />
+                    <path d="M20 4L4 20"  />
+                </svg>
+            </label>
+        </div>
+
+        <form id='searchbar' class='search-form' name="form1" method="get" action="/library/index.php" enctype="multipart/form-data">
+            <input type="hidden" name="by" value="any">
+            <button class='search-icon-container'>
+                <svg viewbox="0 0 15 15" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M10 6.5C10 8.433 8.433 10 6.5 10C4.567 10 3 8.433 3 6.5C3 4.567 4.567 3 6.5 3C8.433 3 10 4.567 10 6.5ZM9.30884 10.0159C8.53901 10.6318 7.56251 11 6.5 11C4.01472 11 2 8.98528 2 6.5C2 4.01472 4.01472 2 6.5 2C8.98528 2 11 4.01472 11 6.5C11 7.56251 10.6318 8.53901 10.0159 9.30884L12.8536 12.1464L12.1464 12.8536L9.30884 10.0159Z" fill="black"/>
+                </svg>
+            </button>
+            <input type="text" placeholder="Search" name="q" size="40">	
+        </form>
+
+        <nav class="category-navigation">
+            <div class="categories">
+                <a class='device-type-pill' href="/library/index.php?type=audio" class="thumb">Audio Effects</a>
+                <a class='device-type-pill' href="/library/index.php?type=instrument" class="thumb">Instruments</a>
+                <a class='device-type-pill' href="/library/index.php?type=midi" class="thumb">MIDI Effects</a>
+                <a class='device-type-pill' href="/library/index.php?type=midi-generators" class="thumb">MIDI Generators</a>
+                <a class='device-type-pill' href="/library/index.php?type=midi-transformations" class="thumb">MIDI Transformations</a>
+            </div>
+        </nav>
+
+        <div class="narrow-divider"></div>
+
+        <nav class='user-interactions'>
+            <ul>
+                <li><a href="/library/index.php?tag=all">Library</a></li>
+                <li><a href="/help.php">Help</a></li>
+
+                                <li><a href="/login.php" class="">Log in or register</a></li>
+                            </ul>
+        </nav>  
+    </div>
+</header>
+
+<script>
+    const hamburger = document.querySelector('.header-hamburger');
+    const narrowContainer = document.querySelector('.narrow-internal-header');
+    const headerToggle = document.getElementById('header-toggle');
+
+    const updateHeaderExpansion = () => {
+        if (headerToggle.checked) {
+            document.body.classList.add('no-scroll');
+        } else {
+            document.body.classList.remove('no-scroll');
+        }
+        
+        const narrowInternalHeader = document.querySelector('.narrow-internal-header');
+        narrowInternalHeader.style.height = headerToggle.checked ? '100vh' : 'auto';
+        Array.from(narrowInternalHeader.children).forEach(child => {
+            if (!Array.from(child.classList).includes('top-row')) {
+                child.style.visibility = headerToggle.checked ? 'visible' : 'hidden'
+                child.style.display =  headerToggle.checked ? 'flex' : 'none'
+            }
+        });
+    }
+
+    headerToggle.addEventListener('change', updateHeaderExpansion);
+
+    window.addEventListener('resize', () => {
+        if (window.innerWidth >= 1100) {
+            headerToggle.checked = false
+            document.body.classList.remove('no-scroll')
+        } else {
+            updateHeaderExpansion()
+        }
+    });
+
+
+</script>
+
+<style>
+    .no-scroll {
+        overflow: hidden;
+        height: 100%;
+    }
+
+    .header-hamburger .icon-x {
+        display: none;
+    }
+
+    #header-toggle:checked ~ .header-hamburger .icon-hamburger {
+        display: none;
+    }
+
+    #header-toggle:checked ~ .header-hamburger .icon-x {
+        display: block;
+    }
+
+    .header-hamburger {
+        background: none;
+        border: none;
+        outline: none;
+    }
+
+    .header-hamburger:hover {
+        cursor: pointer;
+    }
+
+    .header-hamburger svg path {
+        stroke: white;
+        stroke-width: 2;
+        stroke-linecap: round
+    }
+
+    header {
+        position: sticky;
+        top: 0;
+        z-index: 99;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 1em;
+        background-color: #232323;
+        display: flex;
+        flex-direction: column;
+    }
+
+    header .wide-internal-header {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+        padding-left: 1em;
+        padding-right: 1em;
+    }
+
+    header .narrow-internal-header {
+        position: relative;
+        width: 100%;
+        display: none;
+        visibility: hidden;
+        flex-direction: column;
+        gap: 1em;
+        padding: 1em;
+    }
+
+    header .narrow-internal-header :not(.top-row):not(.narrow-divider) {
+        max-width: 386px;
+    }
+
+    .narrow-internal-header .top-row {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .narrow-internal-header .top-row svg {
+        vertical-align: middle;
+    }
+
+    .narrow-internal-header .search-form {
+        margin-top: 4em;
+        margin-bottom: 1em;
+    }
+
+    .narrow-internal-header .user-interactions a {
+        color: white;
+        font-size: 0.8rem;
+    }
+    
+    .category-navigation {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        height: 60px;
+    }
+
+    .device-type-pill {
+        display: flex;
+        background-color: #424242;
+        border-radius: 0.25rem;
+        font-size: 0.75rem;
+        height: 30px;
+        padding: 1rem 0.8125rem !important;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .categories {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 1em;
+    }
+
+    @media screen and (max-width: 1100px) {
+        header {
+            position: sticky;
+            z-index: 4;
+        }
+
+        header .wide-internal-header {
+            display: none;
+            visibility: hidden;
+        }
+
+        header .narrow-internal-header {
+            display: flex;
+            visibility: visible;
+        }
+
+        .category-navigation {
+            flex-direction: column;
+            height: auto;
+            justify-content: flex-start;
+            align-items: flex-start;
+            padding-top: 1em;
+        }
+    }
+
+    .category-navigation a{
+        color: #f5f5f5 !important;
+        font-size: 0.8rem !important;
+    }
+    .header-notice-wrapper {
+        display: flex;
+        background-color: #FBFFA7;
+        color: #000000;
+        width: 100%;
+        margin: 0;
+    }
+
+    .header-notice {
+        margin: 0 auto;
+        max-width: 1200px;
+        width: 100%;
+        font-size: 0.75rem;
+        font-weight: 500;
+        padding: 0 1em;
+        align-self: center;
+        justify-self: center;
+        text-align: center;
+    }
+
+    .header-notice a {
+        color: #FF5F00;
+    }
+
+    .divider {
+        position: absolute;
+        top: 60px;
+        height: 1px;
+        border-bottom: 1px solid #303030;
+        width: 100%;
+    }
+
+    .header-top {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0;
+        white-space: nowrap;
+        background-color: #232323;
+    }
+
+    .header-top nav {
+        flex-grow: 1;
+        max-height: 60px;
+        flex-basis: 0;
+    }
+
+    .header-top a, .header-top a:hover, .header-top a:visited, .header-top a:active {
+        font-size: 0.9rem;
+        color: #ffffff !important;
+    }
+
+    .header-top ul {
+        height: 45px;
+    }
+
+    .header-navigation-start, .header-navigation-end {
+        display: flex;
+        list-style: none;
+        gap: 1.5em;
+        margin: 0;
+
+    }
+
+    .wide-internal-header .header-navigation-start {
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+
+    .wide-internal-header .header-navigation-end {
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+
+    .narrow-internal-header .header-navigation-start {
+        flex-direction: column;
+    }
+
+    .narrow-internal-header .narrow-divider {
+        height: 1px;
+        border-bottom: 1px solid #303030;
+        width: 100%;
+        padding-top: 2em;
+    }
+
+    .header-navigation li {
+        margin-bottom: 0em;
+    }
+
+    #headertitle {
+        background-image: url(/images/m4l-web-icon.svg);
+        background-size: contain;
+        background-repeat: no-repeat;
+        display: block;
+        /* margin: 0 auto; */
+        text-indent: -9999px;
+        width: 110px;
+        height: 30px;
+    }
+
+    .search-form {
+        padding: 0;
+        margin: 0;
+        height: 1.8em;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        font-size: 1rem;
+    }
+
+    .search-form input {
+        height: 100%;
+        width: 100%;
+        border: none;
+        outline: none;
+        padding: 0 0.5em;
+        color: #f5f5f5;
+        background-color: #424242;
+        border-top-right-radius: 0.25rem;
+        border-bottom-right-radius: 0.25rem;
+    }
+
+    .search-form input:hover {
+        color: #f5f5f5;
+        background-color: #424242;
+    }
+
+    .search-icon-container {
+        border-top-left-radius: 0.25rem;
+        border-bottom-left-radius: 0.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        width: 34px;
+        background: #424242;
+        outline: none;
+        border: none;
+    }
+
+    .search-icon-container svg {
+        height: 100%;
+        width: 100%;
+        fill: none;
+        stroke: #7D7D7D;
+    }
+
+    .search-icon-container:hover {
+        cursor: pointer;
+    }
+
+    .narrow-internal-header > *:not(.top-row) {
+        visibility: hidden;
+        display: none;
+    }
+</style>
+    <div class='central-area'>
+        <!-- CONTENT -->
+        <main id="page">
+            <h1>Device Details</h1>
+
+
+
+<!-- IMG Start--->
+<div class='device-img-container'>
+   <a href="/images/screenshots/?ss=Korg_MS-2000-M4L.com.png&id=900">
+      <img
+      onerror="this.onerror=null; this.src='/images/noDeviceScreenshot.png'; this.parentNode.href='/images/noDeviceScreenshot.png';"
+      src="/images/screenshots/?ss=Korg_MS-2000-M4L.com.png&id=900" 
+      >
+   </a>
+</div>
+<br class="clearboth"/>
+<!-- IMG End--->
+
+<!-- Start Post -->
+<h2>Overview</h2>
+<table width="100%" cellpadding="8" cellspacing="2" border="0">
+   <tr valign="top">
+      <td bgcolor="#EFEEEE" width="20%" align="right">Name | Version:</td>
+      <td bgcolor="#EFEEEE">Korg MS-2000 2.0</td>
+   </tr>
+   <tr>
+      <td bgcolor="#EFEEEE" width="20%" align="right">Author:</td>
+      <td bgcolor="#EFEEEE"><a href="/profile/user/grymmjack">grymmjack</a></td>
+   </tr>
+   <tr>
+      <td bgcolor="#EFEEEE" width="20%" align="right">Device Type:</td>
+      <td bgcolor="#EFEEEE">MIDI Effect</td>
+   </tr>
+   <tr valign="top">
+      <td bgcolor="#EFEEEE" width="20%" align="right">Description:</td>
+      <td bgcolor="#EFEEEE">*updated screenshot* <br />
+<br />
+Here is the second version of the Korg MS-2000 Hardware Control device.<br />
+<br />
+I&#039;ve implemented inbound NRPNs, multislider instead of knobs for modseq1-3 supplemented by live number boxes with sane defaults. I&#039;ve hardwired SEQ1 to pitch (this is how it is at the factory and I can&#039;t think of a reason why I wouldn&#039;t want to use pitch for SEQ1 if you can feel free to fork it for whatever you like). I&#039;ve modified the selectors when choosing OSC1 wave to hide/show the DWGS waveform picker and I&#039;ve linked picking a wave from that menu to adjust the knob (though I couldn&#039;t do it from knob to menu without some problems). I added tab support for the mod seq section (this is much more elegant IMO!).<br />
+<br />
+Next up will be a skinned GUI and a smaller &quot;macro window&quot; with an open button to open the full GUI, etc.<br />
+<br />
+This is a lot fun!!! <br />
+<br />
+The inbound NRPNs aren&#039;t perfect, but they are good enough. This let&#039;s the actual MS-2000 device control every aspect of the patch.<br />
+<br />
+I&#039;ve saved the patch frozen, and it includes all the assets in the frozen patch in my testing. (no zip file this time) though I will be making some presets and bundling those together in a zip file to distribute after the GUI is done :)<br />
+<br />
+Hope you like it! Thanks for the help and encouragement.<br />
+<br />
+---<br />
+<br />
+Here is a first version of a Korg MS-2000 Hardware Control device. I will learn bpatcher and windowing eventually and make a better UI, but for now this works. I cannot figure out how to receive NRPNs in an elegant way from the MS-2000, but sending them TO the MS-2000 works. All CC&#039;s and NRPNs are supported, and additionally where applicable ctlins for the MS-2000 default CC messages are hardwired using the factory CC default CC#s. This creates a more symbiotic relationship between Live and the MS-2000 because changing something on the MS-2000 (any knob or button on it&#039;s surface that sends a CC will update the M4L MIDI Device). I wish I could do sysex somehow, but don&#039;t know how. Eventually I&#039;ll clean this up and put the modules in subpatchers.<br />
+<br />
+So this is based on my work done for the microKORG. Most of the work was reusable (thanks Korg). I&#039;ve removed the program select and added a comprehensive Mod Seq including an initialize and randomize per ModSeq (1-3) and initialize and randomize all buttons which work for all ModSeqs at  once. I added the functionality where Control 1 and Control 2 knob labels on OSC1 change based on the waveform selected. I also added a DWGS waveform picker.<br />
+<br />
+Some improvements I&#039;d like to make:<br />
+- Figure out how to make the DWGS waveform picker only show itself if DWGS is chosen for OSC1 waveform.<br />
+- Clean up and encapsualte modules into subpatchers<br />
+- Create a mini view that sits in the rack, then a button to open a big beautiful skinned display :)<br />
+- Modify the ModSeq value controls from knobs to a nice bipolar bar graph.<br />
+- Integrate MS-2000 sending NRPNs to change the M4L Device control values (to enhance the symbiotic relationship)<br />
+<br />
+*NOTE* To install, unzip the file into your Live Library/Presets/MIDI Effects/Max MIDI Effect directory. There is a js file dependency (included in the zip file) that must be installed in the same place as the axmd file.</td>
+      
+   </tr>
+</table>
+      
+<br class="clearboth" />
+<h2>Details</h2>
+<table width="100%" cellpadding="8" cellspacing="2" border="0">
+   <tr>
+      <td bgcolor="#EFEEEE" width="20%" align="right">Live Version Used:</td>
+      <td bgcolor="#EFEEEE">8.2.5</td>
+   </tr>
+   <tr>
+      <td bgcolor="#EFEEEE" width="20%" align="right">Max Version Used:</td>
+      <td bgcolor="#EFEEEE">5.1.8</td>
+   </tr>
+   <tr>
+      <td bgcolor="#EFEEEE" width="20%" align="right">Date Added:</td>
+      <td bgcolor="#EFEEEE">Sep 19 2011 06:24:57</td>
+   </tr>
+   <tr>
+      <td bgcolor="#EFEEEE" width="20%" align="right">Date Last Updated:</td>
+      <td bgcolor="#EFEEEE">Mar 31 2021 19:48:50</td>
+   </tr>
+   <tr>
+      <td bgcolor="#EFEEEE" width="20%" align="right">Downloads:</td>
+      <td bgcolor="#EFEEEE">5</td>
+   </tr>
+
+<!-- Device URL -->
+   <tr>
+      <td bgcolor="#EFEEEE" width="20%" align="right">
+         Website:
+               </td>
+      <td bgcolor="#EFEEEE">
+         <a href="https://github.com/grymmjack/max4live/tree/main/MS-2000" target="_new">https://github.com/grymmjack/max4live/tree/main/MS-2000</a>
+      </td>
+   </tr>
+<!-- License -->
+<tr>
+   <td bgcolor="#EFEEEE" width="20%" align="right">
+      <a href="http://creativecommons.org/about/licenses/" target="_new">&#9432;</a> License:</td>
+   <td bgcolor="#EFEEEE">AttributionNonCommercialShareAlike</td>
+</tr>
+
+<!-- Device Rating -->
+      <tr>
+         <td bgcolor="#EFEEEE">
+            Average Rating
+                        <br/>
+            <h4><a href="/login.php">Log in to rate this device</a></h4>
+         </td>
+         <td bgcolor="#EFEEEE">
+            -n/a-   
+         </td>
+      </tr>
+</table>
+
+
+<br class="clearboth" />    
+
+
+
+
+<br class="clearboth" />
+
+<!-- End Post -->
+<br class="clearboth" />
+<a name="Comments"></a><h2>Comments</h2>
+         <div class="comments">
+         <div class='device-comment'>hi , thanks for your work! i wanted to do the same but til today i was too busy! but maybe i can help you with the bpatchers and the gui! i will take a look at it in the evening!<br />
+thank you!</div>
+         <div class="postMeta">
+         Posted on September 19 2011 by <a href="/profile/user/st235">st235</a> | 
+         <a href="/cdn-cgi/l/email-protection#0b62656d644b666a736d647967627d6e2568646634787e69616e687f36666a736d647967627d6e256864662b42656a7b7b79647b79626a7f6e2b486466666e657f2d69646f723642656a7b7b79647b79626a7f6e2b686466666e657f2b6d64792b6f6e7d62686e312b24676269796a7972246f6e7d62686e257b637b34626f36323b3b28393d3a3e">Report Issue</a>
+         </div></div>
+         <div class="comments">
+         <div class='device-comment'>wow.. don&#039;t have a korg but i&#039;m very curious how you managed the NRPNs... atm i&#039;m working on a patch for the mopho myself<br />
+<br />
+i&#039;m very new to max but bpatcher is very easy and makes everything a lot more accessible..</div>
+         <div class="postMeta">
+         Posted on September 19 2011 by <a href="/profile/user/myus">myus</a> | 
+         <a href="/cdn-cgi/l/email-protection#94fdfaf2fbd4f9f5ecf2fbe6f8fde2f1baf7fbf9abe7e1f6fef1f7e0a9f9f5ecf2fbe6f8fde2f1baf7fbf9b4ddfaf5e4e4e6fbe4e6fdf5e0f1b4d7fbf9f9f1fae0b2f6fbf0eda9ddfaf5e4e4e6fbe4e6fdf5e0f1b4f7fbf9f9f1fae0b4f2fbe6b4f0f1e2fdf7f1aeb4bbf8fdf6e6f5e6edbbf0f1e2fdf7f1bae4fce4abfdf0a9ada4a4b7a6a2a6a4">Report Issue</a>
+         </div></div>
+         <div class="comments">
+         <div class='device-comment'>all you do is save your current patch as .maxpatch.  open it inside a bpatcher via the inspector.  Then you a series of messages of offset x y (which you can get from the inspector) to move bpatcher window.  Basically keep the inspector window open, click your mouse on the bpatcher and move it around till you get what you want in view, record that value and make a offest for it.  Then make a menu to control the offsets.  If you want an example i made one to control the NordLead2x, you can use that as an example of how to do that.  find it at http://www.maxforlive.com/library/device.php?id=607<br />
+</div>
+         <div class="postMeta">
+         Posted on September 19 2011 by <a href="/profile/user/protocol">protocol</a> | 
+         <a href="/cdn-cgi/l/email-protection#244d4a424b6449455c424b56484d52410a474b491b5751464e4147501949455c424b56484d52410a474b49046d4a455454564b54564d45504104674b4949414a5002464b405d196d4a455454564b54564d45504104474b4949414a5004424b56044041524d47411e040b484d465645565d0b4041524d47410a544c541b4d40191d14140716121610">Report Issue</a>
+         </div></div>
+         <div class="comments">
+         <div class='device-comment'>the tab object is your friend here... I remember there&#039;s a example in that maxhelp..</div>
+         <div class="postMeta">
+         Posted on September 20 2011 by <a href="/profile/user/myus">myus</a> | 
+         <a href="/cdn-cgi/l/email-protection#dfb6b1b9b09fb2bea7b9b0adb3b6a9baf1bcb0b2e0acaabdb5babcabe2b2bea7b9b0adb3b6a9baf1bcb0b2ff96b1beafafadb0afadb6beabbaff9cb0b2b2bab1abf9bdb0bba6e296b1beafafadb0afadb6beabbaffbcb0b2b2bab1abffb9b0adffbbbaa9b6bcbae5fff0b3b6bdadbeada6f0bbbaa9b6bcbaf1afb7afe0b6bbe2e6efeffcede9ede8">Report Issue</a>
+         </div></div>
+         <div class="comments">
+         <div class='device-comment'>maxhelp of of the bpatcher sorry... if you click on &quot;patcher more&quot;</div>
+         <div class="postMeta">
+         Posted on September 20 2011 by <a href="/profile/user/myus">myus</a> | 
+         <a href="/cdn-cgi/l/email-protection#4a23242c250a272b322c253826233c2f6429252775393f28202f293e77272b322c253826233c2f642925276a03242b3a3a38253a38232b3e2f6a092527272f243e6c28252e337703242b3a3a38253a38232b3e2f6a292527272f243e6a2c25386a2e2f3c23292f706a65262328382b3833652e2f3c23292f643a223a75232e77737a7a69787c7872">Report Issue</a>
+         </div></div>
+         <div class="comments">
+         <div class='device-comment'>Figured out how to do what I needed. Thanks guys. Learned a lot in the process. Check out the new version and let me know what you think. I did not encapsulate anything yet it was kind of anti-productive when I had started encapsulating into patchers :)<br />
+<br />
+bpatcher and tabs were learned, and so was global javascript variables and bondo and pack/unpack. <br />
+<br />
+Max4Live rules.<br />
+<br />
+Thanks again for your help!</div>
+         <div class="postMeta">
+         Posted on September 28 2011 by <a href="/profile/user/grymmjack">grymmjack</a> | 
+         <a href="/cdn-cgi/l/email-protection#b4dddad2dbf4d9d5ccd2dbc6d8ddc2d19ad7dbd98bc7c1d6ded1d7c089d9d5ccd2dbc6d8ddc2d19ad7dbd994fddad5c4c4c6dbc4c6ddd5c0d194f7dbd9d9d1dac092d6dbd0cd89fddad5c4c4c6dbc4c6ddd5c0d194d7dbd9d9d1dac094d2dbc694d0d1c2ddd7d18e949bd8ddd6c6d5c6cd9bd0d1c2ddd7d19ac4dcc48bddd0898d84849786828185">Report Issue</a>
+         </div></div>
+         <div class="comments">
+         <div class='device-comment'>Hey ! thanks for building this, It&#039;s working great with my MS2000 in the keyboard rack on the other side of the studio. Would love if you could make a randomize everything button. A few years back I use to use a PC program to send random settings to it which gave some interesting results but overall its really neat mate. I always liked the sound of the ms2000 sits nice in the mix. great to have all the controls. using touchOSC and live control. cheers</div>
+         <div class="postMeta">
+         Posted on June 27 2012 by <a href="/profile/user/modulenz">modulenz</a> | 
+         <a href="/cdn-cgi/l/email-protection#9df4f3fbf2ddf0fce5fbf2eff1f4ebf8b3fef2f0a2eee8fff7f8fee9a0f0fce5fbf2eff1f4ebf8b3fef2f0bdd4f3fcededeff2edeff4fce9f8bddef2f0f0f8f3e9bbfff2f9e4a0d4f3fcededeff2edeff4fce9f8bdfef2f0f0f8f3e9bdfbf2efbdf9f8ebf4fef8a7bdb2f1f4ffeffcefe4b2f9f8ebf4fef8b3edf5eda2f4f9a0a4adadbeaeaea4ac">Report Issue</a>
+         </div></div>
+         <div class="comments">
+         <div class='device-comment'>thanks dude I was dreaming with something like this <br />
+I register myself in the forum just to thank you THX</div>
+         <div class="postMeta">
+         Posted on July 27 2012 by <a href="/profile/user/casavan">casavan</a> | 
+         <a href="/cdn-cgi/l/email-protection#5c35323a331c313d243a332e30352a39723f3331632f293e36393f2861313d243a332e30352a39723f33317c15323d2c2c2e332c2e353d28397c1f3331313932287a3e3338256115323d2c2c2e332c2e353d28397c3f3331313932287c3a332e7c38392a353f39667c7330353e2e3d2e257338392a353f39722c342c63353861656c6c7f6f696c6d">Report Issue</a>
+         </div></div>
+         <div class="comments">
+         <div class='device-comment'>NP casavan.</div>
+         <div class="postMeta">
+         Posted on October 14 2012 by <a href="/profile/user/grymmjack">grymmjack</a> | 
+         <a href="/cdn-cgi/l/email-protection#abc2c5cdc4ebc6cad3cdc4d9c7c2ddce85c8c4c694d8dec9c1cec8df96c6cad3cdc4d9c7c2ddce85c8c4c68be2c5cadbdbd9c4dbd9c2cadfce8be8c4c6c6cec5df8dc9c4cfd296e2c5cadbdbd9c4dbd9c2cadfce8bc8c4c6c6cec5df8bcdc4d98bcfceddc2c8ce918b84c7c2c9d9cad9d284cfceddc2c8ce85dbc3db94c2cf96929b9b88989d9c9d">Report Issue</a>
+         </div></div>
+         <div class="comments">
+         <div class='device-comment'>modulenz; i&#039;ll look into a randomize function.</div>
+         <div class="postMeta">
+         Posted on October 14 2012 by <a href="/profile/user/grymmjack">grymmjack</a> | 
+         <a href="/cdn-cgi/l/email-protection#3c55525a537c515d445a534e50554a59125f5351034f495e56595f4801515d445a534e50554a59125f53511c75525d4c4c4e534c4e555d48591c7f5351515952481a5e5358450175525d4c4c4e534c4e555d48591c5f5351515952481c5a534e1c58594a555f59061c1350555e4e5d4e451358594a555f59124c544c03555801050c0c1f0f0a0b0b">Report Issue</a>
+         </div></div>
+         <div class="comments">
+         <div class='device-comment'>awesome i found v2! just picked up a korg ms2000r and started sequencing with ableton ! this is coool.<br />
+can&#039;t wait to try it out tomorrow.<br />
+i&#039;m on Live 9, m4l 6.1.2<br />
+cheers</div>
+         <div class="postMeta">
+         Posted on June 21 2013 by <a href="/profile/user/uxeexu">uxeexu</a> | 
+         <a href="/cdn-cgi/l/email-protection#f69f989099b69b978e9099849a9f8093d895999bc98583949c939582cb9b978e9099849a9f8093d895999bd6bf98978686849986849f978293d6b5999b9b939882d09499928fcbbf98978686849986849f978293d695999b9b939882d6909984d69293809f9593ccd6d99a9f948497848fd99293809f9593d8869e86c99f92cbcfc6c6d5c2c2cec7">Report Issue</a>
+         </div></div>
+         <div class="comments">
+         <div class='device-comment'>so far.... loving the device. <br />
+i&#039;m noticing one wee bug. when mousing inside the sequencer, sometimes it randomly resets to an &quot;init&quot; state. really great device to use with other midi fx in ableton! <br />
+thanks for your work! <br />
+</div>
+         <div class="postMeta">
+         Posted on June 21 2013 by <a href="/profile/user/uxeexu">uxeexu</a> | 
+         <a href="/cdn-cgi/l/email-protection#0861666e67486569706e677a64617e6d266b6765377b7d6a626d6b7c356569706e677a64617e6d266b67652841666978787a67787a61697c6d284b6765656d667c2e6a676c713541666978787a67787a61697c6d286b6765656d667c286e677a286c6d7e616b6d32282764616a7a697a71276c6d7e616b6d2678607837616c353138382b3c3c303c">Report Issue</a>
+         </div></div>
+         <div class="comments">
+         <div class='device-comment'>This device looks really good, does anyone know where I can find it as the link does not work?</div>
+         <div class="postMeta">
+         Posted on February 09 2014 by <a href="/profile/user/Science">Science</a> | 
+         <a href="/cdn-cgi/l/email-protection#1a73747c755a777b627c756876736c7f3479757725696f78707f796e27777b627c756876736c7f347975773a53747b6a6a68756a68737b6e7f3a597577777f746e3c78757e632753747b6a6a68756a68737b6e7f3a797577777f746e3a7c75683a7e7f6c73797f203a35767378687b6863357e7f6c73797f346a726a25737e27232a2a392f2e232b">Report Issue</a>
+         </div></div>
+         <div class="comments">
+         <div class='device-comment'>The link works. I just tried it. Maybe right click on it and choose save as? The file is indeed on my server.</div>
+         <div class="postMeta">
+         Posted on February 10 2014 by <a href="/profile/user/grymmjack">grymmjack</a> | 
+         <a href="/cdn-cgi/l/email-protection#2e474048416e434f5648415c4247584b004d4143115d5b4c444b4d5a13434f5648415c4247584b004d41430e67404f5e5e5c415e5c474f5a4b0e6d4143434b405a084c414a571367404f5e5e5c415e5c474f5a4b0e4d4143434b405a0e48415c0e4a4b58474d4b140e0142474c5c4f5c57014a4b58474d4b005e465e11474a13171e1e0d1b1a171d">Report Issue</a>
+         </div></div>
+         <div class="comments">
+         <div class='device-comment'>Also FTR: I don&#039;t have an MS2K anymore. I sold it off when money was a little tight last year. However, everything in this project is in the download so I grant access to anyone (as before but now since I have NO MS2K I cannot maintain this and see some people made FRs that I can no longer fulfill) to do whatever they want with it :)<br />
+<br />
+Thanks for all the support I appreciate it.</div>
+         <div class="postMeta">
+         Posted on February 10 2014 by <a href="/profile/user/grymmjack">grymmjack</a> | 
+         <a href="/cdn-cgi/l/email-protection#caa3a4aca58aa7abb2aca5b8a6a3bcafe4a9a5a7f5b9bfa8a0afa9bef7a7abb2aca5b8a6a3bcafe4a9a5a7ea83a4abbabab8a5bab8a3abbeafea89a5a7a7afa4beeca8a5aeb3f783a4abbabab8a5bab8a3abbeafeaa9a5a7a7afa4beeaaca5b8eaaeafbca3a9aff0eae5a6a3a8b8abb8b3e5aeafbca3a9afe4baa2baf5a3aef7f3fafae9fffef3fe">Report Issue</a>
+         </div></div>
+         <div class="comments">
+         <div class='device-comment'>Thanks for the response grymmjack. I have been able to download your mircokorg device but not this one. When I click on the link, it just appears as script. Unlike the other devices on the site, it doesn&#039;t have a download button.<br />
+<br />
+Sorry to be a pain, I looked at your device it looks so cool, hopefully I will get the chance to use it :-)</div>
+         <div class="postMeta">
+         Posted on February 11 2014 by <a href="/profile/user/Science">Science</a> | 
+         <a href="/cdn-cgi/l/email-protection#5d34333b321d303c253b322f31342b38733e3230622e283f37383e2960303c253b322f31342b38733e32307d14333c2d2d2f322d2f343c29387d1e3230303833297b3f3239246014333c2d2d2f322d2f343c29387d3e3230303833297d3b322f7d39382b343e38677d7231343f2f3c2f247239382b343e38732d352d62343960646d6d7e68686d6d">Report Issue</a>
+         </div></div>
+         <div class="comments">
+         <div class='device-comment'>Science, the link works fine for me in Safari on a Mac. Does this work for you? I put it on my dropbox for you. https://dl.dropboxusercontent.com/u/18262281/KorgMS-2000v2.0.amxd</div>
+         <div class="postMeta">
+         Posted on February 11 2014 by <a href="/profile/user/synnack">synnack</a> | 
+         <a href="/cdn-cgi/l/email-protection#a6cfc8c0c9e6cbc7dec0c9d4cacfd0c388c5c9cb99d5d3c4ccc3c5d29bcbc7dec0c9d4cacfd0c388c5c9cb86efc8c7d6d6d4c9d6d4cfc7d2c386e5c9cbcbc3c8d280c4c9c2df9befc8c7d6d6d4c9d6d4cfc7d2c386c5c9cbcbc3c8d286c0c9d486c2c3d0cfc5c39c8689cacfc4d4c7d4df89c2c3d0cfc5c388d6ced699cfc29b9f96968593939692">Report Issue</a>
+         </div></div>
+         <div class="comments">
+         <div class='device-comment'>thank you so much!!!!!! Synnack and Grymmjack you are stars</div>
+         <div class="postMeta">
+         Posted on February 15 2014 by <a href="/profile/user/Science">Science</a> | 
+         <a href="/cdn-cgi/l/email-protection#2a43444c456a474b524c455846435c4f0449454715595f48404f495e17474b524c455846435c4f044945470a63444b5a5a58455a58434b5e4f0a694547474f445e0c48454e531763444b5a5a58455a58434b5e4f0a494547474f445e0a4c45580a4e4f5c43494f100a05464348584b5853054e4f5c43494f045a425a15434e17131a1a091f1f1b12">Report Issue</a>
+         </div></div>
+         <div class="comments">
+         <div class='device-comment'>Thanks for this - Great! If you need help with the GUI Design let me know - i&#039;m a designer - looking to get into Instrument GUI Design.</div>
+         <div class="postMeta">
+         Posted on June 26 2014 by <a href="/profile/user/DerekJones">DerekJones</a> | 
+         <a href="/cdn-cgi/l/email-protection#8fe6e1e9e0cfe2eef7e9e0fde3e6f9eaa1ece0e2b0fcfaede5eaecfbb2e2eef7e9e0fde3e6f9eaa1ece0e2afc6e1eefffffde0fffde6eefbeaafcce0e2e2eae1fba9ede0ebf6b2c6e1eefffffde0fffde6eefbeaafece0e2e2eae1fbafe9e0fdafebeaf9e6eceab5afa0e3e6edfdeefdf6a0ebeaf9e6eceaa1ffe7ffb0e6ebb2b6bfbfacb9bebdbe">Report Issue</a>
+         </div></div>
+         <div class="comments">
+         <div class='device-comment'>Hi all,<br />
+<br />
+DL&#039;d the axmd file from here and was not able to sync it with the Korg.  I found the zip file elsewhere with the js file included, but I am unsure of how to install it in order to get the device working.  Any help is appreciated.</div>
+         <div class="postMeta">
+         Posted on September 09 2014 by <a href="/profile/user/sereptie">sereptie</a> | 
+         <a href="/cdn-cgi/l/email-protection#c8a1a6aea788a5a9b0aea7baa4a1beade6aba7a5f7bbbdaaa2adabbcf5a5a9b0aea7baa4a1beade6aba7a5e881a6a9b8b8baa7b8baa1a9bcade88ba7a5a5ada6bceeaaa7acb1f581a6a9b8b8baa7b8baa1a9bcade8aba7a5a5ada6bce8aea7bae8acadbea1abadf2e8e7a4a1aabaa9bab1e7acadbea1abade6b8a0b8f7a1acf5f1f8f8ebfefdf8f9">Report Issue</a>
+         </div></div>
+         <div class="comments">
+         <div class='device-comment'>Hi,<br />
+I can&#039;t make this device work.<br />
+Really sorry but I&#039;m not a programmer, I&#039;m just an user...<br />
+I found a nrpn.js on github and put it in the same folder of the device, but max is still give me the &quot;js:illegal message selector&quot;<br />
+<br />
+Can you help me?</div>
+         <div class="postMeta">
+         Posted on March 05 2017 by <a href="/profile/user/mismatched">mismatched</a> | 
+         <a href="/cdn-cgi/l/email-protection#177e797178577a766f7178657b7e61723974787a286462757d7274632a7a766f7178657b7e61723974787a375e79766767657867657e7663723754787a7a727963317578736e2a5e79766767657867657e7663723774787a7a72796337717865377372617e74722d37387b7e756576656e387372617e747239677f67287e732a2e2727342627262326">Report Issue</a>
+         </div></div>
+         <div class="comments">
+         <div class='device-comment'>Hi there, <br />
+<br />
+Is there any chance to reload the link that you have shared to us? it looks like your link does not work anymore. <br />
+<br />
+Thank you in advance. </div>
+         <div class="postMeta">
+         Posted on November 07 2017 by <a href="/profile/user/HSIK20">HSIK20</a> | 
+         <a href="/cdn-cgi/l/email-protection#5e373038311e333f2638312c3237283b703d3133612d2b3c343b3d2a63333f2638312c3237283b703d31337e17303f2e2e2c312e2c373f2a3b7e1d3133333b302a783c313a276317303f2e2e2c312e2c373f2a3b7e3d3133333b302a7e38312c7e3a3b28373d3b647e7132373c2c3f2c27713a3b28373d3b702e362e61373a63676e6e7d6f6e676f6f">Report Issue</a>
+         </div></div>
+         <div class="comments">
+         <div class='device-comment'>Please, there is a chance to upload the file again ? thanks in advance !</div>
+         <div class="postMeta">
+         Posted on January 08 2018 by <a href="/profile/user/Tiza">Tiza</a> | 
+         <a href="/cdn-cgi/l/email-protection#e38a8d858ca38e829b858c918f8a9586cd808c8edc90968189868097de8e829b858c918f8a9586cd808c8ec3aa8d829393918c93918a829786c3a08c8e8e868d97c5818c879adeaa8d829393918c93918a829786c3808c8e8e868d97c3858c91c38786958a8086d9c3cc8f8a819182919acc8786958a8086cd938b93dc8a87dedad3d3c0d2d2d3dad2">Report Issue</a>
+         </div></div>
+         <div class="comments">
+         <div class='device-comment'>Any chance we can get copy of this?<br />
+<br />
+cheers</div>
+         <div class="postMeta">
+         Posted on July 27 2018 by <a href="/profile/user/stevenclements">stevenclements</a> | 
+         <a href="/cdn-cgi/l/email-protection#7e171018113e131f0618110c1217081b501d1113410d0b1c141b1d0a43131f0618110c1217081b501d11135e37101f0e0e0c110e0c171f0a1b5e3d1113131b100a581c111a074337101f0e0e0c110e0c171f0a1b5e1d1113131b100a5e18110c5e1a1b08171d1b445e5112171c0c1f0c07511a1b08171d1b500e160e41171a43474e4e5d4f4f46484e">Report Issue</a>
+         </div></div>
+         <div class="comments">
+         <div class='device-comment'>Yep right click<br />
+http://www.soundgasmdesign.com/public/Korg%20MS-2000%20v2.0.amxd<br />
+<br />
+Save as... and it downloads<br />
+<br />
+THANKS A BUNDLE!</div>
+         <div class="postMeta">
+         Posted on July 27 2018 by <a href="/profile/user/stevenclements">stevenclements</a> | 
+         <a href="/cdn-cgi/l/email-protection#b6dfd8d0d9f6dbd7ced0d9c4dadfc0d398d5d9db89c5c3d4dcd3d5c28bdbd7ced0d9c4dadfc0d398d5d9db96ffd8d7c6c6c4d9c6c4dfd7c2d396f5d9dbdbd3d8c290d4d9d2cf8bffd8d7c6c6c4d9c6c4dfd7c2d396d5d9dbdbd3d8c296d0d9c496d2d3c0dfd5d38c9699dadfd4c4d7c4cf99d2d3c0dfd5d398c6dec689dfd28b8f86869587878e8087">Report Issue</a>
+         </div></div>
+         <div class="comments">
+         <div class='device-comment'>hi everyone! please give me a mirror to try this pretty shit)))</div>
+         <div class="postMeta">
+         Posted on January 07 2019 by <a href="/profile/user/boo">boo</a> | 
+         <a href="/cdn-cgi/l/email-protection#60090e060f200d0118060f120c0916054e030f0d5f1315020a0503145d0d0118060f120c0916054e030f0d40290e011010120f10120901140540230f0d0d050e1446020f04195d290e011010120f10120901140540030f0d0d050e1440060f12400405160903055a404f0c0902120112194f0405160903054e1008105f09045d595050435152545850">Report Issue</a>
+         </div></div>
+         <div class="comments">
+         <div class='device-comment'>Any chance this could be re-up&#039;ed?</div>
+         <div class="postMeta">
+         Posted on May 06 2019 by <a href="/profile/user/telengard">telengard</a> | 
+         <a href="/cdn-cgi/l/email-protection#bbd2d5ddd4fbd6dac3ddd4c9d7d2cdde95d8d4d684c8ced9d1ded8cf86d6dac3ddd4c9d7d2cdde95d8d4d69bf2d5dacbcbc9d4cbc9d2dacfde9bf8d4d6d6ded5cf9dd9d4dfc286f2d5dacbcbc9d4cbc9d2dacfde9bd8d4d6d6ded5cf9bddd4c99bdfdecdd2d8de819b94d7d2d9c9dac9c294dfdecdd2d8de95cbd3cb84d2df86828b8b988a8982828e">Report Issue</a>
+         </div></div>
+         <div class="comments">
+         <div class='device-comment'>I put all my MaxForLive stuff on my GitHub.<br />
+<br />
+https://github.com/grymmjack/max4live/tree/main/MS-2000<br />
+<br />
+https://github.com/grymmjack/max4live<br />
+<br />
+Also has microKORG thingy:<br />
+https://github.com/grymmjack/max4live/tree/main/microKORG</div>
+         <div class="postMeta">
+         Posted on March 31 2021 by <a href="/profile/user/grymmjack">grymmjack</a> | 
+         <a href="/cdn-cgi/l/email-protection#bbd2d5ddd4fbd6dac3ddd4c9d7d2cdde95d8d4d684c8ced9d1ded8cf86d6dac3ddd4c9d7d2cdde95d8d4d69bf2d5dacbcbc9d4cbc9d2dacfde9bf8d4d6d6ded5cf9dd9d4dfc286f2d5dacbcbc9d4cbc9d2dacfde9bd8d4d6d6ded5cf9bddd4c99bdfdecdd2d8de819b94d7d2d9c9dac9c294dfdecdd2d8de95cbd3cb84d2df86828b8b988a8d83838a">Report Issue</a>
+         </div></div>
+         <div class="comments">
+         <div class='device-comment'>this max device works whit the korg MS2000r ?</div>
+         <div class="postMeta">
+         Posted on April 19 2026 by <a href="/profile/user/Alejomorillo">Alejomorillo</a> | 
+         <a href="/cdn-cgi/l/email-protection#026b6c646d426f637a646d706e6b74672c616d6f3d717760686761763f6f637a646d706e6b74672c616d6f224b6c637272706d72706b63766722416d6f6f676c7624606d667b3f4b6c637272706d72706b63766722616d6f6f676c7622646d70226667746b616738222d6e6b607063707b2d6667746b61672c726a723d6b663f3b3232213035343434">Report Issue</a>
+         </div></div>
+         <div class="comments">
+         <div class='device-comment'>If it&#039;s compatible with the same sysex/nrpn/stuff yes - it should @Alejormorillo</div>
+         <div class="postMeta">
+         Posted on April 19 2026 by <a href="/profile/user/grymmjack">grymmjack</a> | 
+         <a href="/cdn-cgi/l/email-protection#7a13141c153a171b021c150816130c1f5419151745090f18101f190e47171b021c150816130c1f541915175a33141b0a0a08150a08131b0e1f5a391517171f140e5c18151e034733141b0a0a08150a08131b0e1f5a191517171f140e5a1c15085a1e1f0c13191f405a55161318081b0803551e1f0c13191f540a120a45131e47434a4a59484d4c4c4d">Report Issue</a>
+         </div></div><a name="LastComments"></a><p><a href="/login.php">Login</a> to comment on this device.</p>
+
+<a href="/library/index.php?tag=all">Browse the full library</a>
+
+        </main>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+  <nav>
+    <ul class="footer-navigation">
+      <li><a href="https://cycling74.com">&copy; 2026 Cycling '74</a></li>
+      <li><a href="/terms.php">Terms and Conditions</a></li>
+      <li><a href="/privacy-policy.php">Privacy Policy</a></li>
+      <li><a href="https://ableton.com">Go to Ableton.com</a></li>
+    </ul>
+  </nav>
+</footer>
+
+<style>
+
+:root {
+  --footer-height: 45px;
+}
+
+footer {
+  width: 100%;
+  padding: 0;
+  height: var(--footer-height);
+}
+
+footer nav {
+  max-width: 1200px;
+  padding: 0;
+  margin: 0 auto;
+  height: var(--footer-height);
+  display: grid;
+  place-content: center;
+}
+
+footer, footer nav {
+  background-color: #232323;
+}
+
+.footer-navigation {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 2em;
+  margin: 0;
+  padding: 0;
+}
+
+.footer-navigation a {
+  font-size: 0.8rem;
+  color: #ffffff !important;
+}
+
+.footer-navigation li {
+  margin-bottom: 0em;
+}
+
+@media screen and (max-width: 768px) {
+  footer nav {
+    height: auto;
+  }
+  .footer-navigation {
+    flex-direction: column;
+    gap: 1em;
+  }
+}
+
+</style><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a300a8cedfea0546',t:'MTc4NzU1NjcwNw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+
+<div id="cookie-consent">
+    <div class="cookie-consent-desc">
+        <strong>This website uses cookies.</strong>
+        <br />
+        Clicking “Accept” means you consent to your data being processed and you’ll let us use cookies and other technologies to process your personal information to personalize and enhance your experience.
+        Click “Close” to deny consent and continue with technically required cookies that are essential for the website to function.
+    </div>
+    <div class="cookie-consent-actions">
+        <a href="/privacy-policy.php">Privacy Policy</a>
+        <button id='cookie-consent-close'>Close</button>
+        <button id='cookie-consent-accept'>Accept</button>
+    </div>
+</div>
+</html>
+
+ 

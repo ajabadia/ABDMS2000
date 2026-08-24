@@ -1,0 +1,40 @@
+# Build directories
+build/
+build_*/
+bin/
+lib/
+CMakeUserPresets.json
+
+# IDEs & System
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.VC.db
+.DS_Store
+Thumbs.db
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+coverage/
+.vitest/
+
+# Compiled Artifacts & WASM outputs
+*.wasm
+*.obj
+*.o
+*.exe
+*.vst3
+*.dylib
+*.so
+wasm/build_wasm/
+WebUI/wasm/ms2000_dsp.wasm
+
+# Logs & temp
+*.log
+scratch/
+bundle_code/

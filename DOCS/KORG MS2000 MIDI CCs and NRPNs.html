@@ -1,0 +1,2766 @@
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		
+<link rel="canonical" href="https://midi.guide/d/korg/ms2000/" />
+
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style type="text/css">
+		/*!
+		 * Bootstrap v4.1.1 (https://getbootstrap.com/)
+		 * Copyright 2011-2018 The Bootstrap Authors
+		 * Copyright 2011-2018 Twitter, Inc.
+		 * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+		 */
+			dl, h1, h2, h3, h4, h5, h6, ol, p, ul {
+				margin-top:0
+			}
+
+			.img-thumbnail, body {
+				background-color:#fff
+			}
+
+			.btn, img {
+				vertical-align:middle
+			}
+
+			:root {
+				--blue: #007bff;
+				--indigo: #6610f2;
+				--purple: #6f42c1;
+				--pink: #e83e8c;
+				--red: #dc3545;
+				--orange: #fd7e14;
+				--yellow: #ffc107;
+				--green: #28a745;
+				--teal: #20c997;
+				--cyan: #17a2b8;
+				--white: #fff;
+				--gray: #6c757d;
+				--gray-dark: #343a40;
+				--primary: #007bff;
+				--secondary: #6c757d;
+				--success: #28a745;
+				--info: #17a2b8;
+				--warning: #ffc107;
+				--danger: #dc3545;
+				--light: #f8f9fa;
+				--dark: #343a40;
+				--breakpoint-xs: 0;
+				--breakpoint-sm: 576px;
+				--breakpoint-md: 768px;
+				--breakpoint-lg: 992px;
+				--breakpoint-xl: 1200px;
+				--font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+				--font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace
+			}
+
+			*, ::after, ::before {
+				box-sizing:border-box
+			}
+
+			html {
+				font-family: sans-serif;
+				line-height: 1.15;
+				-webkit-text-size-adjust: 100%;
+				-ms-text-size-adjust: 100%;
+				-ms-overflow-style: scrollbar;
+				-webkit-tap-highlight-color:transparent
+			}
+
+			article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
+				display:block
+			}
+
+			body {
+				margin: 0;
+				font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+				font-size: 1rem;
+				font-weight: 400;
+				line-height: 1.5;
+				color: #212529;
+				text-align:left
+			}
+
+			dl, ol, p, ul {
+				margin-bottom:1rem
+			}
+
+			a {
+				color: #007bff;
+				text-decoration: none;
+				background-color: transparent;
+				-webkit-text-decoration-skip:objects
+			}
+
+			img {
+				border-style:none
+			}
+
+			table {
+				border-collapse:collapse
+			}
+
+			th {
+				text-align:inherit
+			}
+
+			.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+				margin-bottom: .5rem;
+				font-family: inherit;
+				font-weight: 500;
+				line-height: 1.2;
+				color:inherit
+			}
+
+			.breadcrumb, .table, hr {
+				margin-bottom:1rem
+			}
+
+			.h1, h1 {
+				font-size:2.5rem
+			}
+
+			.h2, h2 {
+				font-size:2rem
+			}
+
+			.lead {
+				font-size: 1.25rem;
+				font-weight:300
+			}
+
+			.display-4 {
+				font-size: 3rem;
+				font-weight: 300;
+				line-height:1.2
+			}
+
+			hr {
+				box-sizing: content-box;
+				height: 0;
+				overflow: visible;
+				margin-top: 1rem;
+				border: 0;
+				border-top:1px solid rgba(0, 0, 0, .1)
+			}
+
+			.img-thumbnail {
+				padding: .25rem;
+				border: 1px solid #dee2e6;
+				border-radius: .25rem;
+				max-width: 100%;
+				height:auto
+			}
+
+			.container, .container-fluid {
+				width: 100%;
+				padding-right: 15px;
+				padding-left: 15px;
+				margin-right: auto;
+				margin-left:auto
+			}
+
+			@media (min-width: 768px) {
+				.container {
+					max-width:768px
+				}
+			}
+
+			.row {
+				display: -ms-flexbox;
+				display: flex;
+				-ms-flex-wrap: wrap;
+				flex-wrap: wrap;
+				margin-right: -15px;
+				margin-left:-15px
+			}
+
+			.col, .col-1, .col-10, .col-11, .col-12, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-auto, .col-lg, .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-auto, .col-md, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-auto, .col-sm, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-auto, .col-xl, .col-xl-1, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-auto {
+				position: relative;
+				width: 100%;
+				min-height: 1px;
+				padding-right: 15px;
+				padding-left:15px
+			}
+
+			@media (min-width: 992px) {
+				.container {
+					max-width:960px
+				}
+
+				.col-lg-12 {
+					-ms-flex: 0 0 100%;
+					flex: 0 0 100%;
+					max-width:100%
+				}
+			}
+
+			@media (min-width: 1200px) {
+				.container {
+					max-width:1140px
+				}
+
+				.col-xl {
+					-ms-flex-preferred-size: 0;
+					flex-basis: 0;
+					-ms-flex-positive: 1;
+					flex-grow: 1;
+					max-width:100%
+				}
+			}
+
+			.table {
+				width: 100%;
+				max-width: 100%;
+				background-color:transparent
+			}
+
+			.table td, .table th {
+				padding: .75rem;
+				vertical-align: top;
+				border-top:1px solid #dee2e6
+			}
+
+			.table thead th {
+				vertical-align: bottom;
+				border-bottom:2px solid #dee2e6
+			}
+
+			.table-striped tbody tr:nth-of-type(odd) {
+				background-color:rgba(0, 0, 0, .05)
+			}
+
+			.table .thead-dark th {
+				color: #fff;
+				background-color: #212529;
+				border-color:#32383e
+			}
+
+			.table-responsive {
+				display: block;
+				width: 100%;
+				overflow-x: auto;
+				-webkit-overflow-scrolling: touch;
+				-ms-overflow-style:-ms-autohiding-scrollbar
+			}
+
+			.btn {
+				display: inline-block;
+				font-weight: 400;
+				text-align: center;
+				white-space: nowrap;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+				border: 1px solid transparent;
+				padding: .375rem .75rem;
+				font-size: 1rem;
+				line-height: 1.5;
+				border-radius: .25rem;
+				transition:color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out
+			}
+
+			.btn:not(:disabled):not(.disabled) {
+				cursor:pointer
+			}
+
+			.btn-primary {
+				color: #fff;
+				background-color: #007bff;
+				border-color:#007bff
+			}
+
+			.btn-success {
+				color: #fff;
+				background-color: #28a745;
+				border-color:#28a745
+			}
+
+			.breadcrumb, .jumbotron {
+				background-color:#e9ecef
+			}
+
+			.breadcrumb {
+				display: -ms-flexbox;
+				display: flex;
+				-ms-flex-wrap: wrap;
+				flex-wrap: wrap;
+				padding: .75rem 1rem;
+				list-style: none;
+				border-radius:.25rem
+			}
+
+			.breadcrumb-item + .breadcrumb-item {
+				padding-left:.5rem
+			}
+
+			.breadcrumb-item + .breadcrumb-item::before {
+				display: inline-block;
+				padding-right: .5rem;
+				color: #6c757d;
+				content: "/"
+			}
+
+			.breadcrumb-item.active {
+				color:#6c757d
+			}
+
+			.breadcrumb-item {
+				font-weight: 200;
+			}
+
+			.jumbotron {
+				padding: 2rem 1rem;
+				margin-bottom: 1rem;
+				border-radius:.3rem
+			}
+
+			@media (min-width: 576px) {
+				.jumbotron {
+					padding:4rem 2rem
+				}
+			}
+
+			.align-top {
+				vertical-align:top !important
+			}
+
+			.d-inline-block {
+				display:inline-block !important
+			}
+
+			.mt-0, .my-0 {
+				margin-top:0 !important
+			}
+
+			.mt-1, .my-1 {
+				margin-top:0.25rem !important
+			}
+
+			.mt-2, .my-2 {
+				margin-top:0.5rem !important
+			}			
+
+			.mt-3, .my-3 {
+				margin-top:1rem !important
+			}
+
+			.mb-0, .my-0 {
+				margin-bottom:0 !important
+			}
+
+			.mb-1, .my-1 {
+				margin-bottom:0.25rem !important
+			}
+
+			.mb-2, .my-2 {
+				margin-bottom:0.5rem !important
+			}			
+
+			.mb-3, .my-3 {
+				margin-bottom:1rem !important
+			}
+
+			.pb-0, .py-0 {
+				padding-bottom:0 !important
+			}
+
+			.pt-1, .py-1 {
+				padding-top:.25rem !important
+			}
+
+			.pt-2, .py-2 {
+				padding-top:.5rem !important
+			}
+
+			.pt-3, .py-3 {
+				padding-top:1rem !important
+			}
+
+			.pb-5, .py-5 {
+				padding-bottom:3rem
+			}
+
+			.text-center {
+				text-align:center !important
+			}
+
+			.alert {
+				position: relative;
+				padding: .75rem 1.25rem;
+				margin-bottom: 1rem;
+				border: 1px solid transparent;
+				border-radius:.25rem
+			}
+
+			.alert-info {
+				color: #0c5460;
+				background-color: #d1ecf1;
+				border-color:#bee5eb
+			}
+
+			.alert-info .alert-link {
+				color: #062c33
+			}
+			</style>
+		<!-- Favicon -->
+		<link rel="icon" type="image/png" sizes="192x192"   href="/static/images/midi/favicon/android-icon-192x192.d4a2e7ae6d57.png">
+		<link rel="icon" type="image/png" sizes="32x32"     href="/static/images/midi/favicon/favicon-32x32.d300e87b2234.png">
+		<link rel="icon" type="image/png" sizes="96x96"     href="/static/images/midi/favicon/favicon-96x96.94bc0f76f3f7.png">
+		<link rel="icon" type="image/png" sizes="16x16"     href="/static/images/midi/favicon/favicon-16x16.d2cbbcce432d.png">
+
+		<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+		<meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)">
+
+		<!-- Fonts and styles -->
+		<style type="text/css">
+			/* Dark mode color variables */
+			:root {
+				--bg-color: #fff;
+				--text-color: #212529;
+				--jumbotron-bg: #e9ecef;
+				--breadcrumb-bg: #e9ecef;
+				--table-stripe-bg: rgba(0, 0, 0, 0.05);
+				--border-color: #dee2e6;
+				--hr-color: rgba(0, 0, 0, 0.1);
+				--link-color: #007bff;
+				--alert-info-bg: #d1ecf1;
+				--alert-info-text: #0c5460;
+				--alert-info-border: #bee5eb;
+				--contributor-bg: white;
+				--contributor-border: #DEDEDE;
+				--alphabet-nav-bg: #f8f9fa;
+				--system-font-family: system-ui, -apple-system, sans-serif;
+			}
+
+			@media (prefers-color-scheme: dark) {
+				:root {
+					--bg-color: #1a1a1a;
+					--text-color: #e0e0e0;
+					--jumbotron-bg: #2d2d2d;
+					--breadcrumb-bg: #2d2d2d;
+					--table-stripe-bg: rgba(255, 255, 255, 0.05);
+					--border-color: #444;
+					--hr-color: rgba(255, 255, 255, 0.1);
+					--link-color: #4d9fff;
+					--alert-info-bg: #1a3a4a;
+					--alert-info-text: #8bd3e6;
+					--alert-info-border: #2d5a6a;
+					--contributor-bg: #2d2d2d;
+					--contributor-border: #444;
+					--alphabet-nav-bg: #2d2d2d;
+				}
+			}
+
+			body {
+				font-family: var(--system-font-family);
+				background-color: var(--bg-color);
+				color: var(--text-color);
+			}
+
+			a {
+				color: var(--link-color);
+			}
+
+			.jumbotron {
+				padding: 1rem 1rem;
+				background-color: var(--jumbotron-bg);
+			}
+
+			.breadcrumb {
+				background-color: var(--breadcrumb-bg);
+			}
+
+			.table td, .table th {
+				border-top-color: var(--border-color);
+			}
+
+			.table thead th {
+				border-bottom-color: var(--border-color);
+			}
+
+			.table-striped tbody tr:nth-of-type(odd) {
+				background-color: var(--table-stripe-bg);
+			}
+
+			hr {
+				border-top-color: var(--hr-color);
+			}
+
+			.img-thumbnail {
+				border-color: var(--border-color);
+				background-color: var(--bg-color);
+			}
+
+			.alert-info {
+				background-color: var(--alert-info-bg);
+				color: var(--alert-info-text);
+				border-color: var(--alert-info-border);
+			}
+
+			.alphabet-nav {
+				border: 1px solid var(--border-color);
+				padding: 3px;
+
+				display: inline-block;
+				max-width: 100%;
+				white-space: nowrap;
+				overflow: scroll;
+			}
+
+			.alphabet-letter {
+				display: inline-block;
+				font-size: 0.8rem;
+				font-family: monospace;
+				padding: 0.4rem 0.2rem;
+				margin: 0.1rem;
+				border-radius: 0.25rem;
+				min-width: 1.7rem;
+				text-align: center;
+			}
+
+			.alphabet-letter.active {
+				text-decoration: none;
+				border: 2px solid var(--link-color);
+				background-color: var(--link-color);
+				color: white;
+				font-weight: 500;
+			}
+
+			.alphabet-letter.inactive {
+				border: 2px solid var(--border-color);
+				background-color: transparent;
+				color: var(--text-color);
+				opacity: 0.3;
+			}
+
+			.contributors {
+				display: inline-block;
+				max-width: 100%;
+				white-space: nowrap;
+				overflow: scroll;
+				margin-top: 5px;
+			}
+
+			a.contributor:hover {
+				text-decoration: none;
+			}
+
+			a.contributor.btn {
+				padding: 0;
+			}
+
+			a.contributor img.img-thumbnail {
+				aspect-ratio: 1 / 1;
+				width: 41px;
+				height: 41px;
+				object-fit: cover;
+			}
+
+			.external-contributor {
+				display: inline-block;
+				font-weight: 400;
+				text-align: center;
+				white-space: nowrap;
+				vertical-align: middle;
+				border: 1px solid transparent;
+				padding: .375rem .4rem;
+				font-size: 1rem;
+				line-height: 1.5;
+				border-radius: .25rem;
+				background: var(--contributor-bg);
+				border-color: var(--contributor-border);
+			}
+
+			@media (max-width: 992px) {
+				h1.display-4 {
+					font-size: 2rem;
+				}
+				.lead {
+					font-size: 1.2rem;
+					font-weight:300
+				}
+			}
+			/* Shrink header on mobile */
+			@media (max-width: 767px) {
+				h1.display-4 {
+					font-size: 1.6rem;
+				}
+				.lead {
+					font-size: 1rem;
+					font-weight:300
+				}
+			}
+
+			p.license { font-size: 0.9em; }
+			@media (max-width: 576px) {
+				p.license { font-size: 0.8em; }
+			}
+
+			/* Device header */
+			div.device-header {
+				display: flex;
+				align-items: flex-start;
+				gap: 20px;
+			}
+
+			div.device-header .device-image-container {
+				position: relative;
+				width: 130px;
+				flex-shrink: 0;
+				align-self: top;
+			}
+
+			div.device-header .header-text .device-title {
+				font-size: 1.4em;
+				font-stretch: condensed;
+			}
+
+			@media (min-width: 768px) {
+				div.device-header .device-image-container {
+					width: 200px;
+				}
+				div.device-header .header-text .device-title {
+					font-size: 1.8em;
+				}
+			}
+			@media (min-width: 992px) {
+				div.device-header .device-image-container {
+					width: 250px;
+				}
+				div.device-header .header-text .device-title {
+					font-size: 2.2em;
+				}
+			}
+			div.device-header .header-text {
+				flex: 1;
+			}
+
+			div.device-header .header-text p.lead {
+				font-size: 1.0em;
+			}
+
+			div.device-header .device-image-container img.device-icon {
+				max-width: 100%;
+				display: block;
+			}			
+		</style>
+		
+<!-- Open Graph meta tags -->
+<meta property="og:title" content="KORG MS2000 MIDI CCs and NRPNs" />
+<meta property="og:description" content="MIDI implementation details for the KORG MS2000" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://midi.guide/d/korg/ms2000/" />
+<meta property="og:image" content="https://midi.guide/d/korg/ms2000/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<!-- Twitter Card meta tags -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="KORG MS2000 MIDI CCs and NRPNs" />
+<meta name="twitter:description" content="MIDI implementation details for the KORG MS2000" />
+<meta name="twitter:image" content="https://midi.guide/d/korg/ms2000/og-image.png" />
+
+
+		
+<meta name="description" content="MIDI CC and NRPN parameter names, values, and usage details for the MS2000">
+<style type="text/css">
+/* Dark mode */
+	@media (prefers-color-scheme: dark) {
+		.table .thead-dark th {
+			color: #e0e0e0;
+			background-color: #1f1f1f;
+			border-color: #2d2d2d;
+		}
+
+		.table-hover tbody tr:hover {
+			background-color: rgba(255, 255, 255, 0.075);
+		}
+
+		/* Invert device SVG images in dark mode */
+		/* White becomes black after invert, then brighten to match bg (#2d2d2d ≈ 18% gray) */
+/*		div.device-header .device-image-container img.device-icon {
+			filter: invert(1) brightness(1.18);
+		}*/
+	}
+
+	div.device-header .device-image-container .download-overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		display: flex;
+		align-items: end;
+		justify-content: right;
+		opacity: 0;
+		transition: opacity 0.3s ease;
+	}
+	div.device-header .device-image-container:hover .download-overlay {
+		opacity: 1;
+	}
+	div.device-header .device-image-container .download-overlay a {
+		font-size: 0.6em;
+		margin-bottom: 10px;
+		margin-right: 10px;
+	}
+
+	div.helper-explanation {
+		font-size: 0.9em;
+		line-height: 1.0em;
+		font-style: italic;
+	}
+	p.download-instructions .note {
+		text-transform: uppercase;
+	}
+	p.contribution-instructions {
+		margin-bottom: 8px;
+	}
+
+	/*--breakpoint-xs:0;--breakpoint-sm:576px;--breakpoint-md:768px;--breakpoint-lg:992px;--breakpoint-xl:1200px;	*/
+
+	@media (max-width: 768px) {
+		.helper-notes { display: none !important; }
+		.btn { margin-top: 5px;}
+
+		div.device-header {  }
+		div.device-header .device-image-container {  }
+		div.device-header .device-image-container img.device-icon {  }
+		div.device-header .device-image-container:hover .download-overlay { opacity: 0; }
+	}
+
+/* Sections */
+	h2.definition-section a {
+		font-stretch: expanded;
+		font-weight: 900;
+		color: inherit;
+		text-decoration: none;
+	}
+	@media (max-width: 768px) {
+		h2.definition-section { font-size: 1.2em; }
+	}
+	h2.definition-section a:hover {
+		text-decoration-line: underline;
+		text-decoration-style: dotted;
+	}
+
+/* Table styles */
+
+	/* Headers */
+	.thead-dark th							{ }
+	.thead-dark th.parameter				{ }
+	.thead-dark th.fig						{ font-size: 0.7rem; vertical-align: top; }
+	.thead-dark th.range					{ font-size: 0.7rem; vertical-align: top; }
+	.thead-dark th.description				{ }
+	.thead-dark th.usage					{ }
+	.thead-dark th.orientation				{ text-align: right;}
+
+	/* Common separator */
+	th.group-end, td.group-end { border-right: 2px solid var(--bg-color) !important; }
+
+	/* Cells */
+	td { font-family: monospace; }
+	td.human { font-family: var(--system-font-family); font-size: 1rem }
+	td.empty { width: 1px; text-wrap-mode: nowrap; opacity: 0.2 }
+
+	/* Param name*/
+	td.parameter { min-width: 200px }
+	@media (min-width: 1298px) { td.parameter { min-width: 300px; } }
+
+	/* Single figure */
+	td.fig { width: 1px; text-wrap-mode: nowrap; }
+
+	/* Range */
+	td.range { width: 1px; text-wrap-mode: nowrap; }
+
+	/* Description, notes, usage */
+
+	td.usage div, td.description div { max-height: 100px; overflow-y: auto; }
+
+	td.description.empty, td.usage.empty: { width: 1px; }
+
+	@media (min-width: 1px) {
+		td.usage.dense:not(.empty) { min-width: 300px; }
+		td.usage:not(.empty):not(.dense) { min-width: 400px; }
+
+		td.description.dense:not(.empty), td.usage.dense:not(.empty):has(+ .description) { min-width: 150px; }
+		td.description:not(.empty):not(.dense), td.usage:not(.empty):not(.dense):has(+ .description) { min-width: 200px; }
+	}
+	@media (min-width: 1149px) {
+		td.usage.dense:not(.empty) { min-width: 400px; }
+		td.usage:not(.empty):not(.dense) { min-width: 500px; }
+
+		td.description.dense:not(.empty), td.usage.dense:not(.empty):has(+ .description) { min-width: 200px; }
+		td.description:not(.empty):not(.dense), td.usage:not(.empty):not(.dense):has(+ .description) { min-width: 250px; }
+	}
+	@media (min-width: 1249px) {
+		td.usage.dense:not(.empty) { min-width: 500px; }
+		td.usage:not(.empty):not(.dense) { min-width: 600px; }
+
+		td.description.dense:not(.empty), td.usage.dense:not(.empty):has(+ .description) { min-width: 250px; }
+		td.description:not(.empty):not(.dense), td.usage:not(.empty):not(.dense):has(+ .description) { min-width: 300px; }
+	}
+	@media (min-width: 1349px) {
+		td.usage.dense:not(.empty) { min-width: 600px; }
+		td.usage:not(.empty):not(.dense) { min-width: 700px; }
+
+		td.description.dense:not(.empty), td.usage.dense:not(.empty):has(+ .description) { min-width: 300px; }
+		td.description:not(.empty):not(.dense), td.usage:not(.empty):not(.dense):has(+ .description) { min-width: 350px; } }
+	@media (min-width: 1449px) {
+		td.usage.dense:not(.empty) { min-width: 700px; }
+		td.usage:not(.empty):not(.dense) { min-width: 800px; }
+
+				td.description.dense:not(.empty), td.usage.dense:not(.empty):has(+ .description) { min-width: 350px; }
+		td.description:not(.empty):not(.dense), td.usage:not(.empty):not(.dense):has(+ .description) { min-width: 400px; }
+	}
+	@media (min-width: 1549px) {
+		td.usage.dense:not(.empty) { min-width: 800px; }
+		td.usage:not(.empty):not(.dense) { min-width: 900px; }
+
+		td.description.dense:not(.empty), td.usage.dense:not(.empty):has(+ .description) { min-width: 400px; }
+		td.description:not(.empty):not(.dense), td.usage:not(.empty):not(.dense):has(+ .description) { min-width: 450px; }
+	}
+	@media (min-width: 1649px) {
+		td.usage.dense:not(.empty) { min-width: 900px; }
+		td.usage:not(.empty):not(.dense) { min-width: 1000px; }
+
+		td.description.dense:not(.empty), td.usage.dense:not(.empty):has(+ .description) { min-width: 450px; }
+		td.description:not(.empty):not(.dense), td.usage:not(.empty):not(.dense):has(+ .description) { min-width: 500px; }
+	}
+	@media (min-width: 1749px) {
+		td.usage.dense:not(.empty) { min-width: 1000px; }
+		td.usage:not(.empty):not(.dense) { min-width: 1100px; }
+
+		td.description.dense:not(.empty), td.usage.dense:not(.empty):has(+ .description) { min-width: 500px; }
+		td.description:not(.empty):not(.dense), td.usage:not(.empty):not(.dense):has(+ .description) { min-width: 550px; }
+	}
+	@media (min-width: 1849px) {
+		td.usage.dense:not(.empty) { min-width: 1100px; }
+		td.usage:not(.empty):not(.dense) { min-width: 1200px; }
+
+		td.description.dense:not(.empty), td.usage.dense:not(.empty):has(+ .description) { min-width: 550px; }
+		td.description:not(.empty):not(.dense), td.usage:not(.empty):not(.dense):has(+ .description) { min-width: 600px; }
+	}
+	@media (min-width: 1949px) {
+		td.usage.dense:not(.empty) { min-width: 1200px; }
+		td.usage:not(.empty):not(.dense) { min-width: 1300px; }
+
+		td.description.dense:not(.empty), td.usage.dense:not(.empty):has(+ .description) { min-width: 600px; }
+		td.description:not(.empty):not(.dense), td.usage:not(.empty):not(.dense):has(+ .description) { min-width: 650px; }
+	}
+
+	td.description span.description-notes {
+		font-style: italic;
+		font-size: 0.8em;
+	}
+	td.description span.description-notes .intro {
+		font-style: normal;
+		font-weight: 700;
+		text-transform: uppercase;
+	}
+
+	/* Orientation */
+	td.orientation {
+		text-transform: uppercase;
+		font-size: 0.8em;
+		width: 100%;
+		text-wrap-mode: nowrap;
+		text-align: right;
+	}
+	td.orientation span, th.orientation span {
+		display: inline-block;
+		width: 90px;
+		text-align: left;
+	}
+
+	div.custom-container:not(:has(p)) {
+		padding-top: 0 !important;
+	}
+
+	div.header-text small {
+		opacity: 0.8;
+		font-style: italic;
+	}
+
+/* Download options row, lifted out of the overflow:scroll .contributors strip */
+	div.download-options {
+		margin-top: 2px;
+		padding-bottom: 5px;
+	}
+	@media (max-width: 768px) {
+		div.download-options {
+			padding-bottom: 0;
+		}
+	}
+
+	details.csv-flyout {
+		position: relative;
+		top: 2px;
+		display: inline-block;
+	}
+	@media (max-width: 768px) {
+		details.csv-flyout {
+			top: 0px;
+		}
+	}
+	details.csv-flyout > summary {
+		list-style: none;
+		cursor: pointer;
+	}
+	details.csv-flyout > summary::-webkit-details-marker { display: none; }
+	details.csv-flyout > summary::marker { content: ""; }
+	details.csv-flyout .csv-flyout-menu {
+		position: absolute;
+		left: 0;
+		z-index: 1000;
+		margin-top: 4px;
+		min-width: 200px;
+		background-color: var(--bg-color, #fff);
+		border: 1px solid rgba(0, 0, 0, 0.15);
+		border-radius: 4px;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+		padding: 4px 0;
+	}
+	details.csv-flyout .csv-flyout-menu a {
+		display: block;
+		padding: 7px 16px;
+		white-space: nowrap;
+		color: inherit;
+		text-decoration: none;
+		font-size: 0.9rem;
+	}
+	details.csv-flyout .csv-flyout-menu a:hover {
+		background-color: rgba(0, 0, 0, 0.075);
+	}
+	@media (prefers-color-scheme: dark) {
+		details.csv-flyout .csv-flyout-menu {
+			border-color: rgba(255, 255, 255, 0.15);
+		}
+		details.csv-flyout .csv-flyout-menu a:hover {
+			background-color: rgba(255, 255, 255, 0.075);
+		}
+	}
+
+/* Section markers separating the CC/NRPN and MIDI Note charts (shown only when
+   a device has both). A thick top rule visually divides the two data types. */
+	div.chart-section-marker {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		gap: 4px 16px;
+		border-top: 3px solid var(--text-color, currentColor);
+		padding-top: 10px;
+		margin-top: 1.75rem;
+		margin-bottom: 0.25rem;
+		scroll-margin-top: 1rem;
+	}
+	h2.chart-section-marker-label {
+		font-stretch: expanded;
+		font-weight: 500;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		font-size: 1.4rem;
+		margin: 0;
+	}
+	a.chart-jump {
+		font-size: 0.85rem;
+		white-space: nowrap;
+		font-style: italic;
+	}
+	@media (max-width: 768px) {
+		h2.chart-section-marker-label { font-size: 1.15rem; }
+	}
+
+/* Note triggers region */
+	h2.triggers-heading {
+		font-stretch: expanded;
+		font-weight: 900;
+		margin-top: 0.5em;
+		scroll-margin-top: 1rem;
+	}
+	@media (max-width: 768px) {
+		h2.triggers-heading { font-size: 1.2em; }
+	}
+	td.sound { font-family: var(--system-font-family); font-size: 1rem; min-width: 200px; }
+	td.channel { width: 1px; text-wrap-mode: nowrap; text-transform: uppercase; }
+	td.note { width: 1px; text-wrap-mode: nowrap; }
+	td.velocity div { max-height: 100px; overflow-y: auto; }
+</style>
+
+
+<script type="application/ld+json">
+	{"@context": ["https://schema.org", {"csvw": "https://www.w3.org/ns/csvw#"}], "@type": "Dataset", "name": "KORG MS2000 MIDI implementation", "description": "MIDI CC & NRPN details for KORG MS2000 from MIDI.guide, the open, 'comprehensive' MIDI dataset.", "publisher": {"@type": "Organization", "name": "midi.guide"}, "creator": {"@type": "Organization", "url": "https://midi.guide", "name": "MIDI CC & NRPN database", "contactPoint": {"@type": "ContactPoint", "contactType": "customer service", "email": "midi@midi.guide"}}, "header": true, "license": "https://github.com/pencilresearch/midi/blob/main/LICENSE", "mainEntity": {"@type": "csvw:Table", "csvw:tableSchema": {"csvw:columns": [{"csvw:name": "Parameter name", "csvw:datatype": "string", "csvw:cells": [{"csvw:value": "Pitch: Portamento", "csvw:primaryKey": "Pitch: Portamento"}, {"csvw:value": "OSC 1: OSC 1 wave", "csvw:primaryKey": "OSC 1: OSC 1 wave"}, {"csvw:value": "OSC 1: OSC 1 control 1", "csvw:primaryKey": "OSC 1: OSC 1 control 1"}, {"csvw:value": "OSC 1: OSC 1 control 2", "csvw:primaryKey": "OSC 1: OSC 1 control 2"}, {"csvw:value": "OSC 2 / Audio In 2: OSC 2 wave", "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 wave"}, {"csvw:value": "OSC 2 / Audio In 2: OSC 2 modulation", "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 modulation"}, {"csvw:value": "OSC 2 / Audio In 2: OSC 2 semitone", "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 semitone"}, {"csvw:value": "OSC 2 / Audio In 2: OSC 2 tune", "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 tune"}, {"csvw:value": "Mixer: OSC 1 level", "csvw:primaryKey": "Mixer: OSC 1 level"}, {"csvw:value": "Mixer: OSC 2 level", "csvw:primaryKey": "Mixer: OSC 2 level"}, {"csvw:value": "Mixer: Noise level", "csvw:primaryKey": "Mixer: Noise level"}, {"csvw:value": "Filter: Filter type", "csvw:primaryKey": "Filter: Filter type"}, {"csvw:value": "Filter: Filter cutoff", "csvw:primaryKey": "Filter: Filter cutoff"}, {"csvw:value": "Filter: Filter resonance", "csvw:primaryKey": "Filter: Filter resonance"}, {"csvw:value": "Filter: Filter EG 1 intensity", "csvw:primaryKey": "Filter: Filter EG 1 intensity"}, {"csvw:value": "Filter: Filter KBD track", "csvw:primaryKey": "Filter: Filter KBD track"}, {"csvw:value": "Amp: Amp level", "csvw:primaryKey": "Amp: Amp level"}, {"csvw:value": "Amp: Amp panpot", "csvw:primaryKey": "Amp: Amp panpot"}, {"csvw:value": "Amp: Amp EG2/gate", "csvw:primaryKey": "Amp: Amp EG2/gate"}, {"csvw:value": "Amp: Amp distortion", "csvw:primaryKey": "Amp: Amp distortion"}, {"csvw:value": "EG 1: EG 1 attack", "csvw:primaryKey": "EG 1: EG 1 attack"}, {"csvw:value": "EG 1: EG 1 decay", "csvw:primaryKey": "EG 1: EG 1 decay"}, {"csvw:value": "EG 1: EG 1 sustain", "csvw:primaryKey": "EG 1: EG 1 sustain"}, {"csvw:value": "EG 1: EG 1 release", "csvw:primaryKey": "EG 1: EG 1 release"}, {"csvw:value": "EG 2: EG 2 attack", "csvw:primaryKey": "EG 2: EG 2 attack"}, {"csvw:value": "EG 2: EG 2 decay", "csvw:primaryKey": "EG 2: EG 2 decay"}, {"csvw:value": "EG 2: EG 2 sustain", "csvw:primaryKey": "EG 2: EG 2 sustain"}, {"csvw:value": "EG 2: EG 2 release", "csvw:primaryKey": "EG 2: EG 2 release"}, {"csvw:value": "LFO 1: LFO 1 wave", "csvw:primaryKey": "LFO 1: LFO 1 wave"}, {"csvw:value": "LFO 1: LFO 1 frequency", "csvw:primaryKey": "LFO 1: LFO 1 frequency"}, {"csvw:value": "LFO 2: LFO 2 wave", "csvw:primaryKey": "LFO 2: LFO 2 wave"}, {"csvw:value": "LFO 2: LFO 2 frequency", "csvw:primaryKey": "LFO 2: LFO 2 frequency"}, {"csvw:value": "Patches: Patch 1 intensity", "csvw:primaryKey": "Patches: Patch 1 intensity"}, {"csvw:value": "Patches: Patch 2 intensity", "csvw:primaryKey": "Patches: Patch 2 intensity"}, {"csvw:value": "Patches: Patch 3 intensity", "csvw:primaryKey": "Patches: Patch 3 intensity"}, {"csvw:value": "Patches: Patch 4 intensity", "csvw:primaryKey": "Patches: Patch 4 intensity"}, {"csvw:value": "Sequencer: Sequencer on/off", "csvw:primaryKey": "Sequencer: Sequencer on/off"}, {"csvw:value": "Mod FX: Mod FX LFO speed", "csvw:primaryKey": "Mod FX: Mod FX LFO speed"}, {"csvw:value": "Mod FX: Mod FX depth", "csvw:primaryKey": "Mod FX: Mod FX depth"}, {"csvw:value": "Delay FX: Delay time", "csvw:primaryKey": "Delay FX: Delay time"}, {"csvw:value": "Delay FX: Delay depth", "csvw:primaryKey": "Delay FX: Delay depth"}, {"csvw:value": "Vocoder-specific: Audio in 2 HPF level", "csvw:primaryKey": "Vocoder-specific: Audio in 2 HPF level"}, {"csvw:value": "Vocoder-specific: Audio in 2 threshold", "csvw:primaryKey": "Vocoder-specific: Audio in 2 threshold"}, {"csvw:value": "Vocoder-specific: Formant shift", "csvw:primaryKey": "Vocoder-specific: Formant shift"}, {"csvw:value": "Vocoder-specific: Filter modulation intensity", "csvw:primaryKey": "Vocoder-specific: Filter modulation intensity"}]}, {"csvw:name": "Parameter description", "csvw:datatype": "string", "csvw:cells": [{"csvw:value": null, "csvw:primaryKey": "Pitch: Portamento"}, {"csvw:value": null, "csvw:primaryKey": "OSC 1: OSC 1 wave"}, {"csvw:value": null, "csvw:primaryKey": "OSC 1: OSC 1 control 1"}, {"csvw:value": null, "csvw:primaryKey": "OSC 1: OSC 1 control 2"}, {"csvw:value": null, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 wave"}, {"csvw:value": null, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 modulation"}, {"csvw:value": null, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 semitone"}, {"csvw:value": null, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 tune"}, {"csvw:value": null, "csvw:primaryKey": "Mixer: OSC 1 level"}, {"csvw:value": null, "csvw:primaryKey": "Mixer: OSC 2 level"}, {"csvw:value": null, "csvw:primaryKey": "Mixer: Noise level"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter type"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter cutoff"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter resonance"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter EG 1 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter KBD track"}, {"csvw:value": null, "csvw:primaryKey": "Amp: Amp level"}, {"csvw:value": null, "csvw:primaryKey": "Amp: Amp panpot"}, {"csvw:value": null, "csvw:primaryKey": "Amp: Amp EG2/gate"}, {"csvw:value": null, "csvw:primaryKey": "Amp: Amp distortion"}, {"csvw:value": null, "csvw:primaryKey": "EG 1: EG 1 attack"}, {"csvw:value": null, "csvw:primaryKey": "EG 1: EG 1 decay"}, {"csvw:value": null, "csvw:primaryKey": "EG 1: EG 1 sustain"}, {"csvw:value": null, "csvw:primaryKey": "EG 1: EG 1 release"}, {"csvw:value": null, "csvw:primaryKey": "EG 2: EG 2 attack"}, {"csvw:value": null, "csvw:primaryKey": "EG 2: EG 2 decay"}, {"csvw:value": null, "csvw:primaryKey": "EG 2: EG 2 sustain"}, {"csvw:value": null, "csvw:primaryKey": "EG 2: EG 2 release"}, {"csvw:value": null, "csvw:primaryKey": "LFO 1: LFO 1 wave"}, {"csvw:value": null, "csvw:primaryKey": "LFO 1: LFO 1 frequency"}, {"csvw:value": null, "csvw:primaryKey": "LFO 2: LFO 2 wave"}, {"csvw:value": null, "csvw:primaryKey": "LFO 2: LFO 2 frequency"}, {"csvw:value": null, "csvw:primaryKey": "Patches: Patch 1 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Patches: Patch 2 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Patches: Patch 3 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Patches: Patch 4 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Sequencer: Sequencer on/off"}, {"csvw:value": null, "csvw:primaryKey": "Mod FX: Mod FX LFO speed"}, {"csvw:value": null, "csvw:primaryKey": "Mod FX: Mod FX depth"}, {"csvw:value": null, "csvw:primaryKey": "Delay FX: Delay time"}, {"csvw:value": null, "csvw:primaryKey": "Delay FX: Delay depth"}, {"csvw:value": null, "csvw:primaryKey": "Vocoder-specific: Audio in 2 HPF level"}, {"csvw:value": null, "csvw:primaryKey": "Vocoder-specific: Audio in 2 threshold"}, {"csvw:value": null, "csvw:primaryKey": "Vocoder-specific: Formant shift"}, {"csvw:value": null, "csvw:primaryKey": "Vocoder-specific: Filter modulation intensity"}]}, {"csvw:name": "CC MSB", "csvw:datatype": "integer", "csvw:cells": [{"csvw:value": 5, "csvw:primaryKey": "Pitch: Portamento"}, {"csvw:value": 77, "csvw:primaryKey": "OSC 1: OSC 1 wave"}, {"csvw:value": 14, "csvw:primaryKey": "OSC 1: OSC 1 control 1"}, {"csvw:value": 15, "csvw:primaryKey": "OSC 1: OSC 1 control 2"}, {"csvw:value": 78, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 wave"}, {"csvw:value": 82, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 modulation"}, {"csvw:value": 18, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 semitone"}, {"csvw:value": 19, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 tune"}, {"csvw:value": 20, "csvw:primaryKey": "Mixer: OSC 1 level"}, {"csvw:value": 21, "csvw:primaryKey": "Mixer: OSC 2 level"}, {"csvw:value": 22, "csvw:primaryKey": "Mixer: Noise level"}, {"csvw:value": 83, "csvw:primaryKey": "Filter: Filter type"}, {"csvw:value": 74, "csvw:primaryKey": "Filter: Filter cutoff"}, {"csvw:value": 71, "csvw:primaryKey": "Filter: Filter resonance"}, {"csvw:value": 79, "csvw:primaryKey": "Filter: Filter EG 1 intensity"}, {"csvw:value": 85, "csvw:primaryKey": "Filter: Filter KBD track"}, {"csvw:value": 7, "csvw:primaryKey": "Amp: Amp level"}, {"csvw:value": 10, "csvw:primaryKey": "Amp: Amp panpot"}, {"csvw:value": 86, "csvw:primaryKey": "Amp: Amp EG2/gate"}, {"csvw:value": 92, "csvw:primaryKey": "Amp: Amp distortion"}, {"csvw:value": 23, "csvw:primaryKey": "EG 1: EG 1 attack"}, {"csvw:value": 24, "csvw:primaryKey": "EG 1: EG 1 decay"}, {"csvw:value": 25, "csvw:primaryKey": "EG 1: EG 1 sustain"}, {"csvw:value": 26, "csvw:primaryKey": "EG 1: EG 1 release"}, {"csvw:value": 73, "csvw:primaryKey": "EG 2: EG 2 attack"}, {"csvw:value": 75, "csvw:primaryKey": "EG 2: EG 2 decay"}, {"csvw:value": 70, "csvw:primaryKey": "EG 2: EG 2 sustain"}, {"csvw:value": 72, "csvw:primaryKey": "EG 2: EG 2 release"}, {"csvw:value": 87, "csvw:primaryKey": "LFO 1: LFO 1 wave"}, {"csvw:value": 27, "csvw:primaryKey": "LFO 1: LFO 1 frequency"}, {"csvw:value": 88, "csvw:primaryKey": "LFO 2: LFO 2 wave"}, {"csvw:value": 76, "csvw:primaryKey": "LFO 2: LFO 2 frequency"}, {"csvw:value": 28, "csvw:primaryKey": "Patches: Patch 1 intensity"}, {"csvw:value": 29, "csvw:primaryKey": "Patches: Patch 2 intensity"}, {"csvw:value": 30, "csvw:primaryKey": "Patches: Patch 3 intensity"}, {"csvw:value": 31, "csvw:primaryKey": "Patches: Patch 4 intensity"}, {"csvw:value": 89, "csvw:primaryKey": "Sequencer: Sequencer on/off"}, {"csvw:value": 12, "csvw:primaryKey": "Mod FX: Mod FX LFO speed"}, {"csvw:value": 93, "csvw:primaryKey": "Mod FX: Mod FX depth"}, {"csvw:value": 13, "csvw:primaryKey": "Delay FX: Delay time"}, {"csvw:value": 94, "csvw:primaryKey": "Delay FX: Delay depth"}, {"csvw:value": 18, "csvw:primaryKey": "Vocoder-specific: Audio in 2 HPF level"}, {"csvw:value": 19, "csvw:primaryKey": "Vocoder-specific: Audio in 2 threshold"}, {"csvw:value": 83, "csvw:primaryKey": "Vocoder-specific: Formant shift"}, {"csvw:value": 79, "csvw:primaryKey": "Vocoder-specific: Filter modulation intensity"}]}, {"csvw:name": "CC LSB", "csvw:datatype": "integer", "csvw:cells": [{"csvw:value": null, "csvw:primaryKey": "Pitch: Portamento"}, {"csvw:value": null, "csvw:primaryKey": "OSC 1: OSC 1 wave"}, {"csvw:value": null, "csvw:primaryKey": "OSC 1: OSC 1 control 1"}, {"csvw:value": null, "csvw:primaryKey": "OSC 1: OSC 1 control 2"}, {"csvw:value": null, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 wave"}, {"csvw:value": null, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 modulation"}, {"csvw:value": null, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 semitone"}, {"csvw:value": null, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 tune"}, {"csvw:value": null, "csvw:primaryKey": "Mixer: OSC 1 level"}, {"csvw:value": null, "csvw:primaryKey": "Mixer: OSC 2 level"}, {"csvw:value": null, "csvw:primaryKey": "Mixer: Noise level"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter type"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter cutoff"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter resonance"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter EG 1 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter KBD track"}, {"csvw:value": null, "csvw:primaryKey": "Amp: Amp level"}, {"csvw:value": null, "csvw:primaryKey": "Amp: Amp panpot"}, {"csvw:value": null, "csvw:primaryKey": "Amp: Amp EG2/gate"}, {"csvw:value": null, "csvw:primaryKey": "Amp: Amp distortion"}, {"csvw:value": null, "csvw:primaryKey": "EG 1: EG 1 attack"}, {"csvw:value": null, "csvw:primaryKey": "EG 1: EG 1 decay"}, {"csvw:value": null, "csvw:primaryKey": "EG 1: EG 1 sustain"}, {"csvw:value": null, "csvw:primaryKey": "EG 1: EG 1 release"}, {"csvw:value": null, "csvw:primaryKey": "EG 2: EG 2 attack"}, {"csvw:value": null, "csvw:primaryKey": "EG 2: EG 2 decay"}, {"csvw:value": null, "csvw:primaryKey": "EG 2: EG 2 sustain"}, {"csvw:value": null, "csvw:primaryKey": "EG 2: EG 2 release"}, {"csvw:value": null, "csvw:primaryKey": "LFO 1: LFO 1 wave"}, {"csvw:value": null, "csvw:primaryKey": "LFO 1: LFO 1 frequency"}, {"csvw:value": null, "csvw:primaryKey": "LFO 2: LFO 2 wave"}, {"csvw:value": null, "csvw:primaryKey": "LFO 2: LFO 2 frequency"}, {"csvw:value": null, "csvw:primaryKey": "Patches: Patch 1 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Patches: Patch 2 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Patches: Patch 3 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Patches: Patch 4 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Sequencer: Sequencer on/off"}, {"csvw:value": null, "csvw:primaryKey": "Mod FX: Mod FX LFO speed"}, {"csvw:value": null, "csvw:primaryKey": "Mod FX: Mod FX depth"}, {"csvw:value": null, "csvw:primaryKey": "Delay FX: Delay time"}, {"csvw:value": null, "csvw:primaryKey": "Delay FX: Delay depth"}, {"csvw:value": null, "csvw:primaryKey": "Vocoder-specific: Audio in 2 HPF level"}, {"csvw:value": null, "csvw:primaryKey": "Vocoder-specific: Audio in 2 threshold"}, {"csvw:value": null, "csvw:primaryKey": "Vocoder-specific: Formant shift"}, {"csvw:value": null, "csvw:primaryKey": "Vocoder-specific: Filter modulation intensity"}]}, {"csvw:name": "CC minimum value", "csvw:datatype": "integer", "csvw:cells": [{"csvw:value": 0, "csvw:primaryKey": "Pitch: Portamento"}, {"csvw:value": 0, "csvw:primaryKey": "OSC 1: OSC 1 wave"}, {"csvw:value": 0, "csvw:primaryKey": "OSC 1: OSC 1 control 1"}, {"csvw:value": 0, "csvw:primaryKey": "OSC 1: OSC 1 control 2"}, {"csvw:value": 0, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 wave"}, {"csvw:value": 0, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 modulation"}, {"csvw:value": 0, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 semitone"}, {"csvw:value": 0, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 tune"}, {"csvw:value": 0, "csvw:primaryKey": "Mixer: OSC 1 level"}, {"csvw:value": 0, "csvw:primaryKey": "Mixer: OSC 2 level"}, {"csvw:value": 0, "csvw:primaryKey": "Mixer: Noise level"}, {"csvw:value": 0, "csvw:primaryKey": "Filter: Filter type"}, {"csvw:value": 0, "csvw:primaryKey": "Filter: Filter cutoff"}, {"csvw:value": 0, "csvw:primaryKey": "Filter: Filter resonance"}, {"csvw:value": 0, "csvw:primaryKey": "Filter: Filter EG 1 intensity"}, {"csvw:value": 0, "csvw:primaryKey": "Filter: Filter KBD track"}, {"csvw:value": 0, "csvw:primaryKey": "Amp: Amp level"}, {"csvw:value": 0, "csvw:primaryKey": "Amp: Amp panpot"}, {"csvw:value": 0, "csvw:primaryKey": "Amp: Amp EG2/gate"}, {"csvw:value": 0, "csvw:primaryKey": "Amp: Amp distortion"}, {"csvw:value": 0, "csvw:primaryKey": "EG 1: EG 1 attack"}, {"csvw:value": 0, "csvw:primaryKey": "EG 1: EG 1 decay"}, {"csvw:value": 0, "csvw:primaryKey": "EG 1: EG 1 sustain"}, {"csvw:value": 0, "csvw:primaryKey": "EG 1: EG 1 release"}, {"csvw:value": 0, "csvw:primaryKey": "EG 2: EG 2 attack"}, {"csvw:value": 0, "csvw:primaryKey": "EG 2: EG 2 decay"}, {"csvw:value": 0, "csvw:primaryKey": "EG 2: EG 2 sustain"}, {"csvw:value": 0, "csvw:primaryKey": "EG 2: EG 2 release"}, {"csvw:value": 0, "csvw:primaryKey": "LFO 1: LFO 1 wave"}, {"csvw:value": 0, "csvw:primaryKey": "LFO 1: LFO 1 frequency"}, {"csvw:value": 0, "csvw:primaryKey": "LFO 2: LFO 2 wave"}, {"csvw:value": 0, "csvw:primaryKey": "LFO 2: LFO 2 frequency"}, {"csvw:value": 0, "csvw:primaryKey": "Patches: Patch 1 intensity"}, {"csvw:value": 0, "csvw:primaryKey": "Patches: Patch 2 intensity"}, {"csvw:value": 0, "csvw:primaryKey": "Patches: Patch 3 intensity"}, {"csvw:value": 0, "csvw:primaryKey": "Patches: Patch 4 intensity"}, {"csvw:value": 0, "csvw:primaryKey": "Sequencer: Sequencer on/off"}, {"csvw:value": 0, "csvw:primaryKey": "Mod FX: Mod FX LFO speed"}, {"csvw:value": 0, "csvw:primaryKey": "Mod FX: Mod FX depth"}, {"csvw:value": 0, "csvw:primaryKey": "Delay FX: Delay time"}, {"csvw:value": 0, "csvw:primaryKey": "Delay FX: Delay depth"}, {"csvw:value": 0, "csvw:primaryKey": "Vocoder-specific: Audio in 2 HPF level"}, {"csvw:value": 0, "csvw:primaryKey": "Vocoder-specific: Audio in 2 threshold"}, {"csvw:value": 0, "csvw:primaryKey": "Vocoder-specific: Formant shift"}, {"csvw:value": 0, "csvw:primaryKey": "Vocoder-specific: Filter modulation intensity"}]}, {"csvw:name": "CC maximum value", "csvw:datatype": "integer", "csvw:cells": [{"csvw:value": 127, "csvw:primaryKey": "Pitch: Portamento"}, {"csvw:value": 127, "csvw:primaryKey": "OSC 1: OSC 1 wave"}, {"csvw:value": 127, "csvw:primaryKey": "OSC 1: OSC 1 control 1"}, {"csvw:value": 127, "csvw:primaryKey": "OSC 1: OSC 1 control 2"}, {"csvw:value": 127, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 wave"}, {"csvw:value": 127, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 modulation"}, {"csvw:value": 127, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 semitone"}, {"csvw:value": 127, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 tune"}, {"csvw:value": 127, "csvw:primaryKey": "Mixer: OSC 1 level"}, {"csvw:value": 127, "csvw:primaryKey": "Mixer: OSC 2 level"}, {"csvw:value": 127, "csvw:primaryKey": "Mixer: Noise level"}, {"csvw:value": 127, "csvw:primaryKey": "Filter: Filter type"}, {"csvw:value": 127, "csvw:primaryKey": "Filter: Filter cutoff"}, {"csvw:value": 127, "csvw:primaryKey": "Filter: Filter resonance"}, {"csvw:value": 127, "csvw:primaryKey": "Filter: Filter EG 1 intensity"}, {"csvw:value": 127, "csvw:primaryKey": "Filter: Filter KBD track"}, {"csvw:value": 127, "csvw:primaryKey": "Amp: Amp level"}, {"csvw:value": 127, "csvw:primaryKey": "Amp: Amp panpot"}, {"csvw:value": 127, "csvw:primaryKey": "Amp: Amp EG2/gate"}, {"csvw:value": 127, "csvw:primaryKey": "Amp: Amp distortion"}, {"csvw:value": 127, "csvw:primaryKey": "EG 1: EG 1 attack"}, {"csvw:value": 127, "csvw:primaryKey": "EG 1: EG 1 decay"}, {"csvw:value": 127, "csvw:primaryKey": "EG 1: EG 1 sustain"}, {"csvw:value": 127, "csvw:primaryKey": "EG 1: EG 1 release"}, {"csvw:value": 127, "csvw:primaryKey": "EG 2: EG 2 attack"}, {"csvw:value": 127, "csvw:primaryKey": "EG 2: EG 2 decay"}, {"csvw:value": 127, "csvw:primaryKey": "EG 2: EG 2 sustain"}, {"csvw:value": 127, "csvw:primaryKey": "EG 2: EG 2 release"}, {"csvw:value": 127, "csvw:primaryKey": "LFO 1: LFO 1 wave"}, {"csvw:value": 127, "csvw:primaryKey": "LFO 1: LFO 1 frequency"}, {"csvw:value": 127, "csvw:primaryKey": "LFO 2: LFO 2 wave"}, {"csvw:value": 127, "csvw:primaryKey": "LFO 2: LFO 2 frequency"}, {"csvw:value": 127, "csvw:primaryKey": "Patches: Patch 1 intensity"}, {"csvw:value": 127, "csvw:primaryKey": "Patches: Patch 2 intensity"}, {"csvw:value": 127, "csvw:primaryKey": "Patches: Patch 3 intensity"}, {"csvw:value": 127, "csvw:primaryKey": "Patches: Patch 4 intensity"}, {"csvw:value": 127, "csvw:primaryKey": "Sequencer: Sequencer on/off"}, {"csvw:value": 127, "csvw:primaryKey": "Mod FX: Mod FX LFO speed"}, {"csvw:value": 127, "csvw:primaryKey": "Mod FX: Mod FX depth"}, {"csvw:value": 127, "csvw:primaryKey": "Delay FX: Delay time"}, {"csvw:value": 127, "csvw:primaryKey": "Delay FX: Delay depth"}, {"csvw:value": 127, "csvw:primaryKey": "Vocoder-specific: Audio in 2 HPF level"}, {"csvw:value": 127, "csvw:primaryKey": "Vocoder-specific: Audio in 2 threshold"}, {"csvw:value": 127, "csvw:primaryKey": "Vocoder-specific: Formant shift"}, {"csvw:value": 127, "csvw:primaryKey": "Vocoder-specific: Filter modulation intensity"}]}, {"csvw:name": "NRPN MSB", "csvw:datatype": "integer", "csvw:cells": [{"csvw:value": null, "csvw:primaryKey": "Pitch: Portamento"}, {"csvw:value": null, "csvw:primaryKey": "OSC 1: OSC 1 wave"}, {"csvw:value": null, "csvw:primaryKey": "OSC 1: OSC 1 control 1"}, {"csvw:value": null, "csvw:primaryKey": "OSC 1: OSC 1 control 2"}, {"csvw:value": null, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 wave"}, {"csvw:value": null, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 modulation"}, {"csvw:value": null, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 semitone"}, {"csvw:value": null, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 tune"}, {"csvw:value": null, "csvw:primaryKey": "Mixer: OSC 1 level"}, {"csvw:value": null, "csvw:primaryKey": "Mixer: OSC 2 level"}, {"csvw:value": null, "csvw:primaryKey": "Mixer: Noise level"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter type"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter cutoff"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter resonance"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter EG 1 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter KBD track"}, {"csvw:value": null, "csvw:primaryKey": "Amp: Amp level"}, {"csvw:value": null, "csvw:primaryKey": "Amp: Amp panpot"}, {"csvw:value": null, "csvw:primaryKey": "Amp: Amp EG2/gate"}, {"csvw:value": null, "csvw:primaryKey": "Amp: Amp distortion"}, {"csvw:value": null, "csvw:primaryKey": "EG 1: EG 1 attack"}, {"csvw:value": null, "csvw:primaryKey": "EG 1: EG 1 decay"}, {"csvw:value": null, "csvw:primaryKey": "EG 1: EG 1 sustain"}, {"csvw:value": null, "csvw:primaryKey": "EG 1: EG 1 release"}, {"csvw:value": null, "csvw:primaryKey": "EG 2: EG 2 attack"}, {"csvw:value": null, "csvw:primaryKey": "EG 2: EG 2 decay"}, {"csvw:value": null, "csvw:primaryKey": "EG 2: EG 2 sustain"}, {"csvw:value": null, "csvw:primaryKey": "EG 2: EG 2 release"}, {"csvw:value": null, "csvw:primaryKey": "LFO 1: LFO 1 wave"}, {"csvw:value": null, "csvw:primaryKey": "LFO 1: LFO 1 frequency"}, {"csvw:value": null, "csvw:primaryKey": "LFO 2: LFO 2 wave"}, {"csvw:value": null, "csvw:primaryKey": "LFO 2: LFO 2 frequency"}, {"csvw:value": null, "csvw:primaryKey": "Patches: Patch 1 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Patches: Patch 2 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Patches: Patch 3 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Patches: Patch 4 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Sequencer: Sequencer on/off"}, {"csvw:value": null, "csvw:primaryKey": "Mod FX: Mod FX LFO speed"}, {"csvw:value": null, "csvw:primaryKey": "Mod FX: Mod FX depth"}, {"csvw:value": null, "csvw:primaryKey": "Delay FX: Delay time"}, {"csvw:value": null, "csvw:primaryKey": "Delay FX: Delay depth"}, {"csvw:value": null, "csvw:primaryKey": "Vocoder-specific: Audio in 2 HPF level"}, {"csvw:value": null, "csvw:primaryKey": "Vocoder-specific: Audio in 2 threshold"}, {"csvw:value": null, "csvw:primaryKey": "Vocoder-specific: Formant shift"}, {"csvw:value": null, "csvw:primaryKey": "Vocoder-specific: Filter modulation intensity"}]}, {"csvw:name": "NRPN LSB", "csvw:datatype": "integer", "csvw:cells": [{"csvw:value": null, "csvw:primaryKey": "Pitch: Portamento"}, {"csvw:value": null, "csvw:primaryKey": "OSC 1: OSC 1 wave"}, {"csvw:value": null, "csvw:primaryKey": "OSC 1: OSC 1 control 1"}, {"csvw:value": null, "csvw:primaryKey": "OSC 1: OSC 1 control 2"}, {"csvw:value": null, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 wave"}, {"csvw:value": null, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 modulation"}, {"csvw:value": null, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 semitone"}, {"csvw:value": null, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 tune"}, {"csvw:value": null, "csvw:primaryKey": "Mixer: OSC 1 level"}, {"csvw:value": null, "csvw:primaryKey": "Mixer: OSC 2 level"}, {"csvw:value": null, "csvw:primaryKey": "Mixer: Noise level"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter type"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter cutoff"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter resonance"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter EG 1 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter KBD track"}, {"csvw:value": null, "csvw:primaryKey": "Amp: Amp level"}, {"csvw:value": null, "csvw:primaryKey": "Amp: Amp panpot"}, {"csvw:value": null, "csvw:primaryKey": "Amp: Amp EG2/gate"}, {"csvw:value": null, "csvw:primaryKey": "Amp: Amp distortion"}, {"csvw:value": null, "csvw:primaryKey": "EG 1: EG 1 attack"}, {"csvw:value": null, "csvw:primaryKey": "EG 1: EG 1 decay"}, {"csvw:value": null, "csvw:primaryKey": "EG 1: EG 1 sustain"}, {"csvw:value": null, "csvw:primaryKey": "EG 1: EG 1 release"}, {"csvw:value": null, "csvw:primaryKey": "EG 2: EG 2 attack"}, {"csvw:value": null, "csvw:primaryKey": "EG 2: EG 2 decay"}, {"csvw:value": null, "csvw:primaryKey": "EG 2: EG 2 sustain"}, {"csvw:value": null, "csvw:primaryKey": "EG 2: EG 2 release"}, {"csvw:value": null, "csvw:primaryKey": "LFO 1: LFO 1 wave"}, {"csvw:value": null, "csvw:primaryKey": "LFO 1: LFO 1 frequency"}, {"csvw:value": null, "csvw:primaryKey": "LFO 2: LFO 2 wave"}, {"csvw:value": null, "csvw:primaryKey": "LFO 2: LFO 2 frequency"}, {"csvw:value": null, "csvw:primaryKey": "Patches: Patch 1 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Patches: Patch 2 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Patches: Patch 3 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Patches: Patch 4 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Sequencer: Sequencer on/off"}, {"csvw:value": null, "csvw:primaryKey": "Mod FX: Mod FX LFO speed"}, {"csvw:value": null, "csvw:primaryKey": "Mod FX: Mod FX depth"}, {"csvw:value": null, "csvw:primaryKey": "Delay FX: Delay time"}, {"csvw:value": null, "csvw:primaryKey": "Delay FX: Delay depth"}, {"csvw:value": null, "csvw:primaryKey": "Vocoder-specific: Audio in 2 HPF level"}, {"csvw:value": null, "csvw:primaryKey": "Vocoder-specific: Audio in 2 threshold"}, {"csvw:value": null, "csvw:primaryKey": "Vocoder-specific: Formant shift"}, {"csvw:value": null, "csvw:primaryKey": "Vocoder-specific: Filter modulation intensity"}]}, {"csvw:name": "NRPN minimum value", "csvw:datatype": "integer", "csvw:cells": [{"csvw:value": null, "csvw:primaryKey": "Pitch: Portamento"}, {"csvw:value": null, "csvw:primaryKey": "OSC 1: OSC 1 wave"}, {"csvw:value": null, "csvw:primaryKey": "OSC 1: OSC 1 control 1"}, {"csvw:value": null, "csvw:primaryKey": "OSC 1: OSC 1 control 2"}, {"csvw:value": null, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 wave"}, {"csvw:value": null, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 modulation"}, {"csvw:value": null, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 semitone"}, {"csvw:value": null, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 tune"}, {"csvw:value": null, "csvw:primaryKey": "Mixer: OSC 1 level"}, {"csvw:value": null, "csvw:primaryKey": "Mixer: OSC 2 level"}, {"csvw:value": null, "csvw:primaryKey": "Mixer: Noise level"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter type"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter cutoff"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter resonance"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter EG 1 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter KBD track"}, {"csvw:value": null, "csvw:primaryKey": "Amp: Amp level"}, {"csvw:value": null, "csvw:primaryKey": "Amp: Amp panpot"}, {"csvw:value": null, "csvw:primaryKey": "Amp: Amp EG2/gate"}, {"csvw:value": null, "csvw:primaryKey": "Amp: Amp distortion"}, {"csvw:value": null, "csvw:primaryKey": "EG 1: EG 1 attack"}, {"csvw:value": null, "csvw:primaryKey": "EG 1: EG 1 decay"}, {"csvw:value": null, "csvw:primaryKey": "EG 1: EG 1 sustain"}, {"csvw:value": null, "csvw:primaryKey": "EG 1: EG 1 release"}, {"csvw:value": null, "csvw:primaryKey": "EG 2: EG 2 attack"}, {"csvw:value": null, "csvw:primaryKey": "EG 2: EG 2 decay"}, {"csvw:value": null, "csvw:primaryKey": "EG 2: EG 2 sustain"}, {"csvw:value": null, "csvw:primaryKey": "EG 2: EG 2 release"}, {"csvw:value": null, "csvw:primaryKey": "LFO 1: LFO 1 wave"}, {"csvw:value": null, "csvw:primaryKey": "LFO 1: LFO 1 frequency"}, {"csvw:value": null, "csvw:primaryKey": "LFO 2: LFO 2 wave"}, {"csvw:value": null, "csvw:primaryKey": "LFO 2: LFO 2 frequency"}, {"csvw:value": null, "csvw:primaryKey": "Patches: Patch 1 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Patches: Patch 2 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Patches: Patch 3 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Patches: Patch 4 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Sequencer: Sequencer on/off"}, {"csvw:value": null, "csvw:primaryKey": "Mod FX: Mod FX LFO speed"}, {"csvw:value": null, "csvw:primaryKey": "Mod FX: Mod FX depth"}, {"csvw:value": null, "csvw:primaryKey": "Delay FX: Delay time"}, {"csvw:value": null, "csvw:primaryKey": "Delay FX: Delay depth"}, {"csvw:value": null, "csvw:primaryKey": "Vocoder-specific: Audio in 2 HPF level"}, {"csvw:value": null, "csvw:primaryKey": "Vocoder-specific: Audio in 2 threshold"}, {"csvw:value": null, "csvw:primaryKey": "Vocoder-specific: Formant shift"}, {"csvw:value": null, "csvw:primaryKey": "Vocoder-specific: Filter modulation intensity"}]}, {"csvw:name": "NRPN maximum value", "csvw:datatype": "integer", "csvw:cells": [{"csvw:value": null, "csvw:primaryKey": "Pitch: Portamento"}, {"csvw:value": null, "csvw:primaryKey": "OSC 1: OSC 1 wave"}, {"csvw:value": null, "csvw:primaryKey": "OSC 1: OSC 1 control 1"}, {"csvw:value": null, "csvw:primaryKey": "OSC 1: OSC 1 control 2"}, {"csvw:value": null, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 wave"}, {"csvw:value": null, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 modulation"}, {"csvw:value": null, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 semitone"}, {"csvw:value": null, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 tune"}, {"csvw:value": null, "csvw:primaryKey": "Mixer: OSC 1 level"}, {"csvw:value": null, "csvw:primaryKey": "Mixer: OSC 2 level"}, {"csvw:value": null, "csvw:primaryKey": "Mixer: Noise level"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter type"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter cutoff"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter resonance"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter EG 1 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter KBD track"}, {"csvw:value": null, "csvw:primaryKey": "Amp: Amp level"}, {"csvw:value": null, "csvw:primaryKey": "Amp: Amp panpot"}, {"csvw:value": null, "csvw:primaryKey": "Amp: Amp EG2/gate"}, {"csvw:value": null, "csvw:primaryKey": "Amp: Amp distortion"}, {"csvw:value": null, "csvw:primaryKey": "EG 1: EG 1 attack"}, {"csvw:value": null, "csvw:primaryKey": "EG 1: EG 1 decay"}, {"csvw:value": null, "csvw:primaryKey": "EG 1: EG 1 sustain"}, {"csvw:value": null, "csvw:primaryKey": "EG 1: EG 1 release"}, {"csvw:value": null, "csvw:primaryKey": "EG 2: EG 2 attack"}, {"csvw:value": null, "csvw:primaryKey": "EG 2: EG 2 decay"}, {"csvw:value": null, "csvw:primaryKey": "EG 2: EG 2 sustain"}, {"csvw:value": null, "csvw:primaryKey": "EG 2: EG 2 release"}, {"csvw:value": null, "csvw:primaryKey": "LFO 1: LFO 1 wave"}, {"csvw:value": null, "csvw:primaryKey": "LFO 1: LFO 1 frequency"}, {"csvw:value": null, "csvw:primaryKey": "LFO 2: LFO 2 wave"}, {"csvw:value": null, "csvw:primaryKey": "LFO 2: LFO 2 frequency"}, {"csvw:value": null, "csvw:primaryKey": "Patches: Patch 1 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Patches: Patch 2 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Patches: Patch 3 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Patches: Patch 4 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Sequencer: Sequencer on/off"}, {"csvw:value": null, "csvw:primaryKey": "Mod FX: Mod FX LFO speed"}, {"csvw:value": null, "csvw:primaryKey": "Mod FX: Mod FX depth"}, {"csvw:value": null, "csvw:primaryKey": "Delay FX: Delay time"}, {"csvw:value": null, "csvw:primaryKey": "Delay FX: Delay depth"}, {"csvw:value": null, "csvw:primaryKey": "Vocoder-specific: Audio in 2 HPF level"}, {"csvw:value": null, "csvw:primaryKey": "Vocoder-specific: Audio in 2 threshold"}, {"csvw:value": null, "csvw:primaryKey": "Vocoder-specific: Formant shift"}, {"csvw:value": null, "csvw:primaryKey": "Vocoder-specific: Filter modulation intensity"}]}, {"csvw:name": "Orientation", "csvw:datatype": "string", "csvw:cells": [{"csvw:value": "0-based", "csvw:primaryKey": "Pitch: Portamento"}, {"csvw:value": "0-based", "csvw:primaryKey": "OSC 1: OSC 1 wave"}, {"csvw:value": "0-based", "csvw:primaryKey": "OSC 1: OSC 1 control 1"}, {"csvw:value": "0-based", "csvw:primaryKey": "OSC 1: OSC 1 control 2"}, {"csvw:value": "0-based", "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 wave"}, {"csvw:value": "0-based", "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 modulation"}, {"csvw:value": "0-based", "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 semitone"}, {"csvw:value": "centered", "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 tune"}, {"csvw:value": "0-based", "csvw:primaryKey": "Mixer: OSC 1 level"}, {"csvw:value": "0-based", "csvw:primaryKey": "Mixer: OSC 2 level"}, {"csvw:value": "0-based", "csvw:primaryKey": "Mixer: Noise level"}, {"csvw:value": "0-based", "csvw:primaryKey": "Filter: Filter type"}, {"csvw:value": "0-based", "csvw:primaryKey": "Filter: Filter cutoff"}, {"csvw:value": "0-based", "csvw:primaryKey": "Filter: Filter resonance"}, {"csvw:value": "centered", "csvw:primaryKey": "Filter: Filter EG 1 intensity"}, {"csvw:value": "centered", "csvw:primaryKey": "Filter: Filter KBD track"}, {"csvw:value": "0-based", "csvw:primaryKey": "Amp: Amp level"}, {"csvw:value": "centered", "csvw:primaryKey": "Amp: Amp panpot"}, {"csvw:value": "0-based", "csvw:primaryKey": "Amp: Amp EG2/gate"}, {"csvw:value": "0-based", "csvw:primaryKey": "Amp: Amp distortion"}, {"csvw:value": "0-based", "csvw:primaryKey": "EG 1: EG 1 attack"}, {"csvw:value": "0-based", "csvw:primaryKey": "EG 1: EG 1 decay"}, {"csvw:value": "0-based", "csvw:primaryKey": "EG 1: EG 1 sustain"}, {"csvw:value": "0-based", "csvw:primaryKey": "EG 1: EG 1 release"}, {"csvw:value": "0-based", "csvw:primaryKey": "EG 2: EG 2 attack"}, {"csvw:value": "0-based", "csvw:primaryKey": "EG 2: EG 2 decay"}, {"csvw:value": "0-based", "csvw:primaryKey": "EG 2: EG 2 sustain"}, {"csvw:value": "0-based", "csvw:primaryKey": "EG 2: EG 2 release"}, {"csvw:value": "0-based", "csvw:primaryKey": "LFO 1: LFO 1 wave"}, {"csvw:value": "0-based", "csvw:primaryKey": "LFO 1: LFO 1 frequency"}, {"csvw:value": "0-based", "csvw:primaryKey": "LFO 2: LFO 2 wave"}, {"csvw:value": "0-based", "csvw:primaryKey": "LFO 2: LFO 2 frequency"}, {"csvw:value": "centered", "csvw:primaryKey": "Patches: Patch 1 intensity"}, {"csvw:value": "centered", "csvw:primaryKey": "Patches: Patch 2 intensity"}, {"csvw:value": "centered", "csvw:primaryKey": "Patches: Patch 3 intensity"}, {"csvw:value": "centered", "csvw:primaryKey": "Patches: Patch 4 intensity"}, {"csvw:value": "0-based", "csvw:primaryKey": "Sequencer: Sequencer on/off"}, {"csvw:value": "0-based", "csvw:primaryKey": "Mod FX: Mod FX LFO speed"}, {"csvw:value": "0-based", "csvw:primaryKey": "Mod FX: Mod FX depth"}, {"csvw:value": "0-based", "csvw:primaryKey": "Delay FX: Delay time"}, {"csvw:value": "0-based", "csvw:primaryKey": "Delay FX: Delay depth"}, {"csvw:value": "0-based", "csvw:primaryKey": "Vocoder-specific: Audio in 2 HPF level"}, {"csvw:value": "0-based", "csvw:primaryKey": "Vocoder-specific: Audio in 2 threshold"}, {"csvw:value": "0-based", "csvw:primaryKey": "Vocoder-specific: Formant shift"}, {"csvw:value": "centered", "csvw:primaryKey": "Vocoder-specific: Filter modulation intensity"}]}, {"csvw:name": "Notes", "csvw:datatype": "string", "csvw:cells": [{"csvw:value": null, "csvw:primaryKey": "Pitch: Portamento"}, {"csvw:value": null, "csvw:primaryKey": "OSC 1: OSC 1 wave"}, {"csvw:value": null, "csvw:primaryKey": "OSC 1: OSC 1 control 1"}, {"csvw:value": null, "csvw:primaryKey": "OSC 1: OSC 1 control 2"}, {"csvw:value": null, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 wave"}, {"csvw:value": null, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 modulation"}, {"csvw:value": null, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 semitone"}, {"csvw:value": null, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 tune"}, {"csvw:value": null, "csvw:primaryKey": "Mixer: OSC 1 level"}, {"csvw:value": null, "csvw:primaryKey": "Mixer: OSC 2 level"}, {"csvw:value": null, "csvw:primaryKey": "Mixer: Noise level"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter type"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter cutoff"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter resonance"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter EG 1 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter KBD track"}, {"csvw:value": null, "csvw:primaryKey": "Amp: Amp level"}, {"csvw:value": null, "csvw:primaryKey": "Amp: Amp panpot"}, {"csvw:value": null, "csvw:primaryKey": "Amp: Amp EG2/gate"}, {"csvw:value": null, "csvw:primaryKey": "Amp: Amp distortion"}, {"csvw:value": null, "csvw:primaryKey": "EG 1: EG 1 attack"}, {"csvw:value": null, "csvw:primaryKey": "EG 1: EG 1 decay"}, {"csvw:value": null, "csvw:primaryKey": "EG 1: EG 1 sustain"}, {"csvw:value": null, "csvw:primaryKey": "EG 1: EG 1 release"}, {"csvw:value": null, "csvw:primaryKey": "EG 2: EG 2 attack"}, {"csvw:value": null, "csvw:primaryKey": "EG 2: EG 2 decay"}, {"csvw:value": null, "csvw:primaryKey": "EG 2: EG 2 sustain"}, {"csvw:value": null, "csvw:primaryKey": "EG 2: EG 2 release"}, {"csvw:value": null, "csvw:primaryKey": "LFO 1: LFO 1 wave"}, {"csvw:value": null, "csvw:primaryKey": "LFO 1: LFO 1 frequency"}, {"csvw:value": null, "csvw:primaryKey": "LFO 2: LFO 2 wave"}, {"csvw:value": null, "csvw:primaryKey": "LFO 2: LFO 2 frequency"}, {"csvw:value": null, "csvw:primaryKey": "Patches: Patch 1 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Patches: Patch 2 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Patches: Patch 3 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Patches: Patch 4 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Sequencer: Sequencer on/off"}, {"csvw:value": null, "csvw:primaryKey": "Mod FX: Mod FX LFO speed"}, {"csvw:value": null, "csvw:primaryKey": "Mod FX: Mod FX depth"}, {"csvw:value": null, "csvw:primaryKey": "Delay FX: Delay time"}, {"csvw:value": null, "csvw:primaryKey": "Delay FX: Delay depth"}, {"csvw:value": null, "csvw:primaryKey": "Vocoder-specific: Audio in 2 HPF level"}, {"csvw:value": null, "csvw:primaryKey": "Vocoder-specific: Audio in 2 threshold"}, {"csvw:value": null, "csvw:primaryKey": "Vocoder-specific: Formant shift"}, {"csvw:value": null, "csvw:primaryKey": "Vocoder-specific: Filter modulation intensity"}]}, {"csvw:name": "Usage", "csvw:datatype": "string", "csvw:cells": [{"csvw:value": null, "csvw:primaryKey": "Pitch: Portamento"}, {"csvw:value": "0-15: Saw; 16-31: Pulse; 32-47: Tri; 48-63: Sin; 64-79: Vox wave; 80-95: DWGS; 96-111: Noise; 112-127: Audio in", "csvw:primaryKey": "OSC 1: OSC 1 wave"}, {"csvw:value": null, "csvw:primaryKey": "OSC 1: OSC 1 control 1"}, {"csvw:value": null, "csvw:primaryKey": "OSC 1: OSC 1 control 2"}, {"csvw:value": "0-42: Saw; 43-85: Squ; 86-127: Tri", "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 wave"}, {"csvw:value": "0-31: Off; 32-63: Ring; 64-95: Sync; 96-127: Ring sync", "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 modulation"}, {"csvw:value": null, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 semitone"}, {"csvw:value": null, "csvw:primaryKey": "OSC 2 / Audio In 2: OSC 2 tune"}, {"csvw:value": null, "csvw:primaryKey": "Mixer: OSC 1 level"}, {"csvw:value": null, "csvw:primaryKey": "Mixer: OSC 2 level"}, {"csvw:value": null, "csvw:primaryKey": "Mixer: Noise level"}, {"csvw:value": "0-31: 24LPF; 32-63: 12LPF; 64-95: 12BPF; 96-127: 12HPF", "csvw:primaryKey": "Filter: Filter type"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter cutoff"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter resonance"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter EG 1 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Filter: Filter KBD track"}, {"csvw:value": null, "csvw:primaryKey": "Amp: Amp level"}, {"csvw:value": null, "csvw:primaryKey": "Amp: Amp panpot"}, {"csvw:value": "0-63: EG2; 64-127: Gate", "csvw:primaryKey": "Amp: Amp EG2/gate"}, {"csvw:value": "0-63: Off; 64-127: On", "csvw:primaryKey": "Amp: Amp distortion"}, {"csvw:value": null, "csvw:primaryKey": "EG 1: EG 1 attack"}, {"csvw:value": null, "csvw:primaryKey": "EG 1: EG 1 decay"}, {"csvw:value": null, "csvw:primaryKey": "EG 1: EG 1 sustain"}, {"csvw:value": null, "csvw:primaryKey": "EG 1: EG 1 release"}, {"csvw:value": null, "csvw:primaryKey": "EG 2: EG 2 attack"}, {"csvw:value": null, "csvw:primaryKey": "EG 2: EG 2 decay"}, {"csvw:value": null, "csvw:primaryKey": "EG 2: EG 2 sustain"}, {"csvw:value": null, "csvw:primaryKey": "EG 2: EG 2 release"}, {"csvw:value": "0-31: Saw; 32-63: Square; 64-95: Tri; 96-127: S/H", "csvw:primaryKey": "LFO 1: LFO 1 wave"}, {"csvw:value": null, "csvw:primaryKey": "LFO 1: LFO 1 frequency"}, {"csvw:value": "0-31: Saw; 32-63: Square(+); 64-95: Tri; 96-127: S/H", "csvw:primaryKey": "LFO 2: LFO 2 wave"}, {"csvw:value": null, "csvw:primaryKey": "LFO 2: LFO 2 frequency"}, {"csvw:value": null, "csvw:primaryKey": "Patches: Patch 1 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Patches: Patch 2 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Patches: Patch 3 intensity"}, {"csvw:value": null, "csvw:primaryKey": "Patches: Patch 4 intensity"}, {"csvw:value": "0-63: Off; 64-127: On", "csvw:primaryKey": "Sequencer: Sequencer on/off"}, {"csvw:value": null, "csvw:primaryKey": "Mod FX: Mod FX LFO speed"}, {"csvw:value": null, "csvw:primaryKey": "Mod FX: Mod FX depth"}, {"csvw:value": null, "csvw:primaryKey": "Delay FX: Delay time"}, {"csvw:value": null, "csvw:primaryKey": "Delay FX: Delay depth"}, {"csvw:value": null, "csvw:primaryKey": "Vocoder-specific: Audio in 2 HPF level"}, {"csvw:value": null, "csvw:primaryKey": "Vocoder-specific: Audio in 2 threshold"}, {"csvw:value": "0-25: 0; 26-51: +1; 52-76: +2; 77-102: -1; 103-127: -2", "csvw:primaryKey": "Vocoder-specific: Formant shift"}, {"csvw:value": null, "csvw:primaryKey": "Vocoder-specific: Filter modulation intensity"}]}]}}}
+</script>
+
+
+
+
+		<title>
+KORG MS2000 MIDI CCs and NRPNs
+</title>
+
+	</head>
+	<body class="">
+		
+
+			<div class="container">
+
+				
+				<div class="row mt-3">
+					<div class="col-xl">
+						<nav style="display: flex; justify-content: space-between; align-items: center; background-color: var(--breadcrumb-bg); border-radius: .25rem; padding: 0 1rem 0 0;">
+							<ol class="breadcrumb" style="margin-bottom: 0; background-color: transparent;">
+								<li class="breadcrumb-item active"><a href="/">MIDI CC &amp; NRPN database</a></li>
+								
+	<li class="breadcrumb-item"><a href="/d/korg/">KORG</a></li>
+	<li class="breadcrumb-item active">MS2000</li>
+
+							</ol>
+							<span>
+								<a href="https://api.midi.guide/docs/" style="font-weight: 200;">API</a>
+								<a href="/blog/" style="font-weight: 200; margin-left: 1rem;">Blog</a>
+							</span>
+						</nav>
+					</div>
+				</div>
+				
+
+				
+	<div class="row pt-3">
+		<div class="col-lg-12">
+			<div class="jumbotron">
+				<div class="device-header">
+					
+					<div class="header-text">
+						<h1 class="device-title">
+							
+							KORG MS2000 MIDI CCs &amp; NRPNs
+						</h1>
+						<p class="lead mb-0">
+							MIDI implementation details for the KORG MS2000.
+						</p>
+						<p>
+							<small>Last update: <a href="https://github.com/pencilresearch/midi/commits/main/KORG/MS2000.csv">November 27, 2025</a> • 45 parameters</small>
+						</p>
+					</div><!--.header-text-->
+				</div><!--.device-header-->
+				<hr class="helper-notes" />
+				<div class="contributors">
+					<div style="display: inline">
+						<!-- Contribution button -->
+						<a href="https://github.com/pencilresearch/midi/blob/main/KORG/MS2000.csv" class="btn btn-success mt-1">
+							<img src="/static/images/midi/octocat.d707d242e14d.svg" width="25" height="25" class="d-inline-block align-top mr-1" alt="GitHub icon">
+							<span class="helper-notes"> Contribute on GitHub</span>
+						</a>
+						
+							
+								<a class="contributor btn mt-1" href="https://github.com/fauxstor" target="_blank">
+									<img loading="lazy" class="img-thumbnail d-inline-block align-top mr-1" title="fauxstor contributed" alt="fauxstor contributed" width="41" height="41" src="https://avatars.githubusercontent.com/u/70149?v=4&size=123" />
+								</a>
+							
+						
+					</div>
+				</div>
+				<!-- Download options live outside .contributors because that strip uses
+				     overflow: scroll, which would clip the CSV flyout's pop-out menu. -->
+				<div class="download-options">
+						
+							<a href="/d/korg/ms2000/csv/" download class="btn btn-primary mt-1">
+								<img src="/static/images/midi/csv-download-button.f4d0d6509de8.svg" width="25" height="25" class="d-inline-block align-top mr-1" alt="Download icon for CSV file">
+								CSV
+							</a>
+						
+						<a href="https://apps.apple.com/app/condukt/id1473063860?ct=midi.guide" target="_blank" class="btn btn-primary mt-1">
+							<img src="/static/images/midi/app-download-button.d00fac7a272e.svg" width="25" height="25" class="d-inline-block align-top mr-1" alt="Download icon for Condukt">
+							iOS / Mac
+						</a>
+						
+						<a href="/export/novation/launch-control-xl-3/?manufacturer=korg&device=ms2000" class="btn btn-primary mt-1">
+								<img src="/static/images/midi/novation-download-button.25e5c39e54b6.svg" width="25" height="25" class="d-inline-block align-top mr-1" alt="Configure Novation Launch Control XL 3 Custom Mode">
+							Launch Control XL 3
+						</a>
+						<a href="/d/korg/ms2000/deluge/" download class="btn btn-primary mt-1">
+							<img src="/static/images/midi/deluge-download-button.04f8ef04809b.svg" width="25" height="25" class="d-inline-block align-top mr-1" alt="Download icon for Deluge instrument definition">
+							Deluge
+						</a>
+						<a href="/d/korg/ms2000/oxi/" download class="btn btn-primary mt-1">
+							<img src="/static/images/midi/oxi-download-button.a473ce9ac8f6.svg" width="25" height="25" class="d-inline-block align-top mr-1" alt="Download icon for Oxi instrument definition">
+							OXI
+						</a>
+						<a href="/d/korg/ms2000/dmmdm/" download class="btn btn-primary mt-1">
+							<img src="/static/images/midi/dmmdm-download-button.bd87217942de.svg" width="25" height="25" class="d-inline-block align-top mr-1" alt="Download icon for DROID patch file">
+							DROID
+						</a>
+						
+						
+						<a href="/d/korg/ms2000/def/" download class="btn btn-primary mt-1">
+							<img src="/static/images/midi/squarp-download-button.cc484a9e3728.svg" width="25" height="25" class="d-inline-block align-top mr-1" alt="Download icon for Pyramid def file">
+							Pyramid
+						</a>
+						<a href="/d/korg/ms2000/hapax/" download class="btn btn-primary mt-1">
+							<img src="/static/images/midi/squarp-download-button.cc484a9e3728.svg" width="25" height="25" class="d-inline-block align-top mr-1" alt="Download icon for Hapax definition">
+							Hapax
+						</a>
+						
+				</div>
+				<div class="pt-1 mb-0 pb-0 helper-notes helper-explanation">
+					<p class="contribution-instructions">
+						Contributions welcome! <a href="mailto:midi@midi.guide">You can email us</a> your edited CSV if you don't want to use GitHub.
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
+	<div class="row pt-1 mb-1 custom-container">
+		<div class="col-lg-12">
+			
+		</div>
+	</div>
+	
+</div>
+<!-- mdash: — -->
+<!-- ndash: – -->
+<div class="container-fluid">
+	
+	
+		<div class="row pt-3">
+			<div class="col-lg-12">
+				<h2 class="definition-section" id="pitch">
+					<a href="#pitch">
+						Pitch
+					</a>
+				</h2>
+				<div class="table-responsive">
+					<table class="table table-striped table-hover">
+						<thead class="thead-dark">
+							<tr>
+								<th class="parameter group-end">Parameter</th>
+								
+									
+										<th class="fig">CC</th>
+									
+
+									<th class="range group-end">Range</th>
+								
+
+								
+								<th class="usage">Usage</th>
+								
+								<th class="orientation"><span>Orientation</span></th>
+							</tr>
+						</thead>
+						<tbody>
+							
+								<tr>
+									<td class="parameter human group-end">Portamento</td>
+									
+										
+											<td class="fig">5</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	
+		<div class="row pt-3">
+			<div class="col-lg-12">
+				<h2 class="definition-section" id="osc-1">
+					<a href="#osc-1">
+						OSC 1
+					</a>
+				</h2>
+				<div class="table-responsive">
+					<table class="table table-striped table-hover">
+						<thead class="thead-dark">
+							<tr>
+								<th class="parameter group-end">Parameter</th>
+								
+									
+										<th class="fig">CC</th>
+									
+
+									<th class="range group-end">Range</th>
+								
+
+								
+								<th class="usage">Usage</th>
+								
+								<th class="orientation"><span>Orientation</span></th>
+							</tr>
+						</thead>
+						<tbody>
+							
+								<tr>
+									<td class="parameter human group-end">OSC 1 wave</td>
+									
+										
+											<td class="fig">77</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage">
+											<div>0-15: Saw; 16-31: Pulse; 32-47: Tri; 48-63: Sin; 64-79: Vox wave; 80-95: DWGS; 96-111: Noise; 112-127: Audio in</div>
+										</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+								<tr>
+									<td class="parameter human group-end">OSC 1 control 1</td>
+									
+										
+											<td class="fig">14</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+								<tr>
+									<td class="parameter human group-end">OSC 1 control 2</td>
+									
+										
+											<td class="fig">15</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	
+		<div class="row pt-3">
+			<div class="col-lg-12">
+				<h2 class="definition-section" id="osc-2-audio-in-2">
+					<a href="#osc-2-audio-in-2">
+						OSC 2 / Audio In 2
+					</a>
+				</h2>
+				<div class="table-responsive">
+					<table class="table table-striped table-hover">
+						<thead class="thead-dark">
+							<tr>
+								<th class="parameter group-end">Parameter</th>
+								
+									
+										<th class="fig">CC</th>
+									
+
+									<th class="range group-end">Range</th>
+								
+
+								
+								<th class="usage">Usage</th>
+								
+								<th class="orientation"><span>Orientation</span></th>
+							</tr>
+						</thead>
+						<tbody>
+							
+								<tr>
+									<td class="parameter human group-end">OSC 2 wave</td>
+									
+										
+											<td class="fig">78</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage">
+											<div>0-42: Saw; 43-85: Squ; 86-127: Tri</div>
+										</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+								<tr>
+									<td class="parameter human group-end">OSC 2 modulation</td>
+									
+										
+											<td class="fig">82</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage">
+											<div>0-31: Off; 32-63: Ring; 64-95: Sync; 96-127: Ring sync</div>
+										</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+								<tr>
+									<td class="parameter human group-end">OSC 2 semitone</td>
+									
+										
+											<td class="fig">18</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+								<tr>
+									<td class="parameter human group-end">OSC 2 tune</td>
+									
+										
+											<td class="fig">19</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>Centered</span></td>
+								</tr>
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	
+		<div class="row pt-3">
+			<div class="col-lg-12">
+				<h2 class="definition-section" id="mixer">
+					<a href="#mixer">
+						Mixer
+					</a>
+				</h2>
+				<div class="table-responsive">
+					<table class="table table-striped table-hover">
+						<thead class="thead-dark">
+							<tr>
+								<th class="parameter group-end">Parameter</th>
+								
+									
+										<th class="fig">CC</th>
+									
+
+									<th class="range group-end">Range</th>
+								
+
+								
+								<th class="usage">Usage</th>
+								
+								<th class="orientation"><span>Orientation</span></th>
+							</tr>
+						</thead>
+						<tbody>
+							
+								<tr>
+									<td class="parameter human group-end">OSC 1 level</td>
+									
+										
+											<td class="fig">20</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+								<tr>
+									<td class="parameter human group-end">OSC 2 level</td>
+									
+										
+											<td class="fig">21</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+								<tr>
+									<td class="parameter human group-end">Noise level</td>
+									
+										
+											<td class="fig">22</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	
+		<div class="row pt-3">
+			<div class="col-lg-12">
+				<h2 class="definition-section" id="filter">
+					<a href="#filter">
+						Filter
+					</a>
+				</h2>
+				<div class="table-responsive">
+					<table class="table table-striped table-hover">
+						<thead class="thead-dark">
+							<tr>
+								<th class="parameter group-end">Parameter</th>
+								
+									
+										<th class="fig">CC</th>
+									
+
+									<th class="range group-end">Range</th>
+								
+
+								
+								<th class="usage">Usage</th>
+								
+								<th class="orientation"><span>Orientation</span></th>
+							</tr>
+						</thead>
+						<tbody>
+							
+								<tr>
+									<td class="parameter human group-end">Filter type</td>
+									
+										
+											<td class="fig">83</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage">
+											<div>0-31: 24LPF; 32-63: 12LPF; 64-95: 12BPF; 96-127: 12HPF</div>
+										</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+								<tr>
+									<td class="parameter human group-end">Filter cutoff</td>
+									
+										
+											<td class="fig">74</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+								<tr>
+									<td class="parameter human group-end">Filter resonance</td>
+									
+										
+											<td class="fig">71</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+								<tr>
+									<td class="parameter human group-end">Filter EG 1 intensity</td>
+									
+										
+											<td class="fig">79</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>Centered</span></td>
+								</tr>
+							
+								<tr>
+									<td class="parameter human group-end">Filter KBD track</td>
+									
+										
+											<td class="fig">85</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>Centered</span></td>
+								</tr>
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	
+		<div class="row pt-3">
+			<div class="col-lg-12">
+				<h2 class="definition-section" id="amp">
+					<a href="#amp">
+						Amp
+					</a>
+				</h2>
+				<div class="table-responsive">
+					<table class="table table-striped table-hover">
+						<thead class="thead-dark">
+							<tr>
+								<th class="parameter group-end">Parameter</th>
+								
+									
+										<th class="fig">CC</th>
+									
+
+									<th class="range group-end">Range</th>
+								
+
+								
+								<th class="usage">Usage</th>
+								
+								<th class="orientation"><span>Orientation</span></th>
+							</tr>
+						</thead>
+						<tbody>
+							
+								<tr>
+									<td class="parameter human group-end">Amp level</td>
+									
+										
+											<td class="fig">7</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+								<tr>
+									<td class="parameter human group-end">Amp panpot</td>
+									
+										
+											<td class="fig">10</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>Centered</span></td>
+								</tr>
+							
+								<tr>
+									<td class="parameter human group-end">Amp EG2/gate</td>
+									
+										
+											<td class="fig">86</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage">
+											<div>0-63: EG2; 64-127: Gate</div>
+										</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+								<tr>
+									<td class="parameter human group-end">Amp distortion</td>
+									
+										
+											<td class="fig">92</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage">
+											<div>0-63: Off; 64-127: On</div>
+										</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	
+		<div class="row pt-3">
+			<div class="col-lg-12">
+				<h2 class="definition-section" id="eg-1">
+					<a href="#eg-1">
+						EG 1
+					</a>
+				</h2>
+				<div class="table-responsive">
+					<table class="table table-striped table-hover">
+						<thead class="thead-dark">
+							<tr>
+								<th class="parameter group-end">Parameter</th>
+								
+									
+										<th class="fig">CC</th>
+									
+
+									<th class="range group-end">Range</th>
+								
+
+								
+								<th class="usage">Usage</th>
+								
+								<th class="orientation"><span>Orientation</span></th>
+							</tr>
+						</thead>
+						<tbody>
+							
+								<tr>
+									<td class="parameter human group-end">EG 1 attack</td>
+									
+										
+											<td class="fig">23</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+								<tr>
+									<td class="parameter human group-end">EG 1 decay</td>
+									
+										
+											<td class="fig">24</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+								<tr>
+									<td class="parameter human group-end">EG 1 sustain</td>
+									
+										
+											<td class="fig">25</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+								<tr>
+									<td class="parameter human group-end">EG 1 release</td>
+									
+										
+											<td class="fig">26</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	
+		<div class="row pt-3">
+			<div class="col-lg-12">
+				<h2 class="definition-section" id="eg-2">
+					<a href="#eg-2">
+						EG 2
+					</a>
+				</h2>
+				<div class="table-responsive">
+					<table class="table table-striped table-hover">
+						<thead class="thead-dark">
+							<tr>
+								<th class="parameter group-end">Parameter</th>
+								
+									
+										<th class="fig">CC</th>
+									
+
+									<th class="range group-end">Range</th>
+								
+
+								
+								<th class="usage">Usage</th>
+								
+								<th class="orientation"><span>Orientation</span></th>
+							</tr>
+						</thead>
+						<tbody>
+							
+								<tr>
+									<td class="parameter human group-end">EG 2 attack</td>
+									
+										
+											<td class="fig">73</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+								<tr>
+									<td class="parameter human group-end">EG 2 decay</td>
+									
+										
+											<td class="fig">75</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+								<tr>
+									<td class="parameter human group-end">EG 2 sustain</td>
+									
+										
+											<td class="fig">70</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+								<tr>
+									<td class="parameter human group-end">EG 2 release</td>
+									
+										
+											<td class="fig">72</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	
+		<div class="row pt-3">
+			<div class="col-lg-12">
+				<h2 class="definition-section" id="lfo-1">
+					<a href="#lfo-1">
+						LFO 1
+					</a>
+				</h2>
+				<div class="table-responsive">
+					<table class="table table-striped table-hover">
+						<thead class="thead-dark">
+							<tr>
+								<th class="parameter group-end">Parameter</th>
+								
+									
+										<th class="fig">CC</th>
+									
+
+									<th class="range group-end">Range</th>
+								
+
+								
+								<th class="usage">Usage</th>
+								
+								<th class="orientation"><span>Orientation</span></th>
+							</tr>
+						</thead>
+						<tbody>
+							
+								<tr>
+									<td class="parameter human group-end">LFO 1 wave</td>
+									
+										
+											<td class="fig">87</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage">
+											<div>0-31: Saw; 32-63: Square; 64-95: Tri; 96-127: S/H</div>
+										</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+								<tr>
+									<td class="parameter human group-end">LFO 1 frequency</td>
+									
+										
+											<td class="fig">27</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	
+		<div class="row pt-3">
+			<div class="col-lg-12">
+				<h2 class="definition-section" id="lfo-2">
+					<a href="#lfo-2">
+						LFO 2
+					</a>
+				</h2>
+				<div class="table-responsive">
+					<table class="table table-striped table-hover">
+						<thead class="thead-dark">
+							<tr>
+								<th class="parameter group-end">Parameter</th>
+								
+									
+										<th class="fig">CC</th>
+									
+
+									<th class="range group-end">Range</th>
+								
+
+								
+								<th class="usage">Usage</th>
+								
+								<th class="orientation"><span>Orientation</span></th>
+							</tr>
+						</thead>
+						<tbody>
+							
+								<tr>
+									<td class="parameter human group-end">LFO 2 wave</td>
+									
+										
+											<td class="fig">88</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage">
+											<div>0-31: Saw; 32-63: Square(+); 64-95: Tri; 96-127: S/H</div>
+										</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+								<tr>
+									<td class="parameter human group-end">LFO 2 frequency</td>
+									
+										
+											<td class="fig">76</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	
+		<div class="row pt-3">
+			<div class="col-lg-12">
+				<h2 class="definition-section" id="patches">
+					<a href="#patches">
+						Patches
+					</a>
+				</h2>
+				<div class="table-responsive">
+					<table class="table table-striped table-hover">
+						<thead class="thead-dark">
+							<tr>
+								<th class="parameter group-end">Parameter</th>
+								
+									
+										<th class="fig">CC</th>
+									
+
+									<th class="range group-end">Range</th>
+								
+
+								
+								<th class="usage">Usage</th>
+								
+								<th class="orientation"><span>Orientation</span></th>
+							</tr>
+						</thead>
+						<tbody>
+							
+								<tr>
+									<td class="parameter human group-end">Patch 1 intensity</td>
+									
+										
+											<td class="fig">28</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>Centered</span></td>
+								</tr>
+							
+								<tr>
+									<td class="parameter human group-end">Patch 2 intensity</td>
+									
+										
+											<td class="fig">29</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>Centered</span></td>
+								</tr>
+							
+								<tr>
+									<td class="parameter human group-end">Patch 3 intensity</td>
+									
+										
+											<td class="fig">30</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>Centered</span></td>
+								</tr>
+							
+								<tr>
+									<td class="parameter human group-end">Patch 4 intensity</td>
+									
+										
+											<td class="fig">31</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>Centered</span></td>
+								</tr>
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	
+		<div class="row pt-3">
+			<div class="col-lg-12">
+				<h2 class="definition-section" id="sequencer">
+					<a href="#sequencer">
+						Sequencer
+					</a>
+				</h2>
+				<div class="table-responsive">
+					<table class="table table-striped table-hover">
+						<thead class="thead-dark">
+							<tr>
+								<th class="parameter group-end">Parameter</th>
+								
+									
+										<th class="fig">CC</th>
+									
+
+									<th class="range group-end">Range</th>
+								
+
+								
+								<th class="usage">Usage</th>
+								
+								<th class="orientation"><span>Orientation</span></th>
+							</tr>
+						</thead>
+						<tbody>
+							
+								<tr>
+									<td class="parameter human group-end">Sequencer on/off</td>
+									
+										
+											<td class="fig">89</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage">
+											<div>0-63: Off; 64-127: On</div>
+										</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	
+		<div class="row pt-3">
+			<div class="col-lg-12">
+				<h2 class="definition-section" id="mod-fx">
+					<a href="#mod-fx">
+						Mod FX
+					</a>
+				</h2>
+				<div class="table-responsive">
+					<table class="table table-striped table-hover">
+						<thead class="thead-dark">
+							<tr>
+								<th class="parameter group-end">Parameter</th>
+								
+									
+										<th class="fig">CC</th>
+									
+
+									<th class="range group-end">Range</th>
+								
+
+								
+								<th class="usage">Usage</th>
+								
+								<th class="orientation"><span>Orientation</span></th>
+							</tr>
+						</thead>
+						<tbody>
+							
+								<tr>
+									<td class="parameter human group-end">Mod FX LFO speed</td>
+									
+										
+											<td class="fig">12</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+								<tr>
+									<td class="parameter human group-end">Mod FX depth</td>
+									
+										
+											<td class="fig">93</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	
+		<div class="row pt-3">
+			<div class="col-lg-12">
+				<h2 class="definition-section" id="delay-fx">
+					<a href="#delay-fx">
+						Delay FX
+					</a>
+				</h2>
+				<div class="table-responsive">
+					<table class="table table-striped table-hover">
+						<thead class="thead-dark">
+							<tr>
+								<th class="parameter group-end">Parameter</th>
+								
+									
+										<th class="fig">CC</th>
+									
+
+									<th class="range group-end">Range</th>
+								
+
+								
+								<th class="usage">Usage</th>
+								
+								<th class="orientation"><span>Orientation</span></th>
+							</tr>
+						</thead>
+						<tbody>
+							
+								<tr>
+									<td class="parameter human group-end">Delay time</td>
+									
+										
+											<td class="fig">13</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+								<tr>
+									<td class="parameter human group-end">Delay depth</td>
+									
+										
+											<td class="fig">94</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	
+		<div class="row pt-3">
+			<div class="col-lg-12">
+				<h2 class="definition-section" id="vocoder-specific">
+					<a href="#vocoder-specific">
+						Vocoder-specific
+					</a>
+				</h2>
+				<div class="table-responsive">
+					<table class="table table-striped table-hover">
+						<thead class="thead-dark">
+							<tr>
+								<th class="parameter group-end">Parameter</th>
+								
+									
+										<th class="fig">CC</th>
+									
+
+									<th class="range group-end">Range</th>
+								
+
+								
+								<th class="usage">Usage</th>
+								
+								<th class="orientation"><span>Orientation</span></th>
+							</tr>
+						</thead>
+						<tbody>
+							
+								<tr>
+									<td class="parameter human group-end">Audio in 2 HPF level</td>
+									
+										
+											<td class="fig">18</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+								<tr>
+									<td class="parameter human group-end">Audio in 2 threshold</td>
+									
+										
+											<td class="fig">19</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+								<tr>
+									<td class="parameter human group-end">Formant shift</td>
+									
+										
+											<td class="fig">83</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage">
+											<div>0-25: 0; 26-51: +1; 52-76: +2; 77-102: -1; 103-127: -2</div>
+										</td>
+									
+
+									
+									<td class="human orientation"><span>0-based</span></td>
+								</tr>
+							
+								<tr>
+									<td class="parameter human group-end">Filter modulation intensity</td>
+									
+										
+											<td class="fig">79</td>
+										
+
+										
+
+										
+											<td class="range group-end">[0–127]</td>
+										
+									
+
+									
+
+									
+										<td class="usage empty">—</td>
+									
+
+									
+									<td class="human orientation"><span>Centered</span></td>
+								</tr>
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	
+</div>
+
+
+
+			</div><!--.container-fluid-->
+			
+				<div class="container">
+					<div class="row mb-3">
+						<div class="col-xl" id="appendix">
+							
+							
+							<hr />
+							<p class="pt-3 license">
+								This dataset is provided under the <a href="https://github.com/pencilresearch/midi/blob/main/LICENSE">Creative Commons Attribution Share Alike 4.0 International</a> license.
+							</p>
+						</div>
+					</div>
+				</div><!--.container-->
+			
+
+		
+	</body>
+</html>
