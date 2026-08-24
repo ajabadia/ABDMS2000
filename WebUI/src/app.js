@@ -173,11 +173,15 @@ function setupAboutModal() {
   }
 
   closeBtn?.addEventListener('click', () => {
-    modal?.classList.add('hidden');
+    if (modal) {
+      modal.style.setProperty('display', 'none', 'important');
+      modal.classList.add('hidden');
+    }
   });
 
   modal?.addEventListener('click', (e) => {
     if (e.target === modal) {
+      modal.style.setProperty('display', 'none', 'important');
       modal.classList.add('hidden');
     }
   });
@@ -185,7 +189,10 @@ function setupAboutModal() {
 
 function openAboutModal() {
   const modal = document.getElementById('about-modal');
-  modal?.classList.remove('hidden');
+  if (modal) {
+    modal.classList.remove('hidden');
+    modal.style.setProperty('display', 'flex', 'important');
+  }
 }
 
 function setupKeyboard() {

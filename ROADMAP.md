@@ -10,14 +10,13 @@
 |:---:|---|:---:|
 | **Fase 0** | Infraestructura, Pipeline de Build y Ventana Base | ✅ COMPLETADA |
 | **Fase 1** | Motor DSP Base (Osciladores VA + Filtro + Envolventes + 4 Voces) | ✅ COMPLETADA |
-| **Fase 2** | Telemetría MIDI Bidireccional (CCs en Tiempo Real con Hardware) | ⏳ PENDIENTE |
-| **Fase 3** | Codec SysEx (7→8 bit) y Gestor Universal de Bancos | ⏳ PENDIENTE |
-| **Fase 4** | WebUI Completa, Pantalla LCD, Skins y Teclado LED | ⏳ PENDIENTE |
-| **Fase 5** | DSP Avanzado (DWGS 64 ondas, Virtual Patch, Mod Seq, Efectos) | ⏳ PENDIENTE |
-| **Fase 6** | Vocoder de 16 Bandas (Audio In, Formant Shift, HPF Gate) | ⏳ PENDIENTE |
-| **Fase 7** | Compilación WebAssembly (WASM) y AudioWorklet | ⏳ PENDIENTE |
-| **Fase 8** | Multitimbricidad (Layer/Split) y Modo Avanzado (ABD Ultra) | ⏳ PENDIENTE |
-| **Fase 9** | Control de Calidad, Polish y Release (pluginval Level 10) | ⏳ PENDIENTE |
+| **Fase 2** | Arquitectura Completa DSP (DWGS 64 ondas, Mod Seq 3x16, Arp, Virtual Patch, FX, EQ, Vocoder) | ⏳ PENDIENTE |
+| **Fase 3** | Telemetría MIDI Bidireccional (CCs y NRPNs en Tiempo Real con Hardware) | ⏳ PENDIENTE |
+| **Fase 4** | Codec SysEx (7→8 bit) y Gestor Universal de Bancos | ⏳ PENDIENTE |
+| **Fase 5** | WebUI Completa (Paneles de Control, LCD, Mod Seq UI, Skins y Teclado LED) | ⏳ PENDIENTE |
+| **Fase 6** | Compilación WebAssembly (WASM) y AudioWorklet | ⏳ PENDIENTE |
+| **Fase 7** | Multitimbricidad (Layer/Split) y Modo Avanzado (ABD Ultra 32 Voces) | ⏳ PENDIENTE |
+| **Fase 8** | Control de Calidad, Polish y Release (pluginval Level 10) | ⏳ PENDIENTE |
 
 ---
 

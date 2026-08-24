@@ -13,11 +13,11 @@
 .menu-btn {
   background: transparent;
   border: 1px solid transparent;
-  color: var(--color-text-dim);
+  color: var(--color-text-muted);
   font-family: inherit;
-  font-size: 0.82rem;
+  font-size: 12px;
   font-weight: 600;
-  padding: 5px 12px;
+  padding: 4px 10px;
   border-radius: var(--border-radius-sm);
   cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
@@ -31,7 +31,7 @@
 }
 
 .dropdown-menu {
-  display: none;
+  display: none !important;
   position: absolute;
   top: calc(100% + 4px);
   left: 0;
@@ -46,7 +46,7 @@
 }
 
 .dropdown-menu.show {
-  display: block;
+  display: block !important;
   animation: menuFadeIn 0.15s cubic-bezier(0, 0, 0.2, 1);
 }
 
@@ -68,7 +68,7 @@
   padding: 7px 10px;
   cursor: pointer;
   font-family: inherit;
-  font-size: 0.8rem;
+  font-size: 12px;
   transition: background 0.12s ease, color 0.12s ease;
 }
 
@@ -85,12 +85,12 @@
 
 .dropdown-kbd {
   font-family: var(--font-lcd);
-  font-size: 0.7rem;
-  color: var(--color-text-dim);
+  font-size: 10px;
+  color: var(--color-text-muted);
   border: 1px solid var(--color-panel-border);
   border-radius: 3px;
   padding: 1px 5px;
-  background: var(--color-bg);
+  background: var(--color-bg-base);
 }
 
 /* Modal Dialog (About / Settings) */
@@ -105,8 +105,9 @@
   backdrop-filter: blur(6px);
 }
 
-.modal-overlay.hidden {
-  display: none;
+.modal-overlay.hidden,
+.modal-overlay[hidden] {
+  display: none !important;
 }
 
 .modal-box {
@@ -134,7 +135,7 @@
 }
 
 .modal-sub {
-  color: var(--color-text-dim);
+  color: var(--color-text-muted);
   font-size: 0.82rem;
   margin-bottom: 14px;
 }
@@ -145,7 +146,7 @@
   line-height: 1.5;
   margin-bottom: 20px;
   text-align: left;
-  background: var(--color-bg);
+  background: var(--color-bg-base);
   padding: 12px;
   border-radius: var(--border-radius-sm);
   border: 1px solid var(--color-panel-border);
