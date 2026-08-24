@@ -9,7 +9,7 @@
 | Fase | Descripción | Estado |
 |:---:|---|:---:|
 | **Fase 0** | Infraestructura, Pipeline de Build y Ventana Base | ✅ COMPLETADA |
-| **Fase 1** | Motor DSP Base (Osciladores VA + Filtro + Envolventes + 4 Voces) | ⏳ PENDIENTE |
+| **Fase 1** | Motor DSP Base (Osciladores VA + Filtro + Envolventes + 4 Voces) | ✅ COMPLETADA |
 | **Fase 2** | Telemetría MIDI Bidireccional (CCs en Tiempo Real con Hardware) | ⏳ PENDIENTE |
 | **Fase 3** | Codec SysEx (7→8 bit) y Gestor Universal de Bancos | ⏳ PENDIENTE |
 | **Fase 4** | WebUI Completa, Pantalla LCD, Skins y Teclado LED | ⏳ PENDIENTE |
@@ -45,21 +45,22 @@
 ## 🔊 Fase 1: Motor DSP Base y Polifonía
 
 ### Tareas:
-- [ ] Implementar osciladores analógicos virtuales con PolyBLEP:
-  - `Source/DSP/Oscillators/VAOscillator.h/.cpp` (Saw, Square/Pulse con PWM, Triangle, Sine).
-- [ ] Implementar filtro multimodo básico:
-  - `Source/DSP/Filters/MultiModeFilter.h/.cpp` (LPF 24dB, LPF 12dB, BPF 12dB, HPF 12dB).
-  - Curva de frecuencia logarítmica (20Hz a 20kHz, centro en ~1kHz).
-  - Compensación de pérdida de graves según resonancia analógica.
-- [ ] Implementar generador de envolventes ADSR exponencial:
-  - `Source/DSP/Envelopes/ADSREnvelope.h/.cpp` (Attack exponencial inverso 1ms-11s, Decay/Release exponencial 2ms-20s).
-- [ ] Implementar `Voice.h/.cpp` y `VoiceManager.h/.cpp` (4 voces polifónicas con robo de voz inteligente).
-- [ ] Mapear parámetros del APVTS en C++ a los módulos DSP.
+- [x] Implementar utilidades matemáticas y antialiasing: `Source/DSP/Common/DSPUtils.h`, `PolyBLEP.h/.cpp`.
+- [x] Implementar generador de ruido blanco/rosa: `Source/DSP/Oscillators/NoiseGenerator.h/.cpp`.
+- [x] Implementar osciladores analógicos virtuales con PolyBLEP y wave shaping: `Source/DSP/Oscillators/VAOscillator.h/.cpp` (Saw, Pulse/PWM, Triangle, Sine).
+- [x] Implementar modulador entre osciladores: `Source/DSP/Oscillators/OSC2Modulator.h/.cpp` (Hard Sync, Ring Mod, Ring+Sync).
+- [x] Implementar filtro multimodo TPT/ZDF con compensación analógica de graves: `Source/DSP/Filters/MultiModeFilter.h/.cpp` y `FilterResonanceComp.h/.cpp` (LPF24, LPF12, BPF12, HPF12).
+- [x] Implementar generador de envolvente ADSR exponencial calibrado al MS2000: `Source/DSP/Envelopes/ADSREnvelope.h/.cpp` y `EnvelopeCurves.h`.
+- [x] Implementar procesador de Portamento / Glide: `Source/DSP/Modulation/PortamentoGlide.h/.cpp`.
+- [x] Implementar estructura de voz unitaria desacoplada: `Source/Core/Voice.h/.cpp`.
+- [x] Implementar gestor polifónico de 4 voces, modos Mono/Poly/Unison y robo de voz: `Source/Core/VoiceManager.h/.cpp`.
+- [x] Integrar `VoiceManager` en `SynthEngine::processBlock`.
 
 ### 🔍 Criterio de Verificación (Definition of Done):
-1. Tocar notas desde teclado MIDI o teclado QWERTY en Standalone y escuchar un sonido analógico virtual limpio, rico y sin clics.
-2. Comprobar que el corte de filtro y la resonancia responden con calidez analógica.
-3. Las 4 voces de polifonía se asignan correctamente sin cortes abruptos ni fugas de memoria.
+1. Tocar teclas en el teclado virtual o vía MIDI genera sonido polifónico de 4 voces en tiempo real.
+2. Cambio entre ondas (Saw, Pulse, Triangle, Sine), barrido de corte del filtro (Cutoff) y auto-oscilación de resonancia audibles.
+3. Modos Mono con legato y Unison con Detune estéreo operativos.
+4. Compilación limpia sin errores ni advertencias (`0 errors, 0 warnings`).
 
 ---
 

@@ -62,15 +62,48 @@ target_link_libraries(ABDMS2000 PRIVATE WebUIAssets)
 
 # Source Files
 target_sources(ABDMS2000 PRIVATE
+    # Core Engine & Architecture
     Source/Core/SynthEngine.h
     Source/Core/SynthEngine.cpp
+    Source/Core/Voice.h
+    Source/Core/Voice.cpp
+    Source/Core/VoiceManager.h
+    Source/Core/VoiceManager.cpp
     Source/Core/AudioThreadSnapshot.h
     Source/Core/HardwareConstants.h
     Source/Core/BuildVersion.h
 
+    # DSP Common & Math
+    Source/DSP/Common/DSPUtils.h
+    Source/DSP/Common/PolyBLEP.h
+    Source/DSP/Common/PolyBLEP.cpp
+
+    # DSP Oscillators
+    Source/DSP/Oscillators/VAOscillator.h
+    Source/DSP/Oscillators/VAOscillator.cpp
+    Source/DSP/Oscillators/NoiseGenerator.h
+    Source/DSP/Oscillators/NoiseGenerator.cpp
+    Source/DSP/Oscillators/OSC2Modulator.h
+    Source/DSP/Oscillators/OSC2Modulator.cpp
+
+    # DSP Filters
+    Source/DSP/Filters/MultiModeFilter.h
+    Source/DSP/Filters/MultiModeFilter.cpp
+    Source/DSP/Filters/FilterResonanceComp.h
+    Source/DSP/Filters/FilterResonanceComp.cpp
+
+    # DSP Envelopes & Modulation
+    Source/DSP/Envelopes/EnvelopeCurves.h
+    Source/DSP/Envelopes/ADSREnvelope.h
+    Source/DSP/Envelopes/ADSREnvelope.cpp
+    Source/DSP/Modulation/PortamentoGlide.h
+    Source/DSP/Modulation/PortamentoGlide.cpp
+
+    # State & Parameters
     Source/State/ParameterRegistry.gen.h
     Source/State/ParameterRegistry.gen.cpp
 
+    # Plugin Wrappers & WebUI Bridge
     Source/Plugin/PluginProcessor.h
     Source/Plugin/PluginProcessor.cpp
     Source/Plugin/PluginEditor.h
@@ -86,6 +119,11 @@ target_include_directories(ABDMS2000 PRIVATE
     Source
     Source/Core
     Source/DSP
+    Source/DSP/Common
+    Source/DSP/Oscillators
+    Source/DSP/Filters
+    Source/DSP/Envelopes
+    Source/DSP/Modulation
     Source/Plugin
     Source/State
     Source/MIDI

@@ -2,6 +2,7 @@
 #include <juce_audio_processors/juce_audio_processors.h>
 #include "AudioThreadSnapshot.h"
 #include "HardwareConstants.h"
+#include "VoiceManager.h"
 #include "../State/ParameterRegistry.gen.h"
 #include <memory>
 #include <atomic>
@@ -10,7 +11,7 @@ namespace ABDMS2000 {
 
 class SynthEngine {
 public:
-    SynthEngine(juce::AudioProcessorValueTreeState& apvts);
+    explicit SynthEngine(juce::AudioProcessorValueTreeState& apvts);
     ~SynthEngine() = default;
 
     void prepare(double sampleRate, int samplesPerBlock);
@@ -24,15 +25,18 @@ public:
     void allNotesOff();
 
 private:
+    void updateParametersFromAPVTS() noexcept;
+
     juce::AudioProcessorValueTreeState& apvts_;
-    double sampleRate_{44100.0};
-    int samplesPerBlock_{512};
+    double sampleRate_{ 44100.0 };
+    int samplesPerBlock_{ 512 };
+
+    VoiceManager voiceManager_;
+    VoiceParameters voiceParams_;
 
     AudioThreadSnapshot currentSnapshot_{};
-    std::atomic<float> masterVolume_{0.8f};
-
-    // Smooth gain
-    juce::LinearSmoothedValue<float> smoothedMasterGain_{0.8f};
+    std::atomic<float> masterVolume_{ 0.8f };
+    juce::LinearSmoothedValue<float> smoothedMasterGain_{ 0.8f };
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SynthEngine)
 };
