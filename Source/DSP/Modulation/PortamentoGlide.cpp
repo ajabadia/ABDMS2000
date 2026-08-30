@@ -39,10 +39,11 @@ void PortamentoGlide::updateMultiplier() noexcept
         return;
     }
 
-    // Map 0..1 to 5ms..3.5 seconds
-    float glideSec = 0.005f + (3.5f * std::pow(timeParam_, 2.0f));
-    slewMultiplier_ = std::exp(-5.0 / (glideSec * sampleRate_));
+    // Korg MS2000 calibrated curve: 0 to 4.5 seconds with 2.5 power exponent
+    float glideSec = std::pow(timeParam_, 2.5f) * 4.5f;
+    slewMultiplier_ = std::exp(-1.0 / (glideSec * sampleRate_));
 }
+
 
 float PortamentoGlide::getNextPitchSemitones() noexcept
 {

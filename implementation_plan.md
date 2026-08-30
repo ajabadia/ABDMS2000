@@ -732,6 +732,8 @@ El componente visual del Gestor de Bancos no tiene colores fijos; consume variab
 
 ### 8.1 Fuente Canónica: `schemas/parameters-spec.schema.v1.json`
 
+El JSON es la **única fuente de verdad**. El script `Scripts/registry_generator.js` regenera todos los artefactos (`npm run generate` o `build.bat`) y **calcula automáticamente los `sysexOffset`** según el orden de los parámetros en el array (0, 1, 2...). No se escriben offsets a mano en el JSON — eso eliminó los offsets duplicados que se colaban al insertar parámetros nuevos.
+
 ```json
 {
   "schemaVersion": "1.0.0",
@@ -742,15 +744,32 @@ El componente visual del Gestor de Bancos no tiene colores fijos; consume variab
       "group": "OSC1",
       "cc": 77,
       "min": 0,
-      "max": 127,
+      "max": 7,
       "default": 0,
       "type": "choice",
-      "choices": ["Saw", "Square", "Triangle", "Sine", "Vox Wave", "DWGS", "Noise", "Audio In"],
-      "sysexOffset": null
+      "choices": ["Saw", "Square", "Triangle", "Sine", "VoxWave", "DWGS", "Noise", "AudioIn"]
+    },
+    {
+      "id": "masterVolume",
+      "name": "Master Volume",
+      "group": "Master",
+      "cc": 7,
+      "min": 0.0,
+      "max": 1.0,
+      "default": 0.8,
+      "type": "continuous",
+      "sysex": false
     }
   ]
 }
 ```
+
+Convenciones:
+
+- **`sysex: false`** (opcional): excluye el parámetro del mapa de offsets SysEx (p. ej. master/global que no van en el volcado de timbre). Sin la flag, el parámetro recibe el siguiente offset secuencial automáticamente.
+- **Tipos válidos**: `continuous`, `integer`, `choice`, `boolean` (el alias `bool` se normaliza a `boolean`).
+- **Validación en tiempo de generación**: el script aborta con error si hay IDs, CCs u offsets SysEx duplicados, tipos desconocidos o `choice` sin opciones.
+- El offset calculado se inyecta en los artefactos generados (`.gen.cpp` y `registry.gen.js`) para que los consumidores sigan teniendo el dato sin mantenerlo a mano.
 
 ### 8.2 Artefactos Generados
 
@@ -890,9 +909,44 @@ Para asegurar paridad matemática 1:1 entre el movimiento de los potenciómetros
 - **Cero Bloqueos RT:** La transferencia se realiza mediante doble buffer con intercambio de punteros atómicos (`std::atomic<Snapshot*>`), garantizando que la UI jamás interrumpa el procesamiento de audio.
 - **Función Freeze en Osciloscopio:** El osciloscopio en WebUI incluye un botón `[ Freeze / Pausa ]` para detener el renderizado y permitir inspeccionar con calma la forma de onda generada.
 
+### 8.17 Serialización y Persistencia de Estado en el DAW (`getStateInformation` / `setStateInformation`)
+
+- **Persistencia Atómica del APVTS:** `getStateInformation` serializa el estado completo del árbol `juce::AudioProcessorValueTreeState` en formato binario comprimido XML mediante `copyXmlToBinary`.
+- **Inyección de Metadatos:** Se adjuntan propiedades de persistencia que no forman parte de los parámetros de automatización continua (como `currentProgramIndex`, `currentProgramName` de 12 caracteres ASCII y configuración de pantalla LCD).
+- **Restauración Segura en `setStateInformation`:** Al abrir un proyecto musical guardado o duplicar pistas, se desempaqueta el XML con `getXmlFromBinary`, se valida el tag de tipo y se ejecuta `replaceState`, restaurando instantáneamente todos los controles y la pantalla LCD.
+- **Mitigación de Clics Digitales:** Los filtros y ganancias emplean `juce::LinearSmoothedValue` para realizar rampas suaves de microsegundos al cambiar bruscamente los valores del preset al cargar el proyecto, eliminando cualquier transitorio dañino en los monitores.
+
+### 8.18 Constructor de Parches Inteligente y Aleatorizador Musical (`MS2000PatchBuilder`)
+
+- **Init Patch Builder:** Resetea el árbol de parámetros al preset canónico `"Init Synth"` del hardware original (OSC1 Saw 100%, OSC2/Noise off, VCF 24dB LPF abierto a 127 con resonancia 0, EG2 con Sustain 100% y ataque rápido, Virtual Patch neutral y FX suaves).
+- **Musical Bounded Randomizer:** Generador aleatorio con acotación estocástica por zonas acústicas:
+  - Presencia tonal garantizada (OSC1 en rango caliente 80..127 evitando entradas mudas).
+  - Filtro en zona dulce (Cutoff 40..127, Resonancia $\le 85$).
+  - Envolventes acopladas (si Sustain $< 30$, se incrementa Decay para evitar silencios).
+  - Virtual Patch acotado a intensidades moderadas ($\pm 40$) con 50% de probabilidad por slot.
+
+### 8.19 Exportador SysEx de 8 a 7 Bits (`MS2000SysExExporter`)
+
+- **Empaquetado de 8 bits a 7 bits:** Agrupa bloques de 7 bytes de 8 bits y los transforma en 8 bytes de 7 bits compatibles con el protocolo MIDI ($< 128$) utilizando un byte inicial recolector de MSBs.
+- **Formato Oficial Korg:** Genera la cabecera `0xF0 0x42 0x3n 0x58 0x40 ... 0xF7` (1-Program Dump) y `0x4C` (All-Data Dump de 128 programas) para volcado directo a hardware real vía MIDI-OX o SysEx Librarian.
+- **Validación de Bucle Cerrado:** Garantiza paridad matemática 1:1 en el ciclo de ida y vuelta (`Plugin -> .syx -> Plugin`).
+
+### 8.20 Estética Vectorial y LookAndFeel Korg (`KorgLookAndFeel` / `KorgButtonLookAndFeel`)
+
+- **Potenciómetros Rotatorios:** Sombras proyectadas 3D, faldas estriadas, tapas superiores con gradiente cóncavo, borde metálico y puntero trigonométrico off-white con punto central.
+- **Botones Pulsadores y LED Glow:** Cuerpo rectangular de plástico translúcido, bisel interior, diodo LED superior con doble corona de dispersión luminosa alfa (`Colour(255, 40, 20)`) y desplazamiento físico de texto al pulsar.
+- **Botonera de 16 Pasos (`MS2000StepArray`):** Visualizador dinámico de Playhead del DAW a 30 FPS con repintado condicional para evitar sobrecarga de GPU.
+
+### 8.21 Enrutamiento Multimodo Carrier/Modulator del Vocoder de 16 Bandas
+
+- **Modo Synth (Interno):** Los acordes polifónicos de hasta 4 voces generados por el motor analógico-virtual (OSC1 + OSC2) alimentan en tiempo real los 16 filtros de síntesis.
+- **Modo Input (Audio In 1 Externo):** Permite utilizar señales externas (baterías, guitarras) como portadora ignorando el teclado MIDI.
+- **Modulador (Micrófono Audio In 2):** Entrada auxiliar de micrófono analizada por los 16 filtros paso banda ($125\text{ Hz} - 5.7\text{ kHz}$) y el bus de sibilancia HPF a 8 kHz.
+
 ---
 
 ## 9. Pipeline de Compilación, Guía Maestra WASM y Empaquetado de Assets
+
 
 ### 9.1 Guía Maestra de Compilación WASM (Estándar ABDEep)
 
@@ -1060,73 +1114,73 @@ Siguiendo las reglas de oro de `guia_maestra_wasm_juce.md` y `README_WASM_COMPIL
 ## 11. Fases de Desarrollo Propuestas
 
 ### Fase 0 — Infraestructura (Base)
-- [ ] Crear repositorio y estructura de directorios
-- [ ] Configurar CMakeLists.txt (JUCE 8 submodule, targets Standalone + VST3)
-- [ ] Configurar WebView2 básico (index.html con selector Tri-Modo)
-- [ ] Script `registry_generator.js` y `build_webui.js` funcionales
-- [ ] CI básico (build Windows + tests)
-- [ ] `parameters-spec.schema.v1.json` con los primeros parámetros
+- [x] Crear repositorio y estructura de directorios
+- [x] Configurar CMakeLists.txt (JUCE 8 submodule, targets Standalone + VST3)
+- [x] Configurar WebView2 básico (index.html con selector Tri-Modo)
+- [x] Script `registry_generator.js` y `build_webui.js` funcionales
+- [x] CI básico (build Windows + tests)
+- [x] `parameters-spec.schema.v1.json` con los primeros parámetros
 
 ### Fase 1 — Motor DSP Básico
-- [ ] Osciladores VA con PolyBLEP (Saw, Square, Triangle, Sine)
-- [ ] Filtro multimode (LP24 + HP12 mínimo) con comportamiento analógico
-- [ ] ADSR Envelopes (EG1 + EG2) exponenciales
-- [ ] VoiceManager (4 voces polyphonic)
-- [ ] Audio output funcional en standalone
+- [x] Osciladores VA con PolyBLEP (Saw, Square, Triangle, Sine)
+- [x] Filtro multimode (LP24, LP12, BP12, HP12) con comportamiento analógico
+- [x] ADSR Envelopes (EG1 + EG2) exponenciales
+- [x] VoiceManager (4 voces polyphonic)
+- [x] Audio output funcional en standalone
 
 ### Fase 2 — MIDI Bidireccional
-- [ ] MIDIProcessor: recibir notas + CCs del MS2000
-- [ ] MIDIMap completo (todos los CCs del spec)
-- [ ] Envío de CCs al hardware
-- [ ] HardwareLink: detección y selección de puerto MIDI
+- [x] MIDIProcessor: recibir notas + CCs del MS2000
+- [x] MIDIMap completo (todos los CCs del spec)
+- [x] Envío de CCs al hardware
+- [x] HardwareLink: detección y selección de puerto MIDI
 
 ### Fase 3 — SysEx y Gestión Universal de Bancos
-- [ ] SysExCodec: encode/decode Korg 7-bit a 8-bit (validado con ReMS2000)
-- [ ] Model Adapters (MS2000 `0x58` y microKORG `0x5E`)
-- [ ] Program Dump Request/Receive
-- [ ] All Data Dump Request/Receive
-- [ ] BankManager Universal (búsqueda, filtros, drag & drop, diff viewer)
-- [ ] Pantalla SysEx Inspector con copiado/pegado de Hex
+- [x] SysExCodec: encode/decode Korg 7-bit a 8-bit (validado con ReMS2000)
+- [x] Model Adapters (MS2000 `0x58` y microKORG `0x5E`)
+- [x] Program Dump Request/Receive
+- [x] All Data Dump Request/Receive
+- [x] BankManager Universal (búsqueda, filtros, drag & drop, diff viewer)
+- [x] Pantalla SysEx Inspector con copiado/pegado de Hex
 
 ### Fase 4 — WebUI Completa y Tematización
-- [ ] Panel de osciladores con knobs funcionales
-- [ ] Panel de filtro con compensación visual
-- [ ] Panel de envelopes (visualización gráfica)
-- [ ] LCD Hardware Emulado (Menús oficiales 1A-4D)
-- [ ] Skin MS2000 (Azul) + Skin microKORG (Madera/Beige) vía Tokens CSS
-- [ ] Teclado virtual y controles de expresión
+- [x] Panel de osciladores con knobs funcionales
+- [x] Panel de filtro con compensación visual
+- [x] Panel de envelopes (visualización gráfica)
+- [x] LCD Hardware Emulado (Menús oficiales 1A-4D)
+- [x] Skin MS2000 (Azul) + Skin microKORG (Madera/Beige) vía Tokens CSS
+- [x] Teclado virtual y controles de expresión (ABDMIDIKeyb integrado)
 
 ### Fase 5 — DSP Avanzado
-- [ ] DWGS wavetables (64 formas de onda cargadas en memoria)
-- [ ] Ring Mod + Sync + Cross Mod
-- [ ] Virtual Patch (Mod Matrix) con escalas verificadas (±2 oct pitch, ±5 oct cutoff)
-- [ ] LFO logarítmico con tempo sync
-- [ ] Arpeggiador (MidiBuffer inject)
-- [ ] Efectos (EQ, Mod FX, Delay)
-- [ ] Mod Sequence (Step + Smooth con Slew Limiter de 10ms)
+- [x] DWGS wavetables (64 formas de onda cargadas en memoria + Prophet VS + AKWF)
+- [x] Ring Mod + Sync + Cross Mod
+- [x] Virtual Patch (Mod Matrix) con escalas verificadas (±2 oct pitch, ±5 oct cutoff)
+- [x] LFO logarítmico con tempo sync
+- [x] Arpeggiador (MidiBuffer inject)
+- [x] Efectos (EQ, Mod FX, Delay)
+- [x] Mod Sequence (Step + Smooth con Slew Limiter de 10ms)
 
 ### Fase 6 — Vocoder
-- [ ] 16-band analysis filters
-- [ ] 16-band synthesis filters
-- [ ] Envelope followers
-- [ ] Formant shift y HPF Gate (transient detector con ruido blanco)
-- [ ] Audio input routing
+- [x] 16-band analysis filters
+- [x] 16-band synthesis filters
+- [x] Envelope followers
+- [x] Formant shift y HPF Gate (transient detector con ruido blanco)
+- [x] Audio input routing
 
 ### Fase 7 — WASM / Web
-- [ ] Compilación WASM del motor (`build_wasm.bat`)
-- [ ] AudioWorklet integration
-- [ ] Bridge WASM ↔ WebUI
-- [ ] PWA funcional con IndexedDB para bancos
+- [x] Compilación WASM del motor (`build_wasm.bat`)
+- [x] AudioWorklet integration
+- [x] Bridge WASM ↔ WebUI
+- [x] PWA funcional con IndexedDB para bancos
 
 ### Fase 8 — Timbres Multi y Modo Avanzado
-- [ ] Soporte Layer (2 timbres) y Split
-- [ ] Voice Assign: Unison mode con Detune y Spread
-- [ ] Modo Avanzado (Polifonía 32 voces, Reverb Shimmer, Tape Delay, 4 LFOs, Mod Seq 64 pasos)
+- [x] Soporte Layer (2 timbres) y Split
+- [x] Voice Assign: Unison mode con Detune y Spread
+- [x] Modo Avanzado (Polifonía 32 voces, Reverb Shimmer, Tape Delay, 4 LFOs, Mod Seq 64 pasos)
 
 ### Fase 9 — Polish y Release
-- [ ] MIDI Learn
-- [ ] Presets de fábrica completos (MS2000 + microKORG)
-- [ ] Manual de usuario integrado
+- [x] MIDI Learn
+- [x] Presets de fábrica completos (MS2000 + microKORG)
+- [x] Manual de usuario integrado
 - [ ] Build macOS
 - [ ] pluginval validation
 

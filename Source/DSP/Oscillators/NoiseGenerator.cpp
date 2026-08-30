@@ -1,4 +1,5 @@
 #include "NoiseGenerator.h"
+#include "../Common/DSPUtils.h"
 
 namespace ABDMS2000 {
 
@@ -10,10 +11,7 @@ void NoiseGenerator::reset(uint32_t seed) noexcept
 
 float NoiseGenerator::getWhiteNoise() noexcept
 {
-    // 32-bit Linear Congruential Generator (Numerical Recipes)
-    state_ = state_ * 1664525u + 1013904223u;
-    // Map to [-1.0, 1.0]
-    return (static_cast<float>(state_) * (2.0f / 4294967295.0f)) - 1.0f;
+    return DSPUtils::randomBipolar(state_);
 }
 
 float NoiseGenerator::getPinkNoise() noexcept

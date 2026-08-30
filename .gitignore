@@ -1,11 +1,40 @@
-# Build directories
+# Build & Output Directories
 build/
 build_*/
+buildwasm/
+build_wasm/
+wasm/build*/
 bin/
 lib/
 CMakeUserPresets.json
+CMakeCache.txt
+CMakeFiles/
 
-# IDEs & System
+# Heavy Documentation, Samples & Cycles
+DOCS/
+
+# Binary & Compiled Artifacts
+*.wasm
+*.obj
+*.o
+*.exe
+*.vst3
+*.dylib
+*.so
+*.pdb
+*.ilk
+*.exp
+*.lib
+WebUI/wasm/ms2000_dsp.wasm
+
+# Archives & Large Asset Dumps
+*.zip
+*.7z
+*.rar
+*.tar.gz
+*.tar
+
+# IDEs & System Files
 .vs/
 .vscode/
 .idea/
@@ -23,18 +52,13 @@ yarn-error.log*
 coverage/
 .vitest/
 
-# Compiled Artifacts & WASM outputs
-*.wasm
-*.obj
-*.o
-*.exe
-*.vst3
-*.dylib
-*.so
-wasm/build_wasm/
-WebUI/wasm/ms2000_dsp.wasm
-
-# Logs & temp
+# Logs & Temporary Files
 *.log
+standalone_debug.log
 scratch/
 bundle_code/
+.codebase-memory/
+test_output.txt
+codebase_bundle.md
+implementation_plan*.md
+

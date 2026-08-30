@@ -2,8 +2,10 @@
 #include <juce_audio_processors/juce_audio_processors.h>
 #include "../Core/SynthEngine.h"
 #include "../State/ParameterRegistry.gen.h"
+#include "../MIDI/MIDITelemetryManager.h"
 
 namespace ABDMS2000 {
+
 
 class ABDMS2000AudioProcessor : public juce::AudioProcessor {
 public:
@@ -37,12 +39,18 @@ public:
 
     juce::AudioProcessorValueTreeState& getAPVTS() noexcept { return apvts_; }
     SynthEngine& getEngine() noexcept { return engine_; }
+    class MIDITelemetryManager& getMIDITelemetry() noexcept;
+    class SysExManager& getSysExManager() noexcept { return *sysexManager_; }
 
 private:
     juce::AudioProcessorValueTreeState apvts_;
     SynthEngine engine_;
+    std::unique_ptr<class MIDITelemetryManager> midiTelemetry_;
+    std::unique_ptr<class SysExManager> sysexManager_;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ABDMS2000AudioProcessor)
 };
 
+
 } // namespace ABDMS2000
+

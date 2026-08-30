@@ -86,6 +86,17 @@ export const PARAMETERS_SPEC = {
       "sysexOffset": 2
     },
     {
+      "id": "portamentoOn",
+      "name": "Portamento On/Off",
+      "group": "Pitch",
+      "cc": 65,
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "type": "boolean",
+      "sysexOffset": null
+    },
+    {
       "id": "osc1Wave",
       "name": "OSC1 Waveform",
       "group": "OSC1",
@@ -111,9 +122,9 @@ export const PARAMETERS_SPEC = {
       "name": "OSC1 DWGS Wave",
       "group": "OSC1",
       "cc": null,
-      "min": 1,
-      "max": 64,
-      "default": 1,
+      "min": 0,
+      "max": 511,
+      "default": 0,
       "type": "integer",
       "sysexOffset": 4
     },
@@ -168,7 +179,7 @@ export const PARAMETERS_SPEC = {
         "Off",
         "Ring",
         "Sync",
-        "RingSync"
+        "CrossMod"
       ],
       "sysexOffset": 8
     },
@@ -483,6 +494,45 @@ export const PARAMETERS_SPEC = {
       "sysexOffset": 33
     },
     {
+      "id": "lfo1TempoSync",
+      "name": "LFO1 Tempo Sync",
+      "group": "LFO1",
+      "cc": null,
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "type": "boolean",
+      "sysexOffset": 34
+    },
+    {
+      "id": "lfo1SyncNote",
+      "name": "LFO1 Sync Note",
+      "group": "LFO1",
+      "cc": null,
+      "min": 0,
+      "max": 14,
+      "default": 4,
+      "type": "choice",
+      "choices": [
+        "1/1",
+        "3/4",
+        "1/2",
+        "1/2T",
+        "1/4",
+        "1/4T",
+        "1/8",
+        "1/8T",
+        "1/16",
+        "1/16T",
+        "1/32",
+        "1/32T",
+        "1/64",
+        "1/64T",
+        "1/128"
+      ],
+      "sysexOffset": 35
+    },
+    {
       "id": "lfo2Wave",
       "name": "LFO2 Waveform",
       "group": "LFO2",
@@ -497,7 +547,7 @@ export const PARAMETERS_SPEC = {
         "Sine",
         "SampleHold"
       ],
-      "sysexOffset": 34
+      "sysexOffset": 36
     },
     {
       "id": "lfo2Freq",
@@ -510,7 +560,7 @@ export const PARAMETERS_SPEC = {
       "type": "integer",
       "skew": 0.4,
       "unit": "Hz",
-      "sysexOffset": 35
+      "sysexOffset": 37
     },
     {
       "id": "lfo2KeySync",
@@ -526,7 +576,875 @@ export const PARAMETERS_SPEC = {
         "Timbre",
         "Voice"
       ],
-      "sysexOffset": 36
+      "sysexOffset": 38
+    },
+    {
+      "id": "lfo2TempoSync",
+      "name": "LFO2 Tempo Sync",
+      "group": "LFO2",
+      "cc": null,
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "type": "boolean",
+      "sysexOffset": 39
+    },
+    {
+      "id": "lfo2SyncNote",
+      "name": "LFO2 Sync Note",
+      "group": "LFO2",
+      "cc": null,
+      "min": 0,
+      "max": 14,
+      "default": 4,
+      "type": "choice",
+      "choices": [
+        "1/1",
+        "3/4",
+        "1/2",
+        "1/2T",
+        "1/4",
+        "1/4T",
+        "1/8",
+        "1/8T",
+        "1/16",
+        "1/16T",
+        "1/32",
+        "1/32T",
+        "1/64",
+        "1/64T",
+        "1/128"
+      ],
+      "sysexOffset": 40
+    },
+    {
+      "id": "eqLowFreq",
+      "name": "EQ Low Frequency",
+      "group": "EQ",
+      "cc": null,
+      "min": 0,
+      "max": 3,
+      "default": 1,
+      "type": "choice",
+      "choices": [
+        "160Hz",
+        "250Hz",
+        "400Hz",
+        "600Hz"
+      ],
+      "sysexOffset": 41
+    },
+    {
+      "id": "eqLowGain",
+      "name": "EQ Low Gain",
+      "group": "EQ",
+      "cc": null,
+      "min": 0,
+      "max": 127,
+      "default": 64,
+      "type": "integer",
+      "unit": "dB",
+      "sysexOffset": 42
+    },
+    {
+      "id": "eqHighFreq",
+      "name": "EQ High Frequency",
+      "group": "EQ",
+      "cc": null,
+      "min": 0,
+      "max": 3,
+      "default": 2,
+      "type": "choice",
+      "choices": [
+        "4.0kHz",
+        "6.0kHz",
+        "8.0kHz",
+        "12.0kHz"
+      ],
+      "sysexOffset": 43
+    },
+    {
+      "id": "eqHighGain",
+      "name": "EQ High Gain",
+      "group": "EQ",
+      "cc": null,
+      "min": 0,
+      "max": 127,
+      "default": 64,
+      "type": "integer",
+      "unit": "dB",
+      "sysexOffset": 44
+    },
+    {
+      "id": "modFxOn",
+      "name": "Mod FX On/Off",
+      "group": "ModFX",
+      "cc": null,
+      "min": 0,
+      "max": 1,
+      "default": 1,
+      "type": "boolean",
+      "sysexOffset": 45
+    },
+    {
+      "id": "modFxType",
+      "name": "Mod FX Type",
+      "group": "ModFX",
+      "cc": null,
+      "min": 0,
+      "max": 2,
+      "default": 0,
+      "type": "choice",
+      "choices": [
+        "ChorusFlanger",
+        "Ensemble",
+        "Phaser"
+      ],
+      "sysexOffset": 46
+    },
+    {
+      "id": "modFxSpeed",
+      "name": "Mod FX Speed",
+      "group": "ModFX",
+      "cc": 12,
+      "min": 0,
+      "max": 127,
+      "default": 40,
+      "type": "integer",
+      "sysexOffset": 47
+    },
+    {
+      "id": "modFxDepth",
+      "name": "Mod FX Depth",
+      "group": "ModFX",
+      "cc": 93,
+      "min": 0,
+      "max": 127,
+      "default": 64,
+      "type": "integer",
+      "sysexOffset": 48
+    },
+    {
+      "id": "modFxFeedback",
+      "name": "Mod FX Feedback",
+      "group": "ModFX",
+      "cc": null,
+      "min": 0,
+      "max": 127,
+      "default": 0,
+      "type": "integer",
+      "sysexOffset": 49
+    },
+    {
+      "id": "delayOn",
+      "name": "Delay FX On/Off",
+      "group": "DelayFX",
+      "cc": null,
+      "min": 0,
+      "max": 1,
+      "default": 1,
+      "type": "boolean",
+      "sysexOffset": 50
+    },
+    {
+      "id": "delayType",
+      "name": "Delay FX Type",
+      "group": "DelayFX",
+      "cc": null,
+      "min": 0,
+      "max": 2,
+      "default": 0,
+      "type": "choice",
+      "choices": [
+        "Stereo",
+        "Cross",
+        "LeftRight"
+      ],
+      "sysexOffset": 51
+    },
+    {
+      "id": "delayTime",
+      "name": "Delay Time",
+      "group": "DelayFX",
+      "cc": 13,
+      "min": 0,
+      "max": 127,
+      "default": 40,
+      "type": "integer",
+      "sysexOffset": 52
+    },
+    {
+      "id": "delayDepth",
+      "name": "Delay Depth",
+      "group": "DelayFX",
+      "cc": 94,
+      "min": 0,
+      "max": 127,
+      "default": 50,
+      "type": "integer",
+      "sysexOffset": 53
+    },
+    {
+      "id": "delayFeedback",
+      "name": "Delay Feedback",
+      "group": "DelayFX",
+      "cc": null,
+      "min": 0,
+      "max": 127,
+      "default": 40,
+      "type": "integer",
+      "sysexOffset": 54
+    },
+    {
+      "id": "arpOn",
+      "name": "Arpeggiator On/Off",
+      "group": "Arp",
+      "cc": 89,
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "type": "boolean",
+      "sysexOffset": 55
+    },
+    {
+      "id": "arpType",
+      "name": "Arpeggiator Type",
+      "group": "Arp",
+      "cc": null,
+      "min": 0,
+      "max": 5,
+      "default": 0,
+      "type": "choice",
+      "choices": [
+        "Up",
+        "Down",
+        "Alt1",
+        "Alt2",
+        "Random",
+        "Trigger"
+      ],
+      "sysexOffset": 56
+    },
+    {
+      "id": "arpRange",
+      "name": "Arpeggiator Range",
+      "group": "Arp",
+      "cc": null,
+      "min": 1,
+      "max": 4,
+      "default": 1,
+      "type": "integer",
+      "sysexOffset": 57
+    },
+    {
+      "id": "arpGate",
+      "name": "Arpeggiator Gate",
+      "group": "Arp",
+      "cc": null,
+      "min": 0,
+      "max": 127,
+      "default": 100,
+      "type": "integer",
+      "sysexOffset": 58
+    },
+    {
+      "id": "arpLatch",
+      "name": "Arpeggiator Latch",
+      "group": "Arp",
+      "cc": null,
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "type": "boolean",
+      "sysexOffset": 59
+    },
+    {
+      "id": "arpResolution",
+      "name": "Arp Resolution",
+      "group": "Arp",
+      "cc": null,
+      "min": 0,
+      "max": 15,
+      "default": 3,
+      "type": "choice",
+      "choices": [
+        "1/48",
+        "1/32",
+        "1/24",
+        "1/16",
+        "1/12",
+        "1/8",
+        "1/6",
+        "1/4",
+        "1/3",
+        "1/2",
+        "3/4",
+        "1/1",
+        "3/2",
+        "2/1",
+        "3/1",
+        "4/1"
+      ],
+      "sysexOffset": 60
+    },
+    {
+      "id": "modSeqResolution",
+      "name": "Mod Seq Resolution",
+      "group": "Mod Seq",
+      "cc": null,
+      "min": 0,
+      "max": 15,
+      "default": 3,
+      "type": "choice",
+      "choices": [
+        "1/48",
+        "1/32",
+        "1/24",
+        "1/16",
+        "1/12",
+        "1/8",
+        "1/6",
+        "1/4",
+        "1/3",
+        "1/2",
+        "3/4",
+        "1/1",
+        "3/2",
+        "2/1",
+        "3/1",
+        "4/1"
+      ],
+      "sysexOffset": 61
+    },
+    {
+      "id": "assignablePedal",
+      "name": "Assignable Pedal",
+      "group": "Global",
+      "cc": 4,
+      "min": 0,
+      "max": 127,
+      "default": 0,
+      "type": "integer",
+      "sysexOffset": 62
+    },
+    {
+      "id": "assignableSwitch",
+      "name": "Assignable Switch",
+      "group": "Global",
+      "cc": 64,
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "type": "boolean",
+      "sysexOffset": 63
+    },
+    {
+      "id": "patch1Source",
+      "name": "Patch 1 Source",
+      "group": "VirtualPatch",
+      "cc": null,
+      "min": 0,
+      "max": 7,
+      "default": 0,
+      "type": "choice",
+      "choices": [
+        "EG1",
+        "EG2",
+        "LFO1",
+        "LFO2",
+        "Velocity",
+        "KBD Track",
+        "Pitch Bend",
+        "Mod Wheel"
+      ],
+      "sysexOffset": 64
+    },
+    {
+      "id": "patch1Destination",
+      "name": "Patch 1 Destination",
+      "group": "VirtualPatch",
+      "cc": null,
+      "min": 0,
+      "max": 7,
+      "default": 4,
+      "type": "choice",
+      "choices": [
+        "Pitch",
+        "OSC2 Pitch",
+        "OSC1 Ctrl1",
+        "Noise Level",
+        "Cutoff",
+        "Amp",
+        "Pan",
+        "LFO2 Freq"
+      ],
+      "sysexOffset": 65
+    },
+    {
+      "id": "patch1Intensity",
+      "name": "Patch 1 Intensity",
+      "group": "VirtualPatch",
+      "cc": null,
+      "min": -63,
+      "max": 63,
+      "default": 0,
+      "type": "integer",
+      "sysexOffset": 66
+    },
+    {
+      "id": "patch2Source",
+      "name": "Patch 2 Source",
+      "group": "VirtualPatch",
+      "cc": null,
+      "min": 0,
+      "max": 7,
+      "default": 1,
+      "type": "choice",
+      "choices": [
+        "EG1",
+        "EG2",
+        "LFO1",
+        "LFO2",
+        "Velocity",
+        "KBD Track",
+        "Pitch Bend",
+        "Mod Wheel"
+      ],
+      "sysexOffset": 67
+    },
+    {
+      "id": "patch2Destination",
+      "name": "Patch 2 Destination",
+      "group": "VirtualPatch",
+      "cc": null,
+      "min": 0,
+      "max": 7,
+      "default": 4,
+      "type": "choice",
+      "choices": [
+        "Pitch",
+        "OSC2 Pitch",
+        "OSC1 Ctrl1",
+        "Noise Level",
+        "Cutoff",
+        "Amp",
+        "Pan",
+        "LFO2 Freq"
+      ],
+      "sysexOffset": 68
+    },
+    {
+      "id": "patch2Intensity",
+      "name": "Patch 2 Intensity",
+      "group": "VirtualPatch",
+      "cc": null,
+      "min": -63,
+      "max": 63,
+      "default": 0,
+      "type": "integer",
+      "sysexOffset": 69
+    },
+    {
+      "id": "patch3Source",
+      "name": "Patch 3 Source",
+      "group": "VirtualPatch",
+      "cc": null,
+      "min": 0,
+      "max": 7,
+      "default": 2,
+      "type": "choice",
+      "choices": [
+        "EG1",
+        "EG2",
+        "LFO1",
+        "LFO2",
+        "Velocity",
+        "KBD Track",
+        "Pitch Bend",
+        "Mod Wheel"
+      ],
+      "sysexOffset": 70
+    },
+    {
+      "id": "patch3Destination",
+      "name": "Patch 3 Destination",
+      "group": "VirtualPatch",
+      "cc": null,
+      "min": 0,
+      "max": 7,
+      "default": 0,
+      "type": "choice",
+      "choices": [
+        "Pitch",
+        "OSC2 Pitch",
+        "OSC1 Ctrl1",
+        "Noise Level",
+        "Cutoff",
+        "Amp",
+        "Pan",
+        "LFO2 Freq"
+      ],
+      "sysexOffset": 71
+    },
+    {
+      "id": "patch3Intensity",
+      "name": "Patch 3 Intensity",
+      "group": "VirtualPatch",
+      "cc": null,
+      "min": -63,
+      "max": 63,
+      "default": 0,
+      "type": "integer",
+      "sysexOffset": 72
+    },
+    {
+      "id": "patch4Source",
+      "name": "Patch 4 Source",
+      "group": "VirtualPatch",
+      "cc": null,
+      "min": 0,
+      "max": 7,
+      "default": 3,
+      "type": "choice",
+      "choices": [
+        "EG1",
+        "EG2",
+        "LFO1",
+        "LFO2",
+        "Velocity",
+        "KBD Track",
+        "Pitch Bend",
+        "Mod Wheel"
+      ],
+      "sysexOffset": 73
+    },
+    {
+      "id": "patch4Destination",
+      "name": "Patch 4 Destination",
+      "group": "VirtualPatch",
+      "cc": null,
+      "min": 0,
+      "max": 7,
+      "default": 7,
+      "type": "choice",
+      "choices": [
+        "Pitch",
+        "OSC2 Pitch",
+        "OSC1 Ctrl1",
+        "Noise Level",
+        "Cutoff",
+        "Amp",
+        "Pan",
+        "LFO2 Freq"
+      ],
+      "sysexOffset": 74
+    },
+    {
+      "id": "patch4Intensity",
+      "name": "Patch 4 Intensity",
+      "group": "VirtualPatch",
+      "cc": null,
+      "min": -63,
+      "max": 63,
+      "default": 0,
+      "type": "integer",
+      "sysexOffset": 75
+    },
+    {
+      "id": "modSeqOn",
+      "name": "Mod Sequencer On/Off",
+      "group": "Mod Seq",
+      "cc": null,
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "type": "boolean",
+      "sysexOffset": null
+    },
+    {
+      "id": "modSeqType",
+      "name": "Mod Seq Direction",
+      "group": "Mod Seq",
+      "cc": null,
+      "min": 0,
+      "max": 3,
+      "default": 0,
+      "type": "choice",
+      "choices": [
+        "Forward",
+        "Reverse",
+        "Bounce",
+        "Random"
+      ],
+      "sysexOffset": null
+    },
+    {
+      "id": "modSeqSmooth",
+      "name": "Mod Seq Smooth",
+      "group": "Mod Seq",
+      "cc": null,
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "type": "choice",
+      "choices": [
+        "Step",
+        "Smooth"
+      ],
+      "sysexOffset": null
+    },
+    {
+      "id": "synthVocoderMode",
+      "name": "Vocoder Mode",
+      "group": "Vocoder",
+      "cc": null,
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "type": "boolean",
+      "sysexOffset": null
+    },
+    {
+      "id": "vocoderCarrierSrc",
+      "name": "Vocoder Carrier Source",
+      "group": "Vocoder",
+      "cc": null,
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "type": "choice",
+      "choices": [
+        "Synth",
+        "External"
+      ],
+      "sysexOffset": null
+    },
+    {
+      "id": "vocoderFormantShift",
+      "name": "Vocoder Formant Shift",
+      "group": "Vocoder",
+      "cc": null,
+      "min": 0,
+      "max": 4,
+      "default": 2,
+      "type": "choice",
+      "choices": [
+        "-2",
+        "-1",
+        "0",
+        "+1",
+        "+2"
+      ],
+      "sysexOffset": null
+    },
+    {
+      "id": "vocoderHpfLevel",
+      "name": "Vocoder HPF Level",
+      "group": "Vocoder",
+      "cc": null,
+      "min": 0,
+      "max": 127,
+      "default": 64,
+      "type": "integer",
+      "sysexOffset": null
+    },
+    {
+      "id": "vocoderGateSense",
+      "name": "Vocoder Gate Sense",
+      "group": "Vocoder",
+      "cc": null,
+      "min": 0,
+      "max": 127,
+      "default": 50,
+      "type": "integer",
+      "sysexOffset": null
+    },
+    {
+      "id": "vocoderDirectLevel",
+      "name": "Vocoder Direct Level",
+      "group": "Vocoder",
+      "cc": null,
+      "min": 0,
+      "max": 127,
+      "default": 0,
+      "type": "integer",
+      "sysexOffset": null
+    },
+    {
+      "id": "vocoderBandLevel1",
+      "name": "Vocoder Band 1",
+      "group": "Vocoder",
+      "cc": null,
+      "min": 0,
+      "max": 127,
+      "default": 127,
+      "type": "integer",
+      "sysexOffset": null
+    },
+    {
+      "id": "vocoderBandLevel2",
+      "name": "Vocoder Band 2",
+      "group": "Vocoder",
+      "cc": null,
+      "min": 0,
+      "max": 127,
+      "default": 127,
+      "type": "integer",
+      "sysexOffset": null
+    },
+    {
+      "id": "vocoderBandLevel3",
+      "name": "Vocoder Band 3",
+      "group": "Vocoder",
+      "cc": null,
+      "min": 0,
+      "max": 127,
+      "default": 127,
+      "type": "integer",
+      "sysexOffset": null
+    },
+    {
+      "id": "vocoderBandLevel4",
+      "name": "Vocoder Band 4",
+      "group": "Vocoder",
+      "cc": null,
+      "min": 0,
+      "max": 127,
+      "default": 127,
+      "type": "integer",
+      "sysexOffset": null
+    },
+    {
+      "id": "vocoderBandLevel5",
+      "name": "Vocoder Band 5",
+      "group": "Vocoder",
+      "cc": null,
+      "min": 0,
+      "max": 127,
+      "default": 127,
+      "type": "integer",
+      "sysexOffset": null
+    },
+    {
+      "id": "vocoderBandLevel6",
+      "name": "Vocoder Band 6",
+      "group": "Vocoder",
+      "cc": null,
+      "min": 0,
+      "max": 127,
+      "default": 127,
+      "type": "integer",
+      "sysexOffset": null
+    },
+    {
+      "id": "vocoderBandLevel7",
+      "name": "Vocoder Band 7",
+      "group": "Vocoder",
+      "cc": null,
+      "min": 0,
+      "max": 127,
+      "default": 127,
+      "type": "integer",
+      "sysexOffset": null
+    },
+    {
+      "id": "vocoderBandLevel8",
+      "name": "Vocoder Band 8",
+      "group": "Vocoder",
+      "cc": null,
+      "min": 0,
+      "max": 127,
+      "default": 127,
+      "type": "integer",
+      "sysexOffset": null
+    },
+    {
+      "id": "vocoderBandLevel9",
+      "name": "Vocoder Band 9",
+      "group": "Vocoder",
+      "cc": null,
+      "min": 0,
+      "max": 127,
+      "default": 127,
+      "type": "integer",
+      "sysexOffset": null
+    },
+    {
+      "id": "vocoderBandLevel10",
+      "name": "Vocoder Band 10",
+      "group": "Vocoder",
+      "cc": null,
+      "min": 0,
+      "max": 127,
+      "default": 127,
+      "type": "integer",
+      "sysexOffset": null
+    },
+    {
+      "id": "vocoderBandLevel11",
+      "name": "Vocoder Band 11",
+      "group": "Vocoder",
+      "cc": null,
+      "min": 0,
+      "max": 127,
+      "default": 127,
+      "type": "integer",
+      "sysexOffset": null
+    },
+    {
+      "id": "vocoderBandLevel12",
+      "name": "Vocoder Band 12",
+      "group": "Vocoder",
+      "cc": null,
+      "min": 0,
+      "max": 127,
+      "default": 127,
+      "type": "integer",
+      "sysexOffset": null
+    },
+    {
+      "id": "vocoderBandLevel13",
+      "name": "Vocoder Band 13",
+      "group": "Vocoder",
+      "cc": null,
+      "min": 0,
+      "max": 127,
+      "default": 127,
+      "type": "integer",
+      "sysexOffset": null
+    },
+    {
+      "id": "vocoderBandLevel14",
+      "name": "Vocoder Band 14",
+      "group": "Vocoder",
+      "cc": null,
+      "min": 0,
+      "max": 127,
+      "default": 127,
+      "type": "integer",
+      "sysexOffset": null
+    },
+    {
+      "id": "vocoderBandLevel15",
+      "name": "Vocoder Band 15",
+      "group": "Vocoder",
+      "cc": null,
+      "min": 0,
+      "max": 127,
+      "default": 127,
+      "type": "integer",
+      "sysexOffset": null
+    },
+    {
+      "id": "vocoderBandLevel16",
+      "name": "Vocoder Band 16",
+      "group": "Vocoder",
+      "cc": null,
+      "min": 0,
+      "max": 127,
+      "default": 127,
+      "type": "integer",
+      "sysexOffset": null
     }
   ]
 };
@@ -544,3 +1462,5 @@ export const PARAM_IDS = Object.freeze(
     return acc;
   }, {})
 );
+
+export const PARAM_LIST = Object.freeze(PARAMETERS_SPEC.parameters);

@@ -74,10 +74,12 @@ float ADSREnvelope::getNextSample() noexcept
     {
         case EnvelopeStage::Attack:
         {
-            // Inverted exponential curve: starts fast, eases into peak
-            float delta = (1.15f - currentLevel_) * static_cast<float>(attackRate_ * 3.5);
-            if (delta < 0.00001f) delta = 0.00001f;
-            currentLevel_ += delta;
+            // Exponential RC-charge curve: fast start, easing into peak
+            // Target overshoots to 1.582 so that level crosses 1.0 at the
+            // specified attack time (1 time constant = 63.2% of target).
+            constexpr float kOvershootTarget = 1.582f;
+            float coeff = static_cast<float>(attackRate_) * 6.0f;
+            currentLevel_ += (kOvershootTarget - currentLevel_) * coeff;
 
             if (currentLevel_ >= 1.0f)
             {

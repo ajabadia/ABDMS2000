@@ -7,7 +7,8 @@
     "generate": "node Scripts/registry_generator.js",
     "bundle": "node Scripts/build_webui.js",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "sync:keyboard": "cp -r ../ABDMIDIKeyb/src/keyboard.js WebUI/src/components/keyboard.js && cp -r ../ABDMIDIKeyb/src/utils.js WebUI/src/components/utils.js && cp -r ../ABDMIDIKeyb/src/keyboard.css WebUI/src/components/keyboard.css"
   },
   "keywords": [
     "synth",

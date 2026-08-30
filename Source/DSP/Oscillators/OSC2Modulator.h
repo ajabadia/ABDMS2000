@@ -5,9 +5,9 @@ namespace ABDMS2000 {
 
 enum class OSC2ModulationMode {
     Off = 0,
-    RingMod,
-    Sync,
-    RingSync
+    RingMod,   // Multiplicative ring modulation OSC1 * OSC2
+    Sync,       // Hard sync: OSC2 phase resets at OSC1 cycle
+    CrossMod    // FM: OSC2 modulates OSC1 frequency (Korg MS2000 HW behavior)
 };
 
 /**

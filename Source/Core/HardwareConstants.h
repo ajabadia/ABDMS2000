@@ -10,9 +10,9 @@ namespace Constants {
     inline constexpr int kNumBanks = 8;
     inline constexpr int kTotalPrograms = 128;
 
-    inline constexpr int kDwgWaveCount = 64;
+    inline constexpr int kDwgWaveCount = 512;
     inline constexpr int kDwgTableSize = 2048;
-    inline constexpr int kDwgTotalSamples = kDwgWaveCount * kDwgTableSize; // 131,072
+    inline constexpr int kDwgTotalSamples = kDwgWaveCount * kDwgTableSize; // 1,048,576 (~4MB)
 
     inline constexpr int kNumModSeqTracks = 3;
     inline constexpr int kNumModSeqSteps = 16;

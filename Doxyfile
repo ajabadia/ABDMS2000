@@ -1,0 +1,36 @@
+# --- CONFIGURACIÓN BÁSICA DEL PROYECTO ---
+PROJECT_NAME           = "ABDMS2000 — Korg MS2000 Hybrid Editor & DSP Emulator"
+PROJECT_NUMBER         = "1.0.0"
+OUTPUT_DIRECTORY       = "docs"
+OUTPUT_LANGUAGE        = Spanish
+BRIEF_MEMBER_DESC      = YES
+REPEAT_BRIEF           = YES
+
+# --- ARCHIVOS DE ENTRADA (QUÉ ESCANEAR) ---
+INPUT                  = Source/ DOCS/ README.md
+FILE_PATTERNS          = *.h *.cpp *.md
+RECURSIVE              = YES
+EXCLUDE_PATTERNS       = */JUCE/* */build/* */build_wasm/* */.git/*
+
+# --- CONFIGURACIÓN DE EXTRACCIÓN Y C++ ---
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+HIDE_UNDOC_MEMBERS     = NO
+INLINE_SOURCES         = NO
+STRIP_CODE_COMMENTS    = NO
+
+# --- FORMATOS DE SALIDA ---
+GENERATE_HTML          = YES
+HTML_OUTPUT            = html
+GENERATE_LATEX         = NO
+
+# --- DIAGRAMAS DE ARQUITECTURA (Gráficos de Clases) ---
+HAVE_DOT               = YES
+CLASS_GRAPH            = YES
+COLLABORATION_GRAPH    = YES
+INCLUDE_GRAPH          = YES
+INCLUDED_BY_GRAPH      = YES
+DOT_IMAGE_FORMAT       = svg
+INTERACTIVE_SVG        = YES
+USE_MDFILE_AS_MAINPAGE = README.md

@@ -11,10 +11,12 @@ public:
 
     void handleJsEvent(const juce::var& message);
     void sendEventToJs(const juce::String& eventType, const juce::var& payload);
+    void sendFullParamSync();
 
 private:
     ABDMS2000AudioProcessor& processor_;
     juce::WebBrowserComponent& browser_;
 };
+
 
 } // namespace ABDMS2000

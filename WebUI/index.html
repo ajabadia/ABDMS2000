@@ -9,6 +9,9 @@
   <link rel="stylesheet" href="src/styles/themes.css">
   <link rel="stylesheet" href="src/styles/base.css">
   <link rel="stylesheet" href="src/styles/main.css">
+  <link rel="stylesheet" href="src/styles/dashboard.css">
+  <link rel="stylesheet" href="src/styles/slideDrawer.css">
+  <link rel="stylesheet" href="src/components/keyboard.css">
   <link rel="stylesheet" href="src/styles/menu.css">
 </head>
 <body class="skin-ms2000">
@@ -43,6 +46,7 @@
               <button class="dropdown-item" data-action="factory-reset">
                 <span>Factory Preset Reset</span>
               </button>
+
             </div>
           </div>
 
@@ -115,6 +119,11 @@
       </div>
 
       <div class="nav-right">
+        <!-- Diagnostic Test Mode Button -->
+        <button id="btn-diagnostic-test" class="nav-test-btn" title="Diagnóstico de Audio y Modo Test (440Hz / Inyección DSP)">
+          <span class="test-badge">TEST MODE</span>
+        </button>
+
         <!-- WASM / Web Audio Start Button -->
         <button id="btn-audio-init" class="audio-init-btn" title="Iniciar / Reanudar motor de Audio Web">
           <span class="audio-led"></span>
@@ -132,81 +141,525 @@
 
     <!-- Main Content Workspace -->
     <main class="main-workspace">
-      <!-- Top Hero Section: LCD Screen + Quick Stats -->
+      <!-- Top Hero Section: LCD Matrix Left | LCD Main | LCD SysEx | Quick Actions Matrix Right -->
       <section class="hero-panel">
-        <div class="lcd-container" id="lcd-display">
+        <!-- 1. LCD Programmer Navigation Matrix (2 Rows on the Left) -->
+        <div class="lcd-nav-matrix">
+          <div class="lcd-nav-row">
+            <button id="btn-lcd-page-prev" class="lcd-nav-btn" title="Previous Menu Page">PAGE ◄</button>
+            <button id="btn-lcd-page-next" class="lcd-nav-btn" title="Next Menu Page">PAGE ►</button>
+            <button id="btn-lcd-cursor-prev" class="lcd-nav-btn" title="Cursor Left">CURSOR ◄</button>
+            <button id="btn-lcd-cursor-next" class="lcd-nav-btn" title="Cursor Right">CURSOR ►</button>
+          </div>
+          <div class="lcd-nav-row">
+            <button id="btn-lcd-val-down" class="lcd-nav-btn" title="Value Down / -">VALUE ▼</button>
+            <button id="btn-lcd-val-up" class="lcd-nav-btn" title="Value Up / +">VALUE ▲</button>
+            <button id="btn-lcd-edit" class="lcd-nav-btn" title="Edit / Exit Mode">EDIT/EXIT</button>
+            <button id="btn-lcd-write" class="lcd-nav-btn lcd-nav-btn-accent" title="Write / Store Program">WRITE</button>
+          </div>
+        </div>
+
+        <!-- 2. LCD Main Display (16x2 Characters, Compact Hardware Size) -->
+        <div class="lcd-container lcd-main-container" id="lcd-display">
           <div class="lcd-line-1" id="lcd-line-1">A.01 Init Program</div>
           <div class="lcd-line-2" id="lcd-line-2">VA Saw + MultiFilter</div>
         </div>
 
-        <div class="quick-actions">
-          <button class="menu-btn" id="btn-compare" style="border: 1px solid var(--color-panel-border);">Compare A/B</button>
-          <button class="menu-btn" id="btn-random" style="border: 1px solid var(--color-panel-border);">🎲 Random</button>
-          <button class="menu-btn" id="btn-panic" style="background: #e63946; color: #fff; font-weight: bold;">PANIC</button>
+        <!-- 3. LCD SysEx Display (Real-time Hex Stream + Copy Button on Right) -->
+        <div class="lcd-container lcd-sysex-container" id="sysex-lcd-display">
+          <div class="sysex-header-tag">SYSEX STREAM</div>
+          <div class="sysex-lcd-body">
+            <div id="sysex-hex-content" class="sysex-hex-content">F0 42 30 58 40 00 00 00 00 00 7F 00 00 00 00 00 00 00 00 00 F7</div>
+            <button id="btn-copy-sysex" class="sysex-copy-btn" title="Copy SysEx Hex to Clipboard">COPY</button>
+          </div>
+        </div>
+
+        <!-- 4. Global Keypad Matrix (2 Rows on the Right) -->
+        <div class="lcd-nav-matrix global-actions-matrix">
+          <div class="lcd-nav-row">
+            <button class="lcd-nav-btn" id="btn-compare" title="Toggle Compare Buffer">COMPARE</button>
+            <button class="lcd-nav-btn" id="btn-random" title="Randomize Patch (Musical Bounded)">
+              <svg class="ui-btn-icon" viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -1px; margin-right: 2px;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>RNDM
+            </button>
+          </div>
+          <div class="lcd-nav-row">
+            <button class="lcd-nav-btn lcd-nav-btn-accent" id="btn-init-patch" title="Inicializar Patch (Valores por Defecto)">INIT</button>
+            <button class="lcd-nav-btn lcd-nav-btn-danger" id="btn-panic" title="All Notes Off (Panic)">
+              <svg class="ui-btn-icon" viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -1px; margin-right: 2px;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>PANIC
+            </button>
+          </div>
         </div>
       </section>
 
-      <!-- Quick Controls Grid -->
-      <section class="synth-controls-preview">
-        <div class="module-card">
-          <div class="module-title">OSC 1 (VA / DWGS)</div>
-          <div class="control-row">
-            <span>Waveform</span>
-            <span style="color: var(--color-accent); font-weight: bold;">Sawtooth</span>
+
+
+      <!-- Modular Parameter Panels Workspace Grid (CZ-101 Style Dashboard - Audio Signal Path Order) -->
+      <section class="dashboard-workspace" id="synth-workspace">
+        
+        <!-- 1. OSCILLATORS & MIXER CARD -->
+        <div class="dashboard-card" id="card-oscillators">
+          <div class="card-header">
+            <div class="card-title-area">
+              <span class="card-icon">
+                <svg class="ui-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              </span>
+              <span class="card-title">OSCILADORES &amp; MIX</span>
+            </div>
+            <span class="card-badge" id="badge-osc1-wave">VA SAW</span>
           </div>
-          <div class="control-row">
-            <span>Ctrl 1 (PWM)</span>
-            <span>0</span>
+          <div class="card-body">
+            <div class="info-row">
+              <span class="info-label">OSC 1 Forma:</span>
+              <span class="info-value" id="val-osc1-wave">Sawtooth</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">OSC 2 / Mod:</span>
+              <span class="info-value" id="val-osc2-mod">Square (Off)</span>
+            </div>
+            <div class="mini-meter-group">
+              <div class="mini-meter-row">
+                <span class="mini-meter-label">OSC 1</span>
+                <div class="mini-meter-track"><div class="mini-meter-bar" id="bar-mix-osc1" style="width: 100%;"></div></div>
+              </div>
+              <div class="mini-meter-row">
+                <span class="mini-meter-label">OSC 2</span>
+                <div class="mini-meter-track"><div class="mini-meter-bar" id="bar-mix-osc2" style="width: 0%;"></div></div>
+              </div>
+              <div class="mini-meter-row">
+                <span class="mini-meter-label">NOISE</span>
+                <div class="mini-meter-track"><div class="mini-meter-bar" id="bar-mix-noise" style="width: 0%;"></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-actions-group">
+            <button class="card-action-btn" id="btn-edit-osc1">OSC 1</button>
+            <button class="card-action-btn" id="btn-edit-osc2">OSC 2</button>
+            <button class="card-action-btn" id="btn-edit-mixer">MIXER</button>
           </div>
         </div>
 
-        <div class="module-card">
-          <div class="module-title">FILTER MULTIMODE</div>
-          <div class="control-row">
-            <span>Type</span>
-            <span style="color: var(--color-accent); font-weight: bold;">LPF 24dB</span>
+        <!-- 2. VOCODER 16 BANDS CARD -->
+        <div class="dashboard-card" id="card-vocoder">
+          <div class="card-header">
+            <div class="card-title-area">
+              <span class="card-icon">
+                <svg class="ui-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
+              </span>
+              <span class="card-title">VOCODER 16 BANDAS</span>
+            </div>
+            <span class="card-badge" id="badge-vocoder-mode">SYNTH</span>
           </div>
-          <div class="control-row">
-            <span>Cutoff</span>
-            <span>20.0 kHz</span>
+          <div class="card-body">
+            <div class="info-row">
+              <span class="info-label">Estado Vocoder:</span>
+              <span class="info-value" id="val-vocoder-status">OFF (Synth Mode)</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Carrier / Shift:</span>
+              <span class="info-value" id="val-vocoder-carrier">Internal (0)</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Gate / Direct:</span>
+              <span class="info-value" id="val-vocoder-gate">Sense: 50 | Direct: 0</span>
+            </div>
+          </div>
+          <div class="card-actions-group">
+            <button class="card-action-btn" id="btn-edit-vocoder-cfg">CONFIG</button>
+            <button class="card-action-btn" id="btn-edit-vocoder-bands">16 BANDAS</button>
           </div>
         </div>
 
-        <div class="module-card">
-          <div class="module-title">ENVELOPES & AMP</div>
-          <div class="control-row">
-            <span>Attack</span>
-            <span>1 ms</span>
+        <!-- 3. FILTER & DRIVE CARD -->
+        <div class="dashboard-card" id="card-filter">
+          <div class="card-header">
+            <div class="card-title-area">
+              <span class="card-icon">
+                <svg class="ui-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+              </span>
+              <span class="card-title">FILTRO MULTIMODO</span>
+            </div>
+            <span class="card-badge" id="badge-filter-type">LPF 24dB</span>
           </div>
-          <div class="control-row">
-            <span>Release</span>
-            <span>120 ms</span>
+          <div class="card-body">
+            <div class="info-row">
+              <span class="info-label">Tipo:</span>
+              <span class="info-value" id="val-filter-type">LPF 24dB (-24dB/oct)</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Cutoff:</span>
+              <span class="info-value" id="val-filter-cutoff">127 (20.0 kHz)</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Reso / EG1 Int:</span>
+              <span class="info-value" id="val-filter-reso-eg1">0 / Flat (+0)</span>
+            </div>
+          </div>
+          <div class="card-actions-group">
+            <button class="card-action-btn" id="btn-edit-filter-main">FILTRO</button>
+            <button class="card-action-btn" id="btn-edit-filter-mod">MODULACIÓN</button>
           </div>
         </div>
+
+        <!-- 4. AMP & ENVELOPES CARD -->
+        <div class="dashboard-card" id="card-envelopes">
+          <div class="card-header">
+            <div class="card-title-area">
+              <span class="card-icon">
+                <svg class="ui-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="M3 20L7 5l6 9h5l3 6"/></svg>
+              </span>
+              <span class="card-title">AMP &amp; ENVELOPES</span>
+            </div>
+            <span class="card-badge">VCA + EG1/2</span>
+          </div>
+          <div class="card-body">
+            <div class="info-row">
+              <span class="info-label">Nivel / Pan:</span>
+              <span class="info-value" id="val-amp-level-pan">100 | Center</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">EG1 (Filtro):</span>
+              <span class="info-value" id="val-eg1-adsr">0 / 64 / 0 / 40</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">EG2 (Amp):</span>
+              <span class="info-value" id="val-eg2-adsr">0 / 64 / 127 / 20</span>
+            </div>
+          </div>
+          <div class="card-actions-group">
+            <button class="card-action-btn" id="btn-edit-amp-main">AMP (VCA)</button>
+            <button class="card-action-btn" id="btn-edit-eg1">EG 1</button>
+            <button class="card-action-btn" id="btn-edit-eg2">EG 2</button>
+          </div>
+        </div>
+
+        <!-- 5. LFOS & MOD MATRIX CARD -->
+        <div class="dashboard-card" id="card-modpatch">
+          <div class="card-header">
+            <div class="card-title-area">
+              <span class="card-icon">
+                <svg class="ui-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6"/><path d="M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/><path d="M2.5 22v-6h6"/><path d="M2.66 8.43a10 10 0 0 1 .57 8.38L-2.44 22.48"/></svg>
+              </span>
+              <span class="card-title">LFOS &amp; MOD MATRIX</span>
+            </div>
+            <span class="card-badge">4 PATCHES</span>
+          </div>
+          <div class="card-body">
+            <div class="info-row">
+              <span class="info-label">LFO 1:</span>
+              <span class="info-value" id="val-lfo1-status">Triangle (2.50 Hz)</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">LFO 2:</span>
+              <span class="info-value" id="val-lfo2-status">Sine (5.00 Hz)</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Virtual Patches:</span>
+              <span class="info-value" id="val-patch-summary">4 Slots Activos</span>
+            </div>
+          </div>
+          <div class="card-actions-group">
+            <button class="card-action-btn" id="btn-edit-lfo1">LFO 1</button>
+            <button class="card-action-btn" id="btn-edit-lfo2">LFO 2</button>
+            <button class="card-action-btn" id="btn-edit-modmatrix">PATCH</button>
+          </div>
+        </div>
+
+        <!-- 6. MOD SEQUENCE & ARPEGGIATOR CARD -->
+        <div class="dashboard-card" id="card-seq-arp">
+          <div class="card-header">
+            <div class="card-title-area">
+              <span class="card-icon">
+                <svg class="ui-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 4v8"/><path d="M10 4v8"/><path d="M14 4v8"/><path d="M18 4v8"/><path d="M2 12h20"/></svg>
+              </span>
+              <span class="card-title">SEQ &amp; ARPEGGIATOR</span>
+            </div>
+            <span class="card-badge">3x16 STEPS</span>
+          </div>
+          <div class="card-body">
+            <div class="info-row">
+              <span class="info-label">Arpeggiador:</span>
+              <span class="info-value" id="val-arp-status">OFF</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Mod Sequence:</span>
+              <span class="info-value" id="val-modseq-status">OFF</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Resolución:</span>
+              <span class="info-value" id="val-seq-res">1/16 (Tempo: 120)</span>
+            </div>
+          </div>
+          <div class="card-actions-group">
+            <button class="card-action-btn" id="btn-edit-arp">ARPEGGIATOR</button>
+            <button class="card-action-btn" id="btn-edit-modseq">MOD SEQ</button>
+          </div>
+        </div>
+
+        <!-- 7. FX & EQUALIZER CARD -->
+        <div class="dashboard-card" id="card-fx">
+          <div class="card-header">
+            <div class="card-title-area">
+              <span class="card-icon">
+                <svg class="ui-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              </span>
+              <span class="card-title">EFECTOS &amp; EQ</span>
+            </div>
+            <span class="card-badge">MOD + DLY + EQ</span>
+          </div>
+          <div class="card-body">
+            <div class="info-row">
+              <span class="info-label">Mod FX:</span>
+              <span class="info-value" id="val-fx-mod">Chorus (Depth: 64)</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Delay:</span>
+              <span class="info-value" id="val-fx-delay">Stereo (Time: 40)</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">EQ Master:</span>
+              <span class="info-value" id="val-fx-eq">Low 0dB / High 0dB</span>
+            </div>
+          </div>
+          <div class="card-actions-group">
+            <button class="card-action-btn" id="btn-edit-modfx">MOD FX</button>
+            <button class="card-action-btn" id="btn-edit-delayfx">DELAY</button>
+            <button class="card-action-btn" id="btn-edit-eq">EQ</button>
+          </div>
+        </div>
+
+        <!-- 8. VOICE, PITCH & MASTER CARD -->
+        <div class="dashboard-card" id="card-voice-global">
+          <div class="card-header">
+            <div class="card-title-area">
+              <span class="card-icon">
+                <svg class="ui-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              </span>
+              <span class="card-title">VOZ, PITCH &amp; MASTER</span>
+            </div>
+            <span class="card-badge" id="badge-voice-mode">POLY</span>
+          </div>
+          <div class="card-body">
+            <div class="info-row">
+              <span class="info-label">Modo Asignación:</span>
+              <span class="info-value" id="val-voice-mode">Poly (4 Voces)</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Portamento:</span>
+              <span class="info-value" id="val-porta-status">OFF (Time: 0)</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Volumen Master:</span>
+              <span class="info-value" id="val-master-vol">80% (-2.0 dB)</span>
+            </div>
+          </div>
+          <div class="card-actions-group">
+            <button class="card-action-btn" id="btn-edit-voice">VOZ</button>
+            <button class="card-action-btn" id="btn-edit-pitch">PORTAMENTO</button>
+            <button class="card-action-btn" id="btn-edit-global">MASTER</button>
+          </div>
+        </div>
+
       </section>
     </main>
 
+
     <!-- Virtual Keyboard Area -->
     <footer class="keyboard-container">
-      <div class="keyboard-top-bar">
-        <div class="octave-controls">
-          <button id="oct-down" class="menu-btn" style="border: 1px solid var(--color-panel-border);">OCT -</button>
-          <div class="octave-leds">
-            <span class="oct-led" id="led-down"></span>
-            <span class="oct-label">OCTAVE</span>
-            <span class="oct-led" id="led-up"></span>
-          </div>
-          <button id="oct-up" class="menu-btn" style="border: 1px solid var(--color-panel-border);">OCT +</button>
+      <div class="keyboard-lower-section">
+        <!-- Pitch Bend & Mod Wheels -->
+        <div class="wheels-block">
+          <div id="pitch-wheel-container"></div>
+          <div id="mod-wheel-container"></div>
         </div>
-        <div style="font-size: 11px; color: var(--color-text-muted);">
-          Virtual 2-Octave Keyboard (QWERTY / Mouse / Touch / MIDI)
-        </div>
-      </div>
 
-      <div class="piano-keys" id="piano-keyboard">
-        <!-- 2 Octaves generated via app.js -->
+        <!-- Vertical Octave Controls -->
+        <div class="kbd-octave-controls">
+          <button id="oct-up" class="kbd-octave-btn" title="Octave Up">
+            <span>OCT +</span>
+            <div class="kbd-octave-led" id="led-up"></div>
+          </button>
+          <button id="oct-down" class="kbd-octave-btn" title="Octave Down">
+            <span>OCT -</span>
+            <div class="kbd-octave-led" id="led-down"></div>
+          </button>
+        </div>
+
+        <!-- 5-Octave Performance Keybed -->
+        <div id="piano-keyboard">
+          <!-- 61 Keys generated via app.js -->
+        </div>
+
+        <!-- Panic / All Notes Off -->
+        <div class="kbd-panic-zone" id="kbd-panic-zone"></div>
       </div>
     </footer>
+
+
+
+    <!-- Diagnostic Test Modal Dialog -->
+    <div id="diagnostic-modal" class="modal-overlay hidden" style="display: none;">
+      <div class="modal-box diagnostic-modal-box">
+        <div class="diag-header">
+          <div class="diag-title">
+            <span class="diag-badge-icon">
+              <svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+            </span>
+            <h3>MODO TEST &amp; DIAGNÓSTICO DSP</h3>
+          </div>
+          <button id="diag-close-top-btn" class="diag-icon-btn" title="Cerrar modal">✕</button>
+        </div>
+        <div class="modal-sub">Inyector de Señal y Disparo Directo para Localización de Silencios en la Cadena de Audio</div>
+
+        <div class="diag-body">
+          <!-- 1. Tono Continuo / Inyector -->
+          <div class="diag-card">
+            <div class="diag-card-title">1. INYECCIÓN DE TONO DE PRUEBA</div>
+            
+            <div class="diag-row-toggle">
+              <label class="diag-switch">
+                <input type="checkbox" id="diag-tone-enable">
+                <span class="diag-slider"></span>
+              </label>
+              <span class="diag-label-bold" id="diag-tone-status">TONO DESACTIVADO</span>
+            </div>
+
+            <div class="diag-controls-grid">
+              <div class="diag-control-item">
+                <label>Frecuencia: <span id="diag-freq-val">440</span> Hz</label>
+                <input type="range" id="diag-freq-slider" min="50" max="4000" step="10" value="440">
+              </div>
+              <div class="diag-control-item">
+                <label>Volumen: <span id="diag-vol-val">25</span> %</label>
+                <input type="range" id="diag-vol-slider" min="1" max="100" step="1" value="25">
+              </div>
+            </div>
+
+            <div class="diag-section-sub">Punto de Inyección en la Cadena de Audio:</div>
+            <div class="diag-injection-points" id="diag-injection-points">
+              <label class="diag-radio-label">
+                <input type="radio" name="diag-point" value="1">
+                <span class="diag-radio-custom"></span>
+                <span class="diag-point-desc"><strong>[1] Post-Master Volume</strong> (Salida directa al DAC / Master Bus)</span>
+              </label>
+              <label class="diag-radio-label">
+                <input type="radio" name="diag-point" value="2" checked>
+                <span class="diag-radio-custom"></span>
+                <span class="diag-point-desc"><strong>[2] Pre-Master Volume</strong> (Antes del atenuador Master Gain)</span>
+              </label>
+              <label class="diag-radio-label">
+                <input type="radio" name="diag-point" value="3">
+                <span class="diag-radio-custom"></span>
+                <span class="diag-point-desc"><strong>[3] Pre-Efectos</strong> (Salida de Voces / Antes de ModFX, Delay y EQ)</span>
+              </label>
+              <label class="diag-radio-label">
+                <input type="radio" name="diag-point" value="4">
+                <span class="diag-radio-custom"></span>
+                <span class="diag-point-desc"><strong>[4] Pre-Filtro VCF</strong> (Dentro de la voz, pasa por Filtro, VCA y Envolventes)</span>
+              </label>
+              <label class="diag-radio-label">
+                <input type="radio" name="diag-point" value="5">
+                <span class="diag-radio-custom"></span>
+                <span class="diag-point-desc"><strong>[5] Salida OSC 1</strong> (Sustituye la onda de OSC1, pasa por Mixer, Filtro y VCA)</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 2. Disparo Directo al Motor DSP -->
+          <div class="diag-card">
+            <div class="diag-card-title">2. DISPARO DIRECTO DE NOTAS (BYPASS TECLADO / MIDI)</div>
+            <div class="diag-desc-small">Pulsa estos botones para enviar eventos directos al motor C++ sin pasar por el teclado virtual:</div>
+            
+            <div class="diag-note-triggers">
+              <button class="diag-note-btn" data-note="48">C3 (48)</button>
+              <button class="diag-note-btn" data-note="60">C4 (60)</button>
+              <button class="diag-note-btn" data-note="64">E4 (64)</button>
+              <button class="diag-note-btn" data-note="67">G4 (67)</button>
+              <button class="diag-note-btn" data-note="69">A4 (69 - 440Hz)</button>
+              <button class="diag-note-btn" data-note="72">C5 (72)</button>
+            </div>
+
+            <div class="diag-trigger-opts">
+              <label class="diag-toggle-label">
+                <input type="checkbox" id="diag-note-latch">
+                <span>Modo Mantener Nota (Latch / Hold)</span>
+              </label>
+              <button id="diag-btn-panic" class="diag-panic-btn">ALL NOTES OFF (PANIC)</button>
+            </div>
+          </div>
+
+          <!-- 3. Bypass Modular de Componentes (Aislamiento DSP) -->
+          <div class="diag-card">
+            <div class="diag-card-title">3. BYPASS MODULAR DE COMPONENTES (SALTAR ETAPAS DSP)</div>
+            <div class="diag-desc-small">Activa estos interruptores para puentear cada componente de la cadena y detectar cuál está silenciando el audio:</div>
+
+            <div class="diag-bypass-grid">
+              <label class="diag-bypass-item">
+                <input type="checkbox" id="diag-bypass-filter" class="diag-bypass-checkbox">
+                <span class="diag-bypass-box"></span>
+                <span class="diag-bypass-label"><strong>Bypass Filtro VCF</strong> (Pasa la señal directa sin corte ni resonancia)</span>
+              </label>
+
+              <label class="diag-bypass-item">
+                <input type="checkbox" id="diag-bypass-vca" class="diag-bypass-checkbox">
+                <span class="diag-bypass-box"></span>
+                <span class="diag-bypass-label"><strong>Bypass Envolvente / VCA</strong> (Abre el VCA al 100% de forma continua)</span>
+              </label>
+
+              <label class="diag-bypass-item">
+                <input type="checkbox" id="diag-bypass-mixer" class="diag-bypass-checkbox">
+                <span class="diag-bypass-box"></span>
+                <span class="diag-bypass-label"><strong>Bypass Mezclador OSC1</strong> (Fuerza nivel de OSC 1 al 100%)</span>
+              </label>
+
+              <label class="diag-bypass-item">
+                <input type="checkbox" id="diag-bypass-distortion" class="diag-bypass-checkbox">
+                <span class="diag-bypass-box"></span>
+                <span class="diag-bypass-label"><strong>Bypass Distorsión</strong> (Desactiva saturador analógico)</span>
+              </label>
+
+              <label class="diag-bypass-item">
+                <input type="checkbox" id="diag-bypass-modfx" class="diag-bypass-checkbox">
+                <span class="diag-bypass-box"></span>
+                <span class="diag-bypass-label"><strong>Bypass Mod FX</strong> (Puentea Chorus / Flanger / Phaser)</span>
+              </label>
+
+              <label class="diag-bypass-item">
+                <input type="checkbox" id="diag-bypass-delayfx" class="diag-bypass-checkbox">
+                <span class="diag-bypass-box"></span>
+                <span class="diag-bypass-label"><strong>Bypass Delay FX</strong> (Puentea procesador de retardo)</span>
+              </label>
+
+              <label class="diag-bypass-item">
+                <input type="checkbox" id="diag-bypass-eq" class="diag-bypass-checkbox">
+                <span class="diag-bypass-box"></span>
+                <span class="diag-bypass-label"><strong>Bypass Master EQ</strong> (Puentea ecualizador final de 2 bandas)</span>
+              </label>
+            </div>
+
+            <div class="diag-bypass-actions">
+              <button id="diag-btn-reset-bypasses" class="diag-reset-bypass-btn">DESACTIVAR TODOS LOS BYPASS</button>
+            </div>
+          </div>
+
+          <!-- 4. Guía de Diagnóstico -->
+          <div class="diag-guide-box">
+            <div class="diag-guide-title">
+              <svg class="ui-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 4px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Guía de Interpretación de Resultados:
+            </div>
+            <ul>
+              <li><strong>Si activando "Bypass Filtro VCF" ya suena:</strong> El filtro ZDF tenía el Cutoff a 0 o una ecuación de damping atenuando en exceso.</li>
+              <li><strong>Si activando "Bypass Envolvente / VCA" suena continuamente:</strong> La envolvente EG2 (ADSR) o el nivel de VCA no estaban disparándose al pulsar las notas.</li>
+              <li><strong>Si activando "Bypass Mezclador OSC1" suena:</strong> El parámetro de volumen de OSC1 en el Mixer estaba a 0.</li>
+              <li><strong>Si activando "Bypass Mod FX / Delay / EQ" suena:</strong> Uno de los procesadores de efectos estaba silenciando el bloque de salida.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="diag-footer">
+          <button id="diag-close-btn" class="modal-close-btn">CERRAR MODO TEST</button>
+        </div>
+      </div>
+    </div>
 
     <!-- About Modal Dialog -->
     <div id="about-modal" class="modal-overlay hidden" style="display: none;">
@@ -223,6 +676,7 @@
       </div>
     </div>
   </div>
+
 
   <script type="module" src="src/app.js"></script>
 </body>

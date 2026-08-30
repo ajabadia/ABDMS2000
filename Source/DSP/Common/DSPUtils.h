@@ -52,15 +52,65 @@ inline float softClip(float x) noexcept
 }
 
 // Asymmetric distortion for MS2000 Amp Distortion
+// Pre-gains the signal heavily, applies asymmetric tanh waveshaping,
+// then applies makeup gain. The MS2000 distortion is deliberately gritty.
 inline float ampDistortion(float x, float drive) noexcept
 {
-    float in = x * (1.0f + drive * 3.0f);
-    // Asymmetric clipping curve
+    float preGain = 1.0f + drive * 8.0f;  // Up to 7.8x pre-gain
+    float in = x * preGain;
+    float shaped;
+    // Asymmetric clipping curve (even harmonics from asymmetry)
     if (in > 0.0f)
-        return std::tanh(in);
+        shaped = std::tanh(in * 1.5f);
     else
-        return std::tanh(in * 1.2f) * 0.833f;
+        shaped = std::tanh(in * 2.0f) * 0.75f;
+    // Makeup gain to restore perceived loudness
+    return shaped * (1.0f / (0.5f + drive * 0.5f));
 }
+
+// Shared fast LCG-based random float in [-1.0, +1.0] range.
+// All DSP modules should use this single RNG source for consistency.
+inline float randomBipolar(uint32_t& state) noexcept
+{
+    state = state * 1664525u + 1013904223u;
+    return (static_cast<float>(state) * (2.0f / 4294967295.0f)) - 1.0f;
+}
+
+template <typename T = float>
+class LinearSmoother {
+public:
+    void reset(double sampleRate, double rampLengthSeconds) noexcept {
+        steps_ = static_cast<int>(std::max(1.0, sampleRate * rampLengthSeconds));
+        step_ = steps_;
+    }
+    void setCurrentAndTargetValue(T val) noexcept {
+        current_ = target_ = val;
+        step_ = steps_;
+        stepSize_ = 0;
+    }
+    void setTargetValue(T target) noexcept {
+        target_ = target;
+        step_ = 0;
+        stepSize_ = (steps_ > 0) ? ((target_ - current_) / static_cast<T>(steps_)) : 0;
+    }
+    T getNextValue() noexcept {
+        if (step_ < steps_) {
+            current_ += stepSize_;
+            ++step_;
+        } else {
+            current_ = target_;
+        }
+        return current_;
+    }
+    T getCurrentValue() const noexcept { return current_; }
+    bool isSmoothing() const noexcept { return step_ < steps_; }
+private:
+    T current_{ 0 };
+    T target_{ 0 };
+    T stepSize_{ 0 };
+    int steps_{ 1 };
+    int step_{ 1 };
+};
 
 } // namespace DSPUtils
 

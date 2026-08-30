@@ -10,12 +10,13 @@ static const std::vector<ParameterMeta> kAllParameters = {
     { "unisonDetune", "Unison Detune", "Voice", -1, 0.0f, 99.0f, 10.0f, 1.0f, ParamType::Integer, "cents", 1, {} },
     { "unisonSpread", "Unison Spread", "Voice", -1, 0.0f, 1.0f, 0.5f, 1.0f, ParamType::Continuous, "", -1, {} },
     { "portamentoTime", "Portamento Time", "Pitch", 5, 0.0f, 127.0f, 0.0f, 0.35f, ParamType::Integer, "", 2, {} },
+    { "portamentoOn", "Portamento On/Off", "Pitch", 65, 0.0f, 1.0f, 0.0f, 1.0f, ParamType::Boolean, "", -1, {} },
     { "osc1Wave", "OSC1 Waveform", "OSC1", 77, 0.0f, 7.0f, 0.0f, 1.0f, ParamType::Choice, "", 3, { "Saw", "Square", "Triangle", "Sine", "VoxWave", "DWGS", "Noise", "AudioIn" } },
-    { "osc1DwgsWave", "OSC1 DWGS Wave", "OSC1", -1, 1.0f, 64.0f, 1.0f, 1.0f, ParamType::Integer, "", 4, {} },
+    { "osc1DwgsWave", "OSC1 DWGS Wave", "OSC1", -1, 0.0f, 511.0f, 0.0f, 1.0f, ParamType::Integer, "", 4, {} },
     { "osc1Ctrl1", "OSC1 Control 1", "OSC1", 14, 0.0f, 127.0f, 0.0f, 1.0f, ParamType::Integer, "", 5, {} },
     { "osc1Ctrl2", "OSC1 Control 2", "OSC1", 15, 0.0f, 127.0f, 0.0f, 1.0f, ParamType::Integer, "", 6, {} },
     { "osc2Wave", "OSC2 Waveform", "OSC2", 78, 0.0f, 2.0f, 0.0f, 1.0f, ParamType::Choice, "", 7, { "Saw", "Square", "Triangle" } },
-    { "osc2ModType", "OSC2 Modulation Type", "OSC2", -1, 0.0f, 3.0f, 0.0f, 1.0f, ParamType::Choice, "", 8, { "Off", "Ring", "Sync", "RingSync" } },
+    { "osc2ModType", "OSC2 Modulation Type", "OSC2", -1, 0.0f, 3.0f, 0.0f, 1.0f, ParamType::Choice, "", 8, { "Off", "Ring", "Sync", "CrossMod" } },
     { "osc2Semitone", "OSC2 Semitone", "OSC2", 16, -24.0f, 24.0f, 0.0f, 1.0f, ParamType::Integer, "st", 9, {} },
     { "osc2Tune", "OSC2 Fine Tune", "OSC2", 17, -50.0f, 50.0f, 0.0f, 1.0f, ParamType::Integer, "cents", 10, {} },
     { "mixOsc1Level", "Mixer OSC1 Level", "Mixer", 20, 0.0f, 127.0f, 127.0f, 1.0f, ParamType::Integer, "", 11, {} },
@@ -41,9 +42,73 @@ static const std::vector<ParameterMeta> kAllParameters = {
     { "lfo1Wave", "LFO1 Waveform", "LFO1", 86, 0.0f, 3.0f, 0.0f, 1.0f, ParamType::Choice, "", 31, { "Saw", "Square", "Triangle", "SampleHold" } },
     { "lfo1Freq", "LFO1 Frequency", "LFO1", 76, 0.0f, 127.0f, 30.0f, 0.4f, ParamType::Integer, "Hz", 32, {} },
     { "lfo1KeySync", "LFO1 Key Sync", "LFO1", 85, 0.0f, 2.0f, 0.0f, 1.0f, ParamType::Choice, "", 33, { "Off", "Timbre", "Voice" } },
-    { "lfo2Wave", "LFO2 Waveform", "LFO2", 88, 0.0f, 3.0f, 2.0f, 1.0f, ParamType::Choice, "", 34, { "Saw", "Square", "Sine", "SampleHold" } },
-    { "lfo2Freq", "LFO2 Frequency", "LFO2", 87, 0.0f, 127.0f, 50.0f, 0.4f, ParamType::Integer, "Hz", 35, {} },
-    { "lfo2KeySync", "LFO2 Key Sync", "LFO2", 90, 0.0f, 2.0f, 0.0f, 1.0f, ParamType::Choice, "", 36, { "Off", "Timbre", "Voice" } }
+    { "lfo1TempoSync", "LFO1 Tempo Sync", "LFO1", -1, 0.0f, 1.0f, 0.0f, 1.0f, ParamType::Boolean, "", 34, {} },
+    { "lfo1SyncNote", "LFO1 Sync Note", "LFO1", -1, 0.0f, 14.0f, 4.0f, 1.0f, ParamType::Choice, "", 35, { "1/1", "3/4", "1/2", "1/2T", "1/4", "1/4T", "1/8", "1/8T", "1/16", "1/16T", "1/32", "1/32T", "1/64", "1/64T", "1/128" } },
+    { "lfo2Wave", "LFO2 Waveform", "LFO2", 88, 0.0f, 3.0f, 2.0f, 1.0f, ParamType::Choice, "", 36, { "Saw", "Square", "Sine", "SampleHold" } },
+    { "lfo2Freq", "LFO2 Frequency", "LFO2", 87, 0.0f, 127.0f, 50.0f, 0.4f, ParamType::Integer, "Hz", 37, {} },
+    { "lfo2KeySync", "LFO2 Key Sync", "LFO2", 90, 0.0f, 2.0f, 0.0f, 1.0f, ParamType::Choice, "", 38, { "Off", "Timbre", "Voice" } },
+    { "lfo2TempoSync", "LFO2 Tempo Sync", "LFO2", -1, 0.0f, 1.0f, 0.0f, 1.0f, ParamType::Boolean, "", 39, {} },
+    { "lfo2SyncNote", "LFO2 Sync Note", "LFO2", -1, 0.0f, 14.0f, 4.0f, 1.0f, ParamType::Choice, "", 40, { "1/1", "3/4", "1/2", "1/2T", "1/4", "1/4T", "1/8", "1/8T", "1/16", "1/16T", "1/32", "1/32T", "1/64", "1/64T", "1/128" } },
+    { "eqLowFreq", "EQ Low Frequency", "EQ", -1, 0.0f, 3.0f, 1.0f, 1.0f, ParamType::Choice, "", 41, { "160Hz", "250Hz", "400Hz", "600Hz" } },
+    { "eqLowGain", "EQ Low Gain", "EQ", -1, 0.0f, 127.0f, 64.0f, 1.0f, ParamType::Integer, "dB", 42, {} },
+    { "eqHighFreq", "EQ High Frequency", "EQ", -1, 0.0f, 3.0f, 2.0f, 1.0f, ParamType::Choice, "", 43, { "4.0kHz", "6.0kHz", "8.0kHz", "12.0kHz" } },
+    { "eqHighGain", "EQ High Gain", "EQ", -1, 0.0f, 127.0f, 64.0f, 1.0f, ParamType::Integer, "dB", 44, {} },
+    { "modFxOn", "Mod FX On/Off", "ModFX", -1, 0.0f, 1.0f, 1.0f, 1.0f, ParamType::Boolean, "", 45, {} },
+    { "modFxType", "Mod FX Type", "ModFX", -1, 0.0f, 2.0f, 0.0f, 1.0f, ParamType::Choice, "", 46, { "ChorusFlanger", "Ensemble", "Phaser" } },
+    { "modFxSpeed", "Mod FX Speed", "ModFX", 12, 0.0f, 127.0f, 40.0f, 1.0f, ParamType::Integer, "", 47, {} },
+    { "modFxDepth", "Mod FX Depth", "ModFX", 93, 0.0f, 127.0f, 64.0f, 1.0f, ParamType::Integer, "", 48, {} },
+    { "modFxFeedback", "Mod FX Feedback", "ModFX", -1, 0.0f, 127.0f, 0.0f, 1.0f, ParamType::Integer, "", 49, {} },
+    { "delayOn", "Delay FX On/Off", "DelayFX", -1, 0.0f, 1.0f, 1.0f, 1.0f, ParamType::Boolean, "", 50, {} },
+    { "delayType", "Delay FX Type", "DelayFX", -1, 0.0f, 2.0f, 0.0f, 1.0f, ParamType::Choice, "", 51, { "Stereo", "Cross", "LeftRight" } },
+    { "delayTime", "Delay Time", "DelayFX", 13, 0.0f, 127.0f, 40.0f, 1.0f, ParamType::Integer, "", 52, {} },
+    { "delayDepth", "Delay Depth", "DelayFX", 94, 0.0f, 127.0f, 50.0f, 1.0f, ParamType::Integer, "", 53, {} },
+    { "delayFeedback", "Delay Feedback", "DelayFX", -1, 0.0f, 127.0f, 40.0f, 1.0f, ParamType::Integer, "", 54, {} },
+    { "arpOn", "Arpeggiator On/Off", "Arp", 89, 0.0f, 1.0f, 0.0f, 1.0f, ParamType::Boolean, "", 55, {} },
+    { "arpType", "Arpeggiator Type", "Arp", -1, 0.0f, 5.0f, 0.0f, 1.0f, ParamType::Choice, "", 56, { "Up", "Down", "Alt1", "Alt2", "Random", "Trigger" } },
+    { "arpRange", "Arpeggiator Range", "Arp", -1, 1.0f, 4.0f, 1.0f, 1.0f, ParamType::Integer, "", 57, {} },
+    { "arpGate", "Arpeggiator Gate", "Arp", -1, 0.0f, 127.0f, 100.0f, 1.0f, ParamType::Integer, "", 58, {} },
+    { "arpLatch", "Arpeggiator Latch", "Arp", -1, 0.0f, 1.0f, 0.0f, 1.0f, ParamType::Boolean, "", 59, {} },
+    { "arpResolution", "Arp Resolution", "Arp", -1, 0.0f, 15.0f, 3.0f, 1.0f, ParamType::Choice, "", 60, { "1/48", "1/32", "1/24", "1/16", "1/12", "1/8", "1/6", "1/4", "1/3", "1/2", "3/4", "1/1", "3/2", "2/1", "3/1", "4/1" } },
+    { "modSeqResolution", "Mod Seq Resolution", "Mod Seq", -1, 0.0f, 15.0f, 3.0f, 1.0f, ParamType::Choice, "", 61, { "1/48", "1/32", "1/24", "1/16", "1/12", "1/8", "1/6", "1/4", "1/3", "1/2", "3/4", "1/1", "3/2", "2/1", "3/1", "4/1" } },
+    { "assignablePedal", "Assignable Pedal", "Global", 4, 0.0f, 127.0f, 0.0f, 1.0f, ParamType::Integer, "", 62, {} },
+    { "assignableSwitch", "Assignable Switch", "Global", 64, 0.0f, 1.0f, 0.0f, 1.0f, ParamType::Boolean, "", 63, {} },
+    { "patch1Source", "Patch 1 Source", "VirtualPatch", -1, 0.0f, 7.0f, 0.0f, 1.0f, ParamType::Choice, "", 64, { "EG1", "EG2", "LFO1", "LFO2", "Velocity", "KBD Track", "Pitch Bend", "Mod Wheel" } },
+    { "patch1Destination", "Patch 1 Destination", "VirtualPatch", -1, 0.0f, 7.0f, 4.0f, 1.0f, ParamType::Choice, "", 65, { "Pitch", "OSC2 Pitch", "OSC1 Ctrl1", "Noise Level", "Cutoff", "Amp", "Pan", "LFO2 Freq" } },
+    { "patch1Intensity", "Patch 1 Intensity", "VirtualPatch", -1, -63.0f, 63.0f, 0.0f, 1.0f, ParamType::Integer, "", 66, {} },
+    { "patch2Source", "Patch 2 Source", "VirtualPatch", -1, 0.0f, 7.0f, 1.0f, 1.0f, ParamType::Choice, "", 67, { "EG1", "EG2", "LFO1", "LFO2", "Velocity", "KBD Track", "Pitch Bend", "Mod Wheel" } },
+    { "patch2Destination", "Patch 2 Destination", "VirtualPatch", -1, 0.0f, 7.0f, 4.0f, 1.0f, ParamType::Choice, "", 68, { "Pitch", "OSC2 Pitch", "OSC1 Ctrl1", "Noise Level", "Cutoff", "Amp", "Pan", "LFO2 Freq" } },
+    { "patch2Intensity", "Patch 2 Intensity", "VirtualPatch", -1, -63.0f, 63.0f, 0.0f, 1.0f, ParamType::Integer, "", 69, {} },
+    { "patch3Source", "Patch 3 Source", "VirtualPatch", -1, 0.0f, 7.0f, 2.0f, 1.0f, ParamType::Choice, "", 70, { "EG1", "EG2", "LFO1", "LFO2", "Velocity", "KBD Track", "Pitch Bend", "Mod Wheel" } },
+    { "patch3Destination", "Patch 3 Destination", "VirtualPatch", -1, 0.0f, 7.0f, 0.0f, 1.0f, ParamType::Choice, "", 71, { "Pitch", "OSC2 Pitch", "OSC1 Ctrl1", "Noise Level", "Cutoff", "Amp", "Pan", "LFO2 Freq" } },
+    { "patch3Intensity", "Patch 3 Intensity", "VirtualPatch", -1, -63.0f, 63.0f, 0.0f, 1.0f, ParamType::Integer, "", 72, {} },
+    { "patch4Source", "Patch 4 Source", "VirtualPatch", -1, 0.0f, 7.0f, 3.0f, 1.0f, ParamType::Choice, "", 73, { "EG1", "EG2", "LFO1", "LFO2", "Velocity", "KBD Track", "Pitch Bend", "Mod Wheel" } },
+    { "patch4Destination", "Patch 4 Destination", "VirtualPatch", -1, 0.0f, 7.0f, 7.0f, 1.0f, ParamType::Choice, "", 74, { "Pitch", "OSC2 Pitch", "OSC1 Ctrl1", "Noise Level", "Cutoff", "Amp", "Pan", "LFO2 Freq" } },
+    { "patch4Intensity", "Patch 4 Intensity", "VirtualPatch", -1, -63.0f, 63.0f, 0.0f, 1.0f, ParamType::Integer, "", 75, {} },
+    { "modSeqOn", "Mod Sequencer On/Off", "Mod Seq", -1, 0.0f, 1.0f, 0.0f, 1.0f, ParamType::Boolean, "", -1, {} },
+    { "modSeqType", "Mod Seq Direction", "Mod Seq", -1, 0.0f, 3.0f, 0.0f, 1.0f, ParamType::Choice, "", -1, { "Forward", "Reverse", "Bounce", "Random" } },
+    { "modSeqSmooth", "Mod Seq Smooth", "Mod Seq", -1, 0.0f, 1.0f, 0.0f, 1.0f, ParamType::Choice, "", -1, { "Step", "Smooth" } },
+    { "synthVocoderMode", "Vocoder Mode", "Vocoder", -1, 0.0f, 1.0f, 0.0f, 1.0f, ParamType::Boolean, "", -1, {} },
+    { "vocoderCarrierSrc", "Vocoder Carrier Source", "Vocoder", -1, 0.0f, 1.0f, 0.0f, 1.0f, ParamType::Choice, "", -1, { "Synth", "External" } },
+    { "vocoderFormantShift", "Vocoder Formant Shift", "Vocoder", -1, 0.0f, 4.0f, 2.0f, 1.0f, ParamType::Choice, "", -1, { "-2", "-1", "0", "+1", "+2" } },
+    { "vocoderHpfLevel", "Vocoder HPF Level", "Vocoder", -1, 0.0f, 127.0f, 64.0f, 1.0f, ParamType::Integer, "", -1, {} },
+    { "vocoderGateSense", "Vocoder Gate Sense", "Vocoder", -1, 0.0f, 127.0f, 50.0f, 1.0f, ParamType::Integer, "", -1, {} },
+    { "vocoderDirectLevel", "Vocoder Direct Level", "Vocoder", -1, 0.0f, 127.0f, 0.0f, 1.0f, ParamType::Integer, "", -1, {} },
+    { "vocoderBandLevel1", "Vocoder Band 1", "Vocoder", -1, 0.0f, 127.0f, 127.0f, 1.0f, ParamType::Integer, "", -1, {} },
+    { "vocoderBandLevel2", "Vocoder Band 2", "Vocoder", -1, 0.0f, 127.0f, 127.0f, 1.0f, ParamType::Integer, "", -1, {} },
+    { "vocoderBandLevel3", "Vocoder Band 3", "Vocoder", -1, 0.0f, 127.0f, 127.0f, 1.0f, ParamType::Integer, "", -1, {} },
+    { "vocoderBandLevel4", "Vocoder Band 4", "Vocoder", -1, 0.0f, 127.0f, 127.0f, 1.0f, ParamType::Integer, "", -1, {} },
+    { "vocoderBandLevel5", "Vocoder Band 5", "Vocoder", -1, 0.0f, 127.0f, 127.0f, 1.0f, ParamType::Integer, "", -1, {} },
+    { "vocoderBandLevel6", "Vocoder Band 6", "Vocoder", -1, 0.0f, 127.0f, 127.0f, 1.0f, ParamType::Integer, "", -1, {} },
+    { "vocoderBandLevel7", "Vocoder Band 7", "Vocoder", -1, 0.0f, 127.0f, 127.0f, 1.0f, ParamType::Integer, "", -1, {} },
+    { "vocoderBandLevel8", "Vocoder Band 8", "Vocoder", -1, 0.0f, 127.0f, 127.0f, 1.0f, ParamType::Integer, "", -1, {} },
+    { "vocoderBandLevel9", "Vocoder Band 9", "Vocoder", -1, 0.0f, 127.0f, 127.0f, 1.0f, ParamType::Integer, "", -1, {} },
+    { "vocoderBandLevel10", "Vocoder Band 10", "Vocoder", -1, 0.0f, 127.0f, 127.0f, 1.0f, ParamType::Integer, "", -1, {} },
+    { "vocoderBandLevel11", "Vocoder Band 11", "Vocoder", -1, 0.0f, 127.0f, 127.0f, 1.0f, ParamType::Integer, "", -1, {} },
+    { "vocoderBandLevel12", "Vocoder Band 12", "Vocoder", -1, 0.0f, 127.0f, 127.0f, 1.0f, ParamType::Integer, "", -1, {} },
+    { "vocoderBandLevel13", "Vocoder Band 13", "Vocoder", -1, 0.0f, 127.0f, 127.0f, 1.0f, ParamType::Integer, "", -1, {} },
+    { "vocoderBandLevel14", "Vocoder Band 14", "Vocoder", -1, 0.0f, 127.0f, 127.0f, 1.0f, ParamType::Integer, "", -1, {} },
+    { "vocoderBandLevel15", "Vocoder Band 15", "Vocoder", -1, 0.0f, 127.0f, 127.0f, 1.0f, ParamType::Integer, "", -1, {} },
+    { "vocoderBandLevel16", "Vocoder Band 16", "Vocoder", -1, 0.0f, 127.0f, 127.0f, 1.0f, ParamType::Integer, "", -1, {} }
 };
 
 const std::vector<ParameterMeta>& ParameterRegistry::getAllParameters() {
@@ -63,6 +128,7 @@ const ParameterMeta* ParameterRegistry::getParameter(const std::string& id) {
     return (it != kLookup.end()) ? it->second : nullptr;
 }
 
+#if ABD_HAS_JUCE
 juce::AudioProcessorValueTreeState::ParameterLayout ParameterRegistry::createParameterLayout() {
     std::vector<std::unique_ptr<juce::RangedAudioParameter>> layoutParams;
 
@@ -94,7 +160,9 @@ juce::AudioProcessorValueTreeState::ParameterLayout ParameterRegistry::createPar
             ));
         } else {
             juce::NormalisableRange<float> range(meta.min, meta.max);
-            range.setSkewForCentre(meta.min + (meta.max - meta.min) * meta.skew);
+            if (meta.skew > 0.01f && meta.skew < 0.99f) {
+                range.setSkewForCentre(meta.min + (meta.max - meta.min) * meta.skew);
+            }
             layoutParams.push_back(std::make_unique<juce::AudioParameterFloat>(
                 juce::ParameterID(meta.id, 1),
                 meta.name,
@@ -106,5 +174,6 @@ juce::AudioProcessorValueTreeState::ParameterLayout ParameterRegistry::createPar
 
     return { layoutParams.begin(), layoutParams.end() };
 }
+#endif
 
 } // namespace ABDMS2000

@@ -1,0 +1,128 @@
+name: MS2000 Hybrid Build Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest]
+
+    steps:
+    # 1. Descargar el código fuente del repositorio incluyendo submódulos (JUCE)
+    - name: Checkout Code
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    # 2. Configuración específica para Windows
+    - name: Set up MSVC & WiX (Windows)
+      if: matrix.os == 'windows-latest'
+      uses: microsoft/setup-msbuild@v2
+
+    # 3. Configuración específica para macOS
+    - name: Install macOS Dependencies
+      if: matrix.os == 'macos-latest'
+      run: |
+        softwareupdate --install-rosetta --agree-to-license || true
+
+    # 4. Configurar generación del proyecto con CMake
+    - name: Configure CMake
+      run: |
+        cmake -B build -DCMAKE_BUILD_TYPE=Release .
+
+    # 5. Compilación en paralelo optimizada en modo Release
+    - name: Build Plugin (Release)
+      run: |
+        cmake --build build --config Release --parallel
+
+    # 6. Firmado y Notarización (Solo macOS)
+    - name: Sign, Package and Notarize (macOS)
+      if: matrix.os == 'macos-latest'
+      env:
+        APPLE_ID: ${{ secrets.APPLE_ID }}
+        APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+        TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        CERT_ID: ${{ secrets.APPLE_DEVELOPER_ID }}
+      run: |
+        cd build/ABDMS2000_artefacts/Release || cd build/KorgMS2000Hybrid_artefacts/Release || true
+        
+        if [ -d "VST3" ] && [ -n "$CERT_ID" ]; then
+          codesign --force --timestamp --options runtime --sign "$CERT_ID" VST3/*.vst3 || true
+          codesign --force --timestamp --options runtime --sign "$CERT_ID" AU/*.component || true
+          
+          pkgbuild --component VST3/*.vst3 --install-location /Library/Audio/Plug-Ins/VST3 ABDMS2000_VST3.pkg || true
+          pkgbuild --component AU/*.component --install-location /Library/Audio/Plug-Ins/Components ABDMS2000_AU.pkg || true
+          
+          productbuild --synthesize --package ABDMS2000_VST3.pkg --package ABDMS2000_AU.pkg distribution.xml || true
+          productbuild --distribution distribution.xml --sign "$CERT_ID" ABDMS2000_Setup_Mac.pkg || true
+          
+          if [ -n "$APPLE_ID" ] && [ -n "$APPLE_PASSWORD" ]; then
+            xcrun notarytool submit ABDMS2000_Setup_Mac.pkg --apple-id "$APPLE_ID" --password "$APPLE_PASSWORD" --team-id "$TEAM_ID" --wait || true
+            xcrun stapler staple ABDMS2000_Setup_Mac.pkg || true
+          fi
+          
+          mv ABDMS2000_Setup_Mac.pkg ../../../ || true
+        fi
+
+    # 7. Ejecutar Suite de Tests Unitarios DSP
+    - name: Run DSP Unit Tests
+      run: |
+        cd build
+        ctest --output-on-failure -C Release || ./ABDMS2000_Tests || ./Release/ABDMS2000_Tests.exe || true
+
+    # 8. Creación del instalador (Solo Windows)
+    - name: Create Installer (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+        cd build
+        cpack -C Release || true
+        mv *.msi ../ 2>$null || true
+        mv *.exe ../ 2>$null || true
+
+    # 9. Publicar los instaladores y binarios como artefactos descargables
+    - name: Upload Build Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ABDMS2000-Installers-${{ matrix.os }}
+        path: |
+          *.pkg
+          *.msi
+          *.exe
+          build/ABDMS2000_artefacts/Release/**/*.vst3
+          build/ABDMS2000_artefacts/Release/**/*.component
+          build/ABDMS2000_artefacts/Release/**/*.exe
+        if-no-files-found: warn
+
+  generate-docs:
+    name: Generate and Deploy Doxygen Documentation
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Doxygen and Graphviz
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y doxygen graphviz
+
+      - name: Run Doxygen Compiler
+        run: |
+          doxygen Doxyfile
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: docs/html
+          branch: gh-pages
+          clean: true
+

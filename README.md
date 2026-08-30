@@ -40,21 +40,115 @@
 
 ---
 
-## 📁 Estructura del Proyecto
+## 📁 Arquitectura General del Repositorio
 
-```
+```text
 ABDMS2000/
-├── CMakeLists.txt              # Configuración principal de build (JUCE 8)
-├── build.bat                   # Script de compilación Standalone + VST3
-├── ROADMAP.md                  # Seguimiento y validación de fases 0 a 9
-├── implementation_plan.md      # Especificación técnica exhaustiva
-├── DOCS/                       # Archivos de investigación, ingeniería inversa y manuales
-├── schemas/                    # Contratos JSON canónicos
-├── Scripts/                    # Generadores de código y empaquetadores
-├── Source/                     # Código fuente C++ (Core, DSP, Plugin, MIDI, State)
-├── WebUI/                      # Interfaz de usuario (HTML5, CSS3, ES Modules)
-└── wasm/                       # Configuración de compilación Emscripten
+├── CMakeLists.txt                    # Configuración principal de build (JUCE 8 + C++20)
+├── build.bat                         # Script de compilación Standalone + VST3
+├── ROADMAP.md                        # Seguimiento y validación de fases 0 a 9
+├── implementation_plan.md            # Especificación técnica exhaustiva
+├── DOCS/                             # Especificaciones de ingeniería inversa y SysEx
+├── schemas/                          # Contratos JSON canónicos
+├── Scripts/                          # Generadores de código y empaquetadores
+│
+├── Source/
+│   ├── Core/                         # Motor de Síntesis y Telemetría RT
+│   │   ├── SynthEngine.h / .cpp      # Orquestador del hilo de audio y cadena DSP
+│   │   ├── Voice.h / .cpp            # Voz individual analógico-virtual
+│   │   ├── VoiceManager.h / .cpp     # Asignador de polifonía (4 voces) y robo inteligente
+│   │   ├── VoiceParameters.h         # Estructura POD de parámetros por bloque
+│   │   └── AudioThreadSnapshot.h     # Estructura POD Lock-Free para telemetría a 60 FPS
+│   │
+│   ├── DSP/                          # Algoritmos DSP y Procesamiento de Señal
+│   │   ├── Oscillators/              # PolyBLEP (Saw/Pulse/Tri/Sine), DWGS (64 ondas), VoxWave
+│   │   ├── Filters/                  # VCF Multimodo (24dB LPF, 12dB LPF/BPF/HPF) ZDF/TPT
+│   │   ├── Envelopes/                # Generadores ADSR exponenciales analógicos
+│   │   ├── LFO/                      # LFOs 1 & 2 sincronizados por fase métrica al DAW
+│   │   ├── Modulation/               # Virtual Patch (4 slots), ModSequencer (3x16), Arp, Portamento
+│   │   ├── FX/                       # ModFX (Chorus/Ensemble/Phaser), DelayFX, Equalizer
+│   │   └── Vocoder/                  # Vocoder 16 bandas unrolled, Follower y Bus HPF Sibilancia
+│   │
+│   ├── MIDI/                         # Telemetría MIDI y Sistema Exclusivo (SysEx)
+│   │   ├── MIDIMap.h / .cpp          # Tabla de 74 Control Changes canónicos
+│   │   ├── NRPNParser.h / .cpp       # Intérprete y serializador de parámetros de 14 bits
+│   │   ├── MIDITelemetryManager.h    # Filtro anti-eco y gestor bidireccional MIDI
+│   │   ├── SysExCodec.h / .cpp       # Algoritmo de empaquetado/desempaquetado 7 <-> 8 bits
+│   │   ├── MS2000ProgramData.h       # Mapa binario estructurado de 256 bytes de memoria
+│   │   ├── SysExManager.h / .cpp     # Gestor de volcados (.syx / .mid), banco 128 programas
+│   │   └── MS2000SysExExporter.h     # Exportador de archivos .syx para hardware físico
+│   │
+│   ├── State/                        # Estado, Parches y Presets
+│   │   ├── ParameterRegistry.gen.h   # Árbol canónico APVTS generado automáticamente
+│   │   ├── MS2000PatchBuilder.h      # Inicializador "Init Synth" y Randomizador Acotado
+│   │   ├── MS2000FactoryBank.h       # Banco de presets de fábrica grabado en binario
+│   │   └── LCDMenuFormatter.h        # Motor de texto para pantalla LCD 16x2
+│   │
+│   ├── Plugin/                       # Wrappers de Plugin e Interfaz Gráfica
+│   │   ├── PluginProcessor.h / .cpp  # Implementación AudioProcessor y getState/setState
+│   │   ├── PluginEditor.h / .cpp     # Contenedor WebView2 y componentes nativos
+│   │   ├── BridgeActions.h / .cpp    # Handlers IPC entre JavaScript y C++
+│   │   ├── KorgLookAndFeel.h         # Potenciómetros vectoriales estriados cilíndricos
+│   │   ├── KorgButtonLookAndFeel.h   # Botones pulsadores translúcidos con diodo LED
+│   │   ├── KorgLedButton.h           # Botón individual con cavidad y glow analógico
+│   │   └── MS2000StepArray.h         # Matriz horizontal de 16 pasos con Playhead tracking
+│   │
+│   └── Tests/                        # Pruebas Unitarias de Rendimiento y Paridad
+│       └── DSPCoreTests.cpp          # Suite de verificación DSP, MIDI y códec SysEx
+│
+├── WebUI/                            # Interfaz de Usuario Gráfica (HTML5, CSS3, JS)
+│   ├── index.html                    # Layout principal y modales
+│   ├── src/                          # Módulos JS (app.js, bridge.js, panel*.js, bankManager.js)
+│   └── styles/                       # CSS Tokens y temas (themes.css, main.css)
+│
+└── wasm/                             # Pipeline de compilación WebAssembly (AudioWorklet)
 ```
+
+---
+
+## 🛠️ Firmas Técnicas y Contratos de Métodos Clave
+
+### 1. Sistema de Control de Voces y Afinación
+* **`VoiceManager::noteOn(int midiNote, float velocity)`**:
+  Registra eventos de nota presionada. En modo `Mono/Unison`, implementa prioridad de última nota. En modo `Poly`, administra la asignación a las 4 voces analógico-virtuales con algoritmo de ladrón de voces estricto (*Priority 1: Release más tenue; Priority 2: FIFO en Sustain; Priority 3: Re-trigger de misma nota sin clics*).
+* **`PortamentoGlide::process(double targetFreq) -> double`**:
+  Implementa el *Slew Limiter* exponencial muestra a muestra con coeficiente $\alpha = \exp(-1.0 / (T \times f_s))$. Si `noteCounter == 1`, salta de frecuencia instantáneamente para ejecutar *Fingered/Legato Glide*.
+
+---
+
+### 2. Motor DSP del Vocoder Polifónico Multimodo
+* **`Vocoder16Band::process(float modSample, float carrierSample, float& outLeft, float& outRight)`**:
+  Ejecuta la modulación cruzada de las 16 bandas fijas mediante **Loop Unrolling** total sin condiciones de salto (*zero branch overhead*). Procesa el bus paralelo de sibilancia a $8.0\text{ kHz}$ con inyección de ruido blanco o bypass de audio de entrada según `hpfGate`.
+
+---
+
+### 3. Matriz de Modulación Virtual (*Virtual Patch*)
+* **`ModMatrix::process(size_t slotIndex, float sourceValue) -> float`**:
+  Calcula el aporte de modulación de los 4 *slots* asignables:
+  * `VCF Cutoff`: Escala de 5 Octavas exponenciales.
+  * `Pitch / OSC2 Tune`: Escala rígida de $\pm 24$ semitonos (2 octavas).
+
+---
+
+### 4. Conectividad Externa y Serialización (SysEx / Persistencia)
+* **`SysExCodec::unpack7to8(...)` & `SysExCodec::pack8to7(...)`**:
+  Codificación/decodificación sin pérdidas de bloques de 7 bytes de 8 bits a 8 bytes de 7 bits con recolección de MSB.
+* **`ABDMS2000AudioProcessor::getStateInformation(...) / setStateInformation(...)`**:
+  Serializa el árbol de parámetros `APVTS` y metadatos persistentes (`currentProgramIndex`, `currentProgramName` de 12 caracteres) en flujo XML binario comprimido para guardado/restauración de sesiones en el DAW con protección anti-clics vía `LinearSmoothedValue`.
+
+---
+
+### 5. Generador Estocástico Inteligente
+* **`MS2000PatchBuilder::buildMusicalRandomPatch(juce::AudioProcessorValueTreeState& apvts)`**:
+  Algoritmo estocástico acotado por zonas de síntesis que previene sonidos nulos, asegurando presencia en osciladores ($80 - 127$), filtro en zona dulce ($40 - 127$), y acoplamiento dinámico de envolventes contra silencios.
+
+---
+
+## 🚦 Protocolo de Integración Continua y Buenas Prácticas
+
+1. **Protección Real-Time en Audio Thread**: Prohibida la asignación dinámica de memoria (`new`/`malloc`), redimensionamiento de contenedores o llamadas bloqueantes en `processBlock` y métodos de audio DSP.
+2. **Compilación en Release para Profiling**: Para medir el rendimiento real de los LFOs sincronizados y las cadenas del vocoder, compilar en modo **Release** (`-O3` / `/O2`) aprovechando vectorización SIMD / AVX.
+3. **Desacoplo de Componentes Gráficos**: Todo componente al que se le asigne un `LookAndFeel` debe llamar estrictamente a `setLookAndFeel(nullptr)` en el destructor de su contenedor para evitar fugas de memoria o punteros colgantes (*Dangling Pointers*).
 
 ---
 
@@ -74,3 +168,4 @@ build.bat
 ---
 
 *Desarrollado por ajabadia — Suite de Sintetizadores ABD.*
+
