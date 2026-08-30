@@ -1,0 +1,229 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Archivo de código fuente Source/DSP/Modulation/VirtualPatchMatrix.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a class="el" href="dir_28f92771c0af6f341cedd07750149305.html">DSP</a></li><li class="navelem"><a class="el" href="dir_a2627fe50b01e856c7e03170da9fe3b4.html">Modulation</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle"><div class="title">VirtualPatchMatrix.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="VirtualPatchMatrix_8h.html">Ir a la documentación de este archivo.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &lt;array&gt;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceABDMS2000.html">ABDMS2000</a> {</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="foldopen" id="foldopen00006" data-start="{" data-end="};">
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="namespaceABDMS2000.html#a7895228f7783119e55c6fd4abdc08e4c">    6</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="namespaceABDMS2000.html#a7895228f7783119e55c6fd4abdc08e4c">PatchSource</a> {</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#a7895228f7783119e55c6fd4abdc08e4ca98d3707bca086bd36b09d19f1a17fff3">EG1</a> = 0,</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#a7895228f7783119e55c6fd4abdc08e4caff255f850f7f528e7fcae99c810ad0cb">EG2</a>,</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#a7895228f7783119e55c6fd4abdc08e4caab45a06441aa36e8dfeb86cc6b05d86a">LFO1</a>,</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#a7895228f7783119e55c6fd4abdc08e4ca3fcb9e41b6787e68a182e20ec6992160">LFO2</a>,</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#a7895228f7783119e55c6fd4abdc08e4ca88156d46910a2d733443c339a9231d12">Velocity</a>,</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#a7895228f7783119e55c6fd4abdc08e4cae3712667d2f43ab59ad0307618a9f518">KbdTrack</a>,</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#a7895228f7783119e55c6fd4abdc08e4caccc5c5aaa32fc84dc9fae9dc5b26e28e">PitchBend</a>,</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#a7895228f7783119e55c6fd4abdc08e4cae2c822197ee78c60b393f48b03632214">ModWheel</a></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>};</div>
+</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="foldopen" id="foldopen00017" data-start="{" data-end="};">
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="namespaceABDMS2000.html#aa530c131cc34285864e95f03cf969614">   17</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="namespaceABDMS2000.html#aa530c131cc34285864e95f03cf969614">PatchDestination</a> {</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#aa530c131cc34285864e95f03cf969614a87f800274a7f46c50e17114f89171e2e">Pitch</a> = 0,</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#aa530c131cc34285864e95f03cf969614ad02565a905b7d863e5264e6f7b600941">OSC2Pitch</a>,</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#aa530c131cc34285864e95f03cf969614af7015c185d910d503aa7a29158cd5b67">OSC1Ctrl1</a>,</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#aa530c131cc34285864e95f03cf969614a8139edcf8c0d8d2cc48a8b217faffe02">NoiseLevel</a>,</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#aa530c131cc34285864e95f03cf969614abc5449e9092ea92f5393be6516916084">Cutoff</a>,</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#aa530c131cc34285864e95f03cf969614a341e53def592d09b09f20138324bb306">Amp</a>,</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#aa530c131cc34285864e95f03cf969614af6d4a17b27da35c2d90ce13801f36782">Pan</a>,</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#aa530c131cc34285864e95f03cf969614aeb3ec0ff9f259a30fe80ab0f29b2466c">LFO2Freq</a></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>};</div>
+</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="foldopen" id="foldopen00028" data-start="{" data-end="};">
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1PatchSlot.html">   28</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structABDMS2000_1_1PatchSlot.html">PatchSlot</a> {</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1PatchSlot.html#a06670e6f030ccd485c899ea96b827d85">   29</a></span>    <a class="code hl_enumeration" href="namespaceABDMS2000.html#a7895228f7783119e55c6fd4abdc08e4c">PatchSource</a> <a class="code hl_variable" href="structABDMS2000_1_1PatchSlot.html#a06670e6f030ccd485c899ea96b827d85">source</a>{ <a class="code hl_enumvalue" href="namespaceABDMS2000.html#a7895228f7783119e55c6fd4abdc08e4ca98d3707bca086bd36b09d19f1a17fff3">PatchSource::EG1</a> };</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1PatchSlot.html#aaa055f10552ab95926a58982eb3a047f">   30</a></span>    <a class="code hl_enumeration" href="namespaceABDMS2000.html#aa530c131cc34285864e95f03cf969614">PatchDestination</a> <a class="code hl_variable" href="structABDMS2000_1_1PatchSlot.html#aaa055f10552ab95926a58982eb3a047f">destination</a>{ <a class="code hl_enumvalue" href="namespaceABDMS2000.html#aa530c131cc34285864e95f03cf969614abc5449e9092ea92f5393be6516916084">PatchDestination::Cutoff</a> };</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1PatchSlot.html#a5fed20885ad41e5a964da918f43da501">   31</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="structABDMS2000_1_1PatchSlot.html#a5fed20885ad41e5a964da918f43da501">intensity</a>{ 0.0f }; <span class="comment">// -1.0 to +1.0 (Mapped from -63..+63)</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>};</div>
+</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="foldopen" id="foldopen00034" data-start="{" data-end="};">
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1PatchModulationSources.html">   34</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structABDMS2000_1_1PatchModulationSources.html">PatchModulationSources</a> {</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1PatchModulationSources.html#af9f8596904c92b0aae037a49c31b8300">   35</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="structABDMS2000_1_1PatchModulationSources.html#af9f8596904c92b0aae037a49c31b8300">eg1</a>{ 0.0f };</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1PatchModulationSources.html#a833f927caab0c6cf4b63d7c9df350253">   36</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="structABDMS2000_1_1PatchModulationSources.html#a833f927caab0c6cf4b63d7c9df350253">eg2</a>{ 0.0f };</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1PatchModulationSources.html#a4810faa3ca8a729256432412684ed78c">   37</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="structABDMS2000_1_1PatchModulationSources.html#a4810faa3ca8a729256432412684ed78c">lfo1</a>{ 0.0f };</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1PatchModulationSources.html#af90505b6c9c2134836a38624c962042e">   38</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="structABDMS2000_1_1PatchModulationSources.html#af90505b6c9c2134836a38624c962042e">lfo2</a>{ 0.0f };</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1PatchModulationSources.html#a37337034d256f947c477334fded90d7f">   39</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="structABDMS2000_1_1PatchModulationSources.html#a37337034d256f947c477334fded90d7f">velocity</a>{ 0.0f };</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1PatchModulationSources.html#a55379cea0443d558075e49684ab5f7d1">   40</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="structABDMS2000_1_1PatchModulationSources.html#a55379cea0443d558075e49684ab5f7d1">kbdTrack</a>{ 0.0f };</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1PatchModulationSources.html#ab2eac08c03f7646fa743b84c80a2556c">   41</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="structABDMS2000_1_1PatchModulationSources.html#ab2eac08c03f7646fa743b84c80a2556c">pitchBend</a>{ 0.0f };</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1PatchModulationSources.html#ab92a8f53d33a516ffe6287cd44a0057e">   42</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="structABDMS2000_1_1PatchModulationSources.html#ab92a8f53d33a516ffe6287cd44a0057e">modWheel</a>{ 0.0f };</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>};</div>
+</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="foldopen" id="foldopen00045" data-start="{" data-end="};">
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1PatchModulationOutputs.html">   45</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structABDMS2000_1_1PatchModulationOutputs.html">PatchModulationOutputs</a> {</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1PatchModulationOutputs.html#a67c0fe51153f76fd47ab8e0707a02a1d">   46</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="structABDMS2000_1_1PatchModulationOutputs.html#a67c0fe51153f76fd47ab8e0707a02a1d">pitchMod</a>{ 0.0f };</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1PatchModulationOutputs.html#ac76fe21396da839ea18729f698892856">   47</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="structABDMS2000_1_1PatchModulationOutputs.html#ac76fe21396da839ea18729f698892856">osc2PitchMod</a>{ 0.0f };</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1PatchModulationOutputs.html#a3900f6dfab4a37b2935d205008b91807">   48</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="structABDMS2000_1_1PatchModulationOutputs.html#a3900f6dfab4a37b2935d205008b91807">osc1Ctrl1Mod</a>{ 0.0f };</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1PatchModulationOutputs.html#a3a696c02dfe91909292944934bc85114">   49</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="structABDMS2000_1_1PatchModulationOutputs.html#a3a696c02dfe91909292944934bc85114">noiseLevelMod</a>{ 0.0f };</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1PatchModulationOutputs.html#a8d4c23b11b09fc8b69102b320d35a397">   50</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="structABDMS2000_1_1PatchModulationOutputs.html#a8d4c23b11b09fc8b69102b320d35a397">cutoffMod</a>{ 0.0f };</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1PatchModulationOutputs.html#a6af641b546d407e994da718afdf0e462">   51</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="structABDMS2000_1_1PatchModulationOutputs.html#a6af641b546d407e994da718afdf0e462">ampMod</a>{ 0.0f };</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1PatchModulationOutputs.html#a6e3b4cabfb9520dd8f8c3ed69a8a5082">   52</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="structABDMS2000_1_1PatchModulationOutputs.html#a6e3b4cabfb9520dd8f8c3ed69a8a5082">panMod</a>{ 0.0f };</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1PatchModulationOutputs.html#a3cef0faef1409a1655eb8fd16463f058">   53</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="structABDMS2000_1_1PatchModulationOutputs.html#a3cef0faef1409a1655eb8fd16463f058">lfo2FreqMod</a>{ 0.0f };</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>};</div>
+</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment"></span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="comment"> * @brief 4-Slot Virtual Patch Modulation Matrix.</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment"> */</span></div>
+<div class="foldopen" id="foldopen00059" data-start="{" data-end="};">
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VirtualPatchMatrix.html">   59</a></span><span class="keyword">class </span><a class="code hl_class" href="classABDMS2000_1_1VirtualPatchMatrix.html">VirtualPatchMatrix</a> {</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VirtualPatchMatrix.html#a5e38368684ac2e4ff04501b0cb22390c">   61</a></span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> <a class="code hl_variable" href="classABDMS2000_1_1VirtualPatchMatrix.html#a5e38368684ac2e4ff04501b0cb22390c">NUM_SLOTS</a> = 4;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VirtualPatchMatrix.html#af54d98e303c87488516e88b5b4c61b34">   63</a></span>    <a class="code hl_function" href="classABDMS2000_1_1VirtualPatchMatrix.html#af54d98e303c87488516e88b5b4c61b34">VirtualPatchMatrix</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1VirtualPatchMatrix.html#a3c099be916b564e6b7f83ff1796b966b">setSlot</a>(<span class="keywordtype">size_t</span> slotIndex, <a class="code hl_enumeration" href="namespaceABDMS2000.html#a7895228f7783119e55c6fd4abdc08e4c">PatchSource</a> src, <a class="code hl_enumeration" href="namespaceABDMS2000.html#aa530c131cc34285864e95f03cf969614">PatchDestination</a> dst, <span class="keywordtype">float</span> intensityBipolar) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VirtualPatchMatrix.html#a9f6e2f7f7600ecb2b192294f94da5745">   66</a></span>    <a class="code hl_struct" href="structABDMS2000_1_1PatchSlot.html">PatchSlot</a>&amp; <a class="code hl_function" href="classABDMS2000_1_1VirtualPatchMatrix.html#a9f6e2f7f7600ecb2b192294f94da5745">getSlot</a>(<span class="keywordtype">size_t</span> slotIndex) <span class="keyword">noexcept</span> { <span class="keywordflow">return</span> <a class="code hl_variable" href="classABDMS2000_1_1VirtualPatchMatrix.html#a5114e5bdf33175fed539ba40475d2488">slots_</a>[slotIndex % <a class="code hl_variable" href="classABDMS2000_1_1VirtualPatchMatrix.html#a5e38368684ac2e4ff04501b0cb22390c">NUM_SLOTS</a>]; }</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VirtualPatchMatrix.html#a0678d544d3b4f61345185c980ef3ac69">   67</a></span>    <span class="keyword">const</span> <a class="code hl_struct" href="structABDMS2000_1_1PatchSlot.html">PatchSlot</a>&amp; <a class="code hl_function" href="classABDMS2000_1_1VirtualPatchMatrix.html#a0678d544d3b4f61345185c980ef3ac69">getSlot</a>(<span class="keywordtype">size_t</span> slotIndex) <span class="keyword">const</span> <span class="keyword">noexcept</span> { <span class="keywordflow">return</span> <a class="code hl_variable" href="classABDMS2000_1_1VirtualPatchMatrix.html#a5114e5bdf33175fed539ba40475d2488">slots_</a>[slotIndex % <a class="code hl_variable" href="classABDMS2000_1_1VirtualPatchMatrix.html#a5e38368684ac2e4ff04501b0cb22390c">NUM_SLOTS</a>]; }</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <a class="code hl_struct" href="structABDMS2000_1_1PatchModulationOutputs.html">PatchModulationOutputs</a> <a class="code hl_function" href="classABDMS2000_1_1VirtualPatchMatrix.html#aa4a6d3b0af5527f6b0b958255b4c0476">evaluate</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structABDMS2000_1_1PatchModulationSources.html">PatchModulationSources</a>&amp; sources) <span class="keyword">const</span> <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VirtualPatchMatrix.html#a5114e5bdf33175fed539ba40475d2488">   72</a></span>    std::array&lt;PatchSlot, NUM_SLOTS&gt; <a class="code hl_variable" href="classABDMS2000_1_1VirtualPatchMatrix.html#a5114e5bdf33175fed539ba40475d2488">slots_</a>{};</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keywordtype">float</span> <a class="code hl_function" href="classABDMS2000_1_1VirtualPatchMatrix.html#a2c15aad560018e27e5b3e883595dec93">getSourceValue</a>(<a class="code hl_enumeration" href="namespaceABDMS2000.html#a7895228f7783119e55c6fd4abdc08e4c">PatchSource</a> src, <span class="keyword">const</span> <a class="code hl_struct" href="structABDMS2000_1_1PatchModulationSources.html">PatchModulationSources</a>&amp; s) <span class="keyword">const</span> <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>};</div>
+</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>} <span class="comment">// namespace ABDMS2000</span></div>
+<div class="ttc" id="aclassABDMS2000_1_1VirtualPatchMatrix_html"><div class="ttname"><a href="classABDMS2000_1_1VirtualPatchMatrix.html">ABDMS2000::VirtualPatchMatrix</a></div><div class="ttdoc">4-Slot Virtual Patch Modulation Matrix.</div><div class="ttdef"><b>Definition</b> VirtualPatchMatrix.h:59</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VirtualPatchMatrix_html_a0678d544d3b4f61345185c980ef3ac69"><div class="ttname"><a href="classABDMS2000_1_1VirtualPatchMatrix.html#a0678d544d3b4f61345185c980ef3ac69">ABDMS2000::VirtualPatchMatrix::getSlot</a></div><div class="ttdeci">const PatchSlot &amp; getSlot(size_t slotIndex) const noexcept</div><div class="ttdef"><b>Definition</b> VirtualPatchMatrix.h:67</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VirtualPatchMatrix_html_a2c15aad560018e27e5b3e883595dec93"><div class="ttname"><a href="classABDMS2000_1_1VirtualPatchMatrix.html#a2c15aad560018e27e5b3e883595dec93">ABDMS2000::VirtualPatchMatrix::getSourceValue</a></div><div class="ttdeci">float getSourceValue(PatchSource src, const PatchModulationSources &amp;s) const noexcept</div><div class="ttdef"><b>Definition</b> VirtualPatchMatrix.cpp:14</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VirtualPatchMatrix_html_a3c099be916b564e6b7f83ff1796b966b"><div class="ttname"><a href="classABDMS2000_1_1VirtualPatchMatrix.html#a3c099be916b564e6b7f83ff1796b966b">ABDMS2000::VirtualPatchMatrix::setSlot</a></div><div class="ttdeci">void setSlot(size_t slotIndex, PatchSource src, PatchDestination dst, float intensityBipolar) noexcept</div><div class="ttdef"><b>Definition</b> VirtualPatchMatrix.cpp:6</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VirtualPatchMatrix_html_a5114e5bdf33175fed539ba40475d2488"><div class="ttname"><a href="classABDMS2000_1_1VirtualPatchMatrix.html#a5114e5bdf33175fed539ba40475d2488">ABDMS2000::VirtualPatchMatrix::slots_</a></div><div class="ttdeci">std::array&lt; PatchSlot, NUM_SLOTS &gt; slots_</div><div class="ttdef"><b>Definition</b> VirtualPatchMatrix.h:72</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VirtualPatchMatrix_html_a5e38368684ac2e4ff04501b0cb22390c"><div class="ttname"><a href="classABDMS2000_1_1VirtualPatchMatrix.html#a5e38368684ac2e4ff04501b0cb22390c">ABDMS2000::VirtualPatchMatrix::NUM_SLOTS</a></div><div class="ttdeci">static constexpr size_t NUM_SLOTS</div><div class="ttdef"><b>Definition</b> VirtualPatchMatrix.h:61</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VirtualPatchMatrix_html_a9f6e2f7f7600ecb2b192294f94da5745"><div class="ttname"><a href="classABDMS2000_1_1VirtualPatchMatrix.html#a9f6e2f7f7600ecb2b192294f94da5745">ABDMS2000::VirtualPatchMatrix::getSlot</a></div><div class="ttdeci">PatchSlot &amp; getSlot(size_t slotIndex) noexcept</div><div class="ttdef"><b>Definition</b> VirtualPatchMatrix.h:66</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VirtualPatchMatrix_html_aa4a6d3b0af5527f6b0b958255b4c0476"><div class="ttname"><a href="classABDMS2000_1_1VirtualPatchMatrix.html#aa4a6d3b0af5527f6b0b958255b4c0476">ABDMS2000::VirtualPatchMatrix::evaluate</a></div><div class="ttdeci">PatchModulationOutputs evaluate(const PatchModulationSources &amp;sources) const noexcept</div><div class="ttdef"><b>Definition</b> VirtualPatchMatrix.cpp:30</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VirtualPatchMatrix_html_af54d98e303c87488516e88b5b4c61b34"><div class="ttname"><a href="classABDMS2000_1_1VirtualPatchMatrix.html#af54d98e303c87488516e88b5b4c61b34">ABDMS2000::VirtualPatchMatrix::VirtualPatchMatrix</a></div><div class="ttdeci">VirtualPatchMatrix()=default</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html"><div class="ttname"><a href="namespaceABDMS2000.html">ABDMS2000</a></div><div class="ttdef"><b>Definition</b> AppLogger.h:15</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a7895228f7783119e55c6fd4abdc08e4c"><div class="ttname"><a href="namespaceABDMS2000.html#a7895228f7783119e55c6fd4abdc08e4c">ABDMS2000::PatchSource</a></div><div class="ttdeci">PatchSource</div><div class="ttdef"><b>Definition</b> VirtualPatchMatrix.h:6</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a7895228f7783119e55c6fd4abdc08e4ca3fcb9e41b6787e68a182e20ec6992160"><div class="ttname"><a href="namespaceABDMS2000.html#a7895228f7783119e55c6fd4abdc08e4ca3fcb9e41b6787e68a182e20ec6992160">ABDMS2000::PatchSource::LFO2</a></div><div class="ttdeci">@ LFO2</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a7895228f7783119e55c6fd4abdc08e4ca88156d46910a2d733443c339a9231d12"><div class="ttname"><a href="namespaceABDMS2000.html#a7895228f7783119e55c6fd4abdc08e4ca88156d46910a2d733443c339a9231d12">ABDMS2000::PatchSource::Velocity</a></div><div class="ttdeci">@ Velocity</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a7895228f7783119e55c6fd4abdc08e4ca98d3707bca086bd36b09d19f1a17fff3"><div class="ttname"><a href="namespaceABDMS2000.html#a7895228f7783119e55c6fd4abdc08e4ca98d3707bca086bd36b09d19f1a17fff3">ABDMS2000::PatchSource::EG1</a></div><div class="ttdeci">@ EG1</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a7895228f7783119e55c6fd4abdc08e4caab45a06441aa36e8dfeb86cc6b05d86a"><div class="ttname"><a href="namespaceABDMS2000.html#a7895228f7783119e55c6fd4abdc08e4caab45a06441aa36e8dfeb86cc6b05d86a">ABDMS2000::PatchSource::LFO1</a></div><div class="ttdeci">@ LFO1</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a7895228f7783119e55c6fd4abdc08e4caccc5c5aaa32fc84dc9fae9dc5b26e28e"><div class="ttname"><a href="namespaceABDMS2000.html#a7895228f7783119e55c6fd4abdc08e4caccc5c5aaa32fc84dc9fae9dc5b26e28e">ABDMS2000::PatchSource::PitchBend</a></div><div class="ttdeci">@ PitchBend</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a7895228f7783119e55c6fd4abdc08e4cae2c822197ee78c60b393f48b03632214"><div class="ttname"><a href="namespaceABDMS2000.html#a7895228f7783119e55c6fd4abdc08e4cae2c822197ee78c60b393f48b03632214">ABDMS2000::PatchSource::ModWheel</a></div><div class="ttdeci">@ ModWheel</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a7895228f7783119e55c6fd4abdc08e4cae3712667d2f43ab59ad0307618a9f518"><div class="ttname"><a href="namespaceABDMS2000.html#a7895228f7783119e55c6fd4abdc08e4cae3712667d2f43ab59ad0307618a9f518">ABDMS2000::PatchSource::KbdTrack</a></div><div class="ttdeci">@ KbdTrack</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a7895228f7783119e55c6fd4abdc08e4caff255f850f7f528e7fcae99c810ad0cb"><div class="ttname"><a href="namespaceABDMS2000.html#a7895228f7783119e55c6fd4abdc08e4caff255f850f7f528e7fcae99c810ad0cb">ABDMS2000::PatchSource::EG2</a></div><div class="ttdeci">@ EG2</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_aa530c131cc34285864e95f03cf969614"><div class="ttname"><a href="namespaceABDMS2000.html#aa530c131cc34285864e95f03cf969614">ABDMS2000::PatchDestination</a></div><div class="ttdeci">PatchDestination</div><div class="ttdef"><b>Definition</b> VirtualPatchMatrix.h:17</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_aa530c131cc34285864e95f03cf969614a341e53def592d09b09f20138324bb306"><div class="ttname"><a href="namespaceABDMS2000.html#aa530c131cc34285864e95f03cf969614a341e53def592d09b09f20138324bb306">ABDMS2000::PatchDestination::Amp</a></div><div class="ttdeci">@ Amp</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_aa530c131cc34285864e95f03cf969614a8139edcf8c0d8d2cc48a8b217faffe02"><div class="ttname"><a href="namespaceABDMS2000.html#aa530c131cc34285864e95f03cf969614a8139edcf8c0d8d2cc48a8b217faffe02">ABDMS2000::PatchDestination::NoiseLevel</a></div><div class="ttdeci">@ NoiseLevel</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_aa530c131cc34285864e95f03cf969614a87f800274a7f46c50e17114f89171e2e"><div class="ttname"><a href="namespaceABDMS2000.html#aa530c131cc34285864e95f03cf969614a87f800274a7f46c50e17114f89171e2e">ABDMS2000::PatchDestination::Pitch</a></div><div class="ttdeci">@ Pitch</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_aa530c131cc34285864e95f03cf969614abc5449e9092ea92f5393be6516916084"><div class="ttname"><a href="namespaceABDMS2000.html#aa530c131cc34285864e95f03cf969614abc5449e9092ea92f5393be6516916084">ABDMS2000::PatchDestination::Cutoff</a></div><div class="ttdeci">@ Cutoff</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_aa530c131cc34285864e95f03cf969614ad02565a905b7d863e5264e6f7b600941"><div class="ttname"><a href="namespaceABDMS2000.html#aa530c131cc34285864e95f03cf969614ad02565a905b7d863e5264e6f7b600941">ABDMS2000::PatchDestination::OSC2Pitch</a></div><div class="ttdeci">@ OSC2Pitch</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_aa530c131cc34285864e95f03cf969614aeb3ec0ff9f259a30fe80ab0f29b2466c"><div class="ttname"><a href="namespaceABDMS2000.html#aa530c131cc34285864e95f03cf969614aeb3ec0ff9f259a30fe80ab0f29b2466c">ABDMS2000::PatchDestination::LFO2Freq</a></div><div class="ttdeci">@ LFO2Freq</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_aa530c131cc34285864e95f03cf969614af6d4a17b27da35c2d90ce13801f36782"><div class="ttname"><a href="namespaceABDMS2000.html#aa530c131cc34285864e95f03cf969614af6d4a17b27da35c2d90ce13801f36782">ABDMS2000::PatchDestination::Pan</a></div><div class="ttdeci">@ Pan</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_aa530c131cc34285864e95f03cf969614af7015c185d910d503aa7a29158cd5b67"><div class="ttname"><a href="namespaceABDMS2000.html#aa530c131cc34285864e95f03cf969614af7015c185d910d503aa7a29158cd5b67">ABDMS2000::PatchDestination::OSC1Ctrl1</a></div><div class="ttdeci">@ OSC1Ctrl1</div></div>
+<div class="ttc" id="astructABDMS2000_1_1PatchModulationOutputs_html"><div class="ttname"><a href="structABDMS2000_1_1PatchModulationOutputs.html">ABDMS2000::PatchModulationOutputs</a></div><div class="ttdef"><b>Definition</b> VirtualPatchMatrix.h:45</div></div>
+<div class="ttc" id="astructABDMS2000_1_1PatchModulationOutputs_html_a3900f6dfab4a37b2935d205008b91807"><div class="ttname"><a href="structABDMS2000_1_1PatchModulationOutputs.html#a3900f6dfab4a37b2935d205008b91807">ABDMS2000::PatchModulationOutputs::osc1Ctrl1Mod</a></div><div class="ttdeci">float osc1Ctrl1Mod</div><div class="ttdef"><b>Definition</b> VirtualPatchMatrix.h:48</div></div>
+<div class="ttc" id="astructABDMS2000_1_1PatchModulationOutputs_html_a3a696c02dfe91909292944934bc85114"><div class="ttname"><a href="structABDMS2000_1_1PatchModulationOutputs.html#a3a696c02dfe91909292944934bc85114">ABDMS2000::PatchModulationOutputs::noiseLevelMod</a></div><div class="ttdeci">float noiseLevelMod</div><div class="ttdef"><b>Definition</b> VirtualPatchMatrix.h:49</div></div>
+<div class="ttc" id="astructABDMS2000_1_1PatchModulationOutputs_html_a3cef0faef1409a1655eb8fd16463f058"><div class="ttname"><a href="structABDMS2000_1_1PatchModulationOutputs.html#a3cef0faef1409a1655eb8fd16463f058">ABDMS2000::PatchModulationOutputs::lfo2FreqMod</a></div><div class="ttdeci">float lfo2FreqMod</div><div class="ttdef"><b>Definition</b> VirtualPatchMatrix.h:53</div></div>
+<div class="ttc" id="astructABDMS2000_1_1PatchModulationOutputs_html_a67c0fe51153f76fd47ab8e0707a02a1d"><div class="ttname"><a href="structABDMS2000_1_1PatchModulationOutputs.html#a67c0fe51153f76fd47ab8e0707a02a1d">ABDMS2000::PatchModulationOutputs::pitchMod</a></div><div class="ttdeci">float pitchMod</div><div class="ttdef"><b>Definition</b> VirtualPatchMatrix.h:46</div></div>
+<div class="ttc" id="astructABDMS2000_1_1PatchModulationOutputs_html_a6af641b546d407e994da718afdf0e462"><div class="ttname"><a href="structABDMS2000_1_1PatchModulationOutputs.html#a6af641b546d407e994da718afdf0e462">ABDMS2000::PatchModulationOutputs::ampMod</a></div><div class="ttdeci">float ampMod</div><div class="ttdef"><b>Definition</b> VirtualPatchMatrix.h:51</div></div>
+<div class="ttc" id="astructABDMS2000_1_1PatchModulationOutputs_html_a6e3b4cabfb9520dd8f8c3ed69a8a5082"><div class="ttname"><a href="structABDMS2000_1_1PatchModulationOutputs.html#a6e3b4cabfb9520dd8f8c3ed69a8a5082">ABDMS2000::PatchModulationOutputs::panMod</a></div><div class="ttdeci">float panMod</div><div class="ttdef"><b>Definition</b> VirtualPatchMatrix.h:52</div></div>
+<div class="ttc" id="astructABDMS2000_1_1PatchModulationOutputs_html_a8d4c23b11b09fc8b69102b320d35a397"><div class="ttname"><a href="structABDMS2000_1_1PatchModulationOutputs.html#a8d4c23b11b09fc8b69102b320d35a397">ABDMS2000::PatchModulationOutputs::cutoffMod</a></div><div class="ttdeci">float cutoffMod</div><div class="ttdef"><b>Definition</b> VirtualPatchMatrix.h:50</div></div>
+<div class="ttc" id="astructABDMS2000_1_1PatchModulationOutputs_html_ac76fe21396da839ea18729f698892856"><div class="ttname"><a href="structABDMS2000_1_1PatchModulationOutputs.html#ac76fe21396da839ea18729f698892856">ABDMS2000::PatchModulationOutputs::osc2PitchMod</a></div><div class="ttdeci">float osc2PitchMod</div><div class="ttdef"><b>Definition</b> VirtualPatchMatrix.h:47</div></div>
+<div class="ttc" id="astructABDMS2000_1_1PatchModulationSources_html"><div class="ttname"><a href="structABDMS2000_1_1PatchModulationSources.html">ABDMS2000::PatchModulationSources</a></div><div class="ttdef"><b>Definition</b> VirtualPatchMatrix.h:34</div></div>
+<div class="ttc" id="astructABDMS2000_1_1PatchModulationSources_html_a37337034d256f947c477334fded90d7f"><div class="ttname"><a href="structABDMS2000_1_1PatchModulationSources.html#a37337034d256f947c477334fded90d7f">ABDMS2000::PatchModulationSources::velocity</a></div><div class="ttdeci">float velocity</div><div class="ttdef"><b>Definition</b> VirtualPatchMatrix.h:39</div></div>
+<div class="ttc" id="astructABDMS2000_1_1PatchModulationSources_html_a4810faa3ca8a729256432412684ed78c"><div class="ttname"><a href="structABDMS2000_1_1PatchModulationSources.html#a4810faa3ca8a729256432412684ed78c">ABDMS2000::PatchModulationSources::lfo1</a></div><div class="ttdeci">float lfo1</div><div class="ttdef"><b>Definition</b> VirtualPatchMatrix.h:37</div></div>
+<div class="ttc" id="astructABDMS2000_1_1PatchModulationSources_html_a55379cea0443d558075e49684ab5f7d1"><div class="ttname"><a href="structABDMS2000_1_1PatchModulationSources.html#a55379cea0443d558075e49684ab5f7d1">ABDMS2000::PatchModulationSources::kbdTrack</a></div><div class="ttdeci">float kbdTrack</div><div class="ttdef"><b>Definition</b> VirtualPatchMatrix.h:40</div></div>
+<div class="ttc" id="astructABDMS2000_1_1PatchModulationSources_html_a833f927caab0c6cf4b63d7c9df350253"><div class="ttname"><a href="structABDMS2000_1_1PatchModulationSources.html#a833f927caab0c6cf4b63d7c9df350253">ABDMS2000::PatchModulationSources::eg2</a></div><div class="ttdeci">float eg2</div><div class="ttdef"><b>Definition</b> VirtualPatchMatrix.h:36</div></div>
+<div class="ttc" id="astructABDMS2000_1_1PatchModulationSources_html_ab2eac08c03f7646fa743b84c80a2556c"><div class="ttname"><a href="structABDMS2000_1_1PatchModulationSources.html#ab2eac08c03f7646fa743b84c80a2556c">ABDMS2000::PatchModulationSources::pitchBend</a></div><div class="ttdeci">float pitchBend</div><div class="ttdef"><b>Definition</b> VirtualPatchMatrix.h:41</div></div>
+<div class="ttc" id="astructABDMS2000_1_1PatchModulationSources_html_ab92a8f53d33a516ffe6287cd44a0057e"><div class="ttname"><a href="structABDMS2000_1_1PatchModulationSources.html#ab92a8f53d33a516ffe6287cd44a0057e">ABDMS2000::PatchModulationSources::modWheel</a></div><div class="ttdeci">float modWheel</div><div class="ttdef"><b>Definition</b> VirtualPatchMatrix.h:42</div></div>
+<div class="ttc" id="astructABDMS2000_1_1PatchModulationSources_html_af90505b6c9c2134836a38624c962042e"><div class="ttname"><a href="structABDMS2000_1_1PatchModulationSources.html#af90505b6c9c2134836a38624c962042e">ABDMS2000::PatchModulationSources::lfo2</a></div><div class="ttdeci">float lfo2</div><div class="ttdef"><b>Definition</b> VirtualPatchMatrix.h:38</div></div>
+<div class="ttc" id="astructABDMS2000_1_1PatchModulationSources_html_af9f8596904c92b0aae037a49c31b8300"><div class="ttname"><a href="structABDMS2000_1_1PatchModulationSources.html#af9f8596904c92b0aae037a49c31b8300">ABDMS2000::PatchModulationSources::eg1</a></div><div class="ttdeci">float eg1</div><div class="ttdef"><b>Definition</b> VirtualPatchMatrix.h:35</div></div>
+<div class="ttc" id="astructABDMS2000_1_1PatchSlot_html"><div class="ttname"><a href="structABDMS2000_1_1PatchSlot.html">ABDMS2000::PatchSlot</a></div><div class="ttdef"><b>Definition</b> VirtualPatchMatrix.h:28</div></div>
+<div class="ttc" id="astructABDMS2000_1_1PatchSlot_html_a06670e6f030ccd485c899ea96b827d85"><div class="ttname"><a href="structABDMS2000_1_1PatchSlot.html#a06670e6f030ccd485c899ea96b827d85">ABDMS2000::PatchSlot::source</a></div><div class="ttdeci">PatchSource source</div><div class="ttdef"><b>Definition</b> VirtualPatchMatrix.h:29</div></div>
+<div class="ttc" id="astructABDMS2000_1_1PatchSlot_html_a5fed20885ad41e5a964da918f43da501"><div class="ttname"><a href="structABDMS2000_1_1PatchSlot.html#a5fed20885ad41e5a964da918f43da501">ABDMS2000::PatchSlot::intensity</a></div><div class="ttdeci">float intensity</div><div class="ttdef"><b>Definition</b> VirtualPatchMatrix.h:31</div></div>
+<div class="ttc" id="astructABDMS2000_1_1PatchSlot_html_aaa055f10552ab95926a58982eb3a047f"><div class="ttname"><a href="structABDMS2000_1_1PatchSlot.html#aaa055f10552ab95926a58982eb3a047f">ABDMS2000::PatchSlot::destination</a></div><div class="ttdeci">PatchDestination destination</div><div class="ttdef"><b>Definition</b> VirtualPatchMatrix.h:30</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

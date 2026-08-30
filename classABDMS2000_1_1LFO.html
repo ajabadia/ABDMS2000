@@ -1,0 +1,934 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Referencia de la clase ABDMS2000::LFO</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespaceABDMS2000.html">ABDMS2000</a></li><li class="navelem"><a class="el" href="classABDMS2000_1_1LFO.html">LFO</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Métodos públicos</a> &#124;
+<a href="#pub-static-methods">Métodos públicos estáticos</a> &#124;
+<a href="#pri-methods">Métodos privados</a> &#124;
+<a href="#pri-attribs">Atributos privados</a> &#124;
+<a href="classABDMS2000_1_1LFO-members.html">Lista de todos los miembros</a>  </div>
+  <div class="headertitle"><div class="title">Referencia de la clase ABDMS2000::LFO</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>MS2000 Low Frequency Oscillator. LFO1: Saw, Square, Triangle, Sample &amp; Hold. LFO2: Saw, Square+ (random pulse width), Sine, Sample &amp; Hold. Frequency range: logarithmic 0.01 Hz to 20 Hz (exponent ~1.25 per HW measurements). Key Sync: Off (free-run), Timbre (reset on first note of layer), <a class="el" href="classABDMS2000_1_1Voice.html" title="Represents a single synth voice in the 4-voice architecture.">Voice</a> (reset per key press).  
+ <a href="classABDMS2000_1_1LFO.html#details">Más...</a></p>
+
+<p><code>#include &lt;<a class="el" href="LFO_8h_source.html">LFO.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Métodos públicos</h2></td></tr>
+<tr class="memitem:a41f57b2468304b4267265a55af4bcda1" id="r_a41f57b2468304b4267265a55af4bcda1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1LFO.html#a41f57b2468304b4267265a55af4bcda1">LFO</a> ()=default</td></tr>
+<tr class="separator:a41f57b2468304b4267265a55af4bcda1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fdf905da5ea0f4000b6e7e2663ac009" id="r_a0fdf905da5ea0f4000b6e7e2663ac009"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1LFO.html#a0fdf905da5ea0f4000b6e7e2663ac009">prepare</a> (double sampleRate) noexcept</td></tr>
+<tr class="separator:a0fdf905da5ea0f4000b6e7e2663ac009"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69f5a6adac75172357bf590becf49356" id="r_a69f5a6adac75172357bf590becf49356"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1LFO.html#a69f5a6adac75172357bf590becf49356">reset</a> (float initialPhase=0.0f) noexcept</td></tr>
+<tr class="separator:a69f5a6adac75172357bf590becf49356"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14bfb44a38b5cb24616be960514bf663" id="r_a14bfb44a38b5cb24616be960514bf663"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1LFO.html#a14bfb44a38b5cb24616be960514bf663">setFrequencyHz</a> (float freqHz) noexcept</td></tr>
+<tr class="separator:a14bfb44a38b5cb24616be960514bf663"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2569b6408df2282d236e556d57d038e3" id="r_a2569b6408df2282d236e556d57d038e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1LFO.html#a2569b6408df2282d236e556d57d038e3">setTempoSync</a> (bool enabled, int syncNoteIdx=4) noexcept</td></tr>
+<tr class="separator:a2569b6408df2282d236e556d57d038e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea2a8077f48c00f9242e763bf7281bcd" id="r_aea2a8077f48c00f9242e763bf7281bcd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1LFO.html#aea2a8077f48c00f9242e763bf7281bcd">setBpm</a> (double bpm) noexcept</td></tr>
+<tr class="separator:aea2a8077f48c00f9242e763bf7281bcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a260d0dc492d0d2b81b8b830fc49f2d49" id="r_a260d0dc492d0d2b81b8b830fc49f2d49"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1LFO.html#a260d0dc492d0d2b81b8b830fc49f2d49">setWaveformLFO1</a> (<a class="el" href="namespaceABDMS2000.html#a58d40dfa6e8651b26e59e510c4430ccb">LFOWaveform</a> wave) noexcept</td></tr>
+<tr class="separator:a260d0dc492d0d2b81b8b830fc49f2d49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6742be9af6114ede8482e108eb8679b8" id="r_a6742be9af6114ede8482e108eb8679b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1LFO.html#a6742be9af6114ede8482e108eb8679b8">setWaveformLFO2</a> (<a class="el" href="namespaceABDMS2000.html#a5ff5c2549a775ac66e8cfcce1871d051">LFOWaveformLFO2</a> wave) noexcept</td></tr>
+<tr class="separator:a6742be9af6114ede8482e108eb8679b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe99b8df3fa643c375270a245c54d427" id="r_afe99b8df3fa643c375270a245c54d427"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1LFO.html#afe99b8df3fa643c375270a245c54d427">setKeySyncMode</a> (int mode) noexcept</td></tr>
+<tr class="separator:afe99b8df3fa643c375270a245c54d427"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f7cfba7cd5b1a4551d5cdeef0d48339" id="r_a1f7cfba7cd5b1a4551d5cdeef0d48339"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1LFO.html#a1f7cfba7cd5b1a4551d5cdeef0d48339">triggerKeySync</a> (bool isFirstTimbreNote) noexcept</td></tr>
+<tr class="separator:a1f7cfba7cd5b1a4551d5cdeef0d48339"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4f44b129e2645dd514d8ada1377a488" id="r_af4f44b129e2645dd514d8ada1377a488"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1LFO.html#af4f44b129e2645dd514d8ada1377a488">resetPhase</a> () noexcept</td></tr>
+<tr class="separator:af4f44b129e2645dd514d8ada1377a488"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acea71dd6a35eeb94292d30167ea053ef" id="r_acea71dd6a35eeb94292d30167ea053ef"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1LFO.html#acea71dd6a35eeb94292d30167ea053ef">getNextSample</a> (float frequencyModulationOctaves=0.0f) noexcept</td></tr>
+<tr class="separator:acea71dd6a35eeb94292d30167ea053ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f70c71569b15a62018f7c6c631b1fdc" id="r_a1f70c71569b15a62018f7c6c631b1fdc"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1LFO.html#a1f70c71569b15a62018f7c6c631b1fdc">getCurrentValue</a> () const noexcept</td></tr>
+<tr class="separator:a1f70c71569b15a62018f7c6c631b1fdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Métodos públicos estáticos</h2></td></tr>
+<tr class="memitem:a728ad240624db8d1bc939f31a05c6614" id="r_a728ad240624db8d1bc939f31a05c6614"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1LFO.html#a728ad240624db8d1bc939f31a05c6614">syncNoteToMultiplier</a> (int idx) noexcept</td></tr>
+<tr class="separator:a728ad240624db8d1bc939f31a05c6614"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Métodos privados</h2></td></tr>
+<tr class="memitem:a57e0449dda040faa4fc6ddaab74d029c" id="r_a57e0449dda040faa4fc6ddaab74d029c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1LFO.html#a57e0449dda040faa4fc6ddaab74d029c">nextRandom</a> () noexcept</td></tr>
+<tr class="separator:a57e0449dda040faa4fc6ddaab74d029c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af42145f602272fb5127a3b4c9a340079" id="r_af42145f602272fb5127a3b4c9a340079"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1LFO.html#af42145f602272fb5127a3b4c9a340079">advancePhase</a> () noexcept</td></tr>
+<tr class="separator:af42145f602272fb5127a3b4c9a340079"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada871623315b69bda243fb653ddb5132" id="r_ada871623315b69bda243fb653ddb5132"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1LFO.html#ada871623315b69bda243fb653ddb5132">syncPhase</a> () noexcept</td></tr>
+<tr class="separator:ada871623315b69bda243fb653ddb5132"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Atributos privados</h2></td></tr>
+<tr class="memitem:a54d2034343d9fb0eccb7f5080f37ff0a" id="r_a54d2034343d9fb0eccb7f5080f37ff0a"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1LFO.html#a54d2034343d9fb0eccb7f5080f37ff0a">sampleRate_</a> { 44100.0 }</td></tr>
+<tr class="separator:a54d2034343d9fb0eccb7f5080f37ff0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7dd06cbe8bdbe088b29910cee273136a" id="r_a7dd06cbe8bdbe088b29910cee273136a"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1LFO.html#a7dd06cbe8bdbe088b29910cee273136a">frequency_</a> { 1.0f }</td></tr>
+<tr class="separator:a7dd06cbe8bdbe088b29910cee273136a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7324e1e77063780ec17acfc97ff5cf16" id="r_a7324e1e77063780ec17acfc97ff5cf16"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1LFO.html#a7324e1e77063780ec17acfc97ff5cf16">phase_</a> { 0.0 }</td></tr>
+<tr class="separator:a7324e1e77063780ec17acfc97ff5cf16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9456d40f5422888a4c4d15bc9543b268" id="r_a9456d40f5422888a4c4d15bc9543b268"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1LFO.html#a9456d40f5422888a4c4d15bc9543b268">phaseIncrement_</a> { 0.0 }</td></tr>
+<tr class="separator:a9456d40f5422888a4c4d15bc9543b268"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1565b5dab3b60669fc68d8a4f3459d58" id="r_a1565b5dab3b60669fc68d8a4f3459d58"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1LFO.html#a1565b5dab3b60669fc68d8a4f3459d58">waveType_</a> { 2 }</td></tr>
+<tr class="separator:a1565b5dab3b60669fc68d8a4f3459d58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e56b32c32a6abc86d0439ed9f311987" id="r_a4e56b32c32a6abc86d0439ed9f311987"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1LFO.html#a4e56b32c32a6abc86d0439ed9f311987">isLFO2_</a> { false }</td></tr>
+<tr class="separator:a4e56b32c32a6abc86d0439ed9f311987"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17679153f1c7ec1e33f947369d411fcc" id="r_a17679153f1c7ec1e33f947369d411fcc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1LFO.html#a17679153f1c7ec1e33f947369d411fcc">keySyncMode_</a> { 2 }</td></tr>
+<tr class="separator:a17679153f1c7ec1e33f947369d411fcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4ff27c551051413709fea83104fd9d3" id="r_af4ff27c551051413709fea83104fd9d3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1LFO.html#af4ff27c551051413709fea83104fd9d3">tempoSyncEnabled_</a> { false }</td></tr>
+<tr class="separator:af4ff27c551051413709fea83104fd9d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10b6532bd6dbe51b7377f58d67fa1de1" id="r_a10b6532bd6dbe51b7377f58d67fa1de1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1LFO.html#a10b6532bd6dbe51b7377f58d67fa1de1">syncNoteIdx_</a> { 4 }</td></tr>
+<tr class="separator:a10b6532bd6dbe51b7377f58d67fa1de1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abaa353cd0acd568bce5de40b173b3f67" id="r_abaa353cd0acd568bce5de40b173b3f67"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1LFO.html#abaa353cd0acd568bce5de40b173b3f67">bpm_</a> { 120.0 }</td></tr>
+<tr class="separator:abaa353cd0acd568bce5de40b173b3f67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2845a017a25fd2026a3f3fb6636329d4" id="r_a2845a017a25fd2026a3f3fb6636329d4"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1LFO.html#a2845a017a25fd2026a3f3fb6636329d4">currentValue_</a> { 0.0f }</td></tr>
+<tr class="separator:a2845a017a25fd2026a3f3fb6636329d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bbb5b5ea79fa822141f19b0e2f82b7b" id="r_a8bbb5b5ea79fa822141f19b0e2f82b7b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1LFO.html#a8bbb5b5ea79fa822141f19b0e2f82b7b">shHeldValue_</a> { 0.0f }</td></tr>
+<tr class="separator:a8bbb5b5ea79fa822141f19b0e2f82b7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7158f165c65c3e0882e63684baf3514d" id="r_a7158f165c65c3e0882e63684baf3514d"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1LFO.html#a7158f165c65c3e0882e63684baf3514d">squarePlusPW_</a> { 0.5f }</td></tr>
+<tr class="separator:a7158f165c65c3e0882e63684baf3514d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a789365c81aeba58149927000eaca5ab8" id="r_a789365c81aeba58149927000eaca5ab8"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1LFO.html#a789365c81aeba58149927000eaca5ab8">rngState_</a> { 0x98765432 }</td></tr>
+<tr class="separator:a789365c81aeba58149927000eaca5ab8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Descripción detallada</h2>
+<div class="textblock"><p>MS2000 Low Frequency Oscillator. LFO1: Saw, Square, Triangle, Sample &amp; Hold. LFO2: Saw, Square+ (random pulse width), Sine, Sample &amp; Hold. Frequency range: logarithmic 0.01 Hz to 20 Hz (exponent ~1.25 per HW measurements). Key Sync: Off (free-run), Timbre (reset on first note of layer), <a class="el" href="classABDMS2000_1_1Voice.html" title="Represents a single synth voice in the 4-voice architecture.">Voice</a> (reset per key press). </p>
+</div><h2 class="groupheader">Documentación de constructores y destructores</h2>
+<a id="a41f57b2468304b4267265a55af4bcda1" name="a41f57b2468304b4267265a55af4bcda1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41f57b2468304b4267265a55af4bcda1">&#9670;&#160;</a></span>LFO()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ABDMS2000::LFO::LFO </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Documentación de funciones miembro</h2>
+<a id="af42145f602272fb5127a3b4c9a340079" name="af42145f602272fb5127a3b4c9a340079"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af42145f602272fb5127a3b4c9a340079">&#9670;&#160;</a></span>advancePhase()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::LFO::advancePhase </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1f70c71569b15a62018f7c6c631b1fdc" name="a1f70c71569b15a62018f7c6c631b1fdc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f70c71569b15a62018f7c6c631b1fdc">&#9670;&#160;</a></span>getCurrentValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::LFO::getCurrentValue </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acea71dd6a35eeb94292d30167ea053ef" name="acea71dd6a35eeb94292d30167ea053ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acea71dd6a35eeb94292d30167ea053ef">&#9670;&#160;</a></span>getNextSample()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::LFO::getNextSample </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>frequencyModulationOctaves</em> = <code>0.0f</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a57e0449dda040faa4fc6ddaab74d029c" name="a57e0449dda040faa4fc6ddaab74d029c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57e0449dda040faa4fc6ddaab74d029c">&#9670;&#160;</a></span>nextRandom()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::LFO::nextRandom </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0fdf905da5ea0f4000b6e7e2663ac009" name="a0fdf905da5ea0f4000b6e7e2663ac009"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fdf905da5ea0f4000b6e7e2663ac009">&#9670;&#160;</a></span>prepare()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::LFO::prepare </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>sampleRate</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a69f5a6adac75172357bf590becf49356" name="a69f5a6adac75172357bf590becf49356"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69f5a6adac75172357bf590becf49356">&#9670;&#160;</a></span>reset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::LFO::reset </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>initialPhase</em> = <code>0.0f</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af4f44b129e2645dd514d8ada1377a488" name="af4f44b129e2645dd514d8ada1377a488"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4f44b129e2645dd514d8ada1377a488">&#9670;&#160;</a></span>resetPhase()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::LFO::resetPhase </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aea2a8077f48c00f9242e763bf7281bcd" name="aea2a8077f48c00f9242e763bf7281bcd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea2a8077f48c00f9242e763bf7281bcd">&#9670;&#160;</a></span>setBpm()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::LFO::setBpm </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>bpm</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a14bfb44a38b5cb24616be960514bf663" name="a14bfb44a38b5cb24616be960514bf663"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14bfb44a38b5cb24616be960514bf663">&#9670;&#160;</a></span>setFrequencyHz()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::LFO::setFrequencyHz </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>freqHz</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afe99b8df3fa643c375270a245c54d427" name="afe99b8df3fa643c375270a245c54d427"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe99b8df3fa643c375270a245c54d427">&#9670;&#160;</a></span>setKeySyncMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::LFO::setKeySyncMode </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>mode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2569b6408df2282d236e556d57d038e3" name="a2569b6408df2282d236e556d57d038e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2569b6408df2282d236e556d57d038e3">&#9670;&#160;</a></span>setTempoSync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::LFO::setTempoSync </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enabled</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>syncNoteIdx</em> = <code>4</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a260d0dc492d0d2b81b8b830fc49f2d49" name="a260d0dc492d0d2b81b8b830fc49f2d49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a260d0dc492d0d2b81b8b830fc49f2d49">&#9670;&#160;</a></span>setWaveformLFO1()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::LFO::setWaveformLFO1 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceABDMS2000.html#a58d40dfa6e8651b26e59e510c4430ccb">LFOWaveform</a>&#160;</td>
+          <td class="paramname"><em>wave</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6742be9af6114ede8482e108eb8679b8" name="a6742be9af6114ede8482e108eb8679b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6742be9af6114ede8482e108eb8679b8">&#9670;&#160;</a></span>setWaveformLFO2()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::LFO::setWaveformLFO2 </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceABDMS2000.html#a5ff5c2549a775ac66e8cfcce1871d051">LFOWaveformLFO2</a>&#160;</td>
+          <td class="paramname"><em>wave</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a728ad240624db8d1bc939f31a05c6614" name="a728ad240624db8d1bc939f31a05c6614"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a728ad240624db8d1bc939f31a05c6614">&#9670;&#160;</a></span>syncNoteToMultiplier()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::LFO::syncNoteToMultiplier </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>idx</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ada871623315b69bda243fb653ddb5132" name="ada871623315b69bda243fb653ddb5132"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada871623315b69bda243fb653ddb5132">&#9670;&#160;</a></span>syncPhase()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::LFO::syncPhase </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1f7cfba7cd5b1a4551d5cdeef0d48339" name="a1f7cfba7cd5b1a4551d5cdeef0d48339"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f7cfba7cd5b1a4551d5cdeef0d48339">&#9670;&#160;</a></span>triggerKeySync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::LFO::triggerKeySync </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>isFirstTimbreNote</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Documentación de datos miembro</h2>
+<a id="abaa353cd0acd568bce5de40b173b3f67" name="abaa353cd0acd568bce5de40b173b3f67"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abaa353cd0acd568bce5de40b173b3f67">&#9670;&#160;</a></span>bpm_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double ABDMS2000::LFO::bpm_ { 120.0 }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2845a017a25fd2026a3f3fb6636329d4" name="a2845a017a25fd2026a3f3fb6636329d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2845a017a25fd2026a3f3fb6636329d4">&#9670;&#160;</a></span>currentValue_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::LFO::currentValue_ { 0.0f }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7dd06cbe8bdbe088b29910cee273136a" name="a7dd06cbe8bdbe088b29910cee273136a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7dd06cbe8bdbe088b29910cee273136a">&#9670;&#160;</a></span>frequency_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::LFO::frequency_ { 1.0f }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4e56b32c32a6abc86d0439ed9f311987" name="a4e56b32c32a6abc86d0439ed9f311987"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e56b32c32a6abc86d0439ed9f311987">&#9670;&#160;</a></span>isLFO2_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ABDMS2000::LFO::isLFO2_ { false }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a17679153f1c7ec1e33f947369d411fcc" name="a17679153f1c7ec1e33f947369d411fcc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17679153f1c7ec1e33f947369d411fcc">&#9670;&#160;</a></span>keySyncMode_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int ABDMS2000::LFO::keySyncMode_ { 2 }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7324e1e77063780ec17acfc97ff5cf16" name="a7324e1e77063780ec17acfc97ff5cf16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7324e1e77063780ec17acfc97ff5cf16">&#9670;&#160;</a></span>phase_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double ABDMS2000::LFO::phase_ { 0.0 }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9456d40f5422888a4c4d15bc9543b268" name="a9456d40f5422888a4c4d15bc9543b268"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9456d40f5422888a4c4d15bc9543b268">&#9670;&#160;</a></span>phaseIncrement_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double ABDMS2000::LFO::phaseIncrement_ { 0.0 }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a789365c81aeba58149927000eaca5ab8" name="a789365c81aeba58149927000eaca5ab8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a789365c81aeba58149927000eaca5ab8">&#9670;&#160;</a></span>rngState_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t ABDMS2000::LFO::rngState_ { 0x98765432 }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a54d2034343d9fb0eccb7f5080f37ff0a" name="a54d2034343d9fb0eccb7f5080f37ff0a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54d2034343d9fb0eccb7f5080f37ff0a">&#9670;&#160;</a></span>sampleRate_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double ABDMS2000::LFO::sampleRate_ { 44100.0 }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8bbb5b5ea79fa822141f19b0e2f82b7b" name="a8bbb5b5ea79fa822141f19b0e2f82b7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8bbb5b5ea79fa822141f19b0e2f82b7b">&#9670;&#160;</a></span>shHeldValue_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::LFO::shHeldValue_ { 0.0f }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7158f165c65c3e0882e63684baf3514d" name="a7158f165c65c3e0882e63684baf3514d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7158f165c65c3e0882e63684baf3514d">&#9670;&#160;</a></span>squarePlusPW_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::LFO::squarePlusPW_ { 0.5f }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a10b6532bd6dbe51b7377f58d67fa1de1" name="a10b6532bd6dbe51b7377f58d67fa1de1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10b6532bd6dbe51b7377f58d67fa1de1">&#9670;&#160;</a></span>syncNoteIdx_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int ABDMS2000::LFO::syncNoteIdx_ { 4 }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af4ff27c551051413709fea83104fd9d3" name="af4ff27c551051413709fea83104fd9d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4ff27c551051413709fea83104fd9d3">&#9670;&#160;</a></span>tempoSyncEnabled_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ABDMS2000::LFO::tempoSyncEnabled_ { false }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1565b5dab3b60669fc68d8a4f3459d58" name="a1565b5dab3b60669fc68d8a4f3459d58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1565b5dab3b60669fc68d8a4f3459d58">&#9670;&#160;</a></span>waveType_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int ABDMS2000::LFO::waveType_ { 2 }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>La documentación de esta clase está generada de los siguientes archivos:<ul>
+<li>Source/DSP/Modulation/<a class="el" href="LFO_8h_source.html">LFO.h</a></li>
+<li>Source/DSP/Modulation/<a class="el" href="LFO_8cpp.html">LFO.cpp</a></li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

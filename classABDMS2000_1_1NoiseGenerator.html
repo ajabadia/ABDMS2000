@@ -1,0 +1,411 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Referencia de la clase ABDMS2000::NoiseGenerator</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespaceABDMS2000.html">ABDMS2000</a></li><li class="navelem"><a class="el" href="classABDMS2000_1_1NoiseGenerator.html">NoiseGenerator</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Métodos públicos</a> &#124;
+<a href="#pri-attribs">Atributos privados</a> &#124;
+<a href="classABDMS2000_1_1NoiseGenerator-members.html">Lista de todos los miembros</a>  </div>
+  <div class="headertitle"><div class="title">Referencia de la clase ABDMS2000::NoiseGenerator</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>Real-Time Safe White and Pink Noise Generator (LCG algorithm).  
+ <a href="classABDMS2000_1_1NoiseGenerator.html#details">Más...</a></p>
+
+<p><code>#include &lt;<a class="el" href="NoiseGenerator_8h_source.html">NoiseGenerator.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Métodos públicos</h2></td></tr>
+<tr class="memitem:ab85d228eee0e09dff3f2f5943337fadc" id="r_ab85d228eee0e09dff3f2f5943337fadc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1NoiseGenerator.html#ab85d228eee0e09dff3f2f5943337fadc">NoiseGenerator</a> ()=default</td></tr>
+<tr class="separator:ab85d228eee0e09dff3f2f5943337fadc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98d928388b139ff2df15e78714ecbdcf" id="r_a98d928388b139ff2df15e78714ecbdcf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1NoiseGenerator.html#a98d928388b139ff2df15e78714ecbdcf">reset</a> (uint32_t seed=0x12345678) noexcept</td></tr>
+<tr class="separator:a98d928388b139ff2df15e78714ecbdcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0faf552c6a23afbad413abe46102d5ed" id="r_a0faf552c6a23afbad413abe46102d5ed"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1NoiseGenerator.html#a0faf552c6a23afbad413abe46102d5ed">getWhiteNoise</a> () noexcept</td></tr>
+<tr class="separator:a0faf552c6a23afbad413abe46102d5ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8abc9e048a2aab600657019b1bb46427" id="r_a8abc9e048a2aab600657019b1bb46427"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1NoiseGenerator.html#a8abc9e048a2aab600657019b1bb46427">getPinkNoise</a> () noexcept</td></tr>
+<tr class="separator:a8abc9e048a2aab600657019b1bb46427"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Atributos privados</h2></td></tr>
+<tr class="memitem:a5da205480a009d2f1903b10dd9de692f" id="r_a5da205480a009d2f1903b10dd9de692f"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1NoiseGenerator.html#a5da205480a009d2f1903b10dd9de692f">state_</a> { 0x12345678 }</td></tr>
+<tr class="separator:a5da205480a009d2f1903b10dd9de692f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e3eec001186a9a94d3536e94d09617c" id="r_a8e3eec001186a9a94d3536e94d09617c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1NoiseGenerator.html#a8e3eec001186a9a94d3536e94d09617c">b0_</a> { 0.0f }</td></tr>
+<tr class="separator:a8e3eec001186a9a94d3536e94d09617c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba2f8a39da2e370650de5bdc47790f9d" id="r_aba2f8a39da2e370650de5bdc47790f9d"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1NoiseGenerator.html#aba2f8a39da2e370650de5bdc47790f9d">b1_</a> { 0.0f }</td></tr>
+<tr class="separator:aba2f8a39da2e370650de5bdc47790f9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec6fe95957237644e2bf2a08b2e706c5" id="r_aec6fe95957237644e2bf2a08b2e706c5"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1NoiseGenerator.html#aec6fe95957237644e2bf2a08b2e706c5">b2_</a> { 0.0f }</td></tr>
+<tr class="separator:aec6fe95957237644e2bf2a08b2e706c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c8a727a4f5cb86e4fc9b37c64407b26" id="r_a3c8a727a4f5cb86e4fc9b37c64407b26"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1NoiseGenerator.html#a3c8a727a4f5cb86e4fc9b37c64407b26">b3_</a> { 0.0f }</td></tr>
+<tr class="separator:a3c8a727a4f5cb86e4fc9b37c64407b26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72e4c7b6f83834663bed360c1c806142" id="r_a72e4c7b6f83834663bed360c1c806142"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1NoiseGenerator.html#a72e4c7b6f83834663bed360c1c806142">b4_</a> { 0.0f }</td></tr>
+<tr class="separator:a72e4c7b6f83834663bed360c1c806142"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac67237305c9753b18d290b38c0619765" id="r_ac67237305c9753b18d290b38c0619765"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1NoiseGenerator.html#ac67237305c9753b18d290b38c0619765">b5_</a> { 0.0f }</td></tr>
+<tr class="separator:ac67237305c9753b18d290b38c0619765"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a203930769860ef9e35b69dd98c0cb153" id="r_a203930769860ef9e35b69dd98c0cb153"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1NoiseGenerator.html#a203930769860ef9e35b69dd98c0cb153">b6_</a> { 0.0f }</td></tr>
+<tr class="separator:a203930769860ef9e35b69dd98c0cb153"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Descripción detallada</h2>
+<div class="textblock"><p>Real-Time Safe White and Pink Noise Generator (LCG algorithm). </p>
+</div><h2 class="groupheader">Documentación de constructores y destructores</h2>
+<a id="ab85d228eee0e09dff3f2f5943337fadc" name="ab85d228eee0e09dff3f2f5943337fadc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab85d228eee0e09dff3f2f5943337fadc">&#9670;&#160;</a></span>NoiseGenerator()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ABDMS2000::NoiseGenerator::NoiseGenerator </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Documentación de funciones miembro</h2>
+<a id="a8abc9e048a2aab600657019b1bb46427" name="a8abc9e048a2aab600657019b1bb46427"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8abc9e048a2aab600657019b1bb46427">&#9670;&#160;</a></span>getPinkNoise()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::NoiseGenerator::getPinkNoise </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0faf552c6a23afbad413abe46102d5ed" name="a0faf552c6a23afbad413abe46102d5ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0faf552c6a23afbad413abe46102d5ed">&#9670;&#160;</a></span>getWhiteNoise()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::NoiseGenerator::getWhiteNoise </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a98d928388b139ff2df15e78714ecbdcf" name="a98d928388b139ff2df15e78714ecbdcf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98d928388b139ff2df15e78714ecbdcf">&#9670;&#160;</a></span>reset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::NoiseGenerator::reset </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>seed</em> = <code>0x12345678</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Documentación de datos miembro</h2>
+<a id="a8e3eec001186a9a94d3536e94d09617c" name="a8e3eec001186a9a94d3536e94d09617c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e3eec001186a9a94d3536e94d09617c">&#9670;&#160;</a></span>b0_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::NoiseGenerator::b0_ { 0.0f }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aba2f8a39da2e370650de5bdc47790f9d" name="aba2f8a39da2e370650de5bdc47790f9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba2f8a39da2e370650de5bdc47790f9d">&#9670;&#160;</a></span>b1_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::NoiseGenerator::b1_ { 0.0f }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aec6fe95957237644e2bf2a08b2e706c5" name="aec6fe95957237644e2bf2a08b2e706c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec6fe95957237644e2bf2a08b2e706c5">&#9670;&#160;</a></span>b2_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::NoiseGenerator::b2_ { 0.0f }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3c8a727a4f5cb86e4fc9b37c64407b26" name="a3c8a727a4f5cb86e4fc9b37c64407b26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c8a727a4f5cb86e4fc9b37c64407b26">&#9670;&#160;</a></span>b3_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::NoiseGenerator::b3_ { 0.0f }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a72e4c7b6f83834663bed360c1c806142" name="a72e4c7b6f83834663bed360c1c806142"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72e4c7b6f83834663bed360c1c806142">&#9670;&#160;</a></span>b4_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::NoiseGenerator::b4_ { 0.0f }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac67237305c9753b18d290b38c0619765" name="ac67237305c9753b18d290b38c0619765"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac67237305c9753b18d290b38c0619765">&#9670;&#160;</a></span>b5_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::NoiseGenerator::b5_ { 0.0f }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a203930769860ef9e35b69dd98c0cb153" name="a203930769860ef9e35b69dd98c0cb153"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a203930769860ef9e35b69dd98c0cb153">&#9670;&#160;</a></span>b6_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::NoiseGenerator::b6_ { 0.0f }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5da205480a009d2f1903b10dd9de692f" name="a5da205480a009d2f1903b10dd9de692f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5da205480a009d2f1903b10dd9de692f">&#9670;&#160;</a></span>state_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t ABDMS2000::NoiseGenerator::state_ { 0x12345678 }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>La documentación de esta clase está generada de los siguientes archivos:<ul>
+<li>Source/DSP/Oscillators/<a class="el" href="NoiseGenerator_8h_source.html">NoiseGenerator.h</a></li>
+<li>Source/DSP/Oscillators/<a class="el" href="NoiseGenerator_8cpp.html">NoiseGenerator.cpp</a></li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

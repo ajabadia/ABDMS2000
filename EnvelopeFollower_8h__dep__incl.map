@@ -1,0 +1,30 @@
+<map id="Source/DSP/Vocoder/EnvelopeFollower.h" name="Source/DSP/Vocoder/EnvelopeFollower.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="442,5,594,45"/>
+<area shape="rect" id="Node000002" href="$Vocoder16Band_8h.html" title=" " alt="" coords="442,93,594,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="521,59,521,93,515,93,515,59"/>
+<area shape="rect" id="Node000003" href="$SynthEngine_8h.html" title=" " alt="" coords="219,189,417,214"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="463,141,346,191,344,186,461,136"/>
+<area shape="rect" id="Node000012" href="$Vocoder16Band_8cpp.html" title=" " alt="" coords="441,181,595,221"/>
+<area shape="poly" id="edge14_Node000002_Node000012" title=" " alt="" coords="521,147,521,181,515,181,515,147"/>
+<area shape="rect" id="Node000013" href="$WasmBridge_8cpp.html" title=" " alt="" coords="620,189,843,214"/>
+<area shape="poly" id="edge15_Node000002_Node000013" title=" " alt="" coords="579,136,704,186,702,191,577,141"/>
+<area shape="rect" id="Node000004" href="$SynthEngine_8cpp.html" title=" " alt="" coords="91,269,303,295"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="290,224,216,271,213,267,287,220"/>
+<area shape="rect" id="Node000005" href="$PluginProcessor_8h.html" title=" " alt="" coords="327,269,555,295"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="349,219,424,267,421,271,346,224"/>
+<area shape="rect" id="Node000006" href="$BridgeActions_8cpp.html" title=" " alt="" coords="5,431,236,456"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="342,299,245,319,204,331,177,345,158,365,143,388,126,431,121,429,138,386,153,361,174,341,202,326,244,314,341,294"/>
+<area shape="rect" id="Node000007" href="$BridgeActions_8h.html" title=" " alt="" coords="187,350,403,375"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="409,304,318,352,316,347,406,299"/>
+<area shape="rect" id="Node000008" href="$PluginEditor_8h.html" title=" " alt="" coords="261,431,463,456"/>
+<area shape="poly" id="edge11_Node000005_Node000008" title=" " alt="" coords="440,309,433,345,418,384,398,411,377,433,373,429,394,408,413,381,427,344,435,308"/>
+<area shape="rect" id="Node000010" href="$PluginProcessor_8cpp.html" title=" " alt="" coords="379,504,622,529"/>
+<area shape="poly" id="edge12_Node000005_Node000010" title=" " alt="" coords="450,308,500,503,495,504,445,309"/>
+<area shape="rect" id="Node000011" href="$StandaloneApp_8cpp.html" title=" " alt="" coords="539,343,759,383"/>
+<area shape="poly" id="edge13_Node000005_Node000011" title=" " alt="" coords="484,297,600,340,598,345,483,302"/>
+<area shape="poly" id="edge7_Node000007_Node000006" title=" " alt="" coords="258,383,147,433,145,428,256,379"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="316,384,354,429,350,432,312,388"/>
+<area shape="rect" id="Node000009" href="$PluginEditor_8cpp.html" title=" " alt="" coords="137,504,355,529"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="333,465,266,506,264,501,330,461"/>
+<area shape="poly" id="edge10_Node000008_Node000010" title=" " alt="" coords="398,460,479,501,477,506,395,465"/>
+</map>

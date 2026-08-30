@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Referencia del archivo Source/DSP/Oscillators/DWGSTables.cpp</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a class="el" href="dir_28f92771c0af6f341cedd07750149305.html">DSP</a></li><li class="navelem"><a class="el" href="dir_56dd9e7cfcdef65c2e847cdb4c0a413b.html">Oscillators</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">Clases</a> &#124;
+<a href="#namespaces">Espacios de nombres</a> &#124;
+<a href="#func-members">Funciones</a> &#124;
+<a href="#var-members">Variables</a>  </div>
+  <div class="headertitle"><div class="title">Referencia del archivo DWGSTables.cpp</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><code>#include &quot;<a class="el" href="DWGSTables_8h_source.html">DWGSTables.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="WavetableLoader_8h_source.html">WavetableLoader.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="DSPUtils_8h_source.html">../Common/DSPUtils.h</a>&quot;</code><br />
+<code>#include &lt;cmath&gt;</code><br />
+<code>#include &lt;algorithm&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Gráfico de dependencias incluidas en DWGSTables.cpp:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="DWGSTables_8cpp__incl.svg" width="100%" height="503"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Clases</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1AKWFEntry.html">ABDMS2000::AKWFEntry</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1M1FileEntry.html">ABDMS2000::M1FileEntry</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
+Espacios de nombres</h2></td></tr>
+<tr class="memitem:namespaceDWGSBinary" id="r_namespaceDWGSBinary"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceDWGSBinary.html">DWGSBinary</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceABDMS2000" id="r_namespaceABDMS2000"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html">ABDMS2000</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Funciones</h2></td></tr>
+<tr class="memitem:ac159ad42e129df99c9a951117ae80f50" id="r_ac159ad42e129df99c9a951117ae80f50"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceDWGSBinary.html#ac159ad42e129df99c9a951117ae80f50">DWGSBinary::getNamedResource</a> (const char *, int &amp;sz)</td></tr>
+<tr class="separator:ac159ad42e129df99c9a951117ae80f50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa104bf3bf0be04d49ece5a37e89d0219" id="r_aa104bf3bf0be04d49ece5a37e89d0219"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#aa104bf3bf0be04d49ece5a37e89d0219">ABDMS2000::loadM1File</a> (const char *resName, int numWaves, std::vector&lt; std::vector&lt; float &gt; &gt; &amp;out)</td></tr>
+<tr class="separator:aa104bf3bf0be04d49ece5a37e89d0219"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:ab15dc6d9f3f9547021f69e4dfb77c2dc" id="r_ab15dc6d9f3f9547021f69e4dfb77c2dc"><td class="memItemLeft" align="right" valign="top">static const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#ab15dc6d9f3f9547021f69e4dfb77c2dc">ABDMS2000::kDWGSStandardNames</a> [64]</td></tr>
+<tr class="separator:ab15dc6d9f3f9547021f69e4dfb77c2dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2a27890506359d4de6a6fd7ce4cecda" id="r_ab2a27890506359d4de6a6fd7ce4cecda"><td class="memItemLeft" align="right" valign="top">static const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#ab2a27890506359d4de6a6fd7ce4cecda">ABDMS2000::kProphetVSNames</a> [96]</td></tr>
+<tr class="separator:ab2a27890506359d4de6a6fd7ce4cecda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71b8f3803365cc5293e32d87e3505a05" id="r_a71b8f3803365cc5293e32d87e3505a05"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="structABDMS2000_1_1AKWFEntry.html">AKWFEntry</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#a71b8f3803365cc5293e32d87e3505a05">ABDMS2000::kAKWF</a> [128]</td></tr>
+<tr class="separator:a71b8f3803365cc5293e32d87e3505a05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c2e54cfeed552cc57cf5f6ee749400e" id="r_a1c2e54cfeed552cc57cf5f6ee749400e"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="structABDMS2000_1_1AKWFEntry.html">AKWFEntry</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#a1c2e54cfeed552cc57cf5f6ee749400e">ABDMS2000::kAKWFExtras</a> []</td></tr>
+<tr class="separator:a1c2e54cfeed552cc57cf5f6ee749400e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3234bc662266a8019cb62c666726ccff" id="r_a3234bc662266a8019cb62c666726ccff"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="structABDMS2000_1_1M1FileEntry.html">M1FileEntry</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#a3234bc662266a8019cb62c666726ccff">ABDMS2000::kM1Files</a> []</td></tr>
+<tr class="separator:a3234bc662266a8019cb62c666726ccff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

@@ -1,0 +1,2924 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: ReMS2000 — Análisis del Código Lua y Algoritmos MIDI/SysEx</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+</div><!-- top -->
+<div><div class="header">
+  <div class="headertitle"><div class="title">ReMS2000 — Análisis del Código Lua y Algoritmos MIDI/SysEx</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><p><a class="anchor" id="autotoc_md144"></a> <em>Este documento contiene el código Lua extraído del panel ReMS2000 (desarrollado por inteyes en Ctrlr), que implementa el protocolo completo de comunicación, desempaquetado de datos y gestión de parches del Korg MS2000.</em></p>
+<hr  />
+<h1><a class="anchor" id="autotoc_md146"></a>
+&lt;tt&gt;table_dump&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">-- @1.1</div>
+<div class="line">--</div>
+<div class="line">-- Print table contents</div>
+<div class="line">--</div>
+<div class="line">function table_dump(table)</div>
+<div class="line">    for key,value in ipairs(table) do</div>
+<div class="line">        _DBG (&quot;KEY= [&quot;..key..&quot;]&quot;)</div>
+<div class="line"> </div>
+<div class="line">        if (type(value) == &quot;table&quot;) then</div>
+<div class="line">            table_dump(value)</div>
+<div class="line">        elseif (type(value) == &quot;nil&quot;) then</div>
+<div class="line">            _DBG (&quot; = NIL&quot;)</div>
+<div class="line">        else</div>
+<div class="line">            what (value)</div>
+<div class="line">        end</div>
+<div class="line">    end</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md148"></a>
+&lt;tt&gt;setGlobalVars&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function setGlobalVars()</div>
+<div class="line"> </div>
+<div class="line">    sharedValues = {}</div>
+<div class="line"> </div>
+<div class="line">    sharedValues.selectedPreset         = 1             -- Selected program on the panel</div>
+<div class="line">    sharedValues.selectedBank           = 1             -- Selected bank on the panel</div>
+<div class="line">    sharedValues.synthPreset            = 0             -- Selected program on the MS2000</div>
+<div class="line">    sharedValues.synthBank              = 0             -- Selected bank on the MS2000</div>
+<div class="line">    sharedValues.synthProgram           = 0             -- Calculated synth program number (bank + preset) for writing</div>
+<div class="line">    sharedValues.selectedTimbre         = 0</div>
+<div class="line">    sharedValues.selectedSequence       = 0</div>
+<div class="line">    sharedValues.midiActivity           = 0             -- Midi activity flag for blinking the indicator</div>
+<div class="line">    sharedValues.reachStatus            = 0         </div>
+<div class="line">    sharedValues.timbreMode             = tmSynth       -- Current global mode - synthesizer / vocoder</div>
+<div class="line">    sharedValues.voiceMode              = vmUndefined   -- More specific mode description</div>
+<div class="line">    sharedValues.deviceStatus           = dsOffline     -- Device status according to the panel</div>
+<div class="line">    sharedValues.operationMode          = omDefault     -- Synthesizer operation mode (Program, Edit, Global)</div>
+<div class="line">    sharedValues.hintMessage            = &quot;&quot;</div>
+<div class="line">    sharedValues.saveToRamEnabled       = 0             -- Flag to show if preset belong or not to specific program of the bank</div>
+<div class="line">    sharedValues.allowChangeSeq         = false         -- Flag to prevent auto sequence changing           </div>
+<div class="line">    sharedValues.isSequencerDragging    = false</div>
+<div class="line">    sharedValues.sequencerStartY        = 0</div>
+<div class="line">    sharedValues.sequencerKnob          = 0             -- Knob to be affected by sequencer dragging</div>
+<div class="line">    sharedValues.sequencerKnobValue     = 0             -- Value at the moment of drag begins</div>
+<div class="line">    sharedValues.applySettingsOnCatch   = false         -- Required for settings merging routine</div>
+<div class="line">    sharedValues.ignoreSettingsButton   = true          -- Workaround for strange behaviour when settings page was not closed before saving state</div>
+<div class="line">    sharedValues.customBGColor          = SEQ_BACKGROUND</div>
+<div class="line">    sharedValues.playMessageTuple       = {}            -- Program Play mode can send 3 messages in a row, but Ctrlr do not recognize them as multimessage</div>
+<div class="line">    sharedValues.resetDWGS              = true          -- Flag to process OSC1 Control2 bounds and formula</div>
+<div class="line">    sharedValues.restartRequired        = false         -- Flag to indicate if panel restart is required</div>
+<div class="line"> </div>
+<div class="line">    -- SysEx formula templates for non-visual components, will be overriden in certain methods</div>
+<div class="line">    sharedValues.osc1SEValues   = {0xF0, 0x42, 0x00, 0x58, 0x41, 0x49, 0x00, 0x00, 0x00, 0xF7}</div>
+<div class="line">    sharedValues.osc2SEValues   = {0xF0, 0x42, 0x00, 0x58, 0x41, 0x4D, 0x00, 0x00, 0x00, 0xF7}</div>
+<div class="line">    sharedValues.oscModSEValues = {0xF0, 0x42, 0x00, 0x58, 0x41, 0x4E, 0x00, 0x00, 0x00, 0xF7}</div>
+<div class="line">    sharedValues.filterSEValues = {0xF0, 0x42, 0x00, 0x58, 0x41, 0x54, 0x00, 0x00, 0x00, 0xF7}</div>
+<div class="line">    sharedValues.LFO1SEValues   = {0xF0, 0x42, 0x00, 0x58, 0x41, 0x68, 0x00, 0x00, 0x00, 0xF7}</div>
+<div class="line">    sharedValues.LFO2SEValues   = {0xF0, 0x42, 0x00, 0x58, 0x41, 0x6D, 0x00, 0x00, 0x00, 0xF7}</div>
+<div class="line"> </div>
+<div class="line">    panelSettings = {}</div>
+<div class="line"> </div>
+<div class="line">    panelSettings.sendProgOnStartup = 0</div>
+<div class="line">    panelSettings.sendOnProgChange  = 0</div>
+<div class="line">    panelSettings.reqProgOnChange   = 0 -- Request program on change synthesizer&#39;s program number</div>
+<div class="line">    panelSettings.autocheckLCDMode  = 0 -- Force LCD mode on every poll cycle</div>
+<div class="line">    panelSettings.disableWarnings   = 0 -- Disable all warning dialogs. Might be dangerous</div>
+<div class="line">    panelSettings.clockSource       = 2</div>
+<div class="line">    panelSettings.localMode         = 1</div>
+<div class="line">    panelSettings.continuousPolling = 1</div>
+<div class="line">    panelSettings.selectorsSource   = pbsPanel  -- Flag to recognize where to cycle program - on the panel, or on the synthesizer side</div>
+<div class="line">    panelSettings.selectedSkin      = csDefault</div>
+<div class="line"> </div>
+<div class="line">    -- Skin colors</div>
+<div class="line">    skinColors = {}</div>
+<div class="line"> </div>
+<div class="line">    -- Init default colors</div>
+<div class="line">    defaultScheme()</div>
+<div class="line"> </div>
+<div class="line">    -- Timer flags</div>
+<div class="line">    timerFlags = {}</div>
+<div class="line"> </div>
+<div class="line">    -- Flags to indicate if some kind of data is expected or not</div>
+<div class="line">    -- Data that not expected will be ignored on input</div>
+<div class="line">    timerFlags.waitForSingleProgram = false</div>
+<div class="line">    timerFlags.waitForBulkDump      = false</div>
+<div class="line">    timerFlags.waitForSettings      = false</div>
+<div class="line">    timerFlags.waitForWriteReply    = false</div>
+<div class="line"> </div>
+<div class="line">    -- Patch bank</div>
+<div class="line">    presetBank = initPresetBank()</div>
+<div class="line"> </div>
+<div class="line">    -- Current program data buffer. It&#39;s INIT program by default</div>
+<div class="line">    dataBuffer = copyTable(presetBank[1][1])</div>
+<div class="line"> </div>
+<div class="line">    -- Vocoder buffer</div>
+<div class="line">    vocoderBuffer = initVocoderBuffer()</div>
+<div class="line"> </div>
+<div class="line">    -- Timbre clipboard</div>
+<div class="line">    timbreClipboard = {}</div>
+<div class="line"> </div>
+<div class="line">    -- Sequence clipboard</div>
+<div class="line">    seqClipboard = {}</div>
+<div class="line"> </div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md150"></a>
+&lt;tt&gt;setGlobalConstants&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function setGlobalConstants()</div>
+<div class="line"> </div>
+<div class="line">    panelVersion = &quot;1.3.4&quot;</div>
+<div class="line"> </div>
+<div class="line">    -- Color definitions</div>
+<div class="line">    COMP_DISABLED_ALPHA = 0.5</div>
+<div class="line">    COMP_ENABLED_ALPHA  = 1</div>
+<div class="line"> </div>
+<div class="line">    -- LCD</div>
+<div class="line">    LCD_BASE        = Colour(0xFF333333)</div>
+<div class="line">    LCD_BACKLIGHT   = Colour(0xFFc4e283)</div>
+<div class="line">    LCD_DIGITS      = Colour(0xFFb5ca87)</div>
+<div class="line">    LCD_TEXT        = Colour(0xFF202020)</div>
+<div class="line">    LCD_GLOW_START  = Colour(0x25FFFFFF)</div>
+<div class="line">    LCD_GLOW_END    = Colour(0x00FFFFFF)</div>
+<div class="line"> </div>
+<div class="line">    -- Icons</div>
+<div class="line">    ICON_ORANGE = Colour(0xFFC6A34E)</div>
+<div class="line">    ICON_GREEN  = Colour(0xFF66BB66)</div>
+<div class="line">    ICON_RED    = Colour(0xFFDD6666)</div>
+<div class="line"> </div>
+<div class="line">    -- Drawing colors</div>
+<div class="line">    COLOR_SURFACE_LINE      = Colour(0xFFBABABA)</div>
+<div class="line">    COLOR_SURFACE_LINE_DARK = Colour(0xFF9A9A9A) </div>
+<div class="line">    COLOR_GREY_TEXT         = Colour(0xFF9A9A9A)</div>
+<div class="line">    COLOR_TRANSPARENT       = Colour(0x00000000)</div>
+<div class="line">    COLOR_PANEL_BG          = Colour(0xFF334657)</div>
+<div class="line">    COLOR_SETUP_BG          = Colour(0xFA334657)</div>
+<div class="line">    COLOR_PANEL_BG_BLK      = Colour(0xFF353535)</div>
+<div class="line">    COLOR_SETUP_BG_BLK      = Colour(0xFA353535)</div>
+<div class="line">    COLOR_VOCODER_LABEL     = Colour(0xFFAAAAAA)</div>
+<div class="line">    COLOR_COMBO_TEXT        = Colour(0xFFA6914F)</div>
+<div class="line">    COLOR_BUFFER_COPY       = Colour(0xFFA6524A)</div>
+<div class="line">    COLOR_BUFFER_COPY_V     = Colour(0xFF4A85A6)</div>
+<div class="line">    COLOR_BUFFER_TEXT       = Colour(0xFFFAFAFA)</div>
+<div class="line">    COLOR_BUFFER_TEXT_EMPTY = Colour(0xFFBABABA)</div>
+<div class="line">    COLOR_EMERGENCY         = Colour(0xFF993333)</div>
+<div class="line">    COLOR_SEQ_BG_BLACK      = Colour(0xFF1A2024)</div>
+<div class="line">    COLOR_GROUPBOX_OUTLINE  = Colour(0xFFA3A3A3)</div>
+<div class="line">    COLOR_GROUPBOX_LABEL    = Colour(0xFFBABABA)</div>
+<div class="line"> </div>
+<div class="line">    -- Sequencer</div>
+<div class="line">    SEQ_BACKGROUND      = Colour(0xFF2A3034)</div>
+<div class="line">    SEQ_BG_ALTER        = Colour(0xFF252A2E)</div>
+<div class="line">    SEQ_BG_ALTER_BLACK  = Colour(0xFF202529)</div>
+<div class="line">    SEQ_NUMBER_ONE      = Colour(0xFF00FF00)</div>
+<div class="line">    SEQ_NUMBER_TWO      = Colour(0xFF00CCFF)</div>
+<div class="line">    SEQ_NUMBER_THREE    = Colour(0xFFFFCC00)</div>
+<div class="line">    SEQ_GRAYED_OUT      = Colour(0xFFBABABA)</div>
+<div class="line"> </div>
+<div class="line">    -- Operation modes</div>
+<div class="line">    omDefault = 0</div>
+<div class="line">    omLCD     = 1</div>
+<div class="line">    omGlobal  = 2</div>
+<div class="line"> </div>
+<div class="line">    -- Device status</div>
+<div class="line">    dsOnline    = 0</div>
+<div class="line">    dsBusy      = 1</div>
+<div class="line">    dsOffline   = 2</div>
+<div class="line">    dsError     = 3</div>
+<div class="line"> </div>
+<div class="line">    -- Error codes</div>
+<div class="line">    errMaxValExceeded = 0</div>
+<div class="line"> </div>
+<div class="line">    -- Timbre modes</div>
+<div class="line">    tmSynth     = 0</div>
+<div class="line">    tmVocoder   = 1</div>
+<div class="line"> </div>
+<div class="line">    -- Voice modes</div>
+<div class="line">    vmUndefined = -1</div>
+<div class="line">    vmSingle    = 0</div>
+<div class="line">    vmSplit     = 1</div>
+<div class="line">    vmDual      = 2</div>
+<div class="line">    vmVocoder   = 3</div>
+<div class="line"> </div>
+<div class="line">    -- Destination program buffer</div>
+<div class="line">    dbSynth     = 0</div>
+<div class="line">    dbVocoder   = 1</div>
+<div class="line"> </div>
+<div class="line">    -- Color scheme</div>
+<div class="line">    csDefault   = 0</div>
+<div class="line">    csBlack     = 1</div>
+<div class="line">    csNordLead  = 2</div>
+<div class="line">    csJP8080    = 3</div>
+<div class="line"> </div>
+<div class="line">    -- Supported file extensions</div>
+<div class="line">    SUPPORTED_EXT_MASK      = &quot;*.syx;*.mid&quot;</div>
+<div class="line">    SUPPORTED_EXT_MASK_ALT  = &quot;*.syx;*.mid;*.prg&quot;</div>
+<div class="line"> </div>
+<div class="line">    -- Bank \ program selection source</div>
+<div class="line">    pbsPanel    = 0</div>
+<div class="line">    pbsSynth    = 1</div>
+<div class="line"> </div>
+<div class="line">    -- Program data values</div>
+<div class="line">    DATA_PREAMBLE_BYTES     = 5     -- SysEx header</div>
+<div class="line">    COMMON_DATA_SIZE        = 38    -- Shared values for both timbres</div>
+<div class="line"> </div>
+<div class="line">    -- Dump size values</div>
+<div class="line">    -- Raw MIDI data</div>
+<div class="line">    SINGLE_PROGRAM_SIZE     = 297   -- (291 + 5 bytes SysEx header + F7)</div>
+<div class="line">    GLOBAL_DATA_SIZE        = 235   -- (229 + SysEx data)</div>
+<div class="line">    PROGRAM_BANK_DUMP_SIZE  = 37163 -- (37157 + SysEx data)</div>
+<div class="line">    ALL_DATA_DUMP_SIZE      = 37392 -- (37386 + SysEx data)</div>
+<div class="line">    MKSINGLE_PROGRAM_SIZE   = SINGLE_PROGRAM_SIZE + 2 --(MicroKorg program size)</div>
+<div class="line"> </div>
+<div class="line">    -- Special cases</div>
+<div class="line">    HANDSON_DUMP_SIZE       = 37395</div>
+<div class="line"> </div>
+<div class="line">    -- MIDI-to-Program converted data size</div>
+<div class="line">    SINGLE_PROGRAM_INT_SIZE = 254   </div>
+<div class="line"> </div>
+<div class="line">    TIMBRE_DATA_SIZE        = 108</div>
+<div class="line">    TIMBRE_ONE_STARTBYTE    = DATA_PREAMBLE_BYTES + COMMON_DATA_SIZE + 1</div>
+<div class="line">    TIMBRE_TWO_STARTBYTE    = TIMBRE_ONE_STARTBYTE + TIMBRE_DATA_SIZE</div>
+<div class="line"> </div>
+<div class="line">    -- Buffer copy values</div>
+<div class="line">    SEQUENCE_STARTBYTE_DISP     = 53</div>
+<div class="line">    SEQUENCE_DATA_SIZE          = 55</div>
+<div class="line">    VOCODER_SEQDATA_STARTBYTE   = 47</div>
+<div class="line">    VOCODER_SEQDATA_SIZE        = 32</div>
+<div class="line"> </div>
+<div class="line">    -- Timbre values</div>
+<div class="line">    OSC1_WAVEFORM_DISP  = 7</div>
+<div class="line">    OSC2_WAVEFORM_DISP  = 12 -- WARNING, packed byte, bits 0~1</div>
+<div class="line">    OSCMODULATION_DISP  = 12 -- WARNING, packed byte, bits 4~5</div>
+<div class="line">    FILTER_TYPE_DISP    = 19</div>
+<div class="line">    LFO1_TYPE_DISP      = 38 -- WARNING, packed byte, bits 0~1</div>
+<div class="line">    LFO2_TYPE_DISP      = 41 -- WARNING, packed byte, bits 0~1</div>
+<div class="line"> </div>
+<div class="line">    -- Vocoder values</div>
+<div class="line">    OSC1_WAVEFORM_VCD_DISP  = 8</div>
+<div class="line">    FILTER_TYPE_VCD_DISP    = 22</div>
+<div class="line">    LFO1_TYPE_VCD_DISP      = 41</div>
+<div class="line">    LFO2_TYPE_VCD_DISP      = 44</div>
+<div class="line"> </div>
+<div class="line">    SYSEX_VAL_DIFF      = 272   -- Difference between modulator numbers on different layers</div>
+<div class="line">    SYSEX_VAL_DIFF_ALT  = 400</div>
+<div class="line"> </div>
+<div class="line">    -- Dump type</div>
+<div class="line">    dtInvalidSz = -1</div>
+<div class="line">    dtProgBank  = 0</div>
+<div class="line">    dtAllData   = 1</div>
+<div class="line">    dtHandson   = 2</div>
+<div class="line"> </div>
+<div class="line">    -- PopUp result values</div>
+<div class="line">    prOpenProgram       = 1</div>
+<div class="line">    prOpenDump          = 2</div>
+<div class="line">    prSaveProgram       = 10</div>
+<div class="line">    prSaveDump          = 11</div>
+<div class="line">    prSaveToRAM         = 12</div>
+<div class="line">    prRenameProgram     = 15</div>
+<div class="line">    prInitProgram       = 20</div>
+<div class="line">    prInitBank          = 21</div>
+<div class="line">    prRequestProgram    = 30</div>
+<div class="line">    prWriteProgram      = 31</div>
+<div class="line">    prRequestSysexDump  = 40</div>
+<div class="line">    prWriteSysexDump    = 41</div>
+<div class="line"> </div>
+<div class="line">    -- Timer values</div>
+<div class="line">    POLL_TIMER          = 10000 -- Constant synth availability polling</div>
+<div class="line">    SHOWHINT_TIMER      = 15000 -- How long hint will be shown</div>
+<div class="line">    STARTUP_TIMER       = 250   -- Delay before applying all startup data</div>
+<div class="line">    BLINKMIDI_TIMER     = 75    -- How long midi indicator shown</div>
+<div class="line">    WAIT_PROGRAM_TIMER  = 3000  -- Wait for program to be received</div>
+<div class="line">    WAIT_BANK_TIMER     = 22000 -- Wait for program bank to be received</div>
+<div class="line">    POLLSTATE_TIMER     = 3000  -- Timeout for synth mode request</div>
+<div class="line">    WAITFORSET_TIMER    = 3000  -- Timeout for synth settings request</div>
+<div class="line">    DELAY_PROG_REQUEST  = 300   -- Delay before run request</div>
+<div class="line"> </div>
+<div class="line">    STARTUP_TIMER_ID        = 1</div>
+<div class="line">    HINT_TIMER_ID           = 10</div>
+<div class="line">    POLL_TIMER_ID           = 20</div>
+<div class="line">    BLINKMIDI_TIMER_ID      = 30</div>
+<div class="line">    WAIT_PROGRAM_TIMER_ID   = 40</div>
+<div class="line">    WAIT_BANK_TIMER_ID      = 41</div>
+<div class="line">    POLLSTATE_TIMER_ID      = 50</div>
+<div class="line">    WAITFORSET_TIMER_ID     = 80</div>
+<div class="line">    DELAY_PROG_REQUEST_ID   = 90</div>
+<div class="line">    WAITFORWRITE_REPLY_ID   = 100 -- Will indicate if write ok reply was or was not received</div>
+<div class="line"> </div>
+<div class="line">    DEFINE_DEBUG = false</div>
+<div class="line"> </div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md152"></a>
+&lt;tt&gt;startupSequence&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function startupSequence()</div>
+<div class="line"> </div>
+<div class="line">    -- Starting up the panel here</div>
+<div class="line">    panelReady = false</div>
+<div class="line"> </div>
+<div class="line">    -- Prevent panel from sending MIDI-messages while initialization goes</div>
+<div class="line">    mutePanelOut(true)</div>
+<div class="line"> </div>
+<div class="line">    setGlobalConstants()</div>
+<div class="line">    setGlobalVars()</div>
+<div class="line">    restoreGlobalSettings()</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md154"></a>
+&lt;tt&gt;calculateLSBMSB&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function calculateLSBMSB(calcVal, fullByte, nibbleLSB)</div>
+<div class="line">    </div>
+<div class="line">    local fB = 0x07</div>
+<div class="line">    local lsM = 0x7F</div>
+<div class="line"> </div>
+<div class="line">    if fullByte ~= nil then</div>
+<div class="line">        if fullByte then</div>
+<div class="line">            fB = 0x08</div>
+<div class="line"> </div>
+<div class="line">            if nibbleLSB ~= nil then</div>
+<div class="line">                if not nibbleLSB then</div>
+<div class="line">                    lsM = 0xFF</div>
+<div class="line">                end</div>
+<div class="line">            end</div>
+<div class="line">        end</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    local lsb = bit.band(calcVal, lsM)</div>
+<div class="line">    local msb = bit.rshift(calcVal, fB)</div>
+<div class="line"> </div>
+<div class="line">    return {lsb, msb}</div>
+<div class="line">end</div>
+<div class="line"> </div>
+<div class="line">function restoreValueFromLSMS(msb, lsb)</div>
+<div class="line"> </div>
+<div class="line">    return msb * 0x80 + lsb</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md156"></a>
+&lt;tt&gt;midiToProgramData&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function midiToProgramData(rawPatchData, seekBytes)</div>
+<div class="line">    </div>
+<div class="line">    local dataSize = #rawPatchData - seekBytes - 1</div>
+<div class="line">    local blockSize = 8</div>
+<div class="line">    local dataBlockCount = math.ceil(dataSize / blockSize)</div>
+<div class="line">    local bytesRemain = blockSize</div>
+<div class="line">    local i, j</div>
+<div class="line"> </div>
+<div class="line">    local msbBytes = {}</div>
+<div class="line">    local dataChunk = {}</div>
+<div class="line">    local processedData = {}</div>
+<div class="line">    </div>
+<div class="line">    -- Insert header to the final table as is</div>
+<div class="line">    for i = 1, seekBytes do</div>
+<div class="line">        table.insert(processedData, rawPatchData[i])</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    -- Process data, according to the KORG&#39;s midi implementation doc</div>
+<div class="line">    -- It uses 1 + 7 &quot;7BIT byte&quot; chunks to store 1MSB + 7LSB bytes (in my understanding, at least)</div>
+<div class="line">    -- Zeroes and Ones from 1st byte used to indicate MSB value of each byte in a chunk</div>
+<div class="line">    for j = 0, dataBlockCount - 1 do</div>
+<div class="line"> </div>
+<div class="line">        if j == dataBlockCount - 1 then</div>
+<div class="line">            bytesRemain = dataSize - ((dataBlockCount - 1) * blockSize)</div>
+<div class="line">        end</div>
+<div class="line"> </div>
+<div class="line">        -- Getting 8 bytes of data to make calculations</div>
+<div class="line">        for i = 0, bytesRemain - 1 do</div>
+<div class="line">            table.insert(dataChunk, rawPatchData[seekBytes + 1 + (j * blockSize) + i])</div>
+<div class="line">        end</div>
+<div class="line"> </div>
+<div class="line">        -- Convert 1st byte to &quot;1&quot;s and &quot;0&quot;s</div>
+<div class="line">        msbBytes = Dec2Bin(dataChunk[1])</div>
+<div class="line"> </div>
+<div class="line">        -- Apply MSB bits for mapped bytes</div>
+<div class="line">        for i = 2, bytesRemain do</div>
+<div class="line"> </div>
+<div class="line">            dataChunk[i] = dataChunk[i] + (0x80 * msbBytes[i - 1])</div>
+<div class="line">            table.insert(processedData, dataChunk[i])</div>
+<div class="line">        end</div>
+<div class="line"> </div>
+<div class="line">        dataChunk = {}</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    -- End of SysEx</div>
+<div class="line">    table.insert(processedData, 0xF7)</div>
+<div class="line"> </div>
+<div class="line">    return processedData</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md158"></a>
+&lt;tt&gt;programToMIDIData&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function programToMIDIData(bufferData, seekBytes)</div>
+<div class="line">    </div>
+<div class="line">    local programDataSize = #bufferData - seekBytes - 1</div>
+<div class="line">    local blockSize = 7</div>
+<div class="line">    local dataBlockCount = math.ceil(programDataSize / 7)</div>
+<div class="line"> </div>
+<div class="line">    local i, j</div>
+<div class="line">    local lsms = {}</div>
+<div class="line">    local msbBytes = {}</div>
+<div class="line">    local dataChunk = {}</div>
+<div class="line">    local bytesRemain = 7</div>
+<div class="line">    local processedData = {}</div>
+<div class="line"> </div>
+<div class="line">    -- Insert header to the final table as is</div>
+<div class="line">    for i = 1, seekBytes do</div>
+<div class="line">        table.insert(processedData, bufferData[i])</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    -- Constructing MS2000-compatible MIDI data format to store or send</div>
+<div class="line">    -- All values must be pretended as LSB and MSB, MSB data moved to a single byte</div>
+<div class="line">    -- and placed before the data chunk (which is 7 bytes long)</div>
+<div class="line"> </div>
+<div class="line">    for i = 0, dataBlockCount - 1 do</div>
+<div class="line"> </div>
+<div class="line">        if i == dataBlockCount - 1 then</div>
+<div class="line">            bytesRemain = programDataSize - ((dataBlockCount - 1) * blockSize)</div>
+<div class="line">        end</div>
+<div class="line"> </div>
+<div class="line">        -- Construct MSB-bits array</div>
+<div class="line">        for j = 0, bytesRemain - 1 do</div>
+<div class="line"> </div>
+<div class="line">            lsms = calculateLSBMSB(bufferData[seekBytes + 1 + (i * blockSize) + j])</div>
+<div class="line"> </div>
+<div class="line">            -- Collect MSB bit</div>
+<div class="line">            table.insert(msbBytes, lsms[2])</div>
+<div class="line"> </div>
+<div class="line">            -- Insert LSB Value into result table</div>
+<div class="line">            table.insert(dataChunk, lsms[1])</div>
+<div class="line">        end</div>
+<div class="line"> </div>
+<div class="line">        -- Insert &quot;shared&quot; MSB value as 1st byte of this chunk</div>
+<div class="line">        table.insert(processedData, Bin2Dec(msbBytes))</div>
+<div class="line"> </div>
+<div class="line">        for j = 1, #dataChunk do</div>
+<div class="line">            table.insert(processedData, dataChunk[j])</div>
+<div class="line">        end</div>
+<div class="line"> </div>
+<div class="line">        dataChunk = {}</div>
+<div class="line">        msbBytes = {}</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    -- End of SysEx</div>
+<div class="line">    table.insert(processedData, 0xF7)</div>
+<div class="line"> </div>
+<div class="line">    return processedData</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md160"></a>
+&lt;tt&gt;binConversion&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function Bin2Dec(bitArr)</div>
+<div class="line"> </div>
+<div class="line">    local result = 0</div>
+<div class="line"> </div>
+<div class="line">    -- Since max value is 127, it cannot be more than 7 bits long</div>
+<div class="line">    if #bitArr &gt; 7 then</div>
+<div class="line">        return result</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    local invBytes = {}</div>
+<div class="line">    local i</div>
+<div class="line"> </div>
+<div class="line">    for i = #bitArr, 1, -1 do</div>
+<div class="line">        table.insert(invBytes, bitArr[i])</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    for i = 1, #invBytes do</div>
+<div class="line">        result = result + (invBytes[i] * 2 &amp;#94; (#invBytes - i))</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    return result</div>
+<div class="line">end</div>
+<div class="line"> </div>
+<div class="line">function Dec2Bin(num)</div>
+<div class="line">    </div>
+<div class="line">    local result = {0, 0, 0, 0, 0, 0, 0}</div>
+<div class="line">    local bufTab = {}</div>
+<div class="line"> </div>
+<div class="line">    if (num &gt; 0x7F) or (num == 0) then</div>
+<div class="line">        -- Wrong values passed, or it&#39;s zero</div>
+<div class="line">        return result</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    local invertBytes = {}</div>
+<div class="line">    local divided, divider = num, num</div>
+<div class="line">    local i</div>
+<div class="line"> </div>
+<div class="line">    while divided &gt; 1 do</div>
+<div class="line"> </div>
+<div class="line">        divider = math.floor(divided / 2)</div>
+<div class="line"> </div>
+<div class="line">        if divided - (divider * 2) &gt; 0 then</div>
+<div class="line">            table.insert(bufTab, 1)</div>
+<div class="line">        else</div>
+<div class="line">            table.insert(bufTab, 0)</div>
+<div class="line">        end</div>
+<div class="line"> </div>
+<div class="line">        divided = divider</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    table.insert(bufTab, divider)</div>
+<div class="line"> </div>
+<div class="line">    for i = 1, #bufTab do</div>
+<div class="line">        result[i] = bufTab[i]</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    return result</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md162"></a>
+&lt;tt&gt;memBlockToTable&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function memBlockToTable(mbBytes)</div>
+<div class="line">    </div>
+<div class="line">    local i</div>
+<div class="line"> </div>
+<div class="line">    local mbData = {}</div>
+<div class="line"> </div>
+<div class="line">    for i = 0, mbBytes:getSize() - 1 do</div>
+<div class="line">        table.insert(mbData, mbBytes:getByte(i))</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    return mbData</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md164"></a>
+&lt;tt&gt;bankIDToName&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function bankIDToName(bankID)</div>
+<div class="line">    </div>
+<div class="line">    return string.char(64 + bankID)</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md166"></a>
+&lt;tt&gt;packedByteUtils&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function extractPackByte(byteValue, firstBit, lastBit)</div>
+<div class="line"> </div>
+<div class="line">    local lBit</div>
+<div class="line"> </div>
+<div class="line">    if lastBit == nil then</div>
+<div class="line">        lBit = firstBit</div>
+<div class="line">    else</div>
+<div class="line">        lBit = lastBit</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    local valSize = lBit - firstBit + 1</div>
+<div class="line"> </div>
+<div class="line">    -- The simplest way to get bit-based value to me</div>
+<div class="line">    return bit.band(bit.rshift(byteValue, firstBit), (2 &amp;#94; valSize) - 1)</div>
+<div class="line">end</div>
+<div class="line"> </div>
+<div class="line">function packBitsToByte(srcValue, packValue, firstBit, lastBit)</div>
+<div class="line"> </div>
+<div class="line">    local lBit</div>
+<div class="line"> </div>
+<div class="line">    if lastBit == nil then</div>
+<div class="line">        lBit = firstBit</div>
+<div class="line">    else</div>
+<div class="line">        lBit = lastBit</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    -- What I do is subtract shifted value, which is stored in</div>
+<div class="line">    -- certain bits to make them filled with zeroes</div>
+<div class="line">    -- Then write new bits with the &quot;OR&quot; operation</div>
+<div class="line"> </div>
+<div class="line">    local existingValue = extractPackByte(srcValue, firstBit, lBit)</div>
+<div class="line"> </div>
+<div class="line">    local prepValue = srcValue - bit.lshift(existingValue, firstBit)</div>
+<div class="line"> </div>
+<div class="line">    local bitsToPack = bit.lshift(packValue, firstBit)</div>
+<div class="line"> </div>
+<div class="line">    --console(string.format(&quot;valueEx=%d, shiftedV=%d, srcV=%d, src-shift=%d, packVal=%d, shift=%d, shiftedPV=%d, fb=%d, lb=%d&quot;, existingValue, </div>
+<div class="line">    --  bit.lshift(existingValue, firstBit), srcValue, prepValue, packValue, 8 - firstBit - valSize, bitsToPack, firstBit, lastBit))</div>
+<div class="line"> </div>
+<div class="line">    -- ([..0.. OR value] bits)</div>
+<div class="line">    return bit.bor(prepValue, bitsToPack)</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md168"></a>
+&lt;tt&gt;normalizeSysExDumpData&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function normalizeSysExDumpData(dataTable)</div>
+<div class="line">    </div>
+<div class="line">    -- Throwing away data which is not belong to &quot;midi dump data&quot;</div>
+<div class="line">    -- Filter bytes - block must start with F0 and end with F7</div>
+<div class="line"> </div>
+<div class="line">    -- Other data will be cutted out</div>
+<div class="line"> </div>
+<div class="line">    local processedData = {}</div>
+<div class="line"> </div>
+<div class="line">    local i</div>
+<div class="line">    local readState = false</div>
+<div class="line">    local dataSize = #dataTable</div>
+<div class="line"> </div>
+<div class="line">    for i = 1, dataSize do</div>
+<div class="line"> </div>
+<div class="line">        if (not readState) then</div>
+<div class="line"> </div>
+<div class="line">            if dataTable[i] == 0xF0 then</div>
+<div class="line"> </div>
+<div class="line">                readState = true</div>
+<div class="line">                table.insert(processedData, dataTable[i])</div>
+<div class="line">            end</div>
+<div class="line">        else</div>
+<div class="line"> </div>
+<div class="line">            if dataTable[i] == 0xF7 then</div>
+<div class="line"> </div>
+<div class="line">                readState = false</div>
+<div class="line">            end</div>
+<div class="line"> </div>
+<div class="line">            table.insert(processedData, dataTable[i])</div>
+<div class="line">        end</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    return processedData</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md170"></a>
+&lt;tt&gt;getMidiInOut&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function getMidiInOut(getInput)</div>
+<div class="line"> </div>
+<div class="line">    local result = &quot;&quot;</div>
+<div class="line">    local midiCh = &quot;&quot;</div>
+<div class="line"> </div>
+<div class="line">    if getInput then</div>
+<div class="line">        result = panel:getProperty(&quot;panelMidiInputDevice&quot;)</div>
+<div class="line">        midiCh = panel:getProperty(&quot;panelMidiInputChannelDevice&quot;)</div>
+<div class="line"> </div>
+<div class="line">        if midiCh == &quot;0&quot; then</div>
+<div class="line">            midiCh = &quot;All&quot;</div>
+<div class="line">        end</div>
+<div class="line">    else</div>
+<div class="line">        result = panel:getProperty(&quot;panelMidiOutputDevice&quot;)</div>
+<div class="line">        midiCh = panel:getProperty(&quot;panelMidiOutputChannelDevice&quot;)</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    if result ~= &quot;-- None&quot; then</div>
+<div class="line"> </div>
+<div class="line">        result = result .. &quot; : CH &quot; .. midiCh</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    return result</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md172"></a>
+&lt;tt&gt;bankListPopup&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function bankListPopup(load)</div>
+<div class="line">    </div>
+<div class="line">    local popupWin = PopupMenu()</div>
+<div class="line"> </div>
+<div class="line">    popupWin:addSectionHeader(&quot;Select bank:&quot;)</div>
+<div class="line">    popupWin:addSeparator()</div>
+<div class="line"> </div>
+<div class="line">    popupWin:addSubMenu(&quot;Bank A&quot;, constructPresetBankMenu(1, &quot;A&quot;, load), true, Image(), false, 0)</div>
+<div class="line">    popupWin:addSubMenu(&quot;Bank B&quot;, constructPresetBankMenu(2, &quot;B&quot;, load), true, Image(), false, 0)</div>
+<div class="line">    popupWin:addSubMenu(&quot;Bank C&quot;, constructPresetBankMenu(3, &quot;C&quot;, load), true, Image(), false, 0)</div>
+<div class="line">    popupWin:addSubMenu(&quot;Bank D&quot;, constructPresetBankMenu(4, &quot;D&quot;, load), true, Image(), false, 0)</div>
+<div class="line">    popupWin:addSubMenu(&quot;Bank E&quot;, constructPresetBankMenu(5, &quot;E&quot;, load), true, Image(), false, 0)</div>
+<div class="line">    popupWin:addSubMenu(&quot;Bank F&quot;, constructPresetBankMenu(6, &quot;F&quot;, load), true, Image(), false, 0)</div>
+<div class="line">    popupWin:addSubMenu(&quot;Bank G&quot;, constructPresetBankMenu(7, &quot;G&quot;, load), true, Image(), false, 0)</div>
+<div class="line">    popupWin:addSubMenu(&quot;Bank H&quot;, constructPresetBankMenu(8, &quot;H&quot;, load), true, Image(), false, 0)</div>
+<div class="line"> </div>
+<div class="line">    return popupWin</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md174"></a>
+&lt;tt&gt;constructPresetBankMenu&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function constructPresetBankMenu(bankNumber, bankName, load)</div>
+<div class="line">    </div>
+<div class="line">    local popupWin = PopupMenu()</div>
+<div class="line">    local bankID = 100 * bankNumber</div>
+<div class="line"> </div>
+<div class="line">    if not load then</div>
+<div class="line">        bankID = bankID + 1000</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    popupWin:addSectionHeader(string.format(&quot;Preset bank %s:&quot;, bankName))</div>
+<div class="line">    popupWin:addSeparator()</div>
+<div class="line"> </div>
+<div class="line">    for i = 1, 16 do</div>
+<div class="line">        popupWin:addItem(bankID + i, string.format(&quot;%d. %s&quot;, i, getPresetNameByID(bankNumber, i)), true, false)</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    return popupWin</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md176"></a>
+&lt;tt&gt;drawOsc1Waveforms&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function drawOsc1Waveforms(comp, g)</div>
+<div class="line">    </div>
+<div class="line">    drawSaw(comp, g, 22, 5, 10, 2)</div>
+<div class="line">    drawPulse(comp, g, 31, 5, 10, 2)</div>
+<div class="line">    drawTriangle(comp, g, 60, 5, 10, 2)</div>
+<div class="line">    drawSine(comp, g, 76, 5, 2) </div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md178"></a>
+&lt;tt&gt;setOsc1Waveform&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function setOsc1Waveform(comp)</div>
+<div class="line"> </div>
+<div class="line">    local selectedWave = getModPropN(comp:getOwner(), &quot;modulatorCustomIndex&quot;)</div>
+<div class="line"> </div>
+<div class="line">    setOsc1WaveformByValue(selectedWave)</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md180"></a>
+&lt;tt&gt;calculateOscMod&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function calculateOscMod(ring, sync)</div>
+<div class="line">    </div>
+<div class="line">    if (ring or sync) == false then</div>
+<div class="line">        return 0</div>
+<div class="line">    elseif (ring == true) and (sync == false) then</div>
+<div class="line">        return 1</div>
+<div class="line">    elseif (ring == false) and (sync == true) then</div>
+<div class="line">        return 2</div>
+<div class="line">    else</div>
+<div class="line">        return 3</div>
+<div class="line">    end</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md182"></a>
+&lt;tt&gt;processOscModData&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function processOscModData(modValue, muteOutput)</div>
+<div class="line">    </div>
+<div class="line">    local ring</div>
+<div class="line">    local sync</div>
+<div class="line">    local OscModAddress = TIMBRE_ONE_STARTBYTE + (sharedValues.selectedTimbre * TIMBRE_DATA_SIZE) + OSCMODULATION_DISP</div>
+<div class="line"> </div>
+<div class="line">    if modValue == 0 then</div>
+<div class="line">        ring, sync = false, false</div>
+<div class="line">    elseif modValue == 1 then</div>
+<div class="line">        ring, sync = true, false</div>
+<div class="line">    elseif modValue == 2 then</div>
+<div class="line">        ring, sync = false, true</div>
+<div class="line">    else</div>
+<div class="line">        ring, sync = true, true</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    setLightState(&quot;imgOsc2ModLamp0&quot;, ring)</div>
+<div class="line">    setLightState(&quot;imgOsc2ModLamp1&quot;, sync)</div>
+<div class="line"> </div>
+<div class="line">    dataBuffer[OscModAddress] = packBitsToByte(dataBuffer[OscModAddress], calculateOscMod(ring, sync), 4, 5)</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md184"></a>
+&lt;tt&gt;paintSequencer&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function paintSequencer(comp, g)</div>
+<div class="line"> </div>
+<div class="line">    local i</div>
+<div class="line">    local roundRect = 3</div>
+<div class="line">    local canvasW = comp:getWidth()</div>
+<div class="line">    local canvasH = comp:getHeight()</div>
+<div class="line">    local canvasMid = canvasH / 2</div>
+<div class="line">    local figStartY = canvasMid</div>
+<div class="line">    local dashLen = 9</div>
+<div class="line">    local dashSpace = 1</div>
+<div class="line">    local dashCount = math.floor(canvasW / dashLen)</div>
+<div class="line">    local graphW = math.ceil(canvasW / 16)</div>
+<div class="line">    local maxGraphHeight = canvasMid * 0.75</div>
+<div class="line">    local drawProportion</div>
+<div class="line">    local lastStep = modByName(&quot;knobSeqLastStep&quot;):getValue()</div>
+<div class="line"> </div>
+<div class="line">    g:setColour(skinColors.customBG)</div>
+<div class="line">    g:fillRoundedRectangle(0, 0, canvasW, canvasH, roundRect)</div>
+<div class="line"> </div>
+<div class="line">    -- Paint background, zebra-style</div>
+<div class="line">    g:setColour(skinColors.customBGAlter)</div>
+<div class="line"> </div>
+<div class="line">    for i = 1, 16 do</div>
+<div class="line">        if i % 2 &gt; 0 then</div>
+<div class="line">            if i &lt; 15 then</div>
+<div class="line">                g:fillRect(i * graphW, 0, graphW, canvasH)</div>
+<div class="line">            else</div>
+<div class="line">                g:fillRect(i * graphW, 0, graphW - roundRect, canvasH)</div>
+<div class="line">                g:fillRoundedRectangle(i * graphW, 0, graphW, canvasH, roundRect)</div>
+<div class="line">            end</div>
+<div class="line">        end</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    if sharedValues.timbreMode == tmSynth then</div>
+<div class="line"> </div>
+<div class="line">        drawProportion = maxGraphHeight / getSeqStepMaxVal(modByName(string.format(&quot;cbSeqKnob%d&quot;, </div>
+<div class="line">                                                        sharedValues.selectedSequence + 1)):getValue())[2]</div>
+<div class="line">    else</div>
+<div class="line">        if sharedValues.selectedSequence == 0 then</div>
+<div class="line">            maxGraphHeight = canvasH * 0.875</div>
+<div class="line"> </div>
+<div class="line">            -- Start bar from the bottom</div>
+<div class="line">            figStartY = canvasH</div>
+<div class="line">        end</div>
+<div class="line"> </div>
+<div class="line">        drawProportion = maxGraphHeight / getSeqStepMaxVal(sharedValues.selectedSequence)[2]</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    -- Dashed line only for +/- ranges</div>
+<div class="line">    g:setColour(skinColors.lineColor)</div>
+<div class="line"> </div>
+<div class="line">    -- Paint dashed line</div>
+<div class="line">    for i = 0, dashCount do</div>
+<div class="line"> </div>
+<div class="line">        if maxGraphHeight &lt; canvasMid then</div>
+<div class="line">            g:fillRect(i * dashLen, canvasMid, dashLen - dashSpace, 1)</div>
+<div class="line">        else</div>
+<div class="line">            g:fillRect(i * dashLen, canvasMid * 1.125, dashLen - dashSpace, 1)</div>
+<div class="line">        end</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    local knobVal</div>
+<div class="line">    local graphEnd</div>
+<div class="line">    </div>
+<div class="line">    if sharedValues.selectedSequence == 0 then</div>
+<div class="line">        g:setColour(skinColors.seqOneBars)</div>
+<div class="line">    elseif sharedValues.selectedSequence == 1 then</div>
+<div class="line">        g:setColour(skinColors.seqTwoBars)</div>
+<div class="line">    else</div>
+<div class="line">        g:setColour(skinColors.seqThreeBars)</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    g:setFont(Font(10.0, 0))</div>
+<div class="line"> </div>
+<div class="line">    for i = 1, 16 do</div>
+<div class="line">        if i == lastStep + 1 then</div>
+<div class="line">            g:setColour(skinColors.seqGrayedOut)</div>
+<div class="line">        end</div>
+<div class="line"> </div>
+<div class="line">        knobVal = modByName(string.format(&quot;knobSeq%dStep%d&quot;, </div>
+<div class="line">                                          sharedValues.selectedSequence + 1, i)):getValue()</div>
+<div class="line"> </div>
+<div class="line">        if knobVal &gt;= 0 then</div>
+<div class="line">            g:setOpacity(0.42 - skinColors.seqOpacityMinus)</div>
+<div class="line"> </div>
+<div class="line">            graphEnd = knobVal * drawProportion</div>
+<div class="line">            g:fillRect((i - 1) * graphW, figStartY - graphEnd, graphW - 1, graphEnd + 1)</div>
+<div class="line">            g:setOpacity(0.9)</div>
+<div class="line"> </div>
+<div class="line">            -- Paint these tiny value labels</div>
+<div class="line">            g:drawText(tostring(knobVal), (i - 1) * graphW, </div>
+<div class="line">                       figStartY - graphEnd - 9, 20, 8, Justification(Justification.left), false)  </div>
+<div class="line">        else</div>
+<div class="line">            -- Negative values are more transparent</div>
+<div class="line">            g:setOpacity(0.30 - skinColors.seqOpacityMinus)</div>
+<div class="line"> </div>
+<div class="line">            graphEnd = math.abs(knobVal * drawProportion)</div>
+<div class="line">            g:fillRect((i - 1) * graphW, canvasMid, graphW - 1, graphEnd)</div>
+<div class="line">            g:setOpacity(0.9)</div>
+<div class="line"> </div>
+<div class="line">            g:drawText(tostring(knobVal), (i - 1) * graphW, </div>
+<div class="line">                       canvasMid + graphEnd + 2, 20, 8, Justification(Justification.left), false)</div>
+<div class="line">        end</div>
+<div class="line">    end </div>
+<div class="line"> </div>
+<div class="line">    g:setOpacity(1)</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md186"></a>
+&lt;tt&gt;paintSeq2BG&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function paintSeq2BG(mod, g)</div>
+<div class="line"> </div>
+<div class="line">    g:setColour(skinColors.customBG)</div>
+<div class="line">    g:fillRoundedRectangle(0, 0, mod:getWidth(), mod:getHeight(), 2)</div>
+<div class="line"> </div>
+<div class="line">    local i</div>
+<div class="line">    local spacer = 4</div>
+<div class="line">    local textH = 9</div>
+<div class="line"> </div>
+<div class="line">    local mainSeqRect = getCompProp(&quot;uiSequencerScreen&quot;, &quot;componentRectangle&quot;)</div>
+<div class="line">    local mainSeqWidth = getComp(&quot;uiSequencerScreen&quot;):getWidth()</div>
+<div class="line">    local mainSeqWLeft = tonumber(string.sub(mainSeqRect, 1, string.find(mainSeqRect, &quot; &quot;)))</div>
+<div class="line">    local graphW = math.floor(mainSeqWidth / 16 + 0.5)</div>
+<div class="line"> </div>
+<div class="line">    local knobSeqBGRect = getCompProp(&quot;uiSeq2BG&quot;, &quot;componentRectangle&quot;)</div>
+<div class="line">    local knobSeqBGLeft = tonumber(string.sub(knobSeqBGRect, 1, string.find(knobSeqBGRect, &quot; &quot;)))</div>
+<div class="line">    local canvasH = mod:getHeight()</div>
+<div class="line"> </div>
+<div class="line">    local startX = math.abs(mainSeqWLeft - knobSeqBGLeft) - 2</div>
+<div class="line"> </div>
+<div class="line">    g:setColour(skinColors.darkText)</div>
+<div class="line">    g:setFont(Font(8.0, 1))</div>
+<div class="line"> </div>
+<div class="line">    for i = 1, 16 do</div>
+<div class="line"> </div>
+<div class="line">        -- Step numbers</div>
+<div class="line">        g:drawText(tostring(i), startX + (i - 1) * graphW, spacer, graphW, textH,</div>
+<div class="line">                                     Justification(Justification.centred), false)</div>
+<div class="line"> </div>
+<div class="line">        g:drawText(tostring(i), startX + (i - 1) * graphW, canvasH - (textH + spacer), graphW, textH,</div>
+<div class="line">                                     Justification(Justification.centred), false)</div>
+<div class="line">    end</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md188"></a>
+&lt;tt&gt;externalRepaintSequencer&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function externalRepaintSequencer()</div>
+<div class="line">    </div>
+<div class="line">    getComp(&quot;uiSequencerScreen&quot;):repaint()</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md190"></a>
+&lt;tt&gt;sequencerMouseDown&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function sequencerMouseDown(comp, event)</div>
+<div class="line"> </div>
+<div class="line">    local barW = (comp:getWidth() / 16)</div>
+<div class="line">    local cBar = math.ceil(event.x / barW)</div>
+<div class="line"> </div>
+<div class="line">    -- Catch knob name and value to operate on it</div>
+<div class="line">    sharedValues.sequencerKnob = string.format(&quot;knobSeq%dStep%d&quot;, sharedValues.selectedSequence + 1, cBar)</div>
+<div class="line">    sharedValues.sequencerKnobValue = getModValue(sharedValues.sequencerKnob)</div>
+<div class="line"> </div>
+<div class="line">    sharedValues.sequencerStartY = event.y</div>
+<div class="line">    sharedValues.isSequencerDragging = true</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md192"></a>
+&lt;tt&gt;sequencerMouseUp&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function sequencerMouseUp()</div>
+<div class="line"> </div>
+<div class="line">    sharedValues.isSequencerDragging = false</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md194"></a>
+&lt;tt&gt;sequencerMouseDrag&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function sequencerMouseDrag(comp, event)</div>
+<div class="line"> </div>
+<div class="line">    if sharedValues.isSequencerDragging == true then</div>
+<div class="line"> </div>
+<div class="line">        local bounds</div>
+<div class="line">        local newValue</div>
+<div class="line">        local compH = comp:getHeight()</div>
+<div class="line">        local ratio, barRatio</div>
+<div class="line">        local deltaY = sharedValues.sequencerStartY - event.y</div>
+<div class="line">        local currKnobValue = getModValue(sharedValues.sequencerKnob)</div>
+<div class="line"> </div>
+<div class="line">        if sharedValues.timbreMode == tmSynth then</div>
+<div class="line">            bounds = getSeqStepMaxVal(modByName(string.format(&quot;cbSeqKnob%d&quot;, </div>
+<div class="line">                                                sharedValues.selectedSequence + 1)):getValue())</div>
+<div class="line">        else</div>
+<div class="line">            bounds = getSeqStepMaxVal(sharedValues.selectedSequence)</div>
+<div class="line">        end</div>
+<div class="line"> </div>
+<div class="line">        if bounds[1] &lt; 0 then</div>
+<div class="line">            barRatio = 1.25</div>
+<div class="line">        else</div>
+<div class="line">            barRatio = 1.125</div>
+<div class="line">        end</div>
+<div class="line"> </div>
+<div class="line">        ratio = (math.abs(bounds[1]) + math.abs(bounds[2])) / compH</div>
+<div class="line"> </div>
+<div class="line">        newValue = math.floor(sharedValues.sequencerKnobValue + (deltaY * ratio * barRatio))</div>
+<div class="line"> </div>
+<div class="line">        -- Set min or max values if they were exceeded</div>
+<div class="line">        if newValue &lt; bounds[1] then</div>
+<div class="line">            newValue = bounds[1]</div>
+<div class="line">        elseif newValue &gt; bounds[2] then</div>
+<div class="line">            newValue = bounds[2]</div>
+<div class="line">        end</div>
+<div class="line"> </div>
+<div class="line">        modByName(sharedValues.sequencerKnob):setModulatorValue(newValue, false, true, false)</div>
+<div class="line">    end</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md196"></a>
+&lt;tt&gt;selectSequenceByValue&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function selectSequenceByValue(seqNumber)</div>
+<div class="line"> </div>
+<div class="line">    if sharedValues.selectedSequence ~= seqNumber then</div>
+<div class="line"> </div>
+<div class="line">        turnLightsOff(&quot;imgSeqLamp&quot;, 2)</div>
+<div class="line">        setLightState(string.format(&quot;imgSeqLamp%d&quot;, seqNumber), true)</div>
+<div class="line">        sharedValues.selectedSequence = seqNumber</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    -- Repaint SEQ graph since modulator value is changed</div>
+<div class="line">    getComp(&quot;uiSequencerScreen&quot;):repaint()</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md198"></a>
+&lt;tt&gt;sequencerMouseDblClick&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function sequencerMouseDblClick(comp, event)</div>
+<div class="line">    -- Resetting related knob to its default value by double click</div>
+<div class="line"> </div>
+<div class="line">    local barW = (comp:getWidth() / 16)</div>
+<div class="line">    local cBar = math.ceil(event.x / barW)</div>
+<div class="line"> </div>
+<div class="line">    local opKnob = string.format(&quot;knobSeq%dStep%d&quot;, sharedValues.selectedSequence + 1, cBar)</div>
+<div class="line"> </div>
+<div class="line">    setModValue(opKnob, getCompPropN(opKnob, &quot;uiSliderDoubleClickValue&quot;))</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md200"></a>
+&lt;tt&gt;paintMidiActivity&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function paintMidiActivity(mod, g)</div>
+<div class="line">    </div>
+<div class="line">    g:setColour(skinColors.customBG)</div>
+<div class="line">    g:fillAll()</div>
+<div class="line"> </div>
+<div class="line">    if sharedValues.midiActivity == 1 then</div>
+<div class="line">        g:setColour(ICON_ORANGE)</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    g:fillEllipse(2, 7, 10, 10)</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md202"></a>
+&lt;tt&gt;blinkMidiLight&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function blinkMidiLight()</div>
+<div class="line">    </div>
+<div class="line">    sharedValues.midiActivity = 1</div>
+<div class="line">    externalRepaintMidiActivity()</div>
+<div class="line">    blinkMidiLightTimer()</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md204"></a>
+&lt;tt&gt;externalRepaintMidiActivity&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function externalRepaintMidiActivity()</div>
+<div class="line">    </div>
+<div class="line">    getComp(&quot;uiMidiActivity&quot;):repaint()</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md206"></a>
+&lt;tt&gt;applyVocoderLabels&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function applyVocoderLabels(vocoderSelected)</div>
+<div class="line"> </div>
+<div class="line">    local textColor</div>
+<div class="line">    local labelBG </div>
+<div class="line">    local i</div>
+<div class="line"> </div>
+<div class="line">    local onlyColorChangeLabels = {</div>
+<div class="line">        &quot;lblTimbreMidiCh&quot;,</div>
+<div class="line">        &quot;lblTimbreAssign&quot;,</div>
+<div class="line">        &quot;lblEG2Reset&quot;,</div>
+<div class="line">        &quot;lblEG1Reset&quot;,</div>
+<div class="line">        &quot;lblTimbreTrigger&quot;,</div>
+<div class="line">        &quot;lblTimbrePriority&quot;,</div>
+<div class="line">        &quot;lblTimbreDetune&quot;,</div>
+<div class="line">        &quot;lblTimbreTune&quot;,</div>
+<div class="line">        &quot;lblTimbreBendRange&quot;,</div>
+<div class="line">        &quot;lblTimbreTranspose&quot;,</div>
+<div class="line">        &quot;lblTimbreVibrato&quot;,</div>
+<div class="line">        &quot;lblTimbrePorta&quot;,</div>
+<div class="line">        &quot;lblAmpDistortion&quot;,</div>
+<div class="line">        &quot;lblAmpVeloSens&quot;,</div>
+<div class="line">        &quot;lblAmpKeyTrack&quot;,</div>
+<div class="line">        &quot;lblLFO1KeySync&quot;,</div>
+<div class="line">        &quot;lblLFO1TempoSync&quot;,</div>
+<div class="line">        &quot;lblLFO1SyncNote&quot;,</div>
+<div class="line">        &quot;lblLFO2KeySync&quot;,</div>
+<div class="line">        &quot;lblLFO2TempoSync&quot;,</div>
+<div class="line">        &quot;lblLFO2SyncNote&quot;,</div>
+<div class="line">        &quot;lblOsc1Control1&quot;,</div>
+<div class="line">        &quot;lblOsc1Control2&quot;,</div>
+<div class="line">        &quot;lblOsc1WaveCycle&quot;,</div>
+<div class="line">        &quot;lblMixerOsc1&quot;,</div>
+<div class="line">        &quot;lblMixerNoise&quot;,</div>
+<div class="line">        &quot;lblFilterCutoff&quot;,</div>
+<div class="line">        &quot;lblFilterResonance&quot;,</div>
+<div class="line">        &quot;lblEG1Attack&quot;,</div>
+<div class="line">        &quot;lblEG2Attack&quot;,</div>
+<div class="line">        &quot;lblEG1Decay&quot;,</div>
+<div class="line">        &quot;lblEG2Decay&quot;,</div>
+<div class="line">        &quot;lblEG1Sustain&quot;,</div>
+<div class="line">        &quot;lblEG2Sustain&quot;,</div>
+<div class="line">        &quot;lblEG1Release&quot;,</div>
+<div class="line">        &quot;lblEG2Release&quot;,</div>
+<div class="line">        &quot;lblAmpLevel&quot;,</div>
+<div class="line">        &quot;lblLFO1TypeCycle&quot;,</div>
+<div class="line">        &quot;lblLFO2TypeCycle&quot;,</div>
+<div class="line">        &quot;lblLFO1Frequency&quot;,</div>
+<div class="line">        &quot;lblLFO2Frequency&quot;,</div>
+<div class="line">        &quot;lblArpOnOff&quot;,</div>
+<div class="line">        &quot;lblArpLatch&quot;,</div>
+<div class="line">        &quot;lblArpKeySync&quot;,</div>
+<div class="line">        &quot;lblArpTempo&quot;,</div>
+<div class="line">        &quot;lblArpGate&quot;,</div>
+<div class="line">        &quot;lblArpResolution&quot;,</div>
+<div class="line">        &quot;lblArpSwing&quot;,</div>
+<div class="line">        &quot;lblArpTempo&quot;,</div>
+<div class="line">        &quot;lblArpType&quot;,</div>
+<div class="line">        &quot;lblArpRange&quot;</div>
+<div class="line">    }</div>
+<div class="line"> </div>
+<div class="line">    --Change text and background for dedicated labels</div>
+<div class="line">    if vocoderSelected then</div>
+<div class="line"> </div>
+<div class="line">        -- Color depends on selected skin</div>
+<div class="line">        textColor = skinColors.vocoderText:toString()</div>
+<div class="line">        labelBG = skinColors.vocoderElements:toString()</div>
+<div class="line"> </div>
+<div class="line">        alterLableProps(&quot;lblFilter24LPF&quot;, &quot;+ 1&quot;, labelBG, textColor)</div>
+<div class="line">        alterLableProps(&quot;lblFilter12LPF&quot;, &quot;+ 2&quot;, labelBG, textColor)</div>
+<div class="line">        alterLableProps(&quot;lblFilter12BPF&quot;, &quot;-  1&quot;, labelBG, textColor)</div>
+<div class="line">        alterLableProps(&quot;lblFilter12HPF&quot;, &quot;-  2&quot;, labelBG, textColor)</div>
+<div class="line">        alterLableProps(&quot;lblOsc2Semitone&quot;, &quot;HPF LEVEL&quot;, labelBG, textColor)</div>
+<div class="line">        alterLableProps(&quot;lblOsc2Tune&quot;, &quot;THRESHOLD&quot;, labelBG, textColor)</div>
+<div class="line">        alterLableProps(&quot;lblMixerOsc2&quot;, &quot;DIRECT&quot;, labelBG, textColor)</div>
+<div class="line">        alterLableProps(&quot;lblFilterTypeCycle&quot;, &quot;FORMANT SHIFT&quot;, labelBG, textColor)</div>
+<div class="line">        alterLableProps(&quot;lblFilterKbdTrack&quot;, &quot;E.F.SENSE&quot;, labelBG, textColor)</div>
+<div class="line">        alterLableProps(&quot;lblAmpPan&quot;, &quot;DIRECT&quot;, labelBG, textColor)</div>
+<div class="line">        alterLableProps(&quot;lblSequence1&quot;, &quot;LVL&quot;, labelBG, textColor)</div>
+<div class="line">        alterLableProps(&quot;lblSequence2&quot;, &quot;PAN&quot;, labelBG, textColor)</div>
+<div class="line">        alterLableProps(&quot;lblFilterVeloSens&quot;, &quot;GATE SENS&quot;, labelBG, textColor)</div>
+<div class="line">        alterLableProps(&quot;lblAmpEG2Gate&quot;, &quot;HPF GATE&quot;, labelBG, textColor)</div>
+<div class="line">        alterLableProps(&quot;lblFilterEG1Int&quot;, &quot;FC MOD INT&quot;, labelBG, textColor)</div>
+<div class="line">        alterLableProps(&quot;lblPatchSource1&quot;, &quot;FC MOD SOURCE&quot;, labelBG, textColor)</div>
+<div class="line">    else</div>
+<div class="line"> </div>
+<div class="line">        textColor = skinColors.labelTextColor:toString()</div>
+<div class="line">        labelBG = COLOR_TRANSPARENT:toString()</div>
+<div class="line"> </div>
+<div class="line">        alterLableProps(&quot;lblFilter24LPF&quot;, &quot;24LPF&quot;, labelBG, textColor)</div>
+<div class="line">        alterLableProps(&quot;lblFilter12LPF&quot;, &quot;12LPF&quot;, labelBG, textColor)</div>
+<div class="line">        alterLableProps(&quot;lblFilter12BPF&quot;, &quot;12BPF&quot;, labelBG, textColor)</div>
+<div class="line">        alterLableProps(&quot;lblFilter12HPF&quot;, &quot;12HPF&quot;, labelBG, textColor)</div>
+<div class="line">        alterLableProps(&quot;lblOsc2Semitone&quot;, &quot;SEMITONE&quot;, labelBG, textColor)</div>
+<div class="line">        alterLableProps(&quot;lblOsc2Tune&quot;, &quot;TUNE&quot;, labelBG, textColor)</div>
+<div class="line">        alterLableProps(&quot;lblMixerOsc2&quot;, &quot;OSC 2&quot;, labelBG, textColor)</div>
+<div class="line">        alterLableProps(&quot;lblFilterTypeCycle&quot;, &quot;FILTER TYPE&quot;, labelBG, textColor)</div>
+<div class="line">        alterLableProps(&quot;lblFilterKbdTrack&quot;, &quot;KBD TRK&quot;, labelBG, textColor)</div>
+<div class="line">        alterLableProps(&quot;lblAmpPan&quot;, &quot;PAN&quot;, labelBG, textColor)</div>
+<div class="line">        alterLableProps(&quot;lblSequence1&quot;, &quot;SEQ 1&quot;, labelBG, textColor)</div>
+<div class="line">        alterLableProps(&quot;lblSequence2&quot;, &quot;SEQ 2&quot;, labelBG, textColor)</div>
+<div class="line">        alterLableProps(&quot;lblFilterVeloSens&quot;, &quot;VELO SENS&quot;, labelBG, textColor)</div>
+<div class="line">        alterLableProps(&quot;lblAmpEG2Gate&quot;, &quot;EG2 / GATE&quot;, labelBG, textColor)</div>
+<div class="line">        alterLableProps(&quot;lblFilterEG1Int&quot;, &quot;EG 1 INT&quot;, labelBG, textColor)</div>
+<div class="line">        alterLableProps(&quot;lblPatchSource1&quot;, &quot;SOURCE 1&quot;, labelBG, textColor)</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    for i = 1, #onlyColorChangeLabels do</div>
+<div class="line">        alterLabelColors(onlyColorChangeLabels[i], labelBG, textColor)</div>
+<div class="line">    end</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md208"></a>
+&lt;tt&gt;paintMIDISettingsButton&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function paintMIDISettingsButton(mod, g)</div>
+<div class="line"> </div>
+<div class="line">    local canvasW = mod:getWidth()</div>
+<div class="line">    local canvasH = mod:getHeight()</div>
+<div class="line"> </div>
+<div class="line">    g:setColour(SEQ_BACKGROUND)</div>
+<div class="line">    g:fillRoundedRectangle(0, 0, canvasW, canvasH, 2)</div>
+<div class="line"> </div>
+<div class="line">    g:setColour(COLOR_VOCODER_LABEL)</div>
+<div class="line">    g:fillRoundedRectangle(4, 4, canvasW - 8, canvasH - 8, 1)</div>
+<div class="line"> </div>
+<div class="line">    g:setColour(SEQ_BACKGROUND)</div>
+<div class="line">    g:setFont(Font(13, 1))</div>
+<div class="line">    g:drawText(&quot;M&quot;, 5, 3, canvasW - 6, 14, Justification(Justification.left), false)</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md210"></a>
+&lt;tt&gt;midiSettingsClick&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function midiSettingsClick()</div>
+<div class="line"> </div>
+<div class="line">    getComp(&quot;btnMidiDeviceDialogHidden&quot;):click()</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md212"></a>
+&lt;tt&gt;sendSysExMessage&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function sendSysExMessage(message)</div>
+<div class="line"> </div>
+<div class="line">    panel:sendMidiMessageNow(CtrlrMidiMessage(message))</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md214"></a>
+&lt;tt&gt;inputMIDIParser&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function inputMIDIParser(midiMessage)</div>
+<div class="line"> </div>
+<div class="line">    blinkMidiLight()</div>
+<div class="line"> </div>
+<div class="line">    local msgData = midiMessage:getData()</div>
+<div class="line">    local msgSize = midiMessage:getSize()</div>
+<div class="line"> </div>
+<div class="line">    -- Usable data is longer than 3 bytes</div>
+<div class="line"> </div>
+<div class="line">    -- MIDI data</div>
+<div class="line">    if msgSize == 2 then</div>
+<div class="line"> </div>
+<div class="line">        -- Selected patch and bank</div>
+<div class="line">        if msgData:getByte(0) == (0xC0 + getGlobalMidiChannel(true))then</div>
+<div class="line">            captureProgramChangeMessage(msgData)</div>
+<div class="line">        end</div>
+<div class="line"> </div>
+<div class="line">    elseif msgSize == 3 then</div>
+<div class="line"> </div>
+<div class="line">        -- Incoming message from Program Play mode</div>
+<div class="line">        if msgData:getByte(0) == (0xB0 + getGlobalMidiChannel(true)) then</div>
+<div class="line"> </div>
+<div class="line">            processProgramPlayMessage(memBlockToTable(msgData))</div>
+<div class="line">        end</div>
+<div class="line"> </div>
+<div class="line">    -- SysEx parameter data</div>
+<div class="line">    elseif (msgSize &gt;= 6) and (msgSize &lt;= 15) then </div>
+<div class="line"> </div>
+<div class="line">        local opType = msgData:getByte(4) </div>
+<div class="line">        local opParam = msgData:getByte(5)</div>
+<div class="line"> </div>
+<div class="line">        local controlLS = msgData:getByte(5)</div>
+<div class="line">        local controlMS = msgData:getByte(6)</div>
+<div class="line"> </div>
+<div class="line">        -- Request replies may be caught here</div>
+<div class="line"> </div>
+<div class="line">        -- Identity reply</div>
+<div class="line">        if msgSize == 15 then</div>
+<div class="line">            if opType == 0x02 then</div>
+<div class="line">                if (msgData:getByte(5) == 0x42) and </div>
+<div class="line">                   (msgData:getByte(6) == 0x58) and</div>
+<div class="line">                   (msgData:getByte(7) == 0x00) then</div>
+<div class="line"> </div>
+<div class="line">                    setSynthReachStatus(dsOnline)</div>
+<div class="line">                end</div>
+<div class="line">            end</div>
+<div class="line">        end</div>
+<div class="line"> </div>
+<div class="line">        -- Exchange replies</div>
+<div class="line">        if msgSize == 6 then</div>
+<div class="line">            -- Write | Load successful reply</div>
+<div class="line">            if (opType == 0x21) or (opType == 0x23) then</div>
+<div class="line">                writeOKReply()</div>
+<div class="line">            end</div>
+<div class="line"> </div>
+<div class="line">            -- Write error reply</div>
+<div class="line">            if (opType == 0x22) or (opType == 0x24) then</div>
+<div class="line">                writeErrorReply()</div>
+<div class="line">            end</div>
+<div class="line">        end</div>
+<div class="line"> </div>
+<div class="line">        if msgSize == 8 then</div>
+<div class="line"> </div>
+<div class="line">            -- Mode data pushed from HW</div>
+<div class="line">            if opType == 0x4E then</div>
+<div class="line">                setOperationMode(opParam, true)</div>
+<div class="line">            end</div>
+<div class="line">        end</div>
+<div class="line"> </div>
+<div class="line">        -- Parameters transmission</div>
+<div class="line">        if msgSize == 10 then</div>
+<div class="line"> </div>
+<div class="line">            -- Requested mode data response</div>
+<div class="line">            if opType == 0x42 then</div>
+<div class="line">                setOperationMode(opParam, true)</div>
+<div class="line">            end</div>
+<div class="line"> </div>
+<div class="line">            -- Control change</div>
+<div class="line">            if opType == 0x41 then</div>
+<div class="line"> </div>
+<div class="line">                -- Since this panel use fancy &quot;lamp radiobuttons&quot; which aren&#39;t actual controllers, </div>
+<div class="line">                -- incoming data handling code is required for them</div>
+<div class="line"> </div>
+<div class="line">                -- OSC1 waveform changed</div>
+<div class="line">                if  (controlLS == sharedValues.osc1SEValues[6]) and</div>
+<div class="line">                    (controlMS == sharedValues.osc1SEValues[7]) then</div>
+<div class="line"> </div>
+<div class="line">                    setOsc1WaveformByValue(msgData:getByte(7), true)</div>
+<div class="line">                end</div>
+<div class="line"> </div>
+<div class="line">                -- OSC2 waveform changed</div>
+<div class="line">                if  (controlLS == sharedValues.osc2SEValues[6]) and</div>
+<div class="line">                    (controlMS == sharedValues.osc2SEValues[7]) then</div>
+<div class="line"> </div>
+<div class="line">                    setOsc2WaveformByValue(msgData:getByte(7), true)</div>
+<div class="line">                end</div>
+<div class="line"> </div>
+<div class="line">                -- OSC Modulation</div>
+<div class="line">                if  (controlLS == sharedValues.oscModSEValues[6]) and</div>
+<div class="line">                    (controlMS == sharedValues.oscModSEValues[7]) then</div>
+<div class="line"> </div>
+<div class="line">                    processOscModData(msgData:getByte(7))</div>
+<div class="line">                end</div>
+<div class="line"> </div>
+<div class="line">                -- Filter type changed</div>
+<div class="line">                if  (controlLS == sharedValues.filterSEValues[6]) and</div>
+<div class="line">                    (controlMS == sharedValues.filterSEValues[7]) then</div>
+<div class="line"> </div>
+<div class="line">                    setFilterTypeByValue(msgData:getByte(7), true)</div>
+<div class="line">                end</div>
+<div class="line"> </div>
+<div class="line">                -- LFO1 waveform changed</div>
+<div class="line">                if  (controlLS == sharedValues.LFO1SEValues[6]) and</div>
+<div class="line">                    (controlMS == sharedValues.LFO1SEValues[7]) then</div>
+<div class="line"> </div>
+<div class="line">                    setLFO1TypeByValue(msgData:getByte(7), true)</div>
+<div class="line">                end</div>
+<div class="line"> </div>
+<div class="line">                -- LFO2 waveform changed</div>
+<div class="line">                if  (controlLS == sharedValues.LFO2SEValues[6]) and</div>
+<div class="line">                    (controlMS == sharedValues.LFO2SEValues[7]) then</div>
+<div class="line"> </div>
+<div class="line">                    setLFO2TypeByValue(msgData:getByte(7), true)</div>
+<div class="line">                end</div>
+<div class="line">            end</div>
+<div class="line">        end</div>
+<div class="line"> </div>
+<div class="line">    elseif  msgSize &gt;= GLOBAL_DATA_SIZE then </div>
+<div class="line"> </div>
+<div class="line">        local opType = msgData:getByte(4) </div>
+<div class="line"> </div>
+<div class="line">        -- Current program data dump</div>
+<div class="line">        if (opType == 0x40) and (timerFlags.waitForSingleProgram == true) then</div>
+<div class="line">            captureProgramDumpData(msgData)</div>
+<div class="line">        end</div>
+<div class="line"> </div>
+<div class="line">        -- Patch bank data dump</div>
+<div class="line">        if (opType == 0x4C) and (timerFlags.waitForBulkDump == true) then</div>
+<div class="line">            captureBulkDumpData(msgData)</div>
+<div class="line">        end</div>
+<div class="line"> </div>
+<div class="line">        -- Global data dump</div>
+<div class="line">        if (opType == 0x51) and (timerFlags.waitForSettings == true) then</div>
+<div class="line">            captureGlobalSettings(msgData)</div>
+<div class="line">        end</div>
+<div class="line"> </div>
+<div class="line">        -- All data dump</div>
+<div class="line">        --if opType == 0x50 then</div>
+<div class="line">        --end</div>
+<div class="line">    end</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md216"></a>
+&lt;tt&gt;getGlobalMidiChannel&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function getGlobalMidiChannel(pureValue)</div>
+<div class="line"> </div>
+<div class="line">    local mcByte = 0x30</div>
+<div class="line"> </div>
+<div class="line">    if pureValue ~= nil then</div>
+<div class="line">        if pureValue == true then</div>
+<div class="line">            mcByte = 0</div>
+<div class="line">        end</div>
+<div class="line">    end</div>
+<div class="line">        </div>
+<div class="line">    return mcByte + (panel:getPropertyInt(&quot;panelMidiOutputChannelDevice&quot;) - 1)</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md218"></a>
+&lt;tt&gt;copySequenceToClipboard&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function copySequenceToClipboard()</div>
+<div class="line"> </div>
+<div class="line">    local i</div>
+<div class="line">    local startByte</div>
+<div class="line"> </div>
+<div class="line">    -- Copy sequence mode data into buffer</div>
+<div class="line">    if sharedValues.timbreMode == tmSynth then</div>
+<div class="line"> </div>
+<div class="line">        -- Sync data with buffer for using actual values</div>
+<div class="line">        syncTimbreWithBuffer(sharedValues.selectedTimbre)</div>
+<div class="line"> </div>
+<div class="line">        startByte = TIMBRE_ONE_STARTBYTE + SEQUENCE_STARTBYTE_DISP + (TIMBRE_DATA_SIZE * sharedValues.selectedTimbre)</div>
+<div class="line"> </div>
+<div class="line">        -- First byte - type of data being copied</div>
+<div class="line">        seqClipboard = {tmSynth}</div>
+<div class="line"> </div>
+<div class="line">        for i = startByte, startByte + SEQUENCE_DATA_SIZE do</div>
+<div class="line"> </div>
+<div class="line">            table.insert(seqClipboard, dataBuffer[i])</div>
+<div class="line">        end</div>
+<div class="line">    else</div>
+<div class="line"> </div>
+<div class="line">        syncVocoderWithBuffer()</div>
+<div class="line"> </div>
+<div class="line">        seqClipboard = {tmVocoder}</div>
+<div class="line"> </div>
+<div class="line">        for i = VOCODER_SEQDATA_STARTBYTE, VOCODER_SEQDATA_STARTBYTE + VOCODER_SEQDATA_SIZE - 1 do</div>
+<div class="line"> </div>
+<div class="line">            table.insert(seqClipboard, vocoderBuffer[i])</div>
+<div class="line">        end</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    showHint(&quot;Info: Sequence data copied to clipboard&quot;)</div>
+<div class="line"> </div>
+<div class="line">    repaintTimbreCPButtons()</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md220"></a>
+&lt;tt&gt;pasteSequenceFromClipboard&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function pasteSequenceFromClipboard()</div>
+<div class="line"> </div>
+<div class="line">    local i</div>
+<div class="line">    local c = 2</div>
+<div class="line">    local startByte</div>
+<div class="line"> </div>
+<div class="line">    if #seqClipboard &gt; 0 then</div>
+<div class="line"> </div>
+<div class="line">        -- First byte of clipboard - timbre type</div>
+<div class="line">        if seqClipboard[1] ~= sharedValues.timbreMode then</div>
+<div class="line"> </div>
+<div class="line">            genAlertWindow(&quot;Warning!&quot;, &quot;Incompatible type of data. Vocoder data cannot be applied for synthesizer mode, and vice versa&quot;)</div>
+<div class="line">        else</div>
+<div class="line"> </div>
+<div class="line">            if not confirmDialog(&quot;Warning!&quot;, &quot;This will erase corresponded data in the buffer. Proceed?&quot;) then</div>
+<div class="line">                return</div>
+<div class="line">            end</div>
+<div class="line"> </div>
+<div class="line">            if sharedValues.timbreMode == tmSynth then</div>
+<div class="line"> </div>
+<div class="line">                startByte = TIMBRE_ONE_STARTBYTE + SEQUENCE_STARTBYTE_DISP + (TIMBRE_DATA_SIZE * sharedValues.selectedTimbre)</div>
+<div class="line"> </div>
+<div class="line">                -- Apply clipboard data to dataBuffer</div>
+<div class="line">                for i = startByte, startByte + SEQUENCE_DATA_SIZE do</div>
+<div class="line"> </div>
+<div class="line">                    -- Clipboard starts with 2nd byte. First is a clipboard type</div>
+<div class="line">                    dataBuffer[i] = seqClipboard[c]</div>
+<div class="line"> </div>
+<div class="line">                    c = c + 1</div>
+<div class="line">                end</div>
+<div class="line"> </div>
+<div class="line">                applyTimbreData(sharedValues.selectedTimbre, dataBuffer)</div>
+<div class="line">            else</div>
+<div class="line"> </div>
+<div class="line">                -- Apply clipboard to vocoderBuffer</div>
+<div class="line">                for i = VOCODER_SEQDATA_STARTBYTE, VOCODER_SEQDATA_STARTBYTE + VOCODER_SEQDATA_SIZE - 1 do</div>
+<div class="line"> </div>
+<div class="line">                    vocoderBuffer[i] = seqClipboard[c]</div>
+<div class="line"> </div>
+<div class="line">                    c = c + 1</div>
+<div class="line">                end</div>
+<div class="line"> </div>
+<div class="line">                -- Reapply the same voice mode for the changes to take effect</div>
+<div class="line">                applyVocoderData(vocoderBuffer)</div>
+<div class="line">            end</div>
+<div class="line"> </div>
+<div class="line">            -- Reset buffer and repaint buttons</div>
+<div class="line">            seqClipboard = {}</div>
+<div class="line">            repaintTimbreCPButtons()</div>
+<div class="line"> </div>
+<div class="line">            showHint(&quot;Info: Sequence data pasted from clipboard&quot;)</div>
+<div class="line">        end</div>
+<div class="line">    end</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md222"></a>
+&lt;tt&gt;assertSeqKnobBounds&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function assertSeqKnobBounds(mod, selectedMode, source)</div>
+<div class="line">    </div>
+<div class="line">    if blockExecution(source) then</div>
+<div class="line">        return</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    if sharedValues.timbreMode == tmSynth then</div>
+<div class="line"> </div>
+<div class="line">        local knobGroup = getModPropN(mod, &quot;modulatorCustomIndex&quot;) + 1</div>
+<div class="line">    </div>
+<div class="line">        assertSeqKnobBoundsByValue(knobGroup, selectedMode)</div>
+<div class="line">    end</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md224"></a>
+&lt;tt&gt;getSeqStepMaxVal&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function getSeqStepMaxVal(selectedMode)</div>
+<div class="line"> </div>
+<div class="line">    local minV, maxV, defV</div>
+<div class="line"> </div>
+<div class="line">    if sharedValues.timbreMode == tmSynth then</div>
+<div class="line"> </div>
+<div class="line">        -- Synthesizer mode:</div>
+<div class="line"> </div>
+<div class="line">        -- As manual states:</div>
+<div class="line">        -- When Knob is &quot;Step Length&quot; (2)               00~7F : - 6~0~+ 6 (*2-6)</div>
+<div class="line">        -- When Knob is &quot;Pitch&quot; or &quot;OSC2 Semi&quot; (1 or 6) 00~7F : -24~0~+24 (*2-7)</div>
+<div class="line">        -- When Knob is others                          00~7F : -63~0~+63 (*2-8)</div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line">        if selectedMode == 2 then</div>
+<div class="line">            minV, maxV, defV = -6, 6, 0</div>
+<div class="line">        elseif selectedMode == 1 or selectedMode == 6 then</div>
+<div class="line">            minV, maxV, defV = -24, 24, 0</div>
+<div class="line">        else</div>
+<div class="line">            minV, maxV, defV = -63, 63, 0</div>
+<div class="line">        end</div>
+<div class="line">    else</div>
+<div class="line"> </div>
+<div class="line">        -- Vocoder mode:</div>
+<div class="line"> </div>
+<div class="line">        -- SEQ1 - Level [0~127]</div>
+<div class="line">        -- SEQ2 - Pan [-63/+63]</div>
+<div class="line"> </div>
+<div class="line">        if selectedMode == 0 then</div>
+<div class="line">            minV, maxV, defV = 0, 127, 64</div>
+<div class="line">        else</div>
+<div class="line">            minV, maxV, defV = -63, 63, 0</div>
+<div class="line">        end</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    return {minV, maxV, defV}</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md226"></a>
+&lt;tt&gt;assertSysExFormulas&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function assertSysExFormulas(timbreNumber)</div>
+<div class="line"> </div>
+<div class="line">    -- Accepted values are:</div>
+<div class="line">    -- 0 - for Timbre mode, Timbre 1</div>
+<div class="line">    -- 1 - for Timbre mode, Timbre 2</div>
+<div class="line">    -- 2 - for Vocoder mode</div>
+<div class="line"> </div>
+<div class="line">    local i, j, startPoint</div>
+<div class="line">    local numShift</div>
+<div class="line">    local startPoint</div>
+<div class="line">    local lsms</div>
+<div class="line"> </div>
+<div class="line">    if (timbreNumber == 0) or (timbreNumber == 1) then</div>
+<div class="line"> </div>
+<div class="line">        numShift = timbreNumber * SYSEX_VAL_DIFF</div>
+<div class="line">        numShiftAlter = timbreNumber * SYSEX_VAL_DIFF_ALT</div>
+<div class="line"> </div>
+<div class="line">        -- Numbers were verified one-by-one</div>
+<div class="line"> </div>
+<div class="line">        -- Non-visual components</div>
+<div class="line">        sharedValues.osc1SEValues       = setNewModNumber(sharedValues.osc1SEValues,    numShift + 0x49)</div>
+<div class="line">        sharedValues.oscModSEValues     = setNewModNumber(sharedValues.oscModSEValues,  numShift + 0x4E)</div>
+<div class="line">        sharedValues.osc2SEValues       = setNewModNumber(sharedValues.osc2SEValues,    numShift + 0x4D)</div>
+<div class="line">        sharedValues.filterSEValues     = setNewModNumber(sharedValues.filterSEValues,  numShift + 0x54)</div>
+<div class="line">        sharedValues.LFO1SEValues       = setNewModNumber(sharedValues.LFO1SEValues,    numShift + 0x68)</div>
+<div class="line">        sharedValues.LFO2SEValues       = setNewModNumber(sharedValues.LFO2SEValues,    numShift + 0x6D)</div>
+<div class="line"> </div>
+<div class="line">        -- Visual components</div>
+<div class="line">        -- Formulas in the synth mode can be calculated</div>
+<div class="line">        setSEFormulaMod(&quot;cbTimbreMidiCh&quot;, numShift + 0x43)</div>
+<div class="line">        setSEFormulaMod(&quot;cbTimbreAssign&quot;, numShift + 0x40)</div>
+<div class="line">        setSEFormulaMod(&quot;btnEG2Reset&quot;, numShift + 0x13D)</div>
+<div class="line">        setSEFormulaMod(&quot;btnEG1Reset&quot;, numShift + 0x13C)</div>
+<div class="line">        setSEFormulaMod(&quot;cbTimbreTrigger&quot;, numShift + 0x41)</div>
+<div class="line">        setSEFormulaMod(&quot;cbTimbrePriority&quot;, numShiftAlter + 0x7E)</div>
+<div class="line">        setSEFormulaMod(&quot;knobTimbreDetune&quot;, (numShift * 2) + 0x42)</div>
+<div class="line">        setSEFormulaMod(&quot;knobTimbreTune&quot;, numShift + 0x45)</div>
+<div class="line">        setSEFormulaMod(&quot;knobTimbreBendRange&quot;, numShift + 0x48)</div>
+<div class="line">        setSEFormulaMod(&quot;knobTimbreTranspose&quot;, numShift + 0x44)</div>
+<div class="line">        setSEFormulaMod(&quot;knobTimbreVibrato&quot;, numShift + 0x46)</div>
+<div class="line">        setSEFormulaMod(&quot;knobOsc1Control1&quot;, numShift + 0x4A)</div>
+<div class="line">        setSEFormulaMod(&quot;knobOsc2Semitone&quot;, numShift + 0x4F)</div>
+<div class="line">        setSEFormulaMod(&quot;knobOsc2Tune&quot;, numShift + 0x50)</div>
+<div class="line">        setSEFormulaMod(&quot;knobMixerOsc1&quot;, numShift + 0x51)</div>
+<div class="line">        setSEFormulaMod(&quot;knobMixerOsc2&quot;, numShift + 0x52)</div>
+<div class="line">        setSEFormulaMod(&quot;knobMixerNoise&quot;, numShift + 0x53)</div>
+<div class="line">        setSEFormulaMod(&quot;knobTimbrePorta&quot;, numShift + 0x47)</div>
+<div class="line">        setSEFormulaMod(&quot;knobFilterCutoff&quot;, numShift + 0x55)</div>
+<div class="line">        setSEFormulaMod(&quot;knobFilterResonance&quot;, numShift + 0x56)</div>
+<div class="line">        setSEFormulaMod(&quot;knobFilterEG1Int&quot;, numShift + 0x57)</div>
+<div class="line">        setSEFormulaMod(&quot;knobFilterVeloSens&quot;, numShift + 0x62)</div>
+<div class="line">        setSEFormulaMod(&quot;knobFilterKbdTrk&quot;, numShift + 0x58)</div>
+<div class="line">        setSEFormulaMod(&quot;knobAmpLevel&quot;, numShift + 0x59)</div>
+<div class="line">        setSEFormulaMod(&quot;knobAmpPan&quot;, numShift + 0x5A)</div>
+<div class="line">        setSEFormulaMod(&quot;btnAmpEG2Gate&quot;, numShift + 0x5B)</div>
+<div class="line">        setSEFormulaMod(&quot;btnAmpDistortion&quot;, numShift + 0x5C)</div>
+<div class="line">        setSEFormulaMod(&quot;knobEG1Attack&quot;, numShift + 0x5E)</div>
+<div class="line">        setSEFormulaMod(&quot;knobEG1Decay&quot;, numShift + 0x5F)</div>
+<div class="line">        setSEFormulaMod(&quot;knobEG1Sustain&quot;, numShift + 0x60)</div>
+<div class="line">        setSEFormulaMod(&quot;knobEG1Release&quot;, numShift + 0x61)</div>
+<div class="line">        setSEFormulaMod(&quot;knobEG2Attack&quot;, numShift + 0x63)</div>
+<div class="line">        setSEFormulaMod(&quot;knobEG2Decay&quot;, numShift + 0x64)</div>
+<div class="line">        setSEFormulaMod(&quot;knobEG2Sustain&quot;, numShift + 0x65)</div>
+<div class="line">        setSEFormulaMod(&quot;knobEG2Release&quot;, numShift + 0x66)</div>
+<div class="line">        setSEFormulaMod(&quot;knobAmpVeloSens&quot;, numShift + 0x67)</div>
+<div class="line">        setSEFormulaMod(&quot;knobAmpKeyTrack&quot;, numShift + 0x5D)</div>
+<div class="line">        setSEFormulaMod(&quot;knobLFO1Frequency&quot;, numShift + 0x69)</div>
+<div class="line">        setSEFormulaMod(&quot;cbLFO1KeySync&quot;, numShift + 0x6C)</div>
+<div class="line">        setSEFormulaMod(&quot;btnLFO1TempoSync&quot;, numShift + 0x6B)</div>
+<div class="line">        setSEFormulaMod(&quot;cbLFO1SyncNote&quot;, numShift + 0x6A)</div>
+<div class="line">        setSEFormulaMod(&quot;knobLFO2Frequency&quot;, numShift + 0x6E)</div>
+<div class="line">        setSEFormulaMod(&quot;cbLFO2KeySync&quot;, numShiftAlter + 0x71)</div>
+<div class="line">        setSEFormulaMod(&quot;btnLFO2TempoSync&quot;, numShiftAlter + 0x70)</div>
+<div class="line">        setSEFormulaMod(&quot;cbLFO2SyncNote&quot;, numShift + 0x6F)</div>
+<div class="line">        setSEFormulaMod(&quot;cbPatchSource1&quot;, numShiftAlter + 0x72)</div>
+<div class="line">        setSEFormulaMod(&quot;cbPatchSource2&quot;, numShiftAlter + 0x75)</div>
+<div class="line">        setSEFormulaMod(&quot;cbPatchSource3&quot;, numShiftAlter + 0x78)</div>
+<div class="line">        setSEFormulaMod(&quot;cbPatchSource4&quot;, numShiftAlter + 0x7B)</div>
+<div class="line">        setSEFormulaMod(&quot;cbPatchDestination1&quot;, numShiftAlter + 0x73)</div>
+<div class="line">        setSEFormulaMod(&quot;cbPatchDestination2&quot;, numShiftAlter + 0x76)</div>
+<div class="line">        setSEFormulaMod(&quot;cbPatchDestination3&quot;, numShiftAlter + 0x79)</div>
+<div class="line">        setSEFormulaMod(&quot;cbPatchDestination4&quot;, numShiftAlter + 0x7C)</div>
+<div class="line">        setSEFormulaMod(&quot;knobPatch1Amount&quot;, numShiftAlter + 0x74)</div>
+<div class="line">        setSEFormulaMod(&quot;knobPatch2Amount&quot;, numShiftAlter + 0x77)</div>
+<div class="line">        setSEFormulaMod(&quot;knobPatch3Amount&quot;, numShiftAlter + 0x7A)</div>
+<div class="line">        setSEFormulaMod(&quot;knobPatch4Amount&quot;, numShiftAlter + 0x7D)</div>
+<div class="line">        setSEFormulaMod(&quot;btnSeqOnOff&quot;, numShift + 0x100)</div>
+<div class="line">        setSEFormulaMod(&quot;cbSeqRunMode&quot;, numShift + 0x103)</div>
+<div class="line">        setSEFormulaMod(&quot;cbSeqResolution&quot;, numShift + 0x105)</div>
+<div class="line">        setSEFormulaMod(&quot;knobSeqLastStep&quot;, numShift + 0x101)</div>
+<div class="line">        setSEFormulaMod(&quot;cbSeqType&quot;, numShift + 0x102)</div>
+<div class="line">        setSEFormulaMod(&quot;cbSeqKeySync&quot;, numShift + 0x104)</div>
+<div class="line">        setSEFormulaMod(&quot;cbSeqKnob1&quot;, numShift + 0x106)</div>
+<div class="line">        setSEFormulaMod(&quot;cbSeqMotion1&quot;, numShift + 0x107)</div>
+<div class="line">        setSEFormulaMod(&quot;cbSeqKnob2&quot;, numShift + 0x118)</div>
+<div class="line">        setSEFormulaMod(&quot;cbSeqMotion2&quot;, numShift + 0x119)</div>
+<div class="line">        setSEFormulaMod(&quot;cbSeqKnob3&quot;, numShift + 0x12A)</div>
+<div class="line">        setSEFormulaMod(&quot;cbSeqMotion3&quot;, numShift + 0x12B)</div>
+<div class="line"> </div>
+<div class="line">        startPoint = 0x107</div>
+<div class="line">        for j = 1, 3 do</div>
+<div class="line">            for i = 1, 16 do</div>
+<div class="line">                setSEFormulaMod(string.format(&quot;knobSeq%dStep%d&quot;, j, i), numShift + startPoint + i + (18 * (j - 1)))</div>
+<div class="line">            end</div>
+<div class="line">        end</div>
+<div class="line">    else</div>
+<div class="line"> </div>
+<div class="line">        -- Non-visual components</div>
+<div class="line">        sharedValues.osc1SEValues       = setNewModNumber(sharedValues.osc1SEValues, 0x270)</div>
+<div class="line">        sharedValues.filterSEValues     = setNewModNumber(sharedValues.filterSEValues, 0x300)</div>
+<div class="line">        sharedValues.LFO1SEValues       = setNewModNumber(sharedValues.LFO1SEValues, 0x318)</div>
+<div class="line">        sharedValues.LFO2SEValues       = setNewModNumber(sharedValues.LFO2SEValues, 0x320)</div>
+<div class="line"> </div>
+<div class="line">        setSEFormulaMod(&quot;cbTimbreMidiCh&quot;, 0x263)</div>
+<div class="line">        setSEFormulaMod(&quot;cbTimbreAssign&quot;, 0x260)</div>
+<div class="line">        setSEFormulaMod(&quot;btnEG2Reset&quot;, 0x267)</div>
+<div class="line">        setSEFormulaMod(&quot;btnEG1Reset&quot;, 0x266)</div>
+<div class="line">        setSEFormulaMod(&quot;cbTimbreTrigger&quot;, 0x261)</div>
+<div class="line">        setSEFormulaMod(&quot;cbTimbrePriority&quot;, 0x264)</div>
+<div class="line">        setSEFormulaMod(&quot;knobTimbreDetune&quot;, 0x262)</div>
+<div class="line">        setSEFormulaMod(&quot;knobTimbreTune&quot;, 0x269)</div>
+<div class="line">        setSEFormulaMod(&quot;knobTimbreBendRange&quot;, 0x26C)</div>
+<div class="line">        setSEFormulaMod(&quot;knobTimbreTranspose&quot;, 0x268)</div>
+<div class="line">        setSEFormulaMod(&quot;knobTimbreVibrato&quot;, 0x26A)</div>
+<div class="line">        setSEFormulaMod(&quot;knobTimbrePorta&quot;, 0x26B)</div>
+<div class="line">        setSEFormulaMod(&quot;knobOsc1Control1&quot;, 0x271)</div>
+<div class="line">        setSEFormulaMod(&quot;knobOsc2Semitone&quot;, 0x27B)</div>
+<div class="line">        setSEFormulaMod(&quot;knobOsc2Tune&quot;, 0x27D)</div>
+<div class="line">        setSEFormulaMod(&quot;knobMixerOsc1&quot;, 0x278)</div>
+<div class="line">        setSEFormulaMod(&quot;knobMixerOsc2&quot;, 0x279)</div>
+<div class="line">        setSEFormulaMod(&quot;knobMixerNoise&quot;, 0x27A)</div>
+<div class="line">        setSEFormulaMod(&quot;knobFilterCutoff&quot;, 0x301)</div>
+<div class="line">        setSEFormulaMod(&quot;knobFilterResonance&quot;, 0x302)</div>
+<div class="line">        setSEFormulaMod(&quot;knobFilterEG1Int&quot;, 0x304)</div>
+<div class="line">        setSEFormulaMod(&quot;knobFilterVeloSens&quot;, 0x27C)</div>
+<div class="line">        setSEFormulaMod(&quot;knobFilterKbdTrk&quot;, 0x305)</div>
+<div class="line">        setSEFormulaMod(&quot;knobAmpLevel&quot;, 0x308)</div>
+<div class="line">        setSEFormulaMod(&quot;knobAmpPan&quot;, 0x309)</div>
+<div class="line">        setSEFormulaMod(&quot;btnAmpEG2Gate&quot;, 0x27E)</div>
+<div class="line">        setSEFormulaMod(&quot;btnAmpDistortion&quot;, 0x30A)</div>
+<div class="line">        setSEFormulaMod(&quot;knobAmpVeloSens&quot;, 0x30B)</div>
+<div class="line">        setSEFormulaMod(&quot;knobAmpKeyTrack&quot;, 0x30C)</div>
+<div class="line">        setSEFormulaMod(&quot;knobEG1Attack&quot;, 0x314)</div>
+<div class="line">        setSEFormulaMod(&quot;knobEG1Decay&quot;, 0x315)</div>
+<div class="line">        setSEFormulaMod(&quot;knobEG1Sustain&quot;, 0x316)</div>
+<div class="line">        setSEFormulaMod(&quot;knobEG1Release&quot;, 0x317)</div>
+<div class="line">        setSEFormulaMod(&quot;knobEG2Attack&quot;, 0x310)</div>
+<div class="line">        setSEFormulaMod(&quot;knobEG2Decay&quot;, 0x311)</div>
+<div class="line">        setSEFormulaMod(&quot;knobEG2Sustain&quot;, 0x312)</div>
+<div class="line">        setSEFormulaMod(&quot;knobEG2Release&quot;, 0x313)</div>
+<div class="line">        setSEFormulaMod(&quot;knobLFO1Frequency&quot;, 0x319)</div>
+<div class="line">        setSEFormulaMod(&quot;cbLFO1KeySync&quot;, 0x31C)</div>
+<div class="line">        setSEFormulaMod(&quot;btnLFO1TempoSync&quot;, 0x31B)</div>
+<div class="line">        setSEFormulaMod(&quot;cbLFO1SyncNote&quot;, 0x31A)</div>
+<div class="line">        setSEFormulaMod(&quot;knobLFO2Frequency&quot;, 0x321)</div>
+<div class="line">        setSEFormulaMod(&quot;cbLFO2KeySync&quot;, 0x324)</div>
+<div class="line">        setSEFormulaMod(&quot;btnLFO2TempoSync&quot;, 0x323)</div>
+<div class="line">        setSEFormulaMod(&quot;cbLFO2SyncNote&quot;, 0x322)</div>
+<div class="line">        setSEFormulaMod(&quot;cbPatchSource1&quot;, 0x303)</div>
+<div class="line"> </div>
+<div class="line">        startPoint = 0x32F</div>
+<div class="line">        for j = 1, 2 do</div>
+<div class="line">            for i = 1, 16 do</div>
+<div class="line">                setSEFormulaMod(string.format(&quot;knobSeq%dStep%d&quot;, j, i), startPoint + i + (16 * (j - 1)))</div>
+<div class="line">            end</div>
+<div class="line">        end</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    -- Make new formulas work for input messages</div>
+<div class="line">    panel:getInputComparator():rehashComparator()</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md228"></a>
+&lt;tt&gt;assertSeqKnobBoundsByValue&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function assertSeqKnobBoundsByValue(knobGroup, selectedMode)</div>
+<div class="line">    </div>
+<div class="line">    local i</div>
+<div class="line">    local minV, maxV, defV</div>
+<div class="line">    local currKnob</div>
+<div class="line"> </div>
+<div class="line">    local knobBounds = getSeqStepMaxVal(selectedMode)</div>
+<div class="line"> </div>
+<div class="line">    minV, maxV, defV = knobBounds[1], knobBounds[2], knobBounds[3]</div>
+<div class="line"> </div>
+<div class="line">    for i = 1, 16 do</div>
+<div class="line"> </div>
+<div class="line">        currKnob = string.format(&quot;knobSeq%dStep%d&quot;, knobGroup, i)</div>
+<div class="line"> </div>
+<div class="line">        setCompPropN(currKnob, &quot;uiSliderMin&quot;, minV)</div>
+<div class="line">        setCompPropN(currKnob, &quot;uiSliderMax&quot;, maxV)</div>
+<div class="line">        setCompPropN(currKnob, &quot;uiSliderDoubleClickValue&quot;, defV)</div>
+<div class="line"> </div>
+<div class="line">        if modByName(currKnob):getValue() &gt; maxV then</div>
+<div class="line">            modByName(currKnob):setModulatorValue(maxV, false, false, false)</div>
+<div class="line">        end</div>
+<div class="line"> </div>
+<div class="line">        if modByName(currKnob):getValue() &lt; minV then</div>
+<div class="line">            modByName(currKnob):setModulatorValue(minV, false, false, false)</div>
+<div class="line">        end</div>
+<div class="line"> </div>
+<div class="line">        getComp(currKnob):repaint()</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    externalRepaintSequencer()</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md230"></a>
+&lt;tt&gt;applyVocoderData&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function applyVocoderData(dataArray)</div>
+<div class="line"> </div>
+<div class="line">    mutePanelOut(true)</div>
+<div class="line"> </div>
+<div class="line">    -- Applying vocoder data to controllers</div>
+<div class="line">    local i</div>
+<div class="line">    local programData = copyTable(dataArray)</div>
+<div class="line"> </div>
+<div class="line">    -- Some cosmetics</div>
+<div class="line">    sharedValues.allowChangeSeq = false</div>
+<div class="line"> </div>
+<div class="line">    -- Vocoder buffer have no extra information</div>
+<div class="line">    local sb = 1</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 0 - MIDI ch [-1, 0~15 = GLB, 1~16ch]</div>
+<div class="line">    setModValue(&quot;cbTimbreMidiCh&quot;, bit.band(programData[sb] + 1, 0x7F))</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 1  </div>
+<div class="line">    -- Bit 6,7 - Assign Mode [0, 1, 2 = Mono, Poly, Unison]</div>
+<div class="line">    setModValue(&quot;cbTimbreAssign&quot;, extractPackByte(programData[sb + 1], 6, 7))</div>
+<div class="line"> </div>
+<div class="line">    -- Bit 5 - EG2 reset [0,1 = Off, On]</div>
+<div class="line">    setModValue(&quot;btnEG2Reset&quot;, extractPackByte(programData[sb + 1], 5))</div>
+<div class="line"> </div>
+<div class="line">    -- Bit 4 - EG1 reset [0,1 = Off, On]</div>
+<div class="line">    setModValue(&quot;btnEG1Reset&quot;, extractPackByte(programData[sb + 1], 4))</div>
+<div class="line"> </div>
+<div class="line">    -- Bit 3 - Trigger Mode [0,1 = Single, Multi] (use Mono/Unison Mode)</div>
+<div class="line">    setModValue(&quot;cbTimbreTrigger&quot;, extractPackByte(programData[sb + 1], 3))</div>
+<div class="line"> </div>
+<div class="line">    -- Bit 0~1 - Key Priority [0~2 = Last, Low, High]</div>
+<div class="line">    setModValue(&quot;cbTimbrePriority&quot;, extractPackByte(programData[sb + 1], 0, 1))</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 2 - Unison Detune [0~99 = 0~99 cent] (use Unison Mode)</div>
+<div class="line">    setModValue(&quot;knobTimbreDetune&quot;, programData[sb + 2])</div>
+<div class="line"> </div>
+<div class="line">    -- PITCH</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 3 - Tune [64+/-50 = 0+/-50 cent]</div>
+<div class="line">    setModValue(&quot;knobTimbreTune&quot;, programData[sb + 3] - 64)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 4 - Bend Range [64+/-12 = 0+/-12 note]</div>
+<div class="line">    setModValue(&quot;knobTimbreBendRange&quot;, programData[sb + 4] - 64)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 5 - Transpose [64+/-24 = 0+/-24 note]</div>
+<div class="line">    setModValue(&quot;knobTimbreTranspose&quot;, programData[sb + 5] - 64)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 6 - Vibrato Int [64+/-63 = 0+/-63]</div>
+<div class="line">    setModValue(&quot;knobTimbreVibrato&quot;, programData[sb + 6] - 64)</div>
+<div class="line"> </div>
+<div class="line">    -- OSC</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 7 - Wave [0~7 = Saw~Audio In]   </div>
+<div class="line">    setOsc1WaveformByValue(programData[sb + 7], true)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 8 - Waveform CTRL1 [0~127]</div>
+<div class="line">    setModValue(&quot;knobOsc1Control1&quot;, programData[sb + 8])</div>
+<div class="line"> </div>
+<div class="line">    if programData[sb + 7] ~= 5 then -- DWGS not selected</div>
+<div class="line"> </div>
+<div class="line">        -- Byte 9 - Waveform CTRL2 [0~127]</div>
+<div class="line">        setModValue(&quot;knobOsc1Control2&quot;, programData[sb + 9])</div>
+<div class="line">    else</div>
+<div class="line"> </div>
+<div class="line">        -- Byte 10 - DWGS Wave [0~63 = DWGS No. 1~64 (when OSC1 Wave is &quot;DWGS&quot;)]</div>
+<div class="line">        setModValue(&quot;knobOsc1Control2&quot;, programData[sb + 10])</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 11 - (dummy byte)</div>
+<div class="line"> </div>
+<div class="line">    -- AUDIO IN2</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 12</div>
+<div class="line">    -- Bit 1~7 - not use</div>
+<div class="line">    -- Bit 0 - HPF Gate [0, 1 = Dis, Ena]</div>
+<div class="line">    setModValue(&quot;btnAmpEG2Gate&quot;, extractPackByte(programData[sb + 12], 0))</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 13 - (dummy byte)</div>
+<div class="line"> </div>
+<div class="line">    -- PITCH (2)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 14</div>
+<div class="line">    -- Bit 7 - not use [(0)</div>
+<div class="line">    -- Bit 0~6 - Portamento Time [0~127]</div>
+<div class="line">    setModValue(&quot;knobTimbrePorta&quot;, extractPackByte(programData[sb + 14], 0, 6))</div>
+<div class="line"> </div>
+<div class="line">    -- MIXER</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 15 - OSC1 Level [0~127]</div>
+<div class="line">    setModValue(&quot;knobMixerOsc1&quot;, programData[sb + 15])</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 16 - Ext1 Level [0~127]</div>
+<div class="line">    setModValue(&quot;knobMixerOsc2&quot;, programData[sb + 16])</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 17 - Noise Level [0~127]</div>
+<div class="line">    setModValue(&quot;knobMixerNoise&quot;, programData[sb + 17])</div>
+<div class="line"> </div>
+<div class="line">    -- AUDIO IN2 (2)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 18 - HPF Level [0~127]</div>
+<div class="line">    setModValue(&quot;knobOsc2Semitone&quot;, programData[sb + 18])</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 19 - Gate Sense [0~127]</div>
+<div class="line">    setModValue(&quot;knobFilterVeloSens&quot;, programData[sb + 19])</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 20 - Threshold [0~127]</div>
+<div class="line">    setModValue(&quot;knobOsc2Tune&quot;, programData[sb + 20])</div>
+<div class="line"> </div>
+<div class="line">    -- FILTER</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 21 - Shift [0~4 = 0, +1, +2, -1, -2]</div>
+<div class="line">    setFilterTypeByValue(programData[sb + 21], true)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 22 - Cutoff [64+/-63 = 0+/-63]</div>
+<div class="line">    setModValue(&quot;knobFilterCutoff&quot;, programData[sb + 22] - 64)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 23 - Resonance [0~127]</div>
+<div class="line">    setModValue(&quot;knobFilterResonance&quot;, programData[sb + 23])</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 24 - Mod Source [0~7 = EG1~MIDI2]</div>
+<div class="line">    setModValue(&quot;cbPatchSource1&quot;, programData[sb + 24])</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 25 - Intensity [64+/-63 = 0+/-63]</div>
+<div class="line">    setModValue(&quot;knobFilterEG1Int&quot;, programData[sb + 25] - 64)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 26 - E.F.Sense [0~127]</div>
+<div class="line">    setModValue(&quot;knobFilterKbdTrk&quot;, programData[sb + 26])</div>
+<div class="line"> </div>
+<div class="line">    -- AMP</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 27 - Level [0~127]</div>
+<div class="line">    setModValue(&quot;knobAmpLevel&quot;, programData[sb + 27])</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 28 - Direct Level [0~127]</div>
+<div class="line">    setModValue(&quot;knobAmpPan&quot;, programData[sb + 28])</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 29</div>
+<div class="line">    -- Bit 1~7 - not use</div>
+<div class="line">    -- Bit 0 - Distortion On/Off [0, 1 = Off, On]</div>
+<div class="line">    setModValue(&quot;btnAmpDistortion&quot;, extractPackByte(programData[sb + 29], 0))</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 30 - Vel.Sense [64+/-63 = 0+/-63]</div>
+<div class="line">    setModValue(&quot;knobAmpVeloSens&quot;, programData[sb + 30] - 64)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 31 - KeyTrack [64+/-63 = 0+/-63]</div>
+<div class="line">    setModValue(&quot;knobAmpKeyTrack&quot;, programData[sb + 31] - 64)</div>
+<div class="line"> </div>
+<div class="line">    -- EG1</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 32 - Attack [0~127]</div>
+<div class="line">    setModValue(&quot;knobEG1Attack&quot;, programData[sb + 32])</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 33 - Decay [0~127]</div>
+<div class="line">    setModValue(&quot;knobEG1Decay&quot;, programData[sb + 33])</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 34 - Sustain [0~127]</div>
+<div class="line">    setModValue(&quot;knobEG1Sustain&quot;, programData[sb + 34])</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 35 - Release [0~127]</div>
+<div class="line">    setModValue(&quot;knobEG1Release&quot;, programData[sb + 35])</div>
+<div class="line"> </div>
+<div class="line">    -- EG2</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 36 - Attack [0~127]</div>
+<div class="line">    setModValue(&quot;knobEG2Attack&quot;, programData[sb + 36])</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 37 - Decay [0~127]</div>
+<div class="line">    setModValue(&quot;knobEG2Decay&quot;, programData[sb + 37])</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 38 - Sustain [0~127]</div>
+<div class="line">    setModValue(&quot;knobEG2Sustain&quot;, programData[sb + 38])</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 39 - Release [0~127]</div>
+<div class="line">    setModValue(&quot;knobEG2Release&quot;, programData[sb + 39])</div>
+<div class="line"> </div>
+<div class="line">    -- LFO1</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 40</div>
+<div class="line">    -- Bit 6,7 - not use</div>
+<div class="line">    -- Bit 4,5 - Key Sync [0~2 = OFF, Timbre, Voice]</div>
+<div class="line">    setModValue(&quot;cbLFO1KeySync&quot;, extractPackByte(programData[sb + 40], 4, 5))</div>
+<div class="line"> </div>
+<div class="line">    -- Bit 2,3 - not use</div>
+<div class="line">    -- Bit 0,1 - Wave [0~3 = Saw, Squ, Tri, S/H]</div>
+<div class="line">    setLFO1TypeByValue(extractPackByte(programData[sb + 40], 0, 1), true)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 41 - Frequency [0~127]</div>
+<div class="line">    setModValue(&quot;knobLFO1Frequency&quot;, programData[sb + 41])</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 42</div>
+<div class="line">    -- Bit 7 - Tempo Sync [0,1 = Off,On]</div>
+<div class="line">    setModValue(&quot;btnLFO1TempoSync&quot;, extractPackByte(programData[sb + 42], 7))</div>
+<div class="line"> </div>
+<div class="line">    -- Bit 5,6 - not use</div>
+<div class="line">    -- Bit 0~4 - Sync Note [0~14 = 1/1~1/32]</div>
+<div class="line">    setModValue(&quot;cbLFO1SyncNote&quot;, extractPackByte(programData[sb + 42], 0, 4))</div>
+<div class="line"> </div>
+<div class="line">    -- LFO2</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 43</div>
+<div class="line">    -- Bit 6,7 - not use</div>
+<div class="line">    -- Bit 4,5 - Key Sync [0~2 = OFF, Timbre, Voice]</div>
+<div class="line">    setModValue(&quot;cbLFO2KeySync&quot;, extractPackByte(programData[sb + 43], 4, 5))</div>
+<div class="line"> </div>
+<div class="line">    -- Bit 2,3 - not use</div>
+<div class="line">    -- Bit 0,1 - Wave [0~3 = Saw, Squ(+), Sin, S/H]</div>
+<div class="line">    setLFO2TypeByValue(extractPackByte(programData[sb + 43], 0, 1), true)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 44 - Frequency [0~127]</div>
+<div class="line">    setModValue(&quot;knobLFO2Frequency&quot;, programData[sb + 44])</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 45</div>
+<div class="line">    -- Bit 7 - Tempo Sync [0, 1 = Off, On]</div>
+<div class="line">    setModValue(&quot;btnLFO2TempoSync&quot;, extractPackByte(programData[sb + 45], 7))</div>
+<div class="line"> </div>
+<div class="line">    -- Bit 5,6 - not use</div>
+<div class="line">    -- Bit 0~4 - Sync Note [0~14 = 1/1~1/32]</div>
+<div class="line">    setModValue(&quot;cbLFO2SyncNote&quot;, extractPackByte(programData[sb + 45], 0, 4))</div>
+<div class="line"> </div>
+<div class="line">    -- CH LEVEL [0]~[15] = CH[1]~[16]</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 46~61 - Level [0~15] - 0~127</div>
+<div class="line">    for i = 1, 16 do</div>
+<div class="line">        setModValue(string.format(&quot;knobSeq1Step%d&quot;, i), programData[sb + 45 + i])</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    -- CH PAN  [0]~[15] = CH[1]~[16]</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 62~77 - Pan  [0~15] - 1~64~127 = L63~CNT~R63</div>
+<div class="line">    for i = 1, 16 do</div>
+<div class="line">        setModValue(string.format(&quot;knobSeq2Step%d&quot;, i), programData[sb + 61 + i] - 64)</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    -- Select SEQ1 to show</div>
+<div class="line">    selectSequenceByValue(0)</div>
+<div class="line"> </div>
+<div class="line">    mutePanelOut(false)</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md232"></a>
+&lt;tt&gt;syncVocoderWithBuffer&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function syncVocoderWithBuffer()</div>
+<div class="line"> </div>
+<div class="line">    -- Applying vocoder data with buffer</div>
+<div class="line">    local sb</div>
+<div class="line">    local i</div>
+<div class="line"> </div>
+<div class="line">    sb = 1</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 0 - MIDI ch [-1, 0~15 = GLB, 1~16ch]</div>
+<div class="line">    vocoderBuffer[sb] = bit.band(getModValue(&quot;cbTimbreMidiCh&quot;) - 1, 0xFF)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 1  </div>
+<div class="line">    -- Bit 6,7 - Assign Mode [0, 1, 2 = Mono, Poly, Unison]</div>
+<div class="line">    vocoderBuffer[sb + 1] = packBitsToByte(vocoderBuffer[sb + 1], tonumber(getModValue(&quot;cbTimbreAssign&quot;)), 6, 7)</div>
+<div class="line"> </div>
+<div class="line">    -- Bit 5 - EG2 reset [0, 1 = Off, On]</div>
+<div class="line">    vocoderBuffer[sb + 1] = packBitsToByte(vocoderBuffer[sb + 1], getModValue(&quot;btnEG2Reset&quot;), 5)</div>
+<div class="line"> </div>
+<div class="line">    -- Bit 4 - EG1 reset [0, 1 = Off, On]</div>
+<div class="line">    vocoderBuffer[sb + 1] = packBitsToByte(vocoderBuffer[sb + 1], getModValue(&quot;btnEG1Reset&quot;), 4)</div>
+<div class="line"> </div>
+<div class="line">    -- Bit 3 - Trigger Mode [0,1=Single,Multi] (use Mono/Unison Mode)</div>
+<div class="line">    vocoderBuffer[sb + 1] = packBitsToByte(vocoderBuffer[sb + 1], getModValue(&quot;cbTimbreTrigger&quot;), 3)</div>
+<div class="line"> </div>
+<div class="line">    -- Bit 0~1 - Key Priority [0~2 = Last, Low, High]</div>
+<div class="line">    vocoderBuffer[sb + 1] = packBitsToByte(vocoderBuffer[sb + 1], getModValue(&quot;cbTimbrePriority&quot;), 0, 1)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 2 - Unison Detune [0~99 = 0~99 cent] (use Unison Mode)</div>
+<div class="line">    vocoderBuffer[sb + 2] = getModValue(&quot;knobTimbreDetune&quot;)</div>
+<div class="line"> </div>
+<div class="line">    -- PITCH</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 3 - Tune [64+/-50 = 0+/-50[cent]</div>
+<div class="line">    vocoderBuffer[sb + 3] = getModValue(&quot;knobTimbreTune&quot;) + 64</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 4 - Bend Range [64+/-12 = 0+/-12[note]</div>
+<div class="line">    vocoderBuffer[sb + 4] = getModValue(&quot;knobTimbreBendRange&quot;) + 64</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 5 - Transpose [64+/-24 = 0+/-24[note]</div>
+<div class="line">    vocoderBuffer[sb + 5] = getModValue(&quot;knobTimbreTranspose&quot;) + 64</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 6 - Vibrato Int [64+/-63 = 0+/-63</div>
+<div class="line">    vocoderBuffer[sb + 6] = getModValue(&quot;knobTimbreVibrato&quot;) + 64</div>
+<div class="line"> </div>
+<div class="line">    -- OSC</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 7 - Wave [0~7 = Saw~Audio In]</div>
+<div class="line">    -- Stored directly in buffer, not in modulator, so no reason to sync it</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 8 - Waveform CTRL1 [0~127]</div>
+<div class="line">    vocoderBuffer[sb + 8] = getModValue(&quot;knobOsc1Control1&quot;)</div>
+<div class="line"> </div>
+<div class="line">    if vocoderBuffer[sb + 7] ~= 5 then -- DWGS not selected</div>
+<div class="line"> </div>
+<div class="line">        -- Byte 9 - Waveform CTRL2 [0~127]</div>
+<div class="line">        vocoderBuffer[sb + 9] = getModValue(&quot;knobOsc1Control2&quot;)</div>
+<div class="line">    else</div>
+<div class="line"> </div>
+<div class="line">        -- Byte 10 - DWGS Wave [0~63 = DWGS No. 1~64 (when OSC1 Wave is &quot;DWGS&quot;)]</div>
+<div class="line">        vocoderBuffer[sb + 10] = getModValue(&quot;knobOsc1Control2&quot;)</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 11 - (dummy byte)</div>
+<div class="line"> </div>
+<div class="line">    -- AUDIO IN2</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 12</div>
+<div class="line">    -- Bit 1~7 - not use</div>
+<div class="line">    -- Bit 0 - HPF Gate [0, 1 = Dis, Ena]</div>
+<div class="line">    vocoderBuffer[sb + 12] = packBitsToByte(vocoderBuffer[sb + 12], getModValue(&quot;btnAmpEG2Gate&quot;), 0, 1)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 13 - (dummy byte)</div>
+<div class="line"> </div>
+<div class="line">    -- PITCH (2)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 14</div>
+<div class="line">    -- Bit 7 - not use [(0)</div>
+<div class="line">    -- Bit 0~6 - Portamento Time [0~127]</div>
+<div class="line">    vocoderBuffer[sb + 14] = packBitsToByte(vocoderBuffer[sb + 14], getModValue(&quot;knobTimbrePorta&quot;), 0, 6)</div>
+<div class="line"> </div>
+<div class="line">    -- MIXER</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 15 - OSC1 Level [0~127]</div>
+<div class="line">    vocoderBuffer[sb + 15] = getModValue(&quot;knobMixerOsc1&quot;)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 16 - Ext1 Level [0~127]</div>
+<div class="line">    vocoderBuffer[sb + 16] = getModValue(&quot;knobMixerOsc2&quot;)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 17 - Noise Level [0~127]</div>
+<div class="line">    vocoderBuffer[sb + 17] = getModValue(&quot;knobMixerNoise&quot;)</div>
+<div class="line"> </div>
+<div class="line">    -- AUDIO IN2 (2)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 18 - HPF Level [0~127]</div>
+<div class="line">    vocoderBuffer[sb + 18] = getModValue(&quot;knobOsc2Semitone&quot;)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 19 - Gate Sense [0~127]</div>
+<div class="line">    vocoderBuffer[sb + 19] = getModValue(&quot;knobFilterVeloSens&quot;)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 20 - Threshold [0~127]</div>
+<div class="line">    vocoderBuffer[sb + 20] = getModValue(&quot;knobOsc2Tune&quot;)</div>
+<div class="line"> </div>
+<div class="line">    -- FILTER</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 21 - Shift [0~4 = 0, +1, +2, -1, -2]</div>
+<div class="line">    -- Stored directly in buffer</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 22 - Cutoff [64+/-63 = 0+/-63]</div>
+<div class="line">    vocoderBuffer[sb + 22] = getModValue(&quot;knobFilterCutoff&quot;) + 64</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 23 - Resonance [0~127]</div>
+<div class="line">    vocoderBuffer[sb + 23] = getModValue(&quot;knobFilterResonance&quot;)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 24 - Mod Source [0~7 = EG1~MIDI2]</div>
+<div class="line">    vocoderBuffer[sb + 24] = getModValue(&quot;cbPatchSource1&quot;)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 25 - Intensity [64+/-63 = 0+/-63]</div>
+<div class="line">    vocoderBuffer[sb + 25] = getModValue(&quot;knobFilterEG1Int&quot;) + 64</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 26 - E.F.Sense [0~127]</div>
+<div class="line">    vocoderBuffer[sb + 26] = getModValue(&quot;knobFilterKbdTrk&quot;)</div>
+<div class="line"> </div>
+<div class="line">    -- AMP</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 27 - Level [0~127]</div>
+<div class="line">    vocoderBuffer[sb + 27] = getModValue(&quot;knobAmpLevel&quot;)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 28 - Direct Level [0~127]</div>
+<div class="line">    vocoderBuffer[sb + 28] = getModValue(&quot;knobAmpPan&quot;)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 29</div>
+<div class="line">    -- Bit 1~7 - not use</div>
+<div class="line">    -- Bit 0 - Distortion On/Off [0, 1 = Off, On]</div>
+<div class="line">    vocoderBuffer[sb + 29] = packBitsToByte(vocoderBuffer[sb + 29], getModValue(&quot;btnAmpDistortion&quot;), 0)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 30 - Vel.Sense [64+/-63 = 0+/-63]</div>
+<div class="line">    vocoderBuffer[sb + 30] = getModValue(&quot;knobAmpVeloSens&quot;) + 64</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 31 - KeyTrack [64+/-63 = 0+/-63]</div>
+<div class="line">    vocoderBuffer[sb + 31] = getModValue(&quot;knobAmpKeyTrack&quot;) + 64</div>
+<div class="line"> </div>
+<div class="line">    -- EG1</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 32 - Attack [0~127]</div>
+<div class="line">    vocoderBuffer[sb + 32] = getModValue(&quot;knobEG1Attack&quot;)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 33 - Decay [0~127]</div>
+<div class="line">    vocoderBuffer[sb + 33] = getModValue(&quot;knobEG1Decay&quot;)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 34 - Sustain [0~127]</div>
+<div class="line">    vocoderBuffer[sb + 34] = getModValue(&quot;knobEG1Sustain&quot;)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 35 - Release [0~127]</div>
+<div class="line">    vocoderBuffer[sb + 35] = getModValue(&quot;knobEG1Release&quot;)</div>
+<div class="line"> </div>
+<div class="line">    -- EG2</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 36 - Attack [0~127]</div>
+<div class="line">    vocoderBuffer[sb + 36] = getModValue(&quot;knobEG2Attack&quot;)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 37 - Decay [0~127]</div>
+<div class="line">    vocoderBuffer[sb + 37] = getModValue(&quot;knobEG2Decay&quot;)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 38 - Sustain [0~127]</div>
+<div class="line">    vocoderBuffer[sb + 38] = getModValue(&quot;knobEG2Sustain&quot;)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 39 - Release [0~127]</div>
+<div class="line">    vocoderBuffer[sb + 39] = getModValue(&quot;knobEG2Release&quot;)</div>
+<div class="line"> </div>
+<div class="line">    -- LFO1</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 40</div>
+<div class="line">    -- Bit 6,7 - not use</div>
+<div class="line">    -- Bit 4,5 - Key Sync [0~2 = OFF, Timbre, Voice]</div>
+<div class="line">    vocoderBuffer[sb + 40] = packBitsToByte(vocoderBuffer[sb + 40], getModValue(&quot;cbLFO1KeySync&quot;), 4, 5)</div>
+<div class="line"> </div>
+<div class="line">    -- Bit 2,3 - not use</div>
+<div class="line">    -- Bit 0,1 - Wave [0~3 = Saw, Squ, Tri, S/H]</div>
+<div class="line">    -- Stored directly in buffer</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 41 - Frequency [0~127]</div>
+<div class="line">    vocoderBuffer[sb + 41] = getModValue(&quot;knobLFO1Frequency&quot;)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 42</div>
+<div class="line">    -- Bit 7 - Tempo Sync [0,1 = Off,On]</div>
+<div class="line">    vocoderBuffer[sb + 42] = packBitsToByte(vocoderBuffer[sb + 42], getModValue(&quot;btnLFO1TempoSync&quot;), 7)</div>
+<div class="line"> </div>
+<div class="line">    -- Bit 5,6 - not use</div>
+<div class="line">    -- Bit 0~4 - Sync Note [0~14 = 1/1~1/32]</div>
+<div class="line">    vocoderBuffer[sb + 42] = packBitsToByte(vocoderBuffer[sb + 42], getModValue(&quot;cbLFO1SyncNote&quot;), 0, 4)</div>
+<div class="line"> </div>
+<div class="line">    -- LFO2</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 43</div>
+<div class="line">    -- Bit 6,7 - not use</div>
+<div class="line">    -- Bit 4,5 - Key Sync [0~2 = OFF, Timbre, Voice]</div>
+<div class="line">    vocoderBuffer[sb + 43] = packBitsToByte(vocoderBuffer[sb + 43], getModValue(&quot;cbLFO2KeySync&quot;), 4, 5)</div>
+<div class="line"> </div>
+<div class="line">    -- Bit 2,3 - not use</div>
+<div class="line">    -- Bit 0,1 - Wave [0~3 = Saw, Squ(+), Sin, S/H]</div>
+<div class="line">    -- Stored directly in buffer</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 44 - Frequency [0~127]</div>
+<div class="line">    vocoderBuffer[sb + 44] = getModValue(&quot;knobLFO2Frequency&quot;)</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 45</div>
+<div class="line">    -- Bit 7 - Tempo Sync [0, 1 = Off, On]</div>
+<div class="line">    vocoderBuffer[sb + 45] = packBitsToByte(vocoderBuffer[sb + 45], getModValue(&quot;btnLFO2TempoSync&quot;), 7)</div>
+<div class="line"> </div>
+<div class="line">    -- Bit 5,6 - not use</div>
+<div class="line">    -- Bit 0~4 - Sync Note [0~14 = 1/1~1/32]</div>
+<div class="line">    vocoderBuffer[sb + 45] = packBitsToByte(vocoderBuffer[sb + 45], getModValue(&quot;cbLFO2SyncNote&quot;), 0, 4)</div>
+<div class="line"> </div>
+<div class="line">    -- CH LEVEL [0]~[15] = CH[1]~[16]</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 46~61 - Level [0~15] - 0~127</div>
+<div class="line">    for i = 1, 16 do</div>
+<div class="line">        vocoderBuffer[sb + 45 + i] = getModValue(string.format(&quot;knobSeq1Step%d&quot;, i))</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    -- CH PAN  [0]~[15] = CH[1]~[16]</div>
+<div class="line"> </div>
+<div class="line">    -- Byte 62~77 - Pan  [0~15] - 1~64~127 = L63~CNT~R63</div>
+<div class="line">    for i = 1, 16 do</div>
+<div class="line">        vocoderBuffer[sb + 61 + i] = getModValue(string.format(&quot;knobSeq2Step%d&quot;, i)) + 64</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md234"></a>
+&lt;tt&gt;setVocoderMode&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function setVocoderMode(vocoderEnabled)</div>
+<div class="line"> </div>
+<div class="line">    local i</div>
+<div class="line">    local knobList = {</div>
+<div class="line">        &quot;knobOsc2Semitone&quot;,</div>
+<div class="line">        &quot;knobOsc2Tune&quot;, </div>
+<div class="line">        &quot;knobFilterKbdTrk&quot;, </div>
+<div class="line">        &quot;knobAmpPan&quot;, </div>
+<div class="line">        &quot;knobFilterVeloSens&quot;</div>
+<div class="line">    }</div>
+<div class="line"> </div>
+<div class="line">    local modLIst = {</div>
+<div class="line">        &quot;btnOsc2OscModCycle&quot;,</div>
+<div class="line">        &quot;btnOsc2WaveCycle&quot;,</div>
+<div class="line">        &quot;imgOsc2Lamp0&quot;,</div>
+<div class="line">        &quot;imgOsc2Lamp1&quot;,</div>
+<div class="line">        &quot;imgOsc2Lamp2&quot;,</div>
+<div class="line">        &quot;imgOsc2ModLamp0&quot;,</div>
+<div class="line">        &quot;imgOsc2ModLamp1&quot;,</div>
+<div class="line">        &quot;cbPatchDestination1&quot;,</div>
+<div class="line">        &quot;cbPatchDestination2&quot;,</div>
+<div class="line">        &quot;cbPatchDestination3&quot;,</div>
+<div class="line">        &quot;cbPatchDestination4&quot;,</div>
+<div class="line">        &quot;cbPatchSource2&quot;,</div>
+<div class="line">        &quot;cbPatchSource3&quot;,</div>
+<div class="line">        &quot;cbPatchSource4&quot;,</div>
+<div class="line">        &quot;knobPatch1Amount&quot;,</div>
+<div class="line">        &quot;knobPatch2Amount&quot;,</div>
+<div class="line">        &quot;knobPatch3Amount&quot;,</div>
+<div class="line">        &quot;knobPatch4Amount&quot;,</div>
+<div class="line">        &quot;knobSeqLastStep&quot;,</div>
+<div class="line">        &quot;cbSeqKnob1&quot;,</div>
+<div class="line">        &quot;cbSeqKnob2&quot;,</div>
+<div class="line">        &quot;cbSeqKnob3&quot;,</div>
+<div class="line">        &quot;cbSeqMotion1&quot;,</div>
+<div class="line">        &quot;cbSeqMotion2&quot;,</div>
+<div class="line">        &quot;cbSeqMotion3&quot;,</div>
+<div class="line">        &quot;cbSeqType&quot;,</div>
+<div class="line">        &quot;cbSeqRunMode&quot;,</div>
+<div class="line">        &quot;cbSeqKeySync&quot;,</div>
+<div class="line">        &quot;cbSeqResolution&quot;,</div>
+<div class="line">        &quot;btnSeqOnOff&quot;,</div>
+<div class="line">        &quot;imgSeqLamp2&quot;</div>
+<div class="line">    }</div>
+<div class="line"> </div>
+<div class="line">    for i = 1, 16 do</div>
+<div class="line">        table.insert(modLIst, string.format(&quot;knobSeq3Step%d&quot;, i))</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    -- Vocoder used to have these fancy &quot;inverted color&quot; labels</div>
+<div class="line">    applyVocoderLabels(vocoderEnabled)</div>
+<div class="line"> </div>
+<div class="line">    if vocoderEnabled then</div>
+<div class="line"> </div>
+<div class="line">        -- Synchronizing values</div>
+<div class="line"> </div>
+<div class="line">        if sharedValues.voiceMode ~= vmUndefined then</div>
+<div class="line"> </div>
+<div class="line">            syncTimbreWithBuffer(sharedValues.selectedTimbre)</div>
+<div class="line">        else</div>
+<div class="line"> </div>
+<div class="line">            -- Reset all &quot;synth&quot;-related values to its defaults</div>
+<div class="line">            resetVocoderControls(true)</div>
+<div class="line">        end</div>
+<div class="line"> </div>
+<div class="line">        turnLightsOff(&quot;imgOsc2ModLamp&quot;, 1)</div>
+<div class="line">        turnLightsOff(&quot;imgOsc2Lamp&quot;, 2)</div>
+<div class="line"> </div>
+<div class="line">        sharedValues.timbreMode = tmVocoder</div>
+<div class="line"> </div>
+<div class="line">        -- Change bounds</div>
+<div class="line">        for i = 1, #knobList do</div>
+<div class="line"> </div>
+<div class="line">            getComp(knobList[i]):setPropertyInt(&quot;uiSliderMin&quot;, 0)</div>
+<div class="line">            getComp(knobList[i]):setPropertyInt(&quot;uiSliderMax&quot;, 127)</div>
+<div class="line">            getComp(knobList[i]):setPropertyInt(&quot;uiSliderDoubleClickValue&quot;, 64)</div>
+<div class="line"> </div>
+<div class="line">            getComp(knobList[i]):repaint()</div>
+<div class="line">        end</div>
+<div class="line"> </div>
+<div class="line">        -- The &quot;Cutoff&quot; knob is invertd here - 0~127 =&gt; -63~63</div>
+<div class="line">        specialBounds(&quot;knobFilterCutoff&quot;, -63, 63, 0)</div>
+<div class="line"> </div>
+<div class="line">        assertSeqKnobBoundsByValue(1, 0)</div>
+<div class="line">        assertSeqKnobBoundsByValue(2, 1)</div>
+<div class="line"> </div>
+<div class="line">        -- Set new formulas</div>
+<div class="line">        assertSysExFormulas(2)</div>
+<div class="line"> </div>
+<div class="line">        -- Disable some controls</div>
+<div class="line">        enableControls(modLIst, false)</div>
+<div class="line">    else</div>
+<div class="line">        -- Synchronizing values</div>
+<div class="line">        if sharedValues.voiceMode == vmVocoder then</div>
+<div class="line">            syncVocoderWithBuffer()</div>
+<div class="line">        end</div>
+<div class="line"> </div>
+<div class="line">        sharedValues.timbreMode = tmSynth</div>
+<div class="line"> </div>
+<div class="line">        -- Revert bounds</div>
+<div class="line">        for i = 1, #knobList do</div>
+<div class="line"> </div>
+<div class="line">            if knobList[i] ~= &quot;knobOsc2Semitone&quot; then</div>
+<div class="line"> </div>
+<div class="line">                getComp(knobList[i]):setPropertyInt(&quot;uiSliderMin&quot;, -63)</div>
+<div class="line">                getComp(knobList[i]):setPropertyInt(&quot;uiSliderMax&quot;, 63)</div>
+<div class="line">                getComp(knobList[i]):setPropertyInt(&quot;uiSliderDoubleClickValue&quot;, 0)</div>
+<div class="line">            else</div>
+<div class="line"> </div>
+<div class="line">                getComp(knobList[i]):setPropertyInt(&quot;uiSliderMin&quot;, -24)</div>
+<div class="line">                getComp(knobList[i]):setPropertyInt(&quot;uiSliderMax&quot;, 24)</div>
+<div class="line">                getComp(knobList[i]):setPropertyInt(&quot;uiSliderDoubleClickValue&quot;, 0)</div>
+<div class="line">            end</div>
+<div class="line"> </div>
+<div class="line">            getComp(knobList[i]):repaint()</div>
+<div class="line">        end</div>
+<div class="line"> </div>
+<div class="line">        -- The &quot;Cutoff&quot; knob again requires some special treatment</div>
+<div class="line">        specialBounds(&quot;knobFilterCutoff&quot;, 0, 127, 100)</div>
+<div class="line"> </div>
+<div class="line">        -- Set usual formulas</div>
+<div class="line">        assertSysExFormulas(0)</div>
+<div class="line"> </div>
+<div class="line">        -- Enable controls</div>
+<div class="line">        enableControls(modLIst, true)</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md236"></a>
+&lt;tt&gt;initPatchRawData&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function initPatchRawData()</div>
+<div class="line">    </div>
+<div class="line">    -- Raw patch data which should be converted to make it usable</div>
+<div class="line">    -- Mostly for testing and reference purposes</div>
+<div class="line"> </div>
+<div class="line">    -- INIT Patch</div>
+<div class="line">    return {</div>
+<div class="line">    -- SysEx Header</div>
+<div class="line">    0xF0, 0x42, 0x30, 0x58, 0x40, </div>
+<div class="line">    -- Program data begin</div>
+<div class="line">    --MS    B1    B2    B3    B4    B5    B6    B7   </div>
+<div class="line">    0x00, 0x49, 0x4E, 0x49, 0x54, 0x20, 0x50, 0x72, </div>
+<div class="line">    0x00, 0x6F, 0x67, 0x72, 0x61, 0x6D, 0x00, 0x0B, </div>
+<div class="line">    0x00, 0x00, 0x00, 0x40, 0x00, 0x3C, 0x00, 0x28, </div>
+<div class="line">    0x00, 0x00, 0x00, 0x1E, 0x00, 0x00, 0x14, 0x40, </div>
+<div class="line">    0x00, 0x0F, 0x40, 0x00, 0x78, 0x00, 0x00, 0x50, </div>
+<div class="line">    0x08, 0x01, 0x00, 0x00, 0x7F, 0x70, 0x0A, 0x40, </div>
+<div class="line">    0x00, 0x42, 0x40, 0x45, 0x00, 0x00, 0x00, 0x00,  </div>
+<div class="line">    0x00, 0x00, 0x00, 0x40, 0x40, 0x00, 0x7F, 0x00, </div>
+<div class="line">    0x00, 0x00, 0x01, 0x7F, 0x0A, 0x40, 0x40, 0x40, </div>
+<div class="line">    0x00, 0x7F, 0x40, 0x00, 0x40, 0x40, 0x00, 0x40, </div>
+<div class="line">    0x00, 0x7F, 0x00, 0x00, 0x40, 0x7F, 0x00, 0x02, </div>
+<div class="line">    0x00, 0x0A, 0x03, 0x02, 0x46, 0x0C, 0x02, 0x40, </div>
+<div class="line">    0x00, 0x03, 0x40, 0x42, 0x40, 0x43, 0x40, 0x43, </div>
+<div class="line">    0x01, 0x71, 0x01, 0x01, 0x40, 0x40, 0x40, 0x40, </div>
+<div class="line">    0x00, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, </div>
+<div class="line">    0x00, 0x40, 0x40, 0x40, 0x40, 0x40, 0x00, 0x01, </div>
+<div class="line">    0x00, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, </div>
+<div class="line">    0x00, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, </div>
+<div class="line">    0x00, 0x40, 0x40, 0x00, 0x01, 0x40, 0x40, 0x40, </div>
+<div class="line">    0x00, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, </div>
+<div class="line">    0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x7F, </div>
+<div class="line">    0x00, 0x70, 0x0A, 0x40, 0x42, 0x40, 0x45, 0x00, </div>
+<div class="line">    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x40, </div>
+<div class="line">    0x00, 0x00, 0x7F, 0x00, 0x00, 0x01, 0x7F, 0x0A, </div>
+<div class="line">    0x00, 0x40, 0x40, 0x40, 0x7F, 0x40, 0x00, 0x40, </div>
+<div class="line">    0x00, 0x40, 0x00, 0x40, 0x7F, 0x00, 0x00, 0x40, </div>
+<div class="line">    0x00, 0x7F, 0x00, 0x02, 0x0A, 0x03, 0x02, 0x46, </div>
+<div class="line">    0x00, 0x0C, 0x02, 0x40, 0x03, 0x40, 0x42, 0x40, </div>
+<div class="line">    0x08, 0x43, 0x40, 0x43, 0x71, 0x01, 0x01, 0x40, </div>
+<div class="line">    0x00, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, </div>
+<div class="line">    0x00, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, </div>
+<div class="line">    0x00, 0x40, 0x00, 0x01, 0x40, 0x40, 0x40, 0x40, </div>
+<div class="line">    0x00, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, </div>
+<div class="line">    0x00, 0x40, 0x40, 0x40, 0x40, 0x40, 0x00, 0x01, </div>
+<div class="line">    0x00, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, </div>
+<div class="line">    0x00, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, </div>
+<div class="line">    0x00, 0x40, 0x40, </div>
+<div class="line">    -- Program data end</div>
+<div class="line">    0xF7</div>
+<div class="line">    }</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md238"></a>
+&lt;tt&gt;initPatchData&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function initPatchData()</div>
+<div class="line">    </div>
+<div class="line">    -- This data is good to work with, but it should</div>
+<div class="line">    -- be converted before sending to the synth</div>
+<div class="line"> </div>
+<div class="line">    -- INIT Patch</div>
+<div class="line">    return {</div>
+<div class="line">    -- SysEx Header</div>
+<div class="line">    0xF0, 0x42, 0x30, 0x58, 0x40,</div>
+<div class="line">    -- Program data begin</div>
+<div class="line">    --B1    B2    B3    B4    B5    B6    B7 </div>
+<div class="line">    0x49, 0x4E, 0x49, 0x54, 0x20, 0x50, 0x72,</div>
+<div class="line">    0x6F, 0x67, 0x72, 0x61, 0x6D, 0x00, 0x00,</div>
+<div class="line">    0x00, 0x00, 0x40, 0x00, 0x3C, 0x05, 0x28,</div>
+<div class="line">    0x00, 0x00, 0x14, 0x00, 0x00, 0x14, 0x40,</div>
+<div class="line">    0x0F, 0x40, 0x00, 0x78, 0x00, 0x00, 0x50,</div>
+<div class="line">    0x01, 0x00, 0x00, 0xFF, 0x70, 0x0A, 0x40,</div>
+<div class="line">    0x42, 0x40, 0x45, 0x00, 0x00, 0x00, 0x00,</div>
+<div class="line">    0x00, 0x00, 0x40, 0x40, 0x00, 0x7F, 0x00,</div>
+<div class="line">    0x00, 0x01, 0x7F, 0x14, 0x40, 0x40, 0x40,</div>
+<div class="line">    0x7F, 0x40, 0x00, 0x40, 0x40, 0x00, 0x40,</div>
+<div class="line">    0x7F, 0x00, 0x00, 0x40, 0x7F, 0x00, 0x02,</div>
+<div class="line">    0x0A, 0x03, 0x02, 0x46, 0x0C, 0x02, 0x40,</div>
+<div class="line">    0x03, 0x40, 0x42, 0x40, 0x43, 0x40, 0x43,</div>
+<div class="line">    0xF1, 0x01, 0x01, 0x40, 0x40, 0x40, 0x40,</div>
+<div class="line">    0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40,</div>
+<div class="line">    0x40, 0x40, 0x40, 0x40, 0x40, 0x00, 0x01,</div>
+<div class="line">    0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40,</div>
+<div class="line">    0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40,</div>
+<div class="line">    0x40, 0x40, 0x00, 0x01, 0x40, 0x40, 0x40,</div>
+<div class="line">    0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40,</div>
+<div class="line">    0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0xFF,</div>
+<div class="line">    0x70, 0x0A, 0x40, 0x42, 0x40, 0x45, 0x00,</div>
+<div class="line">    0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x40,</div>
+<div class="line">    0x00, 0x7F, 0x00, 0x00, 0x01, 0x7F, 0x14,</div>
+<div class="line">    0x40, 0x40, 0x40, 0x7F, 0x40, 0x00, 0x40,</div>
+<div class="line">    0x40, 0x00, 0x40, 0x7F, 0x00, 0x00, 0x40,</div>
+<div class="line">    0x7F, 0x00, 0x02, 0x0A, 0x03, 0x02, 0x46,</div>
+<div class="line">    0x0C, 0x02, 0x40, 0x03, 0x40, 0x42, 0x40,</div>
+<div class="line">    0x43, 0x40, 0x43, 0xF1, 0x01, 0x01, 0x40,</div>
+<div class="line">    0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40,</div>
+<div class="line">    0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40,</div>
+<div class="line">    0x40, 0x00, 0x01, 0x40, 0x40, 0x40, 0x40,</div>
+<div class="line">    0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40,</div>
+<div class="line">    0x40, 0x40, 0x40, 0x40, 0x40, 0x00, 0x01,</div>
+<div class="line">    0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40,</div>
+<div class="line">    0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40,</div>
+<div class="line">    0x40, 0x40, </div>
+<div class="line">    -- Program data end</div>
+<div class="line">    0xF7</div>
+<div class="line">    }</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md240"></a>
+&lt;tt&gt;initPresetBank&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function initPresetBank()</div>
+<div class="line">    </div>
+<div class="line">    local progBankStorage = {}</div>
+<div class="line">    local progBank = {}</div>
+<div class="line">    local i, j</div>
+<div class="line"> </div>
+<div class="line">    for i = 1, 8 do</div>
+<div class="line"> </div>
+<div class="line">        progBank = {}</div>
+<div class="line">        for j = 1, 16 do</div>
+<div class="line"> </div>
+<div class="line">            table.insert(progBank, initPatchData())</div>
+<div class="line">        end</div>
+<div class="line"> </div>
+<div class="line">        table.insert(progBankStorage, progBank)</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    return progBankStorage</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md242"></a>
+&lt;tt&gt;initVocoderBuffer&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function initVocoderBuffer()</div>
+<div class="line"> </div>
+<div class="line">    -- Vocoder buffer init data</div>
+<div class="line">    return {</div>
+<div class="line">    0xFF, 0x70, 0x0A, 0x40, 0x42, 0x40, 0x45, </div>
+<div class="line">    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, </div>
+<div class="line">    0x00, 0x7F, 0x00, 0x00, 0x00, 0x64, 0x00, </div>
+<div class="line">    0x00, 0x40, 0x14, 0x02, 0x40, 0x1E, 0x7F, </div>
+<div class="line">    0x00, 0x00, 0x40, 0x40, 0x00, 0x40, 0x7F, </div>
+<div class="line">    0x00, 0x00, 0x40, 0x7F, 0x00, 0x02, 0x0A, </div>
+<div class="line">    0x03, 0x02, 0x46, 0x0C, 0x7F, 0x7F, 0x7F, </div>
+<div class="line">    0x7F, 0x7F, 0x7F, 0x7F, 0x7F, 0x7F, 0x7F, </div>
+<div class="line">    0x7F, 0x7F, 0x7F, 0x7F, 0x7F, 0x7F, 0x40, </div>
+<div class="line">    0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, </div>
+<div class="line">    0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, </div>
+<div class="line">    0x40, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, </div>
+<div class="line">    0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x00, </div>
+<div class="line">    0x00, 0x00, 0x00, 0x40, 0x00, 0x3C, 0x05, </div>
+<div class="line">    0x28, 0x00, 0x00, 0x14, 0x00, 0x00, 0x14, </div>
+<div class="line">    0x40, 0x0F, 0x40, 0x00, 0x78, 0x00, 0x00, </div>
+<div class="line">    0x50, 0x01, 0x00, 0x00, 0xFF, 0xFF, 0xFF, </div>
+<div class="line">    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, </div>
+<div class="line">    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, </div>
+<div class="line">    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, </div>
+<div class="line">    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, </div>
+<div class="line">    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, </div>
+<div class="line">    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, </div>
+<div class="line">    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, </div>
+<div class="line">    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, </div>
+<div class="line">    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, </div>
+<div class="line">    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, </div>
+<div class="line">    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, </div>
+<div class="line">    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, </div>
+<div class="line">    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, </div>
+<div class="line">    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF</div>
+<div class="line">    }</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md244"></a>
+&lt;tt&gt;resetVocoderControls&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function resetVocoderControls()</div>
+<div class="line"> </div>
+<div class="line">    local i</div>
+<div class="line"> </div>
+<div class="line">    for i = 1, 16 do</div>
+<div class="line">        modByName(string.format(&quot;knobSeq3Step%d&quot;, i)):setValue(0, false)</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    setModValue(&quot;knobSeqLastStep&quot;, 16)</div>
+<div class="line">    setModValue(&quot;cbSeqKnob1&quot;, 0)</div>
+<div class="line">    setModValue(&quot;cbSeqKnob2&quot;, 0)</div>
+<div class="line">    setModValue(&quot;cbSeqKnob3&quot;, 0)</div>
+<div class="line">    setModValue(&quot;cbSeqMotion1&quot;, 1)</div>
+<div class="line">    setModValue(&quot;cbSeqMotion1&quot;, 1)</div>
+<div class="line">    setModValue(&quot;cbSeqMotion1&quot;, 1)</div>
+<div class="line">    setModValue(&quot;cbSeqType&quot;, 0)</div>
+<div class="line">    setModValue(&quot;cbSeqRunMode&quot;, 1)</div>
+<div class="line">    setModValue(&quot;cbSeqKeySync&quot;, 1)</div>
+<div class="line">    setModValue(&quot;cbSeqResolution&quot;, 3)</div>
+<div class="line">    setModValue(&quot;btnSeqOnOff&quot;, 0)</div>
+<div class="line">    setModValue(&quot;cbArpTarget&quot;, 2)</div>
+<div class="line">    setModValue(&quot;cbPatchDestination1&quot;, 0)</div>
+<div class="line">    setModValue(&quot;cbPatchDestination2&quot;, 0)</div>
+<div class="line">    setModValue(&quot;cbPatchDestination3&quot;, 4)</div>
+<div class="line">    setModValue(&quot;cbPatchDestination4&quot;, 4)</div>
+<div class="line">    setModValue(&quot;cbPatchSource2&quot;, 3)</div>
+<div class="line">    setModValue(&quot;cbPatchSource2&quot;, 2)</div>
+<div class="line">    setModValue(&quot;cbPatchSource2&quot;, 3)</div>
+<div class="line">    setModValue(&quot;knobPatch2Amount&quot;, 0)</div>
+<div class="line">    setModValue(&quot;knobPatch3Amount&quot;, 0)</div>
+<div class="line">    setModValue(&quot;knobPatch4Amount&quot;, 0)</div>
+<div class="line">    setModValue(&quot;knobFilterEG1Int&quot;, 0)</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md246"></a>
+&lt;tt&gt;initBufferWithInitPatch&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function initBufferWithInitPatch()</div>
+<div class="line"> </div>
+<div class="line">    dataBuffer = initPatchData()</div>
+<div class="line">    applyProgramData(dataBuffer, nil, nil, false)</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md248"></a>
+&lt;tt&gt;cycleBanks&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function cycleBanks(mod, value, source)</div>
+<div class="line">    </div>
+<div class="line">    if blockExecution(source) then</div>
+<div class="line">        return</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    local cycleDirection = getModPropN(mod, &quot;modulatorCustomIndex&quot;)</div>
+<div class="line"> </div>
+<div class="line">    -- Choose, where selection must happen</div>
+<div class="line">    if panelSettings.selectorsSource == pbsPanel then</div>
+<div class="line"> </div>
+<div class="line">        if cycleDirection == 1 then</div>
+<div class="line">            cycleBankValues(true, pbsPanel)</div>
+<div class="line">        else</div>
+<div class="line">            cycleBankValues(false, pbsPanel)</div>
+<div class="line">        end</div>
+<div class="line"> </div>
+<div class="line">        chosenPresetToBuffer((sharedValues.selectedBank * 100) + sharedValues.selectedPreset, false)</div>
+<div class="line">    else</div>
+<div class="line"> </div>
+<div class="line">        if cycleDirection == 1 then</div>
+<div class="line">            cycleBankValues(true, pbsSynth)</div>
+<div class="line">        else</div>
+<div class="line">            cycleBankValues(false, pbsSynth)</div>
+<div class="line">        end</div>
+<div class="line"> </div>
+<div class="line">        selectPresetOnSynth()</div>
+<div class="line">    end</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md250"></a>
+&lt;tt&gt;cycleBankValues&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function cycleBankValues(increase, selectionDest)</div>
+<div class="line"> </div>
+<div class="line">    if selectionDest == pbsPanel then</div>
+<div class="line"> </div>
+<div class="line">        if increase then</div>
+<div class="line">            sharedValues.selectedBank = sharedValues.selectedBank + 1</div>
+<div class="line"> </div>
+<div class="line">            if sharedValues.selectedBank &gt; 8 then</div>
+<div class="line">                sharedValues.selectedBank = 1</div>
+<div class="line">            end</div>
+<div class="line">        else</div>
+<div class="line"> </div>
+<div class="line">            sharedValues.selectedBank = sharedValues.selectedBank - 1</div>
+<div class="line"> </div>
+<div class="line">            if sharedValues.selectedBank &lt; 1 then</div>
+<div class="line">                sharedValues.selectedBank = 8</div>
+<div class="line">            end</div>
+<div class="line">        end</div>
+<div class="line">    else</div>
+<div class="line"> </div>
+<div class="line">        if increase then</div>
+<div class="line">            sharedValues.synthBank = sharedValues.synthBank + 1</div>
+<div class="line"> </div>
+<div class="line">            if sharedValues.synthBank &gt; 7 then</div>
+<div class="line">                sharedValues.synthBank = 0</div>
+<div class="line">            end</div>
+<div class="line">        else</div>
+<div class="line"> </div>
+<div class="line">            sharedValues.synthBank = sharedValues.synthBank - 1</div>
+<div class="line"> </div>
+<div class="line">            if sharedValues.synthBank &lt; 0 then</div>
+<div class="line">                sharedValues.synthBank = 7</div>
+<div class="line">            end</div>
+<div class="line">        end</div>
+<div class="line">    end</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md252"></a>
+&lt;tt&gt;openProgramBankFile&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function openProgramBankFile()</div>
+<div class="line"> </div>
+<div class="line">    -- File open dialog</div>
+<div class="line">    local bulkDump = openFileDialog(&quot;Select Korg MS2000 bulk dump file&quot;, SUPPORTED_EXT_MASK)</div>
+<div class="line">    local dumpBytes = MemoryBlock()</div>
+<div class="line"> </div>
+<div class="line">    -- If file exists, then proceed</div>
+<div class="line">    if bulkDump ~= nil then</div>
+<div class="line">        dumpBytes = MemoryBlock(bulkDump:getSize())</div>
+<div class="line">        bulkDump:loadFileAsData(dumpBytes)</div>
+<div class="line">    else</div>
+<div class="line">        return</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    local rawDumpBytesData = normalizeSysExDumpData(memBlockToTable(dumpBytes))</div>
+<div class="line">    local dumpType = checkBulkDumpSize(#rawDumpBytesData)</div>
+<div class="line"> </div>
+<div class="line">    if dumpType ~= dtInvalidSz then</div>
+<div class="line"> </div>
+<div class="line">        if dumpType == dtHandson then</div>
+<div class="line"> </div>
+<div class="line">            -- Check microKORG *.prg signature</div>
+<div class="line">            if (rawDumpBytesData[3] == 0xA4) and (rawDumpBytesData[4] == 0x0F) then</div>
+<div class="line"> </div>
+<div class="line">                rawDumpBytesData = cutBytesFromDump(rawDumpBytesData, 2, 3)</div>
+<div class="line">            end</div>
+<div class="line">        end</div>
+<div class="line"> </div>
+<div class="line">        presetBank = slicePresets(midiToProgramData(rawDumpBytesData, DATA_PREAMBLE_BYTES))</div>
+<div class="line"> </div>
+<div class="line">        dataBuffer = copyTable(presetBank[1][1])</div>
+<div class="line"> </div>
+<div class="line">        chosenPresetToBuffer(101, false) -- 1 - bank, 01 - preset number</div>
+<div class="line">        -- Congratulations! MS2000 bulk dump successfully imported!</div>
+<div class="line">    else</div>
+<div class="line"> </div>
+<div class="line">        genAlertWindow(&quot;Warning&quot;, &quot;Wrong file size, operation cancelled&quot;)</div>
+<div class="line">    end</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md254"></a>
+&lt;tt&gt;saveProgramBankFile&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function saveProgramBankFile()</div>
+<div class="line">    </div>
+<div class="line">    -- Default filename will be like current preset name</div>
+<div class="line">    local cPresName = &quot;ReMS2000 Bulk Dump &quot; .. os.date(&quot;%Y %m %d&quot;)</div>
+<div class="line"> </div>
+<div class="line">    -- File to save</div>
+<div class="line">    local dumpFile = utils.saveFileWindow(&quot;Save program bank to file..&quot;, File(removeSystemSymbols(cPresName)), &quot;*.syx&quot;, true)</div>
+<div class="line"> </div>
+<div class="line">    if not dumpFile:isValid() then</div>
+<div class="line">        return</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    -- Writing data to the file</div>
+<div class="line">    dumpFile:replaceWithData(MemoryBlock(prepareBulkDump()))</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md256"></a>
+&lt;tt&gt;saveProgramToPatchBank&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function saveProgramToPatchBank(rawNumber)</div>
+<div class="line">    </div>
+<div class="line">    local bank = math.floor((rawNumber - 1000) / 100)</div>
+<div class="line">    local preset = rawNumber % 100</div>
+<div class="line">    local patchData</div>
+<div class="line"> </div>
+<div class="line">    syncPanelWithBuffer()</div>
+<div class="line"> </div>
+<div class="line">    -- Buffer ==&gt; presetBank[bank][preset]</div>
+<div class="line"> </div>
+<div class="line">    -- If timbre type is vocoder, we have to merge data first</div>
+<div class="line">    if sharedValues.timbreMode == tmSynth then</div>
+<div class="line">        presetBank[bank][preset] = copyTable(dataBuffer)</div>
+<div class="line">    else</div>
+<div class="line">        presetBank[bank][preset] = getMergedTimbreVocoderData()</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    -- Run assertions by opening saved program from bank</div>
+<div class="line">    chosenPresetToBuffer(rawNumber, true)</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md258"></a>
+&lt;tt&gt;storeProgramBank&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function storeProgramBank()</div>
+<div class="line">    </div>
+<div class="line">    sendSysExMessage(prepareBulkDump())</div>
+<div class="line">    waitForWriteReply(WAIT_BANK_TIMER)</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md260"></a>
+&lt;tt&gt;prepareBulkDump&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function prepareBulkDump()</div>
+<div class="line">    </div>
+<div class="line">    local i, j, c</div>
+<div class="line">    local midiCh = getGlobalMidiChannel()</div>
+<div class="line">    local bulkDump = {0xF0, 0x42, midiCh, 0x58, 0x4C}</div>
+<div class="line"> </div>
+<div class="line">    -- Cut extra bytes (SysEx Header, SysEx End) from every program</div>
+<div class="line">    for i = 1, 8 do</div>
+<div class="line">        for j = 1, 16 do</div>
+<div class="line"> </div>
+<div class="line">            for c = (DATA_PREAMBLE_BYTES + 1), #presetBank[i][j] - 1 do</div>
+<div class="line">                table.insert(bulkDump, presetBank[i][j][c])</div>
+<div class="line">            end</div>
+<div class="line">        end</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    table.insert(bulkDump, 0xF7)</div>
+<div class="line"> </div>
+<div class="line">    return programToMIDIData(bulkDump, DATA_PREAMBLE_BYTES)</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md262"></a>
+&lt;tt&gt;getMergedTimbreVocoderData&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function getMergedTimbreVocoderData()</div>
+<div class="line">    </div>
+<div class="line">    -- Merge dataBuffer with vocoder data</div>
+<div class="line"> </div>
+<div class="line">    local i</div>
+<div class="line">    local mergedData = copyTable(dataBuffer)</div>
+<div class="line"> </div>
+<div class="line">    for i = TIMBRE_ONE_STARTBYTE, TIMBRE_ONE_STARTBYTE + (TIMBRE_DATA_SIZE * 2) - 1 do</div>
+<div class="line"> </div>
+<div class="line">        mergedData[i] = vocoderBuffer[i - TIMBRE_ONE_STARTBYTE + 1]</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    return mergedData</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md264"></a>
+&lt;tt&gt;checkBulkDumpSize&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function checkBulkDumpSize(dumpSize)</div>
+<div class="line">    </div>
+<div class="line">    -- Check if opened data size is correct</div>
+<div class="line">    -- Return type of dump, if size is correct</div>
+<div class="line"> </div>
+<div class="line">    local result = dtInvalidSz</div>
+<div class="line"> </div>
+<div class="line">    if dumpSize == PROGRAM_BANK_DUMP_SIZE then</div>
+<div class="line">        result = dtProgBank</div>
+<div class="line">    elseif dumpSize == ALL_DATA_DUMP_SIZE then</div>
+<div class="line">        result = dtAllData</div>
+<div class="line">    elseif dumpSize == HANDSON_DUMP_SIZE then</div>
+<div class="line">        result = dtHandson</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    return result</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md266"></a>
+&lt;tt&gt;cutBytesFromDump&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function cutBytesFromDump(sourceTable, bFrom, bCount)</div>
+<div class="line"> </div>
+<div class="line">    local i</div>
+<div class="line">    local result = {}</div>
+<div class="line"> </div>
+<div class="line">    for i = 1, #sourceTable do</div>
+<div class="line"> </div>
+<div class="line">        if (i &lt; bFrom) or (i &gt;= (bFrom + bCount)) then</div>
+<div class="line"> </div>
+<div class="line">            table.insert(result, sourceTable[i])</div>
+<div class="line">        end</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    return result</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md268"></a>
+&lt;tt&gt;blinkMidiLightTimer&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function blinkMidiLightTimer()</div>
+<div class="line"> </div>
+<div class="line">    timer:setCallback (BLINKMIDI_TIMER_ID, blinkMidiLightTimerCallback)</div>
+<div class="line">    timer:stopTimer(BLINKMIDI_TIMER_ID) </div>
+<div class="line">    timer:startTimer(BLINKMIDI_TIMER_ID, BLINKMIDI_TIMER)</div>
+<div class="line">end</div>
+<div class="line"> </div>
+<div class="line">function blinkMidiLightTimerCallback()</div>
+<div class="line"> </div>
+<div class="line">    sharedValues.midiActivity = 0</div>
+<div class="line">    externalRepaintMidiActivity()</div>
+<div class="line"> </div>
+<div class="line">    timer:stopTimer(BLINKMIDI_TIMER_ID)</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md270"></a>
+&lt;tt&gt;requestProgramBank&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function requestProgramBank()</div>
+<div class="line">    </div>
+<div class="line">    -- Request program bank</div>
+<div class="line">    sendSysExMessage({0xF0, 0x42, getGlobalMidiChannel(), 0x58, 0x1C, 0xF7})</div>
+<div class="line"> </div>
+<div class="line">    -- Stop timer if it&#39;s already running</div>
+<div class="line">    timer:stopTimer(WAIT_BANK_TIMER_ID)</div>
+<div class="line"> </div>
+<div class="line">    timerFlags.waitForBulkDump  = true</div>
+<div class="line">    setSynthReachStatus(dsBusy)</div>
+<div class="line"> </div>
+<div class="line">    timer:setCallback(WAIT_BANK_TIMER_ID, requestProgramBankCallback)</div>
+<div class="line">    timer:startTimer(WAIT_BANK_TIMER_ID, WAIT_BANK_TIMER)</div>
+<div class="line">end</div>
+<div class="line"> </div>
+<div class="line">function requestProgramBankCallback()</div>
+<div class="line"> </div>
+<div class="line">    -- Set synth error on timeout</div>
+<div class="line">    if timerFlags.waitForBulkDump == true then</div>
+<div class="line">        setSynthReachStatus(dsError, true)</div>
+<div class="line">    end</div>
+<div class="line"> </div>
+<div class="line">    timerFlags.waitForBulkDump  = false</div>
+<div class="line"> </div>
+<div class="line">    timer:stopTimer(WAIT_BANK_TIMER_ID)</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md272"></a>
+&lt;tt&gt;captureProgramDumpData&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function captureProgramDumpData(programData)</div>
+<div class="line"> </div>
+<div class="line">    timerFlags.waitForSingleProgram = false</div>
+<div class="line">    setSynthReachStatus(dsOnline, true)</div>
+<div class="line"> </div>
+<div class="line">    if programData:getSize() == SINGLE_PROGRAM_SIZE then</div>
+<div class="line"> </div>
+<div class="line">        local rawDumpBytesData = normalizeSysExDumpData(memBlockToTable(programData))</div>
+<div class="line"> </div>
+<div class="line">        dataBuffer = midiToProgramData(rawDumpBytesData, DATA_PREAMBLE_BYTES)</div>
+<div class="line"> </div>
+<div class="line">        applyProgramData(dataBuffer, nil, nil, true)</div>
+<div class="line"> </div>
+<div class="line">        showHint(&quot;Info: Program dump received&quot;)</div>
+<div class="line">    else</div>
+<div class="line">        setSynthReachStatus(dsError)</div>
+<div class="line">        showHint(&quot;Info: Error during program data transmission&quot;)</div>
+<div class="line">    end</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md274"></a>
+&lt;tt&gt;captureBulkDumpData&lt;/tt&gt;</h1>
+<div class="fragment"><div class="line">function captureBulkDumpData(programData)</div>
+<div class="line"> </div>
+<div class="line">    timerFlags.waitForBulkDump = false</div>
+<div class="line">    setSynthReachStatus(dsOnline, true)</div>
+<div class="line"> </div>
+<div class="line">    if (programData:getSize() == PROGRAM_BANK_DUMP_SIZE) or (programData:getSize() == ALL_DATA_DUMP_SIZE) then</div>
+<div class="line"> </div>
+<div class="line">        local rawDumpBytesData = normalizeSysExDumpData(memBlockToTable(programData))</div>
+<div class="line"> </div>
+<div class="line">        presetBank = slicePresets(midiToProgramData(rawDumpBytesData, DATA_PREAMBLE_BYTES))</div>
+<div class="line">        dataBuffer = copyTable(presetBank[1][1])</div>
+<div class="line">        chosenPresetToBuffer(101, true)</div>
+<div class="line"> </div>
+<div class="line">        showHint(&quot;Info: SysEx bulk dump received&quot;)</div>
+<div class="line">    else</div>
+<div class="line"> </div>
+<div class="line">        setSynthReachStatus(dsError)</div>
+<div class="line">        showHint(&quot;Info: Error during program data transmission&quot;)</div>
+<div class="line">    end</div>
+<div class="line">end</div>
+</div><!-- fragment --><hr  />
+ </div></div><!-- contents -->
+</div><!-- PageDoc -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

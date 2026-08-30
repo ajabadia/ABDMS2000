@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Archivo de código fuente Source/DSP/Oscillators/DWGSTables.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a class="el" href="dir_28f92771c0af6f341cedd07750149305.html">DSP</a></li><li class="navelem"><a class="el" href="dir_56dd9e7cfcdef65c2e847cdb4c0a413b.html">Oscillators</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle"><div class="title">DWGSTables.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="DWGSTables_8h.html">Ir a la documentación de este archivo.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &quot;<a class="code" href="WaveCategory_8h.html">WaveCategory.h</a>&quot;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;cstdint&gt;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceABDMS2000.html">ABDMS2000</a> {</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="foldopen" id="foldopen00009" data-start="{" data-end="};">
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1WaveEntry.html">    9</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structABDMS2000_1_1WaveEntry.html">WaveEntry</a> {</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1WaveEntry.html#ae5583df973fc006fa59c4170d31b7667">   10</a></span>    std::string <a class="code hl_variable" href="structABDMS2000_1_1WaveEntry.html#ae5583df973fc006fa59c4170d31b7667">name</a>;           <span class="comment">// Display name</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1WaveEntry.html#a54d78e2035eeff40562e7655a47f7bda">   11</a></span>    <a class="code hl_enumeration" href="namespaceABDMS2000.html#ace60b19366c10d097c16040807dbb0a5">WaveCategory</a> <a class="code hl_variable" href="structABDMS2000_1_1WaveEntry.html#a54d78e2035eeff40562e7655a47f7bda">category</a>;      <span class="comment">// Category for filtering</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1WaveEntry.html#a7028b832d116b9e6296b734a3094baa6">   12</a></span>    <span class="keywordtype">size_t</span> <a class="code hl_variable" href="structABDMS2000_1_1WaveEntry.html#a7028b832d116b9e6296b734a3094baa6">slot</a>;                <span class="comment">// Slot index (0..511)</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>};</div>
+</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"></span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"> * @brief DWGS Wavetable Engine — 512-slot architecture.</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment"> * Slot map:</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment"> *    0..63    Standard DWGS (Korg DW-8000 .m1, 32 real + 32 procedural)</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment"> *   64..127   Reserved — Prophet VS / Korg T-Series (loaded at runtime)</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment"> *  128..255   AKWF Curated Bank — 128 waves from Adventure Kid library</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment"> *  256..511   User Bank — drag-and-drop WAV loading at runtime</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment"> */</span></div>
+<div class="foldopen" id="foldopen00024" data-start="{" data-end="};">
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1DWGSTables.html">   24</a></span><span class="keyword">class </span><a class="code hl_class" href="classABDMS2000_1_1DWGSTables.html">DWGSTables</a> {</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1DWGSTables.html#aca4d23873e7a15d9533f32532fc3ac8d">   26</a></span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> <a class="code hl_variable" href="classABDMS2000_1_1DWGSTables.html#aca4d23873e7a15d9533f32532fc3ac8d">NUM_STANDARD_TABLES</a>  = 64;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1DWGSTables.html#a706316d072a7f49f91512dc1e61f486b">   27</a></span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> <a class="code hl_variable" href="classABDMS2000_1_1DWGSTables.html#a706316d072a7f49f91512dc1e61f486b">NUM_AKWF_TABLES</a>      = 128;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1DWGSTables.html#a58e0564dbc3882f3391127b46b64fbff">   28</a></span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> <a class="code hl_variable" href="classABDMS2000_1_1DWGSTables.html#a58e0564dbc3882f3391127b46b64fbff">MAX_EXPANDED_TABLES</a>  = 512;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1DWGSTables.html#a060efdb31aa1f00e6b5446c84e2a370b">   29</a></span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> <a class="code hl_variable" href="classABDMS2000_1_1DWGSTables.html#a060efdb31aa1f00e6b5446c84e2a370b">SAMPLES_PER_TABLE</a>    = 2048;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1DWGSTables.html#a3e4186219d40746bdae814baee58bb8e">   30</a></span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> <a class="code hl_variable" href="classABDMS2000_1_1DWGSTables.html#a3e4186219d40746bdae814baee58bb8e">TOTAL_MAX_SAMPLES</a>    = <a class="code hl_variable" href="classABDMS2000_1_1DWGSTables.html#a58e0564dbc3882f3391127b46b64fbff">MAX_EXPANDED_TABLES</a> * <a class="code hl_variable" href="classABDMS2000_1_1DWGSTables.html#a060efdb31aa1f00e6b5446c84e2a370b">SAMPLES_PER_TABLE</a>;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1DWGSTables.html#afe045e8191c8869bd807f664c4a1a0f3">   32</a></span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> <a class="code hl_variable" href="classABDMS2000_1_1DWGSTables.html#afe045e8191c8869bd807f664c4a1a0f3">AKWF_START_SLOT</a>      = 128;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1DWGSTables.html#a302bab3fb1c270078f49b2b706b7c4e4">   33</a></span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> <a class="code hl_variable" href="classABDMS2000_1_1DWGSTables.html#a302bab3fb1c270078f49b2b706b7c4e4">USER_START_SLOT</a>      = 256;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="comment">// ── Core access ──</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">float</span>* <a class="code hl_function" href="classABDMS2000_1_1DWGSTables.html#ad9e5d87d3a1bce1759c6714643b35a0a">getTableData</a>() noexcept;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    static const <span class="keywordtype">char</span>* <a class="code hl_function" href="classABDMS2000_1_1DWGSTables.html#ab8039f0a36dfb31654c12324bff5a084">getWaveName</a>(<span class="keywordtype">size_t</span> index) noexcept;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    static <a class="code hl_enumeration" href="namespaceABDMS2000.html#ace60b19366c10d097c16040807dbb0a5">WaveCategory</a> <a class="code hl_function" href="classABDMS2000_1_1DWGSTables.html#abded6359c7bfff3fc85cb1271ed7cd60">getWaveCategory</a>(<span class="keywordtype">size_t</span> index) noexcept;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    static <span class="keywordtype">size_t</span> <a class="code hl_function" href="classABDMS2000_1_1DWGSTables.html#a74be0ddc94e51ebbf7b3f1548bb44141">getTotalWaveforms</a>() noexcept;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="comment">// ── Advanced Mode: wavetable browser &amp; search ──</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    static const std::vector&lt;<a class="code hl_struct" href="structABDMS2000_1_1WaveEntry.html">WaveEntry</a>&gt;&amp; <a class="code hl_function" href="classABDMS2000_1_1DWGSTables.html#abd6e106f60ac2d9f13561d2c01d8fead">getCatalog</a>() noexcept;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    static std::vector&lt;<a class="code hl_struct" href="structABDMS2000_1_1WaveEntry.html">WaveEntry</a>&gt; <a class="code hl_function" href="classABDMS2000_1_1DWGSTables.html#acd71ce62f0d392f0205a179639af78ee">search</a>(const std::<span class="keywordtype">string</span>&amp; query) noexcept;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    static std::vector&lt;<a class="code hl_struct" href="structABDMS2000_1_1WaveEntry.html">WaveEntry</a>&gt; <a class="code hl_function" href="classABDMS2000_1_1DWGSTables.html#a24b56e45d3d38d32dc180e27ea2deb3e">filterByCategory</a>(<a class="code hl_enumeration" href="namespaceABDMS2000.html#ace60b19366c10d097c16040807dbb0a5">WaveCategory</a> cat) noexcept;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="comment">// ── User bank: runtime loading ──</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    static <span class="keywordtype">bool</span> <a class="code hl_function" href="classABDMS2000_1_1DWGSTables.html#a0a1dd6d289980ce3f1086d294dbd3666">registerWaveform</a>(<span class="keywordtype">size_t</span> index, const std::<span class="keywordtype">string</span>&amp; name,</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>                                 <a class="code hl_enumeration" href="namespaceABDMS2000.html#ace60b19366c10d097c16040807dbb0a5">WaveCategory</a> cat, const <span class="keywordtype">float</span>* samples,</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                                 <span class="keywordtype">size_t</span> numSamples) noexcept;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    static <span class="keywordtype">bool</span> <a class="code hl_function" href="classABDMS2000_1_1DWGSTables.html#a5e6856a2cdc83fcb97f203f18c3cbfad">loadWavToSlot</a>(<span class="keywordtype">size_t</span> slot, const std::<span class="keywordtype">string</span>&amp; name,</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>                              <a class="code hl_enumeration" href="namespaceABDMS2000.html#ace60b19366c10d097c16040807dbb0a5">WaveCategory</a> cat, const uint8_t* data,</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>                              <span class="keywordtype">size_t</span> size) noexcept;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    static <span class="keywordtype">bool</span> <a class="code hl_function" href="classABDMS2000_1_1DWGSTables.html#aedefcb4201c536ffbd3fd1e8a7d9d371">loadM1Bank</a>(const uint8_t* data, <span class="keywordtype">size_t</span> size,</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>                           <span class="keywordtype">size_t</span> startSlot, <span class="keywordtype">size_t</span> numWaves,</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>                           <a class="code hl_enumeration" href="namespaceABDMS2000.html#ace60b19366c10d097c16040807dbb0a5">WaveCategory</a> cat) noexcept;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>private:</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    static <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1DWGSTables.html#ae1d630487ee0a25575ebf9ec9f97c16a">initTables</a>() noexcept;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    static <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1DWGSTables.html#ae0c089cb00a8a0f00824e15586d63f23">generateStandardProcedural</a>(<span class="keywordtype">size_t</span> slot) noexcept;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1DWGSTables.html#a05ce7af40040cfe9b24824fe19fffab6">   60</a></span>    static <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1DWGSTables.html#a05ce7af40040cfe9b24824fe19fffab6">loadAKWFCurated</a>() noexcept;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1DWGSTables.html#a6f079b1839c9a839d7d2c9a292a14630">   62</a></span>    static std::vector&lt;<span class="keywordtype">float</span>&gt; <a class="code hl_variable" href="classABDMS2000_1_1DWGSTables.html#a6f079b1839c9a839d7d2c9a292a14630">wavetableMemory_</a>;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1DWGSTables.html#af98a3db7b4b4bf9a186614416290a7c1">   63</a></span>    static std::vector&lt;std::<span class="keywordtype">string</span>&gt; <a class="code hl_variable" href="classABDMS2000_1_1DWGSTables.html#af98a3db7b4b4bf9a186614416290a7c1">waveNames_</a>;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1DWGSTables.html#a5c1a30efb7e330da301120f8c72bad0f">   64</a></span>    static std::vector&lt;<a class="code hl_enumeration" href="namespaceABDMS2000.html#ace60b19366c10d097c16040807dbb0a5">WaveCategory</a>&gt; <a class="code hl_variable" href="classABDMS2000_1_1DWGSTables.html#a5c1a30efb7e330da301120f8c72bad0f">waveCategories_</a>;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1DWGSTables.html#a2a0d1243788b1e16156fab251d468b53">   65</a></span>    static std::vector&lt;<a class="code hl_struct" href="structABDMS2000_1_1WaveEntry.html">WaveEntry</a>&gt; <a class="code hl_variable" href="classABDMS2000_1_1DWGSTables.html#a2a0d1243788b1e16156fab251d468b53">catalog_</a>;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1DWGSTables.html#a6dd8dffd2abb1b4f73d3f5716df1d026">   66</a></span>    static <span class="keywordtype">bool</span> <a class="code hl_variable" href="classABDMS2000_1_1DWGSTables.html#a6dd8dffd2abb1b4f73d3f5716df1d026">isInitialized_</a>;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>};</div>
+</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>} <span class="comment">// namespace ABDMS2000</span></div>
+<div class="ttc" id="aWaveCategory_8h_html"><div class="ttname"><a href="WaveCategory_8h.html">WaveCategory.h</a></div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html">ABDMS2000::DWGSTables</a></div><div class="ttdoc">DWGS Wavetable Engine — 512-slot architecture.</div><div class="ttdef"><b>Definition</b> DWGSTables.h:24</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_a05ce7af40040cfe9b24824fe19fffab6"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#a05ce7af40040cfe9b24824fe19fffab6">ABDMS2000::DWGSTables::loadAKWFCurated</a></div><div class="ttdeci">static void loadAKWFCurated() noexcept</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_a060efdb31aa1f00e6b5446c84e2a370b"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#a060efdb31aa1f00e6b5446c84e2a370b">ABDMS2000::DWGSTables::SAMPLES_PER_TABLE</a></div><div class="ttdeci">static constexpr size_t SAMPLES_PER_TABLE</div><div class="ttdef"><b>Definition</b> DWGSTables.h:29</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_a0a1dd6d289980ce3f1086d294dbd3666"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#a0a1dd6d289980ce3f1086d294dbd3666">ABDMS2000::DWGSTables::registerWaveform</a></div><div class="ttdeci">static bool registerWaveform(size_t index, const std::string &amp;name, WaveCategory cat, const float *samples, size_t numSamples) noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:357</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_a24b56e45d3d38d32dc180e27ea2deb3e"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#a24b56e45d3d38d32dc180e27ea2deb3e">ABDMS2000::DWGSTables::filterByCategory</a></div><div class="ttdeci">static std::vector&lt; WaveEntry &gt; filterByCategory(WaveCategory cat) noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:351</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_a2a0d1243788b1e16156fab251d468b53"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#a2a0d1243788b1e16156fab251d468b53">ABDMS2000::DWGSTables::catalog_</a></div><div class="ttdeci">static std::vector&lt; WaveEntry &gt; catalog_</div><div class="ttdef"><b>Definition</b> DWGSTables.h:65</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_a302bab3fb1c270078f49b2b706b7c4e4"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#a302bab3fb1c270078f49b2b706b7c4e4">ABDMS2000::DWGSTables::USER_START_SLOT</a></div><div class="ttdeci">static constexpr size_t USER_START_SLOT</div><div class="ttdef"><b>Definition</b> DWGSTables.h:33</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_a3e4186219d40746bdae814baee58bb8e"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#a3e4186219d40746bdae814baee58bb8e">ABDMS2000::DWGSTables::TOTAL_MAX_SAMPLES</a></div><div class="ttdeci">static constexpr size_t TOTAL_MAX_SAMPLES</div><div class="ttdef"><b>Definition</b> DWGSTables.h:30</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_a58e0564dbc3882f3391127b46b64fbff"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#a58e0564dbc3882f3391127b46b64fbff">ABDMS2000::DWGSTables::MAX_EXPANDED_TABLES</a></div><div class="ttdeci">static constexpr size_t MAX_EXPANDED_TABLES</div><div class="ttdef"><b>Definition</b> DWGSTables.h:28</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_a5c1a30efb7e330da301120f8c72bad0f"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#a5c1a30efb7e330da301120f8c72bad0f">ABDMS2000::DWGSTables::waveCategories_</a></div><div class="ttdeci">static std::vector&lt; WaveCategory &gt; waveCategories_</div><div class="ttdef"><b>Definition</b> DWGSTables.h:64</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_a5e6856a2cdc83fcb97f203f18c3cbfad"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#a5e6856a2cdc83fcb97f203f18c3cbfad">ABDMS2000::DWGSTables::loadWavToSlot</a></div><div class="ttdeci">static bool loadWavToSlot(size_t slot, const std::string &amp;name, WaveCategory cat, const uint8_t *data, size_t size) noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:367</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_a6dd8dffd2abb1b4f73d3f5716df1d026"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#a6dd8dffd2abb1b4f73d3f5716df1d026">ABDMS2000::DWGSTables::isInitialized_</a></div><div class="ttdeci">static bool isInitialized_</div><div class="ttdef"><b>Definition</b> DWGSTables.h:66</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_a6f079b1839c9a839d7d2c9a292a14630"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#a6f079b1839c9a839d7d2c9a292a14630">ABDMS2000::DWGSTables::wavetableMemory_</a></div><div class="ttdeci">static std::vector&lt; float &gt; wavetableMemory_</div><div class="ttdef"><b>Definition</b> DWGSTables.h:62</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_a706316d072a7f49f91512dc1e61f486b"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#a706316d072a7f49f91512dc1e61f486b">ABDMS2000::DWGSTables::NUM_AKWF_TABLES</a></div><div class="ttdeci">static constexpr size_t NUM_AKWF_TABLES</div><div class="ttdef"><b>Definition</b> DWGSTables.h:27</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_a74be0ddc94e51ebbf7b3f1548bb44141"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#a74be0ddc94e51ebbf7b3f1548bb44141">ABDMS2000::DWGSTables::getTotalWaveforms</a></div><div class="ttdeci">static size_t getTotalWaveforms() noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:341</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_ab8039f0a36dfb31654c12324bff5a084"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#ab8039f0a36dfb31654c12324bff5a084">ABDMS2000::DWGSTables::getWaveName</a></div><div class="ttdeci">static const char * getWaveName(size_t index) noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:339</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_abd6e106f60ac2d9f13561d2c01d8fead"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#abd6e106f60ac2d9f13561d2c01d8fead">ABDMS2000::DWGSTables::getCatalog</a></div><div class="ttdeci">static const std::vector&lt; WaveEntry &gt; &amp; getCatalog() noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:342</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_abded6359c7bfff3fc85cb1271ed7cd60"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#abded6359c7bfff3fc85cb1271ed7cd60">ABDMS2000::DWGSTables::getWaveCategory</a></div><div class="ttdeci">static WaveCategory getWaveCategory(size_t index) noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:340</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_aca4d23873e7a15d9533f32532fc3ac8d"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#aca4d23873e7a15d9533f32532fc3ac8d">ABDMS2000::DWGSTables::NUM_STANDARD_TABLES</a></div><div class="ttdeci">static constexpr size_t NUM_STANDARD_TABLES</div><div class="ttdef"><b>Definition</b> DWGSTables.h:26</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_acd71ce62f0d392f0205a179639af78ee"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#acd71ce62f0d392f0205a179639af78ee">ABDMS2000::DWGSTables::search</a></div><div class="ttdeci">static std::vector&lt; WaveEntry &gt; search(const std::string &amp;query) noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:344</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_ad9e5d87d3a1bce1759c6714643b35a0a"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#ad9e5d87d3a1bce1759c6714643b35a0a">ABDMS2000::DWGSTables::getTableData</a></div><div class="ttdeci">static const float * getTableData() noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:338</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_ae0c089cb00a8a0f00824e15586d63f23"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#ae0c089cb00a8a0f00824e15586d63f23">ABDMS2000::DWGSTables::generateStandardProcedural</a></div><div class="ttdeci">static void generateStandardProcedural(size_t slot) noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:232</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_ae1d630487ee0a25575ebf9ec9f97c16a"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#ae1d630487ee0a25575ebf9ec9f97c16a">ABDMS2000::DWGSTables::initTables</a></div><div class="ttdeci">static void initTables() noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:277</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_aedefcb4201c536ffbd3fd1e8a7d9d371"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#aedefcb4201c536ffbd3fd1e8a7d9d371">ABDMS2000::DWGSTables::loadM1Bank</a></div><div class="ttdeci">static bool loadM1Bank(const uint8_t *data, size_t size, size_t startSlot, size_t numWaves, WaveCategory cat) noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:375</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_af98a3db7b4b4bf9a186614416290a7c1"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#af98a3db7b4b4bf9a186614416290a7c1">ABDMS2000::DWGSTables::waveNames_</a></div><div class="ttdeci">static std::vector&lt; std::string &gt; waveNames_</div><div class="ttdef"><b>Definition</b> DWGSTables.h:63</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_afe045e8191c8869bd807f664c4a1a0f3"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#afe045e8191c8869bd807f664c4a1a0f3">ABDMS2000::DWGSTables::AKWF_START_SLOT</a></div><div class="ttdeci">static constexpr size_t AKWF_START_SLOT</div><div class="ttdef"><b>Definition</b> DWGSTables.h:32</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html"><div class="ttname"><a href="namespaceABDMS2000.html">ABDMS2000</a></div><div class="ttdef"><b>Definition</b> AppLogger.h:15</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_ace60b19366c10d097c16040807dbb0a5"><div class="ttname"><a href="namespaceABDMS2000.html#ace60b19366c10d097c16040807dbb0a5">ABDMS2000::WaveCategory</a></div><div class="ttdeci">WaveCategory</div><div class="ttdoc">Canonic wave categories for the ABDMS2000 wavetable browser.</div><div class="ttdef"><b>Definition</b> WaveCategory.h:13</div></div>
+<div class="ttc" id="astructABDMS2000_1_1WaveEntry_html"><div class="ttname"><a href="structABDMS2000_1_1WaveEntry.html">ABDMS2000::WaveEntry</a></div><div class="ttdef"><b>Definition</b> DWGSTables.h:9</div></div>
+<div class="ttc" id="astructABDMS2000_1_1WaveEntry_html_a54d78e2035eeff40562e7655a47f7bda"><div class="ttname"><a href="structABDMS2000_1_1WaveEntry.html#a54d78e2035eeff40562e7655a47f7bda">ABDMS2000::WaveEntry::category</a></div><div class="ttdeci">WaveCategory category</div><div class="ttdef"><b>Definition</b> DWGSTables.h:11</div></div>
+<div class="ttc" id="astructABDMS2000_1_1WaveEntry_html_a7028b832d116b9e6296b734a3094baa6"><div class="ttname"><a href="structABDMS2000_1_1WaveEntry.html#a7028b832d116b9e6296b734a3094baa6">ABDMS2000::WaveEntry::slot</a></div><div class="ttdeci">size_t slot</div><div class="ttdef"><b>Definition</b> DWGSTables.h:12</div></div>
+<div class="ttc" id="astructABDMS2000_1_1WaveEntry_html_ae5583df973fc006fa59c4170d31b7667"><div class="ttname"><a href="structABDMS2000_1_1WaveEntry.html#ae5583df973fc006fa59c4170d31b7667">ABDMS2000::WaveEntry::name</a></div><div class="ttdeci">std::string name</div><div class="ttdef"><b>Definition</b> DWGSTables.h:10</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

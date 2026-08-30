@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Referencia del archivo Source/DSP/Common/DSPUtils.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a class="el" href="dir_28f92771c0af6f341cedd07750149305.html">DSP</a></li><li class="navelem"><a class="el" href="dir_132e1d2b9f0362af9e887ffea5c22880.html">Common</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">Clases</a> &#124;
+<a href="#namespaces">Espacios de nombres</a> &#124;
+<a href="#func-members">Funciones</a> &#124;
+<a href="#var-members">Variables</a>  </div>
+  <div class="headertitle"><div class="title">Referencia del archivo DSPUtils.h</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><code>#include &lt;cmath&gt;</code><br />
+<code>#include &lt;algorithm&gt;</code><br />
+<code>#include &lt;cstdint&gt;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Gráfico de dependencias incluidas en DSPUtils.h:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="DSPUtils_8h__incl.svg" width="275" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div><div class="textblock"><div class="dynheader">
+Gráfico de los archivos que directa o indirectamente incluyen a este archivo:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="DSPUtils_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+</div>
+<p><a href="DSPUtils_8h_source.html">Ir al código fuente de este archivo.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Clases</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1DSPUtils_1_1LinearSmoother.html">ABDMS2000::DSPUtils::LinearSmoother&lt; T &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
+Espacios de nombres</h2></td></tr>
+<tr class="memitem:namespaceABDMS2000" id="r_namespaceABDMS2000"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html">ABDMS2000</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceABDMS2000_1_1DSPUtils" id="r_namespaceABDMS2000_1_1DSPUtils"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1DSPUtils.html">ABDMS2000::DSPUtils</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Funciones</h2></td></tr>
+<tr class="memitem:a88c9c70d9321e283e46cc92baadf227a" id="r_a88c9c70d9321e283e46cc92baadf227a"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1DSPUtils.html#a88c9c70d9321e283e46cc92baadf227a">ABDMS2000::DSPUtils::clamp</a> (float value, float minVal, float maxVal) noexcept</td></tr>
+<tr class="separator:a88c9c70d9321e283e46cc92baadf227a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2710e77da43aef8b1d226bb33b1d57a" id="r_ae2710e77da43aef8b1d226bb33b1d57a"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1DSPUtils.html#ae2710e77da43aef8b1d226bb33b1d57a">ABDMS2000::DSPUtils::midiNoteToFrequency</a> (float midiNote) noexcept</td></tr>
+<tr class="separator:ae2710e77da43aef8b1d226bb33b1d57a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3289a56c1d139c6b9bfd701aec53758" id="r_af3289a56c1d139c6b9bfd701aec53758"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1DSPUtils.html#af3289a56c1d139c6b9bfd701aec53758">ABDMS2000::DSPUtils::semitonesAndCentsToRatio</a> (float semitones, float cents) noexcept</td></tr>
+<tr class="separator:af3289a56c1d139c6b9bfd701aec53758"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa473e32c7b060147e9618dec5f486a9" id="r_afa473e32c7b060147e9618dec5f486a9"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1DSPUtils.html#afa473e32c7b060147e9618dec5f486a9">ABDMS2000::DSPUtils::convertSysExToCutoffHz</a> (float normalized0to1) noexcept</td></tr>
+<tr class="separator:afa473e32c7b060147e9618dec5f486a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cf23922ec880abc019c3a4a93535114" id="r_a1cf23922ec880abc019c3a4a93535114"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1DSPUtils.html#a1cf23922ec880abc019c3a4a93535114">ABDMS2000::DSPUtils::decibelsToLinear</a> (float dB) noexcept</td></tr>
+<tr class="separator:a1cf23922ec880abc019c3a4a93535114"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa95f32fc2a53fa48339615100a7ab2f7" id="r_aa95f32fc2a53fa48339615100a7ab2f7"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1DSPUtils.html#aa95f32fc2a53fa48339615100a7ab2f7">ABDMS2000::DSPUtils::linearToDecibels</a> (float linear) noexcept</td></tr>
+<tr class="separator:aa95f32fc2a53fa48339615100a7ab2f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fcd1d9df6b11078f1ec8db2e82dbfcf" id="r_a5fcd1d9df6b11078f1ec8db2e82dbfcf"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1DSPUtils.html#a5fcd1d9df6b11078f1ec8db2e82dbfcf">ABDMS2000::DSPUtils::softClip</a> (float x) noexcept</td></tr>
+<tr class="separator:a5fcd1d9df6b11078f1ec8db2e82dbfcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98f10243c3adff516e903b9fbd41963d" id="r_a98f10243c3adff516e903b9fbd41963d"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1DSPUtils.html#a98f10243c3adff516e903b9fbd41963d">ABDMS2000::DSPUtils::ampDistortion</a> (float x, float drive) noexcept</td></tr>
+<tr class="separator:a98f10243c3adff516e903b9fbd41963d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a9db239b3080a595db68492ff0df521" id="r_a5a9db239b3080a595db68492ff0df521"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1DSPUtils.html#a5a9db239b3080a595db68492ff0df521">ABDMS2000::DSPUtils::randomBipolar</a> (uint32_t &amp;state) noexcept</td></tr>
+<tr class="separator:a5a9db239b3080a595db68492ff0df521"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a765bb35d84ef2f4c5a7a060159744fab" id="r_a765bb35d84ef2f4c5a7a060159744fab"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1DSPUtils.html#a765bb35d84ef2f4c5a7a060159744fab">ABDMS2000::DSPUtils::PI</a> = 3.14159265358979323846f</td></tr>
+<tr class="separator:a765bb35d84ef2f4c5a7a060159744fab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e133478aded7fd91f650185ef7e7470" id="r_a8e133478aded7fd91f650185ef7e7470"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1DSPUtils.html#a8e133478aded7fd91f650185ef7e7470">ABDMS2000::DSPUtils::TWO_PI</a> = 6.28318530717958647692f</td></tr>
+<tr class="separator:a8e133478aded7fd91f650185ef7e7470"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfa1482cddf8e00f8f86758df3d2f976" id="r_acfa1482cddf8e00f8f86758df3d2f976"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1DSPUtils.html#acfa1482cddf8e00f8f86758df3d2f976">ABDMS2000::DSPUtils::HALF_PI</a> = 1.57079632679489661923f</td></tr>
+<tr class="separator:acfa1482cddf8e00f8f86758df3d2f976"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

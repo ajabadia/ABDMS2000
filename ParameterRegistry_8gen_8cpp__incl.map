@@ -1,0 +1,11 @@
+<map id="Source/State/ParameterRegistry.gen.cpp" name="Source/State/ParameterRegistry.gen.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,288,31"/>
+<area shape="rect" id="Node000002" href="$ParameterRegistry_8gen_8h.html" title=" " alt="" coords="56,79,237,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="149,31,149,65,144,65,144,31"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="32,152,91,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="135,106,87,145,84,141,131,102"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="115,152,178,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="149,104,149,138,144,138,144,104"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="202,152,326,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="167,102,234,142,232,147,164,106"/>
+</map>

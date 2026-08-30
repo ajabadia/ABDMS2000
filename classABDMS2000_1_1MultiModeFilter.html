@@ -1,0 +1,599 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Referencia de la clase ABDMS2000::MultiModeFilter</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespaceABDMS2000.html">ABDMS2000</a></li><li class="navelem"><a class="el" href="classABDMS2000_1_1MultiModeFilter.html">MultiModeFilter</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Métodos públicos</a> &#124;
+<a href="#pri-methods">Métodos privados</a> &#124;
+<a href="#pri-attribs">Atributos privados</a> &#124;
+<a href="classABDMS2000_1_1MultiModeFilter-members.html">Lista de todos los miembros</a>  </div>
+  <div class="headertitle"><div class="title">Referencia de la clase ABDMS2000::MultiModeFilter</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>Zero-Delay Feedback (ZDF/TPT) Multi-Mode Resonant Filter. Accurately models the MS2000 / microKORG filter responses.  
+ <a href="classABDMS2000_1_1MultiModeFilter.html#details">Más...</a></p>
+
+<p><code>#include &lt;<a class="el" href="MultiModeFilter_8h_source.html">MultiModeFilter.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Métodos públicos</h2></td></tr>
+<tr class="memitem:a8bd2450fbf2f5dd66b15390f4cb53348" id="r_a8bd2450fbf2f5dd66b15390f4cb53348"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1MultiModeFilter.html#a8bd2450fbf2f5dd66b15390f4cb53348">MultiModeFilter</a> ()=default</td></tr>
+<tr class="separator:a8bd2450fbf2f5dd66b15390f4cb53348"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad33f164b0e272aeaab5ea8c1868d914f" id="r_ad33f164b0e272aeaab5ea8c1868d914f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1MultiModeFilter.html#ad33f164b0e272aeaab5ea8c1868d914f">prepare</a> (double sampleRate) noexcept</td></tr>
+<tr class="separator:ad33f164b0e272aeaab5ea8c1868d914f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a893f227168e4b79143df7d8c58921a" id="r_a4a893f227168e4b79143df7d8c58921a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1MultiModeFilter.html#a4a893f227168e4b79143df7d8c58921a">reset</a> () noexcept</td></tr>
+<tr class="separator:a4a893f227168e4b79143df7d8c58921a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b0195de08402e215e63d56cac1130f1" id="r_a4b0195de08402e215e63d56cac1130f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1MultiModeFilter.html#a4b0195de08402e215e63d56cac1130f1">setType</a> (<a class="el" href="namespaceABDMS2000.html#aa2b1e8d220a1e4a73e04a079ac7bf1f0">FilterType</a> type) noexcept</td></tr>
+<tr class="separator:a4b0195de08402e215e63d56cac1130f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbe004749158aa4d5e9ec5e5b1cf8e95" id="r_adbe004749158aa4d5e9ec5e5b1cf8e95"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1MultiModeFilter.html#adbe004749158aa4d5e9ec5e5b1cf8e95">setCutoff</a> (float cutoffHz) noexcept</td></tr>
+<tr class="separator:adbe004749158aa4d5e9ec5e5b1cf8e95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a429669bc037e611f3b6f88be2022e935" id="r_a429669bc037e611f3b6f88be2022e935"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1MultiModeFilter.html#a429669bc037e611f3b6f88be2022e935">setResonance</a> (float resonance0to1) noexcept</td></tr>
+<tr class="separator:a429669bc037e611f3b6f88be2022e935"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60a60da71a58f0a946c884ae0fee7548" id="r_a60a60da71a58f0a946c884ae0fee7548"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1MultiModeFilter.html#a60a60da71a58f0a946c884ae0fee7548">process</a> (float inputSample) noexcept</td></tr>
+<tr class="separator:a60a60da71a58f0a946c884ae0fee7548"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Métodos privados</h2></td></tr>
+<tr class="memitem:aaf7cb553c7e2a6ddfdf79e252e540755" id="r_aaf7cb553c7e2a6ddfdf79e252e540755"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1MultiModeFilter.html#aaf7cb553c7e2a6ddfdf79e252e540755">updateCoefficients</a> () noexcept</td></tr>
+<tr class="separator:aaf7cb553c7e2a6ddfdf79e252e540755"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Atributos privados</h2></td></tr>
+<tr class="memitem:adfe9a1390b4f095aa357d20735e1cd3b" id="r_adfe9a1390b4f095aa357d20735e1cd3b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1MultiModeFilter.html#adfe9a1390b4f095aa357d20735e1cd3b">sampleRate_</a> { 44100.0 }</td></tr>
+<tr class="separator:adfe9a1390b4f095aa357d20735e1cd3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d0a2b381922feaa693801f6f852ef9c" id="r_a7d0a2b381922feaa693801f6f852ef9c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceABDMS2000.html#aa2b1e8d220a1e4a73e04a079ac7bf1f0">FilterType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1MultiModeFilter.html#a7d0a2b381922feaa693801f6f852ef9c">type_</a> { <a class="el" href="namespaceABDMS2000.html#aa2b1e8d220a1e4a73e04a079ac7bf1f0a0e725626182f118d07d120cee81e283b">FilterType::LPF24</a> }</td></tr>
+<tr class="separator:a7d0a2b381922feaa693801f6f852ef9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a106c1d83b3fe5940cf8b25027b8f1605" id="r_a106c1d83b3fe5940cf8b25027b8f1605"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1MultiModeFilter.html#a106c1d83b3fe5940cf8b25027b8f1605">cutoffHz_</a> { 1000.0f }</td></tr>
+<tr class="separator:a106c1d83b3fe5940cf8b25027b8f1605"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63f1ecc4d209d4a165bbef33711b75ac" id="r_a63f1ecc4d209d4a165bbef33711b75ac"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1MultiModeFilter.html#a63f1ecc4d209d4a165bbef33711b75ac">resonance_</a> { 0.0f }</td></tr>
+<tr class="separator:a63f1ecc4d209d4a165bbef33711b75ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaacf39a4f70a6b46d8580c03602ddd6b" id="r_aaacf39a4f70a6b46d8580c03602ddd6b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1MultiModeFilter.html#aaacf39a4f70a6b46d8580c03602ddd6b">s1_1_</a> { 0.0f }</td></tr>
+<tr class="separator:aaacf39a4f70a6b46d8580c03602ddd6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7c83fbf0540a85e5c5aa21e60f3f251" id="r_aa7c83fbf0540a85e5c5aa21e60f3f251"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1MultiModeFilter.html#aa7c83fbf0540a85e5c5aa21e60f3f251">s1_2_</a> { 0.0f }</td></tr>
+<tr class="separator:aa7c83fbf0540a85e5c5aa21e60f3f251"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a882cf7a91e194f5f92e803968ea940" id="r_a7a882cf7a91e194f5f92e803968ea940"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1MultiModeFilter.html#a7a882cf7a91e194f5f92e803968ea940">s2_1_</a> { 0.0f }</td></tr>
+<tr class="separator:a7a882cf7a91e194f5f92e803968ea940"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae1c676348dc008d134051ae16b56915" id="r_aae1c676348dc008d134051ae16b56915"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1MultiModeFilter.html#aae1c676348dc008d134051ae16b56915">s2_2_</a> { 0.0f }</td></tr>
+<tr class="separator:aae1c676348dc008d134051ae16b56915"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba8297e2bed848440a2a42e3e8a68e79" id="r_aba8297e2bed848440a2a42e3e8a68e79"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1MultiModeFilter.html#aba8297e2bed848440a2a42e3e8a68e79">g_</a> { 0.1f }</td></tr>
+<tr class="separator:aba8297e2bed848440a2a42e3e8a68e79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a455229a098ae0687a171fed3e7648ecb" id="r_a455229a098ae0687a171fed3e7648ecb"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1MultiModeFilter.html#a455229a098ae0687a171fed3e7648ecb">R_</a> { 1.0f }</td></tr>
+<tr class="separator:a455229a098ae0687a171fed3e7648ecb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92218c86f3a63cb4dea86984e4c3890f" id="r_a92218c86f3a63cb4dea86984e4c3890f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1MultiModeFilter.html#a92218c86f3a63cb4dea86984e4c3890f">h_</a> { 1.0f }</td></tr>
+<tr class="separator:a92218c86f3a63cb4dea86984e4c3890f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Descripción detallada</h2>
+<div class="textblock"><p>Zero-Delay Feedback (ZDF/TPT) Multi-Mode Resonant Filter. Accurately models the MS2000 / microKORG filter responses. </p>
+</div><h2 class="groupheader">Documentación de constructores y destructores</h2>
+<a id="a8bd2450fbf2f5dd66b15390f4cb53348" name="a8bd2450fbf2f5dd66b15390f4cb53348"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8bd2450fbf2f5dd66b15390f4cb53348">&#9670;&#160;</a></span>MultiModeFilter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ABDMS2000::MultiModeFilter::MultiModeFilter </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Documentación de funciones miembro</h2>
+<a id="ad33f164b0e272aeaab5ea8c1868d914f" name="ad33f164b0e272aeaab5ea8c1868d914f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad33f164b0e272aeaab5ea8c1868d914f">&#9670;&#160;</a></span>prepare()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::MultiModeFilter::prepare </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>sampleRate</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a60a60da71a58f0a946c884ae0fee7548" name="a60a60da71a58f0a946c884ae0fee7548"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60a60da71a58f0a946c884ae0fee7548">&#9670;&#160;</a></span>process()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::MultiModeFilter::process </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>inputSample</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4a893f227168e4b79143df7d8c58921a" name="a4a893f227168e4b79143df7d8c58921a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a893f227168e4b79143df7d8c58921a">&#9670;&#160;</a></span>reset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::MultiModeFilter::reset </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="adbe004749158aa4d5e9ec5e5b1cf8e95" name="adbe004749158aa4d5e9ec5e5b1cf8e95"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adbe004749158aa4d5e9ec5e5b1cf8e95">&#9670;&#160;</a></span>setCutoff()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::MultiModeFilter::setCutoff </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>cutoffHz</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a429669bc037e611f3b6f88be2022e935" name="a429669bc037e611f3b6f88be2022e935"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a429669bc037e611f3b6f88be2022e935">&#9670;&#160;</a></span>setResonance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::MultiModeFilter::setResonance </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>resonance0to1</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4b0195de08402e215e63d56cac1130f1" name="a4b0195de08402e215e63d56cac1130f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b0195de08402e215e63d56cac1130f1">&#9670;&#160;</a></span>setType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::MultiModeFilter::setType </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceABDMS2000.html#aa2b1e8d220a1e4a73e04a079ac7bf1f0">FilterType</a>&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aaf7cb553c7e2a6ddfdf79e252e540755" name="aaf7cb553c7e2a6ddfdf79e252e540755"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf7cb553c7e2a6ddfdf79e252e540755">&#9670;&#160;</a></span>updateCoefficients()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::MultiModeFilter::updateCoefficients </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Documentación de datos miembro</h2>
+<a id="a106c1d83b3fe5940cf8b25027b8f1605" name="a106c1d83b3fe5940cf8b25027b8f1605"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a106c1d83b3fe5940cf8b25027b8f1605">&#9670;&#160;</a></span>cutoffHz_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::MultiModeFilter::cutoffHz_ { 1000.0f }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aba8297e2bed848440a2a42e3e8a68e79" name="aba8297e2bed848440a2a42e3e8a68e79"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba8297e2bed848440a2a42e3e8a68e79">&#9670;&#160;</a></span>g_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::MultiModeFilter::g_ { 0.1f }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a92218c86f3a63cb4dea86984e4c3890f" name="a92218c86f3a63cb4dea86984e4c3890f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92218c86f3a63cb4dea86984e4c3890f">&#9670;&#160;</a></span>h_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::MultiModeFilter::h_ { 1.0f }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a455229a098ae0687a171fed3e7648ecb" name="a455229a098ae0687a171fed3e7648ecb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a455229a098ae0687a171fed3e7648ecb">&#9670;&#160;</a></span>R_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::MultiModeFilter::R_ { 1.0f }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a63f1ecc4d209d4a165bbef33711b75ac" name="a63f1ecc4d209d4a165bbef33711b75ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63f1ecc4d209d4a165bbef33711b75ac">&#9670;&#160;</a></span>resonance_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::MultiModeFilter::resonance_ { 0.0f }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aaacf39a4f70a6b46d8580c03602ddd6b" name="aaacf39a4f70a6b46d8580c03602ddd6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaacf39a4f70a6b46d8580c03602ddd6b">&#9670;&#160;</a></span>s1_1_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::MultiModeFilter::s1_1_ { 0.0f }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa7c83fbf0540a85e5c5aa21e60f3f251" name="aa7c83fbf0540a85e5c5aa21e60f3f251"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7c83fbf0540a85e5c5aa21e60f3f251">&#9670;&#160;</a></span>s1_2_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::MultiModeFilter::s1_2_ { 0.0f }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7a882cf7a91e194f5f92e803968ea940" name="a7a882cf7a91e194f5f92e803968ea940"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a882cf7a91e194f5f92e803968ea940">&#9670;&#160;</a></span>s2_1_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::MultiModeFilter::s2_1_ { 0.0f }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aae1c676348dc008d134051ae16b56915" name="aae1c676348dc008d134051ae16b56915"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae1c676348dc008d134051ae16b56915">&#9670;&#160;</a></span>s2_2_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::MultiModeFilter::s2_2_ { 0.0f }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="adfe9a1390b4f095aa357d20735e1cd3b" name="adfe9a1390b4f095aa357d20735e1cd3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adfe9a1390b4f095aa357d20735e1cd3b">&#9670;&#160;</a></span>sampleRate_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double ABDMS2000::MultiModeFilter::sampleRate_ { 44100.0 }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7d0a2b381922feaa693801f6f852ef9c" name="a7d0a2b381922feaa693801f6f852ef9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d0a2b381922feaa693801f6f852ef9c">&#9670;&#160;</a></span>type_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceABDMS2000.html#aa2b1e8d220a1e4a73e04a079ac7bf1f0">FilterType</a> ABDMS2000::MultiModeFilter::type_ { <a class="el" href="namespaceABDMS2000.html#aa2b1e8d220a1e4a73e04a079ac7bf1f0a0e725626182f118d07d120cee81e283b">FilterType::LPF24</a> }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>La documentación de esta clase está generada de los siguientes archivos:<ul>
+<li>Source/DSP/Filters/<a class="el" href="MultiModeFilter_8h_source.html">MultiModeFilter.h</a></li>
+<li>Source/DSP/Filters/<a class="el" href="MultiModeFilter_8cpp.html">MultiModeFilter.cpp</a></li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

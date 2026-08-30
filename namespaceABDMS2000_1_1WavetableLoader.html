@@ -1,0 +1,385 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Referencia del espacio de nombres ABDMS2000::WavetableLoader</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespaceABDMS2000.html">ABDMS2000</a></li><li class="navelem"><a class="el" href="namespaceABDMS2000_1_1WavetableLoader.html">WavetableLoader</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#func-members">Funciones</a> &#124;
+<a href="#var-members">Variables</a>  </div>
+  <div class="headertitle"><div class="title">Referencia del espacio de nombres ABDMS2000::WavetableLoader</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>Utility functions for loading wavetables from raw binary formats.  
+<a href="namespaceABDMS2000_1_1WavetableLoader.html#details">Más...</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Funciones</h2></td></tr>
+<tr class="memitem:aa0febd68fc3913738de3da68bb6f17d7" id="r_aa0febd68fc3913738de3da68bb6f17d7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1WavetableLoader.html#aa0febd68fc3913738de3da68bb6f17d7">loadRaw16BitBE</a> (const uint8_t *data, size_t size, std::vector&lt; float &gt; &amp;out) noexcept</td></tr>
+<tr class="memdesc:aa0febd68fc3913738de3da68bb6f17d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load raw 16-bit big-endian signed PCM samples into a float vector.  <br /></td></tr>
+<tr class="separator:aa0febd68fc3913738de3da68bb6f17d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0494f2ab2ed734590d62aedeb81f477" id="r_ab0494f2ab2ed734590d62aedeb81f477"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1WavetableLoader.html#ab0494f2ab2ed734590d62aedeb81f477">loadRaw16BitLE</a> (const uint8_t *data, size_t size, std::vector&lt; float &gt; &amp;out) noexcept</td></tr>
+<tr class="memdesc:ab0494f2ab2ed734590d62aedeb81f477"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load 16-bit signed little-endian PCM samples into a float vector.  <br /></td></tr>
+<tr class="separator:ab0494f2ab2ed734590d62aedeb81f477"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56620ea654e8c7afc513b575d4ab86f7" id="r_a56620ea654e8c7afc513b575d4ab86f7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1WavetableLoader.html#a56620ea654e8c7afc513b575d4ab86f7">loadWav</a> (const uint8_t *data, size_t size, std::vector&lt; float &gt; &amp;out) noexcept</td></tr>
+<tr class="memdesc:a56620ea654e8c7afc513b575d4ab86f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a standard RIFF WAV file (16-bit PCM mono) into float samples. Returns raw samples — caller should resample to target size.  <br /></td></tr>
+<tr class="separator:a56620ea654e8c7afc513b575d4ab86f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab575dbdb8a9fb1c93655cec104abad22" id="r_ab575dbdb8a9fb1c93655cec104abad22"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1WavetableLoader.html#ab575dbdb8a9fb1c93655cec104abad22">resample</a> (const std::vector&lt; float &gt; &amp;src, float *dest) noexcept</td></tr>
+<tr class="memdesc:ab575dbdb8a9fb1c93655cec104abad22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resample a source wavetable to TARGET_SIZE (2048) samples using linear interpolation.  <br /></td></tr>
+<tr class="separator:ab575dbdb8a9fb1c93655cec104abad22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e5f060f36e71057daf51ad8dc7b7146" id="r_a3e5f060f36e71057daf51ad8dc7b7146"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1WavetableLoader.html#a3e5f060f36e71057daf51ad8dc7b7146">loadM1Bank</a> (const uint8_t *data, size_t size, size_t numWaves, std::vector&lt; std::vector&lt; float &gt; &gt; &amp;out) noexcept</td></tr>
+<tr class="memdesc:a3e5f060f36e71057daf51ad8dc7b7146"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a .m1 bank file and extract individual single-cycle waves.  <br /></td></tr>
+<tr class="separator:a3e5f060f36e71057daf51ad8dc7b7146"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a130ab02ae0714b80bc67abc6b45bee06" id="r_a130ab02ae0714b80bc67abc6b45bee06"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1WavetableLoader.html#a130ab02ae0714b80bc67abc6b45bee06">TARGET_SIZE</a> = 2048</td></tr>
+<tr class="separator:a130ab02ae0714b80bc67abc6b45bee06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Descripción detallada</h2>
+<div class="textblock"><p>Utility functions for loading wavetables from raw binary formats. </p>
+<p>Supports:</p><ul>
+<li>Korg .m1 format: raw 16-bit big-endian signed PCM, single-cycle waves</li>
+<li>Standard .wav format: 16-bit PCM mono single-cycle waves</li>
+<li>Automatic resampling to 2048-sample target size </li>
+</ul>
+</div><h2 class="groupheader">Documentación de funciones</h2>
+<a id="a3e5f060f36e71057daf51ad8dc7b7146" name="a3e5f060f36e71057daf51ad8dc7b7146"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e5f060f36e71057daf51ad8dc7b7146">&#9670;&#160;</a></span>loadM1Bank()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ABDMS2000::WavetableLoader::loadM1Bank </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>numWaves</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; std::vector&lt; float &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Load a .m1 bank file and extract individual single-cycle waves. </p>
+<p>Korg .m1 format: raw 16-bit big-endian signed PCM, contiguous waves. </p><dl class="params"><dt>Parámetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>Raw .m1 file bytes </td></tr>
+    <tr><td class="paramname">size</td><td>File size in bytes </td></tr>
+    <tr><td class="paramname">numWaves</td><td>Number of single-cycle waves in the file </td></tr>
+    <tr><td class="paramname">out</td><td>Output: populated with numWaves float vectors </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Devuelve</dt><dd>true on success </dd></dl>
+
+</div>
+</div>
+<a id="aa0febd68fc3913738de3da68bb6f17d7" name="aa0febd68fc3913738de3da68bb6f17d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0febd68fc3913738de3da68bb6f17d7">&#9670;&#160;</a></span>loadRaw16BitBE()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ABDMS2000::WavetableLoader::loadRaw16BitBE </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Load raw 16-bit big-endian signed PCM samples into a float vector. </p>
+<dl class="params"><dt>Parámetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>Pointer to raw byte buffer </td></tr>
+    <tr><td class="paramname">size</td><td>Buffer size in bytes </td></tr>
+    <tr><td class="paramname">out</td><td>Output vector of normalized float samples [-1.0, +1.0] </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Devuelve</dt><dd>true on success </dd></dl>
+
+</div>
+</div>
+<a id="ab0494f2ab2ed734590d62aedeb81f477" name="ab0494f2ab2ed734590d62aedeb81f477"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0494f2ab2ed734590d62aedeb81f477">&#9670;&#160;</a></span>loadRaw16BitLE()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ABDMS2000::WavetableLoader::loadRaw16BitLE </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Load 16-bit signed little-endian PCM samples into a float vector. </p>
+
+</div>
+</div>
+<a id="a56620ea654e8c7afc513b575d4ab86f7" name="a56620ea654e8c7afc513b575d4ab86f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a56620ea654e8c7afc513b575d4ab86f7">&#9670;&#160;</a></span>loadWav()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ABDMS2000::WavetableLoader::loadWav </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>out</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Load a standard RIFF WAV file (16-bit PCM mono) into float samples. Returns raw samples — caller should resample to target size. </p>
+
+</div>
+</div>
+<a id="ab575dbdb8a9fb1c93655cec104abad22" name="ab575dbdb8a9fb1c93655cec104abad22"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab575dbdb8a9fb1c93655cec104abad22">&#9670;&#160;</a></span>resample()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::WavetableLoader::resample </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>dest</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Resample a source wavetable to TARGET_SIZE (2048) samples using linear interpolation. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Documentación de variables</h2>
+<a id="a130ab02ae0714b80bc67abc6b45bee06" name="a130ab02ae0714b80bc67abc6b45bee06"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a130ab02ae0714b80bc67abc6b45bee06">&#9670;&#160;</a></span>TARGET_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr size_t ABDMS2000::WavetableLoader::TARGET_SIZE = 2048</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

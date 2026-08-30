@@ -1,0 +1,11 @@
+<map id="Source/Plugin/PluginEditor_ResourceProvider.h" name="Source/Plugin/PluginEditor_ResourceProvider.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="256,5,448,45"/>
+<area shape="rect" id="Node000002" href="$PluginEditor_8h.html" title=" " alt="" coords="140,101,343,126"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="318,56,258,102,255,98,315,52"/>
+<area shape="rect" id="Node000005" href="$PluginEditor__ResourceProvider_8cpp.html" title=" " alt="" coords="367,93,559,133"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="389,52,440,91,437,95,386,56"/>
+<area shape="rect" id="Node000003" href="$PluginEditor_8cpp.html" title=" " alt="" coords="5,181,224,207"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="212,136,135,183,132,179,210,131"/>
+<area shape="rect" id="Node000004" href="$PluginProcessor_8cpp.html" title=" " alt="" coords="248,181,491,207"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="273,131,352,179,349,183,270,135"/>
+</map>

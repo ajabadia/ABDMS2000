@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Archivo de código fuente Source/DSP/Oscillators/VAOscillator.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a class="el" href="dir_28f92771c0af6f341cedd07750149305.html">DSP</a></li><li class="navelem"><a class="el" href="dir_56dd9e7cfcdef65c2e847cdb4c0a413b.html">Oscillators</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle"><div class="title">VAOscillator.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="VAOscillator_8h.html">Ir a la documentación de este archivo.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &quot;../Common/PolyBLEP.h&quot;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;../Common/DSPUtils.h&quot;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceABDMS2000.html">ABDMS2000</a> {</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="foldopen" id="foldopen00007" data-start="{" data-end="};">
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="namespaceABDMS2000.html#a4d3dff9454bfb053c741950103055432">    7</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="namespaceABDMS2000.html#a4d3dff9454bfb053c741950103055432">VAWaveform</a> {</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#a58d40dfa6e8651b26e59e510c4430ccbac9ddac7ef9ee84d6bd4691f6bece1d80">Sawtooth</a> = 0,</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#af87646d58e636e72aab721a072557c3eaec8374db32bacb4cd9760199ec42819e">Pulse</a>,</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#af87646d58e636e72aab721a072557c3ea5e5500cb2b82eb72d550de644bd1b64b">Triangle</a>,</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#af87646d58e636e72aab721a072557c3ea6ca9e2d793f678aba7c1b19526592a46">Sine</a></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>};</div>
+</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment"></span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> * @brief PolyBLEP Band-Limited Virtual Analog Oscillator.</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"> * Emulates the Korg MS2000 / microKORG VA algorithms with wave shaping.</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"> */</span></div>
+<div class="foldopen" id="foldopen00018" data-start="{" data-end="};">
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VAOscillator.html">   18</a></span><span class="keyword">class </span><a class="code hl_class" href="classABDMS2000_1_1VAOscillator.html">VAOscillator</a> {</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VAOscillator.html#a5fac7c7313a7eea3eeb3c32af149bb23">   20</a></span>    <a class="code hl_function" href="classABDMS2000_1_1VAOscillator.html#a5fac7c7313a7eea3eeb3c32af149bb23">VAOscillator</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1VAOscillator.html#ae159df49d8beb235aeaddb81d25a8ea8">prepare</a>(<span class="keywordtype">double</span> sampleRate) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1VAOscillator.html#a6136d47c2b8652ec609daf282a3b5b60">reset</a>(<span class="keywordtype">float</span> initialPhase = 0.0f) noexcept;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1VAOscillator.html#a81c96597270902d62e1a38b793beb3f2">setFrequency</a>(<span class="keywordtype">float</span> frequencyHz) noexcept;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1VAOscillator.html#a7b7b0dacfc901afeff607059e69242ab">setWaveform</a>(<a class="code hl_enumeration" href="namespaceABDMS2000.html#a4d3dff9454bfb053c741950103055432">VAWaveform</a> wave) noexcept;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1VAOscillator.html#aef18a8e29a99506df70c5a4a2047ad5e">setControl1</a>(<span class="keywordtype">float</span> ctrl1) noexcept; <span class="comment">// 0.0 to 1.0 (PWM, Wave Shaping, FM)</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="comment">// Hard Sync trigger from master oscillator</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1VAOscillator.html#a3497cffe164ff7a3514a1219f219ff0e">syncPhase</a>(<span class="keywordtype">float</span> masterPhaseDelta) noexcept;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="comment">// Direct phase access for ring mod and sync</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VAOscillator.html#a0c6d666a04b0f173b4dc562e4c69e61b">   33</a></span>    <span class="keywordtype">float</span> <a class="code hl_function" href="classABDMS2000_1_1VAOscillator.html#a0c6d666a04b0f173b4dc562e4c69e61b">getPhase</a>() const noexcept { <span class="keywordflow">return</span> <a class="code hl_variable" href="classABDMS2000_1_1VAOscillator.html#aa8f181d1a4a1f970488450351296b19e">phase_</a>; }</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VAOscillator.html#a7c9c3bbbacccd4e213f28681cada1699">   34</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1VAOscillator.html#a7c9c3bbbacccd4e213f28681cada1699">setPhase</a>(<span class="keywordtype">float</span> newPhase) <span class="keyword">noexcept</span> { <a class="code hl_variable" href="classABDMS2000_1_1VAOscillator.html#aa8f181d1a4a1f970488450351296b19e">phase_</a> = newPhase; }</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordtype">float</span> <a class="code hl_function" href="classABDMS2000_1_1VAOscillator.html#abacddc6a1a0ff34c8b4f69a5e40ee8bb">getNextSample</a>() noexcept;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>private:</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VAOscillator.html#aaaaa7f8ef72faf6b3e6748e84307e125">   39</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="classABDMS2000_1_1VAOscillator.html#aaaaa7f8ef72faf6b3e6748e84307e125">sampleRate_</a>{ 44100.0 };</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VAOscillator.html#a2c72d252c3973855146e6de44c40f771">   40</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1VAOscillator.html#a2c72d252c3973855146e6de44c40f771">frequency_</a>{ 440.0f };</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VAOscillator.html#aa8f181d1a4a1f970488450351296b19e">   41</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1VAOscillator.html#aa8f181d1a4a1f970488450351296b19e">phase_</a>{ 0.0f };</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VAOscillator.html#a7b9dcb51a2e01937c363f73b8b06f2ab">   42</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1VAOscillator.html#a7b9dcb51a2e01937c363f73b8b06f2ab">phaseIncrement_</a>{ 0.01f };</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VAOscillator.html#a306daed02dbbeb8ddc632ffa66a15f06">   43</a></span>    <a class="code hl_enumeration" href="namespaceABDMS2000.html#a4d3dff9454bfb053c741950103055432">VAWaveform</a> <a class="code hl_variable" href="classABDMS2000_1_1VAOscillator.html#a306daed02dbbeb8ddc632ffa66a15f06">waveform_</a>{ <a class="code hl_enumvalue" href="namespaceABDMS2000.html#a4d3dff9454bfb053c741950103055432ac9ddac7ef9ee84d6bd4691f6bece1d80">VAWaveform::Sawtooth</a> };</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VAOscillator.html#adf47542871fef290bd6a954c795bd881">   44</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1VAOscillator.html#adf47542871fef290bd6a954c795bd881">control1_</a>{ 0.5f }; <span class="comment">// Default 50% PWM or neutral shaping</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="comment">// Integrator state for triangle</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VAOscillator.html#af7f28f50c7fe7dd4a419cd96d0dc4ade">   47</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1VAOscillator.html#af7f28f50c7fe7dd4a419cd96d0dc4ade">triIntegrator_</a>{ 0.0f };</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keywordtype">float</span> <a class="code hl_function" href="classABDMS2000_1_1VAOscillator.html#a974dfe26f915fe948997ea2404e14cab">generateSaw</a>() noexcept;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keywordtype">float</span> <a class="code hl_function" href="classABDMS2000_1_1VAOscillator.html#a2e3d7324bc6db4a198eced82d0a2098e">generatePulse</a>() noexcept;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keywordtype">float</span> <a class="code hl_function" href="classABDMS2000_1_1VAOscillator.html#add98189b71600b18f12e7bdff65ad7cd">generateTriangle</a>() noexcept;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordtype">float</span> <a class="code hl_function" href="classABDMS2000_1_1VAOscillator.html#a3a9705354e21384ad70980c21e87c25a">generateSine</a>() noexcept;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>};</div>
+</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>} <span class="comment">// namespace ABDMS2000</span></div>
+<div class="ttc" id="aclassABDMS2000_1_1VAOscillator_html"><div class="ttname"><a href="classABDMS2000_1_1VAOscillator.html">ABDMS2000::VAOscillator</a></div><div class="ttdoc">PolyBLEP Band-Limited Virtual Analog Oscillator. Emulates the Korg MS2000 / microKORG VA algorithms w...</div><div class="ttdef"><b>Definition</b> VAOscillator.h:18</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VAOscillator_html_a0c6d666a04b0f173b4dc562e4c69e61b"><div class="ttname"><a href="classABDMS2000_1_1VAOscillator.html#a0c6d666a04b0f173b4dc562e4c69e61b">ABDMS2000::VAOscillator::getPhase</a></div><div class="ttdeci">float getPhase() const noexcept</div><div class="ttdef"><b>Definition</b> VAOscillator.h:33</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VAOscillator_html_a2c72d252c3973855146e6de44c40f771"><div class="ttname"><a href="classABDMS2000_1_1VAOscillator.html#a2c72d252c3973855146e6de44c40f771">ABDMS2000::VAOscillator::frequency_</a></div><div class="ttdeci">float frequency_</div><div class="ttdef"><b>Definition</b> VAOscillator.h:40</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VAOscillator_html_a2e3d7324bc6db4a198eced82d0a2098e"><div class="ttname"><a href="classABDMS2000_1_1VAOscillator.html#a2e3d7324bc6db4a198eced82d0a2098e">ABDMS2000::VAOscillator::generatePulse</a></div><div class="ttdeci">float generatePulse() noexcept</div><div class="ttdef"><b>Definition</b> VAOscillator.cpp:52</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VAOscillator_html_a306daed02dbbeb8ddc632ffa66a15f06"><div class="ttname"><a href="classABDMS2000_1_1VAOscillator.html#a306daed02dbbeb8ddc632ffa66a15f06">ABDMS2000::VAOscillator::waveform_</a></div><div class="ttdeci">VAWaveform waveform_</div><div class="ttdef"><b>Definition</b> VAOscillator.h:43</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VAOscillator_html_a3497cffe164ff7a3514a1219f219ff0e"><div class="ttname"><a href="classABDMS2000_1_1VAOscillator.html#a3497cffe164ff7a3514a1219f219ff0e">ABDMS2000::VAOscillator::syncPhase</a></div><div class="ttdeci">void syncPhase(float masterPhaseDelta) noexcept</div><div class="ttdef"><b>Definition</b> VAOscillator.cpp:39</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VAOscillator_html_a3a9705354e21384ad70980c21e87c25a"><div class="ttname"><a href="classABDMS2000_1_1VAOscillator.html#a3a9705354e21384ad70980c21e87c25a">ABDMS2000::VAOscillator::generateSine</a></div><div class="ttdeci">float generateSine() noexcept</div><div class="ttdef"><b>Definition</b> VAOscillator.cpp:83</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VAOscillator_html_a5fac7c7313a7eea3eeb3c32af149bb23"><div class="ttname"><a href="classABDMS2000_1_1VAOscillator.html#a5fac7c7313a7eea3eeb3c32af149bb23">ABDMS2000::VAOscillator::VAOscillator</a></div><div class="ttdeci">VAOscillator()=default</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VAOscillator_html_a6136d47c2b8652ec609daf282a3b5b60"><div class="ttname"><a href="classABDMS2000_1_1VAOscillator.html#a6136d47c2b8652ec609daf282a3b5b60">ABDMS2000::VAOscillator::reset</a></div><div class="ttdeci">void reset(float initialPhase=0.0f) noexcept</div><div class="ttdef"><b>Definition</b> VAOscillator.cpp:12</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VAOscillator_html_a7b7b0dacfc901afeff607059e69242ab"><div class="ttname"><a href="classABDMS2000_1_1VAOscillator.html#a7b7b0dacfc901afeff607059e69242ab">ABDMS2000::VAOscillator::setWaveform</a></div><div class="ttdeci">void setWaveform(VAWaveform wave) noexcept</div><div class="ttdef"><b>Definition</b> VAOscillator.cpp:25</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VAOscillator_html_a7b9dcb51a2e01937c363f73b8b06f2ab"><div class="ttname"><a href="classABDMS2000_1_1VAOscillator.html#a7b9dcb51a2e01937c363f73b8b06f2ab">ABDMS2000::VAOscillator::phaseIncrement_</a></div><div class="ttdeci">float phaseIncrement_</div><div class="ttdef"><b>Definition</b> VAOscillator.h:42</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VAOscillator_html_a7c9c3bbbacccd4e213f28681cada1699"><div class="ttname"><a href="classABDMS2000_1_1VAOscillator.html#a7c9c3bbbacccd4e213f28681cada1699">ABDMS2000::VAOscillator::setPhase</a></div><div class="ttdeci">void setPhase(float newPhase) noexcept</div><div class="ttdef"><b>Definition</b> VAOscillator.h:34</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VAOscillator_html_a81c96597270902d62e1a38b793beb3f2"><div class="ttname"><a href="classABDMS2000_1_1VAOscillator.html#a81c96597270902d62e1a38b793beb3f2">ABDMS2000::VAOscillator::setFrequency</a></div><div class="ttdeci">void setFrequency(float frequencyHz) noexcept</div><div class="ttdef"><b>Definition</b> VAOscillator.cpp:19</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VAOscillator_html_a974dfe26f915fe948997ea2404e14cab"><div class="ttname"><a href="classABDMS2000_1_1VAOscillator.html#a974dfe26f915fe948997ea2404e14cab">ABDMS2000::VAOscillator::generateSaw</a></div><div class="ttdeci">float generateSaw() noexcept</div><div class="ttdef"><b>Definition</b> VAOscillator.cpp:44</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VAOscillator_html_aa8f181d1a4a1f970488450351296b19e"><div class="ttname"><a href="classABDMS2000_1_1VAOscillator.html#aa8f181d1a4a1f970488450351296b19e">ABDMS2000::VAOscillator::phase_</a></div><div class="ttdeci">float phase_</div><div class="ttdef"><b>Definition</b> VAOscillator.h:41</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VAOscillator_html_aaaaa7f8ef72faf6b3e6748e84307e125"><div class="ttname"><a href="classABDMS2000_1_1VAOscillator.html#aaaaa7f8ef72faf6b3e6748e84307e125">ABDMS2000::VAOscillator::sampleRate_</a></div><div class="ttdeci">double sampleRate_</div><div class="ttdef"><b>Definition</b> VAOscillator.h:39</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VAOscillator_html_abacddc6a1a0ff34c8b4f69a5e40ee8bb"><div class="ttname"><a href="classABDMS2000_1_1VAOscillator.html#abacddc6a1a0ff34c8b4f69a5e40ee8bb">ABDMS2000::VAOscillator::getNextSample</a></div><div class="ttdeci">float getNextSample() noexcept</div><div class="ttdef"><b>Definition</b> VAOscillator.cpp:89</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VAOscillator_html_add98189b71600b18f12e7bdff65ad7cd"><div class="ttname"><a href="classABDMS2000_1_1VAOscillator.html#add98189b71600b18f12e7bdff65ad7cd">ABDMS2000::VAOscillator::generateTriangle</a></div><div class="ttdeci">float generateTriangle() noexcept</div><div class="ttdef"><b>Definition</b> VAOscillator.cpp:69</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VAOscillator_html_adf47542871fef290bd6a954c795bd881"><div class="ttname"><a href="classABDMS2000_1_1VAOscillator.html#adf47542871fef290bd6a954c795bd881">ABDMS2000::VAOscillator::control1_</a></div><div class="ttdeci">float control1_</div><div class="ttdef"><b>Definition</b> VAOscillator.h:44</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VAOscillator_html_ae159df49d8beb235aeaddb81d25a8ea8"><div class="ttname"><a href="classABDMS2000_1_1VAOscillator.html#ae159df49d8beb235aeaddb81d25a8ea8">ABDMS2000::VAOscillator::prepare</a></div><div class="ttdeci">void prepare(double sampleRate) noexcept</div><div class="ttdef"><b>Definition</b> VAOscillator.cpp:6</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VAOscillator_html_aef18a8e29a99506df70c5a4a2047ad5e"><div class="ttname"><a href="classABDMS2000_1_1VAOscillator.html#aef18a8e29a99506df70c5a4a2047ad5e">ABDMS2000::VAOscillator::setControl1</a></div><div class="ttdeci">void setControl1(float ctrl1) noexcept</div><div class="ttdef"><b>Definition</b> VAOscillator.cpp:30</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VAOscillator_html_af7f28f50c7fe7dd4a419cd96d0dc4ade"><div class="ttname"><a href="classABDMS2000_1_1VAOscillator.html#af7f28f50c7fe7dd4a419cd96d0dc4ade">ABDMS2000::VAOscillator::triIntegrator_</a></div><div class="ttdeci">float triIntegrator_</div><div class="ttdef"><b>Definition</b> VAOscillator.h:47</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html"><div class="ttname"><a href="namespaceABDMS2000.html">ABDMS2000</a></div><div class="ttdef"><b>Definition</b> AppLogger.h:15</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a4d3dff9454bfb053c741950103055432"><div class="ttname"><a href="namespaceABDMS2000.html#a4d3dff9454bfb053c741950103055432">ABDMS2000::VAWaveform</a></div><div class="ttdeci">VAWaveform</div><div class="ttdef"><b>Definition</b> VAOscillator.h:7</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a4d3dff9454bfb053c741950103055432ac9ddac7ef9ee84d6bd4691f6bece1d80"><div class="ttname"><a href="namespaceABDMS2000.html#a4d3dff9454bfb053c741950103055432ac9ddac7ef9ee84d6bd4691f6bece1d80">ABDMS2000::VAWaveform::Sawtooth</a></div><div class="ttdeci">@ Sawtooth</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a58d40dfa6e8651b26e59e510c4430ccbac9ddac7ef9ee84d6bd4691f6bece1d80"><div class="ttname"><a href="namespaceABDMS2000.html#a58d40dfa6e8651b26e59e510c4430ccbac9ddac7ef9ee84d6bd4691f6bece1d80">ABDMS2000::LFOWaveform::Sawtooth</a></div><div class="ttdeci">@ Sawtooth</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_af87646d58e636e72aab721a072557c3ea5e5500cb2b82eb72d550de644bd1b64b"><div class="ttname"><a href="namespaceABDMS2000.html#af87646d58e636e72aab721a072557c3ea5e5500cb2b82eb72d550de644bd1b64b">ABDMS2000::OSC1Type::Triangle</a></div><div class="ttdeci">@ Triangle</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_af87646d58e636e72aab721a072557c3ea6ca9e2d793f678aba7c1b19526592a46"><div class="ttname"><a href="namespaceABDMS2000.html#af87646d58e636e72aab721a072557c3ea6ca9e2d793f678aba7c1b19526592a46">ABDMS2000::OSC1Type::Sine</a></div><div class="ttdeci">@ Sine</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_af87646d58e636e72aab721a072557c3eaec8374db32bacb4cd9760199ec42819e"><div class="ttname"><a href="namespaceABDMS2000.html#af87646d58e636e72aab721a072557c3eaec8374db32bacb4cd9760199ec42819e">ABDMS2000::OSC1Type::Pulse</a></div><div class="ttdeci">@ Pulse</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

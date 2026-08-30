@@ -1,0 +1,11 @@
+<map id="Source/Plugin/BridgeActions.h" name="Source/Plugin/BridgeActions.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="133,5,349,31"/>
+<area shape="rect" id="Node000002" href="$BridgeActions_8cpp.html" title=" " alt="" coords="5,79,236,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="211,40,142,81,139,76,208,35"/>
+<area shape="rect" id="Node000003" href="$PluginEditor_8h.html" title=" " alt="" coords="261,79,463,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="274,35,343,76,341,81,271,40"/>
+<area shape="rect" id="Node000004" href="$PluginEditor_8cpp.html" title=" " alt="" coords="125,152,343,177"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="331,113,256,154,254,149,328,108"/>
+<area shape="rect" id="Node000005" href="$PluginProcessor_8cpp.html" title=" " alt="" coords="367,152,610,177"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="396,108,469,149,467,154,393,113"/>
+</map>

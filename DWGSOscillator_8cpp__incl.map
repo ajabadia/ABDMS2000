@@ -1,0 +1,25 @@
+<map id="Source/DSP/Oscillators/DWGSOscillator.cpp" name="Source/DSP/Oscillators/DWGSOscillator.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="294,5,463,45"/>
+<area shape="rect" id="Node000002" href="$DWGSOscillator_8h.html" title=" " alt="" coords="136,93,272,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="338,48,243,90,241,85,336,43"/>
+<area shape="rect" id="Node000008" href="$DSPUtils_8h.html" title=" " alt="" coords="296,93,461,119"/>
+<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="381,46,381,79,376,79,376,46"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="453,167,539,192"/>
+<area shape="poly" id="edge13_Node000001_Node000010" title=" " alt="" coords="419,43,449,64,476,92,490,122,497,153,491,154,485,124,471,95,446,68,416,48"/>
+<area shape="rect" id="Node000003" href="$DWGSTables_8h.html" title=" " alt="" coords="146,167,262,192"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="207,119,207,153,201,153,201,119"/>
+<area shape="rect" id="Node000004" href="$WaveCategory_8h.html" title=" " alt="" coords="25,240,151,265"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="187,194,120,235,117,230,184,190"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="243,313,309,339"/>
+<area shape="poly" id="edge8_Node000003_Node000005" title=" " alt="" coords="217,190,235,212,253,239,266,270,274,299,269,300,261,271,248,241,231,215,213,194"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="8,313,67,339"/>
+<area shape="poly" id="edge7_Node000003_Node000006" title=" " alt="" coords="146,184,111,189,75,199,41,216,14,242,9,255,10,270,23,301,18,303,4,272,3,254,10,238,38,212,73,194,110,184,145,179"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="175,240,238,265"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="207,192,208,226,203,227,202,192"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="119,263,233,306,232,311,117,268"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="82,267,56,304,51,301,77,264"/>
+<area shape="poly" id="edge12_Node000008_Node000005" title=" " alt="" coords="376,120,290,301,285,299,371,118"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="365,167,427,192"/>
+<area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="384,118,393,153,387,154,379,120"/>
+<area shape="poly" id="edge11_Node000008_Node000010" title=" " alt="" coords="399,116,466,157,464,162,396,121"/>
+</map>

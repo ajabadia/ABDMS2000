@@ -1,0 +1,7 @@
+<map id="ABDMS2000::Vocoder16Band" name="ABDMS2000::Vocoder16Band">
+<area shape="rect" id="Node000001" title="16&#45;Band Korg MS2000 Vocoder Engine. Features 16 analysis/synthesis channels, Formant Shift (&#45;2...." alt="" coords="134,93,345,119"/>
+<area shape="rect" id="Node000002" href="$classABDMS2000_1_1EnvelopeFollower.html" title="High&#45;precision Envelope Follower with configurable release time (Gate Sense)." alt="" coords="5,5,231,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="147,37,224,91,221,95,144,41"/>
+<area shape="rect" id="Node000003" href="$classABDMS2000_1_1NoiseGenerator.html" title="Real&#45;Time Safe White and Pink Noise Generator (LCG algorithm)." alt="" coords="255,5,467,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="346,44,318,71,273,96,271,91,315,67,342,40"/>
+</map>

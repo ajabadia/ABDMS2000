@@ -1,0 +1,226 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Archivo de código fuente Source/DSP/Effects/ModFX.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a class="el" href="dir_28f92771c0af6f341cedd07750149305.html">DSP</a></li><li class="navelem"><a class="el" href="dir_93b0420c202dab069e0f3b7b5bb42654.html">Effects</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle"><div class="title">ModFX.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="ModFX_8h.html">Ir a la documentación de este archivo.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;array&gt;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceABDMS2000.html">ABDMS2000</a> {</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="foldopen" id="foldopen00007" data-start="{" data-end="};">
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="namespaceABDMS2000.html#ae684545985d7be9cd7d291bcd814f5c4">    7</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="namespaceABDMS2000.html#ae684545985d7be9cd7d291bcd814f5c4">ModFXType</a> {</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#ae684545985d7be9cd7d291bcd814f5c4a0d22c92d153dd53d29450752c1cf0dfe">ChorusFlanger</a> = 0,</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#ae684545985d7be9cd7d291bcd814f5c4abe5dd267794f8f209543995a5461710f">Ensemble</a>,</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#ae684545985d7be9cd7d291bcd814f5c4ac7ffeb4f85999b84a15fcd0381db1537">Phaser</a></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>};</div>
+</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment"></span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> * @brief Modulation FX Block for MS2000.</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> * Incorporates exact reverse-engineered specs:</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"> * - Chorus/Flanger: 8.5ms base offset, +/-4ms excursion, inverted feedback when &gt; 100</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"> * - Ensemble: Solina 3-delay line matrix per channel with 120-degree 3-phase dual LFOs (0.5Hz / 6.0Hz) &amp; asymmetric counter-phase output</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment"> * - Phaser: 4-stage allpass with 800Hz..4.5kHz notch sweep</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment"> */</span></div>
+<div class="foldopen" id="foldopen00020" data-start="{" data-end="};">
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ModFX.html">   20</a></span><span class="keyword">class </span><a class="code hl_class" href="classABDMS2000_1_1ModFX.html">ModFX</a> {</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ModFX.html#a2c1e411e4533e2d0684f8a1f89daee0c">   22</a></span>    <a class="code hl_function" href="classABDMS2000_1_1ModFX.html#a2c1e411e4533e2d0684f8a1f89daee0c">ModFX</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1ModFX.html#a053278225ba9cb2d583652151c84cfcc">prepare</a>(<span class="keywordtype">double</span> sampleRate) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1ModFX.html#a8303fed5c451e74befa95f1cec6be47e">reset</a>() noexcept;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ModFX.html#a855620072e1ffb594b02dc1adc0f52af">   27</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1ModFX.html#a855620072e1ffb594b02dc1adc0f52af">setEnabled</a>(<span class="keywordtype">bool</span> enabled) noexcept { <a class="code hl_variable" href="classABDMS2000_1_1ModFX.html#a095c6192339ef6ff720196fcd904099c">enabled_</a> = enabled; }</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ModFX.html#acff1ad1dbc0aff8bbfec7750f2eebcee">   28</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classABDMS2000_1_1ModFX.html#acff1ad1dbc0aff8bbfec7750f2eebcee">isEnabled</a>() const noexcept { <span class="keywordflow">return</span> <a class="code hl_variable" href="classABDMS2000_1_1ModFX.html#a095c6192339ef6ff720196fcd904099c">enabled_</a>; }</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ModFX.html#a89b3e249cdf05c39f1e56f5addd10884">   30</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1ModFX.html#a89b3e249cdf05c39f1e56f5addd10884">setType</a>(<a class="code hl_enumeration" href="namespaceABDMS2000.html#ae684545985d7be9cd7d291bcd814f5c4">ModFXType</a> type) <span class="keyword">noexcept</span> { <a class="code hl_variable" href="classABDMS2000_1_1ModFX.html#a10a16fbfac0dd857d538f4565052e9a2">type_</a> = type; }</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1ModFX.html#a585bd5f3df61a72c89e1644461e00870">setSpeed</a>(<span class="keywordtype">float</span> speed0to1) <span class="keyword">noexcept</span>;     <span class="comment">// Maps 0.02Hz to 15.0Hz</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1ModFX.html#a0b14b7ae4c608a383c9eb9cb04c17c99">setDepth</a>(<span class="keywordtype">float</span> depth0to1) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1ModFX.html#a17de99eecf90f116e356c6df9fd04887">setFeedback</a>(<span class="keywordtype">float</span> feedback0to127) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1ModFX.html#aaa26127ef38378ff22785a6d8202524c">process</a>(<span class="keywordtype">float</span>&amp; leftSample, <span class="keywordtype">float</span>&amp; rightSample) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ModFX.html#a1816d60ffb3e98dd1f8c6aab89f9f7bb">   38</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="classABDMS2000_1_1ModFX.html#a1816d60ffb3e98dd1f8c6aab89f9f7bb">sampleRate_</a>{ 44100.0 };</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ModFX.html#a095c6192339ef6ff720196fcd904099c">   39</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="classABDMS2000_1_1ModFX.html#a095c6192339ef6ff720196fcd904099c">enabled_</a>{ <span class="keyword">false</span> };</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ModFX.html#a10a16fbfac0dd857d538f4565052e9a2">   40</a></span>    <a class="code hl_enumeration" href="namespaceABDMS2000.html#ae684545985d7be9cd7d291bcd814f5c4">ModFXType</a> <a class="code hl_variable" href="classABDMS2000_1_1ModFX.html#a10a16fbfac0dd857d538f4565052e9a2">type_</a>{ <a class="code hl_enumvalue" href="namespaceABDMS2000.html#ae684545985d7be9cd7d291bcd814f5c4a0d22c92d153dd53d29450752c1cf0dfe">ModFXType::ChorusFlanger</a> };</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ModFX.html#a034cdf9d30bfa4757ab86af107a5d5d4">   42</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1ModFX.html#a034cdf9d30bfa4757ab86af107a5d5d4">speed_</a>{ 0.3f };</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ModFX.html#aedf30e8d9ee42860daf9053e731bd33a">   43</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1ModFX.html#aedf30e8d9ee42860daf9053e731bd33a">depth_</a>{ 0.5f };</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ModFX.html#a4706c03f0a8a53cb35388bfd4c08c53a">   44</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1ModFX.html#a4706c03f0a8a53cb35388bfd4c08c53a">rawFeedback_</a>{ 0.0f }; <span class="comment">// 0..127</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="comment">// LFO phases</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ModFX.html#aa5e16881465948c8897af80d05750ea5">   47</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="classABDMS2000_1_1ModFX.html#aa5e16881465948c8897af80d05750ea5">lfoPhase_</a>{ 0.0 };</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ModFX.html#a115612a265b2bd97e4225c8cfca3bcc7">   48</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="classABDMS2000_1_1ModFX.html#a115612a265b2bd97e4225c8cfca3bcc7">lfoIncrement_</a>{ 0.0 };</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="comment">// Ensemble dual LFO phases</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ModFX.html#a7044f0ccd464e59bc77ecc0e9f0f60b7">   51</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="classABDMS2000_1_1ModFX.html#a7044f0ccd464e59bc77ecc0e9f0f60b7">ensemblePhaseSlow_</a>{ 0.0 };</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ModFX.html#ada51e429b593183fd88f2a09fcfe33f5">   52</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="classABDMS2000_1_1ModFX.html#ada51e429b593183fd88f2a09fcfe33f5">ensemblePhaseFast_</a>{ 0.0 };</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="comment">// Delay lines: 3 per channel for Ensemble, 1 per channel for Chorus/Flanger</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ModFX.html#a9523d4d16fda55cf8b9e4bf91818280d">   55</a></span>    std::array&lt;std::vector&lt;float&gt;, 3&gt; <a class="code hl_variable" href="classABDMS2000_1_1ModFX.html#a9523d4d16fda55cf8b9e4bf91818280d">ensembleLinesL_</a>;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ModFX.html#a2204b04501ab145bc231f95f8bf909a6">   56</a></span>    std::array&lt;std::vector&lt;float&gt;, 3&gt; <a class="code hl_variable" href="classABDMS2000_1_1ModFX.html#a2204b04501ab145bc231f95f8bf909a6">ensembleLinesR_</a>;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ModFX.html#a8f877f949137c55385ee891ebfd7f9a9">   57</a></span>    <span class="keywordtype">size_t</span> <a class="code hl_variable" href="classABDMS2000_1_1ModFX.html#a8f877f949137c55385ee891ebfd7f9a9">ensembleWriteIndex_</a>{ 0 };</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ModFX.html#a6e641faf7cdc79c9c12486be5282ce62">   58</a></span>    <span class="keywordtype">size_t</span> <a class="code hl_variable" href="classABDMS2000_1_1ModFX.html#a6e641faf7cdc79c9c12486be5282ce62">ensembleMaxSamples_</a>{ 4410 };</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ModFX.html#acdb415a5d15a3b58bdda190b5cf8dd39">   60</a></span>    std::vector&lt;float&gt; <a class="code hl_variable" href="classABDMS2000_1_1ModFX.html#acdb415a5d15a3b58bdda190b5cf8dd39">chorusBufferL_</a>;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ModFX.html#a3f04fc01eca9e93e5ef964eb472a3fcd">   61</a></span>    std::vector&lt;float&gt; <a class="code hl_variable" href="classABDMS2000_1_1ModFX.html#a3f04fc01eca9e93e5ef964eb472a3fcd">chorusBufferR_</a>;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ModFX.html#a860b9037896e559ebaea5f93651c187e">   62</a></span>    <span class="keywordtype">size_t</span> <a class="code hl_variable" href="classABDMS2000_1_1ModFX.html#a860b9037896e559ebaea5f93651c187e">chorusWriteIndex_</a>{ 0 };</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ModFX.html#af5181940a007c95d1bc204097f40aa7f">   63</a></span>    <span class="keywordtype">size_t</span> <a class="code hl_variable" href="classABDMS2000_1_1ModFX.html#af5181940a007c95d1bc204097f40aa7f">chorusMaxSamples_</a>{ 4410 };</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="comment">// 4-stage Phaser allpass filter states (Direct Form I)</span></div>
+<div class="foldopen" id="foldopen00066" data-start="{" data-end="};">
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1ModFX_1_1AllPassState.html">   66</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="structABDMS2000_1_1ModFX_1_1AllPassState.html">AllPassState</a> {</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1ModFX_1_1AllPassState.html#a684f9dc2842b12dd24f7fd96b3609b20">   67</a></span>        <span class="keywordtype">float</span> <a class="code hl_variable" href="structABDMS2000_1_1ModFX_1_1AllPassState.html#a684f9dc2842b12dd24f7fd96b3609b20">x1</a>{ 0.0f };</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1ModFX_1_1AllPassState.html#a5ad5528a519934a391fe066bb374be0c">   68</a></span>        <span class="keywordtype">float</span> <a class="code hl_variable" href="structABDMS2000_1_1ModFX_1_1AllPassState.html#a5ad5528a519934a391fe066bb374be0c">y1</a>{ 0.0f };</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1ModFX_1_1AllPassState.html#a3d96c77a0d365d0e2806c1a8aa0545fc">   69</a></span>        <span class="keywordtype">void</span> <a class="code hl_function" href="structABDMS2000_1_1ModFX_1_1AllPassState.html#a3d96c77a0d365d0e2806c1a8aa0545fc">clear</a>() noexcept { <a class="code hl_variable" href="structABDMS2000_1_1ModFX_1_1AllPassState.html#a684f9dc2842b12dd24f7fd96b3609b20">x1</a> = <a class="code hl_variable" href="structABDMS2000_1_1ModFX_1_1AllPassState.html#a5ad5528a519934a391fe066bb374be0c">y1</a> = 0.0f; }</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    };</div>
+</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ModFX.html#addfe08a790e854e913bf795f5b4b4ebf">   71</a></span>    std::array&lt;AllPassState, 4&gt; <a class="code hl_variable" href="classABDMS2000_1_1ModFX.html#addfe08a790e854e913bf795f5b4b4ebf">phaserAPFL_</a>{};</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ModFX.html#a831862e306f24e7ca0bc7f8962d3c03d">   72</a></span>    std::array&lt;AllPassState, 4&gt; <a class="code hl_variable" href="classABDMS2000_1_1ModFX.html#a831862e306f24e7ca0bc7f8962d3c03d">phaserAPFR_</a>{};</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ModFX.html#a3623414572a52654d0dab797ac749860">   73</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1ModFX.html#a3623414572a52654d0dab797ac749860">phaserFeedbackL_</a>{ 0.0f };</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ModFX.html#a4cfdd8b7a0c6655dd43baedb5816a85b">   74</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1ModFX.html#a4cfdd8b7a0c6655dd43baedb5816a85b">phaserFeedbackR_</a>{ 0.0f };</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keywordtype">float</span> <a class="code hl_function" href="classABDMS2000_1_1ModFX.html#a88b609d29d0bf463687366be7118ad1b">readInterpolated</a>(<span class="keyword">const</span> std::vector&lt;float&gt;&amp; buf, <span class="keywordtype">float</span> readPos, <span class="keywordtype">size_t</span> bufLen) <span class="keyword">const</span> <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1ModFX.html#a295f8c5bf2287c3ba8d5a3dfa2c7c0fa">processChorusFlanger</a>(<span class="keywordtype">float</span>&amp; left, <span class="keywordtype">float</span>&amp; right) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1ModFX.html#a5a225c36785991984a203a69139ac74e">processEnsemble</a>(<span class="keywordtype">float</span>&amp; left, <span class="keywordtype">float</span>&amp; right) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1ModFX.html#ae559d2fb820a3eee80fc9b6d8d1b996a">processPhaser</a>(<span class="keywordtype">float</span>&amp; left, <span class="keywordtype">float</span>&amp; right) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>};</div>
+</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>} <span class="comment">// namespace ABDMS2000</span></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html">ABDMS2000::ModFX</a></div><div class="ttdoc">Modulation FX Block for MS2000. Incorporates exact reverse-engineered specs:</div><div class="ttdef"><b>Definition</b> ModFX.h:20</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_a034cdf9d30bfa4757ab86af107a5d5d4"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#a034cdf9d30bfa4757ab86af107a5d5d4">ABDMS2000::ModFX::speed_</a></div><div class="ttdeci">float speed_</div><div class="ttdef"><b>Definition</b> ModFX.h:42</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_a053278225ba9cb2d583652151c84cfcc"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#a053278225ba9cb2d583652151c84cfcc">ABDMS2000::ModFX::prepare</a></div><div class="ttdeci">void prepare(double sampleRate) noexcept</div><div class="ttdef"><b>Definition</b> ModFX.cpp:8</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_a095c6192339ef6ff720196fcd904099c"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#a095c6192339ef6ff720196fcd904099c">ABDMS2000::ModFX::enabled_</a></div><div class="ttdeci">bool enabled_</div><div class="ttdef"><b>Definition</b> ModFX.h:39</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_a0b14b7ae4c608a383c9eb9cb04c17c99"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#a0b14b7ae4c608a383c9eb9cb04c17c99">ABDMS2000::ModFX::setDepth</a></div><div class="ttdeci">void setDepth(float depth0to1) noexcept</div><div class="ttdef"><b>Definition</b> ModFX.cpp:56</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_a10a16fbfac0dd857d538f4565052e9a2"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#a10a16fbfac0dd857d538f4565052e9a2">ABDMS2000::ModFX::type_</a></div><div class="ttdeci">ModFXType type_</div><div class="ttdef"><b>Definition</b> ModFX.h:40</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_a115612a265b2bd97e4225c8cfca3bcc7"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#a115612a265b2bd97e4225c8cfca3bcc7">ABDMS2000::ModFX::lfoIncrement_</a></div><div class="ttdeci">double lfoIncrement_</div><div class="ttdef"><b>Definition</b> ModFX.h:48</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_a17de99eecf90f116e356c6df9fd04887"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#a17de99eecf90f116e356c6df9fd04887">ABDMS2000::ModFX::setFeedback</a></div><div class="ttdeci">void setFeedback(float feedback0to127) noexcept</div><div class="ttdef"><b>Definition</b> ModFX.cpp:61</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_a1816d60ffb3e98dd1f8c6aab89f9f7bb"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#a1816d60ffb3e98dd1f8c6aab89f9f7bb">ABDMS2000::ModFX::sampleRate_</a></div><div class="ttdeci">double sampleRate_</div><div class="ttdef"><b>Definition</b> ModFX.h:38</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_a2204b04501ab145bc231f95f8bf909a6"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#a2204b04501ab145bc231f95f8bf909a6">ABDMS2000::ModFX::ensembleLinesR_</a></div><div class="ttdeci">std::array&lt; std::vector&lt; float &gt;, 3 &gt; ensembleLinesR_</div><div class="ttdef"><b>Definition</b> ModFX.h:56</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_a295f8c5bf2287c3ba8d5a3dfa2c7c0fa"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#a295f8c5bf2287c3ba8d5a3dfa2c7c0fa">ABDMS2000::ModFX::processChorusFlanger</a></div><div class="ttdeci">void processChorusFlanger(float &amp;left, float &amp;right) noexcept</div><div class="ttdef"><b>Definition</b> ModFX.cpp:87</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_a2c1e411e4533e2d0684f8a1f89daee0c"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#a2c1e411e4533e2d0684f8a1f89daee0c">ABDMS2000::ModFX::ModFX</a></div><div class="ttdeci">ModFX()=default</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_a3623414572a52654d0dab797ac749860"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#a3623414572a52654d0dab797ac749860">ABDMS2000::ModFX::phaserFeedbackL_</a></div><div class="ttdeci">float phaserFeedbackL_</div><div class="ttdef"><b>Definition</b> ModFX.h:73</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_a3f04fc01eca9e93e5ef964eb472a3fcd"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#a3f04fc01eca9e93e5ef964eb472a3fcd">ABDMS2000::ModFX::chorusBufferR_</a></div><div class="ttdeci">std::vector&lt; float &gt; chorusBufferR_</div><div class="ttdef"><b>Definition</b> ModFX.h:61</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_a4706c03f0a8a53cb35388bfd4c08c53a"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#a4706c03f0a8a53cb35388bfd4c08c53a">ABDMS2000::ModFX::rawFeedback_</a></div><div class="ttdeci">float rawFeedback_</div><div class="ttdef"><b>Definition</b> ModFX.h:44</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_a4cfdd8b7a0c6655dd43baedb5816a85b"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#a4cfdd8b7a0c6655dd43baedb5816a85b">ABDMS2000::ModFX::phaserFeedbackR_</a></div><div class="ttdeci">float phaserFeedbackR_</div><div class="ttdef"><b>Definition</b> ModFX.h:74</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_a585bd5f3df61a72c89e1644461e00870"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#a585bd5f3df61a72c89e1644461e00870">ABDMS2000::ModFX::setSpeed</a></div><div class="ttdeci">void setSpeed(float speed0to1) noexcept</div><div class="ttdef"><b>Definition</b> ModFX.cpp:48</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_a5a225c36785991984a203a69139ac74e"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#a5a225c36785991984a203a69139ac74e">ABDMS2000::ModFX::processEnsemble</a></div><div class="ttdeci">void processEnsemble(float &amp;left, float &amp;right) noexcept</div><div class="ttdef"><b>Definition</b> ModFX.cpp:125</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_a6e641faf7cdc79c9c12486be5282ce62"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#a6e641faf7cdc79c9c12486be5282ce62">ABDMS2000::ModFX::ensembleMaxSamples_</a></div><div class="ttdeci">size_t ensembleMaxSamples_</div><div class="ttdef"><b>Definition</b> ModFX.h:58</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_a7044f0ccd464e59bc77ecc0e9f0f60b7"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#a7044f0ccd464e59bc77ecc0e9f0f60b7">ABDMS2000::ModFX::ensemblePhaseSlow_</a></div><div class="ttdeci">double ensemblePhaseSlow_</div><div class="ttdef"><b>Definition</b> ModFX.h:51</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_a8303fed5c451e74befa95f1cec6be47e"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#a8303fed5c451e74befa95f1cec6be47e">ABDMS2000::ModFX::reset</a></div><div class="ttdeci">void reset() noexcept</div><div class="ttdef"><b>Definition</b> ModFX.cpp:26</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_a831862e306f24e7ca0bc7f8962d3c03d"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#a831862e306f24e7ca0bc7f8962d3c03d">ABDMS2000::ModFX::phaserAPFR_</a></div><div class="ttdeci">std::array&lt; AllPassState, 4 &gt; phaserAPFR_</div><div class="ttdef"><b>Definition</b> ModFX.h:72</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_a855620072e1ffb594b02dc1adc0f52af"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#a855620072e1ffb594b02dc1adc0f52af">ABDMS2000::ModFX::setEnabled</a></div><div class="ttdeci">void setEnabled(bool enabled) noexcept</div><div class="ttdef"><b>Definition</b> ModFX.h:27</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_a860b9037896e559ebaea5f93651c187e"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#a860b9037896e559ebaea5f93651c187e">ABDMS2000::ModFX::chorusWriteIndex_</a></div><div class="ttdeci">size_t chorusWriteIndex_</div><div class="ttdef"><b>Definition</b> ModFX.h:62</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_a88b609d29d0bf463687366be7118ad1b"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#a88b609d29d0bf463687366be7118ad1b">ABDMS2000::ModFX::readInterpolated</a></div><div class="ttdeci">float readInterpolated(const std::vector&lt; float &gt; &amp;buf, float readPos, size_t bufLen) const noexcept</div><div class="ttdef"><b>Definition</b> ModFX.cpp:66</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_a89b3e249cdf05c39f1e56f5addd10884"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#a89b3e249cdf05c39f1e56f5addd10884">ABDMS2000::ModFX::setType</a></div><div class="ttdeci">void setType(ModFXType type) noexcept</div><div class="ttdef"><b>Definition</b> ModFX.h:30</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_a8f877f949137c55385ee891ebfd7f9a9"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#a8f877f949137c55385ee891ebfd7f9a9">ABDMS2000::ModFX::ensembleWriteIndex_</a></div><div class="ttdeci">size_t ensembleWriteIndex_</div><div class="ttdef"><b>Definition</b> ModFX.h:57</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_a9523d4d16fda55cf8b9e4bf91818280d"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#a9523d4d16fda55cf8b9e4bf91818280d">ABDMS2000::ModFX::ensembleLinesL_</a></div><div class="ttdeci">std::array&lt; std::vector&lt; float &gt;, 3 &gt; ensembleLinesL_</div><div class="ttdef"><b>Definition</b> ModFX.h:55</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_aa5e16881465948c8897af80d05750ea5"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#aa5e16881465948c8897af80d05750ea5">ABDMS2000::ModFX::lfoPhase_</a></div><div class="ttdeci">double lfoPhase_</div><div class="ttdef"><b>Definition</b> ModFX.h:47</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_aaa26127ef38378ff22785a6d8202524c"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#aaa26127ef38378ff22785a6d8202524c">ABDMS2000::ModFX::process</a></div><div class="ttdeci">void process(float &amp;leftSample, float &amp;rightSample) noexcept</div><div class="ttdef"><b>Definition</b> ModFX.cpp:75</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_acdb415a5d15a3b58bdda190b5cf8dd39"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#acdb415a5d15a3b58bdda190b5cf8dd39">ABDMS2000::ModFX::chorusBufferL_</a></div><div class="ttdeci">std::vector&lt; float &gt; chorusBufferL_</div><div class="ttdef"><b>Definition</b> ModFX.h:60</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_acff1ad1dbc0aff8bbfec7750f2eebcee"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#acff1ad1dbc0aff8bbfec7750f2eebcee">ABDMS2000::ModFX::isEnabled</a></div><div class="ttdeci">bool isEnabled() const noexcept</div><div class="ttdef"><b>Definition</b> ModFX.h:28</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_ada51e429b593183fd88f2a09fcfe33f5"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#ada51e429b593183fd88f2a09fcfe33f5">ABDMS2000::ModFX::ensemblePhaseFast_</a></div><div class="ttdeci">double ensemblePhaseFast_</div><div class="ttdef"><b>Definition</b> ModFX.h:52</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_addfe08a790e854e913bf795f5b4b4ebf"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#addfe08a790e854e913bf795f5b4b4ebf">ABDMS2000::ModFX::phaserAPFL_</a></div><div class="ttdeci">std::array&lt; AllPassState, 4 &gt; phaserAPFL_</div><div class="ttdef"><b>Definition</b> ModFX.h:71</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_ae559d2fb820a3eee80fc9b6d8d1b996a"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#ae559d2fb820a3eee80fc9b6d8d1b996a">ABDMS2000::ModFX::processPhaser</a></div><div class="ttdeci">void processPhaser(float &amp;left, float &amp;right) noexcept</div><div class="ttdef"><b>Definition</b> ModFX.cpp:182</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_aedf30e8d9ee42860daf9053e731bd33a"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#aedf30e8d9ee42860daf9053e731bd33a">ABDMS2000::ModFX::depth_</a></div><div class="ttdeci">float depth_</div><div class="ttdef"><b>Definition</b> ModFX.h:43</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ModFX_html_af5181940a007c95d1bc204097f40aa7f"><div class="ttname"><a href="classABDMS2000_1_1ModFX.html#af5181940a007c95d1bc204097f40aa7f">ABDMS2000::ModFX::chorusMaxSamples_</a></div><div class="ttdeci">size_t chorusMaxSamples_</div><div class="ttdef"><b>Definition</b> ModFX.h:63</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html"><div class="ttname"><a href="namespaceABDMS2000.html">ABDMS2000</a></div><div class="ttdef"><b>Definition</b> AppLogger.h:15</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_ae684545985d7be9cd7d291bcd814f5c4"><div class="ttname"><a href="namespaceABDMS2000.html#ae684545985d7be9cd7d291bcd814f5c4">ABDMS2000::ModFXType</a></div><div class="ttdeci">ModFXType</div><div class="ttdef"><b>Definition</b> ModFX.h:7</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_ae684545985d7be9cd7d291bcd814f5c4a0d22c92d153dd53d29450752c1cf0dfe"><div class="ttname"><a href="namespaceABDMS2000.html#ae684545985d7be9cd7d291bcd814f5c4a0d22c92d153dd53d29450752c1cf0dfe">ABDMS2000::ModFXType::ChorusFlanger</a></div><div class="ttdeci">@ ChorusFlanger</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_ae684545985d7be9cd7d291bcd814f5c4abe5dd267794f8f209543995a5461710f"><div class="ttname"><a href="namespaceABDMS2000.html#ae684545985d7be9cd7d291bcd814f5c4abe5dd267794f8f209543995a5461710f">ABDMS2000::ModFXType::Ensemble</a></div><div class="ttdeci">@ Ensemble</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_ae684545985d7be9cd7d291bcd814f5c4ac7ffeb4f85999b84a15fcd0381db1537"><div class="ttname"><a href="namespaceABDMS2000.html#ae684545985d7be9cd7d291bcd814f5c4ac7ffeb4f85999b84a15fcd0381db1537">ABDMS2000::ModFXType::Phaser</a></div><div class="ttdeci">@ Phaser</div></div>
+<div class="ttc" id="astructABDMS2000_1_1ModFX_1_1AllPassState_html"><div class="ttname"><a href="structABDMS2000_1_1ModFX_1_1AllPassState.html">ABDMS2000::ModFX::AllPassState</a></div><div class="ttdef"><b>Definition</b> ModFX.h:66</div></div>
+<div class="ttc" id="astructABDMS2000_1_1ModFX_1_1AllPassState_html_a3d96c77a0d365d0e2806c1a8aa0545fc"><div class="ttname"><a href="structABDMS2000_1_1ModFX_1_1AllPassState.html#a3d96c77a0d365d0e2806c1a8aa0545fc">ABDMS2000::ModFX::AllPassState::clear</a></div><div class="ttdeci">void clear() noexcept</div><div class="ttdef"><b>Definition</b> ModFX.h:69</div></div>
+<div class="ttc" id="astructABDMS2000_1_1ModFX_1_1AllPassState_html_a5ad5528a519934a391fe066bb374be0c"><div class="ttname"><a href="structABDMS2000_1_1ModFX_1_1AllPassState.html#a5ad5528a519934a391fe066bb374be0c">ABDMS2000::ModFX::AllPassState::y1</a></div><div class="ttdeci">float y1</div><div class="ttdef"><b>Definition</b> ModFX.h:68</div></div>
+<div class="ttc" id="astructABDMS2000_1_1ModFX_1_1AllPassState_html_a684f9dc2842b12dd24f7fd96b3609b20"><div class="ttname"><a href="structABDMS2000_1_1ModFX_1_1AllPassState.html#a684f9dc2842b12dd24f7fd96b3609b20">ABDMS2000::ModFX::AllPassState::x1</a></div><div class="ttdeci">float x1</div><div class="ttdef"><b>Definition</b> ModFX.h:67</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

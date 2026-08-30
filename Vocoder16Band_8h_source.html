@@ -1,0 +1,220 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Archivo de código fuente Source/DSP/Vocoder/Vocoder16Band.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a class="el" href="dir_28f92771c0af6f341cedd07750149305.html">DSP</a></li><li class="navelem"><a class="el" href="dir_a0f9960bb3dcb6522460b587221195e1.html">Vocoder</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle"><div class="title">Vocoder16Band.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="Vocoder16Band_8h.html">Ir a la documentación de este archivo.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &quot;<a class="code" href="EnvelopeFollower_8h.html">EnvelopeFollower.h</a>&quot;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;../Oscillators/NoiseGenerator.h&quot;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;array&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceABDMS2000.html">ABDMS2000</a> {</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="foldopen" id="foldopen00008" data-start="{" data-end="};">
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1BiquadBPF.html">    8</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structABDMS2000_1_1BiquadBPF.html">BiquadBPF</a> {</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1BiquadBPF.html#af9dd5e4efad38088c006558cbe8d12b9">    9</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="structABDMS2000_1_1BiquadBPF.html#a36b6384e814a5a9410d38b71d6999dd1">b0</a>{ 0.0f }, <a class="code hl_variable" href="structABDMS2000_1_1BiquadBPF.html#ad7c76418f69bc1a3a6d84df1000be851">b1</a>{ 0.0f }, <a class="code hl_variable" href="structABDMS2000_1_1BiquadBPF.html#a1e4c26fdfa03c8d28b5a598fc639d9e0">b2</a>{ 0.0f }, <a class="code hl_variable" href="structABDMS2000_1_1BiquadBPF.html#af9dd5e4efad38088c006558cbe8d12b9">a1</a>{ 0.0f }, <a class="code hl_variable" href="structABDMS2000_1_1BiquadBPF.html#a377878716e4c505117ceb6694948f594">a2</a>{ 0.0f };</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1BiquadBPF.html#a092163cdc0b98e8baa0f41fc85996345">   10</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="structABDMS2000_1_1BiquadBPF.html#a092163cdc0b98e8baa0f41fc85996345">s1</a>{ 0.0f }, <a class="code hl_variable" href="structABDMS2000_1_1BiquadBPF.html#a7041631ffef243e8ecdc77e50e60987a">s2</a>{ 0.0f };</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="structABDMS2000_1_1BiquadBPF.html#a42de77f6f272ad28afccb1cfef1e593b">setBandpass</a>(<span class="keywordtype">float</span> centerFreq, <span class="keywordtype">float</span> q, <span class="keywordtype">double</span> sampleRate) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1BiquadBPF.html#a5c8f28d5db77546521cb3de0b7644301">   13</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="structABDMS2000_1_1BiquadBPF.html#a5c8f28d5db77546521cb3de0b7644301">reset</a>() noexcept { <a class="code hl_variable" href="structABDMS2000_1_1BiquadBPF.html#a092163cdc0b98e8baa0f41fc85996345">s1</a> = <a class="code hl_variable" href="structABDMS2000_1_1BiquadBPF.html#a7041631ffef243e8ecdc77e50e60987a">s2</a> = 0.0f; }</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <span class="keywordtype">float</span> <a class="code hl_function" href="structABDMS2000_1_1BiquadBPF.html#ada61cb9719eaf957f4bb8e5b3a0f2d77">process</a>(<span class="keywordtype">float</span> in) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>};</div>
+</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"></span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment"> * @brief 16-Band Korg MS2000 Vocoder Engine.</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment"> * Features 16 analysis/synthesis channels, Formant Shift (-2..+2), HPF 8kHz Sibilance Gate, and Pan per band.</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment"> */</span></div>
+<div class="foldopen" id="foldopen00021" data-start="{" data-end="};">
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Vocoder16Band.html">   21</a></span><span class="keyword">class </span><a class="code hl_class" href="classABDMS2000_1_1Vocoder16Band.html">Vocoder16Band</a> {</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Vocoder16Band.html#af0ae9052724f2b8f82c7575955c55022">   23</a></span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> <a class="code hl_variable" href="classABDMS2000_1_1Vocoder16Band.html#af0ae9052724f2b8f82c7575955c55022">NUM_BANDS</a> = 16;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Vocoder16Band.html#a2a3ce1907f9d6ec4b090d8786e405746">   25</a></span>    <a class="code hl_function" href="classABDMS2000_1_1Vocoder16Band.html#a2a3ce1907f9d6ec4b090d8786e405746">Vocoder16Band</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1Vocoder16Band.html#a82644f271cfa7bace924b0d0b3542568">prepare</a>(<span class="keywordtype">double</span> sampleRate) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1Vocoder16Band.html#a9e45b7909d48e5dbb8481312352ce3a4">reset</a>() noexcept;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Vocoder16Band.html#a7f84fda2a3b65555a1e345c5318ee4d1">   30</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1Vocoder16Band.html#a7f84fda2a3b65555a1e345c5318ee4d1">setEnabled</a>(<span class="keywordtype">bool</span> enabled) noexcept { <a class="code hl_variable" href="classABDMS2000_1_1Vocoder16Band.html#a655162494e2176e58d7bc01b5e9883f4">enabled_</a> = enabled; }</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Vocoder16Band.html#ae5c651cf2c19003a70f51c610bfc2fc5">   31</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classABDMS2000_1_1Vocoder16Band.html#ae5c651cf2c19003a70f51c610bfc2fc5">isEnabled</a>() const noexcept { <span class="keywordflow">return</span> <a class="code hl_variable" href="classABDMS2000_1_1Vocoder16Band.html#a655162494e2176e58d7bc01b5e9883f4">enabled_</a>; }</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1Vocoder16Band.html#a4bf38b385a32a9c77b79f9fc83af12db">setFormantShift</a>(<span class="keywordtype">int</span> shiftValue) <span class="keyword">noexcept</span>; <span class="comment">// -2, -1, 0, +1, +2</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1Vocoder16Band.html#ad30522b3bf7dc72613a8ab9baedeca12">setGateSense</a>(<span class="keywordtype">float</span> gateSense0to1) <span class="keyword">noexcept</span>; <span class="comment">// 0..1 -&gt; 0.005s..0.200s</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1Vocoder16Band.html#aa81f41871b00248420ca25dc622ee639">setHPFLevel</a>(<span class="keywordtype">float</span> level0to1) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Vocoder16Band.html#a141caee5de8941e7d882cfd86a3925b3">   36</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1Vocoder16Band.html#a141caee5de8941e7d882cfd86a3925b3">setHPFGate</a>(<span class="keywordtype">bool</span> enabled) <span class="keyword">noexcept</span> { <a class="code hl_variable" href="classABDMS2000_1_1Vocoder16Band.html#a783711fe41df8cb09f087ecaa9f567bf">hpfGate_</a> = enabled; }</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1Vocoder16Band.html#a16ec0fe6669e25cacce4058f7be8ae4e">setHPFThreshold</a>(<span class="keywordtype">float</span> thresh0to1) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1Vocoder16Band.html#a0a1883989a89766d7baed5451726e047">setDirectLevel</a>(<span class="keywordtype">float</span> level0to1) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1Vocoder16Band.html#aad4c61b19cc025b230092ff425f37b20">setBandLevel</a>(<span class="keywordtype">size_t</span> bandIndex, <span class="keywordtype">float</span> level0to1) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1Vocoder16Band.html#a1106261cf0bfbb456a9d42159af7d141">setBandPan</a>(<span class="keywordtype">size_t</span> bandIndex, <span class="keywordtype">float</span> pan0to1) <span class="keyword">noexcept</span>; <span class="comment">// 0.0 (L) to 1.0 (R)</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1Vocoder16Band.html#a779f45f9b933fcfa95a0163c3ad654e6">process</a>(<span class="keywordtype">float</span> modSample, <span class="keywordtype">float</span> carrierSample, <span class="keywordtype">float</span>&amp; outLeft, <span class="keywordtype">float</span>&amp; outRight) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Vocoder16Band.html#a46792a0f421fdf47985d9825433edbaf">   46</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="classABDMS2000_1_1Vocoder16Band.html#a46792a0f421fdf47985d9825433edbaf">sampleRate_</a>{ 44100.0 };</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Vocoder16Band.html#a655162494e2176e58d7bc01b5e9883f4">   47</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="classABDMS2000_1_1Vocoder16Band.html#a655162494e2176e58d7bc01b5e9883f4">enabled_</a>{ <span class="keyword">false</span> };</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Vocoder16Band.html#ad089bed9d8b773b3c87fd104e974f014">   48</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="classABDMS2000_1_1Vocoder16Band.html#ad089bed9d8b773b3c87fd104e974f014">formantShift_</a>{ 0 };</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Vocoder16Band.html#a11002fb745ffcbf4d90adbde2447e5bd">   49</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1Vocoder16Band.html#a11002fb745ffcbf4d90adbde2447e5bd">hpfLevel_</a>{ 0.0f };</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Vocoder16Band.html#a783711fe41df8cb09f087ecaa9f567bf">   50</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="classABDMS2000_1_1Vocoder16Band.html#a783711fe41df8cb09f087ecaa9f567bf">hpfGate_</a>{ <span class="keyword">true</span> };</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Vocoder16Band.html#a25e2c043fcf29400d6e4a191720feee3">   51</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1Vocoder16Band.html#a25e2c043fcf29400d6e4a191720feee3">hpfThreshold_</a>{ 0.1f };</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Vocoder16Band.html#a38499a84767ce0dbcc5551f4424dcb6c">   52</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1Vocoder16Band.html#a38499a84767ce0dbcc5551f4424dcb6c">directLevel_</a>{ 0.0f };</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Vocoder16Band.html#a3b6e1e74b6ff2e2cc8c781d3fee088e6">   54</a></span>    std::array&lt;BiquadBPF, NUM_BANDS&gt; <a class="code hl_variable" href="classABDMS2000_1_1Vocoder16Band.html#a3b6e1e74b6ff2e2cc8c781d3fee088e6">analysisFilters_</a>{};</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Vocoder16Band.html#ab16b25340cbecd9c5c84ddfbe6cfc75c">   55</a></span>    std::array&lt;BiquadBPF, NUM_BANDS&gt; <a class="code hl_variable" href="classABDMS2000_1_1Vocoder16Band.html#ab16b25340cbecd9c5c84ddfbe6cfc75c">synthesisFilters_</a>{};</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Vocoder16Band.html#a6cec4f4f4079637ba4cc16307259dc20">   56</a></span>    std::array&lt;EnvelopeFollower, NUM_BANDS&gt; <a class="code hl_variable" href="classABDMS2000_1_1Vocoder16Band.html#a6cec4f4f4079637ba4cc16307259dc20">followers_</a>{};</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Vocoder16Band.html#a48f508c9afe58102490909a9bbb6a6da">   57</a></span>    std::array&lt;float, NUM_BANDS&gt; <a class="code hl_variable" href="classABDMS2000_1_1Vocoder16Band.html#a48f508c9afe58102490909a9bbb6a6da">bandLevels_</a>{};</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Vocoder16Band.html#a494e390afe57ee4499cb99a50e0240dd">   58</a></span>    std::array&lt;float, NUM_BANDS&gt; <a class="code hl_variable" href="classABDMS2000_1_1Vocoder16Band.html#a494e390afe57ee4499cb99a50e0240dd">bandPans_</a>{};</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="comment">// Sibilance 8kHz HPF Filter and Fast Follower</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Vocoder16Band.html#a3f6e6379bbd2ef661873ea8a03ad1c8c">   61</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1Vocoder16Band.html#aba1bf4a5c0737a7b74a5d23cd719ed3d">hpfB0_</a>{ 1.0f }, <a class="code hl_variable" href="classABDMS2000_1_1Vocoder16Band.html#a629a9bbd4f9566bc8a59eb3ab4c21b13">hpfB1_</a>{ -2.0f }, <a class="code hl_variable" href="classABDMS2000_1_1Vocoder16Band.html#a724d3d02a2f3050f623ec794c61b3a1f">hpfB2_</a>{ 1.0f }, <a class="code hl_variable" href="classABDMS2000_1_1Vocoder16Band.html#a3f6e6379bbd2ef661873ea8a03ad1c8c">hpfA1_</a>{ 0.0f }, <a class="code hl_variable" href="classABDMS2000_1_1Vocoder16Band.html#aba093eeebf1d97fcf46ebabd2f8f0aaf">hpfA2_</a>{ 0.0f };</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Vocoder16Band.html#a7fe147ca27b693cee1894fcc28a499ed">   62</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1Vocoder16Band.html#a7fe147ca27b693cee1894fcc28a499ed">hpfS1_</a>{ 0.0f }, <a class="code hl_variable" href="classABDMS2000_1_1Vocoder16Band.html#a38bd5b3866b31be6e6a49be7497e4860">hpfS2_</a>{ 0.0f };</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Vocoder16Band.html#abf3fb1891a8d5d68494dbb2030398f16">   63</a></span>    <a class="code hl_class" href="classABDMS2000_1_1EnvelopeFollower.html">EnvelopeFollower</a> <a class="code hl_variable" href="classABDMS2000_1_1Vocoder16Band.html#abf3fb1891a8d5d68494dbb2030398f16">sibilanceFollower_</a>;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Vocoder16Band.html#a61b82cb75f3c8a8ea4e89d2fbe6447ca">   65</a></span>    <a class="code hl_class" href="classABDMS2000_1_1NoiseGenerator.html">NoiseGenerator</a> <a class="code hl_variable" href="classABDMS2000_1_1Vocoder16Band.html#a61b82cb75f3c8a8ea4e89d2fbe6447ca">whiteNoiseGen_</a>;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1Vocoder16Band.html#af4e7261d284bf773fdc2f5ea7608eedf">updateFilterFrequencies</a>() noexcept;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1Vocoder16Band.html#a7bea9ecb8b7832eead1bbe2e5706c287">updateHPFFilter</a>() noexcept;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>};</div>
+</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>} <span class="comment">// namespace ABDMS2000</span></div>
+<div class="ttc" id="aEnvelopeFollower_8h_html"><div class="ttname"><a href="EnvelopeFollower_8h.html">EnvelopeFollower.h</a></div></div>
+<div class="ttc" id="aclassABDMS2000_1_1EnvelopeFollower_html"><div class="ttname"><a href="classABDMS2000_1_1EnvelopeFollower.html">ABDMS2000::EnvelopeFollower</a></div><div class="ttdoc">High-precision Envelope Follower with configurable release time (Gate Sense).</div><div class="ttdef"><b>Definition</b> EnvelopeFollower.h:10</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1NoiseGenerator_html"><div class="ttname"><a href="classABDMS2000_1_1NoiseGenerator.html">ABDMS2000::NoiseGenerator</a></div><div class="ttdoc">Real-Time Safe White and Pink Noise Generator (LCG algorithm).</div><div class="ttdef"><b>Definition</b> NoiseGenerator.h:9</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html">ABDMS2000::Vocoder16Band</a></div><div class="ttdoc">16-Band Korg MS2000 Vocoder Engine. Features 16 analysis/synthesis channels, Formant Shift (-2....</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:21</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_a0a1883989a89766d7baed5451726e047"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#a0a1883989a89766d7baed5451726e047">ABDMS2000::Vocoder16Band::setDirectLevel</a></div><div class="ttdeci">void setDirectLevel(float level0to1) noexcept</div><div class="ttdef"><b>Definition</b> Vocoder16Band.cpp:93</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_a11002fb745ffcbf4d90adbde2447e5bd"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#a11002fb745ffcbf4d90adbde2447e5bd">ABDMS2000::Vocoder16Band::hpfLevel_</a></div><div class="ttdeci">float hpfLevel_</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:49</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_a1106261cf0bfbb456a9d42159af7d141"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#a1106261cf0bfbb456a9d42159af7d141">ABDMS2000::Vocoder16Band::setBandPan</a></div><div class="ttdeci">void setBandPan(size_t bandIndex, float pan0to1) noexcept</div><div class="ttdef"><b>Definition</b> Vocoder16Band.cpp:103</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_a141caee5de8941e7d882cfd86a3925b3"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#a141caee5de8941e7d882cfd86a3925b3">ABDMS2000::Vocoder16Band::setHPFGate</a></div><div class="ttdeci">void setHPFGate(bool enabled) noexcept</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:36</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_a16ec0fe6669e25cacce4058f7be8ae4e"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#a16ec0fe6669e25cacce4058f7be8ae4e">ABDMS2000::Vocoder16Band::setHPFThreshold</a></div><div class="ttdeci">void setHPFThreshold(float thresh0to1) noexcept</div><div class="ttdef"><b>Definition</b> Vocoder16Band.cpp:88</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_a25e2c043fcf29400d6e4a191720feee3"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#a25e2c043fcf29400d6e4a191720feee3">ABDMS2000::Vocoder16Band::hpfThreshold_</a></div><div class="ttdeci">float hpfThreshold_</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:51</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_a2a3ce1907f9d6ec4b090d8786e405746"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#a2a3ce1907f9d6ec4b090d8786e405746">ABDMS2000::Vocoder16Band::Vocoder16Band</a></div><div class="ttdeci">Vocoder16Band()=default</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_a38499a84767ce0dbcc5551f4424dcb6c"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#a38499a84767ce0dbcc5551f4424dcb6c">ABDMS2000::Vocoder16Band::directLevel_</a></div><div class="ttdeci">float directLevel_</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:52</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_a38bd5b3866b31be6e6a49be7497e4860"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#a38bd5b3866b31be6e6a49be7497e4860">ABDMS2000::Vocoder16Band::hpfS2_</a></div><div class="ttdeci">float hpfS2_</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:62</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_a3b6e1e74b6ff2e2cc8c781d3fee088e6"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#a3b6e1e74b6ff2e2cc8c781d3fee088e6">ABDMS2000::Vocoder16Band::analysisFilters_</a></div><div class="ttdeci">std::array&lt; BiquadBPF, NUM_BANDS &gt; analysisFilters_</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:54</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_a3f6e6379bbd2ef661873ea8a03ad1c8c"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#a3f6e6379bbd2ef661873ea8a03ad1c8c">ABDMS2000::Vocoder16Band::hpfA1_</a></div><div class="ttdeci">float hpfA1_</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:61</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_a46792a0f421fdf47985d9825433edbaf"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#a46792a0f421fdf47985d9825433edbaf">ABDMS2000::Vocoder16Band::sampleRate_</a></div><div class="ttdeci">double sampleRate_</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:46</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_a48f508c9afe58102490909a9bbb6a6da"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#a48f508c9afe58102490909a9bbb6a6da">ABDMS2000::Vocoder16Band::bandLevels_</a></div><div class="ttdeci">std::array&lt; float, NUM_BANDS &gt; bandLevels_</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:57</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_a494e390afe57ee4499cb99a50e0240dd"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#a494e390afe57ee4499cb99a50e0240dd">ABDMS2000::Vocoder16Band::bandPans_</a></div><div class="ttdeci">std::array&lt; float, NUM_BANDS &gt; bandPans_</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:58</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_a4bf38b385a32a9c77b79f9fc83af12db"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#a4bf38b385a32a9c77b79f9fc83af12db">ABDMS2000::Vocoder16Band::setFormantShift</a></div><div class="ttdeci">void setFormantShift(int shiftValue) noexcept</div><div class="ttdef"><b>Definition</b> Vocoder16Band.cpp:66</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_a61b82cb75f3c8a8ea4e89d2fbe6447ca"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#a61b82cb75f3c8a8ea4e89d2fbe6447ca">ABDMS2000::Vocoder16Band::whiteNoiseGen_</a></div><div class="ttdeci">NoiseGenerator whiteNoiseGen_</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:65</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_a629a9bbd4f9566bc8a59eb3ab4c21b13"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#a629a9bbd4f9566bc8a59eb3ab4c21b13">ABDMS2000::Vocoder16Band::hpfB1_</a></div><div class="ttdeci">float hpfB1_</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:61</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_a655162494e2176e58d7bc01b5e9883f4"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#a655162494e2176e58d7bc01b5e9883f4">ABDMS2000::Vocoder16Band::enabled_</a></div><div class="ttdeci">bool enabled_</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:47</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_a6cec4f4f4079637ba4cc16307259dc20"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#a6cec4f4f4079637ba4cc16307259dc20">ABDMS2000::Vocoder16Band::followers_</a></div><div class="ttdeci">std::array&lt; EnvelopeFollower, NUM_BANDS &gt; followers_</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:56</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_a724d3d02a2f3050f623ec794c61b3a1f"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#a724d3d02a2f3050f623ec794c61b3a1f">ABDMS2000::Vocoder16Band::hpfB2_</a></div><div class="ttdeci">float hpfB2_</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:61</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_a779f45f9b933fcfa95a0163c3ad654e6"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#a779f45f9b933fcfa95a0163c3ad654e6">ABDMS2000::Vocoder16Band::process</a></div><div class="ttdeci">void process(float modSample, float carrierSample, float &amp;outLeft, float &amp;outRight) noexcept</div><div class="ttdef"><b>Definition</b> Vocoder16Band.cpp:139</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_a783711fe41df8cb09f087ecaa9f567bf"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#a783711fe41df8cb09f087ecaa9f567bf">ABDMS2000::Vocoder16Band::hpfGate_</a></div><div class="ttdeci">bool hpfGate_</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:50</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_a7bea9ecb8b7832eead1bbe2e5706c287"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#a7bea9ecb8b7832eead1bbe2e5706c287">ABDMS2000::Vocoder16Band::updateHPFFilter</a></div><div class="ttdeci">void updateHPFFilter() noexcept</div><div class="ttdef"><b>Definition</b> Vocoder16Band.cpp:123</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_a7f84fda2a3b65555a1e345c5318ee4d1"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#a7f84fda2a3b65555a1e345c5318ee4d1">ABDMS2000::Vocoder16Band::setEnabled</a></div><div class="ttdeci">void setEnabled(bool enabled) noexcept</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:30</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_a7fe147ca27b693cee1894fcc28a499ed"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#a7fe147ca27b693cee1894fcc28a499ed">ABDMS2000::Vocoder16Band::hpfS1_</a></div><div class="ttdeci">float hpfS1_</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:62</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_a82644f271cfa7bace924b0d0b3542568"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#a82644f271cfa7bace924b0d0b3542568">ABDMS2000::Vocoder16Band::prepare</a></div><div class="ttdeci">void prepare(double sampleRate) noexcept</div><div class="ttdef"><b>Definition</b> Vocoder16Band.cpp:37</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_a9e45b7909d48e5dbb8481312352ce3a4"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#a9e45b7909d48e5dbb8481312352ce3a4">ABDMS2000::Vocoder16Band::reset</a></div><div class="ttdeci">void reset() noexcept</div><div class="ttdef"><b>Definition</b> Vocoder16Band.cpp:56</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_aa81f41871b00248420ca25dc622ee639"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#aa81f41871b00248420ca25dc622ee639">ABDMS2000::Vocoder16Band::setHPFLevel</a></div><div class="ttdeci">void setHPFLevel(float level0to1) noexcept</div><div class="ttdef"><b>Definition</b> Vocoder16Band.cpp:83</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_aad4c61b19cc025b230092ff425f37b20"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#aad4c61b19cc025b230092ff425f37b20">ABDMS2000::Vocoder16Band::setBandLevel</a></div><div class="ttdeci">void setBandLevel(size_t bandIndex, float level0to1) noexcept</div><div class="ttdef"><b>Definition</b> Vocoder16Band.cpp:98</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_ab16b25340cbecd9c5c84ddfbe6cfc75c"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#ab16b25340cbecd9c5c84ddfbe6cfc75c">ABDMS2000::Vocoder16Band::synthesisFilters_</a></div><div class="ttdeci">std::array&lt; BiquadBPF, NUM_BANDS &gt; synthesisFilters_</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:55</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_aba093eeebf1d97fcf46ebabd2f8f0aaf"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#aba093eeebf1d97fcf46ebabd2f8f0aaf">ABDMS2000::Vocoder16Band::hpfA2_</a></div><div class="ttdeci">float hpfA2_</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:61</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_aba1bf4a5c0737a7b74a5d23cd719ed3d"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#aba1bf4a5c0737a7b74a5d23cd719ed3d">ABDMS2000::Vocoder16Band::hpfB0_</a></div><div class="ttdeci">float hpfB0_</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:61</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_abf3fb1891a8d5d68494dbb2030398f16"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#abf3fb1891a8d5d68494dbb2030398f16">ABDMS2000::Vocoder16Band::sibilanceFollower_</a></div><div class="ttdeci">EnvelopeFollower sibilanceFollower_</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:63</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_ad089bed9d8b773b3c87fd104e974f014"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#ad089bed9d8b773b3c87fd104e974f014">ABDMS2000::Vocoder16Band::formantShift_</a></div><div class="ttdeci">int formantShift_</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:48</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_ad30522b3bf7dc72613a8ab9baedeca12"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#ad30522b3bf7dc72613a8ab9baedeca12">ABDMS2000::Vocoder16Band::setGateSense</a></div><div class="ttdeci">void setGateSense(float gateSense0to1) noexcept</div><div class="ttdef"><b>Definition</b> Vocoder16Band.cpp:72</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_ae5c651cf2c19003a70f51c610bfc2fc5"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#ae5c651cf2c19003a70f51c610bfc2fc5">ABDMS2000::Vocoder16Band::isEnabled</a></div><div class="ttdeci">bool isEnabled() const noexcept</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:31</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_af0ae9052724f2b8f82c7575955c55022"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#af0ae9052724f2b8f82c7575955c55022">ABDMS2000::Vocoder16Band::NUM_BANDS</a></div><div class="ttdeci">static constexpr size_t NUM_BANDS</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:23</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Vocoder16Band_html_af4e7261d284bf773fdc2f5ea7608eedf"><div class="ttname"><a href="classABDMS2000_1_1Vocoder16Band.html#af4e7261d284bf773fdc2f5ea7608eedf">ABDMS2000::Vocoder16Band::updateFilterFrequencies</a></div><div class="ttdeci">void updateFilterFrequencies() noexcept</div><div class="ttdef"><b>Definition</b> Vocoder16Band.cpp:108</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html"><div class="ttname"><a href="namespaceABDMS2000.html">ABDMS2000</a></div><div class="ttdef"><b>Definition</b> AppLogger.h:15</div></div>
+<div class="ttc" id="astructABDMS2000_1_1BiquadBPF_html"><div class="ttname"><a href="structABDMS2000_1_1BiquadBPF.html">ABDMS2000::BiquadBPF</a></div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:8</div></div>
+<div class="ttc" id="astructABDMS2000_1_1BiquadBPF_html_a092163cdc0b98e8baa0f41fc85996345"><div class="ttname"><a href="structABDMS2000_1_1BiquadBPF.html#a092163cdc0b98e8baa0f41fc85996345">ABDMS2000::BiquadBPF::s1</a></div><div class="ttdeci">float s1</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:10</div></div>
+<div class="ttc" id="astructABDMS2000_1_1BiquadBPF_html_a1e4c26fdfa03c8d28b5a598fc639d9e0"><div class="ttname"><a href="structABDMS2000_1_1BiquadBPF.html#a1e4c26fdfa03c8d28b5a598fc639d9e0">ABDMS2000::BiquadBPF::b2</a></div><div class="ttdeci">float b2</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:9</div></div>
+<div class="ttc" id="astructABDMS2000_1_1BiquadBPF_html_a36b6384e814a5a9410d38b71d6999dd1"><div class="ttname"><a href="structABDMS2000_1_1BiquadBPF.html#a36b6384e814a5a9410d38b71d6999dd1">ABDMS2000::BiquadBPF::b0</a></div><div class="ttdeci">float b0</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:9</div></div>
+<div class="ttc" id="astructABDMS2000_1_1BiquadBPF_html_a377878716e4c505117ceb6694948f594"><div class="ttname"><a href="structABDMS2000_1_1BiquadBPF.html#a377878716e4c505117ceb6694948f594">ABDMS2000::BiquadBPF::a2</a></div><div class="ttdeci">float a2</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:9</div></div>
+<div class="ttc" id="astructABDMS2000_1_1BiquadBPF_html_a42de77f6f272ad28afccb1cfef1e593b"><div class="ttname"><a href="structABDMS2000_1_1BiquadBPF.html#a42de77f6f272ad28afccb1cfef1e593b">ABDMS2000::BiquadBPF::setBandpass</a></div><div class="ttdeci">void setBandpass(float centerFreq, float q, double sampleRate) noexcept</div><div class="ttdef"><b>Definition</b> Vocoder16Band.cpp:14</div></div>
+<div class="ttc" id="astructABDMS2000_1_1BiquadBPF_html_a5c8f28d5db77546521cb3de0b7644301"><div class="ttname"><a href="structABDMS2000_1_1BiquadBPF.html#a5c8f28d5db77546521cb3de0b7644301">ABDMS2000::BiquadBPF::reset</a></div><div class="ttdeci">void reset() noexcept</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:13</div></div>
+<div class="ttc" id="astructABDMS2000_1_1BiquadBPF_html_a7041631ffef243e8ecdc77e50e60987a"><div class="ttname"><a href="structABDMS2000_1_1BiquadBPF.html#a7041631ffef243e8ecdc77e50e60987a">ABDMS2000::BiquadBPF::s2</a></div><div class="ttdeci">float s2</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:10</div></div>
+<div class="ttc" id="astructABDMS2000_1_1BiquadBPF_html_ad7c76418f69bc1a3a6d84df1000be851"><div class="ttname"><a href="structABDMS2000_1_1BiquadBPF.html#ad7c76418f69bc1a3a6d84df1000be851">ABDMS2000::BiquadBPF::b1</a></div><div class="ttdeci">float b1</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:9</div></div>
+<div class="ttc" id="astructABDMS2000_1_1BiquadBPF_html_ada61cb9719eaf957f4bb8e5b3a0f2d77"><div class="ttname"><a href="structABDMS2000_1_1BiquadBPF.html#ada61cb9719eaf957f4bb8e5b3a0f2d77">ABDMS2000::BiquadBPF::process</a></div><div class="ttdeci">float process(float in) noexcept</div><div class="ttdef"><b>Definition</b> Vocoder16Band.cpp:29</div></div>
+<div class="ttc" id="astructABDMS2000_1_1BiquadBPF_html_af9dd5e4efad38088c006558cbe8d12b9"><div class="ttname"><a href="structABDMS2000_1_1BiquadBPF.html#af9dd5e4efad38088c006558cbe8d12b9">ABDMS2000::BiquadBPF::a1</a></div><div class="ttdeci">float a1</div><div class="ttdef"><b>Definition</b> Vocoder16Band.h:9</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

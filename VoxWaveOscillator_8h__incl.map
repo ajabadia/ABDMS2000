@@ -1,0 +1,11 @@
+<map id="Source/DSP/Oscillators/VoxWaveOscillator.h" name="Source/DSP/Oscillators/VoxWaveOscillator.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="51,5,220,45"/>
+<area shape="rect" id="Node000002" href="$DSPUtils_8h.html" title=" " alt="" coords="53,93,218,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="138,46,138,79,133,79,133,46"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,167,68,192"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="121,121,65,161,62,156,118,117"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="93,167,178,192"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="138,119,138,153,133,153,133,119"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="202,167,269,192"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="153,117,209,156,206,161,150,121"/>
+</map>

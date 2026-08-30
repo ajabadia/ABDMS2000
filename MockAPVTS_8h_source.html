@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Archivo de código fuente Source/Tests/Mocks/MockAPVTS.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a class="el" href="dir_c4649485c883873e4a98325dc46175f5.html">Tests</a></li><li class="navelem"><a class="el" href="dir_1e567ce215409295e8efe393845205aa.html">Mocks</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle"><div class="title">MockAPVTS.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="MockAPVTS_8h.html">Ir a la documentación de este archivo.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &lt;juce_audio_processors/juce_audio_processors.h&gt;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceABDMS2000.html">ABDMS2000</a> {</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="foldopen" id="foldopen00008" data-start="{" data-end="};">
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="namespaceABDMS2000.html#a0dcdf0d091b26a2cc31824179dcb7070">    8</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="namespaceABDMS2000.html#a0dcdf0d091b26a2cc31824179dcb7070">ParamType</a> {</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#a0dcdf0d091b26a2cc31824179dcb7070a535863a82f163709557e59e2eb8139a7">Continuous</a>,</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#a0dcdf0d091b26a2cc31824179dcb7070aa0faef0851b4294c06f2b94bb1cb2044">Integer</a>,</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#a0dcdf0d091b26a2cc31824179dcb7070a458b9dcc0921f46b1192427426d59c10">Choice</a>,</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#a0dcdf0d091b26a2cc31824179dcb7070a27226c864bac7454a8504f8edb15d95b">Boolean</a></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>};</div>
+</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="foldopen" id="foldopen00015" data-start="{" data-end="};">
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1MockParameter.html">   15</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structABDMS2000_1_1MockParameter.html">MockParameter</a> {</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1MockParameter.html#afb232173d5c9001da5c9c1b7e4d82cfb">   16</a></span>    juce::String <a class="code hl_variable" href="structABDMS2000_1_1MockParameter.html#afb232173d5c9001da5c9c1b7e4d82cfb">id</a>;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1MockParameter.html#a14ac0e522e2787def1820ce99aef118b">   17</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="structABDMS2000_1_1MockParameter.html#a14ac0e522e2787def1820ce99aef118b">value</a>;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>};</div>
+</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment"></span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment"> * @brief Minimal mock APVTS for unit testing DSP modules in isolation.</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment"> * Only supports getRawParameterValue and getParameter.</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment"> */</span></div>
+<div class="foldopen" id="foldopen00024" data-start="{" data-end="};">
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MockAPVTS.html">   24</a></span><span class="keyword">class </span><a class="code hl_class" href="classABDMS2000_1_1MockAPVTS.html">MockAPVTS</a> {</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00026" data-start="{" data-end="}">
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MockAPVTS.html#ab338452d3699e3a80bba1506ed0837d5">   26</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1MockAPVTS.html#ab338452d3699e3a80bba1506ed0837d5">addParameter</a>(<span class="keyword">const</span> juce::String&amp; <span class="keywordtype">id</span>, <span class="keywordtype">float</span> defaultValue = 0.0f) {</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        <a class="code hl_variable" href="classABDMS2000_1_1MockAPVTS.html#a83e4cab1f950962d8d144fc41eed4f28">params_</a>.push_back({ id, defaultValue });</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    }</div>
+</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="foldopen" id="foldopen00030" data-start="{" data-end="}">
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MockAPVTS.html#a2cbd3205ae38257713cf427b9c7f130e">   30</a></span>    <span class="keywordtype">float</span>* <a class="code hl_function" href="classABDMS2000_1_1MockAPVTS.html#a2cbd3205ae38257713cf427b9c7f130e">getRawParameterValue</a>(<span class="keyword">const</span> juce::String&amp; <span class="keywordtype">id</span>) {</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; p : <a class="code hl_variable" href="classABDMS2000_1_1MockAPVTS.html#a83e4cab1f950962d8d144fc41eed4f28">params_</a>) {</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>            <span class="keywordflow">if</span> (p.id == <span class="keywordtype">id</span>) <span class="keywordflow">return</span> &amp;p.value;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        }</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        <span class="keywordflow">return</span> &amp;<a class="code hl_variable" href="classABDMS2000_1_1MockAPVTS.html#a84b44d1761c59ac79b58c4ceafa7862c">dummy_</a>;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    }</div>
+</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="foldopen" id="foldopen00037" data-start="{" data-end="}">
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MockAPVTS.html#a8a7abbf3d003da3c30b80d036f20d3a2">   37</a></span>    juce::RangedAudioParameter* <a class="code hl_function" href="classABDMS2000_1_1MockAPVTS.html#a8a7abbf3d003da3c30b80d036f20d3a2">getParameter</a>(<span class="keyword">const</span> juce::String&amp; <span class="keywordtype">id</span>) {</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        <span class="comment">// Return nullptr by default — tests should mock this</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        juce::ignoreUnused(<span class="keywordtype">id</span>);</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    }</div>
+</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="foldopen" id="foldopen00043" data-start="{" data-end="}">
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MockAPVTS.html#a7e4570d695e453533fcc24583eaddebb">   43</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1MockAPVTS.html#a7e4570d695e453533fcc24583eaddebb">setValue</a>(<span class="keyword">const</span> juce::String&amp; <span class="keywordtype">id</span>, <span class="keywordtype">float</span> v) {</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; p : <a class="code hl_variable" href="classABDMS2000_1_1MockAPVTS.html#a83e4cab1f950962d8d144fc41eed4f28">params_</a>) {</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>            <span class="keywordflow">if</span> (p.id == <span class="keywordtype">id</span>) { p.value = v; <span class="keywordflow">return</span>; }</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        }</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    }</div>
+</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MockAPVTS.html#a83e4cab1f950962d8d144fc41eed4f28">   50</a></span>    std::vector&lt;MockParameter&gt; <a class="code hl_variable" href="classABDMS2000_1_1MockAPVTS.html#a83e4cab1f950962d8d144fc41eed4f28">params_</a>;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MockAPVTS.html#a84b44d1761c59ac79b58c4ceafa7862c">   51</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1MockAPVTS.html#a84b44d1761c59ac79b58c4ceafa7862c">dummy_</a>{ 0.0f };</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>};</div>
+</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>} <span class="comment">// namespace ABDMS2000</span></div>
+<div class="ttc" id="aclassABDMS2000_1_1MockAPVTS_html"><div class="ttname"><a href="classABDMS2000_1_1MockAPVTS.html">ABDMS2000::MockAPVTS</a></div><div class="ttdoc">Minimal mock APVTS for unit testing DSP modules in isolation. Only supports getRawParameterValue and ...</div><div class="ttdef"><b>Definition</b> MockAPVTS.h:24</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MockAPVTS_html_a2cbd3205ae38257713cf427b9c7f130e"><div class="ttname"><a href="classABDMS2000_1_1MockAPVTS.html#a2cbd3205ae38257713cf427b9c7f130e">ABDMS2000::MockAPVTS::getRawParameterValue</a></div><div class="ttdeci">float * getRawParameterValue(const juce::String &amp;id)</div><div class="ttdef"><b>Definition</b> MockAPVTS.h:30</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MockAPVTS_html_a7e4570d695e453533fcc24583eaddebb"><div class="ttname"><a href="classABDMS2000_1_1MockAPVTS.html#a7e4570d695e453533fcc24583eaddebb">ABDMS2000::MockAPVTS::setValue</a></div><div class="ttdeci">void setValue(const juce::String &amp;id, float v)</div><div class="ttdef"><b>Definition</b> MockAPVTS.h:43</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MockAPVTS_html_a83e4cab1f950962d8d144fc41eed4f28"><div class="ttname"><a href="classABDMS2000_1_1MockAPVTS.html#a83e4cab1f950962d8d144fc41eed4f28">ABDMS2000::MockAPVTS::params_</a></div><div class="ttdeci">std::vector&lt; MockParameter &gt; params_</div><div class="ttdef"><b>Definition</b> MockAPVTS.h:50</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MockAPVTS_html_a84b44d1761c59ac79b58c4ceafa7862c"><div class="ttname"><a href="classABDMS2000_1_1MockAPVTS.html#a84b44d1761c59ac79b58c4ceafa7862c">ABDMS2000::MockAPVTS::dummy_</a></div><div class="ttdeci">float dummy_</div><div class="ttdef"><b>Definition</b> MockAPVTS.h:51</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MockAPVTS_html_a8a7abbf3d003da3c30b80d036f20d3a2"><div class="ttname"><a href="classABDMS2000_1_1MockAPVTS.html#a8a7abbf3d003da3c30b80d036f20d3a2">ABDMS2000::MockAPVTS::getParameter</a></div><div class="ttdeci">juce::RangedAudioParameter * getParameter(const juce::String &amp;id)</div><div class="ttdef"><b>Definition</b> MockAPVTS.h:37</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MockAPVTS_html_ab338452d3699e3a80bba1506ed0837d5"><div class="ttname"><a href="classABDMS2000_1_1MockAPVTS.html#ab338452d3699e3a80bba1506ed0837d5">ABDMS2000::MockAPVTS::addParameter</a></div><div class="ttdeci">void addParameter(const juce::String &amp;id, float defaultValue=0.0f)</div><div class="ttdef"><b>Definition</b> MockAPVTS.h:26</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html"><div class="ttname"><a href="namespaceABDMS2000.html">ABDMS2000</a></div><div class="ttdef"><b>Definition</b> AppLogger.h:15</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a0dcdf0d091b26a2cc31824179dcb7070"><div class="ttname"><a href="namespaceABDMS2000.html#a0dcdf0d091b26a2cc31824179dcb7070">ABDMS2000::ParamType</a></div><div class="ttdeci">ParamType</div><div class="ttdef"><b>Definition</b> ParameterRegistry.gen.h:15</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a0dcdf0d091b26a2cc31824179dcb7070a27226c864bac7454a8504f8edb15d95b"><div class="ttname"><a href="namespaceABDMS2000.html#a0dcdf0d091b26a2cc31824179dcb7070a27226c864bac7454a8504f8edb15d95b">ABDMS2000::ParamType::Boolean</a></div><div class="ttdeci">@ Boolean</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a0dcdf0d091b26a2cc31824179dcb7070a458b9dcc0921f46b1192427426d59c10"><div class="ttname"><a href="namespaceABDMS2000.html#a0dcdf0d091b26a2cc31824179dcb7070a458b9dcc0921f46b1192427426d59c10">ABDMS2000::ParamType::Choice</a></div><div class="ttdeci">@ Choice</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a0dcdf0d091b26a2cc31824179dcb7070a535863a82f163709557e59e2eb8139a7"><div class="ttname"><a href="namespaceABDMS2000.html#a0dcdf0d091b26a2cc31824179dcb7070a535863a82f163709557e59e2eb8139a7">ABDMS2000::ParamType::Continuous</a></div><div class="ttdeci">@ Continuous</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a0dcdf0d091b26a2cc31824179dcb7070aa0faef0851b4294c06f2b94bb1cb2044"><div class="ttname"><a href="namespaceABDMS2000.html#a0dcdf0d091b26a2cc31824179dcb7070aa0faef0851b4294c06f2b94bb1cb2044">ABDMS2000::ParamType::Integer</a></div><div class="ttdeci">@ Integer</div></div>
+<div class="ttc" id="astructABDMS2000_1_1MockParameter_html"><div class="ttname"><a href="structABDMS2000_1_1MockParameter.html">ABDMS2000::MockParameter</a></div><div class="ttdef"><b>Definition</b> MockAPVTS.h:15</div></div>
+<div class="ttc" id="astructABDMS2000_1_1MockParameter_html_a14ac0e522e2787def1820ce99aef118b"><div class="ttname"><a href="structABDMS2000_1_1MockParameter.html#a14ac0e522e2787def1820ce99aef118b">ABDMS2000::MockParameter::value</a></div><div class="ttdeci">float value</div><div class="ttdef"><b>Definition</b> MockAPVTS.h:17</div></div>
+<div class="ttc" id="astructABDMS2000_1_1MockParameter_html_afb232173d5c9001da5c9c1b7e4d82cfb"><div class="ttname"><a href="structABDMS2000_1_1MockParameter.html#afb232173d5c9001da5c9c1b7e4d82cfb">ABDMS2000::MockParameter::id</a></div><div class="ttdeci">juce::String id</div><div class="ttdef"><b>Definition</b> MockAPVTS.h:16</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

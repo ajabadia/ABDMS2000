@@ -1,0 +1,308 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Mapa de Menús, Parámetros y Valores del Korg MS2000 (Árbol Completo)</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+</div><!-- top -->
+<div><div class="header">
+  <div class="headertitle"><div class="title">Mapa de Menús, Parámetros y Valores del Korg MS2000 (Árbol Completo)</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><p><a class="anchor" id="autotoc_md0"></a> Este documento contiene la estructura oficial de páginas de edición extraída del manual técnico y la implementación MIDI del <b>Korg MS2000 / MS2000R / microKORG</b>. Está estructurado para mapear directamente el árbol de datos (<code>juce::AudioProcessorValueTreeState</code>) del plugin y sincronizar con SysEx y contratos WebUI.</p>
+<hr  />
+<h1><a class="anchor" id="autotoc_md2"></a>
+PARTE 1: VOZ Y SINTETIZADOR</h1>
+<h2><a class="anchor" id="autotoc_md3"></a>
+1. GLOBAL / VOICE (Configuración de la Arquitectura de Voz)</h2>
+<ul>
+<li><b>Voice Assign (Págs. de edición global del parche):</b> Estructura cómo se comportan las voces y los timbres.<ul>
+<li><code>MONO</code> / <code>POLY</code> / <code>UNISON</code></li>
+</ul>
+</li>
+<li><b>Trigger Mode (Comportamiento del teclado):</b><ul>
+<li><code>SINGLE</code> (La envolvente no se redispara en legato) / <code>MULTI</code> (Se redispara siempre en cada pulsación)</li>
+</ul>
+</li>
+<li><b>Voice Mode (Modo de capas/timbres):</b><ul>
+<li><code>SINGLE</code> (1 Timbre, 4 voces) / <code>SPLIT</code> (2 Timbres divididos en el teclado) / <code>DUAL</code> (2 Timbres encapados, 2 voces)</li>
+</ul>
+</li>
+<li><b>Unison Detune (Solo visible si Voice Assign está en UNISON):</b><ul>
+<li><code>0</code> a <code>99</code> (Cents de desafinación entre las voces apiladas)</li>
+</ul>
+</li>
+<li><b>Unison Spread (Solo visible si Voice Assign está en UNISON):</b><ul>
+<li><code>0</code> a <code>127</code> (Apertura estéreo de las voces apiladas)</li>
+</ul>
+</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md4"></a>
+2. PITCH (Afinación y Glide por Timbre)</h2>
+<ul>
+<li><b>Transpose:</b> <code>-24</code> a <code>+24</code> (Desplazamiento por semitonos)</li>
+<li><b>Tune:</b> <code>-50</code> a <code>+50</code> (Afinación fina en cents)</li>
+<li><b>Portamento (Glide):</b> <code>0</code> a <code>127</code> (Tiempo de transición de tono)</li>
+<li><b>Vibrato Intensity (Modulación rápida de pitch por LFO2):</b> <code>-63</code> a <code>+63</code> (Mapeado SysEx <code>0</code> a <code>127</code>, centro en <code>64</code>)</li>
+<li><b>Pitch Bend Range:</b> <code>-12</code> a <code>+12</code> (Rango de la rueda de pitch bend en semitonos)</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md5"></a>
+3. OSC 1 (Oscilador Principal)</h2>
+<ul>
+<li><b>Wave (Algoritmo base):</b><ul>
+<li><code>SAW</code> / <code>PULSE</code> / <code>TRIANGLE</code> / <code>SINE</code> / <code>VOX</code> / <code>DWGS</code> / <code>NOISE</code> / <code>AUDIO IN</code></li>
+</ul>
+</li>
+<li><b>OSC1 Control 1 (Función cambia según la onda elegida):</b> <code>0</code> a <code>127</code><ul>
+<li><em>Si es SAW/TRIANGLE:</em> Modula la forma de onda (Waveform Shaping).</li>
+<li><em>Si es PULSE:</em> Controla el ancho de pulso base (Pulse Width).</li>
+<li><em>Si es SINE:</em> Ajusta la profundidad de la modulación cruzada (Cross Mod Depth).</li>
+<li><em>Si es VOX:</em> Modula el carácter de la formante vocal.</li>
+</ul>
+</li>
+<li><b>OSC1 Control 2 (Sub-parámetro de modulación o selección):</b><ul>
+<li><em>Si la onda es DWGS:</em> Selecciona la forma de onda digital entre <code>0</code> y <code>63</code> (64 ondas DWGS).</li>
+<li><em>Si la onda es PULSE/SAW/TRIANGLE:</em> Permite asignar una fuente para modular automáticamente el Control 1 (<code>LFO1</code>, <code>LFO2</code>, <code>EG1</code>).</li>
+</ul>
+</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md6"></a>
+4. OSC 2 (Oscilador Secundario)</h2>
+<ul>
+<li><b>Wave:</b> <code>SAW</code> / <code>SQUARE</code> / <code>TRIANGLE</code></li>
+<li><b>Modulation Mode (Interacción con OSC1):</b><ul>
+<li><code>OFF</code> / <code>RING</code> (Modulación en anillo) / <code>SYNC</code> (Sincronización dura) / <code>RING+SYNC</code></li>
+</ul>
+</li>
+<li><b>Semitone (Afinación basta):</b> <code>-24</code> a <code>+24</code></li>
+<li><b>Tune (Afinación fina):</b> <code>-50</code> a <code>+50</code></li>
+</ul>
+<h2><a class="anchor" id="autotoc_md7"></a>
+5. MIXER (Mezclador de Señal)</h2>
+<ul>
+<li><b>OSC1 Level:</b> <code>0</code> a <code>127</code></li>
+<li><b>OSC2 Level:</b> <code>0</code> a <code>127</code></li>
+<li><b>Noise Level / Audio In Level:</b> <code>0</code> a <code>127</code></li>
+</ul>
+<hr  />
+<h1><a class="anchor" id="autotoc_md9"></a>
+PARTE 2: FILTRO, AMPLIFICADOR Y ENVOLVENTES</h1>
+<h2><a class="anchor" id="autotoc_md10"></a>
+6. VCF (Filtro Multimodo)</h2>
+<ul>
+<li><b>Type (Tipo de filtro):</b><ul>
+<li><code>24LPF</code> (Paso bajo de 4 polos, -24dB/oct)</li>
+<li><code>12LPF</code> (Paso bajo de 2 polos, -12dB/oct)</li>
+<li><code>12BPF</code> (Paso banda de 2 polos, -12dB/oct)</li>
+<li><code>12HPF</code> (Paso alto de 2 polos, -12dB/oct)</li>
+</ul>
+</li>
+<li><b>Cutoff (Frecuencia de corte):</b> <code>0</code> a <code>127</code> (Mapeo logarítmico calibrado 20Hz a 20kHz).</li>
+<li><b>Resonance (Resonancia):</b> <code>0</code> a <code>127</code> (Entra en auto-oscilación analógica a partir de ~105).</li>
+<li><b>EG1 Intensity (Profundidad de la envolvente 1 hacia el filtro):</b> <code>-63</code> a <code>+63</code> (Mapeado SysEx: <code>0</code> a <code>127</code>, neutro en <code>64</code>).</li>
+<li><b>KBD Track (Seguimiento de teclado):</b> <code>-63</code> a <code>+63</code> (Controla cuánto abre o cierra el filtro según la altura de la nota).</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md11"></a>
+7. VCA / AMP (Sección de Amplificación y Distorsión)</h2>
+<ul>
+<li><b>Amp Level (Volumen del timbre):</b> <code>0</code> a <code>127</code></li>
+<li><b>Panpot (Posición estéreo):</b> <code>L64</code> (Todo a la izquierda) a <code>CNT</code> (Centro, valor <code>64</code>) a <code>R63</code> (Todo a la derecha, valor <code>127</code>).</li>
+<li><b>Distortion (Conmutador de saturación analógica):</b> <code>OFF</code> / <code>ON</code></li>
+<li><b>KBD Track (Seguimiento de volumen por teclado):</b> <code>-63</code> a <code>+63</code></li>
+</ul>
+<h2><a class="anchor" id="autotoc_md12"></a>
+8. EG1 &amp; EG2 (Generadores de Envolvente)</h2>
+<p><em>Ambas envolventes (EG1: Filtro/Pitch, EG2: Amplitud) comparten los mismos parámetros y curvas exponenciales calibradas:</em></p><ul>
+<li><b>Attack (Tiempo de ataque):</b> <code>0</code> a <code>127</code> (Curva exponencial invertida, 1ms a 11s).</li>
+<li><b>Decay (Tiempo de decaimiento):</b> <code>0</code> a <code>127</code> (Curva exponencial, 2ms a 20s).</li>
+<li><b>Sustain (Nivel de sostenido):</b> <code>0</code> a <code>127</code> (Nivel lineal 0% a 100%).</li>
+<li><b>Release (Tiempo de relajación):</b> <code>0</code> a <code>127</code> (Curva exponencial, 2ms a 20s).</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md13"></a>
+9. LFO 1 &amp; LFO 2 (Osciladores de Baja Frecuencia)</h2>
+<ul>
+<li><b>LFO1 Wave:</b> <code>SAW</code> / <code>SQUARE</code> / <code>TRIANGLE</code> / <code>S&amp;H</code> (Sample &amp; Hold)</li>
+<li><b>LFO2 Wave:</b> <code>SAW</code> / <code>SQUARE</code> / <code>SINE</code> / <code>S&amp;H</code></li>
+<li><b>Tempo Sync:</b> <code>OFF</code> (Frecuencia libre en Hz) / <code>ON</code> (Sincronizado al reloj del DAW / BPM).</li>
+<li><b>LFO Speed / Sync Frequency:</b><ul>
+<li><em>Si Tempo Sync está en OFF:</em> <code>0</code> a <code>127</code> (Mapea logarítmicamente de 0.01 Hz a 20 Hz).</li>
+<li><em>Si Tempo Sync está en ON:</em> Subdivisiones rítmicas: <code>1/1</code>, <code>3/4</code>, <code>1/2</code>, <code>1/4</code>, <code>1/8</code>, <code>1/16</code>, <code>1/32</code>, etc.</li>
+</ul>
+</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md14"></a>
+Virtual Patch (4 Ranuras de Modulación Matricial)</h2>
+<ul>
+<li><b>PATCH [1–4] SOURCE (Orígenes):</b> <code>EG1</code>, <code>EG2</code>, <code>LFO1</code>, <code>LFO2</code>, <code>VELOCITY</code> (Velocidad de pulsación), <code>KBD_TRK</code> (Seguimiento de nota), <code>PITCH_BEND</code>, <code>MOD_WHEEL</code>.</li>
+<li><b>PATCH [1–4] DESTINATION (Destinos):</b> <code>PITCH</code>, <code>OSC2_PITCH</code>, <code>OSC1_CTRL1</code>, <code>CUTOFF</code>, <code>AMP</code>, <code>PAN</code>, <code>LFO2_FREQ</code>.</li>
+<li><b>PATCH [1–4] INTENSITY (Intensidad de modulación bipolar):</b> <code>-63</code> a <code>+63</code> (Mapeado SysEx: <code>0</code> a <code>127</code>, neutro en <code>64</code>).</li>
+</ul>
+<hr  />
+<h1><a class="anchor" id="autotoc_md16"></a>
+PARTE 3: EFECTOS (FX), ECUALIZADOR (EQ) Y VOCODER</h1>
+<h2><a class="anchor" id="autotoc_md17"></a>
+10. CHORUS/MOD FX (Efectos de Modulación)</h2>
+<ul>
+<li><b>Mod FX Type (Tipo de efecto):</b><ul>
+<li><code>CHORUS/FLANGER</code></li>
+<li><code>ENSEMBLE</code></li>
+<li><code>PHASER</code></li>
+</ul>
+</li>
+<li><b>LFO Speed (Velocidad del LFO del efecto):</b> <code>0</code> a <code>127</code></li>
+<li><b>Effect Depth (Profundidad / Intensidad):</b> <code>0</code> a <code>127</code></li>
+<li><b>Feedback (Solo operativo si el tipo es Phaser o Flanger):</b> <code>0</code> a <code>127</code></li>
+</ul>
+<h2><a class="anchor" id="autotoc_md18"></a>
+11. DELAY FX (Efectos de Retardo Maestro)</h2>
+<ul>
+<li><b>Delay Type (Tipo de Delay):</b><ul>
+<li><code>STEREO DELAY</code> (Retardo estéreo paralelo)</li>
+<li><code>CROSS DELAY</code> (Efecto ping-pong alternado)</li>
+<li><code>L/R DELAY</code> (Tiempos independientes izquierda/derecha)</li>
+</ul>
+</li>
+<li><b>Tempo Sync:</b><ul>
+<li><code>OFF</code> (Tiempo libre manual)</li>
+<li><code>ON</code> (Sincronizado al reloj del sistema o reloj MIDI del DAW)</li>
+</ul>
+</li>
+<li><b>Delay Time / Sync Time:</b><ul>
+<li><em>Si Tempo Sync está en OFF:</em> <code>0</code> a <code>127</code> (Mapeado de ~1ms a 1400ms).</li>
+<li><em>Si Tempo Sync está en ON:</em> Valores rítmicos indexados (<code>1/32</code>, <code>1/16</code>, <code>1/16P</code> [Puntillo], <code>1/8T</code> [Tresillo], <code>1/8</code>, <code>1/4</code>, <code>1/2</code>, <code>1/1</code>, etc.).</li>
+</ul>
+</li>
+<li><b>Delay Depth (Volumen / Mix de las repeticiones):</b> <code>0</code> a <code>127</code></li>
+<li><b>Feedback (Cantidad de repeticiones / Retroalimentación):</b> <code>0</code> a <code>127</code></li>
+</ul>
+<h2><a class="anchor" id="autotoc_md19"></a>
+12. EQUALIZER (EQ Paramétrico Global del Timbre)</h2>
+<ul>
+<li><b>Low EQ Freq (Frecuencia de corte de graves):</b><ul>
+<li><code>160Hz</code>, <code>250Hz</code>, <code>400Hz</code>, <code>600Hz</code></li>
+</ul>
+</li>
+<li><b>Low EQ Gain (Ganancia de graves):</b><ul>
+<li><code>-12</code> a <code>+12</code> (Mapeado SysEx: <code>0</code> a <code>127</code>, neutro en <code>64</code>).</li>
+</ul>
+</li>
+<li><b>High EQ Freq (Frecuencia de corte de agudos):</b><ul>
+<li><code>4.0kHz</code>, <code>6.0kHz</code>, <code>8.0kHz</code>, <code>12.0kHz</code></li>
+</ul>
+</li>
+<li><b>High EQ Gain (Ganancia de agudos):</b><ul>
+<li><code>-12</code> a <code>+12</code> (Mapeado SysEx: <code>0</code> a <code>127</code>, neutro en <code>64</code>).</li>
+</ul>
+</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md20"></a>
+13. VOCODER (Filtros y Modos Especiales)</h2>
+<p><em>Los siguientes parámetros solo se activan cuando el modo global del sintetizador se conmuta de 'Synth' a 'Vocoder':</em></p><ul>
+<li><b>Vocoder Select (Estructura de enrutamiento):</b> <code>INTERNAL</code> / <code>EXTERNAL</code></li>
+<li><b>Formant Shift (Desplazamiento armónico de formantes):</b><ul>
+<li><code>-2</code>, <code>-1</code>, <code>0</code>, <code>+1</code>, <code>+2</code></li>
+</ul>
+</li>
+<li><b>VCO Level / Carrier In (Nivel de la portadora interna):</b> <code>0</code> a <code>127</code></li>
+<li><b>Audio In Level / Modulator In (Nivel del micrófono/entrada analógica):</b> <code>0</code> a <code>127</code></li>
+<li><b>Gate Sense (Umbral de la puerta de ruido del modulador):</b> <code>0</code> a <code>127</code></li>
+<li><b>HPF Level (Nivel del filtro paso alto para consonantes sibilantes):</b> <code>0</code> a <code>127</code></li>
+<li><b>HPF Gate (Modo de disparo de las consonantes):</b> <code>DISABLE</code> / <code>ENABLE</code></li>
+</ul>
+<hr  />
+<h1><a class="anchor" id="autotoc_md22"></a>
+PARTE 4: SECUENCIADORES Y AJUSTES GLOBALES</h1>
+<h2><a class="anchor" id="autotoc_md23"></a>
+14. MOD SEQUENCE (Secuenciador de Modulación)</h2>
+<p><em>El MS2000 tiene 3 pistas de modulación paralelas (A, B, C) de hasta 16 pasos individuales cada una:</em></p><ul>
+<li><b>Sequence Control (Comportamiento global):</b><ul>
+<li><b>Sequence A/B/C Param (Destino):</b> <code>PITCH</code>, <code>OSC2_PITCH</code>, <code>OSC1_CTRL1</code>, <code>CUTOFF</code>, <code>AMP</code>, <code>PAN</code>, <code>LFO2_FREQ</code>, etc.</li>
+<li><b>Sequence A/B/C Motion (Tipo de transición):</b> <code>STEP</code> (Salto directo por escalones) / <code>SMOOTH</code> (Rampa interpolada).</li>
+<li><b>Sequence Length (Longitud de la secuencia):</b> <code>1</code> a <code>16</code> pasos.</li>
+<li><b>Sequence Mode (Dirección de lectura):</b> <code>FORWARD</code>, <code>BACKWARD</code>, <code>BOUNCE</code>, <code>RANDOM</code>.</li>
+</ul>
+</li>
+<li><b>Step Values (Valores por paso para cada secuencia A, B y C):</b><ul>
+<li><b>Step 1 al Step 16:</b> <code>0</code> a <code>127</code> (Cada paso almacena de forma independiente un entero de 7 bits).</li>
+</ul>
+</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md24"></a>
+15. GLOBAL SETTINGS (Ajustes de Sistema)</h2>
+<p><em>Estos parámetros afectan al comportamiento de todo el dispositivo y no se guardan en el parche, sino en la memoria interna del sistema:</em></p><ul>
+<li><b>Master Tune (Afinación global de referencia):</b> <code>430.0Hz</code> a <code>450.0Hz</code> (Por defecto en <code>440.0Hz</code>).</li>
+<li><b>MIDI Clock (Sincronización de reloj):</b> <code>INTERNAL</code>, <code>EXTERNAL_MIDI</code>, <code>AUTO</code></li>
+<li><b>MIDI Local Control (Desacoplar teclado físico del motor interno):</b> <code>OFF</code> / <code>ON</code></li>
+<li><b>Memory Protect (Protección contra escritura de parches):</b> <code>OFF</code> / <code>ON</code> </li>
+</ul>
+</div></div><!-- contents -->
+</div><!-- PageDoc -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

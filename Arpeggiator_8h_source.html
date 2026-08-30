@@ -1,0 +1,227 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Archivo de código fuente Source/DSP/Sequencer/Arpeggiator.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a class="el" href="dir_28f92771c0af6f341cedd07750149305.html">DSP</a></li><li class="navelem"><a class="el" href="dir_f22db3c5347e9cc6d7c87df2e020db26.html">Sequencer</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle"><div class="title">Arpeggiator.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="Arpeggiator_8h.html">Ir a la documentación de este archivo.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;cstdint&gt;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceABDMS2000.html">ABDMS2000</a> {</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="foldopen" id="foldopen00007" data-start="{" data-end="};">
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="namespaceABDMS2000.html#a60e3bbeecb75743b3cffa5b2789f39b8">    7</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="namespaceABDMS2000.html#a60e3bbeecb75743b3cffa5b2789f39b8">ArpType</a> {</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#a60e3bbeecb75743b3cffa5b2789f39b8a258f49887ef8d14ac268c92b02503aaa">Up</a> = 0,</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#a60e3bbeecb75743b3cffa5b2789f39b8a08a38277b0309070706f6652eeae9a53">Down</a>,</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#a60e3bbeecb75743b3cffa5b2789f39b8a82e31852c570ab2ca765a3c74e9153fd">Alt1</a>,</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#a60e3bbeecb75743b3cffa5b2789f39b8a5d6551c7d1a58f514f8ead1c8c2bcedc">Alt2</a>,</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#a60e3bbeecb75743b3cffa5b2789f39b8a64663f4646781c9c0110838b905daa23">Random</a>,</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#a60e3bbeecb75743b3cffa5b2789f39b8af698f67f5666aff10729d8a1cb1c14d2">Trigger</a></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>};</div>
+</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
+<div class="foldopen" id="foldopen00016" data-start="{" data-end="};">
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1ArpNoteEvent.html">   16</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structABDMS2000_1_1ArpNoteEvent.html">ArpNoteEvent</a> {</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1ArpNoteEvent.html#ac0e8a6f3d54a084ab77a616089269759">   17</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="structABDMS2000_1_1ArpNoteEvent.html#ac0e8a6f3d54a084ab77a616089269759">midiNote</a>{ 60 };</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1ArpNoteEvent.html#a098a97c45b84e860a499ecfb374354b8">   18</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="structABDMS2000_1_1ArpNoteEvent.html#a098a97c45b84e860a499ecfb374354b8">velocity</a>{ 0.8f };</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1ArpNoteEvent.html#a0ef539a3058798dca7706648e50e066a">   19</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="structABDMS2000_1_1ArpNoteEvent.html#a0ef539a3058798dca7706648e50e066a">isNoteOn</a>{ <span class="keyword">true</span> };</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>};</div>
+</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment"></span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment"> * @brief Musical Arpeggiator with Tempo Sync, Octave Multi-Range, and Swing.</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment"> */</span></div>
+<div class="foldopen" id="foldopen00025" data-start="{" data-end="};">
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Arpeggiator.html">   25</a></span><span class="keyword">class </span><a class="code hl_class" href="classABDMS2000_1_1Arpeggiator.html">Arpeggiator</a> {</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Arpeggiator.html#a216461800a4955c0bd2343b5a2fca3c0">   27</a></span>    <a class="code hl_function" href="classABDMS2000_1_1Arpeggiator.html#a216461800a4955c0bd2343b5a2fca3c0">Arpeggiator</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1Arpeggiator.html#ab21601f0ff83aced28ef3e3f4091bb0e">prepare</a>(<span class="keywordtype">double</span> sampleRate) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1Arpeggiator.html#a77550bb665427c10f52ef0da4b4cd6a8">reset</a>() noexcept;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Arpeggiator.html#a17d4bf1eaca34b27e02b9efcacc6d7a1">   32</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1Arpeggiator.html#a17d4bf1eaca34b27e02b9efcacc6d7a1">setEnabled</a>(<span class="keywordtype">bool</span> enabled) noexcept { <a class="code hl_variable" href="classABDMS2000_1_1Arpeggiator.html#a3441ab4be1f4ae1f576bcc4d6daacb69">enabled_</a> = enabled; }</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Arpeggiator.html#a6c324a2b475793d8babfa1ba67dc9291">   33</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classABDMS2000_1_1Arpeggiator.html#a6c324a2b475793d8babfa1ba67dc9291">isEnabled</a>() const noexcept { <span class="keywordflow">return</span> <a class="code hl_variable" href="classABDMS2000_1_1Arpeggiator.html#a3441ab4be1f4ae1f576bcc4d6daacb69">enabled_</a>; }</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Arpeggiator.html#aa426a1e33ec896722a754c194215c22c">   35</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1Arpeggiator.html#aa426a1e33ec896722a754c194215c22c">setType</a>(<a class="code hl_enumeration" href="namespaceABDMS2000.html#a60e3bbeecb75743b3cffa5b2789f39b8">ArpType</a> type) <span class="keyword">noexcept</span> { <a class="code hl_variable" href="classABDMS2000_1_1Arpeggiator.html#aebc559f999d9df1f83fa8d11265cd2e4">type_</a> = type; }</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1Arpeggiator.html#a02359c30021cc5f2c797cf7062db50ee">setOctaveRange</a>(<span class="keywordtype">int</span> octaves1to4) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1Arpeggiator.html#a63d04dbd65307fdaed3c6ca57b3fc993">setGateTime</a>(<span class="keywordtype">float</span> gate0to1) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1Arpeggiator.html#a9cc10a4075566eb8105096dd26dde44d">setTempoBPM</a>(<span class="keywordtype">float</span> bpm) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="comment">// Tempo Sync resolution: index 0..15 (MS2000 SysEx canonical)</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="comment">// 0=1/48, 3=1/16, 7=1/4, 11=1/1, 15=4/1</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1Arpeggiator.html#a8080ccc0255e4688928dcad2e02c8e84">setSyncResolution</a>(<span class="keywordtype">int</span> idx) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keyword">static</span> <span class="keywordtype">float</span> <a class="code hl_function" href="classABDMS2000_1_1Arpeggiator.html#a5284f51774982fe2e77b2738ecb93a2a">syncResolutionToStepsPerBeat</a>(<span class="keywordtype">int</span> idx) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1Arpeggiator.html#a537ee9ee843df10576dd15b8f8fc4c71">setLatch</a>(<span class="keywordtype">bool</span> latch) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Arpeggiator.html#a7cc3ddd0326d0bebe66c7baa404a205d">   45</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1Arpeggiator.html#a7cc3ddd0326d0bebe66c7baa404a205d">setKeySync</a>(<span class="keywordtype">bool</span> keySync) <span class="keyword">noexcept</span> { <a class="code hl_variable" href="classABDMS2000_1_1Arpeggiator.html#a8f9757fa4432ac17df9d52fcb61335b8">keySync_</a> = keySync; }</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1Arpeggiator.html#aad76eddc67c6282fc0c9824b59d8087d">noteOn</a>(<span class="keywordtype">int</span> midiNote, <span class="keywordtype">float</span> velocity) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1Arpeggiator.html#ac35e9afe172e1be3900cdfaee462bd64">noteOff</a>(<span class="keywordtype">int</span> midiNote) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1Arpeggiator.html#a413354f48563fa5fdecae9e2d14bb674">allNotesOff</a>() noexcept;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="comment">// Check if a note should be triggered or released at current sample step</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classABDMS2000_1_1Arpeggiator.html#abb893acb91ae5283992b9a60037c80f2">processStep</a>(<span class="keywordtype">int</span> numSamples, std::vector&lt;<a class="code hl_struct" href="structABDMS2000_1_1ArpNoteEvent.html">ArpNoteEvent</a>&gt;&amp; outEvents) noexcept;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>private:</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Arpeggiator.html#a3f20417bd4729282e7cda70b0d246010">   55</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="classABDMS2000_1_1Arpeggiator.html#a3f20417bd4729282e7cda70b0d246010">sampleRate_</a>{ 44100.0 };</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Arpeggiator.html#a3441ab4be1f4ae1f576bcc4d6daacb69">   56</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="classABDMS2000_1_1Arpeggiator.html#a3441ab4be1f4ae1f576bcc4d6daacb69">enabled_</a>{ <span class="keyword">false</span> };</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Arpeggiator.html#aebc559f999d9df1f83fa8d11265cd2e4">   57</a></span>    <a class="code hl_enumeration" href="namespaceABDMS2000.html#a60e3bbeecb75743b3cffa5b2789f39b8">ArpType</a> <a class="code hl_variable" href="classABDMS2000_1_1Arpeggiator.html#aebc559f999d9df1f83fa8d11265cd2e4">type_</a>{ <a class="code hl_enumvalue" href="namespaceABDMS2000.html#a60e3bbeecb75743b3cffa5b2789f39b8a258f49887ef8d14ac268c92b02503aaa">ArpType::Up</a> };</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Arpeggiator.html#a59bd398ec56399865ee315e38bcf8931">   58</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="classABDMS2000_1_1Arpeggiator.html#a59bd398ec56399865ee315e38bcf8931">octaveRange_</a>{ 1 };</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Arpeggiator.html#aafa11f9cb712acddf2851bab241c090f">   59</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1Arpeggiator.html#aafa11f9cb712acddf2851bab241c090f">gateTime_</a>{ 0.8f };</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Arpeggiator.html#a129905cac57e1d8548d9994189f00c83">   60</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1Arpeggiator.html#a129905cac57e1d8548d9994189f00c83">bpm_</a>{ 120.0f };</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Arpeggiator.html#a9254e56799b0775e3e7a6c32a489f0df">   61</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="classABDMS2000_1_1Arpeggiator.html#a9254e56799b0775e3e7a6c32a489f0df">latch_</a>{ <span class="keyword">false</span> };</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Arpeggiator.html#a8f9757fa4432ac17df9d52fcb61335b8">   62</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="classABDMS2000_1_1Arpeggiator.html#a8f9757fa4432ac17df9d52fcb61335b8">keySync_</a>{ <span class="keyword">true</span> };</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Arpeggiator.html#abc3b73f521570f372168d6b85244f9a6">   63</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="classABDMS2000_1_1Arpeggiator.html#abc3b73f521570f372168d6b85244f9a6">physicallyHeldCount_</a>{ 0 };</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Arpeggiator.html#ae0e9460e9ff41f293e2ee3715cf76d6e">   65</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1Arpeggiator.html#ae0e9460e9ff41f293e2ee3715cf76d6e">syncStepsPerBeat_</a>{ 16.0f }; <span class="comment">// Default: 1/16 (16 steps per beat)</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Arpeggiator.html#a0a38ab149f05a8f4ef5fc5f46bb8b7a0">   66</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="classABDMS2000_1_1Arpeggiator.html#a0a38ab149f05a8f4ef5fc5f46bb8b7a0">samplesPerStep_</a>{ 5512.5 };</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Arpeggiator.html#a82b0d19531736749f9c74cb1dd62c367">   67</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="classABDMS2000_1_1Arpeggiator.html#a82b0d19531736749f9c74cb1dd62c367">stepSampleCounter_</a>{ 0.0 };</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Arpeggiator.html#a6aa4a71112878a0d3e2c1ff6728c59c8">   68</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="classABDMS2000_1_1Arpeggiator.html#a6aa4a71112878a0d3e2c1ff6728c59c8">currentNoteActive_</a>{ <span class="keyword">false</span> };</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Arpeggiator.html#a80c65746e5673748bce453cd9744a19f">   69</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="classABDMS2000_1_1Arpeggiator.html#a80c65746e5673748bce453cd9744a19f">currentPlayingNote_</a>{ -1 };</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Arpeggiator.html#a3b16eddf9b3599d64daf0508d173f5ba">   71</a></span>    std::vector&lt;int&gt; <a class="code hl_variable" href="classABDMS2000_1_1Arpeggiator.html#a3b16eddf9b3599d64daf0508d173f5ba">heldNotes_</a>;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Arpeggiator.html#a3d82fe27d87476d7885d8c9af9312129">   72</a></span>    std::vector&lt;int&gt; <a class="code hl_variable" href="classABDMS2000_1_1Arpeggiator.html#a3d82fe27d87476d7885d8c9af9312129">generatedPattern_</a>;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Arpeggiator.html#a692606042958f3c779dbda045cfec0aa">   73</a></span>    <span class="keywordtype">size_t</span> <a class="code hl_variable" href="classABDMS2000_1_1Arpeggiator.html#a692606042958f3c779dbda045cfec0aa">patternIndex_</a>{ 0 };</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Arpeggiator.html#a1bdf3c2de36ecd5bdaf9286d844a1f50">   74</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="classABDMS2000_1_1Arpeggiator.html#a1bdf3c2de36ecd5bdaf9286d844a1f50">patternDirection_</a>{ <span class="keyword">true</span> }; <span class="comment">// true = up, false = down</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1Arpeggiator.html#ac15bb089b2fc624a2b1ddd57359980ee">   76</a></span>    uint32_t <a class="code hl_variable" href="classABDMS2000_1_1Arpeggiator.html#ac15bb089b2fc624a2b1ddd57359980ee">rngState_</a>{ 0x56781234 };</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1Arpeggiator.html#ab2b892de13652448610e24c42018947d">rebuildPattern</a>() noexcept;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>};</div>
+</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>} <span class="comment">// namespace ABDMS2000</span></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html">ABDMS2000::Arpeggiator</a></div><div class="ttdoc">Musical Arpeggiator with Tempo Sync, Octave Multi-Range, and Swing.</div><div class="ttdef"><b>Definition</b> Arpeggiator.h:25</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_a02359c30021cc5f2c797cf7062db50ee"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#a02359c30021cc5f2c797cf7062db50ee">ABDMS2000::Arpeggiator::setOctaveRange</a></div><div class="ttdeci">void setOctaveRange(int octaves1to4) noexcept</div><div class="ttdef"><b>Definition</b> Arpeggiator.cpp:66</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_a0a38ab149f05a8f4ef5fc5f46bb8b7a0"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#a0a38ab149f05a8f4ef5fc5f46bb8b7a0">ABDMS2000::Arpeggiator::samplesPerStep_</a></div><div class="ttdeci">double samplesPerStep_</div><div class="ttdef"><b>Definition</b> Arpeggiator.h:66</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_a129905cac57e1d8548d9994189f00c83"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#a129905cac57e1d8548d9994189f00c83">ABDMS2000::Arpeggiator::bpm_</a></div><div class="ttdeci">float bpm_</div><div class="ttdef"><b>Definition</b> Arpeggiator.h:60</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_a17d4bf1eaca34b27e02b9efcacc6d7a1"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#a17d4bf1eaca34b27e02b9efcacc6d7a1">ABDMS2000::Arpeggiator::setEnabled</a></div><div class="ttdeci">void setEnabled(bool enabled) noexcept</div><div class="ttdef"><b>Definition</b> Arpeggiator.h:32</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_a1bdf3c2de36ecd5bdaf9286d844a1f50"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#a1bdf3c2de36ecd5bdaf9286d844a1f50">ABDMS2000::Arpeggiator::patternDirection_</a></div><div class="ttdeci">bool patternDirection_</div><div class="ttdef"><b>Definition</b> Arpeggiator.h:74</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_a216461800a4955c0bd2343b5a2fca3c0"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#a216461800a4955c0bd2343b5a2fca3c0">ABDMS2000::Arpeggiator::Arpeggiator</a></div><div class="ttdeci">Arpeggiator()=default</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_a3441ab4be1f4ae1f576bcc4d6daacb69"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#a3441ab4be1f4ae1f576bcc4d6daacb69">ABDMS2000::Arpeggiator::enabled_</a></div><div class="ttdeci">bool enabled_</div><div class="ttdef"><b>Definition</b> Arpeggiator.h:56</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_a3b16eddf9b3599d64daf0508d173f5ba"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#a3b16eddf9b3599d64daf0508d173f5ba">ABDMS2000::Arpeggiator::heldNotes_</a></div><div class="ttdeci">std::vector&lt; int &gt; heldNotes_</div><div class="ttdef"><b>Definition</b> Arpeggiator.h:71</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_a3d82fe27d87476d7885d8c9af9312129"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#a3d82fe27d87476d7885d8c9af9312129">ABDMS2000::Arpeggiator::generatedPattern_</a></div><div class="ttdeci">std::vector&lt; int &gt; generatedPattern_</div><div class="ttdef"><b>Definition</b> Arpeggiator.h:72</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_a3f20417bd4729282e7cda70b0d246010"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#a3f20417bd4729282e7cda70b0d246010">ABDMS2000::Arpeggiator::sampleRate_</a></div><div class="ttdeci">double sampleRate_</div><div class="ttdef"><b>Definition</b> Arpeggiator.h:55</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_a413354f48563fa5fdecae9e2d14bb674"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#a413354f48563fa5fdecae9e2d14bb674">ABDMS2000::Arpeggiator::allNotesOff</a></div><div class="ttdeci">void allNotesOff() noexcept</div><div class="ttdef"><b>Definition</b> Arpeggiator.cpp:132</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_a5284f51774982fe2e77b2738ecb93a2a"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#a5284f51774982fe2e77b2738ecb93a2a">ABDMS2000::Arpeggiator::syncResolutionToStepsPerBeat</a></div><div class="ttdeci">static float syncResolutionToStepsPerBeat(int idx) noexcept</div><div class="ttdef"><b>Definition</b> Arpeggiator.cpp:30</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_a537ee9ee843df10576dd15b8f8fc4c71"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#a537ee9ee843df10576dd15b8f8fc4c71">ABDMS2000::Arpeggiator::setLatch</a></div><div class="ttdeci">void setLatch(bool latch) noexcept</div><div class="ttdef"><b>Definition</b> Arpeggiator.cpp:36</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_a59bd398ec56399865ee315e38bcf8931"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#a59bd398ec56399865ee315e38bcf8931">ABDMS2000::Arpeggiator::octaveRange_</a></div><div class="ttdeci">int octaveRange_</div><div class="ttdef"><b>Definition</b> Arpeggiator.h:58</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_a63d04dbd65307fdaed3c6ca57b3fc993"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#a63d04dbd65307fdaed3c6ca57b3fc993">ABDMS2000::Arpeggiator::setGateTime</a></div><div class="ttdeci">void setGateTime(float gate0to1) noexcept</div><div class="ttdef"><b>Definition</b> Arpeggiator.cpp:72</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_a692606042958f3c779dbda045cfec0aa"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#a692606042958f3c779dbda045cfec0aa">ABDMS2000::Arpeggiator::patternIndex_</a></div><div class="ttdeci">size_t patternIndex_</div><div class="ttdef"><b>Definition</b> Arpeggiator.h:73</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_a6aa4a71112878a0d3e2c1ff6728c59c8"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#a6aa4a71112878a0d3e2c1ff6728c59c8">ABDMS2000::Arpeggiator::currentNoteActive_</a></div><div class="ttdeci">bool currentNoteActive_</div><div class="ttdef"><b>Definition</b> Arpeggiator.h:68</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_a6c324a2b475793d8babfa1ba67dc9291"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#a6c324a2b475793d8babfa1ba67dc9291">ABDMS2000::Arpeggiator::isEnabled</a></div><div class="ttdeci">bool isEnabled() const noexcept</div><div class="ttdef"><b>Definition</b> Arpeggiator.h:33</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_a77550bb665427c10f52ef0da4b4cd6a8"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#a77550bb665427c10f52ef0da4b4cd6a8">ABDMS2000::Arpeggiator::reset</a></div><div class="ttdeci">void reset() noexcept</div><div class="ttdef"><b>Definition</b> Arpeggiator.cpp:57</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_a7cc3ddd0326d0bebe66c7baa404a205d"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#a7cc3ddd0326d0bebe66c7baa404a205d">ABDMS2000::Arpeggiator::setKeySync</a></div><div class="ttdeci">void setKeySync(bool keySync) noexcept</div><div class="ttdef"><b>Definition</b> Arpeggiator.h:45</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_a8080ccc0255e4688928dcad2e02c8e84"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#a8080ccc0255e4688928dcad2e02c8e84">ABDMS2000::Arpeggiator::setSyncResolution</a></div><div class="ttdeci">void setSyncResolution(int idx) noexcept</div><div class="ttdef"><b>Definition</b> Arpeggiator.cpp:85</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_a80c65746e5673748bce453cd9744a19f"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#a80c65746e5673748bce453cd9744a19f">ABDMS2000::Arpeggiator::currentPlayingNote_</a></div><div class="ttdeci">int currentPlayingNote_</div><div class="ttdef"><b>Definition</b> Arpeggiator.h:69</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_a82b0d19531736749f9c74cb1dd62c367"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#a82b0d19531736749f9c74cb1dd62c367">ABDMS2000::Arpeggiator::stepSampleCounter_</a></div><div class="ttdeci">double stepSampleCounter_</div><div class="ttdef"><b>Definition</b> Arpeggiator.h:67</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_a8f9757fa4432ac17df9d52fcb61335b8"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#a8f9757fa4432ac17df9d52fcb61335b8">ABDMS2000::Arpeggiator::keySync_</a></div><div class="ttdeci">bool keySync_</div><div class="ttdef"><b>Definition</b> Arpeggiator.h:62</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_a9254e56799b0775e3e7a6c32a489f0df"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#a9254e56799b0775e3e7a6c32a489f0df">ABDMS2000::Arpeggiator::latch_</a></div><div class="ttdeci">bool latch_</div><div class="ttdef"><b>Definition</b> Arpeggiator.h:61</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_a9cc10a4075566eb8105096dd26dde44d"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#a9cc10a4075566eb8105096dd26dde44d">ABDMS2000::Arpeggiator::setTempoBPM</a></div><div class="ttdeci">void setTempoBPM(float bpm) noexcept</div><div class="ttdef"><b>Definition</b> Arpeggiator.cpp:77</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_aa426a1e33ec896722a754c194215c22c"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#aa426a1e33ec896722a754c194215c22c">ABDMS2000::Arpeggiator::setType</a></div><div class="ttdeci">void setType(ArpType type) noexcept</div><div class="ttdef"><b>Definition</b> Arpeggiator.h:35</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_aad76eddc67c6282fc0c9824b59d8087d"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#aad76eddc67c6282fc0c9824b59d8087d">ABDMS2000::Arpeggiator::noteOn</a></div><div class="ttdeci">void noteOn(int midiNote, float velocity) noexcept</div><div class="ttdef"><b>Definition</b> Arpeggiator.cpp:92</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_aafa11f9cb712acddf2851bab241c090f"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#aafa11f9cb712acddf2851bab241c090f">ABDMS2000::Arpeggiator::gateTime_</a></div><div class="ttdeci">float gateTime_</div><div class="ttdef"><b>Definition</b> Arpeggiator.h:59</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_ab21601f0ff83aced28ef3e3f4091bb0e"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#ab21601f0ff83aced28ef3e3f4091bb0e">ABDMS2000::Arpeggiator::prepare</a></div><div class="ttdeci">void prepare(double sampleRate) noexcept</div><div class="ttdef"><b>Definition</b> Arpeggiator.cpp:50</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_ab2b892de13652448610e24c42018947d"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#ab2b892de13652448610e24c42018947d">ABDMS2000::Arpeggiator::rebuildPattern</a></div><div class="ttdeci">void rebuildPattern() noexcept</div><div class="ttdef"><b>Definition</b> Arpeggiator.cpp:140</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_abb893acb91ae5283992b9a60037c80f2"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#abb893acb91ae5283992b9a60037c80f2">ABDMS2000::Arpeggiator::processStep</a></div><div class="ttdeci">bool processStep(int numSamples, std::vector&lt; ArpNoteEvent &gt; &amp;outEvents) noexcept</div><div class="ttdef"><b>Definition</b> Arpeggiator.cpp:159</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_abc3b73f521570f372168d6b85244f9a6"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#abc3b73f521570f372168d6b85244f9a6">ABDMS2000::Arpeggiator::physicallyHeldCount_</a></div><div class="ttdeci">int physicallyHeldCount_</div><div class="ttdef"><b>Definition</b> Arpeggiator.h:63</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_ac15bb089b2fc624a2b1ddd57359980ee"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#ac15bb089b2fc624a2b1ddd57359980ee">ABDMS2000::Arpeggiator::rngState_</a></div><div class="ttdeci">uint32_t rngState_</div><div class="ttdef"><b>Definition</b> Arpeggiator.h:76</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_ac35e9afe172e1be3900cdfaee462bd64"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#ac35e9afe172e1be3900cdfaee462bd64">ABDMS2000::Arpeggiator::noteOff</a></div><div class="ttdeci">void noteOff(int midiNote) noexcept</div><div class="ttdef"><b>Definition</b> Arpeggiator.cpp:117</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_ae0e9460e9ff41f293e2ee3715cf76d6e"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#ae0e9460e9ff41f293e2ee3715cf76d6e">ABDMS2000::Arpeggiator::syncStepsPerBeat_</a></div><div class="ttdeci">float syncStepsPerBeat_</div><div class="ttdef"><b>Definition</b> Arpeggiator.h:65</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Arpeggiator_html_aebc559f999d9df1f83fa8d11265cd2e4"><div class="ttname"><a href="classABDMS2000_1_1Arpeggiator.html#aebc559f999d9df1f83fa8d11265cd2e4">ABDMS2000::Arpeggiator::type_</a></div><div class="ttdeci">ArpType type_</div><div class="ttdef"><b>Definition</b> Arpeggiator.h:57</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html"><div class="ttname"><a href="namespaceABDMS2000.html">ABDMS2000</a></div><div class="ttdef"><b>Definition</b> AppLogger.h:15</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a60e3bbeecb75743b3cffa5b2789f39b8"><div class="ttname"><a href="namespaceABDMS2000.html#a60e3bbeecb75743b3cffa5b2789f39b8">ABDMS2000::ArpType</a></div><div class="ttdeci">ArpType</div><div class="ttdef"><b>Definition</b> Arpeggiator.h:7</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a60e3bbeecb75743b3cffa5b2789f39b8a08a38277b0309070706f6652eeae9a53"><div class="ttname"><a href="namespaceABDMS2000.html#a60e3bbeecb75743b3cffa5b2789f39b8a08a38277b0309070706f6652eeae9a53">ABDMS2000::ArpType::Down</a></div><div class="ttdeci">@ Down</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a60e3bbeecb75743b3cffa5b2789f39b8a258f49887ef8d14ac268c92b02503aaa"><div class="ttname"><a href="namespaceABDMS2000.html#a60e3bbeecb75743b3cffa5b2789f39b8a258f49887ef8d14ac268c92b02503aaa">ABDMS2000::ArpType::Up</a></div><div class="ttdeci">@ Up</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a60e3bbeecb75743b3cffa5b2789f39b8a5d6551c7d1a58f514f8ead1c8c2bcedc"><div class="ttname"><a href="namespaceABDMS2000.html#a60e3bbeecb75743b3cffa5b2789f39b8a5d6551c7d1a58f514f8ead1c8c2bcedc">ABDMS2000::ArpType::Alt2</a></div><div class="ttdeci">@ Alt2</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a60e3bbeecb75743b3cffa5b2789f39b8a64663f4646781c9c0110838b905daa23"><div class="ttname"><a href="namespaceABDMS2000.html#a60e3bbeecb75743b3cffa5b2789f39b8a64663f4646781c9c0110838b905daa23">ABDMS2000::ArpType::Random</a></div><div class="ttdeci">@ Random</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a60e3bbeecb75743b3cffa5b2789f39b8a82e31852c570ab2ca765a3c74e9153fd"><div class="ttname"><a href="namespaceABDMS2000.html#a60e3bbeecb75743b3cffa5b2789f39b8a82e31852c570ab2ca765a3c74e9153fd">ABDMS2000::ArpType::Alt1</a></div><div class="ttdeci">@ Alt1</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a60e3bbeecb75743b3cffa5b2789f39b8af698f67f5666aff10729d8a1cb1c14d2"><div class="ttname"><a href="namespaceABDMS2000.html#a60e3bbeecb75743b3cffa5b2789f39b8af698f67f5666aff10729d8a1cb1c14d2">ABDMS2000::ArpType::Trigger</a></div><div class="ttdeci">@ Trigger</div></div>
+<div class="ttc" id="astructABDMS2000_1_1ArpNoteEvent_html"><div class="ttname"><a href="structABDMS2000_1_1ArpNoteEvent.html">ABDMS2000::ArpNoteEvent</a></div><div class="ttdef"><b>Definition</b> Arpeggiator.h:16</div></div>
+<div class="ttc" id="astructABDMS2000_1_1ArpNoteEvent_html_a098a97c45b84e860a499ecfb374354b8"><div class="ttname"><a href="structABDMS2000_1_1ArpNoteEvent.html#a098a97c45b84e860a499ecfb374354b8">ABDMS2000::ArpNoteEvent::velocity</a></div><div class="ttdeci">float velocity</div><div class="ttdef"><b>Definition</b> Arpeggiator.h:18</div></div>
+<div class="ttc" id="astructABDMS2000_1_1ArpNoteEvent_html_a0ef539a3058798dca7706648e50e066a"><div class="ttname"><a href="structABDMS2000_1_1ArpNoteEvent.html#a0ef539a3058798dca7706648e50e066a">ABDMS2000::ArpNoteEvent::isNoteOn</a></div><div class="ttdeci">bool isNoteOn</div><div class="ttdef"><b>Definition</b> Arpeggiator.h:19</div></div>
+<div class="ttc" id="astructABDMS2000_1_1ArpNoteEvent_html_ac0e8a6f3d54a084ab77a616089269759"><div class="ttname"><a href="structABDMS2000_1_1ArpNoteEvent.html#ac0e8a6f3d54a084ab77a616089269759">ABDMS2000::ArpNoteEvent::midiNote</a></div><div class="ttdeci">int midiNote</div><div class="ttdef"><b>Definition</b> Arpeggiator.h:17</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Archivo de código fuente Source/Plugin/PluginProcessor.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a class="el" href="dir_1e2b7963a8a8999ee633c134c5eb4ce2.html">Plugin</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle"><div class="title">PluginProcessor.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="PluginProcessor_8h.html">Ir a la documentación de este archivo.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &lt;juce_audio_processors/juce_audio_processors.h&gt;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;../Core/SynthEngine.h&quot;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;../State/ParameterRegistry.gen.h&quot;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;../MIDI/MIDITelemetryManager.h&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceABDMS2000.html">ABDMS2000</a> {</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="foldopen" id="foldopen00010" data-start="{" data-end="};">
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html">   10</a></span><span class="keyword">class </span><a class="code hl_class" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html">ABDMS2000AudioProcessor</a> : <span class="keyword">public</span> juce::AudioProcessor {</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <a class="code hl_function" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#aec5d33ba3eb8ca8f7fe618e37f87c745">ABDMS2000AudioProcessor</a>();</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <a class="code hl_function" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#a820b709810264332264ab8e628d3e071">~ABDMS2000AudioProcessor</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#a66264fc491a9190c23991f25bd63a426">prepareToPlay</a>(<span class="keywordtype">double</span> sampleRate, <span class="keywordtype">int</span> samplesPerBlock) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#ad8ac8dd57b3ad086372396a1df6abcf2">releaseResources</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#adb81ed8f99129098ce528723b0e0daae">isBusesLayoutSupported</a>(<span class="keyword">const</span> BusesLayout&amp; layouts) <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#a87d9e7542dc7745f1fe1d18511b287de">processBlock</a>(juce::AudioBuffer&lt;float&gt;&amp;, juce::MidiBuffer&amp;) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    juce::AudioProcessorEditor* <a class="code hl_function" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#a1a9483323c21aab5aacca945d05cbef9">createEditor</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#afbe82027286b506c78c741bab73ba8f2">hasEditor</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="keyword">const</span> juce::String <a class="code hl_function" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#a02494e2e250569f5f002856896afa186">getName</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#aee3405946be1f933cc609af013509cbc">acceptsMidi</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#ae984d25d647ba5e0a13ca6445c90df05">producesMidi</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#a78f78d2b8b67b61b73ce04f078285a80">isMidiEffect</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keywordtype">double</span> <a class="code hl_function" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#adcd39d19baa57ade8138b676f14a490c">getTailLengthSeconds</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keywordtype">int</span> <a class="code hl_function" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#af712f07e908f2fa2d926dfe175496630">getNumPrograms</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keywordtype">int</span> <a class="code hl_function" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#aef359cdd22bf4af99808a956508fc49a">getCurrentProgram</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#aa7b59d34a6001d14c9ebce14ad4e6a3c">setCurrentProgram</a>(<span class="keywordtype">int</span> index) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keyword">const</span> juce::String <a class="code hl_function" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#a019d86058a92a99dd6918169aa4a3d0d">getProgramName</a>(<span class="keywordtype">int</span> index) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#a1f2945025ca5b246117a6a1ab1c350e6">changeProgramName</a>(<span class="keywordtype">int</span> index, <span class="keyword">const</span> juce::String&amp; newName) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#ae1a5cc2596f049034c4de09800422108">getStateInformation</a>(juce::MemoryBlock&amp; destData) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#aba7baaaf0cabc2766dfa00f0bb0fc2e3">setStateInformation</a>(<span class="keyword">const</span> <span class="keywordtype">void</span>* data, <span class="keywordtype">int</span> sizeInBytes) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#ae50662a70e7dd942b36c7f4910c1fdc1">   40</a></span>    juce::AudioProcessorValueTreeState&amp; <a class="code hl_function" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#ae50662a70e7dd942b36c7f4910c1fdc1">getAPVTS</a>() noexcept { <span class="keywordflow">return</span> <a class="code hl_variable" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#aabd2888b4ad155757f89f24c651df0aa">apvts_</a>; }</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#ae7cfe176b4ca9faef42661af8067739f">   41</a></span>    <a class="code hl_class" href="classABDMS2000_1_1SynthEngine.html">SynthEngine</a>&amp; <a class="code hl_function" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#ae7cfe176b4ca9faef42661af8067739f">getEngine</a>() noexcept { <span class="keywordflow">return</span> <a class="code hl_variable" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#acc17bf981d23d0e6e64b2cef46b9b119">engine_</a>; }</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keyword">class </span><a class="code hl_class" href="classABDMS2000_1_1MIDITelemetryManager.html">MIDITelemetryManager</a>&amp; <a class="code hl_function" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#a612ce4984003196ac7311170209fcba4">getMIDITelemetry</a>() noexcept;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#a2a0b293e3ae1f113c1db71fc0d06c069">   43</a></span>    class <a class="code hl_class" href="classABDMS2000_1_1SysExManager.html">SysExManager</a>&amp; <a class="code hl_function" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#a2a0b293e3ae1f113c1db71fc0d06c069">getSysExManager</a>() noexcept { <span class="keywordflow">return</span> *<a class="code hl_variable" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#af4f0ac1e9d010e1627527bd4927d00b3">sysexManager_</a>; }</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#aabd2888b4ad155757f89f24c651df0aa">   46</a></span>    juce::AudioProcessorValueTreeState <a class="code hl_variable" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#aabd2888b4ad155757f89f24c651df0aa">apvts_</a>;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#acc17bf981d23d0e6e64b2cef46b9b119">   47</a></span>    <a class="code hl_class" href="classABDMS2000_1_1SynthEngine.html">SynthEngine</a> <a class="code hl_variable" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#acc17bf981d23d0e6e64b2cef46b9b119">engine_</a>;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#aed1241dbee3405e90c8b3120a6ba9515">   48</a></span>    std::unique_ptr&lt;class MIDITelemetryManager&gt; <a class="code hl_variable" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#aed1241dbee3405e90c8b3120a6ba9515">midiTelemetry_</a>;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#af4f0ac1e9d010e1627527bd4927d00b3">   49</a></span>    std::unique_ptr&lt;class SysExManager&gt; <a class="code hl_variable" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#af4f0ac1e9d010e1627527bd4927d00b3">sysexManager_</a>;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(<a class="code hl_class" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html">ABDMS2000AudioProcessor</a>)</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>};</div>
+</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>} <span class="comment">// namespace ABDMS2000</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="ttc" id="aclassABDMS2000_1_1ABDMS2000AudioProcessor_html"><div class="ttname"><a href="classABDMS2000_1_1ABDMS2000AudioProcessor.html">ABDMS2000::ABDMS2000AudioProcessor</a></div><div class="ttdef"><b>Definition</b> PluginProcessor.h:10</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ABDMS2000AudioProcessor_html_a019d86058a92a99dd6918169aa4a3d0d"><div class="ttname"><a href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#a019d86058a92a99dd6918169aa4a3d0d">ABDMS2000::ABDMS2000AudioProcessor::getProgramName</a></div><div class="ttdeci">const juce::String getProgramName(int index) override</div><div class="ttdef"><b>Definition</b> PluginProcessor.cpp:96</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ABDMS2000AudioProcessor_html_a02494e2e250569f5f002856896afa186"><div class="ttname"><a href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#a02494e2e250569f5f002856896afa186">ABDMS2000::ABDMS2000AudioProcessor::getName</a></div><div class="ttdeci">const juce::String getName() const override</div><div class="ttdef"><b>Definition</b> PluginProcessor.cpp:46</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ABDMS2000AudioProcessor_html_a1a9483323c21aab5aacca945d05cbef9"><div class="ttname"><a href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#a1a9483323c21aab5aacca945d05cbef9">ABDMS2000::ABDMS2000AudioProcessor::createEditor</a></div><div class="ttdeci">juce::AudioProcessorEditor * createEditor() override</div><div class="ttdef"><b>Definition</b> PluginProcessor.cpp:177</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ABDMS2000AudioProcessor_html_a1f2945025ca5b246117a6a1ab1c350e6"><div class="ttname"><a href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#a1f2945025ca5b246117a6a1ab1c350e6">ABDMS2000::ABDMS2000AudioProcessor::changeProgramName</a></div><div class="ttdeci">void changeProgramName(int index, const juce::String &amp;newName) override</div><div class="ttdef"><b>Definition</b> PluginProcessor.cpp:105</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ABDMS2000AudioProcessor_html_a2a0b293e3ae1f113c1db71fc0d06c069"><div class="ttname"><a href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#a2a0b293e3ae1f113c1db71fc0d06c069">ABDMS2000::ABDMS2000AudioProcessor::getSysExManager</a></div><div class="ttdeci">class SysExManager &amp; getSysExManager() noexcept</div><div class="ttdef"><b>Definition</b> PluginProcessor.h:43</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ABDMS2000AudioProcessor_html_a612ce4984003196ac7311170209fcba4"><div class="ttname"><a href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#a612ce4984003196ac7311170209fcba4">ABDMS2000::ABDMS2000AudioProcessor::getMIDITelemetry</a></div><div class="ttdeci">class MIDITelemetryManager &amp; getMIDITelemetry() noexcept</div><div class="ttdef"><b>Definition</b> PluginProcessor.cpp:41</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ABDMS2000AudioProcessor_html_a66264fc491a9190c23991f25bd63a426"><div class="ttname"><a href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#a66264fc491a9190c23991f25bd63a426">ABDMS2000::ABDMS2000AudioProcessor::prepareToPlay</a></div><div class="ttdeci">void prepareToPlay(double sampleRate, int samplesPerBlock) override</div><div class="ttdef"><b>Definition</b> PluginProcessor.cpp:115</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ABDMS2000AudioProcessor_html_a78f78d2b8b67b61b73ce04f078285a80"><div class="ttname"><a href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#a78f78d2b8b67b61b73ce04f078285a80">ABDMS2000::ABDMS2000AudioProcessor::isMidiEffect</a></div><div class="ttdeci">bool isMidiEffect() const override</div><div class="ttdef"><b>Definition</b> PluginProcessor.cpp:61</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ABDMS2000AudioProcessor_html_a820b709810264332264ab8e628d3e071"><div class="ttname"><a href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#a820b709810264332264ab8e628d3e071">ABDMS2000::ABDMS2000AudioProcessor::~ABDMS2000AudioProcessor</a></div><div class="ttdeci">~ABDMS2000AudioProcessor() override</div><div class="ttdef"><b>Definition</b> PluginProcessor.cpp:34</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ABDMS2000AudioProcessor_html_a87d9e7542dc7745f1fe1d18511b287de"><div class="ttname"><a href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#a87d9e7542dc7745f1fe1d18511b287de">ABDMS2000::ABDMS2000AudioProcessor::processBlock</a></div><div class="ttdeci">void processBlock(juce::AudioBuffer&lt; float &gt; &amp;, juce::MidiBuffer &amp;) override</div><div class="ttdef"><b>Definition</b> PluginProcessor.cpp:137</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ABDMS2000AudioProcessor_html_aa7b59d34a6001d14c9ebce14ad4e6a3c"><div class="ttname"><a href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#aa7b59d34a6001d14c9ebce14ad4e6a3c">ABDMS2000::ABDMS2000AudioProcessor::setCurrentProgram</a></div><div class="ttdeci">void setCurrentProgram(int index) override</div><div class="ttdef"><b>Definition</b> PluginProcessor.cpp:81</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ABDMS2000AudioProcessor_html_aabd2888b4ad155757f89f24c651df0aa"><div class="ttname"><a href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#aabd2888b4ad155757f89f24c651df0aa">ABDMS2000::ABDMS2000AudioProcessor::apvts_</a></div><div class="ttdeci">juce::AudioProcessorValueTreeState apvts_</div><div class="ttdef"><b>Definition</b> PluginProcessor.h:46</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ABDMS2000AudioProcessor_html_aba7baaaf0cabc2766dfa00f0bb0fc2e3"><div class="ttname"><a href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#aba7baaaf0cabc2766dfa00f0bb0fc2e3">ABDMS2000::ABDMS2000AudioProcessor::setStateInformation</a></div><div class="ttdeci">void setStateInformation(const void *data, int sizeInBytes) override</div><div class="ttdef"><b>Definition</b> PluginProcessor.cpp:203</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ABDMS2000AudioProcessor_html_acc17bf981d23d0e6e64b2cef46b9b119"><div class="ttname"><a href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#acc17bf981d23d0e6e64b2cef46b9b119">ABDMS2000::ABDMS2000AudioProcessor::engine_</a></div><div class="ttdeci">SynthEngine engine_</div><div class="ttdef"><b>Definition</b> PluginProcessor.h:47</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ABDMS2000AudioProcessor_html_ad8ac8dd57b3ad086372396a1df6abcf2"><div class="ttname"><a href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#ad8ac8dd57b3ad086372396a1df6abcf2">ABDMS2000::ABDMS2000AudioProcessor::releaseResources</a></div><div class="ttdeci">void releaseResources() override</div><div class="ttdef"><b>Definition</b> PluginProcessor.cpp:121</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ABDMS2000AudioProcessor_html_adb81ed8f99129098ce528723b0e0daae"><div class="ttname"><a href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#adb81ed8f99129098ce528723b0e0daae">ABDMS2000::ABDMS2000AudioProcessor::isBusesLayoutSupported</a></div><div class="ttdeci">bool isBusesLayoutSupported(const BusesLayout &amp;layouts) const override</div><div class="ttdef"><b>Definition</b> PluginProcessor.cpp:127</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ABDMS2000AudioProcessor_html_adcd39d19baa57ade8138b676f14a490c"><div class="ttname"><a href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#adcd39d19baa57ade8138b676f14a490c">ABDMS2000::ABDMS2000AudioProcessor::getTailLengthSeconds</a></div><div class="ttdeci">double getTailLengthSeconds() const override</div><div class="ttdef"><b>Definition</b> PluginProcessor.cpp:66</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ABDMS2000AudioProcessor_html_ae1a5cc2596f049034c4de09800422108"><div class="ttname"><a href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#ae1a5cc2596f049034c4de09800422108">ABDMS2000::ABDMS2000AudioProcessor::getStateInformation</a></div><div class="ttdeci">void getStateInformation(juce::MemoryBlock &amp;destData) override</div><div class="ttdef"><b>Definition</b> PluginProcessor.cpp:183</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ABDMS2000AudioProcessor_html_ae50662a70e7dd942b36c7f4910c1fdc1"><div class="ttname"><a href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#ae50662a70e7dd942b36c7f4910c1fdc1">ABDMS2000::ABDMS2000AudioProcessor::getAPVTS</a></div><div class="ttdeci">juce::AudioProcessorValueTreeState &amp; getAPVTS() noexcept</div><div class="ttdef"><b>Definition</b> PluginProcessor.h:40</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ABDMS2000AudioProcessor_html_ae7cfe176b4ca9faef42661af8067739f"><div class="ttname"><a href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#ae7cfe176b4ca9faef42661af8067739f">ABDMS2000::ABDMS2000AudioProcessor::getEngine</a></div><div class="ttdeci">SynthEngine &amp; getEngine() noexcept</div><div class="ttdef"><b>Definition</b> PluginProcessor.h:41</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ABDMS2000AudioProcessor_html_ae984d25d647ba5e0a13ca6445c90df05"><div class="ttname"><a href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#ae984d25d647ba5e0a13ca6445c90df05">ABDMS2000::ABDMS2000AudioProcessor::producesMidi</a></div><div class="ttdeci">bool producesMidi() const override</div><div class="ttdef"><b>Definition</b> PluginProcessor.cpp:56</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ABDMS2000AudioProcessor_html_aec5d33ba3eb8ca8f7fe618e37f87c745"><div class="ttname"><a href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#aec5d33ba3eb8ca8f7fe618e37f87c745">ABDMS2000::ABDMS2000AudioProcessor::ABDMS2000AudioProcessor</a></div><div class="ttdeci">ABDMS2000AudioProcessor()</div><div class="ttdef"><b>Definition</b> PluginProcessor.cpp:16</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ABDMS2000AudioProcessor_html_aed1241dbee3405e90c8b3120a6ba9515"><div class="ttname"><a href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#aed1241dbee3405e90c8b3120a6ba9515">ABDMS2000::ABDMS2000AudioProcessor::midiTelemetry_</a></div><div class="ttdeci">std::unique_ptr&lt; class MIDITelemetryManager &gt; midiTelemetry_</div><div class="ttdef"><b>Definition</b> PluginProcessor.h:48</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ABDMS2000AudioProcessor_html_aee3405946be1f933cc609af013509cbc"><div class="ttname"><a href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#aee3405946be1f933cc609af013509cbc">ABDMS2000::ABDMS2000AudioProcessor::acceptsMidi</a></div><div class="ttdeci">bool acceptsMidi() const override</div><div class="ttdef"><b>Definition</b> PluginProcessor.cpp:51</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ABDMS2000AudioProcessor_html_aef359cdd22bf4af99808a956508fc49a"><div class="ttname"><a href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#aef359cdd22bf4af99808a956508fc49a">ABDMS2000::ABDMS2000AudioProcessor::getCurrentProgram</a></div><div class="ttdeci">int getCurrentProgram() override</div><div class="ttdef"><b>Definition</b> PluginProcessor.cpp:76</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ABDMS2000AudioProcessor_html_af4f0ac1e9d010e1627527bd4927d00b3"><div class="ttname"><a href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#af4f0ac1e9d010e1627527bd4927d00b3">ABDMS2000::ABDMS2000AudioProcessor::sysexManager_</a></div><div class="ttdeci">std::unique_ptr&lt; class SysExManager &gt; sysexManager_</div><div class="ttdef"><b>Definition</b> PluginProcessor.h:49</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ABDMS2000AudioProcessor_html_af712f07e908f2fa2d926dfe175496630"><div class="ttname"><a href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#af712f07e908f2fa2d926dfe175496630">ABDMS2000::ABDMS2000AudioProcessor::getNumPrograms</a></div><div class="ttdeci">int getNumPrograms() override</div><div class="ttdef"><b>Definition</b> PluginProcessor.cpp:71</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1ABDMS2000AudioProcessor_html_afbe82027286b506c78c741bab73ba8f2"><div class="ttname"><a href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#afbe82027286b506c78c741bab73ba8f2">ABDMS2000::ABDMS2000AudioProcessor::hasEditor</a></div><div class="ttdeci">bool hasEditor() const override</div><div class="ttdef"><b>Definition</b> PluginProcessor.cpp:171</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MIDITelemetryManager_html"><div class="ttname"><a href="classABDMS2000_1_1MIDITelemetryManager.html">ABDMS2000::MIDITelemetryManager</a></div><div class="ttdoc">Bidirectional MIDI Telemetry Manager. Handles:</div><div class="ttdef"><b>Definition</b> MIDITelemetryManager.h:29</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1SynthEngine_html"><div class="ttname"><a href="classABDMS2000_1_1SynthEngine.html">ABDMS2000::SynthEngine</a></div><div class="ttdef"><b>Definition</b> SynthEngine.h:28</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1SysExManager_html"><div class="ttname"><a href="classABDMS2000_1_1SysExManager.html">ABDMS2000::SysExManager</a></div><div class="ttdef"><b>Definition</b> SysExManager.h:31</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html"><div class="ttname"><a href="namespaceABDMS2000.html">ABDMS2000</a></div><div class="ttdef"><b>Definition</b> AppLogger.h:15</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

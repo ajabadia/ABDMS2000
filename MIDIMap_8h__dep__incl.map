@@ -1,0 +1,29 @@
+<map id="Source/MIDI/MIDIMap.h" name="Source/MIDI/MIDIMap.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="122,5,297,31"/>
+<area shape="rect" id="Node000002" href="$MIDIMap_8cpp.html" title=" " alt="" coords="5,86,195,111"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="183,41,118,88,115,84,180,37"/>
+<area shape="rect" id="Node000003" href="$MIDITelemetryManager_8h.html" title=" " alt="" coords="219,79,418,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="238,36,294,76,291,81,235,41"/>
+<area shape="rect" id="Node000004" href="$MIDITelemetryManager_8cpp.html" title=" " alt="" coords="33,167,231,207"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="267,127,174,169,172,164,264,122"/>
+<area shape="rect" id="Node000005" href="$BridgeActions_8cpp.html" title=" " alt="" coords="397,343,627,368"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="316,133,313,169,315,212,325,255,346,293,363,310,383,323,427,340,426,345,380,327,360,314,342,296,320,257,310,213,308,169,311,132"/>
+<area shape="rect" id="Node000006" href="$PluginEditor_8cpp.html" title=" " alt="" coords="853,416,1072,441"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="432,107,576,125,733,154,807,173,871,196,921,222,940,237,954,253,965,274,972,297,977,343,974,385,968,416,963,415,969,385,972,343,967,298,960,276,950,256,937,241,918,227,869,201,805,178,732,159,575,130,432,113"/>
+<area shape="rect" id="Node000007" href="$PluginProcessor_8cpp.html" title=" " alt="" coords="544,416,787,441"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="314,133,309,167,309,207,309,252,312,271,320,294,332,319,345,336,362,351,385,366,423,384,463,398,544,416,543,421,462,403,421,389,383,370,358,355,341,340,328,321,315,296,306,272,304,252,304,207,304,166,309,132"/>
+<area shape="rect" id="Node000008" href="$PluginProcessor_8h.html" title=" " alt="" coords="526,174,754,199"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="403,120,598,171,597,177,402,125"/>
+<area shape="poly" id="edge8_Node000008_Node000005" title=" " alt="" coords="634,214,618,254,591,296,563,324,533,345,530,340,559,320,587,293,613,252,630,212"/>
+<area shape="poly" id="edge15_Node000008_Node000007" title=" " alt="" coords="645,213,667,416,661,416,640,214"/>
+<area shape="rect" id="Node000009" href="$BridgeActions_8h.html" title=" " alt="" coords="703,262,919,287"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="676,203,789,259,786,264,674,208"/>
+<area shape="rect" id="Node000010" href="$PluginEditor_8h.html" title=" " alt="" coords="739,343,941,368"/>
+<area shape="poly" id="edge14_Node000008_Node000010" title=" " alt="" coords="766,199,867,219,907,234,933,253,939,264,941,274,933,296,921,312,906,326,873,345,870,340,903,322,917,309,928,293,935,274,934,265,929,256,904,239,865,224,765,204"/>
+<area shape="rect" id="Node000011" href="$StandaloneApp_8cpp.html" title=" " alt="" coords="357,255,577,295"/>
+<area shape="poly" id="edge16_Node000008_Node000011" title=" " alt="" coords="606,208,506,257,504,252,603,203"/>
+<area shape="poly" id="edge10_Node000009_Node000005" title=" " alt="" coords="755,293,556,345,555,340,753,288"/>
+<area shape="poly" id="edge11_Node000009_Node000010" title=" " alt="" coords="822,299,838,342,833,343,817,301"/>
+<area shape="poly" id="edge12_Node000010_Node000006" title=" " alt="" coords="873,372,944,413,941,418,870,377"/>
+<area shape="poly" id="edge13_Node000010_Node000007" title=" " alt="" coords="800,376,695,418,693,413,798,371"/>
+</map>

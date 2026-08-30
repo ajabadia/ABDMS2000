@@ -1,0 +1,5 @@
+<map id="ABDMS2000::DelayFX" name="ABDMS2000::DelayFX">
+<area shape="rect" id="Node000001" title="MS2000 / Motorola DSP56362 Delay FX Block. Incorporates:" alt="" coords="19,137,184,163"/>
+<area shape="rect" id="Node000002" href="$classABDMS2000_1_1DSPUtils_1_1LinearSmoother.html" title=" " alt="" coords="5,5,197,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="104,59,104,137,99,137,99,59"/>
+</map>

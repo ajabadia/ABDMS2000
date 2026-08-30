@@ -1,0 +1,22 @@
+var searchData=
+[
+  ['name_0',['name',['../structABDMS2000_1_1WaveEntry.html#ae5583df973fc006fa59c4170d31b7667',1,'ABDMS2000::WaveEntry::name'],['../structABDMS2000_1_1FactoryPreset.html#a9451e84762e8ac172e48a91a07a3d754',1,'ABDMS2000::FactoryPreset::name'],['../structABDMS2000_1_1ParameterMeta.html#ac76d6b5b1cc4cb442a51d5b852d09e46',1,'ABDMS2000::ParameterMeta::name'],['../structABDMS2000_1_1AKWFEntry.html#a77e68caa7cb35eb4bcfe19f8cf5ae650',1,'ABDMS2000::AKWFEntry::name']]],
+  ['name_5fend_1',['NAME_END',['../structABDMS2000_1_1MS2000ProgramData.html#ade06654d9f6fb4628fd2c6adca181bbb',1,'ABDMS2000::MS2000ProgramData']]],
+  ['name_5flength_2',['NAME_LENGTH',['../structABDMS2000_1_1MS2000ProgramData.html#a61abe1dc60dcadc97bce402d9b97457a',1,'ABDMS2000::MS2000ProgramData']]],
+  ['noisegen_5f_3',['noiseGen_',['../classABDMS2000_1_1Voice.html#ad512a8b6bfa97abbc81e2179048d19bb',1,'ABDMS2000::Voice']]],
+  ['noiselevel_4',['noiseLevel',['../structABDMS2000_1_1VoiceParameters.html#a1c469803b371056b3873dddb7dd90c4b',1,'ABDMS2000::VoiceParameters']]],
+  ['noiselevelmod_5',['noiseLevelMod',['../structABDMS2000_1_1PatchModulationOutputs.html#a3a696c02dfe91909292944934bc85114',1,'ABDMS2000::PatchModulationOutputs']]],
+  ['noteage_5f_6',['noteAge_',['../classABDMS2000_1_1Voice.html#af5a38bd537415f18a345be426634be10',1,'ABDMS2000::Voice']]],
+  ['noteontime_7',['noteOnTime',['../structABDMS2000_1_1VoiceSlotState.html#ac728f7f720ab9d9cb1501481357b1aca',1,'ABDMS2000::VoiceSlotState']]],
+  ['nrpnlsb_8',['nrpnlsb',['../structABDMS2000_1_1NRPNMessage.html#a179251aaa3b260986fb27fcbf39a6ef4',1,'ABDMS2000::NRPNMessage::nrpnLSB'],['../structABDMS2000_1_1MIDICCInfo.html#ac1c5ea373d052cf5f52baf38c684830a',1,'ABDMS2000::MIDICCInfo::nrpnLSB']]],
+  ['nrpnmsb_9',['nrpnmsb',['../structABDMS2000_1_1MIDICCInfo.html#ad2f8a2deda512ea77e144f4b7e4d5edf',1,'ABDMS2000::MIDICCInfo::nrpnMSB'],['../structABDMS2000_1_1NRPNMessage.html#af028bd5cc6357943505c35becb105bcd',1,'ABDMS2000::NRPNMessage::nrpnMSB']]],
+  ['nrpnparser_5f_10',['nrpnParser_',['../classABDMS2000_1_1MIDITelemetryManager.html#a3d5e6b183e33abceddd399597581bc4b',1,'ABDMS2000::MIDITelemetryManager']]],
+  ['num_5fakwf_5ftables_11',['NUM_AKWF_TABLES',['../classABDMS2000_1_1DWGSTables.html#a706316d072a7f49f91512dc1e61f486b',1,'ABDMS2000::DWGSTables']]],
+  ['num_5fbands_12',['NUM_BANDS',['../classABDMS2000_1_1Vocoder16Band.html#af0ae9052724f2b8f82c7575955c55022',1,'ABDMS2000::Vocoder16Band']]],
+  ['num_5fhw_5fvoices_13',['NUM_HW_VOICES',['../classABDMS2000_1_1VoiceManager.html#a4c5f4eb62f0f436b35be8b394db35d6d',1,'ABDMS2000::VoiceManager']]],
+  ['num_5fslots_14',['NUM_SLOTS',['../classABDMS2000_1_1VirtualPatchMatrix.html#a5e38368684ac2e4ff04501b0cb22390c',1,'ABDMS2000::VirtualPatchMatrix']]],
+  ['num_5fstandard_5ftables_15',['NUM_STANDARD_TABLES',['../classABDMS2000_1_1DWGSTables.html#aca4d23873e7a15d9533f32532fc3ac8d',1,'ABDMS2000::DWGSTables']]],
+  ['num_5fsteps_16',['NUM_STEPS',['../classABDMS2000_1_1ModSequencer.html#adeca5ba78c43296550a40b97d301c8c6',1,'ABDMS2000::ModSequencer']]],
+  ['num_5ftracks_17',['NUM_TRACKS',['../classABDMS2000_1_1ModSequencer.html#a902e38db12aa2564c5992816fe3ee952',1,'ABDMS2000::ModSequencer']]],
+  ['numwaves_18',['numWaves',['../structABDMS2000_1_1M1FileEntry.html#a318543cf4da1e97392c68878a5d6bcd3',1,'ABDMS2000::M1FileEntry']]]
+];

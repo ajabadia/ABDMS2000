@@ -1,0 +1,266 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Archivo de código fuente Source/Core/VoiceManager.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a class="el" href="dir_1ad6433457b0067ef8f54a4fa85f5c9a.html">Core</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle"><div class="title">VoiceManager.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="VoiceManager_8h.html">Ir a la documentación de este archivo.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &quot;<a class="code" href="Voice_8h.html">Voice.h</a>&quot;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;array&gt;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceABDMS2000.html">ABDMS2000</a> {</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="foldopen" id="foldopen00008" data-start="{" data-end="};">
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="namespaceABDMS2000.html#a28040a5818d8f8b96a3a4c36b1c4b988">    8</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="namespaceABDMS2000.html#a28040a5818d8f8b96a3a4c36b1c4b988">VoiceAssignMode</a> {</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#a28040a5818d8f8b96a3a4c36b1c4b988a5d9b47bd3b65072e0d5daf55f01da086">Mono</a> = 0,</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#a28040a5818d8f8b96a3a4c36b1c4b988a7462cd846ee2e800d33ac6250a8ff4af">Poly</a>,</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#a28040a5818d8f8b96a3a4c36b1c4b988a634a6ceed2dff57f563b54a769e64db9">Unison</a></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>};</div>
+</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="foldopen" id="foldopen00014" data-start="{" data-end="};">
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="namespaceABDMS2000.html#aea9565eccc7efbf2e814ffb602ba19a1">   14</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="namespaceABDMS2000.html#aea9565eccc7efbf2e814ffb602ba19a1">TriggerMode</a> {</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#aea9565eccc7efbf2e814ffb602ba19a1a66ba162102bbf6ae31b522aec561735e">Single</a> = 0, <span class="comment">// Legato (envelopes do not retrigger if another key is held)</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#aea9565eccc7efbf2e814ffb602ba19a1ace7898536dd0e928d1640ee2ad531cc8">Multi</a>       <span class="comment">// Retrigger envelopes on every note press</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>};</div>
+</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="foldopen" id="foldopen00019" data-start="{" data-end="};">
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1VoiceSlotState.html">   19</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structABDMS2000_1_1VoiceSlotState.html">VoiceSlotState</a> {</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1VoiceSlotState.html#a3ae28446c15ae518535dd03f9ad0cf0b">   20</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="structABDMS2000_1_1VoiceSlotState.html#a3ae28446c15ae518535dd03f9ad0cf0b">currentMidiNote</a>{ -1 };</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1VoiceSlotState.html#ac728f7f720ab9d9cb1501481357b1aca">   21</a></span>    uint32_t <a class="code hl_variable" href="structABDMS2000_1_1VoiceSlotState.html#ac728f7f720ab9d9cb1501481357b1aca">noteOnTime</a>{ 0 };</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1VoiceSlotState.html#af4bd1b699602de4b2a55e169470c258f">   22</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="structABDMS2000_1_1VoiceSlotState.html#af4bd1b699602de4b2a55e169470c258f">isKeyPressed</a>{ <span class="keyword">false</span> };</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1VoiceSlotState.html#ab629f337ded45c4b7a5ceac46ad883c5">   23</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="structABDMS2000_1_1VoiceSlotState.html#ab629f337ded45c4b7a5ceac46ad883c5">isHeldByLatch</a>{ <span class="keyword">false</span> };</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1VoiceSlotState.html#adfbba0f420741a4e7a4b3b3cac842659">   24</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="structABDMS2000_1_1VoiceSlotState.html#adfbba0f420741a4e7a4b3b3cac842659">lastFrequencyHz</a>{ 0.0 };</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>};</div>
+</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment"></span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment"> * @brief High-performance Voice Manager matching Korg MS2000 / microKORG hardware specs.</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment"> * Capabilities:</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment"> * - 4-voice authentic hardware polyphony (expandable up to 32 voices in Advanced Mode)</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment"> * - Intelligent MS2000 Voice Stealing:</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment"> *   1. Repeated Note Protection (Re-triggering same voice)</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment"> *   2. Steal Latch/Hold voices where key was released</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment"> *   3. Release Phase Stealing (steals voice closest to silence)</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment"> *   4. FIFO Sustain Stealing (steals oldest held note)</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="comment"> * - Anti-click rapid ramp-down on stolen voices</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment"> * - Portamento Glide: Fingered/Legato in Mono/Unison, Per-Voice Memory Glide in Poly</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment"> * - Hold / Latch buffer support</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment"> */</span></div>
+<div class="foldopen" id="foldopen00041" data-start="{" data-end="};">
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VoiceManager.html">   41</a></span><span class="keyword">class </span><a class="code hl_class" href="classABDMS2000_1_1VoiceManager.html">VoiceManager</a> {</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VoiceManager.html#a4c5f4eb62f0f436b35be8b394db35d6d">   43</a></span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> <a class="code hl_variable" href="classABDMS2000_1_1VoiceManager.html#a4c5f4eb62f0f436b35be8b394db35d6d">NUM_HW_VOICES</a> = 4;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VoiceManager.html#a75cd3b497e5ebce0a5742d725bfdd799">   44</a></span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> <a class="code hl_variable" href="classABDMS2000_1_1VoiceManager.html#a75cd3b497e5ebce0a5742d725bfdd799">MAX_EXPANDED_VOICES</a> = 32;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VoiceManager.html#ae41becd6b622e57c6159232b88708fe3">   46</a></span>    <a class="code hl_function" href="classABDMS2000_1_1VoiceManager.html#ae41becd6b622e57c6159232b88708fe3">VoiceManager</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1VoiceManager.html#a256ab5ef9c53e747a820cb0c9b11fb07">prepare</a>(<span class="keywordtype">double</span> sampleRate) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1VoiceManager.html#accd7a00e4085efe8732aab0927835bc0">reset</a>() noexcept;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="foldopen" id="foldopen00051" data-start="{" data-end="}">
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VoiceManager.html#a92952eb5854863d2eb85dd3ae010ebd7">   51</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1VoiceManager.html#a92952eb5854863d2eb85dd3ae010ebd7">setAssignMode</a>(<a class="code hl_enumeration" href="namespaceABDMS2000.html#a28040a5818d8f8b96a3a4c36b1c4b988">VoiceAssignMode</a> mode) noexcept</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    {</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="classABDMS2000_1_1VoiceManager.html#a92a7bbd0b1e4b5f08f8fd12d03ff3372">assignMode_</a> != mode)</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        {</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>            <a class="code hl_function" href="classABDMS2000_1_1VoiceManager.html#ae942eaf17893be2009494eb7e7d9db64">allNotesOff</a>();</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>            <a class="code hl_variable" href="classABDMS2000_1_1VoiceManager.html#a92a7bbd0b1e4b5f08f8fd12d03ff3372">assignMode_</a> = mode;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        }</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    }</div>
+</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VoiceManager.html#aceceab0150b174147c2e12930fd16b7e">   59</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1VoiceManager.html#aceceab0150b174147c2e12930fd16b7e">setTriggerMode</a>(<a class="code hl_enumeration" href="namespaceABDMS2000.html#aea9565eccc7efbf2e814ffb602ba19a1">TriggerMode</a> mode) <span class="keyword">noexcept</span> { <a class="code hl_variable" href="classABDMS2000_1_1VoiceManager.html#a5eb28727bb999f2dd1e34c6f83bdefab">triggerMode_</a> = mode; }</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VoiceManager.html#a912a10f352028b6cd78e1077f81321a5">   60</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1VoiceManager.html#a912a10f352028b6cd78e1077f81321a5">setUnisonDetune</a>(<span class="keywordtype">float</span> detuneCents) <span class="keyword">noexcept</span> { <a class="code hl_variable" href="classABDMS2000_1_1VoiceManager.html#aee5252147a61fa1a27938ea2a9ff46e2">unisonDetune_</a> = detuneCents; }</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VoiceManager.html#a96d38e1dfe5b48869e57832caea98f32">   61</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1VoiceManager.html#a96d38e1dfe5b48869e57832caea98f32">setUnisonSpread</a>(<span class="keywordtype">float</span> spread0to1) <span class="keyword">noexcept</span> { <a class="code hl_variable" href="classABDMS2000_1_1VoiceManager.html#a09998a33921fc6f22ff6ba256d82b276">unisonSpread_</a> = spread0to1; }</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1VoiceManager.html#a32493a6613dedcb631159239bc8fbc45">setPortamentoTime</a>(<span class="keywordtype">float</span> portamentoTime0to127) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1VoiceManager.html#a4297f9cd743ea35858e078d155932d64">setHoldButtonState</a>(<span class="keywordtype">bool</span> active) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="comment">// Advanced mode polyphony configuration (4..32)</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1VoiceManager.html#a83bc2f18c5db4572163900e3eb5b1b61">setMaxPolyphony</a>(<span class="keywordtype">size_t</span> numVoices) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VoiceManager.html#a5b08fd531098c531c4233fcdfad55dd8">   67</a></span>    <span class="keywordtype">size_t</span> <a class="code hl_function" href="classABDMS2000_1_1VoiceManager.html#a5b08fd531098c531c4233fcdfad55dd8">getMaxPolyphony</a>() const noexcept { <span class="keywordflow">return</span> <a class="code hl_variable" href="classABDMS2000_1_1VoiceManager.html#a9b51df0b7a1b3e77b395b7e3b6c5289b">activeVoiceCapacity_</a>; }</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1VoiceManager.html#aafa6d880762adc8d780952fcfee79baf">noteOn</a>(<span class="keywordtype">int</span> midiNote, <span class="keywordtype">float</span> velocity) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1VoiceManager.html#ace8ebce3d62de8f98aa4e234336c385d">noteOff</a>(<span class="keywordtype">int</span> midiNote) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1VoiceManager.html#ae942eaf17893be2009494eb7e7d9db64">allNotesOff</a>() noexcept;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="comment">// Call once per audio block to apply static parameters to all voices</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1VoiceManager.html#a3ce4ef4ebe149738a5a336938a297de7">applyBlockParams</a>(const <a class="code hl_struct" href="structABDMS2000_1_1VoiceParameters.html">VoiceParameters</a>&amp; params) noexcept;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="comment">// Process one stereo sample across all active voices</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1VoiceManager.html#a41d43c08a515791b124f9b9549f13433">process</a>(<span class="keywordtype">float</span>&amp; leftOut, <span class="keywordtype">float</span>&amp; rightOut, <span class="keywordtype">int</span> diagPoint = 0, <span class="keywordtype">float</span> diagTone = 0.0f) noexcept;</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keywordtype">size_t</span> <a class="code hl_function" href="classABDMS2000_1_1VoiceManager.html#ac00b52b3b4789ca57e80fb464aa5472b">getActiveVoiceCount</a>() const noexcept;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VoiceManager.html#af07d640f12a878a0f1d59555e5306be6">   80</a></span>    const <a class="code hl_class" href="classABDMS2000_1_1Voice.html">Voice</a>&amp; <a class="code hl_function" href="classABDMS2000_1_1VoiceManager.html#af07d640f12a878a0f1d59555e5306be6">getVoice</a>(<span class="keywordtype">size_t</span> index) const noexcept { <span class="keywordflow">return</span> <a class="code hl_variable" href="classABDMS2000_1_1VoiceManager.html#a60dd397578ff51d191b4a3bf686b3675">voices_</a>[index % <a class="code hl_variable" href="classABDMS2000_1_1VoiceManager.html#a75cd3b497e5ebce0a5742d725bfdd799">MAX_EXPANDED_VOICES</a>]; }</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VoiceManager.html#a5c0fd06efb5711bd9fe1ab5df2983b2e">   83</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="classABDMS2000_1_1VoiceManager.html#a5c0fd06efb5711bd9fe1ab5df2983b2e">sampleRate_</a>{ 44100.0 };</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VoiceManager.html#a60dd397578ff51d191b4a3bf686b3675">   84</a></span>    std::array&lt;Voice, MAX_EXPANDED_VOICES&gt; <a class="code hl_variable" href="classABDMS2000_1_1VoiceManager.html#a60dd397578ff51d191b4a3bf686b3675">voices_</a>;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VoiceManager.html#a1d285302b62f01843ee3545f3701d5b4">   85</a></span>    std::array&lt;VoiceSlotState, MAX_EXPANDED_VOICES&gt; <a class="code hl_variable" href="classABDMS2000_1_1VoiceManager.html#a1d285302b62f01843ee3545f3701d5b4">slotStates_</a>;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VoiceManager.html#a9b51df0b7a1b3e77b395b7e3b6c5289b">   87</a></span>    <span class="keywordtype">size_t</span> <a class="code hl_variable" href="classABDMS2000_1_1VoiceManager.html#a9b51df0b7a1b3e77b395b7e3b6c5289b">activeVoiceCapacity_</a>{ <a class="code hl_variable" href="classABDMS2000_1_1VoiceManager.html#a4c5f4eb62f0f436b35be8b394db35d6d">NUM_HW_VOICES</a> };</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VoiceManager.html#a92a7bbd0b1e4b5f08f8fd12d03ff3372">   88</a></span>    <a class="code hl_enumeration" href="namespaceABDMS2000.html#a28040a5818d8f8b96a3a4c36b1c4b988">VoiceAssignMode</a> <a class="code hl_variable" href="classABDMS2000_1_1VoiceManager.html#a92a7bbd0b1e4b5f08f8fd12d03ff3372">assignMode_</a>{ <a class="code hl_enumvalue" href="namespaceABDMS2000.html#a28040a5818d8f8b96a3a4c36b1c4b988a7462cd846ee2e800d33ac6250a8ff4af">VoiceAssignMode::Poly</a> };</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VoiceManager.html#a5eb28727bb999f2dd1e34c6f83bdefab">   89</a></span>    <a class="code hl_enumeration" href="namespaceABDMS2000.html#aea9565eccc7efbf2e814ffb602ba19a1">TriggerMode</a> <a class="code hl_variable" href="classABDMS2000_1_1VoiceManager.html#a5eb28727bb999f2dd1e34c6f83bdefab">triggerMode_</a>{ <a class="code hl_enumvalue" href="namespaceABDMS2000.html#aea9565eccc7efbf2e814ffb602ba19a1ace7898536dd0e928d1640ee2ad531cc8">TriggerMode::Multi</a> };</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VoiceManager.html#aee5252147a61fa1a27938ea2a9ff46e2">   90</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1VoiceManager.html#aee5252147a61fa1a27938ea2a9ff46e2">unisonDetune_</a>{ 10.0f }; <span class="comment">// Cents</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VoiceManager.html#a09998a33921fc6f22ff6ba256d82b276">   91</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1VoiceManager.html#a09998a33921fc6f22ff6ba256d82b276">unisonSpread_</a>{ 0.5f };  <span class="comment">// Stereo width</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VoiceManager.html#a92e34034061435a7ae61044b94c21164">   92</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1VoiceManager.html#a92e34034061435a7ae61044b94c21164">portamentoTimeParam_</a>{ 0.0f }; <span class="comment">// 0..127</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VoiceManager.html#a8388491f75fa9cf214b3726dcc20a414">   93</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1VoiceManager.html#a8388491f75fa9cf214b3726dcc20a414">glideTimeSec_</a>{ 0.0f };</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VoiceManager.html#a33579a3f1a78c62bfd5482a1552dbb1b">   94</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="classABDMS2000_1_1VoiceManager.html#a33579a3f1a78c62bfd5482a1552dbb1b">isHoldActive_</a>{ <span class="keyword">false</span> };</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VoiceManager.html#a44332aeb85cbe72e475dfb8de6dec7ce">   96</a></span>    uint32_t <a class="code hl_variable" href="classABDMS2000_1_1VoiceManager.html#a44332aeb85cbe72e475dfb8de6dec7ce">globalTimeCounter_</a>{ 0 };</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="comment">// Per-block cached params for Unison precomputation</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VoiceManager.html#adf243418097b7cf352dc64986f329fd0">   99</a></span>    <a class="code hl_struct" href="structABDMS2000_1_1VoiceParameters.html">VoiceParameters</a> <a class="code hl_variable" href="classABDMS2000_1_1VoiceManager.html#adf243418097b7cf352dc64986f329fd0">baseBlockParams_</a>;</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="comment">// Key stack for Mono legato</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VoiceManager.html#a2a77647cc5450eaa85253be818b70a51">  102</a></span>    std::vector&lt;int&gt; <a class="code hl_variable" href="classABDMS2000_1_1VoiceManager.html#a2a77647cc5450eaa85253be818b70a51">heldNotesStack_</a>;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1VoiceManager.html#a62788919fd6fd4d9dbed8d99a392d4f8">  103</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="classABDMS2000_1_1VoiceManager.html#a62788919fd6fd4d9dbed8d99a392d4f8">lastMonoNote_</a>{ -1 };</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="keywordtype">int</span> <a class="code hl_function" href="classABDMS2000_1_1VoiceManager.html#a02cb30b8de244ae944203aad63869541">findVoiceToSteal</a>(<span class="keywordtype">int</span> incomingNote) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classABDMS2000_1_1VoiceManager.html#a10cb07dad6faedc435a6b86b8f7085e4">anyKeyPressed</a>() const noexcept;</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1VoiceManager.html#a5ea16700ecf8bb46d3337d4fdcfd3847">releaseVoiceSlot</a>(<span class="keywordtype">size_t</span> index) noexcept;</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>};</div>
+</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>} <span class="comment">// namespace ABDMS2000</span></div>
+<div class="ttc" id="aVoice_8h_html"><div class="ttname"><a href="Voice_8h.html">Voice.h</a></div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html">ABDMS2000::VoiceManager</a></div><div class="ttdoc">High-performance Voice Manager matching Korg MS2000 / microKORG hardware specs.</div><div class="ttdef"><b>Definition</b> VoiceManager.h:41</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_a02cb30b8de244ae944203aad63869541"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#a02cb30b8de244ae944203aad63869541">ABDMS2000::VoiceManager::findVoiceToSteal</a></div><div class="ttdeci">int findVoiceToSteal(int incomingNote) noexcept</div><div class="ttdef"><b>Definition</b> VoiceManager.cpp:80</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_a09998a33921fc6f22ff6ba256d82b276"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#a09998a33921fc6f22ff6ba256d82b276">ABDMS2000::VoiceManager::unisonSpread_</a></div><div class="ttdeci">float unisonSpread_</div><div class="ttdef"><b>Definition</b> VoiceManager.h:91</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_a10cb07dad6faedc435a6b86b8f7085e4"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#a10cb07dad6faedc435a6b86b8f7085e4">ABDMS2000::VoiceManager::anyKeyPressed</a></div><div class="ttdeci">bool anyKeyPressed() const noexcept</div><div class="ttdef"><b>Definition</b> VoiceManager.cpp:62</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_a1d285302b62f01843ee3545f3701d5b4"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#a1d285302b62f01843ee3545f3701d5b4">ABDMS2000::VoiceManager::slotStates_</a></div><div class="ttdeci">std::array&lt; VoiceSlotState, MAX_EXPANDED_VOICES &gt; slotStates_</div><div class="ttdef"><b>Definition</b> VoiceManager.h:85</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_a256ab5ef9c53e747a820cb0c9b11fb07"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#a256ab5ef9c53e747a820cb0c9b11fb07">ABDMS2000::VoiceManager::prepare</a></div><div class="ttdeci">void prepare(double sampleRate) noexcept</div><div class="ttdef"><b>Definition</b> VoiceManager.cpp:8</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_a2a77647cc5450eaa85253be818b70a51"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#a2a77647cc5450eaa85253be818b70a51">ABDMS2000::VoiceManager::heldNotesStack_</a></div><div class="ttdeci">std::vector&lt; int &gt; heldNotesStack_</div><div class="ttdef"><b>Definition</b> VoiceManager.h:102</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_a32493a6613dedcb631159239bc8fbc45"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#a32493a6613dedcb631159239bc8fbc45">ABDMS2000::VoiceManager::setPortamentoTime</a></div><div class="ttdeci">void setPortamentoTime(float portamentoTime0to127) noexcept</div><div class="ttdef"><b>Definition</b> VoiceManager.cpp:33</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_a33579a3f1a78c62bfd5482a1552dbb1b"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#a33579a3f1a78c62bfd5482a1552dbb1b">ABDMS2000::VoiceManager::isHoldActive_</a></div><div class="ttdeci">bool isHoldActive_</div><div class="ttdef"><b>Definition</b> VoiceManager.h:94</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_a3ce4ef4ebe149738a5a336938a297de7"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#a3ce4ef4ebe149738a5a336938a297de7">ABDMS2000::VoiceManager::applyBlockParams</a></div><div class="ttdeci">void applyBlockParams(const VoiceParameters &amp;params) noexcept</div><div class="ttdef"><b>Definition</b> VoiceManager.cpp:292</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_a41d43c08a515791b124f9b9549f13433"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#a41d43c08a515791b124f9b9549f13433">ABDMS2000::VoiceManager::process</a></div><div class="ttdeci">void process(float &amp;leftOut, float &amp;rightOut, int diagPoint=0, float diagTone=0.0f) noexcept</div><div class="ttdef"><b>Definition</b> VoiceManager.cpp:322</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_a4297f9cd743ea35858e078d155932d64"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#a4297f9cd743ea35858e078d155932d64">ABDMS2000::VoiceManager::setHoldButtonState</a></div><div class="ttdeci">void setHoldButtonState(bool active) noexcept</div><div class="ttdef"><b>Definition</b> VoiceManager.cpp:41</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_a44332aeb85cbe72e475dfb8de6dec7ce"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#a44332aeb85cbe72e475dfb8de6dec7ce">ABDMS2000::VoiceManager::globalTimeCounter_</a></div><div class="ttdeci">uint32_t globalTimeCounter_</div><div class="ttdef"><b>Definition</b> VoiceManager.h:96</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_a4c5f4eb62f0f436b35be8b394db35d6d"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#a4c5f4eb62f0f436b35be8b394db35d6d">ABDMS2000::VoiceManager::NUM_HW_VOICES</a></div><div class="ttdeci">static constexpr size_t NUM_HW_VOICES</div><div class="ttdef"><b>Definition</b> VoiceManager.h:43</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_a5b08fd531098c531c4233fcdfad55dd8"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#a5b08fd531098c531c4233fcdfad55dd8">ABDMS2000::VoiceManager::getMaxPolyphony</a></div><div class="ttdeci">size_t getMaxPolyphony() const noexcept</div><div class="ttdef"><b>Definition</b> VoiceManager.h:67</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_a5c0fd06efb5711bd9fe1ab5df2983b2e"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#a5c0fd06efb5711bd9fe1ab5df2983b2e">ABDMS2000::VoiceManager::sampleRate_</a></div><div class="ttdeci">double sampleRate_</div><div class="ttdef"><b>Definition</b> VoiceManager.h:83</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_a5ea16700ecf8bb46d3337d4fdcfd3847"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#a5ea16700ecf8bb46d3337d4fdcfd3847">ABDMS2000::VoiceManager::releaseVoiceSlot</a></div><div class="ttdeci">void releaseVoiceSlot(size_t index) noexcept</div><div class="ttdef"><b>Definition</b> VoiceManager.cpp:71</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_a5eb28727bb999f2dd1e34c6f83bdefab"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#a5eb28727bb999f2dd1e34c6f83bdefab">ABDMS2000::VoiceManager::triggerMode_</a></div><div class="ttdeci">TriggerMode triggerMode_</div><div class="ttdef"><b>Definition</b> VoiceManager.h:89</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_a60dd397578ff51d191b4a3bf686b3675"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#a60dd397578ff51d191b4a3bf686b3675">ABDMS2000::VoiceManager::voices_</a></div><div class="ttdeci">std::array&lt; Voice, MAX_EXPANDED_VOICES &gt; voices_</div><div class="ttdef"><b>Definition</b> VoiceManager.h:84</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_a62788919fd6fd4d9dbed8d99a392d4f8"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#a62788919fd6fd4d9dbed8d99a392d4f8">ABDMS2000::VoiceManager::lastMonoNote_</a></div><div class="ttdeci">int lastMonoNote_</div><div class="ttdef"><b>Definition</b> VoiceManager.h:103</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_a75cd3b497e5ebce0a5742d725bfdd799"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#a75cd3b497e5ebce0a5742d725bfdd799">ABDMS2000::VoiceManager::MAX_EXPANDED_VOICES</a></div><div class="ttdeci">static constexpr size_t MAX_EXPANDED_VOICES</div><div class="ttdef"><b>Definition</b> VoiceManager.h:44</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_a8388491f75fa9cf214b3726dcc20a414"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#a8388491f75fa9cf214b3726dcc20a414">ABDMS2000::VoiceManager::glideTimeSec_</a></div><div class="ttdeci">float glideTimeSec_</div><div class="ttdef"><b>Definition</b> VoiceManager.h:93</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_a83bc2f18c5db4572163900e3eb5b1b61"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#a83bc2f18c5db4572163900e3eb5b1b61">ABDMS2000::VoiceManager::setMaxPolyphony</a></div><div class="ttdeci">void setMaxPolyphony(size_t numVoices) noexcept</div><div class="ttdef"><b>Definition</b> VoiceManager.cpp:57</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_a912a10f352028b6cd78e1077f81321a5"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#a912a10f352028b6cd78e1077f81321a5">ABDMS2000::VoiceManager::setUnisonDetune</a></div><div class="ttdeci">void setUnisonDetune(float detuneCents) noexcept</div><div class="ttdef"><b>Definition</b> VoiceManager.h:60</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_a92952eb5854863d2eb85dd3ae010ebd7"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#a92952eb5854863d2eb85dd3ae010ebd7">ABDMS2000::VoiceManager::setAssignMode</a></div><div class="ttdeci">void setAssignMode(VoiceAssignMode mode) noexcept</div><div class="ttdef"><b>Definition</b> VoiceManager.h:51</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_a92a7bbd0b1e4b5f08f8fd12d03ff3372"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#a92a7bbd0b1e4b5f08f8fd12d03ff3372">ABDMS2000::VoiceManager::assignMode_</a></div><div class="ttdeci">VoiceAssignMode assignMode_</div><div class="ttdef"><b>Definition</b> VoiceManager.h:88</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_a92e34034061435a7ae61044b94c21164"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#a92e34034061435a7ae61044b94c21164">ABDMS2000::VoiceManager::portamentoTimeParam_</a></div><div class="ttdeci">float portamentoTimeParam_</div><div class="ttdef"><b>Definition</b> VoiceManager.h:92</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_a96d38e1dfe5b48869e57832caea98f32"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#a96d38e1dfe5b48869e57832caea98f32">ABDMS2000::VoiceManager::setUnisonSpread</a></div><div class="ttdeci">void setUnisonSpread(float spread0to1) noexcept</div><div class="ttdef"><b>Definition</b> VoiceManager.h:61</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_a9b51df0b7a1b3e77b395b7e3b6c5289b"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#a9b51df0b7a1b3e77b395b7e3b6c5289b">ABDMS2000::VoiceManager::activeVoiceCapacity_</a></div><div class="ttdeci">size_t activeVoiceCapacity_</div><div class="ttdef"><b>Definition</b> VoiceManager.h:87</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_aafa6d880762adc8d780952fcfee79baf"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#aafa6d880762adc8d780952fcfee79baf">ABDMS2000::VoiceManager::noteOn</a></div><div class="ttdeci">void noteOn(int midiNote, float velocity) noexcept</div><div class="ttdef"><b>Definition</b> VoiceManager.cpp:143</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_ac00b52b3b4789ca57e80fb464aa5472b"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#ac00b52b3b4789ca57e80fb464aa5472b">ABDMS2000::VoiceManager::getActiveVoiceCount</a></div><div class="ttdeci">size_t getActiveVoiceCount() const noexcept</div><div class="ttdef"><b>Definition</b> VoiceManager.cpp:372</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_accd7a00e4085efe8732aab0927835bc0"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#accd7a00e4085efe8732aab0927835bc0">ABDMS2000::VoiceManager::reset</a></div><div class="ttdeci">void reset() noexcept</div><div class="ttdef"><b>Definition</b> VoiceManager.cpp:18</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_ace8ebce3d62de8f98aa4e234336c385d"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#ace8ebce3d62de8f98aa4e234336c385d">ABDMS2000::VoiceManager::noteOff</a></div><div class="ttdeci">void noteOff(int midiNote) noexcept</div><div class="ttdef"><b>Definition</b> VoiceManager.cpp:203</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_aceceab0150b174147c2e12930fd16b7e"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#aceceab0150b174147c2e12930fd16b7e">ABDMS2000::VoiceManager::setTriggerMode</a></div><div class="ttdeci">void setTriggerMode(TriggerMode mode) noexcept</div><div class="ttdef"><b>Definition</b> VoiceManager.h:59</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_adf243418097b7cf352dc64986f329fd0"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#adf243418097b7cf352dc64986f329fd0">ABDMS2000::VoiceManager::baseBlockParams_</a></div><div class="ttdeci">VoiceParameters baseBlockParams_</div><div class="ttdef"><b>Definition</b> VoiceManager.h:99</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_ae41becd6b622e57c6159232b88708fe3"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#ae41becd6b622e57c6159232b88708fe3">ABDMS2000::VoiceManager::VoiceManager</a></div><div class="ttdeci">VoiceManager()=default</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_ae942eaf17893be2009494eb7e7d9db64"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#ae942eaf17893be2009494eb7e7d9db64">ABDMS2000::VoiceManager::allNotesOff</a></div><div class="ttdeci">void allNotesOff() noexcept</div><div class="ttdef"><b>Definition</b> VoiceManager.cpp:279</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_aee5252147a61fa1a27938ea2a9ff46e2"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#aee5252147a61fa1a27938ea2a9ff46e2">ABDMS2000::VoiceManager::unisonDetune_</a></div><div class="ttdeci">float unisonDetune_</div><div class="ttdef"><b>Definition</b> VoiceManager.h:90</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1VoiceManager_html_af07d640f12a878a0f1d59555e5306be6"><div class="ttname"><a href="classABDMS2000_1_1VoiceManager.html#af07d640f12a878a0f1d59555e5306be6">ABDMS2000::VoiceManager::getVoice</a></div><div class="ttdeci">const Voice &amp; getVoice(size_t index) const noexcept</div><div class="ttdef"><b>Definition</b> VoiceManager.h:80</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1Voice_html"><div class="ttname"><a href="classABDMS2000_1_1Voice.html">ABDMS2000::Voice</a></div><div class="ttdoc">Represents a single synth voice in the 4-voice architecture.</div><div class="ttdef"><b>Definition</b> Voice.h:111</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html"><div class="ttname"><a href="namespaceABDMS2000.html">ABDMS2000</a></div><div class="ttdef"><b>Definition</b> AppLogger.h:15</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a28040a5818d8f8b96a3a4c36b1c4b988"><div class="ttname"><a href="namespaceABDMS2000.html#a28040a5818d8f8b96a3a4c36b1c4b988">ABDMS2000::VoiceAssignMode</a></div><div class="ttdeci">VoiceAssignMode</div><div class="ttdef"><b>Definition</b> VoiceManager.h:8</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a28040a5818d8f8b96a3a4c36b1c4b988a5d9b47bd3b65072e0d5daf55f01da086"><div class="ttname"><a href="namespaceABDMS2000.html#a28040a5818d8f8b96a3a4c36b1c4b988a5d9b47bd3b65072e0d5daf55f01da086">ABDMS2000::VoiceAssignMode::Mono</a></div><div class="ttdeci">@ Mono</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a28040a5818d8f8b96a3a4c36b1c4b988a634a6ceed2dff57f563b54a769e64db9"><div class="ttname"><a href="namespaceABDMS2000.html#a28040a5818d8f8b96a3a4c36b1c4b988a634a6ceed2dff57f563b54a769e64db9">ABDMS2000::VoiceAssignMode::Unison</a></div><div class="ttdeci">@ Unison</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a28040a5818d8f8b96a3a4c36b1c4b988a7462cd846ee2e800d33ac6250a8ff4af"><div class="ttname"><a href="namespaceABDMS2000.html#a28040a5818d8f8b96a3a4c36b1c4b988a7462cd846ee2e800d33ac6250a8ff4af">ABDMS2000::VoiceAssignMode::Poly</a></div><div class="ttdeci">@ Poly</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_aea9565eccc7efbf2e814ffb602ba19a1"><div class="ttname"><a href="namespaceABDMS2000.html#aea9565eccc7efbf2e814ffb602ba19a1">ABDMS2000::TriggerMode</a></div><div class="ttdeci">TriggerMode</div><div class="ttdef"><b>Definition</b> VoiceManager.h:14</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_aea9565eccc7efbf2e814ffb602ba19a1a66ba162102bbf6ae31b522aec561735e"><div class="ttname"><a href="namespaceABDMS2000.html#aea9565eccc7efbf2e814ffb602ba19a1a66ba162102bbf6ae31b522aec561735e">ABDMS2000::TriggerMode::Single</a></div><div class="ttdeci">@ Single</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_aea9565eccc7efbf2e814ffb602ba19a1ace7898536dd0e928d1640ee2ad531cc8"><div class="ttname"><a href="namespaceABDMS2000.html#aea9565eccc7efbf2e814ffb602ba19a1ace7898536dd0e928d1640ee2ad531cc8">ABDMS2000::TriggerMode::Multi</a></div><div class="ttdeci">@ Multi</div></div>
+<div class="ttc" id="astructABDMS2000_1_1VoiceParameters_html"><div class="ttname"><a href="structABDMS2000_1_1VoiceParameters.html">ABDMS2000::VoiceParameters</a></div><div class="ttdef"><b>Definition</b> Voice.h:34</div></div>
+<div class="ttc" id="astructABDMS2000_1_1VoiceSlotState_html"><div class="ttname"><a href="structABDMS2000_1_1VoiceSlotState.html">ABDMS2000::VoiceSlotState</a></div><div class="ttdef"><b>Definition</b> VoiceManager.h:19</div></div>
+<div class="ttc" id="astructABDMS2000_1_1VoiceSlotState_html_a3ae28446c15ae518535dd03f9ad0cf0b"><div class="ttname"><a href="structABDMS2000_1_1VoiceSlotState.html#a3ae28446c15ae518535dd03f9ad0cf0b">ABDMS2000::VoiceSlotState::currentMidiNote</a></div><div class="ttdeci">int currentMidiNote</div><div class="ttdef"><b>Definition</b> VoiceManager.h:20</div></div>
+<div class="ttc" id="astructABDMS2000_1_1VoiceSlotState_html_ab629f337ded45c4b7a5ceac46ad883c5"><div class="ttname"><a href="structABDMS2000_1_1VoiceSlotState.html#ab629f337ded45c4b7a5ceac46ad883c5">ABDMS2000::VoiceSlotState::isHeldByLatch</a></div><div class="ttdeci">bool isHeldByLatch</div><div class="ttdef"><b>Definition</b> VoiceManager.h:23</div></div>
+<div class="ttc" id="astructABDMS2000_1_1VoiceSlotState_html_ac728f7f720ab9d9cb1501481357b1aca"><div class="ttname"><a href="structABDMS2000_1_1VoiceSlotState.html#ac728f7f720ab9d9cb1501481357b1aca">ABDMS2000::VoiceSlotState::noteOnTime</a></div><div class="ttdeci">uint32_t noteOnTime</div><div class="ttdef"><b>Definition</b> VoiceManager.h:21</div></div>
+<div class="ttc" id="astructABDMS2000_1_1VoiceSlotState_html_adfbba0f420741a4e7a4b3b3cac842659"><div class="ttname"><a href="structABDMS2000_1_1VoiceSlotState.html#adfbba0f420741a4e7a4b3b3cac842659">ABDMS2000::VoiceSlotState::lastFrequencyHz</a></div><div class="ttdeci">double lastFrequencyHz</div><div class="ttdef"><b>Definition</b> VoiceManager.h:24</div></div>
+<div class="ttc" id="astructABDMS2000_1_1VoiceSlotState_html_af4bd1b699602de4b2a55e169470c258f"><div class="ttname"><a href="structABDMS2000_1_1VoiceSlotState.html#af4bd1b699602de4b2a55e169470c258f">ABDMS2000::VoiceSlotState::isKeyPressed</a></div><div class="ttdeci">bool isKeyPressed</div><div class="ttdef"><b>Definition</b> VoiceManager.h:22</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

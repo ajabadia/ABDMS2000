@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Archivo de código fuente Source/DSP/Effects/DelayFX.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a class="el" href="dir_28f92771c0af6f341cedd07750149305.html">DSP</a></li><li class="navelem"><a class="el" href="dir_93b0420c202dab069e0f3b7b5bb42654.html">Effects</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle"><div class="title">DelayFX.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="DelayFX_8h.html">Ir a la documentación de este archivo.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;../Common/DSPUtils.h&quot;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceABDMS2000.html">ABDMS2000</a> {</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="foldopen" id="foldopen00007" data-start="{" data-end="};">
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="namespaceABDMS2000.html#a89c40c628fb3a8499e3afcb11056dbfd">    7</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="namespaceABDMS2000.html#a89c40c628fb3a8499e3afcb11056dbfd">DelayType</a> {</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#a89c40c628fb3a8499e3afcb11056dbfdabbc45d9b35436f5f0ed9e33499efcea9">Stereo</a> = 0,</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#a89c40c628fb3a8499e3afcb11056dbfdae76b449b9fc8536af7557ffa6321d269">Cross</a>,</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#a89c40c628fb3a8499e3afcb11056dbfda955322c98b1fc571e8b6b688ae7d9ee4">LeftRight</a></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>};</div>
+</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment"></span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> * @brief MS2000 / Motorola DSP56362 Delay FX Block.</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> * Incorporates:</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"> * - Max delay: 1400ms (1.4s)</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"> * - Pitch Glitch / Analog Tape Drag using 50ms LinearSmoothedValue &amp; fractional interpolation</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment"> * - 6.0 kHz Damping One-Pole Low-Pass Filter in feedback path</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment"> * - Stereo, Cross Delay (Inverted Left Feedback), and L/R Delay (0.75x right offset)</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment"> */</span></div>
+<div class="foldopen" id="foldopen00021" data-start="{" data-end="};">
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1DelayFX.html">   21</a></span><span class="keyword">class </span><a class="code hl_class" href="classABDMS2000_1_1DelayFX.html">DelayFX</a> {</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1DelayFX.html#a04c631d04db3be062332cc19e850f7c6">   23</a></span>    <a class="code hl_function" href="classABDMS2000_1_1DelayFX.html#a04c631d04db3be062332cc19e850f7c6">DelayFX</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1DelayFX.html#a419d1dd4e6316bee9bf784c4ee1b35ce">prepare</a>(<span class="keywordtype">double</span> sampleRate) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1DelayFX.html#ae5c0b6afed7e2bf06a33434b7218e1f6">reset</a>() noexcept;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1DelayFX.html#aa178e0db884d9ec8fcbd9216ea76ec3c">   28</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1DelayFX.html#aa178e0db884d9ec8fcbd9216ea76ec3c">setEnabled</a>(<span class="keywordtype">bool</span> enabled) noexcept { <a class="code hl_variable" href="classABDMS2000_1_1DelayFX.html#ae7b7a9a4d2a19f10cd3386d89b10132b">enabled_</a> = enabled; }</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1DelayFX.html#a9559b5a044bbed7eda579cae83b92bf2">   29</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classABDMS2000_1_1DelayFX.html#a9559b5a044bbed7eda579cae83b92bf2">isEnabled</a>() const noexcept { <span class="keywordflow">return</span> <a class="code hl_variable" href="classABDMS2000_1_1DelayFX.html#ae7b7a9a4d2a19f10cd3386d89b10132b">enabled_</a>; }</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1DelayFX.html#af5f377de028c5d320fde71b639713276">   31</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1DelayFX.html#af5f377de028c5d320fde71b639713276">setType</a>(<a class="code hl_enumeration" href="namespaceABDMS2000.html#a89c40c628fb3a8499e3afcb11056dbfd">DelayType</a> type) <span class="keyword">noexcept</span> { <a class="code hl_variable" href="classABDMS2000_1_1DelayFX.html#a0d4c458beaa7ff9f36207398beced841">type_</a> = type; }</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1DelayFX.html#a224bf022ab900259cd2ec9b1aba33625">setTimeSeconds</a>(<span class="keywordtype">float</span> timeSec) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1DelayFX.html#a5f270e63b003bb7dfaf8bdbaa68adce3">setDepth</a>(<span class="keywordtype">float</span> wetMix0to1) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1DelayFX.html#af20c91c9074828210c0eedcf0c8b2afb">setFeedback</a>(<span class="keywordtype">float</span> feedbackGain0to1) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1DelayFX.html#a1ecbb0d6d419684ae30bb410256a6f21">process</a>(<span class="keywordtype">float</span>&amp; leftSample, <span class="keywordtype">float</span>&amp; rightSample) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1DelayFX.html#a1245f4cd90bc96802f74fbf5f5c7363a">   39</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="classABDMS2000_1_1DelayFX.html#a1245f4cd90bc96802f74fbf5f5c7363a">sampleRate_</a>{ 44100.0 };</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1DelayFX.html#ae7b7a9a4d2a19f10cd3386d89b10132b">   40</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="classABDMS2000_1_1DelayFX.html#ae7b7a9a4d2a19f10cd3386d89b10132b">enabled_</a>{ <span class="keyword">false</span> };</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1DelayFX.html#a0d4c458beaa7ff9f36207398beced841">   41</a></span>    <a class="code hl_enumeration" href="namespaceABDMS2000.html#a89c40c628fb3a8499e3afcb11056dbfd">DelayType</a> <a class="code hl_variable" href="classABDMS2000_1_1DelayFX.html#a0d4c458beaa7ff9f36207398beced841">type_</a>{ <a class="code hl_enumvalue" href="namespaceABDMS2000.html#a89c40c628fb3a8499e3afcb11056dbfdabbc45d9b35436f5f0ed9e33499efcea9">DelayType::Stereo</a> };</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1DelayFX.html#ab3df7f63fcec85c19295437ac0233c13">   43</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1DelayFX.html#ab3df7f63fcec85c19295437ac0233c13">timeSeconds_</a>{ 0.35f };</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1DelayFX.html#a86fdf4836ba04a15467ccb55f2d175d2">   44</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1DelayFX.html#a86fdf4836ba04a15467ccb55f2d175d2">wetMix_</a>{ 0.4f };</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1DelayFX.html#ac701bb22ef568b60fb8610e564ecd0ed">   45</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1DelayFX.html#ac701bb22ef568b60fb8610e564ecd0ed">feedbackGain_</a>{ 0.4f };</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1DelayFX.html#afed59f59b826d505777296746d908f02">   47</a></span>    std::vector&lt;float&gt; <a class="code hl_variable" href="classABDMS2000_1_1DelayFX.html#afed59f59b826d505777296746d908f02">delayBufferL_</a>;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1DelayFX.html#aa334d8e60af636f9dc4da22b7a450b43">   48</a></span>    std::vector&lt;float&gt; <a class="code hl_variable" href="classABDMS2000_1_1DelayFX.html#aa334d8e60af636f9dc4da22b7a450b43">delayBufferR_</a>;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1DelayFX.html#ae2d89b80d734a807203f16049505da02">   49</a></span>    <span class="keywordtype">size_t</span> <a class="code hl_variable" href="classABDMS2000_1_1DelayFX.html#ae2d89b80d734a807203f16049505da02">writeIndex_</a>{ 0 };</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1DelayFX.html#a085fffaae74856ca9f82e0cceb5b72c5">   50</a></span>    <span class="keywordtype">size_t</span> <a class="code hl_variable" href="classABDMS2000_1_1DelayFX.html#a085fffaae74856ca9f82e0cceb5b72c5">maxDelaySamples_</a>{ 61740 }; <span class="comment">// 1.4s at 44.1kHz</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1DelayFX.html#aed45ac0378d0304cd7951eb08b0bcdab">   52</a></span>    <a class="code hl_class" href="classABDMS2000_1_1DSPUtils_1_1LinearSmoother.html">DSPUtils::LinearSmoother&lt;float&gt;</a> <a class="code hl_variable" href="classABDMS2000_1_1DelayFX.html#aed45ac0378d0304cd7951eb08b0bcdab">smoothedDelaySamplesL_</a>;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1DelayFX.html#ac3da03b895e44a14618e31a5acee5695">   53</a></span>    <a class="code hl_class" href="classABDMS2000_1_1DSPUtils_1_1LinearSmoother.html">DSPUtils::LinearSmoother&lt;float&gt;</a> <a class="code hl_variable" href="classABDMS2000_1_1DelayFX.html#ac3da03b895e44a14618e31a5acee5695">smoothedDelaySamplesR_</a>;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="comment">// 6.0 kHz 1-pole damping filter states</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1DelayFX.html#a76e09a7f486d1056d8863ff52c11a0c3">   56</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1DelayFX.html#a76e09a7f486d1056d8863ff52c11a0c3">dampingStateL_</a>{ 0.0f };</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1DelayFX.html#a634478c5acd93cb889c1d9c9b5198a3e">   57</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1DelayFX.html#a634478c5acd93cb889c1d9c9b5198a3e">dampingStateR_</a>{ 0.0f };</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keywordtype">float</span> <a class="code hl_function" href="classABDMS2000_1_1DelayFX.html#a0dc5058e70498aaa10797158856c7e93">readInterpolated</a>(<span class="keyword">const</span> std::vector&lt;float&gt;&amp; buf, <span class="keywordtype">float</span> readPos) <span class="keyword">const</span> <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>};</div>
+</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>} <span class="comment">// namespace ABDMS2000</span></div>
+<div class="ttc" id="aclassABDMS2000_1_1DSPUtils_1_1LinearSmoother_html"><div class="ttname"><a href="classABDMS2000_1_1DSPUtils_1_1LinearSmoother.html">ABDMS2000::DSPUtils::LinearSmoother</a></div><div class="ttdef"><b>Definition</b> DSPUtils.h:80</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DelayFX_html"><div class="ttname"><a href="classABDMS2000_1_1DelayFX.html">ABDMS2000::DelayFX</a></div><div class="ttdoc">MS2000 / Motorola DSP56362 Delay FX Block. Incorporates:</div><div class="ttdef"><b>Definition</b> DelayFX.h:21</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DelayFX_html_a04c631d04db3be062332cc19e850f7c6"><div class="ttname"><a href="classABDMS2000_1_1DelayFX.html#a04c631d04db3be062332cc19e850f7c6">ABDMS2000::DelayFX::DelayFX</a></div><div class="ttdeci">DelayFX()=default</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DelayFX_html_a085fffaae74856ca9f82e0cceb5b72c5"><div class="ttname"><a href="classABDMS2000_1_1DelayFX.html#a085fffaae74856ca9f82e0cceb5b72c5">ABDMS2000::DelayFX::maxDelaySamples_</a></div><div class="ttdeci">size_t maxDelaySamples_</div><div class="ttdef"><b>Definition</b> DelayFX.h:50</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DelayFX_html_a0d4c458beaa7ff9f36207398beced841"><div class="ttname"><a href="classABDMS2000_1_1DelayFX.html#a0d4c458beaa7ff9f36207398beced841">ABDMS2000::DelayFX::type_</a></div><div class="ttdeci">DelayType type_</div><div class="ttdef"><b>Definition</b> DelayFX.h:41</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DelayFX_html_a0dc5058e70498aaa10797158856c7e93"><div class="ttname"><a href="classABDMS2000_1_1DelayFX.html#a0dc5058e70498aaa10797158856c7e93">ABDMS2000::DelayFX::readInterpolated</a></div><div class="ttdeci">float readInterpolated(const std::vector&lt; float &gt; &amp;buf, float readPos) const noexcept</div><div class="ttdef"><b>Definition</b> DelayFX.cpp:58</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DelayFX_html_a1245f4cd90bc96802f74fbf5f5c7363a"><div class="ttname"><a href="classABDMS2000_1_1DelayFX.html#a1245f4cd90bc96802f74fbf5f5c7363a">ABDMS2000::DelayFX::sampleRate_</a></div><div class="ttdeci">double sampleRate_</div><div class="ttdef"><b>Definition</b> DelayFX.h:39</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DelayFX_html_a1ecbb0d6d419684ae30bb410256a6f21"><div class="ttname"><a href="classABDMS2000_1_1DelayFX.html#a1ecbb0d6d419684ae30bb410256a6f21">ABDMS2000::DelayFX::process</a></div><div class="ttdeci">void process(float &amp;leftSample, float &amp;rightSample) noexcept</div><div class="ttdef"><b>Definition</b> DelayFX.cpp:69</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DelayFX_html_a224bf022ab900259cd2ec9b1aba33625"><div class="ttname"><a href="classABDMS2000_1_1DelayFX.html#a224bf022ab900259cd2ec9b1aba33625">ABDMS2000::DelayFX::setTimeSeconds</a></div><div class="ttdeci">void setTimeSeconds(float timeSec) noexcept</div><div class="ttdef"><b>Definition</b> DelayFX.cpp:33</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DelayFX_html_a419d1dd4e6316bee9bf784c4ee1b35ce"><div class="ttname"><a href="classABDMS2000_1_1DelayFX.html#a419d1dd4e6316bee9bf784c4ee1b35ce">ABDMS2000::DelayFX::prepare</a></div><div class="ttdeci">void prepare(double sampleRate) noexcept</div><div class="ttdef"><b>Definition</b> DelayFX.cpp:8</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DelayFX_html_a5f270e63b003bb7dfaf8bdbaa68adce3"><div class="ttname"><a href="classABDMS2000_1_1DelayFX.html#a5f270e63b003bb7dfaf8bdbaa68adce3">ABDMS2000::DelayFX::setDepth</a></div><div class="ttdeci">void setDepth(float wetMix0to1) noexcept</div><div class="ttdef"><b>Definition</b> DelayFX.cpp:48</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DelayFX_html_a634478c5acd93cb889c1d9c9b5198a3e"><div class="ttname"><a href="classABDMS2000_1_1DelayFX.html#a634478c5acd93cb889c1d9c9b5198a3e">ABDMS2000::DelayFX::dampingStateR_</a></div><div class="ttdeci">float dampingStateR_</div><div class="ttdef"><b>Definition</b> DelayFX.h:57</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DelayFX_html_a76e09a7f486d1056d8863ff52c11a0c3"><div class="ttname"><a href="classABDMS2000_1_1DelayFX.html#a76e09a7f486d1056d8863ff52c11a0c3">ABDMS2000::DelayFX::dampingStateL_</a></div><div class="ttdeci">float dampingStateL_</div><div class="ttdef"><b>Definition</b> DelayFX.h:56</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DelayFX_html_a86fdf4836ba04a15467ccb55f2d175d2"><div class="ttname"><a href="classABDMS2000_1_1DelayFX.html#a86fdf4836ba04a15467ccb55f2d175d2">ABDMS2000::DelayFX::wetMix_</a></div><div class="ttdeci">float wetMix_</div><div class="ttdef"><b>Definition</b> DelayFX.h:44</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DelayFX_html_a9559b5a044bbed7eda579cae83b92bf2"><div class="ttname"><a href="classABDMS2000_1_1DelayFX.html#a9559b5a044bbed7eda579cae83b92bf2">ABDMS2000::DelayFX::isEnabled</a></div><div class="ttdeci">bool isEnabled() const noexcept</div><div class="ttdef"><b>Definition</b> DelayFX.h:29</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DelayFX_html_aa178e0db884d9ec8fcbd9216ea76ec3c"><div class="ttname"><a href="classABDMS2000_1_1DelayFX.html#aa178e0db884d9ec8fcbd9216ea76ec3c">ABDMS2000::DelayFX::setEnabled</a></div><div class="ttdeci">void setEnabled(bool enabled) noexcept</div><div class="ttdef"><b>Definition</b> DelayFX.h:28</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DelayFX_html_aa334d8e60af636f9dc4da22b7a450b43"><div class="ttname"><a href="classABDMS2000_1_1DelayFX.html#aa334d8e60af636f9dc4da22b7a450b43">ABDMS2000::DelayFX::delayBufferR_</a></div><div class="ttdeci">std::vector&lt; float &gt; delayBufferR_</div><div class="ttdef"><b>Definition</b> DelayFX.h:48</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DelayFX_html_ab3df7f63fcec85c19295437ac0233c13"><div class="ttname"><a href="classABDMS2000_1_1DelayFX.html#ab3df7f63fcec85c19295437ac0233c13">ABDMS2000::DelayFX::timeSeconds_</a></div><div class="ttdeci">float timeSeconds_</div><div class="ttdef"><b>Definition</b> DelayFX.h:43</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DelayFX_html_ac3da03b895e44a14618e31a5acee5695"><div class="ttname"><a href="classABDMS2000_1_1DelayFX.html#ac3da03b895e44a14618e31a5acee5695">ABDMS2000::DelayFX::smoothedDelaySamplesR_</a></div><div class="ttdeci">DSPUtils::LinearSmoother&lt; float &gt; smoothedDelaySamplesR_</div><div class="ttdef"><b>Definition</b> DelayFX.h:53</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DelayFX_html_ac701bb22ef568b60fb8610e564ecd0ed"><div class="ttname"><a href="classABDMS2000_1_1DelayFX.html#ac701bb22ef568b60fb8610e564ecd0ed">ABDMS2000::DelayFX::feedbackGain_</a></div><div class="ttdeci">float feedbackGain_</div><div class="ttdef"><b>Definition</b> DelayFX.h:45</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DelayFX_html_ae2d89b80d734a807203f16049505da02"><div class="ttname"><a href="classABDMS2000_1_1DelayFX.html#ae2d89b80d734a807203f16049505da02">ABDMS2000::DelayFX::writeIndex_</a></div><div class="ttdeci">size_t writeIndex_</div><div class="ttdef"><b>Definition</b> DelayFX.h:49</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DelayFX_html_ae5c0b6afed7e2bf06a33434b7218e1f6"><div class="ttname"><a href="classABDMS2000_1_1DelayFX.html#ae5c0b6afed7e2bf06a33434b7218e1f6">ABDMS2000::DelayFX::reset</a></div><div class="ttdeci">void reset() noexcept</div><div class="ttdef"><b>Definition</b> DelayFX.cpp:24</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DelayFX_html_ae7b7a9a4d2a19f10cd3386d89b10132b"><div class="ttname"><a href="classABDMS2000_1_1DelayFX.html#ae7b7a9a4d2a19f10cd3386d89b10132b">ABDMS2000::DelayFX::enabled_</a></div><div class="ttdeci">bool enabled_</div><div class="ttdef"><b>Definition</b> DelayFX.h:40</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DelayFX_html_aed45ac0378d0304cd7951eb08b0bcdab"><div class="ttname"><a href="classABDMS2000_1_1DelayFX.html#aed45ac0378d0304cd7951eb08b0bcdab">ABDMS2000::DelayFX::smoothedDelaySamplesL_</a></div><div class="ttdeci">DSPUtils::LinearSmoother&lt; float &gt; smoothedDelaySamplesL_</div><div class="ttdef"><b>Definition</b> DelayFX.h:52</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DelayFX_html_af20c91c9074828210c0eedcf0c8b2afb"><div class="ttname"><a href="classABDMS2000_1_1DelayFX.html#af20c91c9074828210c0eedcf0c8b2afb">ABDMS2000::DelayFX::setFeedback</a></div><div class="ttdeci">void setFeedback(float feedbackGain0to1) noexcept</div><div class="ttdef"><b>Definition</b> DelayFX.cpp:53</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DelayFX_html_af5f377de028c5d320fde71b639713276"><div class="ttname"><a href="classABDMS2000_1_1DelayFX.html#af5f377de028c5d320fde71b639713276">ABDMS2000::DelayFX::setType</a></div><div class="ttdeci">void setType(DelayType type) noexcept</div><div class="ttdef"><b>Definition</b> DelayFX.h:31</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DelayFX_html_afed59f59b826d505777296746d908f02"><div class="ttname"><a href="classABDMS2000_1_1DelayFX.html#afed59f59b826d505777296746d908f02">ABDMS2000::DelayFX::delayBufferL_</a></div><div class="ttdeci">std::vector&lt; float &gt; delayBufferL_</div><div class="ttdef"><b>Definition</b> DelayFX.h:47</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html"><div class="ttname"><a href="namespaceABDMS2000.html">ABDMS2000</a></div><div class="ttdef"><b>Definition</b> AppLogger.h:15</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a89c40c628fb3a8499e3afcb11056dbfd"><div class="ttname"><a href="namespaceABDMS2000.html#a89c40c628fb3a8499e3afcb11056dbfd">ABDMS2000::DelayType</a></div><div class="ttdeci">DelayType</div><div class="ttdef"><b>Definition</b> DelayFX.h:7</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a89c40c628fb3a8499e3afcb11056dbfda955322c98b1fc571e8b6b688ae7d9ee4"><div class="ttname"><a href="namespaceABDMS2000.html#a89c40c628fb3a8499e3afcb11056dbfda955322c98b1fc571e8b6b688ae7d9ee4">ABDMS2000::DelayType::LeftRight</a></div><div class="ttdeci">@ LeftRight</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a89c40c628fb3a8499e3afcb11056dbfdabbc45d9b35436f5f0ed9e33499efcea9"><div class="ttname"><a href="namespaceABDMS2000.html#a89c40c628fb3a8499e3afcb11056dbfdabbc45d9b35436f5f0ed9e33499efcea9">ABDMS2000::DelayType::Stereo</a></div><div class="ttdeci">@ Stereo</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a89c40c628fb3a8499e3afcb11056dbfdae76b449b9fc8536af7557ffa6321d269"><div class="ttname"><a href="namespaceABDMS2000.html#a89c40c628fb3a8499e3afcb11056dbfdae76b449b9fc8536af7557ffa6321d269">ABDMS2000::DelayType::Cross</a></div><div class="ttdeci">@ Cross</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

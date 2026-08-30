@@ -1,0 +1,7 @@
+<map id="ABDMS2000::VoiceManager" name="ABDMS2000::VoiceManager">
+<area shape="rect" id="Node000001" title="High&#45;performance Voice Manager matching Korg MS2000 / microKORG hardware specs." alt="" coords="13,181,216,207"/>
+<area shape="rect" id="Node000002" href="$structABDMS2000_1_1VoiceParameters.html" title=" " alt="" coords="5,93,224,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,133,117,181,112,181,112,133"/>
+<area shape="rect" id="Node000003" href="$structABDMS2000_1_1PatchSlot.html" title=" " alt="" coords="29,5,200,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="117,45,117,93,112,93,112,45"/>
+</map>

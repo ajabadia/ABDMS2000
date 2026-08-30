@@ -1,0 +1,9 @@
+<map id="Source/State/ParameterRegistry.gen.h" name="Source/State/ParameterRegistry.gen.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,272,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="24,79,83,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="127,33,79,72,76,68,123,29"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="107,79,170,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="141,31,141,65,136,65,136,31"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="194,79,318,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="159,28,226,69,224,74,156,33"/>
+</map>

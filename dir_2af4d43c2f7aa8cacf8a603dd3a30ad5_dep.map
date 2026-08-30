@@ -1,0 +1,10 @@
+<map id="Source/Standalone" name="Source/Standalone">
+<area shape="rect" id="node1" href="dir_1ad6433457b0067ef8f54a4fa85f5c9a.html" title="Core" alt="" coords="27,125,79,151"/>
+<area shape="rect" id="node2" href="dir_1e2b7963a8a8999ee633c134c5eb4ce2.html" title="Plugin" alt="" coords="103,125,166,151"/>
+<area shape="rect" id="node3" href="dir_2af4d43c2f7aa8cacf8a603dd3a30ad5.html" title="Standalone" alt="" coords="49,52,143,77"/>
+<area shape="poly" id="edge1" href="dir_000019_000001.html" alt="" coords="91,79,69,115,65,112,87,76"/>
+<area shape="rect" id="edge1-headlabel" href="dir_000019_000001.html" title="1" alt="" coords="72,107,82,121"/>
+<area shape="poly" id="edge2" href="dir_000019_000016.html" alt="" coords="105,76,124,112,120,115,100,79"/>
+<area shape="rect" id="edge2-headlabel" href="dir_000019_000016.html" title="1" alt="" coords="122,98,132,113"/>
+<area shape="rect" id="clust1" href="dir_74389ed8173ad57b461b9d623a1f3867.html" title="Source" alt="" coords="16,16,177,161"/>
+</map>

@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Archivo de código fuente Source/DSP/Filters/MultiModeFilter.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a class="el" href="dir_28f92771c0af6f341cedd07750149305.html">DSP</a></li><li class="navelem"><a class="el" href="dir_79a4dfb72f0c4320b84382f2431ecef6.html">Filters</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle"><div class="title">MultiModeFilter.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="MultiModeFilter_8h.html">Ir a la documentación de este archivo.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &quot;<a class="code" href="FilterResonanceComp_8h.html">FilterResonanceComp.h</a>&quot;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;../Common/DSPUtils.h&quot;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceABDMS2000.html">ABDMS2000</a> {</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="foldopen" id="foldopen00007" data-start="{" data-end="};">
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="namespaceABDMS2000.html#aa2b1e8d220a1e4a73e04a079ac7bf1f0">    7</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="namespaceABDMS2000.html#aa2b1e8d220a1e4a73e04a079ac7bf1f0">FilterType</a> {</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#aa2b1e8d220a1e4a73e04a079ac7bf1f0a0e725626182f118d07d120cee81e283b">LPF24</a> = 0, <span class="comment">// 4-pole Lowpass</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#aa2b1e8d220a1e4a73e04a079ac7bf1f0a4a46bff5a8645768bbf206205e4ac292">LPF12</a>,     <span class="comment">// 2-pole Lowpass</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#aa2b1e8d220a1e4a73e04a079ac7bf1f0a98c6c0f34f585f86e57c002357c32689">BPF12</a>,     <span class="comment">// 2-pole Bandpass</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#aa2b1e8d220a1e4a73e04a079ac7bf1f0af18e50f81881a130c3c48a9c85bcb21d">HPF12</a>      <span class="comment">// 2-pole Highpass</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>};</div>
+</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment"></span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> * @brief Zero-Delay Feedback (ZDF/TPT) Multi-Mode Resonant Filter.</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"> * Accurately models the MS2000 / microKORG filter responses.</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"> */</span></div>
+<div class="foldopen" id="foldopen00018" data-start="{" data-end="};">
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MultiModeFilter.html">   18</a></span><span class="keyword">class </span><a class="code hl_class" href="classABDMS2000_1_1MultiModeFilter.html">MultiModeFilter</a> {</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MultiModeFilter.html#a8bd2450fbf2f5dd66b15390f4cb53348">   20</a></span>    <a class="code hl_function" href="classABDMS2000_1_1MultiModeFilter.html#a8bd2450fbf2f5dd66b15390f4cb53348">MultiModeFilter</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1MultiModeFilter.html#ad33f164b0e272aeaab5ea8c1868d914f">prepare</a>(<span class="keywordtype">double</span> sampleRate) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1MultiModeFilter.html#a4a893f227168e4b79143df7d8c58921a">reset</a>() noexcept;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1MultiModeFilter.html#a4b0195de08402e215e63d56cac1130f1">setType</a>(<a class="code hl_enumeration" href="namespaceABDMS2000.html#aa2b1e8d220a1e4a73e04a079ac7bf1f0">FilterType</a> type) noexcept;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1MultiModeFilter.html#adbe004749158aa4d5e9ec5e5b1cf8e95">setCutoff</a>(<span class="keywordtype">float</span> cutoffHz) noexcept;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1MultiModeFilter.html#a429669bc037e611f3b6f88be2022e935">setResonance</a>(<span class="keywordtype">float</span> resonance0to1) noexcept;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keywordtype">float</span> <a class="code hl_function" href="classABDMS2000_1_1MultiModeFilter.html#a60a60da71a58f0a946c884ae0fee7548">process</a>(<span class="keywordtype">float</span> inputSample) noexcept;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>private:</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MultiModeFilter.html#adfe9a1390b4f095aa357d20735e1cd3b">   32</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="classABDMS2000_1_1MultiModeFilter.html#adfe9a1390b4f095aa357d20735e1cd3b">sampleRate_</a>{ 44100.0 };</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MultiModeFilter.html#a7d0a2b381922feaa693801f6f852ef9c">   33</a></span>    <a class="code hl_enumeration" href="namespaceABDMS2000.html#aa2b1e8d220a1e4a73e04a079ac7bf1f0">FilterType</a> <a class="code hl_variable" href="classABDMS2000_1_1MultiModeFilter.html#a7d0a2b381922feaa693801f6f852ef9c">type_</a>{ <a class="code hl_enumvalue" href="namespaceABDMS2000.html#aa2b1e8d220a1e4a73e04a079ac7bf1f0a0e725626182f118d07d120cee81e283b">FilterType::LPF24</a> };</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MultiModeFilter.html#a106c1d83b3fe5940cf8b25027b8f1605">   34</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1MultiModeFilter.html#a106c1d83b3fe5940cf8b25027b8f1605">cutoffHz_</a>{ 1000.0f };</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MultiModeFilter.html#a63f1ecc4d209d4a165bbef33711b75ac">   35</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1MultiModeFilter.html#a63f1ecc4d209d4a165bbef33711b75ac">resonance_</a>{ 0.0f };</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="comment">// TPT SVF internal states for 2-pole stage 1</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MultiModeFilter.html#aaacf39a4f70a6b46d8580c03602ddd6b">   38</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1MultiModeFilter.html#aaacf39a4f70a6b46d8580c03602ddd6b">s1_1_</a>{ 0.0f };</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MultiModeFilter.html#aa7c83fbf0540a85e5c5aa21e60f3f251">   39</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1MultiModeFilter.html#aa7c83fbf0540a85e5c5aa21e60f3f251">s1_2_</a>{ 0.0f };</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="comment">// TPT SVF internal states for 2-pole stage 2 (for 4-pole 24dB LPF)</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MultiModeFilter.html#a7a882cf7a91e194f5f92e803968ea940">   42</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1MultiModeFilter.html#a7a882cf7a91e194f5f92e803968ea940">s2_1_</a>{ 0.0f };</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MultiModeFilter.html#aae1c676348dc008d134051ae16b56915">   43</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1MultiModeFilter.html#aae1c676348dc008d134051ae16b56915">s2_2_</a>{ 0.0f };</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="comment">// Cached filter coefficients</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MultiModeFilter.html#aba8297e2bed848440a2a42e3e8a68e79">   46</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1MultiModeFilter.html#aba8297e2bed848440a2a42e3e8a68e79">g_</a>{ 0.1f };</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MultiModeFilter.html#a455229a098ae0687a171fed3e7648ecb">   47</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1MultiModeFilter.html#a455229a098ae0687a171fed3e7648ecb">R_</a>{ 1.0f };</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MultiModeFilter.html#a92218c86f3a63cb4dea86984e4c3890f">   48</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1MultiModeFilter.html#a92218c86f3a63cb4dea86984e4c3890f">h_</a>{ 1.0f };</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1MultiModeFilter.html#aaf7cb553c7e2a6ddfdf79e252e540755">updateCoefficients</a>() noexcept;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>};</div>
+</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>} <span class="comment">// namespace ABDMS2000</span></div>
+<div class="ttc" id="aFilterResonanceComp_8h_html"><div class="ttname"><a href="FilterResonanceComp_8h.html">FilterResonanceComp.h</a></div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MultiModeFilter_html"><div class="ttname"><a href="classABDMS2000_1_1MultiModeFilter.html">ABDMS2000::MultiModeFilter</a></div><div class="ttdoc">Zero-Delay Feedback (ZDF/TPT) Multi-Mode Resonant Filter. Accurately models the MS2000 / microKORG fi...</div><div class="ttdef"><b>Definition</b> MultiModeFilter.h:18</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MultiModeFilter_html_a106c1d83b3fe5940cf8b25027b8f1605"><div class="ttname"><a href="classABDMS2000_1_1MultiModeFilter.html#a106c1d83b3fe5940cf8b25027b8f1605">ABDMS2000::MultiModeFilter::cutoffHz_</a></div><div class="ttdeci">float cutoffHz_</div><div class="ttdef"><b>Definition</b> MultiModeFilter.h:34</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MultiModeFilter_html_a429669bc037e611f3b6f88be2022e935"><div class="ttname"><a href="classABDMS2000_1_1MultiModeFilter.html#a429669bc037e611f3b6f88be2022e935">ABDMS2000::MultiModeFilter::setResonance</a></div><div class="ttdeci">void setResonance(float resonance0to1) noexcept</div><div class="ttdef"><b>Definition</b> MultiModeFilter.cpp:30</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MultiModeFilter_html_a455229a098ae0687a171fed3e7648ecb"><div class="ttname"><a href="classABDMS2000_1_1MultiModeFilter.html#a455229a098ae0687a171fed3e7648ecb">ABDMS2000::MultiModeFilter::R_</a></div><div class="ttdeci">float R_</div><div class="ttdef"><b>Definition</b> MultiModeFilter.h:47</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MultiModeFilter_html_a4a893f227168e4b79143df7d8c58921a"><div class="ttname"><a href="classABDMS2000_1_1MultiModeFilter.html#a4a893f227168e4b79143df7d8c58921a">ABDMS2000::MultiModeFilter::reset</a></div><div class="ttdeci">void reset() noexcept</div><div class="ttdef"><b>Definition</b> MultiModeFilter.cpp:13</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MultiModeFilter_html_a4b0195de08402e215e63d56cac1130f1"><div class="ttname"><a href="classABDMS2000_1_1MultiModeFilter.html#a4b0195de08402e215e63d56cac1130f1">ABDMS2000::MultiModeFilter::setType</a></div><div class="ttdeci">void setType(FilterType type) noexcept</div><div class="ttdef"><b>Definition</b> MultiModeFilter.cpp:19</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MultiModeFilter_html_a60a60da71a58f0a946c884ae0fee7548"><div class="ttname"><a href="classABDMS2000_1_1MultiModeFilter.html#a60a60da71a58f0a946c884ae0fee7548">ABDMS2000::MultiModeFilter::process</a></div><div class="ttdeci">float process(float inputSample) noexcept</div><div class="ttdef"><b>Definition</b> MultiModeFilter.cpp:53</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MultiModeFilter_html_a63f1ecc4d209d4a165bbef33711b75ac"><div class="ttname"><a href="classABDMS2000_1_1MultiModeFilter.html#a63f1ecc4d209d4a165bbef33711b75ac">ABDMS2000::MultiModeFilter::resonance_</a></div><div class="ttdeci">float resonance_</div><div class="ttdef"><b>Definition</b> MultiModeFilter.h:35</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MultiModeFilter_html_a7a882cf7a91e194f5f92e803968ea940"><div class="ttname"><a href="classABDMS2000_1_1MultiModeFilter.html#a7a882cf7a91e194f5f92e803968ea940">ABDMS2000::MultiModeFilter::s2_1_</a></div><div class="ttdeci">float s2_1_</div><div class="ttdef"><b>Definition</b> MultiModeFilter.h:42</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MultiModeFilter_html_a7d0a2b381922feaa693801f6f852ef9c"><div class="ttname"><a href="classABDMS2000_1_1MultiModeFilter.html#a7d0a2b381922feaa693801f6f852ef9c">ABDMS2000::MultiModeFilter::type_</a></div><div class="ttdeci">FilterType type_</div><div class="ttdef"><b>Definition</b> MultiModeFilter.h:33</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MultiModeFilter_html_a8bd2450fbf2f5dd66b15390f4cb53348"><div class="ttname"><a href="classABDMS2000_1_1MultiModeFilter.html#a8bd2450fbf2f5dd66b15390f4cb53348">ABDMS2000::MultiModeFilter::MultiModeFilter</a></div><div class="ttdeci">MultiModeFilter()=default</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MultiModeFilter_html_a92218c86f3a63cb4dea86984e4c3890f"><div class="ttname"><a href="classABDMS2000_1_1MultiModeFilter.html#a92218c86f3a63cb4dea86984e4c3890f">ABDMS2000::MultiModeFilter::h_</a></div><div class="ttdeci">float h_</div><div class="ttdef"><b>Definition</b> MultiModeFilter.h:48</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MultiModeFilter_html_aa7c83fbf0540a85e5c5aa21e60f3f251"><div class="ttname"><a href="classABDMS2000_1_1MultiModeFilter.html#aa7c83fbf0540a85e5c5aa21e60f3f251">ABDMS2000::MultiModeFilter::s1_2_</a></div><div class="ttdeci">float s1_2_</div><div class="ttdef"><b>Definition</b> MultiModeFilter.h:39</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MultiModeFilter_html_aaacf39a4f70a6b46d8580c03602ddd6b"><div class="ttname"><a href="classABDMS2000_1_1MultiModeFilter.html#aaacf39a4f70a6b46d8580c03602ddd6b">ABDMS2000::MultiModeFilter::s1_1_</a></div><div class="ttdeci">float s1_1_</div><div class="ttdef"><b>Definition</b> MultiModeFilter.h:38</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MultiModeFilter_html_aae1c676348dc008d134051ae16b56915"><div class="ttname"><a href="classABDMS2000_1_1MultiModeFilter.html#aae1c676348dc008d134051ae16b56915">ABDMS2000::MultiModeFilter::s2_2_</a></div><div class="ttdeci">float s2_2_</div><div class="ttdef"><b>Definition</b> MultiModeFilter.h:43</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MultiModeFilter_html_aaf7cb553c7e2a6ddfdf79e252e540755"><div class="ttname"><a href="classABDMS2000_1_1MultiModeFilter.html#aaf7cb553c7e2a6ddfdf79e252e540755">ABDMS2000::MultiModeFilter::updateCoefficients</a></div><div class="ttdeci">void updateCoefficients() noexcept</div><div class="ttdef"><b>Definition</b> MultiModeFilter.cpp:36</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MultiModeFilter_html_aba8297e2bed848440a2a42e3e8a68e79"><div class="ttname"><a href="classABDMS2000_1_1MultiModeFilter.html#aba8297e2bed848440a2a42e3e8a68e79">ABDMS2000::MultiModeFilter::g_</a></div><div class="ttdeci">float g_</div><div class="ttdef"><b>Definition</b> MultiModeFilter.h:46</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MultiModeFilter_html_ad33f164b0e272aeaab5ea8c1868d914f"><div class="ttname"><a href="classABDMS2000_1_1MultiModeFilter.html#ad33f164b0e272aeaab5ea8c1868d914f">ABDMS2000::MultiModeFilter::prepare</a></div><div class="ttdeci">void prepare(double sampleRate) noexcept</div><div class="ttdef"><b>Definition</b> MultiModeFilter.cpp:6</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MultiModeFilter_html_adbe004749158aa4d5e9ec5e5b1cf8e95"><div class="ttname"><a href="classABDMS2000_1_1MultiModeFilter.html#adbe004749158aa4d5e9ec5e5b1cf8e95">ABDMS2000::MultiModeFilter::setCutoff</a></div><div class="ttdeci">void setCutoff(float cutoffHz) noexcept</div><div class="ttdef"><b>Definition</b> MultiModeFilter.cpp:24</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MultiModeFilter_html_adfe9a1390b4f095aa357d20735e1cd3b"><div class="ttname"><a href="classABDMS2000_1_1MultiModeFilter.html#adfe9a1390b4f095aa357d20735e1cd3b">ABDMS2000::MultiModeFilter::sampleRate_</a></div><div class="ttdeci">double sampleRate_</div><div class="ttdef"><b>Definition</b> MultiModeFilter.h:32</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html"><div class="ttname"><a href="namespaceABDMS2000.html">ABDMS2000</a></div><div class="ttdef"><b>Definition</b> AppLogger.h:15</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_aa2b1e8d220a1e4a73e04a079ac7bf1f0"><div class="ttname"><a href="namespaceABDMS2000.html#aa2b1e8d220a1e4a73e04a079ac7bf1f0">ABDMS2000::FilterType</a></div><div class="ttdeci">FilterType</div><div class="ttdef"><b>Definition</b> MultiModeFilter.h:7</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_aa2b1e8d220a1e4a73e04a079ac7bf1f0a0e725626182f118d07d120cee81e283b"><div class="ttname"><a href="namespaceABDMS2000.html#aa2b1e8d220a1e4a73e04a079ac7bf1f0a0e725626182f118d07d120cee81e283b">ABDMS2000::FilterType::LPF24</a></div><div class="ttdeci">@ LPF24</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_aa2b1e8d220a1e4a73e04a079ac7bf1f0a4a46bff5a8645768bbf206205e4ac292"><div class="ttname"><a href="namespaceABDMS2000.html#aa2b1e8d220a1e4a73e04a079ac7bf1f0a4a46bff5a8645768bbf206205e4ac292">ABDMS2000::FilterType::LPF12</a></div><div class="ttdeci">@ LPF12</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_aa2b1e8d220a1e4a73e04a079ac7bf1f0a98c6c0f34f585f86e57c002357c32689"><div class="ttname"><a href="namespaceABDMS2000.html#aa2b1e8d220a1e4a73e04a079ac7bf1f0a98c6c0f34f585f86e57c002357c32689">ABDMS2000::FilterType::BPF12</a></div><div class="ttdeci">@ BPF12</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_aa2b1e8d220a1e4a73e04a079ac7bf1f0af18e50f81881a130c3c48a9c85bcb21d"><div class="ttname"><a href="namespaceABDMS2000.html#aa2b1e8d220a1e4a73e04a079ac7bf1f0af18e50f81881a130c3c48a9c85bcb21d">ABDMS2000::FilterType::HPF12</a></div><div class="ttdeci">@ HPF12</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

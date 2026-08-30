@@ -1,0 +1,648 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Referencia de la clase ABDMS2000::SysExManager</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespaceABDMS2000.html">ABDMS2000</a></li><li class="navelem"><a class="el" href="classABDMS2000_1_1SysExManager.html">SysExManager</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Métodos públicos</a> &#124;
+<a href="#pub-static-methods">Métodos públicos estáticos</a> &#124;
+<a href="#pub-static-attribs">Atributos públicos estáticos</a> &#124;
+<a href="#pri-methods">Métodos privados</a> &#124;
+<a href="#pri-attribs">Atributos privados</a> &#124;
+<a href="classABDMS2000_1_1SysExManager-members.html">Lista de todos los miembros</a>  </div>
+  <div class="headertitle"><div class="title">Referencia de la clase ABDMS2000::SysExManager</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p><code>#include &lt;<a class="el" href="SysExManager_8h_source.html">SysExManager.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Métodos públicos</h2></td></tr>
+<tr class="memitem:af02af3267b481c7b4f254e538f50ec3a" id="r_af02af3267b481c7b4f254e538f50ec3a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#af02af3267b481c7b4f254e538f50ec3a">SysExManager</a> ()</td></tr>
+<tr class="separator:af02af3267b481c7b4f254e538f50ec3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6080d368c561427d83b0812b245f51d" id="r_ae6080d368c561427d83b0812b245f51d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#ae6080d368c561427d83b0812b245f51d">~SysExManager</a> ()=default</td></tr>
+<tr class="separator:ae6080d368c561427d83b0812b245f51d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a674b8e0be042c6bc830810b40c9cdcd3" id="r_a674b8e0be042c6bc830810b40c9cdcd3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structABDMS2000_1_1SysExParseResult.html">SysExParseResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#a674b8e0be042c6bc830810b40c9cdcd3">parseSysEx</a> (const uint8_t *data, size_t size, juce::AudioProcessorValueTreeState &amp;apvts)</td></tr>
+<tr class="separator:a674b8e0be042c6bc830810b40c9cdcd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5451870643e97fa290f7c03a265ed7a1" id="r_a5451870643e97fa290f7c03a265ed7a1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structABDMS2000_1_1SysExParseResult.html">SysExParseResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#a5451870643e97fa290f7c03a265ed7a1">parseMidiFile</a> (const juce::File &amp;file, juce::AudioProcessorValueTreeState &amp;apvts)</td></tr>
+<tr class="separator:a5451870643e97fa290f7c03a265ed7a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac22f1cb31f361600b35c8b7e7a50347e" id="r_ac22f1cb31f361600b35c8b7e7a50347e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; uint8_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#ac22f1cb31f361600b35c8b7e7a50347e">createProgramDump</a> (int channel, const <a class="el" href="structABDMS2000_1_1MS2000ProgramData.html">MS2000ProgramData</a> &amp;program) const</td></tr>
+<tr class="separator:ac22f1cb31f361600b35c8b7e7a50347e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada6c551c153fa6c51629c0ec0c9cae3d" id="r_ada6c551c153fa6c51629c0ec0c9cae3d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; uint8_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#ada6c551c153fa6c51629c0ec0c9cae3d">createAllDataDump</a> (int channel) const</td></tr>
+<tr class="separator:ada6c551c153fa6c51629c0ec0c9cae3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a451de7d6a6bb41bd7586da2a44420377" id="r_a451de7d6a6bb41bd7586da2a44420377"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structABDMS2000_1_1MS2000ProgramData.html">MS2000ProgramData</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#a451de7d6a6bb41bd7586da2a44420377">getProgram</a> (size_t index) const noexcept</td></tr>
+<tr class="separator:a451de7d6a6bb41bd7586da2a44420377"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48bec770642923270ffefd5217e4e8d4" id="r_a48bec770642923270ffefd5217e4e8d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#a48bec770642923270ffefd5217e4e8d4">setProgram</a> (size_t index, const <a class="el" href="structABDMS2000_1_1MS2000ProgramData.html">MS2000ProgramData</a> &amp;prog) noexcept</td></tr>
+<tr class="separator:a48bec770642923270ffefd5217e4e8d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a283fc7e181fee862094e16fd7da36a67" id="r_a283fc7e181fee862094e16fd7da36a67"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#a283fc7e181fee862094e16fd7da36a67">getBankSize</a> () const noexcept</td></tr>
+<tr class="separator:a283fc7e181fee862094e16fd7da36a67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97fd8f70a30795d50c30a4042c2db349" id="r_a97fd8f70a30795d50c30a4042c2db349"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#a97fd8f70a30795d50c30a4042c2db349">getActiveProgramIndex</a> () const noexcept</td></tr>
+<tr class="separator:a97fd8f70a30795d50c30a4042c2db349"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6088b0cec5dba493aa4aefa715fbc56c" id="r_a6088b0cec5dba493aa4aefa715fbc56c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#a6088b0cec5dba493aa4aefa715fbc56c">setActiveProgramIndex</a> (int idx) noexcept</td></tr>
+<tr class="separator:a6088b0cec5dba493aa4aefa715fbc56c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb7a7f5197ddfea5363636cea3b1720f" id="r_abb7a7f5197ddfea5363636cea3b1720f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#abb7a7f5197ddfea5363636cea3b1720f">loadCurrentProgramIntoAPVTS</a> (juce::AudioProcessorValueTreeState &amp;apvts) const</td></tr>
+<tr class="separator:abb7a7f5197ddfea5363636cea3b1720f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abcf7748053600ed0aba2e047c54a1d7d" id="r_abcf7748053600ed0aba2e047c54a1d7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#abcf7748053600ed0aba2e047c54a1d7d">saveAPVTSIntoCurrentProgram</a> (const juce::AudioProcessorValueTreeState &amp;apvts, const std::string &amp;name)</td></tr>
+<tr class="separator:abcf7748053600ed0aba2e047c54a1d7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Métodos públicos estáticos</h2></td></tr>
+<tr class="memitem:ab086d7d8d98874e49c85fee9a0ac9ba4" id="r_ab086d7d8d98874e49c85fee9a0ac9ba4"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#ab086d7d8d98874e49c85fee9a0ac9ba4">formatHexDump</a> (const uint8_t *data, size_t size, size_t bytesPerLine=16)</td></tr>
+<tr class="separator:ab086d7d8d98874e49c85fee9a0ac9ba4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
+Atributos públicos estáticos</h2></td></tr>
+<tr class="memitem:a8e56e69c6c6f99df38982f84fbec8279" id="r_a8e56e69c6c6f99df38982f84fbec8279"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#a8e56e69c6c6f99df38982f84fbec8279">BANK_SIZE</a> = 128</td></tr>
+<tr class="separator:a8e56e69c6c6f99df38982f84fbec8279"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Métodos privados</h2></td></tr>
+<tr class="memitem:ab9448048aae122fe2ddb6d5aa9438928" id="r_ab9448048aae122fe2ddb6d5aa9438928"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#ab9448048aae122fe2ddb6d5aa9438928">isKorgHeader</a> (const uint8_t *data, size_t size, int &amp;outChannel, uint8_t &amp;outFunction) const noexcept</td></tr>
+<tr class="separator:ab9448048aae122fe2ddb6d5aa9438928"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Atributos privados</h2></td></tr>
+<tr class="memitem:ac1d91be04b7ca998d79a688b79713d91" id="r_ac1d91be04b7ca998d79a688b79713d91"><td class="memItemLeft" align="right" valign="top">std::array&lt; <a class="el" href="structABDMS2000_1_1MS2000ProgramData.html">MS2000ProgramData</a>, <a class="el" href="classABDMS2000_1_1SysExManager.html#a8e56e69c6c6f99df38982f84fbec8279">BANK_SIZE</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#ac1d91be04b7ca998d79a688b79713d91">bank_</a> {}</td></tr>
+<tr class="separator:ac1d91be04b7ca998d79a688b79713d91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6d51384589cfd15852c0a8a825d2e49" id="r_ab6d51384589cfd15852c0a8a825d2e49"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#ab6d51384589cfd15852c0a8a825d2e49">activeProgramIndex_</a> { 0 }</td></tr>
+<tr class="separator:ab6d51384589cfd15852c0a8a825d2e49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Documentación de constructores y destructores</h2>
+<a id="af02af3267b481c7b4f254e538f50ec3a" name="af02af3267b481c7b4f254e538f50ec3a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af02af3267b481c7b4f254e538f50ec3a">&#9670;&#160;</a></span>SysExManager()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ABDMS2000::SysExManager::SysExManager </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae6080d368c561427d83b0812b245f51d" name="ae6080d368c561427d83b0812b245f51d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6080d368c561427d83b0812b245f51d">&#9670;&#160;</a></span>~SysExManager()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ABDMS2000::SysExManager::~SysExManager </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Documentación de funciones miembro</h2>
+<a id="ada6c551c153fa6c51629c0ec0c9cae3d" name="ada6c551c153fa6c51629c0ec0c9cae3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada6c551c153fa6c51629c0ec0c9cae3d">&#9670;&#160;</a></span>createAllDataDump()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; uint8_t &gt; ABDMS2000::SysExManager::createAllDataDump </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>channel</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Creates an All-Data Dump SysEx message (0x4C) for all 128 bank programs. </p>
+
+</div>
+</div>
+<a id="ac22f1cb31f361600b35c8b7e7a50347e" name="ac22f1cb31f361600b35c8b7e7a50347e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac22f1cb31f361600b35c8b7e7a50347e">&#9670;&#160;</a></span>createProgramDump()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; uint8_t &gt; ABDMS2000::SysExManager::createProgramDump </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>channel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structABDMS2000_1_1MS2000ProgramData.html">MS2000ProgramData</a> &amp;&#160;</td>
+          <td class="paramname"><em>program</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Creates a 1-Program Data Dump SysEx message (0x40). </p>
+
+</div>
+</div>
+<a id="ab086d7d8d98874e49c85fee9a0ac9ba4" name="ab086d7d8d98874e49c85fee9a0ac9ba4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab086d7d8d98874e49c85fee9a0ac9ba4">&#9670;&#160;</a></span>formatHexDump()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string ABDMS2000::SysExManager::formatHexDump </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>bytesPerLine</em> = <code>16</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Formats binary data as a 2-column Hex + ASCII Inspector dump string. </p>
+
+</div>
+</div>
+<a id="a97fd8f70a30795d50c30a4042c2db349" name="a97fd8f70a30795d50c30a4042c2db349"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97fd8f70a30795d50c30a4042c2db349">&#9670;&#160;</a></span>getActiveProgramIndex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int ABDMS2000::SysExManager::getActiveProgramIndex </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a283fc7e181fee862094e16fd7da36a67" name="a283fc7e181fee862094e16fd7da36a67"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a283fc7e181fee862094e16fd7da36a67">&#9670;&#160;</a></span>getBankSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t ABDMS2000::SysExManager::getBankSize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a451de7d6a6bb41bd7586da2a44420377" name="a451de7d6a6bb41bd7586da2a44420377"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a451de7d6a6bb41bd7586da2a44420377">&#9670;&#160;</a></span>getProgram()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="structABDMS2000_1_1MS2000ProgramData.html">MS2000ProgramData</a> &amp; ABDMS2000::SysExManager::getProgram </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab9448048aae122fe2ddb6d5aa9438928" name="ab9448048aae122fe2ddb6d5aa9438928"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9448048aae122fe2ddb6d5aa9438928">&#9670;&#160;</a></span>isKorgHeader()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ABDMS2000::SysExManager::isKorgHeader </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>outChannel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t &amp;&#160;</td>
+          <td class="paramname"><em>outFunction</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abb7a7f5197ddfea5363636cea3b1720f" name="abb7a7f5197ddfea5363636cea3b1720f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb7a7f5197ddfea5363636cea3b1720f">&#9670;&#160;</a></span>loadCurrentProgramIntoAPVTS()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::SysExManager::loadCurrentProgramIntoAPVTS </td>
+          <td>(</td>
+          <td class="paramtype">juce::AudioProcessorValueTreeState &amp;&#160;</td>
+          <td class="paramname"><em>apvts</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5451870643e97fa290f7c03a265ed7a1" name="a5451870643e97fa290f7c03a265ed7a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5451870643e97fa290f7c03a265ed7a1">&#9670;&#160;</a></span>parseMidiFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structABDMS2000_1_1SysExParseResult.html">SysExParseResult</a> ABDMS2000::SysExManager::parseMidiFile </td>
+          <td>(</td>
+          <td class="paramtype">const juce::File &amp;&#160;</td>
+          <td class="paramname"><em>file</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">juce::AudioProcessorValueTreeState &amp;&#160;</td>
+          <td class="paramname"><em>apvts</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Parses a Standard MIDI File (.mid) containing embedded SysEx dumps. </p>
+
+</div>
+</div>
+<a id="a674b8e0be042c6bc830810b40c9cdcd3" name="a674b8e0be042c6bc830810b40c9cdcd3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a674b8e0be042c6bc830810b40c9cdcd3">&#9670;&#160;</a></span>parseSysEx()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structABDMS2000_1_1SysExParseResult.html">SysExParseResult</a> ABDMS2000::SysExManager::parseSysEx </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">juce::AudioProcessorValueTreeState &amp;&#160;</td>
+          <td class="paramname"><em>apvts</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Parses raw SysEx bytes (from .syx file or MIDI input). </p>
+
+</div>
+</div>
+<a id="abcf7748053600ed0aba2e047c54a1d7d" name="abcf7748053600ed0aba2e047c54a1d7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abcf7748053600ed0aba2e047c54a1d7d">&#9670;&#160;</a></span>saveAPVTSIntoCurrentProgram()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::SysExManager::saveAPVTSIntoCurrentProgram </td>
+          <td>(</td>
+          <td class="paramtype">const juce::AudioProcessorValueTreeState &amp;&#160;</td>
+          <td class="paramname"><em>apvts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>name</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6088b0cec5dba493aa4aefa715fbc56c" name="a6088b0cec5dba493aa4aefa715fbc56c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6088b0cec5dba493aa4aefa715fbc56c">&#9670;&#160;</a></span>setActiveProgramIndex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::SysExManager::setActiveProgramIndex </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>idx</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a48bec770642923270ffefd5217e4e8d4" name="a48bec770642923270ffefd5217e4e8d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48bec770642923270ffefd5217e4e8d4">&#9670;&#160;</a></span>setProgram()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::SysExManager::setProgram </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structABDMS2000_1_1MS2000ProgramData.html">MS2000ProgramData</a> &amp;&#160;</td>
+          <td class="paramname"><em>prog</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Documentación de datos miembro</h2>
+<a id="ab6d51384589cfd15852c0a8a825d2e49" name="ab6d51384589cfd15852c0a8a825d2e49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6d51384589cfd15852c0a8a825d2e49">&#9670;&#160;</a></span>activeProgramIndex_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int ABDMS2000::SysExManager::activeProgramIndex_ { 0 }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac1d91be04b7ca998d79a688b79713d91" name="ac1d91be04b7ca998d79a688b79713d91"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1d91be04b7ca998d79a688b79713d91">&#9670;&#160;</a></span>bank_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::array&lt;<a class="el" href="structABDMS2000_1_1MS2000ProgramData.html">MS2000ProgramData</a>, <a class="el" href="classABDMS2000_1_1SysExManager.html#a8e56e69c6c6f99df38982f84fbec8279">BANK_SIZE</a>&gt; ABDMS2000::SysExManager::bank_ {}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8e56e69c6c6f99df38982f84fbec8279" name="a8e56e69c6c6f99df38982f84fbec8279"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e56e69c6c6f99df38982f84fbec8279">&#9670;&#160;</a></span>BANK_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr size_t ABDMS2000::SysExManager::BANK_SIZE = 128</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>La documentación de esta clase está generada de los siguientes archivos:<ul>
+<li>Source/MIDI/<a class="el" href="SysExManager_8h_source.html">SysExManager.h</a></li>
+<li>Source/MIDI/<a class="el" href="SysExManager_8cpp.html">SysExManager.cpp</a></li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

@@ -1,0 +1,1158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Referencia de la clase ABDMS2000::VoiceManager</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="namespaceABDMS2000.html">ABDMS2000</a></li><li class="navelem"><a class="el" href="classABDMS2000_1_1VoiceManager.html">VoiceManager</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Métodos públicos</a> &#124;
+<a href="#pub-static-attribs">Atributos públicos estáticos</a> &#124;
+<a href="#pri-methods">Métodos privados</a> &#124;
+<a href="#pri-attribs">Atributos privados</a> &#124;
+<a href="classABDMS2000_1_1VoiceManager-members.html">Lista de todos los miembros</a>  </div>
+  <div class="headertitle"><div class="title">Referencia de la clase ABDMS2000::VoiceManager</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>High-performance <a class="el" href="classABDMS2000_1_1Voice.html" title="Represents a single synth voice in the 4-voice architecture.">Voice</a> Manager matching Korg MS2000 / microKORG hardware specs.  
+ <a href="classABDMS2000_1_1VoiceManager.html#details">Más...</a></p>
+
+<p><code>#include &lt;<a class="el" href="VoiceManager_8h_source.html">VoiceManager.h</a>&gt;</code></p>
+<div class="dynheader">
+Diagrama de colaboración de ABDMS2000::VoiceManager:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classABDMS2000_1_1VoiceManager__coll__graph.svg" width="247" height="212"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a href="graph_legend.html">leyenda</a>]</span></center></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Métodos públicos</h2></td></tr>
+<tr class="memitem:ae41becd6b622e57c6159232b88708fe3" id="r_ae41becd6b622e57c6159232b88708fe3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#ae41becd6b622e57c6159232b88708fe3">VoiceManager</a> ()=default</td></tr>
+<tr class="separator:ae41becd6b622e57c6159232b88708fe3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a256ab5ef9c53e747a820cb0c9b11fb07" id="r_a256ab5ef9c53e747a820cb0c9b11fb07"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a256ab5ef9c53e747a820cb0c9b11fb07">prepare</a> (double sampleRate) noexcept</td></tr>
+<tr class="separator:a256ab5ef9c53e747a820cb0c9b11fb07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accd7a00e4085efe8732aab0927835bc0" id="r_accd7a00e4085efe8732aab0927835bc0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#accd7a00e4085efe8732aab0927835bc0">reset</a> () noexcept</td></tr>
+<tr class="separator:accd7a00e4085efe8732aab0927835bc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92952eb5854863d2eb85dd3ae010ebd7" id="r_a92952eb5854863d2eb85dd3ae010ebd7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a92952eb5854863d2eb85dd3ae010ebd7">setAssignMode</a> (<a class="el" href="namespaceABDMS2000.html#a28040a5818d8f8b96a3a4c36b1c4b988">VoiceAssignMode</a> mode) noexcept</td></tr>
+<tr class="separator:a92952eb5854863d2eb85dd3ae010ebd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aceceab0150b174147c2e12930fd16b7e" id="r_aceceab0150b174147c2e12930fd16b7e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#aceceab0150b174147c2e12930fd16b7e">setTriggerMode</a> (<a class="el" href="namespaceABDMS2000.html#aea9565eccc7efbf2e814ffb602ba19a1">TriggerMode</a> mode) noexcept</td></tr>
+<tr class="separator:aceceab0150b174147c2e12930fd16b7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a912a10f352028b6cd78e1077f81321a5" id="r_a912a10f352028b6cd78e1077f81321a5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a912a10f352028b6cd78e1077f81321a5">setUnisonDetune</a> (float detuneCents) noexcept</td></tr>
+<tr class="separator:a912a10f352028b6cd78e1077f81321a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96d38e1dfe5b48869e57832caea98f32" id="r_a96d38e1dfe5b48869e57832caea98f32"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a96d38e1dfe5b48869e57832caea98f32">setUnisonSpread</a> (float spread0to1) noexcept</td></tr>
+<tr class="separator:a96d38e1dfe5b48869e57832caea98f32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32493a6613dedcb631159239bc8fbc45" id="r_a32493a6613dedcb631159239bc8fbc45"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a32493a6613dedcb631159239bc8fbc45">setPortamentoTime</a> (float portamentoTime0to127) noexcept</td></tr>
+<tr class="separator:a32493a6613dedcb631159239bc8fbc45"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4297f9cd743ea35858e078d155932d64" id="r_a4297f9cd743ea35858e078d155932d64"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a4297f9cd743ea35858e078d155932d64">setHoldButtonState</a> (bool active) noexcept</td></tr>
+<tr class="separator:a4297f9cd743ea35858e078d155932d64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83bc2f18c5db4572163900e3eb5b1b61" id="r_a83bc2f18c5db4572163900e3eb5b1b61"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a83bc2f18c5db4572163900e3eb5b1b61">setMaxPolyphony</a> (size_t numVoices) noexcept</td></tr>
+<tr class="separator:a83bc2f18c5db4572163900e3eb5b1b61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b08fd531098c531c4233fcdfad55dd8" id="r_a5b08fd531098c531c4233fcdfad55dd8"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a5b08fd531098c531c4233fcdfad55dd8">getMaxPolyphony</a> () const noexcept</td></tr>
+<tr class="separator:a5b08fd531098c531c4233fcdfad55dd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aafa6d880762adc8d780952fcfee79baf" id="r_aafa6d880762adc8d780952fcfee79baf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#aafa6d880762adc8d780952fcfee79baf">noteOn</a> (int midiNote, float velocity) noexcept</td></tr>
+<tr class="separator:aafa6d880762adc8d780952fcfee79baf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace8ebce3d62de8f98aa4e234336c385d" id="r_ace8ebce3d62de8f98aa4e234336c385d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#ace8ebce3d62de8f98aa4e234336c385d">noteOff</a> (int midiNote) noexcept</td></tr>
+<tr class="separator:ace8ebce3d62de8f98aa4e234336c385d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae942eaf17893be2009494eb7e7d9db64" id="r_ae942eaf17893be2009494eb7e7d9db64"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#ae942eaf17893be2009494eb7e7d9db64">allNotesOff</a> () noexcept</td></tr>
+<tr class="separator:ae942eaf17893be2009494eb7e7d9db64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ce4ef4ebe149738a5a336938a297de7" id="r_a3ce4ef4ebe149738a5a336938a297de7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a3ce4ef4ebe149738a5a336938a297de7">applyBlockParams</a> (const <a class="el" href="structABDMS2000_1_1VoiceParameters.html">VoiceParameters</a> &amp;params) noexcept</td></tr>
+<tr class="separator:a3ce4ef4ebe149738a5a336938a297de7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41d43c08a515791b124f9b9549f13433" id="r_a41d43c08a515791b124f9b9549f13433"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a41d43c08a515791b124f9b9549f13433">process</a> (float &amp;leftOut, float &amp;rightOut, int diagPoint=0, float diagTone=0.0f) noexcept</td></tr>
+<tr class="separator:a41d43c08a515791b124f9b9549f13433"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac00b52b3b4789ca57e80fb464aa5472b" id="r_ac00b52b3b4789ca57e80fb464aa5472b"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#ac00b52b3b4789ca57e80fb464aa5472b">getActiveVoiceCount</a> () const noexcept</td></tr>
+<tr class="separator:ac00b52b3b4789ca57e80fb464aa5472b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af07d640f12a878a0f1d59555e5306be6" id="r_af07d640f12a878a0f1d59555e5306be6"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classABDMS2000_1_1Voice.html">Voice</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#af07d640f12a878a0f1d59555e5306be6">getVoice</a> (size_t index) const noexcept</td></tr>
+<tr class="separator:af07d640f12a878a0f1d59555e5306be6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
+Atributos públicos estáticos</h2></td></tr>
+<tr class="memitem:a4c5f4eb62f0f436b35be8b394db35d6d" id="r_a4c5f4eb62f0f436b35be8b394db35d6d"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a4c5f4eb62f0f436b35be8b394db35d6d">NUM_HW_VOICES</a> = 4</td></tr>
+<tr class="separator:a4c5f4eb62f0f436b35be8b394db35d6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75cd3b497e5ebce0a5742d725bfdd799" id="r_a75cd3b497e5ebce0a5742d725bfdd799"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a75cd3b497e5ebce0a5742d725bfdd799">MAX_EXPANDED_VOICES</a> = 32</td></tr>
+<tr class="separator:a75cd3b497e5ebce0a5742d725bfdd799"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Métodos privados</h2></td></tr>
+<tr class="memitem:a02cb30b8de244ae944203aad63869541" id="r_a02cb30b8de244ae944203aad63869541"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a02cb30b8de244ae944203aad63869541">findVoiceToSteal</a> (int incomingNote) noexcept</td></tr>
+<tr class="separator:a02cb30b8de244ae944203aad63869541"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10cb07dad6faedc435a6b86b8f7085e4" id="r_a10cb07dad6faedc435a6b86b8f7085e4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a10cb07dad6faedc435a6b86b8f7085e4">anyKeyPressed</a> () const noexcept</td></tr>
+<tr class="separator:a10cb07dad6faedc435a6b86b8f7085e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ea16700ecf8bb46d3337d4fdcfd3847" id="r_a5ea16700ecf8bb46d3337d4fdcfd3847"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a5ea16700ecf8bb46d3337d4fdcfd3847">releaseVoiceSlot</a> (size_t index) noexcept</td></tr>
+<tr class="separator:a5ea16700ecf8bb46d3337d4fdcfd3847"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Atributos privados</h2></td></tr>
+<tr class="memitem:a5c0fd06efb5711bd9fe1ab5df2983b2e" id="r_a5c0fd06efb5711bd9fe1ab5df2983b2e"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a5c0fd06efb5711bd9fe1ab5df2983b2e">sampleRate_</a> { 44100.0 }</td></tr>
+<tr class="separator:a5c0fd06efb5711bd9fe1ab5df2983b2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60dd397578ff51d191b4a3bf686b3675" id="r_a60dd397578ff51d191b4a3bf686b3675"><td class="memItemLeft" align="right" valign="top">std::array&lt; <a class="el" href="classABDMS2000_1_1Voice.html">Voice</a>, <a class="el" href="classABDMS2000_1_1VoiceManager.html#a75cd3b497e5ebce0a5742d725bfdd799">MAX_EXPANDED_VOICES</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a60dd397578ff51d191b4a3bf686b3675">voices_</a></td></tr>
+<tr class="separator:a60dd397578ff51d191b4a3bf686b3675"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d285302b62f01843ee3545f3701d5b4" id="r_a1d285302b62f01843ee3545f3701d5b4"><td class="memItemLeft" align="right" valign="top">std::array&lt; <a class="el" href="structABDMS2000_1_1VoiceSlotState.html">VoiceSlotState</a>, <a class="el" href="classABDMS2000_1_1VoiceManager.html#a75cd3b497e5ebce0a5742d725bfdd799">MAX_EXPANDED_VOICES</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a1d285302b62f01843ee3545f3701d5b4">slotStates_</a></td></tr>
+<tr class="separator:a1d285302b62f01843ee3545f3701d5b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b51df0b7a1b3e77b395b7e3b6c5289b" id="r_a9b51df0b7a1b3e77b395b7e3b6c5289b"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a9b51df0b7a1b3e77b395b7e3b6c5289b">activeVoiceCapacity_</a> { <a class="el" href="classABDMS2000_1_1VoiceManager.html#a4c5f4eb62f0f436b35be8b394db35d6d">NUM_HW_VOICES</a> }</td></tr>
+<tr class="separator:a9b51df0b7a1b3e77b395b7e3b6c5289b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92a7bbd0b1e4b5f08f8fd12d03ff3372" id="r_a92a7bbd0b1e4b5f08f8fd12d03ff3372"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceABDMS2000.html#a28040a5818d8f8b96a3a4c36b1c4b988">VoiceAssignMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a92a7bbd0b1e4b5f08f8fd12d03ff3372">assignMode_</a> { <a class="el" href="namespaceABDMS2000.html#a28040a5818d8f8b96a3a4c36b1c4b988a7462cd846ee2e800d33ac6250a8ff4af">VoiceAssignMode::Poly</a> }</td></tr>
+<tr class="separator:a92a7bbd0b1e4b5f08f8fd12d03ff3372"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5eb28727bb999f2dd1e34c6f83bdefab" id="r_a5eb28727bb999f2dd1e34c6f83bdefab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceABDMS2000.html#aea9565eccc7efbf2e814ffb602ba19a1">TriggerMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a5eb28727bb999f2dd1e34c6f83bdefab">triggerMode_</a> { <a class="el" href="namespaceABDMS2000.html#aea9565eccc7efbf2e814ffb602ba19a1ace7898536dd0e928d1640ee2ad531cc8">TriggerMode::Multi</a> }</td></tr>
+<tr class="separator:a5eb28727bb999f2dd1e34c6f83bdefab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee5252147a61fa1a27938ea2a9ff46e2" id="r_aee5252147a61fa1a27938ea2a9ff46e2"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#aee5252147a61fa1a27938ea2a9ff46e2">unisonDetune_</a> { 10.0f }</td></tr>
+<tr class="separator:aee5252147a61fa1a27938ea2a9ff46e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09998a33921fc6f22ff6ba256d82b276" id="r_a09998a33921fc6f22ff6ba256d82b276"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a09998a33921fc6f22ff6ba256d82b276">unisonSpread_</a> { 0.5f }</td></tr>
+<tr class="separator:a09998a33921fc6f22ff6ba256d82b276"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92e34034061435a7ae61044b94c21164" id="r_a92e34034061435a7ae61044b94c21164"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a92e34034061435a7ae61044b94c21164">portamentoTimeParam_</a> { 0.0f }</td></tr>
+<tr class="separator:a92e34034061435a7ae61044b94c21164"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8388491f75fa9cf214b3726dcc20a414" id="r_a8388491f75fa9cf214b3726dcc20a414"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a8388491f75fa9cf214b3726dcc20a414">glideTimeSec_</a> { 0.0f }</td></tr>
+<tr class="separator:a8388491f75fa9cf214b3726dcc20a414"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33579a3f1a78c62bfd5482a1552dbb1b" id="r_a33579a3f1a78c62bfd5482a1552dbb1b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a33579a3f1a78c62bfd5482a1552dbb1b">isHoldActive_</a> { false }</td></tr>
+<tr class="separator:a33579a3f1a78c62bfd5482a1552dbb1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44332aeb85cbe72e475dfb8de6dec7ce" id="r_a44332aeb85cbe72e475dfb8de6dec7ce"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a44332aeb85cbe72e475dfb8de6dec7ce">globalTimeCounter_</a> { 0 }</td></tr>
+<tr class="separator:a44332aeb85cbe72e475dfb8de6dec7ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf243418097b7cf352dc64986f329fd0" id="r_adf243418097b7cf352dc64986f329fd0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structABDMS2000_1_1VoiceParameters.html">VoiceParameters</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#adf243418097b7cf352dc64986f329fd0">baseBlockParams_</a></td></tr>
+<tr class="separator:adf243418097b7cf352dc64986f329fd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a77647cc5450eaa85253be818b70a51" id="r_a2a77647cc5450eaa85253be818b70a51"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a2a77647cc5450eaa85253be818b70a51">heldNotesStack_</a></td></tr>
+<tr class="separator:a2a77647cc5450eaa85253be818b70a51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62788919fd6fd4d9dbed8d99a392d4f8" id="r_a62788919fd6fd4d9dbed8d99a392d4f8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a62788919fd6fd4d9dbed8d99a392d4f8">lastMonoNote_</a> { -1 }</td></tr>
+<tr class="separator:a62788919fd6fd4d9dbed8d99a392d4f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Descripción detallada</h2>
+<div class="textblock"><p>High-performance <a class="el" href="classABDMS2000_1_1Voice.html" title="Represents a single synth voice in the 4-voice architecture.">Voice</a> Manager matching Korg MS2000 / microKORG hardware specs. </p>
+<p>Capabilities:</p><ul>
+<li>4-voice authentic hardware polyphony (expandable up to 32 voices in Advanced Mode)</li>
+<li>Intelligent MS2000 <a class="el" href="classABDMS2000_1_1Voice.html" title="Represents a single synth voice in the 4-voice architecture.">Voice</a> Stealing:<ol type="1">
+<li>Repeated Note Protection (Re-triggering same voice)</li>
+<li>Steal Latch/Hold voices where key was released</li>
+<li>Release Phase Stealing (steals voice closest to silence)</li>
+<li>FIFO Sustain Stealing (steals oldest held note)</li>
+</ol>
+</li>
+<li>Anti-click rapid ramp-down on stolen voices</li>
+<li>Portamento Glide: Fingered/Legato in Mono/Unison, Per-Voice Memory Glide in Poly</li>
+<li>Hold / Latch buffer support </li>
+</ul>
+</div><h2 class="groupheader">Documentación de constructores y destructores</h2>
+<a id="ae41becd6b622e57c6159232b88708fe3" name="ae41becd6b622e57c6159232b88708fe3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae41becd6b622e57c6159232b88708fe3">&#9670;&#160;</a></span>VoiceManager()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ABDMS2000::VoiceManager::VoiceManager </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Documentación de funciones miembro</h2>
+<a id="ae942eaf17893be2009494eb7e7d9db64" name="ae942eaf17893be2009494eb7e7d9db64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae942eaf17893be2009494eb7e7d9db64">&#9670;&#160;</a></span>allNotesOff()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::VoiceManager::allNotesOff </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a10cb07dad6faedc435a6b86b8f7085e4" name="a10cb07dad6faedc435a6b86b8f7085e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10cb07dad6faedc435a6b86b8f7085e4">&#9670;&#160;</a></span>anyKeyPressed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ABDMS2000::VoiceManager::anyKeyPressed </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3ce4ef4ebe149738a5a336938a297de7" name="a3ce4ef4ebe149738a5a336938a297de7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ce4ef4ebe149738a5a336938a297de7">&#9670;&#160;</a></span>applyBlockParams()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::VoiceManager::applyBlockParams </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structABDMS2000_1_1VoiceParameters.html">VoiceParameters</a> &amp;&#160;</td>
+          <td class="paramname"><em>params</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a02cb30b8de244ae944203aad63869541" name="a02cb30b8de244ae944203aad63869541"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02cb30b8de244ae944203aad63869541">&#9670;&#160;</a></span>findVoiceToSteal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int ABDMS2000::VoiceManager::findVoiceToSteal </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>incomingNote</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac00b52b3b4789ca57e80fb464aa5472b" name="ac00b52b3b4789ca57e80fb464aa5472b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac00b52b3b4789ca57e80fb464aa5472b">&#9670;&#160;</a></span>getActiveVoiceCount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t ABDMS2000::VoiceManager::getActiveVoiceCount </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5b08fd531098c531c4233fcdfad55dd8" name="a5b08fd531098c531c4233fcdfad55dd8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b08fd531098c531c4233fcdfad55dd8">&#9670;&#160;</a></span>getMaxPolyphony()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t ABDMS2000::VoiceManager::getMaxPolyphony </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af07d640f12a878a0f1d59555e5306be6" name="af07d640f12a878a0f1d59555e5306be6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af07d640f12a878a0f1d59555e5306be6">&#9670;&#160;</a></span>getVoice()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classABDMS2000_1_1Voice.html">Voice</a> &amp; ABDMS2000::VoiceManager::getVoice </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ace8ebce3d62de8f98aa4e234336c385d" name="ace8ebce3d62de8f98aa4e234336c385d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace8ebce3d62de8f98aa4e234336c385d">&#9670;&#160;</a></span>noteOff()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::VoiceManager::noteOff </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>midiNote</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aafa6d880762adc8d780952fcfee79baf" name="aafa6d880762adc8d780952fcfee79baf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aafa6d880762adc8d780952fcfee79baf">&#9670;&#160;</a></span>noteOn()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::VoiceManager::noteOn </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>midiNote</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>velocity</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a256ab5ef9c53e747a820cb0c9b11fb07" name="a256ab5ef9c53e747a820cb0c9b11fb07"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a256ab5ef9c53e747a820cb0c9b11fb07">&#9670;&#160;</a></span>prepare()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::VoiceManager::prepare </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>sampleRate</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a41d43c08a515791b124f9b9549f13433" name="a41d43c08a515791b124f9b9549f13433"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41d43c08a515791b124f9b9549f13433">&#9670;&#160;</a></span>process()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::VoiceManager::process </td>
+          <td>(</td>
+          <td class="paramtype">float &amp;&#160;</td>
+          <td class="paramname"><em>leftOut</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float &amp;&#160;</td>
+          <td class="paramname"><em>rightOut</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>diagPoint</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>diagTone</em> = <code>0.0f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5ea16700ecf8bb46d3337d4fdcfd3847" name="a5ea16700ecf8bb46d3337d4fdcfd3847"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ea16700ecf8bb46d3337d4fdcfd3847">&#9670;&#160;</a></span>releaseVoiceSlot()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::VoiceManager::releaseVoiceSlot </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="accd7a00e4085efe8732aab0927835bc0" name="accd7a00e4085efe8732aab0927835bc0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#accd7a00e4085efe8732aab0927835bc0">&#9670;&#160;</a></span>reset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::VoiceManager::reset </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a92952eb5854863d2eb85dd3ae010ebd7" name="a92952eb5854863d2eb85dd3ae010ebd7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92952eb5854863d2eb85dd3ae010ebd7">&#9670;&#160;</a></span>setAssignMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::VoiceManager::setAssignMode </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceABDMS2000.html#a28040a5818d8f8b96a3a4c36b1c4b988">VoiceAssignMode</a>&#160;</td>
+          <td class="paramname"><em>mode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4297f9cd743ea35858e078d155932d64" name="a4297f9cd743ea35858e078d155932d64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4297f9cd743ea35858e078d155932d64">&#9670;&#160;</a></span>setHoldButtonState()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::VoiceManager::setHoldButtonState </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>active</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a83bc2f18c5db4572163900e3eb5b1b61" name="a83bc2f18c5db4572163900e3eb5b1b61"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83bc2f18c5db4572163900e3eb5b1b61">&#9670;&#160;</a></span>setMaxPolyphony()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::VoiceManager::setMaxPolyphony </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>numVoices</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a32493a6613dedcb631159239bc8fbc45" name="a32493a6613dedcb631159239bc8fbc45"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32493a6613dedcb631159239bc8fbc45">&#9670;&#160;</a></span>setPortamentoTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::VoiceManager::setPortamentoTime </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>portamentoTime0to127</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aceceab0150b174147c2e12930fd16b7e" name="aceceab0150b174147c2e12930fd16b7e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aceceab0150b174147c2e12930fd16b7e">&#9670;&#160;</a></span>setTriggerMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::VoiceManager::setTriggerMode </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceABDMS2000.html#aea9565eccc7efbf2e814ffb602ba19a1">TriggerMode</a>&#160;</td>
+          <td class="paramname"><em>mode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a912a10f352028b6cd78e1077f81321a5" name="a912a10f352028b6cd78e1077f81321a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a912a10f352028b6cd78e1077f81321a5">&#9670;&#160;</a></span>setUnisonDetune()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::VoiceManager::setUnisonDetune </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>detuneCents</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a96d38e1dfe5b48869e57832caea98f32" name="a96d38e1dfe5b48869e57832caea98f32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96d38e1dfe5b48869e57832caea98f32">&#9670;&#160;</a></span>setUnisonSpread()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::VoiceManager::setUnisonSpread </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>spread0to1</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Documentación de datos miembro</h2>
+<a id="a9b51df0b7a1b3e77b395b7e3b6c5289b" name="a9b51df0b7a1b3e77b395b7e3b6c5289b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b51df0b7a1b3e77b395b7e3b6c5289b">&#9670;&#160;</a></span>activeVoiceCapacity_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t ABDMS2000::VoiceManager::activeVoiceCapacity_ { <a class="el" href="classABDMS2000_1_1VoiceManager.html#a4c5f4eb62f0f436b35be8b394db35d6d">NUM_HW_VOICES</a> }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a92a7bbd0b1e4b5f08f8fd12d03ff3372" name="a92a7bbd0b1e4b5f08f8fd12d03ff3372"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92a7bbd0b1e4b5f08f8fd12d03ff3372">&#9670;&#160;</a></span>assignMode_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceABDMS2000.html#a28040a5818d8f8b96a3a4c36b1c4b988">VoiceAssignMode</a> ABDMS2000::VoiceManager::assignMode_ { <a class="el" href="namespaceABDMS2000.html#a28040a5818d8f8b96a3a4c36b1c4b988a7462cd846ee2e800d33ac6250a8ff4af">VoiceAssignMode::Poly</a> }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="adf243418097b7cf352dc64986f329fd0" name="adf243418097b7cf352dc64986f329fd0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf243418097b7cf352dc64986f329fd0">&#9670;&#160;</a></span>baseBlockParams_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structABDMS2000_1_1VoiceParameters.html">VoiceParameters</a> ABDMS2000::VoiceManager::baseBlockParams_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8388491f75fa9cf214b3726dcc20a414" name="a8388491f75fa9cf214b3726dcc20a414"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8388491f75fa9cf214b3726dcc20a414">&#9670;&#160;</a></span>glideTimeSec_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::VoiceManager::glideTimeSec_ { 0.0f }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a44332aeb85cbe72e475dfb8de6dec7ce" name="a44332aeb85cbe72e475dfb8de6dec7ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44332aeb85cbe72e475dfb8de6dec7ce">&#9670;&#160;</a></span>globalTimeCounter_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t ABDMS2000::VoiceManager::globalTimeCounter_ { 0 }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2a77647cc5450eaa85253be818b70a51" name="a2a77647cc5450eaa85253be818b70a51"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a77647cc5450eaa85253be818b70a51">&#9670;&#160;</a></span>heldNotesStack_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;int&gt; ABDMS2000::VoiceManager::heldNotesStack_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a33579a3f1a78c62bfd5482a1552dbb1b" name="a33579a3f1a78c62bfd5482a1552dbb1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33579a3f1a78c62bfd5482a1552dbb1b">&#9670;&#160;</a></span>isHoldActive_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ABDMS2000::VoiceManager::isHoldActive_ { false }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a62788919fd6fd4d9dbed8d99a392d4f8" name="a62788919fd6fd4d9dbed8d99a392d4f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62788919fd6fd4d9dbed8d99a392d4f8">&#9670;&#160;</a></span>lastMonoNote_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int ABDMS2000::VoiceManager::lastMonoNote_ { -1 }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a75cd3b497e5ebce0a5742d725bfdd799" name="a75cd3b497e5ebce0a5742d725bfdd799"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75cd3b497e5ebce0a5742d725bfdd799">&#9670;&#160;</a></span>MAX_EXPANDED_VOICES</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr size_t ABDMS2000::VoiceManager::MAX_EXPANDED_VOICES = 32</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4c5f4eb62f0f436b35be8b394db35d6d" name="a4c5f4eb62f0f436b35be8b394db35d6d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c5f4eb62f0f436b35be8b394db35d6d">&#9670;&#160;</a></span>NUM_HW_VOICES</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr size_t ABDMS2000::VoiceManager::NUM_HW_VOICES = 4</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a92e34034061435a7ae61044b94c21164" name="a92e34034061435a7ae61044b94c21164"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92e34034061435a7ae61044b94c21164">&#9670;&#160;</a></span>portamentoTimeParam_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::VoiceManager::portamentoTimeParam_ { 0.0f }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5c0fd06efb5711bd9fe1ab5df2983b2e" name="a5c0fd06efb5711bd9fe1ab5df2983b2e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c0fd06efb5711bd9fe1ab5df2983b2e">&#9670;&#160;</a></span>sampleRate_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double ABDMS2000::VoiceManager::sampleRate_ { 44100.0 }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1d285302b62f01843ee3545f3701d5b4" name="a1d285302b62f01843ee3545f3701d5b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d285302b62f01843ee3545f3701d5b4">&#9670;&#160;</a></span>slotStates_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::array&lt;<a class="el" href="structABDMS2000_1_1VoiceSlotState.html">VoiceSlotState</a>, <a class="el" href="classABDMS2000_1_1VoiceManager.html#a75cd3b497e5ebce0a5742d725bfdd799">MAX_EXPANDED_VOICES</a>&gt; ABDMS2000::VoiceManager::slotStates_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5eb28727bb999f2dd1e34c6f83bdefab" name="a5eb28727bb999f2dd1e34c6f83bdefab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5eb28727bb999f2dd1e34c6f83bdefab">&#9670;&#160;</a></span>triggerMode_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceABDMS2000.html#aea9565eccc7efbf2e814ffb602ba19a1">TriggerMode</a> ABDMS2000::VoiceManager::triggerMode_ { <a class="el" href="namespaceABDMS2000.html#aea9565eccc7efbf2e814ffb602ba19a1ace7898536dd0e928d1640ee2ad531cc8">TriggerMode::Multi</a> }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aee5252147a61fa1a27938ea2a9ff46e2" name="aee5252147a61fa1a27938ea2a9ff46e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee5252147a61fa1a27938ea2a9ff46e2">&#9670;&#160;</a></span>unisonDetune_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::VoiceManager::unisonDetune_ { 10.0f }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a09998a33921fc6f22ff6ba256d82b276" name="a09998a33921fc6f22ff6ba256d82b276"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09998a33921fc6f22ff6ba256d82b276">&#9670;&#160;</a></span>unisonSpread_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::VoiceManager::unisonSpread_ { 0.5f }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a60dd397578ff51d191b4a3bf686b3675" name="a60dd397578ff51d191b4a3bf686b3675"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60dd397578ff51d191b4a3bf686b3675">&#9670;&#160;</a></span>voices_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::array&lt;<a class="el" href="classABDMS2000_1_1Voice.html">Voice</a>, <a class="el" href="classABDMS2000_1_1VoiceManager.html#a75cd3b497e5ebce0a5742d725bfdd799">MAX_EXPANDED_VOICES</a>&gt; ABDMS2000::VoiceManager::voices_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>La documentación de esta clase está generada de los siguientes archivos:<ul>
+<li>Source/Core/<a class="el" href="VoiceManager_8h_source.html">VoiceManager.h</a></li>
+<li>Source/Core/<a class="el" href="VoiceManager_8cpp.html">VoiceManager.cpp</a></li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>
