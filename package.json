@@ -8,7 +8,8 @@
     "bundle": "node Scripts/build_webui.js",
     "test": "vitest run",
     "test:watch": "vitest",
-    "sync:keyboard": "cp -r ../ABDMIDIKeyb/src/keyboard.js WebUI/src/components/keyboard.js && cp -r ../ABDMIDIKeyb/src/utils.js WebUI/src/components/utils.js && cp -r ../ABDMIDIKeyb/src/keyboard.css WebUI/src/components/keyboard.css"
+    "sync:keyboard": "cp -r ../ABDSharedCode/MidiKeyboard/src/keyboard.js WebUI/src/components/keyboard.js && cp -r ../ABDSharedCode/MidiKeyboard/src/utils.js WebUI/src/components/utils.js && cp -r ../ABDSharedCode/MidiKeyboard/src/keyboard.css WebUI/src/components/keyboard.css",
+    "sync:scope": "node Scripts/sync_scope.js"
   },
   "keywords": [
     "synth",
@@ -22,6 +23,12 @@
   "author": "ajabadia",
   "license": "UNLICENSED",
   "devDependencies": {
+    "@abdsynths/midi-keyb": "workspace:*",
+    "@abdsynths/shared": "workspace:*",
+    "dexie": "^4.4.5",
+    "file-saver": "^2.0.5",
+    "jszip": "^3.10.1",
+    "vite": "^5.4.21",
     "vitest": "^1.6.0"
   }
 }
