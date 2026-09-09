@@ -5,14 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ABDMS2000 - Synthesizer</title>
   
-  <!-- Estilos de la aplicacion -->
-  <link rel="stylesheet" href="src/styles/themes.css">
-  <link rel="stylesheet" href="src/styles/base.css">
-  <link rel="stylesheet" href="src/styles/main.css">
-  <link rel="stylesheet" href="src/styles/dashboard.css">
-  <link rel="stylesheet" href="src/styles/slideDrawer.css">
-  <link rel="stylesheet" href="src/components/keyboard.css">
-  <link rel="stylesheet" href="src/styles/menu.css">
+  <!-- Estilos de la aplicacion (cache-busting: sube ?v= al cambiar estilos en el standalone, el WebView2 cachea por URL) -->
+  <link rel="stylesheet" href="src/styles/themes.css?v=20260907">
+  <link rel="stylesheet" href="src/styles/base.css?v=20260907">
+  <link rel="stylesheet" href="src/styles/main.css?v=20260907">
+  <link rel="stylesheet" href="src/styles/dashboard.css?v=20260907">
+  <link rel="stylesheet" href="src/styles/slideDrawer.css?v=20260907">
+  <link rel="stylesheet" href="src/components/bank/BankManagerModal.css?v=20260907">
+  <!-- keyboard.css: imported via JS in app.js → Vite bundles into index.css -->
+  <link rel="stylesheet" href="abdscope/src/scope.css?v=20260907">
+  <link rel="stylesheet" href="src/styles/menu.css?v=20260907">
 </head>
 <body class="skin-ms2000">
   <div id="app">
@@ -26,6 +28,11 @@
           <div class="menu-item-container">
             <button class="menu-btn" data-menu="file-menu">File</button>
             <div class="dropdown-menu" id="file-menu">
+              <button class="dropdown-item" data-action="open-bank-manager">
+                <span>Bank Manager &amp; Librarian...</span>
+                <span class="dropdown-kbd">Ctrl+B</span>
+              </button>
+              <div class="dropdown-separator"></div>
               <button class="dropdown-item" data-action="new-patch">
                 <span>New Patch</span>
                 <span class="dropdown-kbd">Ctrl+N</span>
@@ -119,6 +126,11 @@
       </div>
 
       <div class="nav-right">
+        <!-- Bank Manager Button -->
+        <button id="btn-open-bank-manager" class="nav-test-btn" style="border-color: var(--color-accent); color: var(--color-accent);" title="Abrir Gestor de Bancos y Librerías (Korg MS2000)">
+          <span class="test-badge" style="background: rgba(var(--color-accent-rgb), 0.15); color: var(--color-accent);">BANK MGR</span>
+        </button>
+
         <!-- Diagnostic Test Mode Button -->
         <button id="btn-diagnostic-test" class="nav-test-btn" title="Diagnóstico de Audio y Modo Test (440Hz / Inyección DSP)">
           <span class="test-badge">TEST MODE</span>

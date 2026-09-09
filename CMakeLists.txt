@@ -16,6 +16,56 @@ else()
     find_package(JUCE 8 CONFIG REQUIRED)
 endif()
 
+# --- ABDBankManager Integration (Direct local subdirectory + WebUI source-of-truth) ---
+# C++ core lib + WebUI se resuelven desde el mismo repo ABDBankManager:
+#  * local ../ABDBankManager si existe (desarrollo)
+#  * FetchContent desde GitHub v0.3.0-lib como fallback (CI/CD sin copia local)
+set(ABDBANKMANAGER_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../ABDBankManager")
+if(EXISTS "${ABDBANKMANAGER_DIR}/cpp/CMakeLists.txt")
+    set(ABDBANKMANAGER_WEBUI_DIR "${ABDBANKMANAGER_DIR}/WebUI")
+    message(STATUS "ABDBankManager: Using local repo at ${ABDBANKMANAGER_DIR}")
+    add_subdirectory("${ABDBANKMANAGER_DIR}/cpp" "${CMAKE_BINARY_DIR}/ABDBankManagerCore")
+else()
+    # Fallback: FetchContent para CI/CD sin copia local
+    include(FetchContent)
+    FetchContent_Declare(
+      ABDBankManager
+      GIT_REPOSITORY https://github.com/ajabadia/ABDBankManager.git
+      GIT_TAG        v0.3.0-lib
+    )
+    FetchContent_MakeAvailable(ABDBankManager)
+    set(ABDBANKMANAGER_WEBUI_DIR "${abdbankmanager_SOURCE_DIR}/WebUI")
+endif()
+
+# --- ABDSharedCode Integration ---
+set(ABDSHARED_CODE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../ABDSharedCode")
+if(EXISTS "${ABDSHARED_CODE_DIR}/CMakeLists.txt")
+    message(STATUS "ABDSharedCode: Using local at ${ABDSHARED_CODE_DIR}")
+    add_subdirectory("${ABDSHARED_CODE_DIR}" "${CMAKE_BINARY_DIR}/ABDSharedCode")
+else()
+    include(FetchContent)
+    FetchContent_Declare(
+      ABDSharedCode
+      GIT_REPOSITORY https://github.com/ajabadia/ABDSharedCode.git
+      GIT_TAG        master
+    )
+    FetchContent_MakeAvailable(ABDSharedCode)
+endif()
+
+# --- ABDScope Integration (analytical multi-lane scope, native C++ taps) ---
+# ABDScope es un proyecto hermano que empaqueta el core C++ header-only (ScopeTap,
+# ScopeDataCollector, ScopeFrameSerializer) + componente JUCE WebView2 listo
+# (JuceWebScopeComponent) + WebUI embebido como binary data. Se resuelve como
+# dependencia local fija (../ABDScope). Targets: ABDScope::ABDScopeCore y
+# ABDScope::ABDScopeWebAssets (linkado INTERFACE al core).
+set(ABDSCOPE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../ABDScope")
+if(EXISTS "${ABDSCOPE_DIR}/CMakeLists.txt")
+    message(STATUS "ABDScope: Using local at ${ABDSCOPE_DIR}")
+    add_subdirectory("${ABDSCOPE_DIR}" "${CMAKE_BINARY_DIR}/ABDScope")
+else()
+    message(FATAL_ERROR "ABDScope not found at ${ABDSCOPE_DIR}; ABDMS2000 scope integration requires the ABDScope repo.")
+endif()
+
 # Create JUCE Plugin
 juce_add_plugin(ABDMS2000
     COMPANY_NAME "ajabadia"
@@ -33,21 +83,31 @@ juce_add_plugin(ABDMS2000
 
 juce_generate_juce_header(ABDMS2000)
 
-# --- WebUI Binary Assets ---
+# --- WebUI Binary Assets (native synth UI, bundled dist — Fase 3 DRY) ---
+# El WebUI se empaqueta con Vite (Scripts/build_webui.js -> WebUI/dist) ANTES de
+# configurar CMake: dist ya trae los bare imports @abdsynths/* resueltos y el
+# cascade de tokens compartidos que antes solo existia en dev.
+# Los vendor JS (dexie/jszip/file-saver) solo los usa el SPA de abdbank, que se
+# sirve desde disco (bankwebui:// / disk fallback), asi que ya no se embeben.
+if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/WebUI/dist/index.html")
+    message(FATAL_ERROR
+        "WebUI/dist/index.html not found. Run 'node Scripts/build_webui.js' (vite build) before configuring CMake.")
+endif()
 file(GLOB_RECURSE WEBUI_ASSETS 
-    "WebUI/src/*" 
-    "WebUI/assets/*"
-    "WebUI/icons/*" 
-    "WebUI/index.html" 
+    "WebUI/dist/*"
 )
-list(FILTER WEBUI_ASSETS EXCLUDE REGEX "WebUI/dist")
-list(FILTER WEBUI_ASSETS EXCLUDE REGEX "WebUI/tests")
+# Paridad con el embed historico: las imagenes del bank manager se sirven via
+# bankwebui:// (junction ABDSharedAssets), no van en el binario.
+list(FILTER WEBUI_ASSETS EXCLUDE REGEX "WebUI/dist/assets/images")
 juce_add_binary_data(WebUIAssets 
     HEADER_NAME "WebUIAssets.h" 
     NAMESPACE "WebUIAssets" 
     SOURCES ${WEBUI_ASSETS}
 )
 target_link_libraries(ABDMS2000 PUBLIC WebUIAssets)
+
+# --- ABDBankManager WebUI is served from disk ---
+# The modal loads /abdbank/* via the disk fallback in pluginResourceProvider.
 
 # Embedded DWGS Wavetable Binaries (Korg DW-8000 + AKWF curated bundles)
 juce_add_binary_data(DWGSBinary
@@ -83,10 +143,9 @@ target_sources(ABDMS2000 PRIVATE
     Source/Core/HardwareConstants.h
     Source/Core/BuildVersion.h
 
-    # DSP Common & Math
+    # DSP Common & Math (implementaciones en ABDShared::SynthCore, shims locales)
     Source/DSP/Common/DSPUtils.h
     Source/DSP/Common/PolyBLEP.h
-    Source/DSP/Common/PolyBLEP.cpp
 
     # DSP Oscillators
     Source/DSP/Oscillators/WavetableLoader.h
@@ -110,14 +169,11 @@ target_sources(ABDMS2000 PRIVATE
     Source/DSP/Filters/FilterResonanceComp.h
     Source/DSP/Filters/FilterResonanceComp.cpp
 
-    # DSP Envelopes & Modulation
+    # DSP Envelopes & Modulation (implementaciones en ABDShared::SynthCore, shims locales)
     Source/DSP/Envelopes/EnvelopeCurves.h
     Source/DSP/Envelopes/ADSREnvelope.h
-    Source/DSP/Envelopes/ADSREnvelope.cpp
     Source/DSP/Modulation/PortamentoGlide.h
-    Source/DSP/Modulation/PortamentoGlide.cpp
     Source/DSP/Modulation/LFO.h
-    Source/DSP/Modulation/LFO.cpp
     Source/DSP/Modulation/VirtualPatchMatrix.h
     Source/DSP/Modulation/VirtualPatchMatrix.cpp
 
@@ -149,19 +205,17 @@ target_sources(ABDMS2000 PRIVATE
 
 
     # MIDI Telemetry & SysEx
+    # NOTE: SysExCodec.{h,cpp} and NRPNParser.{h,cpp} have been migrated to
+    # ABDShared::HardwareDrivers (namespace abd::hw). They are consumed via
+    # target_link_libraries below — do NOT add local copies back.
     Source/MIDI/MIDIMap.h
     Source/MIDI/MIDIMap.cpp
-    Source/MIDI/NRPNParser.h
-    Source/MIDI/NRPNParser.cpp
     Source/MIDI/MIDITelemetryManager.h
     Source/MIDI/MIDITelemetryManager.cpp
-    Source/MIDI/SysExCodec.h
-    Source/MIDI/SysExCodec.cpp
     Source/MIDI/MS2000ProgramData.h
     Source/MIDI/SysExManager.h
     Source/MIDI/SysExManager.cpp
     Source/MIDI/MS2000SysExExporter.h
-
 
 
     # Plugin Wrappers & WebUI Bridge
@@ -171,6 +225,7 @@ target_sources(ABDMS2000 PRIVATE
     Source/Plugin/PluginEditor.cpp
     Source/Plugin/PluginEditor_ResourceProvider.h
     Source/Plugin/PluginEditor_ResourceProvider.cpp
+    Source/Plugin/ScopeFloatingWindow.h
     Source/Plugin/BridgeActions.h
     Source/Plugin/BridgeActions.cpp
 )
@@ -191,7 +246,6 @@ target_include_directories(ABDMS2000 PUBLIC
     Source/Plugin
     Source/State
     Source/MIDI
-    Source/Utils
 )
 
 # Link JUCE Modules
@@ -211,6 +265,11 @@ target_link_libraries(ABDMS2000 PUBLIC
     juce::juce_recommended_config_flags
     juce::juce_recommended_lto_flags
     juce::juce_recommended_warning_flags
+    ABDBankManager::ABDBankManagerCore
+    ABDShared::AutoUpdater
+    ABDShared::SynthCore
+    ABDShared::HardwareDrivers
+    ABDScope::ABDScopeCore
 )
 
 # --- C++ Unit Tests (Standalone executable, no JUCE GUI) ---
@@ -219,7 +278,6 @@ add_executable(ABDMS2000_Tests
     Source/Core/VoiceManager.cpp
     Source/Core/Voice.cpp
     Source/Core/SynthEngine.cpp
-    Source/DSP/Common/PolyBLEP.cpp
     Source/DSP/Oscillators/VAOscillator.cpp
     Source/DSP/Oscillators/DWGSOscillator.cpp
     Source/DSP/Oscillators/DWGSTables.cpp
@@ -228,9 +286,6 @@ add_executable(ABDMS2000_Tests
     Source/DSP/Oscillators/OSC2Modulator.cpp
     Source/DSP/Filters/MultiModeFilter.cpp
     Source/DSP/Filters/FilterResonanceComp.cpp
-    Source/DSP/Envelopes/ADSREnvelope.cpp
-    Source/DSP/Modulation/LFO.cpp
-    Source/DSP/Modulation/PortamentoGlide.cpp
     Source/DSP/Modulation/VirtualPatchMatrix.cpp
     Source/DSP/Sequencer/ModSequencer.cpp
     Source/DSP/Sequencer/Arpeggiator.cpp
@@ -240,8 +295,6 @@ add_executable(ABDMS2000_Tests
     Source/DSP/Vocoder/Vocoder16Band.cpp
     Source/State/ParameterRegistry.gen.cpp
     Source/MIDI/MIDIMap.cpp
-    Source/MIDI/NRPNParser.cpp
-    Source/MIDI/SysExCodec.cpp
     Source/MIDI/MIDITelemetryManager.cpp
     Source/MIDI/SysExManager.cpp
 )
@@ -254,6 +307,9 @@ target_link_libraries(ABDMS2000_Tests PRIVATE
     juce::juce_events
     juce::juce_graphics
     DWGSBinary
+    WebUIAssets
+    ABDShared::SynthCore
+    ABDShared::HardwareDrivers
 )
 
 target_include_directories(ABDMS2000_Tests PRIVATE
@@ -267,6 +323,8 @@ target_include_directories(ABDMS2000_Tests PRIVATE
     Source/MIDI
     Source/State
     Source/Tests
+    "${ABDSCOPE_DIR}/Source"
+    "${ABDSCOPE_DIR}/Source/Core"
 )
 target_compile_features(ABDMS2000_Tests PRIVATE cxx_std_20)
 

@@ -5,10 +5,30 @@ echo =======================================================
 echo          ABDMS2000 - Compilacion Release
 echo =======================================================
 
-echo [0/6] Sincronizando ABDMIDIKeyb compartido...
-xcopy /Y /Q "..\ABDMIDIKeyb\src\keyboard.js" "WebUI\src\components\keyboard.js" >nul 2>&1
-xcopy /Y /Q "..\ABDMIDIKeyb\src\utils.js" "WebUI\src\components\utils.js" >nul 2>&1
-xcopy /Y /Q "..\ABDMIDIKeyb\src\keyboard.css" "WebUI\src\components\keyboard.css" >nul 2>&1
+echo [0/6] Sincronizando modulos compartidos...
+REM NOTA: keyboard.js y utils.js se importan desde @abdsynths/midi-keyb (ABDSharedCode)
+REM via Vite workspace. El CSS se importa via JS en app.js. No mantener forks locales.
+REM Ver Scripts/SYNC_DOCUMENTATION.md para el inventario completo de sincronizaciones.
+node Scripts/sync_bankmanager.js
+if %ERRORLEVEL% neq 0 (
+    echo [ERROR] Fallo al sincronizar ABDBankManager.
+    exit /b %ERRORLEVEL%
+)
+node Scripts/sync_bankmanager_ui.js
+if %ERRORLEVEL% neq 0 (
+    echo [ERROR] Fallo al sincronizar BankManagerModal desde packages/ui.
+    exit /b %ERRORLEVEL%
+)
+node Scripts/sync_scope.js
+if %ERRORLEVEL% neq 0 (
+    echo [ERROR] Fallo al sincronizar ABDScope.
+    exit /b %ERRORLEVEL%
+)
+node Scripts/sync_assets.js
+if %ERRORLEVEL% neq 0 (
+    echo [ERROR] Fallo al sincronizar ABDSharedAssets.
+    exit /b %ERRORLEVEL%
+)
 
 echo [1/6] Generando registros y contratos...
 node Scripts/registry_generator.js
@@ -39,7 +59,7 @@ if %ERRORLEVEL% neq 0 (
 )
 
 echo [5/6] Compilando Standalone y VST3...
-cmake --build build --config Release
+cmake --build build --config Release --target ABDMS2000_All
 if %ERRORLEVEL% neq 0 (
     echo [ERROR] Fallo en la compilacion de Standalone y VST3.
     exit /b %ERRORLEVEL%

@@ -8,7 +8,8 @@
 #if ABD_HAS_JUCE
 #include <juce_audio_processors/juce_audio_processors.h>
 #endif
-#include "SysExCodec.h"
+#include "../../ABDSharedCode/HardwareDrivers/SysExCodec.h"
+using abd::hw::SysExCodec;
 #include <sstream>
 #include <iomanip>
 

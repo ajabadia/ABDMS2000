@@ -6,18 +6,25 @@ import { createScopePanel } from './panels/panelScope.js';
 import { renderGroupPanel, renderAllPanels } from './ui/panelFactory.js';
 import { paramStore } from './contracts/paramStore.js';
 import { LcdProgrammer } from './ui/lcdProgrammer.js';
-import { createKeyboard } from './components/keyboard.js'; // @abdsynths/midi-keyb — sync with: npm run sync:keyboard
+import { createKeyboard } from '@abdsynths/midi-keyb'; // Single source: ABDSharedCode/MidiKeyboard — no local fork
+import '@abdsynths/midi-keyb/keyboard.css'; // Shared CSS (wheels + kbd-buttons via ABDSharedAssets)
 import { slideDrawer } from './components/slideDrawer.js';
 import { SliderFilmstrip, initFilmstrips } from './components/sliderFilmstrip.js';
 import { RotaryKnob } from './components/rotaryKnob.js';
 import { openWavetableBrowser, syncCatalogFromEngine, getWaveName } from './ui/wavetableBrowser.js';
 import { SegmentedSelector, LcdDropdown, WAVE_ICONS, FILTER_ICONS } from './components/customSelectors.js';
 import { diagnosticModal } from './ui/diagnosticModal.js';
+import { BankManagerModal } from './components/bank/BankManagerModal.js';
+import { OscilloscopeModal } from './components/OscilloscopeModal.js';
 
 let currentTheme = 'ms2000';
 let isAudioActive = false;
 let lcdProgrammer = null;
 let keyboardInstance = null;
+let bankManagerModal = null;
+let oscilloscopeModal = null;
+let timbreClipboard = null;
+let globalMidiChannel = 1;
 
 document.addEventListener('DOMContentLoaded', () => {
   console.log(`[ABDMS2000 App Init] Version: ${BUILD_INFO.version} (Build ${BUILD_INFO.buildNumber})`);
@@ -31,6 +38,18 @@ document.addEventListener('DOMContentLoaded', () => {
   setupAboutModal();
   setupKeyboardShortcuts();
   diagnosticModal.init();
+  oscilloscopeModal = new OscilloscopeModal(bridge);
+
+  // Instantiate Universal Bank Manager Modal (Full Native ABDBankManager WebUI).
+  // The iframe URL resolves automatically to the same-origin /abdbank/ copy so
+  // it works inside JUCE WebView2 (https://juce.backend/...) and in the browser.
+  bankManagerModal = new BankManagerModal({
+    synthBridge: bridge
+  });
+
+  document.getElementById('btn-open-bank-manager')?.addEventListener('click', () => {
+    bankManagerModal?.toggle();
+  });
 
   // Sync catalog from engine
   syncCatalogFromEngine(bridge);
@@ -1518,16 +1537,14 @@ function setTheme(mode) {
     t.classList.toggle('active', t.dataset.mode === mode);
   });
 
-  if (mode === 'ms2000') {
-    document.documentElement.removeAttribute('data-theme');
-  } else {
-    document.documentElement.setAttribute('data-theme', mode);
-  }
+  document.documentElement.setAttribute('data-theme', mode);
+  document.body.className = 'skin-' + (mode === 'advanced' ? 'cyberpunk' : mode);
   currentTheme = mode;
 
   const modeIdx = mode === 'advanced' ? 2 : (mode === 'microkorg' ? 1 : 0);
   paramStore.set('synthMode', modeIdx);
   bridge.setParam('synthMode', modeIdx);
+  bankManagerModal?.setTheme(mode);
   console.log('[Theme Switch]:', mode, 'modeIdx:', modeIdx);
 }
 
@@ -1591,14 +1608,20 @@ function closeAllDropdowns() {
 function handleMenuAction(action) {
   console.log(`[Menu Action Triggered]: ${action}`);
   switch (action) {
-    case 'open-about':
-      openAboutModal();
+    case 'open-bank-manager':
+      bankManagerModal?.open();
       break;
     case 'open-sysex':
       triggerSysexFileInput();
       break;
+    case 'save-patch':
+      saveCurrentPatch();
+      break;
     case 'export-sysex':
       bridge.send('exportSysexProgram', {});
+      break;
+    case 'open-about':
+      openAboutModal();
       break;
     case 'skin-ms2000':
       setTheme('ms2000');
@@ -1629,9 +1652,73 @@ function handleMenuAction(action) {
       bridge.allNotesOff();
       if (keyboardInstance) keyboardInstance.panic();
       break;
-
-
+    case 'toggle-oscilloscope':
+      oscilloscopeModal?.toggle();
+      break;
+    case 'toggle-virtual-keys':
+      if (keyboardInstance) {
+        keyboardInstance.toggleCollapse();
+      }
+      break;
+    case 'undo':
+      paramStore.undo?.();
+      break;
+    case 'redo':
+      paramStore.redo?.();
+      break;
+    case 'copy-timbre':
+      timbreClipboard = {};
+      Object.keys(PARAM_LOOKUP).forEach(id => {
+        if (id.includes('1') || id.startsWith('osc1_') || id.startsWith('filter1_') || id.startsWith('eg1_')) {
+          timbreClipboard[id] = paramStore.get(id);
+        }
+      });
+      console.log('[Timbre 1 Copied to Clipboard]');
+      break;
+    case 'paste-timbre':
+      if (timbreClipboard) {
+        Object.entries(timbreClipboard).forEach(([k, v]) => {
+          const targetKey = k.replace('1', '2');
+          paramStore.set(targetKey, v);
+          bridge.setParam(targetKey, v);
+        });
+        console.log('[Timbre Pasted to Timbre 2]');
+      }
+      break;
+    case 'zoom-100':
+      document.body.style.zoom = '100%';
+      break;
+    case 'zoom-125':
+      document.body.style.zoom = '125%';
+      break;
+    case 'zoom-150':
+      document.body.style.zoom = '150%';
+      break;
+    case 'midi-setup':
+      diagnosticModal?.open();
+      break;
+    case 'midi-channel':
+      globalMidiChannel = (globalMidiChannel % 16) + 1;
+      const chItem = document.querySelector('[data-action="midi-channel"] span');
+      if (chItem) chItem.textContent = `Global MIDI Channel: ${globalMidiChannel}`;
+      bridge.send('setMidiChannel', { channel: globalMidiChannel });
+      break;
+    case 'open-manual':
+      window.open('https://github.com/ajabadia/ABDMS2000#readme', '_blank');
+      break;
+    case 'midi-cc-chart':
+      diagnosticModal?.open();
+      break;
   }
+}
+
+function saveCurrentPatch() {
+  // Save the current patch: confirm on the LCD (like the WRITE button) and
+  // produce a .syx dump via the bridge, which the sysexProgramExported
+  // listener downloads as ms2000_patch.syx.
+  if (lcdProgrammer) lcdProgrammer.flashMessage('WRITE COMPLETED', 'PATCH SAVED');
+  bridge.send('exportSysexProgram', {});
+  console.log('[Menu Action]: Save Patch - exporting current patch as .syx');
 }
 
 function triggerSysexFileInput() {
@@ -1835,11 +1922,27 @@ function setupButtons() {
 
 function setupKeyboardShortcuts() {
   // QWERTY keyboard is now handled by the unified keyboard component.
-  // Only Escape key handling remains here for UI modals.
+  // Global modal shortcuts and Escape key handling
   document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey || e.metaKey) {
+      if (e.key === 'b' || e.key === 'B') {
+        e.preventDefault();
+        bankManagerModal?.toggle();
+      } else if (e.key === 'o' || e.key === 'O') {
+        e.preventDefault();
+        handleMenuAction('open-sysex');
+      } else if (e.key === 's' || e.key === 'S') {
+        e.preventDefault();
+        handleMenuAction('save-patch');
+      } else if (e.key === 'e' || e.key === 'E') {
+        e.preventDefault();
+        handleMenuAction('export-sysex');
+      }
+    }
     if (e.key === 'Escape') {
       closeAllDropdowns();
       diagnosticModal.close();
+      bankManagerModal?.close();
       const modal = document.getElementById('about-modal');
       if (modal) {
         modal.style.setProperty('display', 'none', 'important');

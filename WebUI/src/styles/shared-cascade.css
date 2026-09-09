@@ -1,0 +1,6 @@
+/* Capa 1 de la cascada de 3 niveles: tokens compartidos del paquete @abdsynths/shared.
+   Se inyecta como primer stylesheet tanto en dev (start.bat → Vite dev server)
+   como en producción (vite build → se resuelve el @import y se empaqueta en index.css).
+   themes.css (host) carga después y conserva el look actual del MS2000 por encima de estos defaults.
+   Single source of truth: ABDSharedAssets/styles/tokens.css → @abdsynths/shared. */
+@import '@abdsynths/shared/styles/tokens.css';

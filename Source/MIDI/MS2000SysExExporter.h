@@ -1,7 +1,8 @@
 #pragma once
 #include <juce_audio_processors/juce_audio_processors.h>
 #include <juce_core/juce_core.h>
-#include "SysExCodec.h"
+#include "../../ABDSharedCode/HardwareDrivers/SysExCodec.h"
+using abd::hw::SysExCodec;
 #include "MS2000ProgramData.h"
 #include "SysExManager.h"
 #include <vector>

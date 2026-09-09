@@ -17,6 +17,8 @@
 | **Fase 6** | Compilación WebAssembly (WASM) y AudioWorklet | ✅ COMPLETADA |
 | **Fase 7** | Multitimbricidad (Layer/Split) y Modo Avanzado (ABD Ultra 32 Voces y 512 Wavetables) | ✅ COMPLETADA |
 | **Fase 8** | Control de Calidad, Polish y Release (pluginval Level 10) | ✅ COMPLETADA |
+| **Fase 9** | Unificación de Código Compartido (ABDSharedCode + ABDSharedAssets) y Motor WASM Real en Web | 🔄 PENDIENTE |
+| **Fase 10** | Convergencia de Ecosistema (ABDSharedCode::LutDSP & VoiceAllocator) | ⏳ FUTURA |
 
 
 
@@ -228,3 +230,77 @@
 2. Rendimiento en tiempo real estable a 44.1 kHz, 48 kHz, 96 kHz y 192 kHz con 0 dropouts.
 3. Binarios VST3 y Standalone listos para producción y distribución.
 
+
+---
+
+## 🔄 Fase 9: Unificación de Código Compartido (ABDSharedCode + ABDSharedAssets) y Motor WASM Real en Web
+
+> **Filosofía:** Reutilizar al máximo el código entre proyectos. Todo lo que viva en ABDSharedCode o ABDSharedAssets es la fuente de verdad (SSOT). Si algo se copia o duplica localmente, hay que eliminarlo y consumirlo desde el origen — ya sea via `add_subdirectory`/`FetchContent` (C++), Vite bare imports `@abdsynths/*` (JS/CSS), o scripts de sincronización desde GitHub (assets). La copia manual es técnica deuda, no solución.
+
+### 🔴 Crítico: Conectar el motor WASM al bridge web
+
+**Problema actual:** El archivo `bridgeWasm.js` importa `ms2000AudioEngine.js`, que es un sintetizador reescrito en JavaScript puro con Web Audio API (OscillatorNode, BiquadFilterNode). El motor WASM compilado (`ms2000_dsp.js` + `ms2000Worklet.js`) existe pero **nobody lo usa**. La versión web suena distinto al VST3 nativo.
+
+### Tareas:
+
+#### 9.1 Motor WASM conectado al web (Crítico)
+- [x] **Modificar `bridgeWasm.js`** para cargar el módulo Emscripten `ms2000_dsp.js` en vez de importar `ms2000AudioEngine.js`.
+  - Extrae el binario WASM del archivo SINGLE_FILE vía index-based extraction (indexOf) en vez de regex (que falla por 115+ comillas simples embebidas en los datos binarios).
+- [x] **Instanciar AudioWorklet** con `ms2000Worklet.js`, pasar el binario WASM via `port.postMessage({ type: 'FETCH_WASM', binary })`.
+  - El worklet usa `WebAssembly.instantiate()` directo sin Emscripten JS runtime.
+  - Crea HEAPF32/HEAP32 desde `exports.memory` (no depende del glue de Emscripten).
+  - Usa bump allocator para buffers si `_malloc` no está exportado.
+- [x] **Redirigir todas las llamadas** (noteOn, noteOff, allNotesOff, setParam, loadProgram, initPatch, randomizePatch) al worklet en vez del engine JS genérico.
+- [x] **Gestionar AudioContext** en el thread principal y pasar al worklet — el worklet solo procesa audio, el AudioContext lifecycle queda en el bridge.
+- [x] **Conectar telemetría** del worklet (scopeBuffer, vuLeft, vuRight, activeVoices) al osciloscopio y VU meters (via onSnapshot callback).
+- [x] **Eliminar `ms2000AudioEngine.js`** — movido a `WebUI/src/engine/legacy/`.
+- [x] **Rebuild WASM** con `_malloc` y `_free` en EXPORTED_FUNCTIONS — compilado exitosamente.
+- [ ] **Verificar** que la web suena idéntico al VST3 nativo (mismas curvas ADSR, resonancia PolyBLEP, efectos).
+
+#### 9.2 Eliminar duplicación C++ (SysExCodec / NRPNParser)
+- [x] **Migrar `Source/MIDI/SysExCodec.{h,cpp}`** para que consuma `ABDSharedCode/HardwareDrivers/SysExCodec` (namespace `abd::hw`) en vez de mantener una copia local con namespace `ABDMS2000`.
+- [x] **Migrar `Source/MIDI/NRPNParser.{h,cpp}`** de la misma forma — eliminar la copia local.
+- [x] **Actualizar el CMakeLists.txt raíz** para que `Source/MIDI/` importe desde `ABDSharedCode/HardwareDrivers` en vez de compilar las copias.
+- [x] **Verificar** que el build nativo y WASM compilan sin los archivos duplicados.
+
+#### 9.3 WASM: Consumir ABDSharedCode via target CMake (no rutas relativas)
+- [x] **Modificar `wasm/CMakeLists.txt`** para usar `target_link_libraries(ms2000_dsp PRIVATE ABDShared::SynthCore)` en vez de compilar directamente `../../ABDSharedCode/SynthCore/*.cpp`.
+  - Añadido `add_subdirectory` + `FetchContent` fallback para ABDSharedCode (igual que el raíz).
+  - `ABDShared::SynthCore` propagates include directories y sources automáticamente.
+  - `SysExCodec.cpp` se compila directamente (HardwareDrivers depende de `juce_audio_basics`).
+- [x] **Añadir FetchContent de ABDSharedCode** al CMake WASM (igual que el raíz) para que funcione en CI/CD sin copia local.
+- [x] **Añadir opciones condicionales** a ABDSharedCode CMakeLists.txt (`ABDSHAREDCODE_BUILD_AUTOUPDATER`, `ABDSHAREDCODE_BUILD_HARDWAREDRIVERS`, `ABDSHAREDCODE_BUILD_HARDWAREMIDIDETECT`) para desactivar módulos que dependen de JUCE en el build WASM.
+- [x] **Verificar** que el build WASM compila correctamente (26/26 archivos, WASM 110.9KB).
+
+#### 9.4 CSS compartido: Cascada de tokens en build de producción
+- [x] **Corregir `vite.config.js`** para que `shared-cascade.css` se resuelva correctamente tanto en dev como en `vite build` (el import `@abdsynths/shared/styles/tokens.css` debe encontrar el paquete en ambos modos).
+- [x] **Verificar** que el `vite build` empaqueta los tokens compartidos en `WebUI/dist/` y que el WebView2 nativo los carga.
+- [x] **Verificar cascada de 3 niveles**: tokens compartidos → overrides del host → customizaciones del MS2000.
+
+#### 9.5 Teclado: Migrar a versión compartida de ABDSharedCode
+- [x] **Evaluar** si el `keyboard.js` local (fork de `ABDSharedCode/MidiKeyboard`) puede reemplazarse por la versión compartida, o si la divergencia (ruedas filmstrip embebidas vs compartidas) justifica mantener el fork.
+- [x] **Si se migra**: importar `@abdsynths/midi-keyb` via Vite y eliminar `WebUI/src/components/keyboard.js` y `keyboard.css` locales.
+- [x] **Si se mantiene fork**: documentar por qué y añadir nota en el archivo de que sincronización manual con upstream es requerida.
+
+#### 9.6 Sync scripts: Consolidar y documentar
+- [x] **Verificar** que `sync_assets.js`, `sync_bankmanager.js`, `sync_scope.js` y `sync_bankmanager_ui.js` ejecutan correctamente en `start.bat` y `build.bat`.
+- [x] **Documentar en ROADMAP** qué se sincroniza desde dónde, con qué frecuencia, y qué componente lo consume.
+- [x] **Evaluar** si `sync_assets.js` puede eliminarse a favor del ResourceProvider sirviendo directo desde ABDSharedAssets (como ya hace `bankwebui://`).
+
+### 🔍 Criterio de Verificación (Definition of Done):
+1. **Web usa WASM real**: Abrir la web en Chrome, pulsar START AUDIO, tocar teclas → el audio se genera por el motor C++ compilado a WASM, no por Web Audio genérico.
+2. **Sonido idéntico VST3 ↔ Web**: Sin diferencias perceptibles en timbre, envolventes, resonancia o efectos.
+3. **Cero duplicación C++**: `SysExCodec` y `NRPNParser` existen una sola vez (en ABDSharedCode). El CMake nativo y WASM los consumen desde ahí.
+4. **WASM consume ABDSharedCode via CMake target**: El `wasm/CMakeLists.txt` usa `ABDShared::SynthCore`, no rutas relativas `../../ABDSharedCode/...`.
+5. **Tokens compartidos en producción**: El build `vite build` incluye los tokens de ABDSharedAssets y el cascade CSS funciona en WebView2 nativo.
+6. **`grep -r "@abdsynths" WebUI/src`** muestra solo los imports soportados por Vite (no imports rotos o hardcodeados).
+7. **`build.bat`** compila sin errores con todos los cambios integrados.
+
+---
+
+## 🧬 Fase 10: Convergencia de Ecosistema (ABDSharedCode::LutDSP & VoiceAllocator)
+
+### Tareas:
+- [ ] **Modelado de Dispersión Analógica Multivoz**: Integración de `abd::lutdsp::VoiceDispersionModel` para simulación opcional de deriva analógica (drift térmico y varianza de corte de filtros) en las 4 voces del MS2000.
+- [ ] **Unificación de Asignador de Voces**: Migración de VoiceManager para heredar o apoyarse en `abd::lutdsp::VoiceAllocator` de ABDSharedCode.
+- [ ] **LUTs Oficiales de Filtros Analógicos**: Integración opcional del evaluador SIMD de filtros (`abd::lutdsp::AnalogLutFilterModule`) para emular respuestas no lineales analógicas en modo expandido.

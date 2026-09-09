@@ -1,7 +1,8 @@
 #pragma once
 #include <juce_audio_processors/juce_audio_processors.h>
 #include <juce_audio_basics/juce_audio_basics.h>
-#include "SysExCodec.h"
+#include "../../ABDSharedCode/HardwareDrivers/SysExCodec.h"
+using abd::hw::SysExCodec;
 #include "MS2000ProgramData.h"
 #include <vector>
 #include <array>
@@ -63,6 +64,8 @@ public:
     // Bank Management
     const MS2000ProgramData& getProgram(size_t index) const noexcept { return bank_[index % BANK_SIZE]; }
     void setProgram(size_t index, const MS2000ProgramData& prog) noexcept { bank_[index % BANK_SIZE] = prog; }
+    const std::array<MS2000ProgramData, BANK_SIZE>& getAllPrograms() const noexcept { return bank_; }
+    void setAllPrograms(const std::array<MS2000ProgramData, BANK_SIZE>& bank) noexcept { bank_ = bank; }
     size_t getBankSize() const noexcept { return BANK_SIZE; }
 
     int getActiveProgramIndex() const noexcept { return activeProgramIndex_; }

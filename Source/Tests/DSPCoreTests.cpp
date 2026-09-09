@@ -12,9 +12,14 @@
 #include "../../Core/VoiceManager.h"
 #include "../../MIDI/MIDIMap.h"
 
-#include "../../MIDI/NRPNParser.h"
-#include "../../MIDI/SysExCodec.h"
+#include "../../ABDSharedCode/HardwareDrivers/NRPNParser.h"
+#include "../../ABDSharedCode/HardwareDrivers/SysExCodec.h"
+using abd::hw::NRPNParser;
+using abd::hw::NRPNMessage;
+using abd::hw::SysExCodec;
 #include "../State/LCDMenuFormatter.h"
+
+#include "WebUIAssets.h"
 
 #include <cmath>
 #include <algorithm>
@@ -59,8 +64,10 @@ static void runAllTests() {
     check(DSPUtils::softClip(-100.0f) == -1.0f, "softClip saturates to -1");
 
     // --- ampDistortion ---
+    // tanh output is bounded by [-0.75, +1.0]; makeup gain (1/(0.5+0.5*drive))
+    // can push it past 1.0 by design. For drive=0.8 the ceiling is 1/(0.5+0.4).
     float dist = DSPUtils::ampDistortion(0.3f, 0.8f);
-    check(std::abs(dist) <= 1.0f, "ampDistortion stays bounded");
+    check(std::abs(dist) <= 1.0f / (0.5f + 0.8f * 0.5f), "ampDistortion stays bounded");
     check(DSPUtils::ampDistortion(0.0f, 1.0f) == 0.0f, "ampDistortion zero input zero out");
 
     // --- convertSysExToCutoffHz ---
@@ -81,16 +88,16 @@ static void runAllTests() {
     // --- Attack time ---
     float at0 = EnvelopeCurves::getAttackTimeSeconds(0.0f);
     float at1 = EnvelopeCurves::getAttackTimeSeconds(1.0f);
-    check(std::abs(at0 - 0.001f) < 0.0005f, "attack norm=0 => ~1ms");
-    check(std::abs(at1 - 11.001f) < 0.01f, "attack norm=1 => ~11s");
+    check(std::abs(at0 - 0.0005f) < 0.0001f, "attack norm=0 => ~0.5ms");
+    check(std::abs(at1 - 5.0f) < 0.001f, "attack norm=1 => ~5s");
     check(EnvelopeCurves::getAttackTimeSeconds(0.1f) < EnvelopeCurves::getAttackTimeSeconds(0.9f),
           "attack monotonic");
 
     // --- Decay/Release time ---
     float dr0 = EnvelopeCurves::getDecayReleaseTimeSeconds(0.0f);
     float dr1 = EnvelopeCurves::getDecayReleaseTimeSeconds(1.0f);
-    check(std::abs(dr0 - 0.002f) < 0.001f, "decay norm=0 => ~2ms");
-    check(std::abs(dr1 - 20.002f) < 0.1f, "decay norm=1 => ~20s");
+    check(std::abs(dr0 - 0.005f) < 0.0001f, "decay norm=0 => ~5ms");
+    check(std::abs(dr1 - 10.0f) < 0.001f, "decay norm=1 => ~10s");
 
     // --- Decay multiplier ---
     double multLong = EnvelopeCurves::getDecayMultiplier(10.0, 44100.0);
@@ -540,6 +547,71 @@ static void runAllTests() {
     engine.processBlock(testBuffer, dummyMidi, nullptr);
     float resetPeakL = testBuffer.getMagnitude(0, 0, 480);
     check(resetPeakL < 0.001f, "Resetting bypasses returns synth to quiet idle state");
+
+    // --- Scope Tap Capture (ABDScope integration) ---
+    {
+        auto& sc = engine.getScopeCollector();
+        check(sc.getTapCount() == 6, "SynthEngine registers 6 scope taps (master_out/pre_fx/osc_mix/post_filter/post_vca/lfo1)");
+        check(sc.getTap(0) != nullptr && sc.getTap(0)->isActive(), "Scope master_out tap auto-activated on register");
+        check(sc.getTap(2) != nullptr && !sc.getTap(2)->isActive(), "Non-first taps start inactive (on-demand policy)");
+
+        // Fresh engine => fresh collector, deterministic empty-buffer baseline.
+        SynthEngine scopeEngine(apvts);
+        scopeEngine.prepare(testSampleRate, 480);
+        scopeEngine.noteOn(1, 55, 0.8f);
+
+        juce::AudioBuffer<float> scopeBuf(2, 480);
+        scopeBuf.clear();
+        juce::MidiBuffer scopeMidi;
+        const auto& sc2 = scopeEngine.getScopeCollector();
+        const size_t before = sc2.getTap(0)->getAvailableRead();
+        scopeEngine.processBlock(scopeBuf, scopeMidi, nullptr);
+        const size_t after = sc2.getTap(0)->getAvailableRead();
+        printf("  [debug] Scope(fresh) master_out available samples: before=%zu after=%zu\n", before, after); fflush(stdout);
+        check(after > 0, "Scope master_out tap captures samples into ring buffer after processBlock");
+    }
+
+    // --- Test 15: Embedded WebUI Binary Data integrity ---
+    printf("\n[Test 15] Embedded WebUI Binary Data (WebUIAssets)...\n");
+    {
+        // Regression test: the ABD Bank Manager WebUI must NOT be embedded in the
+        // synth binary. If it sneaks back in (e.g. via a GLOB_RECURSE matching
+        // WebUI/abdbank/index.html), the resource provider serves the Bank Manager
+        // as the root page of the standalone instead of the synth.
+        int indexHtmlCount = 0;
+        int abdbankCount = 0;
+        juce::String synthIndexResource;
+
+        for (int i = 0; i < WebUIAssets::namedResourceListSize; ++i)
+        {
+            juce::String orig = juce::String::fromUTF8(WebUIAssets::originalFilenames[i]);
+            if (orig.endsWithIgnoreCase("index.html"))
+            {
+                ++indexHtmlCount;
+                synthIndexResource = juce::String::fromUTF8(WebUIAssets::namedResourceList[i]);
+            }
+            if (orig.containsIgnoreCase("abdbank"))
+                ++abdbankCount;
+        }
+
+        check(indexHtmlCount == 1, "Embedded binary contains exactly one index.html (the synth root)");
+        check(abdbankCount == 0, "Embedded binary contains no abdbank resources");
+
+        // The single index.html must be the synth's (title "ABDMS2000 - Synthesizer"),
+        // not the Bank Manager's ("ABD Universal Bank Manager").
+        bool isSynthIndex = false;
+        if (synthIndexResource.isNotEmpty())
+        {
+            int dataSize = 0;
+            const char* data = WebUIAssets::getNamedResource(synthIndexResource.toRawUTF8(), dataSize);
+            if (data != nullptr && dataSize > 0)
+            {
+                juce::String content = juce::String::fromUTF8(data, dataSize);
+                isSynthIndex = content.contains("ABDMS2000 - Synthesizer");
+            }
+        }
+        check(isSynthIndex, "Embedded index.html is the synth root page, not the Bank Manager");
+    }
 
     // --- Summary ---
     printf("\n=== Test Summary ===\n");

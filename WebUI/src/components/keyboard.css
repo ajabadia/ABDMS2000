@@ -9,20 +9,23 @@
      --kbd-font, --kbd-wheel-label-color, --kbd-wheel-value-color
    ══════════════════════════════════════════════════════════════ */
 
-/* ── Main Keyboard Container & Footer Layout ── */
-.keyboard-container {
+
+/* Shared reusable components (single source - ABDSharedAssets).
+   Octave/panic/sustain/sostenuto/soft buttons + pitch/mod wheels
+   live in the shared package; the keybed below stays local. */
+@import '@abdsynths/shared/styles/components/wheels.css';
+@import '@abdsynths/shared/styles/components/kbd-buttons.css';
+/* ── Piano Container ── */
+#piano-keyboard {
+  flex: 1;
   display: flex;
-  flex-direction: column;
-  height: 124px;
-  min-height: 124px;
-  max-height: 140px;
-  background: var(--kbd-bg, #0c1017);
-  border-top: 2px solid var(--color-panel-border, #222);
-  padding: 6px 12px 10px 12px;
-  box-sizing: border-box;
-  flex-shrink: 0;
-  user-select: none;
-  z-index: 20;
+  align-items: stretch;
+  min-width: 0;
+  position: relative;
+  contain: layout style;
+}
+
+.keyboard-container {
   transition: height 0.28s cubic-bezier(0.16, 1, 0.3, 1), padding 0.28s ease;
   will-change: height;
 }
@@ -38,45 +41,9 @@
   display: none !important;
 }
 
-.keyboard-lower-section {
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  gap: 8px;
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-
-.wheels-block {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 6px;
-  flex-shrink: 0;
-  background: var(--color-panel-surface, #141820);
-  border: 1px solid var(--color-panel-border, #283040);
-  border-radius: 5px;
-  padding: 4px 6px;
-}
-
-/* ── Piano Container ── */
-#piano-keyboard {
-  flex: 1;
-  display: flex;
-  align-items: stretch;
-  min-width: 0;
-  height: 100%;
-  position: relative;
-  contain: layout style;
-}
-
 .kbd-piano-keys {
   flex: 1;
   display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  height: 100%;
   background: var(--kbd-bg, #080808);
   border-radius: 0 0 5px 5px;
   overflow: visible;
@@ -85,16 +52,6 @@
   border-top: none;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.7);
   will-change: contents;
-}
-
-.kbd-keys-wrapper {
-  flex: 1;
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  height: 100%;
-  min-width: 0;
-  position: relative;
 }
 
 /* Shadow gradient over keys for depth (from ABDEep) */
@@ -115,9 +72,6 @@
    ══════════════════════════════════════════════════════════════ */
 .kbd-white-key {
   flex: 1;
-  height: 100%;
-  min-height: 0;
-  box-sizing: border-box;
   background: linear-gradient(to bottom,
     var(--kbd-ivory-top, var(--kbd-white-top, #fdfcf8)) 0%,
     var(--kbd-ivory-base, var(--kbd-white-base, #ffffff)) 40%,
@@ -396,377 +350,6 @@
   transform: translateZ(0);
 }
 
-/* ══════════════════════════════════════════════════════════════
-   OCTAVE BUTTONS + LEDs
-   ══════════════════════════════════════════════════════════════ */
-.kbd-octave-controls {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 8px;
-  background: var(--color-panel-surface, #1a1a1a);
-  border: 1px solid var(--color-panel-border, #333);
-  border-radius: 5px;
-  padding: 6px;
-  box-shadow: inset 0 2px 5px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.4);
-}
-
-.kbd-octave-btn {
-  background: var(--color-panel-bg, #222);
-  border: 1px solid var(--color-panel-border, #444);
-  color: var(--color-text-main, #aaa);
-  font-family: var(--kbd-font, 'Share Tech Mono', monospace);
-  font-size: var(--kbd-font-size, 9px);
-  font-weight: 700;
-  padding: 6px 8px;
-  border-radius: 4px;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
-  transition: all 0.15s ease;
-  min-width: 44px;
-}
-
-.kbd-octave-btn:hover {
-  border-color: var(--color-accent, #00ccff);
-  color: var(--color-accent, #00ccff);
-}
-
-.kbd-octave-btn:active {
-  background: var(--color-panel-surface, #1a1a1a);
-  transform: translateY(1px);
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.6);
-}
-
-.kbd-octave-led {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #181818;
-  border: 1px solid #333;
-  box-shadow: inset 0 1px 2px rgba(0,0,0,0.6);
-  transition: background 0.2s ease, box-shadow 0.2s ease;
-  will-change: background, box-shadow;
-}
-
-.kbd-octave-led.on {
-  background: var(--color-led-active, #f00);
-  box-shadow: 0 0 7px var(--color-led-glow, #f00);
-}
-
-.kbd-octave-led.blink {
-  background: var(--color-led-active, #f00);
-  animation: kbdBlinkLed 0.6s infinite alternate;
-}
-
-@keyframes kbdBlinkLed {
-  0% { opacity: 0.2; }
-  100% { opacity: 1; }
-}
-
-/* ══════════════════════════════════════════════════════════════
-   PITCH / MOD WHEELS
-   ══════════════════════════════════════════════════════════════ */
-.kbd-wheel-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.kbd-wheel-label {
-  font-size: 9px;
-  font-weight: 700;
-  color: var(--kbd-wheel-label-color, var(--color-text-muted, #888));
-  margin-bottom: 4px;
-  letter-spacing: 0.5px;
-}
-
-.kbd-wheel-value {
-  font-size: 9px;
-  font-family: var(--kbd-font, var(--font-lcd, monospace));
-  color: var(--kbd-wheel-value-color, var(--color-accent, #00ccff));
-  margin-top: 4px;
-  min-width: 22px;
-  text-align: center;
-}
-
-/* ══════════════════════════════════════════════════════════════
-   PANIC BUTTON (auto-generated to the right of the keybed)
-   ══════════════════════════════════════════════════════════════ */
-.kbd-panic-btn {
-  flex: 0 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  width: 42px;
-  min-height: 80px;
-  margin: 0 4px 0 2px;
-  background: linear-gradient(to bottom, #1e1e22 0%, #141418 100%);
-  border: 1px solid #333;
-  border-radius: 0 0 5px 5px;
-  border-top: none;
-  cursor: pointer;
-  user-select: none;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.6), 0 2px 4px rgba(0,0,0,0.4);
-  transition: background 0.1s ease, box-shadow 0.1s ease;
-}
-
-.kbd-panic-btn:hover {
-  background: linear-gradient(to bottom, #28282e 0%, #1a1a1e 100%);
-  border-color: #555;
-}
-
-.kbd-panic-btn:active {
-  background: linear-gradient(to bottom, #121214 0%, #0c0c0e 100%);
-  box-shadow: inset 0 2px 6px rgba(0,0,0,0.8);
-}
-
-.kbd-panic-led {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #3a1010;
-  border: 1px solid #222;
-  box-shadow: inset 0 1px 2px rgba(0,0,0,0.6);
-  transition: background 0.15s ease, box-shadow 0.15s ease;
-  will-change: background, box-shadow;
-}
-
-.kbd-panic-btn:hover .kbd-panic-led {
-  background: #ff2233;
-  box-shadow: 0 0 6px #ff2233, 0 0 12px rgba(255,34,51,0.4);
-}
-
-.kbd-panic-label {
-  font-family: var(--kbd-font, 'Share Tech Mono', monospace);
-  font-size: 8px;
-  font-weight: 700;
-  color: #888;
-  letter-spacing: 0.5px;
-  text-align: center;
-  line-height: 1.2;
-  text-transform: uppercase;
-}
-
-.kbd-panic-btn:hover .kbd-panic-label {
-  color: #ff2233;
-}
-
-/* Panic LED flash during allNotesOff strobe */
-.kbd-panic-btn .kbd-panic-led {
-  animation: none;
-}
-
-@keyframes kbdPanicBtnFlash {
-  0%, 100% { background: #3a1010; box-shadow: inset 0 1px 2px rgba(0,0,0,0.6); }
-  50% { background: #ff2233; box-shadow: 0 0 8px #ff2233, 0 0 16px rgba(255,34,51,0.5); }
-}
-
-/* ══════════════════════════════════════════════════════════════
-   SUSTAIN PEDAL BUTTON (auto-generated, toggle behavior)
-   CC#64 emulation — green LED when active
-   ══════════════════════════════════════════════════════════════ */
-.kbd-sustain-btn {
-  flex: 0 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  width: 42px;
-  min-height: 80px;
-  margin: 0 4px 0 0;
-  background: linear-gradient(to bottom, #1e1e22 0%, #141418 100%);
-  border: 1px solid #333;
-  border-radius: 0 0 5px 5px;
-  border-top: none;
-  cursor: pointer;
-  user-select: none;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.6), 0 2px 4px rgba(0,0,0,0.4);
-  transition: background 0.1s ease, box-shadow 0.1s ease;
-}
-
-.kbd-sustain-btn:hover {
-  background: linear-gradient(to bottom, #28282e 0%, #1a1a1e 100%);
-  border-color: #555;
-}
-
-.kbd-sustain-btn:active {
-  background: linear-gradient(to bottom, #121214 0%, #0c0c0e 100%);
-  box-shadow: inset 0 2px 6px rgba(0,0,0,0.8);
-}
-
-.kbd-sustain-led {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #1a2a1a;
-  border: 1px solid #222;
-  box-shadow: inset 0 1px 2px rgba(0,0,0,0.6);
-  transition: background 0.15s ease, box-shadow 0.15s ease;
-  will-change: background, box-shadow;
-}
-
-.kbd-sustain-led.on {
-  background: #33cc55;
-  box-shadow: 0 0 6px #33cc55, 0 0 12px rgba(51,204,85,0.4);
-}
-
-.kbd-sustain-btn:hover .kbd-sustain-led {
-  background: #44dd66;
-  box-shadow: 0 0 6px #44dd66, 0 0 12px rgba(68,221,102,0.4);
-}
-
-.kbd-sustain-label {
-  font-family: var(--kbd-font, 'Share Tech Mono', monospace);
-  font-size: 8px;
-  font-weight: 700;
-  color: #888;
-  letter-spacing: 0.5px;
-  text-align: center;
-  line-height: 1.2;
-  text-transform: uppercase;
-}
-
-.kbd-sustain-btn:hover .kbd-sustain-label {
-  color: #33cc55;
-}
-
-/* ══════════════════════════════════════════════════════════════
-   SOSTENUTO PEDAL BUTTON (CC#66) — orange LED
-   ══════════════════════════════════════════════════════════════ */
-.kbd-sostenuto-btn {
-  flex: 0 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  width: 42px;
-  min-height: 80px;
-  margin: 0 4px 0 0;
-  background: linear-gradient(to bottom, #1e1e22 0%, #141418 100%);
-  border: 1px solid #333;
-  border-radius: 0 0 5px 5px;
-  border-top: none;
-  cursor: pointer;
-  user-select: none;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.6), 0 2px 4px rgba(0,0,0,0.4);
-  transition: background 0.1s ease, box-shadow 0.1s ease;
-}
-.kbd-sostenuto-btn:hover {
-  background: linear-gradient(to bottom, #28282e 0%, #1a1a1e 100%);
-  border-color: #555;
-}
-.kbd-sostenuto-btn:active {
-  background: linear-gradient(to bottom, #121214 0%, #0c0c0e 100%);
-  box-shadow: inset 0 2px 6px rgba(0,0,0,0.8);
-}
-.kbd-sostenuto-led {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #2a1a0a;
-  border: 1px solid #222;
-  box-shadow: inset 0 1px 2px rgba(0,0,0,0.6);
-  transition: background 0.15s ease, box-shadow 0.15s ease;
-  will-change: background, box-shadow;
-}
-.kbd-sostenuto-led.on {
-  background: #ff8800;
-  box-shadow: 0 0 6px #ff8800, 0 0 12px rgba(255,136,0,0.4);
-}
-.kbd-sostenuto-label {
-  font-family: var(--kbd-font, 'Share Tech Mono', monospace);
-  font-size: 8px;
-  font-weight: 700;
-  color: #888;
-  letter-spacing: 0.5px;
-  text-align: center;
-  line-height: 1.2;
-  text-transform: uppercase;
-}
-.kbd-sostenuto-btn:hover .kbd-sostenuto-label { color: #ff8800; }
-
-/* ══════════════════════════════════════════════════════════════
-   SOFT PEDAL BUTTON (CC#67) — purple LED
-   ══════════════════════════════════════════════════════════════ */
-.kbd-soft-btn {
-  flex: 0 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  width: 42px;
-  min-height: 80px;
-  margin: 0 4px 0 0;
-  background: linear-gradient(to bottom, #1e1e22 0%, #141418 100%);
-  border: 1px solid #333;
-  border-radius: 0 0 5px 5px;
-  border-top: none;
-  cursor: pointer;
-  user-select: none;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.6), 0 2px 4px rgba(0,0,0,0.4);
-  transition: background 0.1s ease, box-shadow 0.1s ease;
-}
-.kbd-soft-btn:hover {
-  background: linear-gradient(to bottom, #28282e 0%, #1a1a1e 100%);
-  border-color: #555;
-}
-.kbd-soft-btn:active {
-  background: linear-gradient(to bottom, #121214 0%, #0c0c0e 100%);
-  box-shadow: inset 0 2px 6px rgba(0,0,0,0.8);
-}
-.kbd-soft-led {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #1a0a2a;
-  border: 1px solid #222;
-  box-shadow: inset 0 1px 2px rgba(0,0,0,0.6);
-  transition: background 0.15s ease, box-shadow 0.15s ease;
-  will-change: background, box-shadow;
-}
-.kbd-soft-led.on {
-  background: #aa44ff;
-  box-shadow: 0 0 6px #aa44ff, 0 0 12px rgba(170,68,255,0.4);
-}
-.kbd-soft-label {
-  font-family: var(--kbd-font, 'Share Tech Mono', monospace);
-  font-size: 8px;
-  font-weight: 700;
-  color: #888;
-  letter-spacing: 0.5px;
-  text-align: center;
-  line-height: 1.2;
-  text-transform: uppercase;
-}
-.kbd-soft-btn:hover .kbd-soft-label { color: #aa44ff; }
-
-/* Panic + Sustain + Sostenuto + Soft buttons stay visible when collapsed */
-.kbd-piano-keys.kbd-collapsed .kbd-panic-btn,
-.kbd-piano-keys.kbd-collapsed .kbd-sustain-btn,
-.kbd-piano-keys.kbd-collapsed .kbd-sostenuto-btn,
-.kbd-piano-keys.kbd-collapsed .kbd-soft-btn,
-.kbd-piano-keys.kbd-collapsed .kbd-collapse-btn {
-  opacity: 1;
-  min-height: 28px;
-  height: 28px;
-}
-
-/* Focus indicator for sostenuto/soft buttons */
-.kbd-sostenuto-btn:focus-visible,
-.kbd-soft-btn:focus-visible,
-.kbd-collapse-btn:focus-visible {
-  outline: 3px solid var(--kbd-led-color, var(--color-accent, #00ccff));
-  outline-offset: 2px;
-}
 
 /* ══════════════════════════════════════════════════════════════
    SCALE FILTER — dimming for out-of-scale keys

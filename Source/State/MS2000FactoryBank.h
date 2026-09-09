@@ -1,6 +1,6 @@
 #pragma once
 #include "../MIDI/MS2000ProgramData.h"
-#include "../MIDI/SysExCodec.h"
+// SysExCodec included transitively via MS2000ProgramData.h -> ABDSharedCode
 #include <vector>
 #include <string>
 #include <algorithm>

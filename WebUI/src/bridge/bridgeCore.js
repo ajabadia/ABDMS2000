@@ -50,31 +50,41 @@ export class BridgeCore {
     if (this.isWebView) {
       window.__JUCE__.backend.emitEvent('nativeEvent', msg);
     } else {
-      // Forward to Web Audio / WASM Bridge
-      if (action === 'setParam') {
-        this.wasmBridge.setParam(payload.paramId, payload.value);
-      } else if (action === 'noteOn') {
-        this.wasmBridge.noteOn(payload.note, payload.velocity);
-      } else if (action === 'noteOff') {
-        this.wasmBridge.noteOff(payload.note);
-      } else if (action === 'allNotesOff') {
-        this.wasmBridge.allNotesOff();
-      } else if (action === 'pitchBend') {
-        this.wasmBridge.pitchBend(payload.value);
-      } else if (action === 'modWheel') {
-        this.wasmBridge.modWheel(payload.value);
-      } else if (action === 'setDiagnosticTone') {
-        this.wasmBridge.setDiagnosticTone(payload.point, payload.frequency, payload.level);
-      } else if (action === 'triggerDiagnosticNote') {
-        this.wasmBridge.triggerDiagnosticNote(payload.note, payload.velocity, payload.isNoteOn);
-      } else if (action === 'setDiagnosticBypass') {
-        if (this.wasmBridge.setDiagnosticBypass) {
+      // Forward to WASM Worklet Bridge
+      switch (action) {
+        case 'setParam':
+          this.wasmBridge.setParam(payload.paramId, payload.value);
+          break;
+        case 'noteOn':
+          this.wasmBridge.noteOn(payload.note, payload.velocity);
+          break;
+        case 'noteOff':
+          this.wasmBridge.noteOff(payload.note);
+          break;
+        case 'allNotesOff':
+          this.wasmBridge.allNotesOff();
+          break;
+        case 'pitchBend':
+          this.wasmBridge.pitchBend(payload.value);
+          break;
+        case 'modWheel':
+          this.wasmBridge.modWheel(payload.value);
+          break;
+        case 'setDiagnosticTone':
+          this.wasmBridge.setDiagnosticTone(payload.point, payload.frequency, payload.level);
+          break;
+        case 'triggerDiagnosticNote':
+          this.wasmBridge.triggerDiagnosticNote(payload.note, payload.velocity, payload.isNoteOn);
+          break;
+        case 'setDiagnosticBypass':
           this.wasmBridge.setDiagnosticBypass(payload.stage, payload.enabled);
-        }
-      } else if (action === 'resetDiagnosticBypasses') {
-        if (this.wasmBridge.resetDiagnosticBypasses) {
+          break;
+        case 'resetDiagnosticBypasses':
           this.wasmBridge.resetDiagnosticBypasses();
-        }
+          break;
+        default:
+          // Unknown action — log for debugging
+          console.warn('[BridgeCore] Unknown WASM action:', action, payload);
       }
     }
   }
@@ -126,6 +136,40 @@ export class BridgeCore {
     } else {
       this.wasmBridge.midiCC(cc, value);
     }
+  }
+
+  // --- Bank Manager & Patch Data Bridge ---
+
+  async getRawProgramData(name = 'Active Patch') {
+    if (this.isWebView) {
+      return new Promise((resolve) => {
+        const handler = (data) => {
+          this.off('rawProgramDataResponse', handler);
+          if (data && data.dataBase64) {
+            const binStr = atob(data.dataBase64);
+            const bytes = new Uint8Array(binStr.length);
+            for (let i = 0; i < binStr.length; i++) bytes[i] = binStr.charCodeAt(i);
+            resolve({ rawData: bytes, name: data.name });
+          } else {
+            resolve(null);
+          }
+        };
+        this.on('rawProgramDataResponse', handler);
+        this.send('getRawProgramData', { name });
+      });
+    } else {
+      // WASM / Local fallback
+      return null;
+    }
+  }
+
+  setRawProgramData(uint8ArrayData) {
+    let binary = '';
+    for (let i = 0; i < uint8ArrayData.length; i++) {
+      binary += String.fromCharCode(uint8ArrayData[i]);
+    }
+    const dataBase64 = btoa(binary);
+    this.send('setRawProgramData', { dataBase64 });
   }
 
   on(event, callback) {

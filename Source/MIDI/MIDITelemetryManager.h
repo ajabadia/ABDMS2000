@@ -2,7 +2,9 @@
 #include <juce_audio_processors/juce_audio_processors.h>
 #include <juce_audio_basics/juce_audio_basics.h>
 #include "MIDIMap.h"
-#include "NRPNParser.h"
+#include "../../ABDSharedCode/HardwareDrivers/NRPNParser.h"
+using abd::hw::NRPNParser;
+using abd::hw::NRPNMessage;
 #include <array>
 #include <atomic>
 #include <vector>
