@@ -38,28 +38,17 @@ endif()
 # ABDShared::SynthCore target — no more fragile ../../ABDSharedCode paths.
 # SysExCodec is compiled directly because ABDShared::HardwareDrivers depends
 # on juce_audio_basics which is not available in the Emscripten WASM build.
+#
+# Lista DSP compartida con el raiz (single-source, anti-drift): vive en
+# DspSources.cmake. La diferencia WASM (SynthEngine/MIDITelemetryManager,
+# dependientes de juce_audio_processors) esta documentada alli — NO drift.
+include("${CMAKE_CURRENT_LIST_DIR}/../DspSources.cmake")
+
 set(DSP_SOURCES
     ../Source/Wasm/WasmBridge.cpp
-    ../Source/Core/VoiceManager.cpp
-    ../Source/Core/Voice.cpp
-    ../Source/DSP/Oscillators/VAOscillator.cpp
-    ../Source/DSP/Oscillators/DWGSOscillator.cpp
-    ../Source/DSP/Oscillators/DWGSTables.cpp
-    ../Source/DSP/Oscillators/VoxWaveOscillator.cpp
-    ../Source/DSP/Oscillators/NoiseGenerator.cpp
-    ../Source/DSP/Filters/MultiModeFilter.cpp
-    ../Source/DSP/Filters/FilterResonanceComp.cpp
-    ../Source/DSP/Modulation/VirtualPatchMatrix.cpp
-    ../Source/DSP/Effects/ModFX.cpp
-    ../Source/DSP/Effects/DelayFX.cpp
-    ../Source/DSP/Effects/Equalizer.cpp
-    ../Source/DSP/Vocoder/Vocoder16Band.cpp
-    ../Source/DSP/Sequencer/Arpeggiator.cpp
-    ../Source/DSP/Sequencer/ModSequencer.cpp
+    ${MS2000_DSP_SOURCES_WASM}
     # SysExCodec compiled directly (HardwareDrivers has JUCE dep)
     ${ABDSHARED_CODE_DIR}/HardwareDrivers/SysExCodec.cpp
-    ../Source/MIDI/MIDIMap.cpp
-    ../Source/State/ParameterRegistry.gen.cpp
 )
 
 add_executable(ms2000_dsp ${DSP_SOURCES})
@@ -91,9 +80,11 @@ target_compile_definitions(ms2000_dsp PRIVATE
     __EMSCRIPTEN__=1
 )
 
+
+
 # Emscripten Compilation & Link Flags
 set_target_properties(ms2000_dsp PROPERTIES
     OUTPUT_NAME "ms2000_dsp"
-    SUFFIX ".js"
-    LINK_FLAGS "-s SINGLE_FILE=1 -s MALLOC=emmalloc -s ALLOW_MEMORY_GROWTH=1 -s EXPORTED_RUNTIME_METHODS=['ccall','cwrap','getValue','setValue'] -s EXPORTED_FUNCTIONS=['_initEngine','_processAudio','_noteOn','_noteOff','_allNotesOff','_setParamNormalized','_setParamById','_getAudioSnapshot','_loadProgram','_initPatch','_randomizePatch','_malloc','_free'] -O3"
+    SUFFIX ""
+    LINK_FLAGS "-s MALLOC=emmalloc -s ALLOW_MEMORY_GROWTH=1 -s INITIAL_MEMORY=16777216 -s EXPORTED_RUNTIME_METHODS=['ccall','cwrap','getValue','setValue'] -s EXPORTED_FUNCTIONS=['_initEngine','_processAudio','_noteOn','_noteOff','_allNotesOff','_setParamNormalized','_setParamById','_getAudioSnapshot','_loadProgram','_initPatch','_randomizePatch','_malloc','_free'] -O2"
 )

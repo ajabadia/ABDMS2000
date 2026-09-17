@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.22)
 
 project(ABDMS2000 VERSION 1.0.0 LANGUAGES C CXX)
 
+enable_testing()
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -67,6 +69,10 @@ else()
 endif()
 
 # Create JUCE Plugin
+# Lista DSP compartida con el build WASM (single-source, anti-drift):
+# DspSources.cmake define MS2000_DSP_SOURCES y MS2000_DSP_SOURCES_WASM.
+include("${CMAKE_CURRENT_SOURCE_DIR}/DspSources.cmake")
+
 juce_add_plugin(ABDMS2000
     COMPANY_NAME "ajabadia"
     IS_SYNTH TRUE
@@ -131,17 +137,18 @@ juce_add_binary_data(DWGSBinary
 target_link_libraries(ABDMS2000 PUBLIC DWGSBinary)
 
 # Source Files
+# Los .cpp del DSP viven en DspSources.cmake (compartidos con wasm/).
+# Aqui solo los headers del DSP y las fuentes de UI/Plugin/MIDI-SysEx.
 target_sources(ABDMS2000 PRIVATE
     # Core Engine & Architecture
     Source/Core/SynthEngine.h
-    Source/Core/SynthEngine.cpp
     Source/Core/Voice.h
-    Source/Core/Voice.cpp
     Source/Core/VoiceManager.h
-    Source/Core/VoiceManager.cpp
     Source/Core/AudioThreadSnapshot.h
     Source/Core/HardwareConstants.h
     Source/Core/BuildVersion.h
+
+    ${MS2000_DSP_SOURCES}
 
     # DSP Common & Math (implementaciones en ABDShared::SynthCore, shims locales)
     Source/DSP/Common/DSPUtils.h
@@ -151,23 +158,15 @@ target_sources(ABDMS2000 PRIVATE
     Source/DSP/Oscillators/WavetableLoader.h
     Source/DSP/Oscillators/WaveCategory.h
     Source/DSP/Oscillators/VAOscillator.h
-    Source/DSP/Oscillators/VAOscillator.cpp
     Source/DSP/Oscillators/VoxWaveOscillator.h
-    Source/DSP/Oscillators/VoxWaveOscillator.cpp
     Source/DSP/Oscillators/DWGSTables.h
-    Source/DSP/Oscillators/DWGSTables.cpp
     Source/DSP/Oscillators/DWGSOscillator.h
-    Source/DSP/Oscillators/DWGSOscillator.cpp
     Source/DSP/Oscillators/NoiseGenerator.h
-    Source/DSP/Oscillators/NoiseGenerator.cpp
     Source/DSP/Oscillators/OSC2Modulator.h
-    Source/DSP/Oscillators/OSC2Modulator.cpp
 
     # DSP Filters
     Source/DSP/Filters/MultiModeFilter.h
-    Source/DSP/Filters/MultiModeFilter.cpp
     Source/DSP/Filters/FilterResonanceComp.h
-    Source/DSP/Filters/FilterResonanceComp.cpp
 
     # DSP Envelopes & Modulation (implementaciones en ABDShared::SynthCore, shims locales)
     Source/DSP/Envelopes/EnvelopeCurves.h
@@ -175,30 +174,22 @@ target_sources(ABDMS2000 PRIVATE
     Source/DSP/Modulation/PortamentoGlide.h
     Source/DSP/Modulation/LFO.h
     Source/DSP/Modulation/VirtualPatchMatrix.h
-    Source/DSP/Modulation/VirtualPatchMatrix.cpp
 
     # DSP Sequencers
     Source/DSP/Sequencer/ModSequencer.h
-    Source/DSP/Sequencer/ModSequencer.cpp
     Source/DSP/Sequencer/Arpeggiator.h
-    Source/DSP/Sequencer/Arpeggiator.cpp
 
     # DSP Effects
     Source/DSP/Effects/ModFX.h
-    Source/DSP/Effects/ModFX.cpp
     Source/DSP/Effects/DelayFX.h
-    Source/DSP/Effects/DelayFX.cpp
     Source/DSP/Effects/Equalizer.h
-    Source/DSP/Effects/Equalizer.cpp
 
     # DSP Vocoder
     Source/DSP/Vocoder/EnvelopeFollower.h
     Source/DSP/Vocoder/Vocoder16Band.h
-    Source/DSP/Vocoder/Vocoder16Band.cpp
 
     # State & Parameters
     Source/State/ParameterRegistry.gen.h
-    Source/State/ParameterRegistry.gen.cpp
     Source/State/MS2000PatchBuilder.h
     Source/State/MS2000FactoryBank.h
     Source/State/LCDMenuFormatter.h
@@ -209,13 +200,14 @@ target_sources(ABDMS2000 PRIVATE
     # ABDShared::HardwareDrivers (namespace abd::hw). They are consumed via
     # target_link_libraries below — do NOT add local copies back.
     Source/MIDI/MIDIMap.h
-    Source/MIDI/MIDIMap.cpp
     Source/MIDI/MIDITelemetryManager.h
-    Source/MIDI/MIDITelemetryManager.cpp
     Source/MIDI/MS2000ProgramData.h
     Source/MIDI/SysExManager.h
     Source/MIDI/SysExManager.cpp
     Source/MIDI/MS2000SysExExporter.h
+    # Tramas Korg del contrato del Bank Manager (Scripts/generate_korg_channel.js).
+    # El .h vive en el repo para que un clone + CMake configure funcione.
+    Source/MIDI/KorgChannel.gen.h
 
 
     # Plugin Wrappers & WebUI Bridge
@@ -228,6 +220,10 @@ target_sources(ABDMS2000 PRIVATE
     Source/Plugin/ScopeFloatingWindow.h
     Source/Plugin/BridgeActions.h
     Source/Plugin/BridgeActions.cpp
+    # Identidad del host generada desde el ModelContract
+    # (Scripts/generate_host_model_id.js). El .h vive en el repo como
+    # ParameterRegistry.gen.h para que un clone + CMake configure funcione.
+    Source/Plugin/HostModelId.gen.h
 )
 
 # Target Include Directories
@@ -275,6 +271,11 @@ target_link_libraries(ABDMS2000 PUBLIC
 # --- C++ Unit Tests (Standalone executable, no JUCE GUI) ---
 add_executable(ABDMS2000_Tests
     Source/Tests/DSPCoreTests.cpp
+    # BridgeActions is compiled here (instead of the PluginProcessor) so the
+    # WebUI event dispatch is unit-tested directly: the host is injected through
+    # the BridgeHost port and the JS messages through a sink, with no WebView
+    # and no JUCE GUI. See Source/Plugin/BridgeHost.h.
+    Source/Plugin/BridgeActions.cpp
     Source/Core/VoiceManager.cpp
     Source/Core/Voice.cpp
     Source/Core/SynthEngine.cpp
@@ -312,6 +313,9 @@ target_link_libraries(ABDMS2000_Tests PRIVATE
     ABDShared::HardwareDrivers
 )
 
+# BridgeActions.h/BridgeHost.h live in Source/Plugin for the tests too.
+target_include_directories(ABDMS2000_Tests PRIVATE Source/Plugin)
+
 target_include_directories(ABDMS2000_Tests PRIVATE
     Source
     Source/DSP
@@ -327,6 +331,25 @@ target_include_directories(ABDMS2000_Tests PRIVATE
     "${ABDSCOPE_DIR}/Source/Core"
 )
 target_compile_features(ABDMS2000_Tests PRIVATE cxx_std_20)
+
+add_test(NAME ABDMS2000_Tests COMMAND ABDMS2000_Tests)
+
+# Pila del binario de tests. `runAllTests()` es una sola funcion con todos los
+# casos y el marcador reserva de golpe los locales de todos ellos, incluidos los
+# dobles de host (SynthEngine + MIDITelemetryManager + SysExManager) que viven en
+# la pila. Al anadir el Test 25 el marco paso del 1 MB por defecto de Windows y el
+# proceso moria con STATUS_STACK_OVERFLOW (0xC00000FD) ya dentro del Test 17, que
+# es solo el siguiente en usar un doble de host. 16 MB dejan margen de sobra.
+#
+# (Ese flag ya no esta: la suite vive ahora en una funcion por caso —ver
+# `runAllTests()` en Source/Tests/DSPCoreTests.cpp—, asi que cada marco se libera
+# al volver y el binario cabe en el 1 MB por defecto de Windows. Si algun dia se
+# vuelve a juntar todo en una funcion, hara falta el flag otra vez.)
+#
+# El margen medido (Release, MSVC): con el binario partido en una funcion por caso la suite
+# entera pasa con una pila de 512 KB y el 1 MB por defecto de Windows sobra; con 256 KB
+# muere ya en el Test 21, que es el que mas pila necesita. Ese es el orden de magnitud del
+# peor caso actual (el `SynthEngine` de cada test, no la suma de todos).
 
 # --- Compile Definitions for WebView2 and Standalone
 target_compile_definitions(ABDMS2000 PUBLIC
