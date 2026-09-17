@@ -45,7 +45,7 @@ var searchData=
   ['korg_20ms2000_20—_20arquitectura_20dsp_20e_20ingeniería_20inversa_42',['Investigación Completa del Korg MS2000 — Arquitectura, DSP e Ingeniería Inversa',['../md_DOCS_2MS2000__Research__Notes.html',1,'']]],
   ['korg_20ms2000_20especificación_20de_20mensajes_20sysex_20y_20offsets_20hexadecimales_43',['Korg MS2000 - Especificación de Mensajes SysEx y Offsets Hexadecimales',['../md_DOCS_2MS2000__SysEx__Spec.html',1,'']]],
   ['korg_5fms2000_5fmenu_5fmap_2emd_44',['korg_ms2000_menu_map.md',['../korg__ms2000__menu__map_8md.html',1,'']]],
-  ['korgbuttonlookandfeel_45',['korgbuttonlookandfeel',['../classABDMS2000_1_1KorgButtonLookAndFeel.html',1,'ABDMS2000::KorgButtonLookAndFeel'],['../classABDMS2000_1_1KorgButtonLookAndFeel.html#acca8635d81465d0b3b12f82b4804e154',1,'ABDMS2000::KorgButtonLookAndFeel::KorgButtonLookAndFeel()']]],
+  ['korgbuttonlookandfeel_45',['korgbuttonlookandfeel',['../classABDMS2000_1_1KorgButtonLookAndFeel.html#acca8635d81465d0b3b12f82b4804e154',1,'ABDMS2000::KorgButtonLookAndFeel::KorgButtonLookAndFeel()'],['../classABDMS2000_1_1KorgButtonLookAndFeel.html',1,'ABDMS2000::KorgButtonLookAndFeel']]],
   ['korgbuttonlookandfeel_2eh_46',['KorgButtonLookAndFeel.h',['../KorgButtonLookAndFeel_8h.html',1,'']]],
   ['korgledbutton_47',['korgledbutton',['../classABDMS2000_1_1KorgLedButton.html#a57db77edaa41d687d4f598136fc641f6',1,'ABDMS2000::KorgLedButton::KorgLedButton()'],['../classABDMS2000_1_1KorgLedButton.html',1,'ABDMS2000::KorgLedButton']]],
   ['korgledbutton_2eh_48',['KorgLedButton.h',['../KorgLedButton_8h.html',1,'']]],
@@ -55,7 +55,6 @@ var searchData=
   ['kprophetvsnames_52',['kProphetVSNames',['../namespaceABDMS2000.html#ab2a27890506359d4de6a6fd7ce4cecda',1,'ABDMS2000']]],
   ['kresolutionstepsperbeat_53',['kResolutionStepsPerBeat',['../namespaceABDMS2000.html#a36f152df219048949b8bf516532d0baa',1,'ABDMS2000']]],
   ['kscopebuffersize_54',['kScopeBufferSize',['../structABDMS2000_1_1AudioThreadSnapshot.html#a056be1de14fd22d502ba3a823ded2251',1,'ABDMS2000::AudioThreadSnapshot']]],
-  ['ksyncnotemultipliers_55',['kSyncNoteMultipliers',['../namespaceABDMS2000.html#ace5638b72a3fecc2836780e1f59246f1',1,'ABDMS2000']]],
-  ['ktotalprograms_56',['kTotalPrograms',['../namespaceABDMS2000_1_1Constants.html#a6dc6aba0fa56dd041e55e9c39aa38948',1,'ABDMS2000::Constants']]],
-  ['kversionstring_57',['kVersionString',['../namespaceABDMS2000.html#ad5194868aeecc75e8d673102674d47e4',1,'ABDMS2000']]]
+  ['ktotalprograms_55',['kTotalPrograms',['../namespaceABDMS2000_1_1Constants.html#a6dc6aba0fa56dd041e55e9c39aa38948',1,'ABDMS2000::Constants']]],
+  ['kversionstring_56',['kVersionString',['../namespaceABDMS2000.html#ad5194868aeecc75e8d673102674d47e4',1,'ABDMS2000']]]
 ];

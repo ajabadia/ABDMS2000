@@ -1,9 +1,0 @@
-<map id="Source/DSP/Modulation/PortamentoGlide.cpp" name="Source/DSP/Modulation/PortamentoGlide.cpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="119,5,292,45"/>
-<area shape="rect" id="Node000002" href="$PortamentoGlide_8h.html" title=" " alt="" coords="5,93,149,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="176,48,109,88,106,84,173,43"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="174,93,237,119"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="208,46,208,79,203,79,203,46"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="261,93,347,119"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="231,43,280,82,277,87,228,48"/>
-</map>

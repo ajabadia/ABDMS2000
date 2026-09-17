@@ -1,3 +1,7 @@
 <map id="Gráfico de jerarquía de clases" name="Gráfico de jerarquía de clases">
-<area shape="rect" id="Node000000" href="$classABDMS2000_1_1WasmEngineInstance.html" title=" " alt="" coords="5,5,255,31"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,5,200,31"/>
+<area shape="rect" id="Node000001" href="$classABDMS2000_1_1ABDMS2000AudioProcessorEditor.html" title=" " alt="" coords="248,23,475,63"/>
+<area shape="poly" id="edge2_Node000000_Node000001" title=" " alt="" coords="214,26,248,30,248,35,213,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="55,55,150,80"/>
+<area shape="poly" id="edge3_Node000002_Node000001" title=" " alt="" coords="163,59,247,51,248,57,164,64"/>
 </map>

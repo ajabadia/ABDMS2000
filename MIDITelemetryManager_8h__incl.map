@@ -1,26 +1,24 @@
 <map id="Source/MIDI/MIDITelemetryManager.h" name="Source/MIDI/MIDITelemetryManager.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="389,5,588,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="517,5,716,45"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="5,93,191,133"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="404,48,197,93,196,88,402,43"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="133,181,303,221"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="390,36,354,44,319,56,285,73,256,95,243,111,234,130,224,168,218,167,229,128,239,108,252,91,282,68,317,51,353,39,389,31"/>
-<area shape="rect" id="Node000004" href="$MIDIMap_8h.html" title=" " alt="" coords="401,101,493,126"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="482,47,461,89,457,87,477,44"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="501,189,564,214"/>
-<area shape="poly" id="edge12_Node000001_Node000006" title=" " alt="" coords="496,45,509,93,529,174,524,176,503,94,491,47"/>
-<area shape="rect" id="Node000008" href="$NRPNParser_8h.html" title=" " alt="" coords="267,101,377,126"/>
-<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="453,48,357,97,355,92,451,43"/>
-<area shape="rect" id="Node000009" title=" " alt="" coords="569,101,625,126"/>
-<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="514,44,573,90,569,94,511,48"/>
-<area shape="rect" id="Node000010" title=" " alt="" coords="649,101,715,126"/>
-<area shape="poly" id="edge11_Node000001_Node000010" title=" " alt="" coords="532,43,645,93,643,98,530,48"/>
-<area shape="rect" id="Node000011" title=" " alt="" coords="740,101,827,126"/>
-<area shape="poly" id="edge13_Node000001_Node000011" title=" " alt="" coords="560,43,728,91,738,94,736,99,727,96,559,48"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="418,189,477,214"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="450,126,450,174,445,174,445,126"/>
-<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="461,124,513,177,509,181,457,128"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="327,189,394,214"/>
-<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="438,128,384,181,380,177,434,124"/>
-<area shape="poly" id="edge8_Node000008_Node000003" title=" " alt="" coords="310,128,253,174,250,170,306,124"/>
-<area shape="poly" id="edge9_Node000008_Node000007" title=" " alt="" coords="330,125,352,175,347,177,325,127"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="518,45,205,96,204,91,517,40"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="215,93,386,133"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="548,48,384,92,382,87,547,43"/>
+<area shape="rect" id="Node000004" href="$MIDIMap_8h.html" title=" " alt="" coords="411,101,503,126"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="583,48,491,97,489,92,580,43"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="512,181,575,207"/>
+<area shape="poly" id="edge10_Node000001_Node000006" title=" " alt="" coords="601,47,585,69,570,94,557,133,549,168,544,167,551,131,565,92,580,66,597,44"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="579,93,807,133"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="636,44,669,81,665,85,632,47"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="831,101,887,126"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="681,43,820,91,824,93,822,97,818,96,679,48"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="911,101,978,126"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="714,43,805,64,900,91,907,93,905,98,899,96,803,69,713,48"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="1003,101,1089,126"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="717,38,848,60,991,91,1002,94,1001,99,989,96,847,65,716,43"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="338,181,397,207"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="445,128,392,174,389,170,442,124"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="471,124,522,170,518,174,468,128"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="421,181,487,207"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="459,126,458,168,452,167,454,126"/>
 </map>

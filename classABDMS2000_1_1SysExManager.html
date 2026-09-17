@@ -104,6 +104,10 @@ Métodos públicos</h2></td></tr>
 <tr class="separator:a451de7d6a6bb41bd7586da2a44420377"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48bec770642923270ffefd5217e4e8d4" id="r_a48bec770642923270ffefd5217e4e8d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#a48bec770642923270ffefd5217e4e8d4">setProgram</a> (size_t index, const <a class="el" href="structABDMS2000_1_1MS2000ProgramData.html">MS2000ProgramData</a> &amp;prog) noexcept</td></tr>
 <tr class="separator:a48bec770642923270ffefd5217e4e8d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7292f418158011acb9d9c314222b787" id="r_ad7292f418158011acb9d9c314222b787"><td class="memItemLeft" align="right" valign="top">const std::array&lt; <a class="el" href="structABDMS2000_1_1MS2000ProgramData.html">MS2000ProgramData</a>, <a class="el" href="classABDMS2000_1_1SysExManager.html#a8e56e69c6c6f99df38982f84fbec8279">BANK_SIZE</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#ad7292f418158011acb9d9c314222b787">getAllPrograms</a> () const noexcept</td></tr>
+<tr class="separator:ad7292f418158011acb9d9c314222b787"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf12affb03c591ffe65bc6284f4565f2" id="r_aaf12affb03c591ffe65bc6284f4565f2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#aaf12affb03c591ffe65bc6284f4565f2">setAllPrograms</a> (const std::array&lt; <a class="el" href="structABDMS2000_1_1MS2000ProgramData.html">MS2000ProgramData</a>, <a class="el" href="classABDMS2000_1_1SysExManager.html#a8e56e69c6c6f99df38982f84fbec8279">BANK_SIZE</a> &gt; &amp;bank) noexcept</td></tr>
+<tr class="separator:aaf12affb03c591ffe65bc6284f4565f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a283fc7e181fee862094e16fd7da36a67" id="r_a283fc7e181fee862094e16fd7da36a67"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#a283fc7e181fee862094e16fd7da36a67">getBankSize</a> () const noexcept</td></tr>
 <tr class="separator:a283fc7e181fee862094e16fd7da36a67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97fd8f70a30795d50c30a4042c2db349" id="r_a97fd8f70a30795d50c30a4042c2db349"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#a97fd8f70a30795d50c30a4042c2db349">getActiveProgramIndex</a> () const noexcept</td></tr>
@@ -283,6 +287,31 @@ Atributos privados</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">int ABDMS2000::SysExManager::getActiveProgramIndex </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad7292f418158011acb9d9c314222b787" name="ad7292f418158011acb9d9c314222b787"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7292f418158011acb9d9c314222b787">&#9670;&#160;</a></span>getAllPrograms()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::array&lt; <a class="el" href="structABDMS2000_1_1MS2000ProgramData.html">MS2000ProgramData</a>, <a class="el" href="classABDMS2000_1_1SysExManager.html#a8e56e69c6c6f99df38982f84fbec8279">BANK_SIZE</a> &gt; &amp; ABDMS2000::SysExManager::getAllPrograms </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -520,6 +549,32 @@ Atributos privados</h2></td></tr>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>idx</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aaf12affb03c591ffe65bc6284f4565f2" name="aaf12affb03c591ffe65bc6284f4565f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf12affb03c591ffe65bc6284f4565f2">&#9670;&#160;</a></span>setAllPrograms()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::SysExManager::setAllPrograms </td>
+          <td>(</td>
+          <td class="paramtype">const std::array&lt; <a class="el" href="structABDMS2000_1_1MS2000ProgramData.html">MS2000ProgramData</a>, <a class="el" href="classABDMS2000_1_1SysExManager.html#a8e56e69c6c6f99df38982f84fbec8279">BANK_SIZE</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>bank</em></td><td>)</td>
           <td></td>
         </tr>
       </table>

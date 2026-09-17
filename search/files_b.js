@@ -8,8 +8,6 @@ var searchData=
   ['plugineditor_5fresourceprovider_2eh_5',['PluginEditor_ResourceProvider.h',['../PluginEditor__ResourceProvider_8h.html',1,'']]],
   ['pluginprocessor_2ecpp_6',['PluginProcessor.cpp',['../PluginProcessor_8cpp.html',1,'']]],
   ['pluginprocessor_2eh_7',['PluginProcessor.h',['../PluginProcessor_8h.html',1,'']]],
-  ['polyblep_2ecpp_8',['PolyBLEP.cpp',['../PolyBLEP_8cpp.html',1,'']]],
-  ['polyblep_2eh_9',['PolyBLEP.h',['../PolyBLEP_8h.html',1,'']]],
-  ['portamentoglide_2ecpp_10',['PortamentoGlide.cpp',['../PortamentoGlide_8cpp.html',1,'']]],
-  ['portamentoglide_2eh_11',['PortamentoGlide.h',['../PortamentoGlide_8h.html',1,'']]]
+  ['polyblep_2eh_8',['PolyBLEP.h',['../PolyBLEP_8h.html',1,'']]],
+  ['portamentoglide_2eh_9',['PortamentoGlide.h',['../PortamentoGlide_8h.html',1,'']]]
 ];

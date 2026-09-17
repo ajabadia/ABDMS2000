@@ -18,7 +18,7 @@ var searchData=
   ['filterresonancecomp_15',['FilterResonanceComp',['../classABDMS2000_1_1FilterResonanceComp.html',1,'ABDMS2000']]],
   ['filterresonancecomp_2ecpp_16',['FilterResonanceComp.cpp',['../FilterResonanceComp_8cpp.html',1,'']]],
   ['filterresonancecomp_2eh_17',['FilterResonanceComp.h',['../FilterResonanceComp_8h.html',1,'']]],
-  ['filtertype_18',['filtertype',['../namespaceABDMS2000.html#aa2b1e8d220a1e4a73e04a079ac7bf1f0',1,'ABDMS2000::FilterType'],['../namespaceABDMS2000_1_1ParamIDs.html#a38d432e23697c23323c183d209c11059',1,'ABDMS2000::ParamIDs::filterType'],['../structABDMS2000_1_1VoiceParameters.html#ab144ef703647dfcc14704b21374629f4',1,'ABDMS2000::VoiceParameters::filterType']]],
+  ['filtertype_18',['filtertype',['../namespaceABDMS2000_1_1ParamIDs.html#a38d432e23697c23323c183d209c11059',1,'ABDMS2000::ParamIDs::filterType'],['../namespaceABDMS2000.html#aa2b1e8d220a1e4a73e04a079ac7bf1f0',1,'ABDMS2000::FilterType'],['../structABDMS2000_1_1VoiceParameters.html#ab144ef703647dfcc14704b21374629f4',1,'ABDMS2000::VoiceParameters::filterType']]],
   ['filtro_20amplificador_20y_20distorsión_19',['3.3 Timbre 1: Filtro, Amplificador y Distorsión',['../md_DOCS_2MS2000__SysEx__Spec.html#autotoc_md138',1,'']]],
   ['filtro_20amplificador_20y_20envolventes_20',['PARTE 2: FILTRO, AMPLIFICADOR Y ENVOLVENTES',['../md_DOCS_2korg__ms2000__menu__map.html#autotoc_md9',1,'']]],
   ['filtro_20intensity_20y_20tracking_21',['7.4 Modulación del Filtro (Intensity y Tracking)',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md73',1,'']]],
