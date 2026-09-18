@@ -4,6 +4,8 @@
 #include "../MIDI/SysExManager.h"
 #include "../State/MS2000PatchBuilder.h"
 #include "../Core/AppLogger.h"
+#include <utility>
+#include <vector>
 
 namespace ABDMS2000 {
 
@@ -141,16 +143,30 @@ void ABDMS2000AudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
     // Check for incoming SysEx messages to parse
     if (sysexManager_)
     {
+        // Lo que hay que contestar (el volcado que pide una petición, o el acuse
+        // `0x23`/`0x24` de una escritura) se recoge antes de tocar el buffer: añadir
+        // eventos mientras se itera invalidaría el iterador.
+        std::vector<std::pair<std::vector<uint8_t>, int>> sysExReplies;
+
         for (const auto meta : midiMessages)
         {
             auto msg = meta.getMessage();
             if (msg.isSysEx())
             {
-                sysexManager_->parseSysEx(static_cast<const uint8_t*>(msg.getSysExData()),
-                                         static_cast<size_t>(msg.getSysExDataSize()),
-                                         apvts_);
+                auto res = sysexManager_->parseSysEx(static_cast<const uint8_t*>(msg.getSysExData()),
+                                                     static_cast<size_t>(msg.getSysExDataSize()),
+                                                     apvts_);
+                if (!res.reply.empty())
+                    sysExReplies.emplace_back(std::move(res.reply), meta.samplePosition);
             }
         }
+
+        // Salida MIDI: el plugin ya escribe aquí (arpegiador y telemetría), así que el
+        // acuse viaja por el mismo camino y llega a quien mandó el dump.
+        for (const auto& [bytes, samplePosition] : sysExReplies)
+            midiMessages.addEvent(juce::MidiMessage::createSysExMessage(bytes.data(),
+                                                                        static_cast<int>(bytes.size())),
+                                  samplePosition);
     }
 
     if (midiTelemetry_)
@@ -190,6 +206,11 @@ void ABDMS2000AudioProcessor::getStateInformation(juce::MemoryBlock& destData)
     {
         state.setProperty("currentProgramIndex", sysexManager_->getActiveProgramIndex(), nullptr);
         state.setProperty("currentProgramName", juce::String(sysexManager_->getProgram(sysexManager_->getActiveProgramIndex()).getName()), nullptr);
+
+        // Serializar los 128 programas del banco activo en memoria (36 KB binarios)
+        const auto& allProgs = sysexManager_->getAllPrograms();
+        juce::MemoryBlock bankBlock(allProgs.data(), sizeof(MS2000ProgramData) * SysExManager::BANK_SIZE);
+        state.setProperty("bankDataBlob", bankBlock.toBase64Encoding(), nullptr);
     }
 
     // 3. Serializar a XML compacto y escribir en bloque binario del DAW
@@ -214,7 +235,20 @@ void ABDMS2000AudioProcessor::setStateInformation(const void* data, int sizeInBy
             // 2. Reemplazar atómicamente el estado del APVTS
             apvts_.replaceState(newTree);
 
-            // 3. Restaurar metadatos del programa y LCD si existen
+            // 3. Restaurar banco completo de memoria si existe en el proyecto del DAW
+            if (sysexManager_ && newTree.hasProperty("bankDataBlob"))
+            {
+                auto b64 = newTree.getProperty("bankDataBlob").toString();
+                juce::MemoryOutputStream mem;
+                if (juce::Base64::convertFromBase64(mem, b64) && mem.getDataSize() >= sizeof(MS2000ProgramData) * SysExManager::BANK_SIZE)
+                {
+                    std::array<MS2000ProgramData, SysExManager::BANK_SIZE> restoredBank;
+                    std::memcpy(restoredBank.data(), mem.getData(), sizeof(MS2000ProgramData) * SysExManager::BANK_SIZE);
+                    sysexManager_->setAllPrograms(restoredBank);
+                }
+            }
+
+            // 4. Restaurar metadatos del programa y LCD si existen
             if (sysexManager_ && newTree.hasProperty("currentProgramIndex"))
             {
                 int progIdx = static_cast<int>(newTree.getProperty("currentProgramIndex", 0));

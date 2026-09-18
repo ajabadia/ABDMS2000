@@ -3,11 +3,13 @@
 #include "../Core/SynthEngine.h"
 #include "../State/ParameterRegistry.gen.h"
 #include "../MIDI/MIDITelemetryManager.h"
+#include "BridgeHost.h"
 
 namespace ABDMS2000 {
 
 
-class ABDMS2000AudioProcessor : public juce::AudioProcessor {
+class ABDMS2000AudioProcessor : public juce::AudioProcessor,
+                                public BridgeHost {
 public:
     ABDMS2000AudioProcessor();
     ~ABDMS2000AudioProcessor() override;
@@ -37,16 +39,24 @@ public:
     void getStateInformation(juce::MemoryBlock& destData) override;
     void setStateInformation(const void* data, int sizeInBytes) override;
 
-    juce::AudioProcessorValueTreeState& getAPVTS() noexcept { return apvts_; }
-    SynthEngine& getEngine() noexcept { return engine_; }
-    class MIDITelemetryManager& getMIDITelemetry() noexcept;
-    class SysExManager& getSysExManager() noexcept { return *sysexManager_; }
+    // --- BridgeHost (puerto que consume BridgeActions) ---
+    juce::AudioProcessorValueTreeState& getAPVTS() noexcept override { return apvts_; }
+    SynthEngine& getEngine() noexcept override { return engine_; }
+    class MIDITelemetryManager& getMIDITelemetry() noexcept override;
+    class SysExManager& getSysExManager() noexcept override { return *sysexManager_; }
+    HardwareMidiTransport& getHardwareMidiTransport() noexcept override { return hardwareMidiTransport_; }
+    // getCurrentProgram/setCurrentProgram/changeProgramName ya se declaran más
+    // abajo como overrides de juce::AudioProcessor: cumplen también BridgeHost.
 
 private:
     juce::AudioProcessorValueTreeState apvts_;
     SynthEngine engine_;
     std::unique_ptr<class MIDITelemetryManager> midiTelemetry_;
     std::unique_ptr<class SysExManager> sysexManager_;
+
+    // Hardware MIDI para el puente del Bank Manager embebido (los dispositivos
+    // reales los enlaza el Editor; ver Source/Plugin/HardwareMidiTransport.h).
+    HardwareMidiTransport hardwareMidiTransport_;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ABDMS2000AudioProcessor)
 };
