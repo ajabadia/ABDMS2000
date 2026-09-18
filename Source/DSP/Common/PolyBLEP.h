@@ -1,26 +1,16 @@
 #pragma once
-#include <cmath>
 
-namespace ABDMS2000 {
-
-/**
- * @brief PolyBLEP (Polynomial Band-Limited Step) helper functions.
- * Used for antialiased generation of Saw, Pulse, and Triangle waves.
+/*
+ * Compatibility shim — canonical implementation lives in ABDSharedCode::SynthCore
+ * (namespace abd::synth). This file is a thin re-export so the synth keeps its
+ * historical include paths while consuming the shared module.
+ * Extracted: Phase 2 of the transversal DRY plan (ANALISIS_DRY_COMPARTIDO.md §4.1).
+ * NOTE: sync artifact, not hand-maintained — edit ABDSharedCode/SynthCore instead.
  */
-class PolyBLEP {
-public:
-    /**
-     * @brief Computes 2-point / 4-point PolyBLEP residual for a step transition.
-     * @param t Normalized phase [0.0, 1.0)
-     * @param dt Phase increment per sample (frequency / sampleRate)
-     * @return BLEP correction value to subtract/add to naive waveform
-     */
-    static float getResidual(float t, float dt) noexcept;
 
-    /**
-     * @brief Computes PolyBLAMP residual for integrated step (used in Triangle wave).
-     */
-    static float getResidualIntegrated(float t, float dt) noexcept;
-};
+#include "SynthCore/PolyBLEP.h"
 
-} // namespace ABDMS2000
+namespace ABDMS2000
+{
+    using abd::synth::PolyBLEP;
+}

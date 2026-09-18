@@ -16,14 +16,25 @@ using abd::hw::SysExCodec;
 namespace ABDMS2000 {
 
 /**
- * @brief Korg MS2000 Program Data — 128-byte Sysex layout with registry-driven encoding.
+ * @brief Programa **propio** del plugin (el sistema `native` que declara el contrato
+ *        del host, ver `Source/Plugin/HostModelId.gen.h`):
+ *        bloque de 384 B con codificación dirigida por el `ParameterRegistry`.
  *
- * Byte Layout (128 bytes):
+ * Byte Layout (384 bytes — v2):
  *   [0x00..0x0B]  Program Name (12 bytes, ASCII)
  *   [0x0C]        Voice Mode byte (packed: voiceMode | unisonDetune | portamentoTime | portamentoOn)
  *   [0x0D]        Reserved
- *   [0x0E..0x4B]  Timbre parameters — byte positions driven by ParameterRegistry sysexOffset
- *   [0x4C..0x7F]  Reserved (future: all-data-dump extensions)
+ *   [0x0E..0x10A] Parámetros — byte dirigido por el `sysexOffset` del registro (1 byte por
+ *                 parámetro marcado `sysex != false`, hoy 253). Cubre Timbre 1 **y Timbre 2**,
+ *                 velocidades, escala/split y los pasos del mod sequence.
+ *   [0x10B..0x17F] Reservado
+ *
+ * La v1 (128 B) solo cabía Timbre 1 + voz: los 30 parámetros marcados `sysex: false`
+ * (vocoder entero, `modSeqOn/Type`, `unisonSpread`, `masterVolume`…) ya se perdían, y
+ * Timbre 2 ni existía. La v2 es el mismo
+ * layout al principio, así que **un bloque v1 se sigue leyendo** (`unpackFromSysexPayload`
+ * rellena con ceros el resto). El bloque es opaco para el ABD Bank Manager: el tamaño
+ * no viaja en el contrato, solo en la carga útil base64.
  *
  * Conversion between 8-bit rawData and APVTS is fully automatic:
  * it iterates ParameterRegistry::getAllParameters() and reads/writes bytes
@@ -33,7 +44,11 @@ namespace ABDMS2000 {
  * via their min/max ranges and handled by a small lookup set.
  */
 struct MS2000ProgramData {
-    static constexpr size_t UNPACKED_PROGRAM_SIZE = 128;
+    // v2: cabe todo lo que el motor modela (253 parámetros con byte propio).
+    // Es múltiplo de 128 a propósito: el bloque v1 (128 B) sigue siendo un subconjunto.
+    static constexpr size_t UNPACKED_PROGRAM_SIZE = 384;
+    /** Bloque de la v1 (solo Timbre 1 + voz). Se sigue leyendo; se escribe en v2. */
+    static constexpr size_t UNPACKED_PROGRAM_SIZE_V1 = 128;
     static constexpr size_t NAME_LENGTH = 12;
     static constexpr uint8_t NAME_END = 12;
     static constexpr uint8_t VOICE_BYTE = 0x0C;
@@ -88,6 +103,9 @@ struct MS2000ProgramData {
             char c = static_cast<char>(rawData[i]);
             res += (c >= 32 && c <= 126) ? c : ' ';
         }
+        // El nombre viaja en 12 B rellenas con espacios, pero no se devuelve el relleno:
+        // el Bank Manager lo muestra tal cual (igual que `MS2000HardwareProgram::getName`).
+        while (!res.empty() && res.back() == ' ') res.pop_back();
         return res;
     }
 

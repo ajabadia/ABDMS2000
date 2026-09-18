@@ -31,6 +31,28 @@ enum class KeySyncMode {
     Voice       // Reset on every single note press per voice
 };
 
+/**
+ * Modulación del **Mod Sequence** del timbre, ya traducida por el motor a las mismas
+ * unidades que la matriz de patch (bipolar −1..+1 por destino). Las escalas concretas
+ * (octavas, semitonos, pan) las aplica `Voice::renderNextSample`.
+ *
+ * El secuenciador es por timbre (3 filas A/B/C dentro del bloque de 108 B del programa
+ * real), así que cada `VoiceParameters` lleva la suya.
+ */
+struct SeqModulation {
+    float pitch{ 0.0f };
+    float osc2Pitch{ 0.0f };   // semitonos (±24 a fondo de escala)
+    float osc2Tune{ 0.0f };    // semitonos (±0.5 = ±50 cents)
+    float osc1Ctrl1{ 0.0f };
+    float noiseLevel{ 0.0f };
+    float osc1Level{ 0.0f };
+    float osc2Level{ 0.0f };
+    float cutoff{ 0.0f };
+    float amp{ 0.0f };
+    float pan{ 0.0f };
+    float lfo2Freq{ 0.0f };
+};
+
 struct VoiceParameters {
     // OSC 1
     OSC1Type osc1Type{ OSC1Type::Saw };
@@ -55,6 +77,7 @@ struct VoiceParameters {
     float filterResonance{ 0.0f };   // 0..1
     float eg1FilterIntensity{ 0.0f };// -1.0 to +1.0
     float filterKbdTrack{ 0.0f };    // -1.0 to +1.0
+    float filterVeloSens{ 0.0f };    // -1.0 to +1.0 (byte 23 del bloque real, ±63)
 
     // Envelopes
     float eg1Attack{ 0.01f };
@@ -84,7 +107,11 @@ struct VoiceParameters {
     float ampLevel{ 0.8f };
     float panpot{ 0.0f }; // -1.0 (L) to +1.0 (R)
     bool distortionOn{ false };
-    float ampKeyTrack{ 0.0f }; // -1.0 to +1.0
+    float ampKeyTrack{ 0.0f };  // -1.0 to +1.0
+    float ampVeloSens{ 0.0f };  // -1.0 to +1.0 (byte 28 del bloque real, ±63)
+
+    // Mod Sequence de este timbre
+    SeqModulation seq{};
     float portamentoTime{ 0.0f };
     float voiceDetuneCents{ 0.0f };
 
@@ -140,6 +167,10 @@ public:
     };
     DiagnosticStats lastDiagStats_{};
     const DiagnosticStats& getDiagnosticStats() const noexcept { return lastDiagStats_; }
+
+    // Read-only access to the per-voice LFOs (used by the analytical scope taps).
+    const LFO& getLfo1() const noexcept { return lfo1_; }
+    const LFO& getLfo2() const noexcept { return lfo2_; }
 
     // Call once per audio block to apply all static/structure parameters.
     // Must be called before any renderNextSample() calls in the same block.

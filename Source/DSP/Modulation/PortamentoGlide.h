@@ -1,31 +1,15 @@
 #pragma once
 
-namespace ABDMS2000 {
-
-/**
- * @brief Exponential Portamento / Glide processor for smooth note pitch transitions.
+/*
+ * Compatibility shim — canonical implementation lives in ABDSharedCode::SynthCore
+ * (namespace abd::synth). Thin re-export keeping historical include paths while
+ * consuming the shared module (Phase 2 DRY extraction).
+ * NOTE: sync artifact, not hand-maintained — edit ABDSharedCode/SynthCore instead.
  */
-class PortamentoGlide {
-public:
-    PortamentoGlide() = default;
 
-    void prepare(double sampleRate) noexcept;
-    void reset(float initialMidiNote = 60.0f) noexcept;
+#include "SynthCore/PortamentoGlide.h"
 
-    void setTargetNote(float targetMidiNote, bool glideEnabled) noexcept;
-    void setGlideTime(float timeParam0to1) noexcept; // 0 (0ms) to 1 (approx 2.5s)
-
-    float getNextPitchSemitones() noexcept;
-    float getCurrentPitch() const noexcept { return currentPitch_; }
-
-private:
-    double sampleRate_{ 44100.0 };
-    float currentPitch_{ 60.0f };
-    float targetPitch_{ 60.0f };
-    float timeParam_{ 0.0f };
-    double slewMultiplier_{ 0.0 };
-
-    void updateMultiplier() noexcept;
-};
-
-} // namespace ABDMS2000
+namespace ABDMS2000
+{
+    using abd::synth::PortamentoGlide;
+}

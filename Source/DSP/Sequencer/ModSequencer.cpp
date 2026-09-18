@@ -38,14 +38,16 @@ void ModSequencer::prepare(double sampleRate) noexcept
         0.25f, 0.75f, 0.35f, 0.65f, 0.15f, 0.85f, 0.50f, 0.50f
     };
 
-    tracks_[0].length = 16;
-    tracks_[1].length = 16;
-    tracks_[2].length = 16;
-    for (size_t s = 0; s < NUM_STEPS; ++s)
+    // Las pistas del Timbre 2 arrancan con la misma fila que las del Timbre 1: el
+    // programa INIT del equipo real tiene los dos bloques de timbre idénticos.
+    for (size_t t = 0; t < NUM_TRACKS; ++t)
     {
-        tracks_[0].steps[s] = kDefaultTrack1[s];
-        tracks_[1].steps[s] = kDefaultTrack2[s];
-        tracks_[2].steps[s] = kDefaultTrack3[s];
+        const float* defaults = (t % TRACKS_PER_TIMBRE == 0) ? kDefaultTrack1
+                             : (t % TRACKS_PER_TIMBRE == 1) ? kDefaultTrack2
+                                                            : kDefaultTrack3;
+        tracks_[t].length = static_cast<int>(NUM_STEPS);
+        for (size_t s = 0; s < NUM_STEPS; ++s)
+            tracks_[t].steps[s] = defaults[s];
     }
     setTempoBPM(bpm_);
     reset();
@@ -77,9 +79,17 @@ void ModSequencer::setSyncResolution(int idx) noexcept
     setTempoBPM(bpm_); // re-evaluate samplesPerStep
 }
 
-void ModSequencer::triggerKeySync() noexcept
+void ModSequencer::triggerKeySync(size_t firstTrack, size_t count) noexcept
 {
-    reset();
+    // El Key Sync del equipo es por timbre: solo las filas de ese timbre vuelven al paso 0.
+    stepSampleCounter_ = 0.0;
+    const size_t end = std::min(NUM_TRACKS, firstTrack + count);
+    for (size_t t = firstTrack; t < end; ++t)
+    {
+        currentStep_[t] = 0;
+        bounceDirection_[t] = true;
+        smoothedOutput_[t] = tracks_[t].steps[0];
+    }
 }
 
 void ModSequencer::advanceClock(int numSamples) noexcept

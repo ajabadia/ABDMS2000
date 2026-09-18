@@ -152,6 +152,12 @@ void Voice::renderNextSample(float& leftOut, float& rightOut, int diagPoint, flo
     float lfo1Val = lfo1_.getNextSample();
     float eg1Val  = eg1_.getNextSample();
     float eg2Val  = eg2_.getNextSample();
+    // El VCA y el filtro usan el nivel **crudo** del EG (sin su ganancia por velocidad):
+    // el MS2000 tiene sus propios controles de sensibilidad (AMP VELO / FILTER VELO) y
+    // con ellos a 0 la velocidad no cambia el sonido. Los EG como fuente de patch siguen
+    // entregando su valor escalado, como hasta ahora.
+    const float eg1Raw = eg1_.getCurrentLevel();
+    const float eg2Raw = eg2_.getCurrentLevel();
 
     // 3. Evaluate LFO2 with potential Virtual Patch frequency cross-modulation
     PatchModulationSources prelimSources;
@@ -165,7 +171,7 @@ void Voice::renderNextSample(float& leftOut, float& rightOut, int diagPoint, flo
     prelimSources.modWheel  = p.modWheelValue;
 
     PatchModulationOutputs prelimMod = patchMatrix_.evaluate(prelimSources);
-    float lfo2Freq = p.lfo2FreqHz * std::pow(2.0f, prelimMod.lfo2FreqMod * 4.0f);
+    float lfo2Freq = p.lfo2FreqHz * std::pow(2.0f, (prelimMod.lfo2FreqMod + p.seq.lfo2Freq) * 4.0f);
     lfo2_.setFrequencyHz(lfo2Freq);
     float lfo2Val = lfo2_.getNextSample();
 
@@ -174,14 +180,18 @@ void Voice::renderNextSample(float& leftOut, float& rightOut, int diagPoint, flo
     sources.lfo2 = lfo2Val;
     PatchModulationOutputs mod = patchMatrix_.evaluate(sources);
 
-    // 5. Portamento + LFO + Virtual Patch Pitch Modulation + Voice Detune
+    // 5. Portamento + LFO + Virtual Patch Pitch Modulation + Mod Seq + Voice Detune
     float voiceDetuneSemitones = p.voiceDetuneCents / 100.0f;
-    float osc1PitchMod = (p.pitchBendValue * 2.0f) + (mod.pitchMod * 24.0f) + voiceDetuneSemitones;
+    const float seqPitchSemis = p.seq.pitch * 24.0f;      // "PITCH" del seq: ±24 st
+    const float seqOsc2Semis  = p.seq.osc2Pitch * 24.0f;  // "OSC2 SEMI" del seq: ±24 st
+    float osc1PitchMod = (p.pitchBendValue * 2.0f) + (mod.pitchMod * 24.0f) + voiceDetuneSemitones
+                       + seqPitchSemis;
     float osc1FinalPitch = basePitch + osc1PitchMod;
     float osc1Freq = DSPUtils::midiNoteToFrequency(osc1FinalPitch);
 
     float osc2PitchMod = (p.pitchBendValue * 2.0f) + (mod.pitchMod * 24.0f) + voiceDetuneSemitones
-                       + p.osc2Semitone + (p.osc2Tune / 100.0f);
+                       + seqPitchSemis + seqOsc2Semis
+                       + p.osc2Semitone + ((p.osc2Tune + (p.seq.osc2Tune * 100.0f)) / 100.0f);
     float osc2FinalPitch = basePitch + osc2PitchMod;
     float osc2Freq = DSPUtils::midiNoteToFrequency(osc2FinalPitch);
 
@@ -200,7 +210,7 @@ void Voice::renderNextSample(float& leftOut, float& rightOut, int diagPoint, flo
         case OSC1Type::Triangle:
         case OSC1Type::Sine:
             osc1VA_.setWaveform(static_cast<VAWaveform>(p.osc1Type));
-            osc1VA_.setControl1(DSPUtils::clamp(p.osc1Ctrl1 + mod.osc1Ctrl1Mod, 0.0f, 1.0f));
+            osc1VA_.setControl1(DSPUtils::clamp(p.osc1Ctrl1 + mod.osc1Ctrl1Mod + p.seq.osc1Ctrl1, 0.0f, 1.0f));
             osc1Sig = osc1VA_.getNextSample();
             break;
 
@@ -210,7 +220,7 @@ void Voice::renderNextSample(float& leftOut, float& rightOut, int diagPoint, flo
             break;
 
         case OSC1Type::VoxWave:
-            osc1VoxWave_.setVowel(DSPUtils::clamp(p.osc1Ctrl1 + mod.osc1Ctrl1Mod, 0.0f, 1.0f));
+            osc1VoxWave_.setVowel(DSPUtils::clamp(p.osc1Ctrl1 + mod.osc1Ctrl1Mod + p.seq.osc1Ctrl1, 0.0f, 1.0f));
             osc1Sig = osc1VoxWave_.getNextSample();
             break;
 
@@ -242,13 +252,15 @@ void Voice::renderNextSample(float& leftOut, float& rightOut, int diagPoint, flo
     }
 
     // 9. Noise
-    float noiseLevel = DSPUtils::clamp(p.noiseLevel + mod.noiseLevelMod, 0.0f, 1.0f);
+    float noiseLevel = DSPUtils::clamp(p.noiseLevel + mod.noiseLevelMod + p.seq.noiseLevel, 0.0f, 1.0f);
     float noiseSig   = (noiseLevel > 0.001f) ? noiseGen_.getWhiteNoise() : 0.0f;
 
     // 10. Mixer stage — sum OSC1, OSC2, Noise
-    float osc1Level = p.diagBypassOscMixer ? 1.0f : p.osc1Level;
+    float osc1Level = p.diagBypassOscMixer ? 1.0f
+                                           : DSPUtils::clamp(p.osc1Level + p.seq.osc1Level, 0.0f, 1.0f);
     float osc1Mixed = osc1Sig * osc1Level;
-    float osc2Mixed = osc2Sig * p.osc2Level;
+    float osc2Level = DSPUtils::clamp(p.osc2Level + p.seq.osc2Level, 0.0f, 1.0f);
+    float osc2Mixed = osc2Sig * osc2Level;
     float mixedAudio = osc1Mixed + osc2Mixed + (noiseSig * noiseLevel);
 
     if (diagPoint == 4) // Diagnostic Point 4: PreFilter (Bypasses OSC & Mixer)
@@ -261,10 +273,13 @@ void Voice::renderNextSample(float& leftOut, float& rightOut, int diagPoint, flo
     if (!p.diagBypassFilter)
     {
         float baseHz       = DSPUtils::convertSysExToCutoffHz(p.filterCutoffNorm);
-        float egOctaves    = eg1Val * (p.eg1FilterIntensity * 5.0f);
+        float egOctaves    = eg1Raw * (p.eg1FilterIntensity * 5.0f);
         float kbdOctaves   = ((basePitch - 60.0f) / 12.0f) * p.filterKbdTrack;
-        float patchOctaves = mod.cutoffMod * 5.0f;
-        float cutoffHz     = baseHz * std::pow(2.0f, egOctaves + kbdOctaves + patchOctaves);
+        float patchOctaves = (mod.cutoffMod + p.seq.cutoff) * 5.0f;
+        // FILTER VELO del byte 23 (±63 → ±5 octavas a fondo): la velocidad abre el
+        // filtro con intensidad positiva y lo cierra con negativa. A 0, sin efecto.
+        float veloOctaves  = p.filterVeloSens * velocity_ * 5.0f;
+        float cutoffHz     = baseHz * std::pow(2.0f, egOctaves + kbdOctaves + patchOctaves + veloOctaves);
 
         filter_.setCutoff(cutoffHz);
         filtered = filter_.process(mixedAudio);
@@ -281,12 +296,19 @@ void Voice::renderNextSample(float& leftOut, float& rightOut, int diagPoint, flo
     float vcaOut = filtered;
     if (!p.diagBypassVCA)
     {
-        float amp = DSPUtils::clamp(p.ampLevel + mod.ampMod, 0.0f, 1.0f);
-        vcaOut = filtered * eg2Val * amp;
+        float amp = DSPUtils::clamp(p.ampLevel + mod.ampMod + p.seq.amp, 0.0f, 1.0f);
+        // AMP VELO del byte 28 (±63): con intensidad positiva la velocidad abre el VCA
+        // (a fondo: −63 dB a velocidad 0) y con negativa lo cierra al subir la velocidad.
+        // A 0 queda plano: la única vía de la velocidad al nivel es este control.
+        const float veloSens = p.ampVeloSens;
+        const float veloGain = DSPUtils::clamp((veloSens >= 0.0f)
+            ? ((1.0f - veloSens) + (veloSens * velocity_))
+            : (1.0f + (veloSens * velocity_)), 0.0f, 1.0f);
+        vcaOut = filtered * eg2Raw * amp * veloGain;
     }
 
     // 14. Stereo pan — Constant Equal-Power law (trigonometric -3dB quadrant)
-    float effPan = DSPUtils::clamp(p.panpot + (mod.panMod * 0.5f), -1.0f, 1.0f);
+    float effPan = DSPUtils::clamp(p.panpot + (mod.panMod * 0.5f) + (p.seq.pan * 0.5f), -1.0f, 1.0f);
     float angle  = (effPan * 0.5f + 0.5f) * (DSPUtils::PI * 0.5f); // [0, PI/2]
     float lGain  = std::cos(angle);
     float rGain  = std::sin(angle);

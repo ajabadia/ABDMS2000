@@ -10,6 +10,7 @@
 #include "../DSP/Effects/Equalizer.h"
 #include "../DSP/Vocoder/Vocoder16Band.h"
 #include "../State/ParameterRegistry.gen.h"
+#include <ScopeDataCollector.h>
 #include <memory>
 #include <atomic>
 #include <vector>
@@ -80,6 +81,12 @@ public:
     Equalizer& getMasterEQ() noexcept { return masterEQ_; }
     Vocoder16Band& getVocoder() noexcept { return vocoder_; }
 
+    // ABDScope analytical multi-lane scope: shared tap collector feeding the
+    // native floating window and the web WASM build from ONE source.
+    abd::scope::ScopeDataCollector& getScopeCollector() noexcept { return scopeCollector_; }
+
+    [[nodiscard]] double getSampleRate() const noexcept { return sampleRate_; }
+
     void updateParametersFromAPVTS() noexcept;
     void triggerArpNote(int note, float velocity, bool isNoteOn) noexcept;
 
@@ -87,15 +94,15 @@ public:
     double sampleRate_{ 44100.0 };
     int samplesPerBlock_{ 512 };
 
-    // Dual-Timbre Voice Architecture (Single / Split / Dual Layer / Vocoder)
+    // Arquitectura de dos timbres (Single / Split / Layer), como el equipo real:
+    // cada timbre tiene sus **propios** parámetros (`t2…` para el Timbre 2) y su
+    // propio juego de voces. El modo y el reparto de voces son globales del programa.
     VoiceParameters voiceParamsA_{};
     VoiceParameters voiceParamsB_{};
     VoiceManager voiceManagerA_;
     VoiceManager voiceManagerB_;
-    int timbreMode_{ 0 };      // 0: Single, 1: Split, 2: Dual
-    int voiceAssignMode_{ 1 }; // 0: Mono, 1: Poly, 2: Unison
-    int splitKey_{ 60 };       // C4 Split Point
-    float timbreBalance_{ 0.5f };
+    int timbreMode_{ 0 };  // 0: Single, 1: Split, 2: Layer
+    int splitKey_{ 60 };   // C4 por defecto (byte 0x12 real)
 
     ModSequencer modSeq_;
     Arpeggiator arpeggiator_;
@@ -123,6 +130,44 @@ public:
     std::atomic<bool> diagBypassMasterEQ_{ false };
     double testTonePhase_{ 0.0 };
     juce::LinearSmoothedValue<float> smoothedMasterGain_{ 0.8f };
+
+    // ── ABDScope taps (native C++ capture, block-flushed) ──
+    abd::scope::ScopeDataCollector scopeCollector_;
+    abd::scope::ScopeTap* tapMaster_{ nullptr };
+    abd::scope::ScopeTap* tapPreFx_{ nullptr };
+    abd::scope::ScopeTap* tapOscMix_{ nullptr };
+    abd::scope::ScopeTap* tapPostFilter_{ nullptr };
+    abd::scope::ScopeTap* tapPostVca_{ nullptr };
+    abd::scope::ScopeTap* tapLfo1_{ nullptr };
+    bool scopeTapsRegistered_{ false };
+
+    // Per-block capture scratch buffers (sized to samplesPerBlock_ in prepare()).
+    std::vector<float> scopeBufMasterL_, scopeBufMasterR_;
+    std::vector<float> scopeBufPreFxL_, scopeBufPreFxR_;
+    std::vector<float> scopeBufOscMix_;
+    std::vector<float> scopeBufPostFilter_;
+    std::vector<float> scopeBufPostVca_;
+    std::vector<float> scopeBufLfo1_;
+
+    void registerScopeTaps();
+    void flushScopeTaps(int numSamples) noexcept;
+
+    // ── Lectura de parámetros por timbre ─────────────────────────────────────
+    //
+    // Los dos timbres comparten vocabulario: el Timbre 2 usa el mismo id con el
+    // prefijo `t2` y la inicial en mayúscula (`osc1Wave` → `t2Osc1Wave`), que es
+    // como el registro declara su espejo. Así no hay dos listas que mantener.
+    float paramValueById(const juce::String& id, float defaultVal) const noexcept;
+    float paramValue(bool second, const char* id, float defaultVal = 0.0f) const noexcept;
+
+    /** Vuelca en `out` todos los parámetros del timbre (1 si `second` es false, 2 si no). */
+    void readTimbreParams(bool second, VoiceParameters& out) noexcept;
+
+    /** Lee las 3 filas del mod sequence del timbre en sus pistas del secuenciador. */
+    void configureTimbreSeq(bool second, size_t firstTrack) noexcept;
+
+    /** Aplica la salida de las 3 filas del timbre a sus parámetros de voz. */
+    void applySeqModulation(bool second, VoiceParameters& out) noexcept;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SynthEngine)
 };
