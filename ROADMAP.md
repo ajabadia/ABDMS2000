@@ -239,7 +239,7 @@
 
 ### 🔴 Crítico: Conectar el motor WASM al bridge web
 
-**Problema actual:** El archivo `bridgeWasm.js` importa `ms2000AudioEngine.js`, que es un sintetizador reescrito en JavaScript puro con Web Audio API (OscillatorNode, BiquadFilterNode). El motor WASM compilado (`ms2000_dsp.js` + `ms2000Worklet.js`) existe pero **nobody lo usa**. La versión web suena distinto al VST3 nativo.
+**Estado actual:** La versión web usa exclusivamente `ms2000Worklet.js` con el binario C++ `ms2000_dsp.wasm`. El antiguo motor JavaScript/Web Audio (`ms2000AudioEngine.js`) fue eliminado; la diferencia de timbre pendiente corresponde a la paridad entre `WasmEngineInstance` y `SynthEngine`, no a un fallback del navegador.
 
 ### Tareas:
 
@@ -253,7 +253,7 @@
 - [x] **Redirigir todas las llamadas** (noteOn, noteOff, allNotesOff, setParam, loadProgram, initPatch, randomizePatch) al worklet en vez del engine JS genérico.
 - [x] **Gestionar AudioContext** en el thread principal y pasar al worklet — el worklet solo procesa audio, el AudioContext lifecycle queda en el bridge.
 - [x] **Conectar telemetría** del worklet (scopeBuffer, vuLeft, vuRight, activeVoices) al osciloscopio y VU meters (via onSnapshot callback).
-- [x] **Eliminar `ms2000AudioEngine.js`** — movido a `WebUI/src/engine/legacy/`.
+- [x] **Eliminar `ms2000AudioEngine.js`** — eliminado por completo al no existir referencias activas; el WebUI utiliza el AudioWorklet WASM.
 - [x] **Rebuild WASM** con `_malloc` y `_free` en EXPORTED_FUNCTIONS — compilado exitosamente.
 - [ ] **Verificar** que la web suena idéntico al VST3 nativo (mismas curvas ADSR, resonancia PolyBLEP, efectos).
 
@@ -304,3 +304,24 @@
 - [ ] **Modelado de Dispersión Analógica Multivoz**: Integración de `abd::lutdsp::VoiceDispersionModel` para simulación opcional de deriva analógica (drift térmico y varianza de corte de filtros) en las 4 voces del MS2000.
 - [ ] **Unificación de Asignador de Voces**: Migración de VoiceManager para heredar o apoyarse en `abd::lutdsp::VoiceAllocator` de ABDSharedCode.
 - [ ] **LUTs Oficiales de Filtros Analógicos**: Integración opcional del evaluador SIMD de filtros (`abd::lutdsp::AnalogLutFilterModule`) para emular respuestas no lineales analógicas en modo expandido.
+
+---
+
+## 🧪 Verificación contra hardware real (MS2000 físico) — PENDIENTE
+
+> **Por qué existe esta sección:** todo el soporte SysEx (formato propio `F0 7D 0A` **y** formato del equipo `F0 42 3n 58`) está implementado y cubierto por tests, pero **cuatro cosas solo las puede confirmar un MS2000 delante**. Se apuntan aquí para no darlas por buenas de memoria. Formato: `DOCS/MS2000_SysEx_Spec.md` · `DOCS/ABDSynths_SysEx_Spec.md`.
+
+- [ ] **1. Empaquetado del All Data Dump (`0x4C`)** — el 7→8 de Korg se aplica al **flujo completo** (`N × 254` B concatenados), no a cada programa por separado: de `N` trozos independientes saldría otro tren de bytes (37 248 B frente a los 37 157 B de payload esperados con 128 programas). *Cómo verificarlo:* grabar un All Data Dump real del equipo y comprobar que la trama mide **37 163 B** y que su payload desempaquetado como flujo único da 32 512 B (múltiplo de 254). Si empaquetara por programa, cada trozo mediría 291 B y habría que partir antes de deshacer el 7→8.
+  - *Dónde:* `MS2000HardwareProgram::buildAllDataDump` / `allDataDumpPayloadSize`; `SysExManager` (comando `0x4C` y `buildHardwareBankDumpResponse`).
+- [ ] **2. ¿El equipo contesta con un acuse (`0x23`/`0x24`) al recibir un `0x40`/`0x4C`?** El plugin ya reconoce esos acuses al recibirlos (Test 24) y el ABD Bank Manager elige esperar la confirmación **solo** en destinos software justo por esto. Si el MS2000 también acusa, se puede pedir confirmación también a hardware real.
+  - *Dónde:* `SysExManager::parseSysEx`; `ABDBankManager/WebUI/src/core/pro800Midi.js` (`sendPatch(..., { confirm: true })`).
+- [ ] **3. Aceptación de un volcado generado por el software** — que el equipo acepte el `0x4C` que le manda el emulador. La conversión de los 128 presets nativos a programas reales de 254 B **ya está hecha** (`MS2000HardwareProgram::fromNativeProgram` + `buildHardwareBankDumpResponse`, §6.4 de `DOCS/ABDSynths_SysEx_Spec.md`), así que un plugin suelto ya contesta el `0x0E` con su memoria convertida; lo único que falta es lo que no se puede hacer desde aquí: comprobar que el equipo **acepta** ese volcado y qué se pierde por el camino.
+  - *Cómo verificarlo:* convertir un preset con parámetros conocidos (cutoff, EG, patch), mandarlo al MS2000 y releerlo del equipo. Esperado: los parámetros que el motor modela vuelven iguales; lo que no modela (`unmodelled()`) vuelve con los valores del **INIT Program** del equipo — no hay nada que recuperar, el bloque nativo del plugin nunca los guardó.
+  - *Dónde:* `MS2000HardwareProgram::fromNativeProgram` / `captureModeledFields` / `nativeEngineValue` (un solo camino de escritura: si cambia el mapa del hardware, cambian los dos sentidos a la vez); cubierto por el Test 24.
+
+- [ ] **4. Confirmar con hardware real la convención del canal en el byte `3n`** — la implementación ya está alineada en ambos repositorios: canal 1 → `0x30` y canal 16 → `0x3F`, mediante `korgChannelByte` en C++ y TS. Los fixtures y las pruebas cubren la coherencia software, pero no identifican el canal MIDI con el que fueron grabados.
+  - *Estado a 2026-09-15 (decidido y aplicado, sin hardware):* el Bank Manager y el plugin usan la misma convención `0x30 | (canal - 1)`; no queda una discrepancia de implementación pendiente.
+  - *Cómo cerrarlo:* con el equipo en canal 1, mandar `F0 42 30 58 10 F7` y `F0 42 31 58 10 F7` y registrar cuál contesta. Si contestara al `0x31`, se cambiaría el helper compartido y sus pruebas; nada más cambia porque el parseo no filtra por canal.
+  - *Dónde:* `ABDBankManager/Source/Contracts/Models/korg-ms2000.ts`, `ABDMS2000/Source/MIDI/MS2000HardwareProgram.h`, `Source/Tests/DSPCoreTests.cpp` y `ABDBankManager/WebUI/tests/unit/korgChannelConvention.test.js`.
+
+**Criterio de cierre:** con un MS2000 conectado, un `0x0E` del emulador y uno del equipo producen volcados que el otro extremo acepta sin perder bytes, y queda escrito en `DOCS/MS2000_SysEx_Spec.md` qué era hipótesis y qué está comprobado.

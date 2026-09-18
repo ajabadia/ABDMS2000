@@ -87,11 +87,8 @@ ABDMS2000/
 │   ├── Plugin/                       # Wrappers de Plugin e Interfaz Gráfica
 │   │   ├── PluginProcessor.h / .cpp  # Implementación AudioProcessor y getState/setState
 │   │   ├── PluginEditor.h / .cpp     # Contenedor WebView2 y componentes nativos
-│   │   ├── BridgeActions.h / .cpp    # Handlers IPC entre JavaScript y C++
-│   │   ├── KorgLookAndFeel.h         # Potenciómetros vectoriales estriados cilíndricos
-│   │   ├── KorgButtonLookAndFeel.h   # Botones pulsadores translúcidos con diodo LED
-│   │   ├── KorgLedButton.h           # Botón individual con cavidad y glow analógico
-│   │   └── MS2000StepArray.h         # Matriz horizontal de 16 pasos con Playhead tracking
+│   │   ├── PluginEditor_ResourceProvider.h / .cpp  # Servidor de recursos embebidos y disco
+│   │   └── BridgeActions.h / .cpp    # Handlers IPC entre JavaScript y C++
 │   │
 │   └── Tests/                        # Pruebas Unitarias de Rendimiento y Paridad
 │       └── DSPCoreTests.cpp          # Suite de verificación DSP, MIDI y códec SysEx

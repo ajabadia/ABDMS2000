@@ -1,0 +1,10 @@
+{
+  "modelId": "behringer-pro800",
+  "profileId": "behringer-pro800-fw-v111",
+  "firmware": "1.4.4",
+  "formatVersion": 111,
+  "patchCount": 100,
+  "decodedPatchBytes": 173,
+  "source": "Supplied locally by the project author; originally stored under DOCS/DOCS-pro800-borrar/.",
+  "licenseStatus": "unknown; confirm before redistribution"
+}
