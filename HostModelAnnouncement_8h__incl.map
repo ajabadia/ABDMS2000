@@ -1,0 +1,9 @@
+<map id="Source/Plugin/HostModelAnnouncement.h" name="Source/Plugin/HostModelAnnouncement.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="89,5,383,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,168,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="213,33,125,75,122,70,211,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="193,79,279,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="239,31,239,65,233,65,233,31"/>
+<area shape="rect" id="Node000004" href="$HostModelId_8gen_8h.html" title=" " alt="" coords="304,79,448,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="260,28,342,70,340,75,257,33"/>
+</map>

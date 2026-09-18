@@ -1,5 +1,19 @@
 var searchData=
 [
-  ['handlejsevent_0',['handleJsEvent',['../classABDMS2000_1_1BridgeActions.html#a06a554d919f5a5019ae79b34db4e2c7d',1,'ABDMS2000::BridgeActions']]],
-  ['haseditor_1',['hasEditor',['../classABDMS2000_1_1ABDMS2000AudioProcessor.html#afbe82027286b506c78c741bab73ba8f2',1,'ABDMS2000::ABDMS2000AudioProcessor']]]
+  ['handlebankread_0',['handleBankRead',['../classABDMS2000_1_1BridgeActions.html#a6e14329d2c0aa840cb410c515c65fe97',1,'ABDMS2000::BridgeActions']]],
+  ['handlebankwrite_1',['handleBankWrite',['../classABDMS2000_1_1BridgeActions.html#ad07c2341f63d4c75d69ea8fa8223fa2c',1,'ABDMS2000::BridgeActions']]],
+  ['handleincomingmidimessage_2',['handleIncomingMidiMessage',['../classABDMS2000_1_1ABDMS2000AudioProcessorEditor.html#a41fe130bfa930469ff46ea50b0aa5de6',1,'ABDMS2000::ABDMS2000AudioProcessorEditor']]],
+  ['handlejsevent_3',['handleJsEvent',['../classABDMS2000_1_1BridgeActions.html#a06a554d919f5a5019ae79b34db4e2c7d',1,'ABDMS2000::BridgeActions']]],
+  ['handlepresetcapture_4',['handlePresetCapture',['../classABDMS2000_1_1BridgeActions.html#a53f5e324937102fbefc15aa6110afd21',1,'ABDMS2000::BridgeActions']]],
+  ['handlepresetread_5',['handlePresetRead',['../classABDMS2000_1_1BridgeActions.html#a7672d267ab70ad0274fe08be1eb00b79',1,'ABDMS2000::BridgeActions']]],
+  ['handlepresetwrite_6',['handlePresetWrite',['../classABDMS2000_1_1BridgeActions.html#a224c42c1c9f1bf968ea2e1ead4bb6821',1,'ABDMS2000::BridgeActions']]],
+  ['haseditor_7',['haseditor',['../classABDMS2000_1_1Tests_1_1DummyProcessor.html#a98f386b169d03feaca12d70d411e19b9',1,'ABDMS2000::Tests::DummyProcessor::hasEditor()'],['../classABDMS2000_1_1Tests_1_1BridgeTestProcessor.html#a00194ef0ccc0e27798df962c463b2afc',1,'ABDMS2000::Tests::BridgeTestProcessor::hasEditor()'],['../classABDMS2000_1_1ABDMS2000AudioProcessor.html#afbe82027286b506c78c741bab73ba8f2',1,'ABDMS2000::ABDMS2000AudioProcessor::hasEditor()']]],
+  ['hashardwareprogram_8',['hasHardwareProgram',['../classABDMS2000_1_1SysExManager.html#a7a6980931429f78b05e9947acb9c360a',1,'ABDMS2000::SysExManager']]],
+  ['hasselectedinput_9',['hasSelectedInput',['../classABDMS2000_1_1HardwareMidiTransport.html#a2f74e642611521670db542feeb5aa932',1,'ABDMS2000::HardwareMidiTransport']]],
+  ['hasselectedoutput_10',['hasSelectedOutput',['../classABDMS2000_1_1HardwareMidiTransport.html#a94bbb7736d60fcf58b3067bbce677900',1,'ABDMS2000::HardwareMidiTransport']]],
+  ['hostbuildrevision_11',['hostBuildRevision',['../namespaceABDMS2000.html#a11089d0bc41116aa4586b959996935bc',1,'ABDMS2000']]],
+  ['hostbuildstamp_12',['hostBuildStamp',['../namespaceABDMS2000.html#a47ebf2a900b98cbf26e0a80b92250b6f',1,'ABDMS2000']]],
+  ['hostinfomessage_13',['hostInfoMessage',['../namespaceABDMS2000.html#a96ead7101e967e4f966759f4d63170b1',1,'ABDMS2000']]],
+  ['hostmodelid_14',['hostModelId',['../namespaceABDMS2000.html#a136a433ced61ac2ddef6496b7292f63e',1,'ABDMS2000']]],
+  ['hostmodelmessage_15',['hostModelMessage',['../namespaceABDMS2000.html#ae2cae043680c096b606d7cd560a9ea4a',1,'ABDMS2000']]]
 ];

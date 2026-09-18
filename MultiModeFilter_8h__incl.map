@@ -4,10 +4,6 @@
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="169,48,120,87,117,82,165,43"/>
 <area shape="rect" id="Node000003" href="$DSPUtils_8h.html" title=" " alt="" coords="205,93,371,119"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="216,43,265,82,261,87,213,48"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="158,167,221,192"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="274,121,218,161,215,156,271,117"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="245,167,331,192"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="291,119,291,153,285,153,285,119"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="355,167,421,192"/>
-<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="306,117,362,156,359,161,303,121"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="207,167,369,192"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="291,119,291,153,285,153,285,119"/>
 </map>

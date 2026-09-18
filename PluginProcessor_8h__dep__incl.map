@@ -1,18 +1,10 @@
 <map id="Source/Plugin/PluginProcessor.h" name="Source/Plugin/PluginProcessor.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="327,5,555,31"/>
-<area shape="rect" id="Node000002" href="$BridgeActions_8cpp.html" title=" " alt="" coords="5,167,236,192"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="313,29,242,47,208,62,177,81,158,101,143,124,126,167,121,165,138,122,153,97,174,77,205,57,240,42,312,24"/>
-<area shape="rect" id="Node000003" href="$BridgeActions_8h.html" title=" " alt="" coords="187,86,403,111"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="409,40,318,88,316,83,406,35"/>
-<area shape="rect" id="Node000004" href="$PluginEditor_8h.html" title=" " alt="" coords="261,167,463,192"/>
-<area shape="poly" id="edge7_Node000001_Node000004" title=" " alt="" coords="440,45,433,81,418,120,398,147,377,169,373,165,394,144,413,117,427,80,435,44"/>
-<area shape="rect" id="Node000006" href="$PluginProcessor_8cpp.html" title=" " alt="" coords="379,240,622,265"/>
-<area shape="poly" id="edge8_Node000001_Node000006" title=" " alt="" coords="450,44,500,239,495,240,445,45"/>
-<area shape="rect" id="Node000007" href="$StandaloneApp_8cpp.html" title=" " alt="" coords="539,79,759,119"/>
-<area shape="poly" id="edge9_Node000001_Node000007" title=" " alt="" coords="484,33,600,76,598,81,483,38"/>
-<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="258,119,147,169,145,164,256,115"/>
-<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="316,120,354,165,350,168,312,124"/>
-<area shape="rect" id="Node000005" href="$PluginEditor_8cpp.html" title=" " alt="" coords="137,240,355,265"/>
-<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="333,201,266,242,264,237,330,197"/>
-<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="398,196,479,237,477,242,395,201"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="186,5,414,31"/>
+<area shape="rect" id="Node000002" href="$PluginEditor_8h.html" title=" " alt="" coords="129,79,332,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="281,43,244,80,240,77,277,39"/>
+<area shape="rect" id="Node000004" href="$PluginProcessor_8cpp.html" title=" " alt="" coords="248,152,491,177"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="321,40,346,77,362,117,370,151,365,153,356,119,342,80,317,43"/>
+<area shape="rect" id="Node000003" href="$PluginEditor_8cpp.html" title=" " alt="" coords="5,152,224,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="202,113,135,154,132,149,199,109"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="266,108,348,149,345,154,264,113"/>
 </map>

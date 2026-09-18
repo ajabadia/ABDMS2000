@@ -1,0 +1,9 @@
+<map id="Source/Plugin/HardwareMidiTransport.h" name="Source/Plugin/HardwareMidiTransport.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="133,5,339,45"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,93,168,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="201,48,122,89,120,84,199,43"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="193,93,279,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="239,46,239,79,233,79,233,46"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="303,93,363,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="261,43,310,82,307,87,258,48"/>
+</map>

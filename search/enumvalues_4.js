@@ -1,6 +1,25 @@
 var searchData=
 [
   ['eg1_0',['EG1',['../namespaceABDMS2000.html#a7895228f7783119e55c6fd4abdc08e4ca98d3707bca086bd36b09d19f1a17fff3',1,'ABDMS2000']]],
-  ['eg2_1',['EG2',['../namespaceABDMS2000.html#a7895228f7783119e55c6fd4abdc08e4caff255f850f7f528e7fcae99c810ad0cb',1,'ABDMS2000']]],
-  ['ensemble_2',['Ensemble',['../namespaceABDMS2000.html#ae684545985d7be9cd7d291bcd814f5c4abe5dd267794f8f209543995a5461710f',1,'ABDMS2000']]]
+  ['eg1_5fattack_1',['EG1_ATTACK',['../structABDMS2000_1_1MS2000HardwareProgram_1_1ti.html#a419a390f4e12b6119fb0e0a27a43dd09a6b7c242cde5184888064168cfb206bfd',1,'ABDMS2000::MS2000HardwareProgram::ti']]],
+  ['eg1_5fdecay_2',['EG1_DECAY',['../structABDMS2000_1_1MS2000HardwareProgram_1_1ti.html#a419a390f4e12b6119fb0e0a27a43dd09ade0ea60c382c5b9505a36785a306af56',1,'ABDMS2000::MS2000HardwareProgram::ti']]],
+  ['eg1_5frelease_3',['EG1_RELEASE',['../structABDMS2000_1_1MS2000HardwareProgram_1_1ti.html#a419a390f4e12b6119fb0e0a27a43dd09aa42d9a21d1dc3f65fae765f4a39b1e8b',1,'ABDMS2000::MS2000HardwareProgram::ti']]],
+  ['eg1_5fsustain_4',['EG1_SUSTAIN',['../structABDMS2000_1_1MS2000HardwareProgram_1_1ti.html#a419a390f4e12b6119fb0e0a27a43dd09a30422432b45addc2cc979709ab36fc49',1,'ABDMS2000::MS2000HardwareProgram::ti']]],
+  ['eg1attack_5',['EG1Attack',['../namespaceABDMS2000.html#a495c6af1070566573e5fb9f7628c8d46aeb289731cab09173c90728fdfe74017b',1,'ABDMS2000']]],
+  ['eg1decay_6',['EG1Decay',['../namespaceABDMS2000.html#a495c6af1070566573e5fb9f7628c8d46acb9dcedcc9f5ea28eaccd0d7e1b20fc9',1,'ABDMS2000']]],
+  ['eg1int_7',['EG1Int',['../namespaceABDMS2000.html#a495c6af1070566573e5fb9f7628c8d46afd4057c66285ee3a80142d97df0c58ae',1,'ABDMS2000']]],
+  ['eg1release_8',['EG1Release',['../namespaceABDMS2000.html#a495c6af1070566573e5fb9f7628c8d46a08739f5383efce092fdbb9926a534948',1,'ABDMS2000']]],
+  ['eg1sustain_9',['EG1Sustain',['../namespaceABDMS2000.html#a495c6af1070566573e5fb9f7628c8d46accbe834c70e8ed8f3899eaba9bda5fb6',1,'ABDMS2000']]],
+  ['eg2_10',['EG2',['../namespaceABDMS2000.html#a7895228f7783119e55c6fd4abdc08e4caff255f850f7f528e7fcae99c810ad0cb',1,'ABDMS2000']]],
+  ['eg2_5fattack_11',['EG2_ATTACK',['../structABDMS2000_1_1MS2000HardwareProgram_1_1ti.html#a419a390f4e12b6119fb0e0a27a43dd09adbe2818f1510fdd66b573d1a3ef38244',1,'ABDMS2000::MS2000HardwareProgram::ti']]],
+  ['eg2_5fdecay_12',['EG2_DECAY',['../structABDMS2000_1_1MS2000HardwareProgram_1_1ti.html#a419a390f4e12b6119fb0e0a27a43dd09ad94138a151671db1664bc2db04c00902',1,'ABDMS2000::MS2000HardwareProgram::ti']]],
+  ['eg2_5frelease_13',['EG2_RELEASE',['../structABDMS2000_1_1MS2000HardwareProgram_1_1ti.html#a419a390f4e12b6119fb0e0a27a43dd09a41db4f08f405640d0aebefc3475e13fb',1,'ABDMS2000::MS2000HardwareProgram::ti']]],
+  ['eg2_5fsustain_14',['EG2_SUSTAIN',['../structABDMS2000_1_1MS2000HardwareProgram_1_1ti.html#a419a390f4e12b6119fb0e0a27a43dd09a499b20b5a785824dddfe53769f5ea06e',1,'ABDMS2000::MS2000HardwareProgram::ti']]],
+  ['eg2attack_15',['EG2Attack',['../namespaceABDMS2000.html#a495c6af1070566573e5fb9f7628c8d46a92d5e5b37cb2705150a13281aed56d07',1,'ABDMS2000']]],
+  ['eg2decay_16',['EG2Decay',['../namespaceABDMS2000.html#a495c6af1070566573e5fb9f7628c8d46afa10cb6300b14a597340775b8a60c656',1,'ABDMS2000']]],
+  ['eg2release_17',['EG2Release',['../namespaceABDMS2000.html#a495c6af1070566573e5fb9f7628c8d46abca9b46acca3fd22876a25092d0c302f',1,'ABDMS2000']]],
+  ['eg2sustain_18',['EG2Sustain',['../namespaceABDMS2000.html#a495c6af1070566573e5fb9f7628c8d46a524dbe2adec5313b56261d60a27db905',1,'ABDMS2000']]],
+  ['ensemble_19',['Ensemble',['../namespaceABDMS2000.html#ae684545985d7be9cd7d291bcd814f5c4abe5dd267794f8f209543995a5461710f',1,'ABDMS2000']]],
+  ['eqfreq_20',['EqFreq',['../structABDMS2000_1_1MS2000HardwareProgram.html#a60d8435af1014a4de6d3b80b5823aefeaa0685092b8e55b76bfb2c5e48d854116',1,'ABDMS2000::MS2000HardwareProgram']]],
+  ['eqgain_21',['EqGain',['../structABDMS2000_1_1MS2000HardwareProgram.html#a60d8435af1014a4de6d3b80b5823aefead2cc7108b1ec0eca669eadb3351de1a4',1,'ABDMS2000::MS2000HardwareProgram']]]
 ];

@@ -82,36 +82,21 @@ $(document).ready(function() { init_codefold(0); });
 </div><!--header-->
 <div class="contents">
 <a href="PolyBLEP_8h.html">Ir a la documentación de este archivo.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &lt;cmath&gt;</span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceABDMS2000.html">ABDMS2000</a> {</div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment"></span> </div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment"> * @brief PolyBLEP (Polynomial Band-Limited Step) helper functions.</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment"> * Used for antialiased generation of Saw, Pulse, and Triangle waves.</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment"> * Compatibility shim — canonical implementation lives in ABDSharedCode::SynthCore</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment"> * (namespace abd::synth). This file is a thin re-export so the synth keeps its</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment"> * historical include paths while consuming the shared module.</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment"> * Extracted: Phase 2 of the transversal DRY plan (ANALISIS_DRY_COMPARTIDO.md §4.1).</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment"> * NOTE: sync artifact, not hand-maintained — edit ABDSharedCode/SynthCore instead.</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment"> */</span></div>
-<div class="foldopen" id="foldopen00010" data-start="{" data-end="};">
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1PolyBLEP.html">   10</a></span><span class="keyword">class </span><a class="code hl_class" href="classABDMS2000_1_1PolyBLEP.html">PolyBLEP</a> {</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">public</span>:<span class="comment"></span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">    /**</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">     * @brief Computes 2-point / 4-point PolyBLEP residual for a step transition.</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">     * @param t Normalized phase [0.0, 1.0)</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">     * @param dt Phase increment per sample (frequency / sampleRate)</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">     * @return BLEP correction value to subtract/add to naive waveform</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">     */</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1PolyBLEP.html#a8c2ff65f09e213e6638c93e3ef06b94b">   18</a></span>    <span class="keyword">static</span> <span class="keywordtype">float</span> <a class="code hl_function" href="classABDMS2000_1_1PolyBLEP.html#a8c2ff65f09e213e6638c93e3ef06b94b">getResidual</a>(<span class="keywordtype">float</span> t, <span class="keywordtype">float</span> dt) <span class="keyword">noexcept</span>;</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment"></span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment">    /**</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment">     * @brief Computes PolyBLAMP residual for integrated step (used in Triangle wave).</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">     */</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1PolyBLEP.html#a18bb95472899235372ffac63da72075a">   23</a></span>    <span class="keyword">static</span> <span class="keywordtype">float</span> <a class="code hl_function" href="classABDMS2000_1_1PolyBLEP.html#a18bb95472899235372ffac63da72075a">getResidualIntegrated</a>(<span class="keywordtype">float</span> t, <span class="keywordtype">float</span> dt) <span class="keyword">noexcept</span>;</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>};</div>
-</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>} <span class="comment">// namespace ABDMS2000</span></div>
-<div class="ttc" id="aclassABDMS2000_1_1PolyBLEP_html"><div class="ttname"><a href="classABDMS2000_1_1PolyBLEP.html">ABDMS2000::PolyBLEP</a></div><div class="ttdoc">PolyBLEP (Polynomial Band-Limited Step) helper functions. Used for antialiased generation of Saw,...</div><div class="ttdef"><b>Definition</b> PolyBLEP.h:10</div></div>
-<div class="ttc" id="aclassABDMS2000_1_1PolyBLEP_html_a18bb95472899235372ffac63da72075a"><div class="ttname"><a href="classABDMS2000_1_1PolyBLEP.html#a18bb95472899235372ffac63da72075a">ABDMS2000::PolyBLEP::getResidualIntegrated</a></div><div class="ttdeci">static float getResidualIntegrated(float t, float dt) noexcept</div><div class="ttdoc">Computes PolyBLAMP residual for integrated step (used in Triangle wave).</div></div>
-<div class="ttc" id="aclassABDMS2000_1_1PolyBLEP_html_a8c2ff65f09e213e6638c93e3ef06b94b"><div class="ttname"><a href="classABDMS2000_1_1PolyBLEP.html#a8c2ff65f09e213e6638c93e3ef06b94b">ABDMS2000::PolyBLEP::getResidual</a></div><div class="ttdeci">static float getResidual(float t, float dt) noexcept</div><div class="ttdoc">Computes 2-point / 4-point PolyBLEP residual for a step transition.</div></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;SynthCore/PolyBLEP.h&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceABDMS2000.html">ABDMS2000</a></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>{</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <span class="keyword">using </span>abd::synth::PolyBLEP;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>}</div>
 <div class="ttc" id="anamespaceABDMS2000_html"><div class="ttname"><a href="namespaceABDMS2000.html">ABDMS2000</a></div><div class="ttdef"><b>Definition</b> AppLogger.h:15</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

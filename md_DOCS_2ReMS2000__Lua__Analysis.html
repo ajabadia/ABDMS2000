@@ -72,9 +72,9 @@ $(function() {
   <div class="headertitle"><div class="title">ReMS2000 — Análisis del Código Lua y Algoritmos MIDI/SysEx</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md144"></a> <em>Este documento contiene el código Lua extraído del panel ReMS2000 (desarrollado por inteyes en Ctrlr), que implementa el protocolo completo de comunicación, desempaquetado de datos y gestión de parches del Korg MS2000.</em></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md140"></a> <em>Este documento contiene el código Lua extraído del panel ReMS2000 (desarrollado por inteyes en Ctrlr), que implementa el protocolo completo de comunicación, desempaquetado de datos y gestión de parches del Korg MS2000.</em></p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md146"></a>
+<h1><a class="anchor" id="autotoc_md142"></a>
 &lt;tt&gt;table_dump&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">-- @1.1</div>
 <div class="line">--</div>
@@ -94,7 +94,7 @@ $(function() {
 <div class="line">    end</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md148"></a>
+<h1><a class="anchor" id="autotoc_md144"></a>
 &lt;tt&gt;setGlobalVars&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function setGlobalVars()</div>
 <div class="line"> </div>
@@ -181,7 +181,7 @@ $(function() {
 <div class="line"> </div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md150"></a>
+<h1><a class="anchor" id="autotoc_md146"></a>
 &lt;tt&gt;setGlobalConstants&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function setGlobalConstants()</div>
 <div class="line"> </div>
@@ -367,7 +367,7 @@ $(function() {
 <div class="line"> </div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md152"></a>
+<h1><a class="anchor" id="autotoc_md148"></a>
 &lt;tt&gt;startupSequence&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function startupSequence()</div>
 <div class="line"> </div>
@@ -382,7 +382,7 @@ $(function() {
 <div class="line">    restoreGlobalSettings()</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md154"></a>
+<h1><a class="anchor" id="autotoc_md150"></a>
 &lt;tt&gt;calculateLSBMSB&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function calculateLSBMSB(calcVal, fullByte, nibbleLSB)</div>
 <div class="line">    </div>
@@ -412,7 +412,7 @@ $(function() {
 <div class="line">    return msb * 0x80 + lsb</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md156"></a>
+<h1><a class="anchor" id="autotoc_md152"></a>
 &lt;tt&gt;midiToProgramData&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function midiToProgramData(rawPatchData, seekBytes)</div>
 <div class="line">    </div>
@@ -464,7 +464,7 @@ $(function() {
 <div class="line">    return processedData</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md158"></a>
+<h1><a class="anchor" id="autotoc_md154"></a>
 &lt;tt&gt;programToMIDIData&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function programToMIDIData(bufferData, seekBytes)</div>
 <div class="line">    </div>
@@ -523,7 +523,7 @@ $(function() {
 <div class="line">    return processedData</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md160"></a>
+<h1><a class="anchor" id="autotoc_md156"></a>
 &lt;tt&gt;binConversion&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function Bin2Dec(bitArr)</div>
 <div class="line"> </div>
@@ -584,7 +584,7 @@ $(function() {
 <div class="line">    return result</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md162"></a>
+<h1><a class="anchor" id="autotoc_md158"></a>
 &lt;tt&gt;memBlockToTable&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function memBlockToTable(mbBytes)</div>
 <div class="line">    </div>
@@ -599,14 +599,14 @@ $(function() {
 <div class="line">    return mbData</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md164"></a>
+<h1><a class="anchor" id="autotoc_md160"></a>
 &lt;tt&gt;bankIDToName&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function bankIDToName(bankID)</div>
 <div class="line">    </div>
 <div class="line">    return string.char(64 + bankID)</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md166"></a>
+<h1><a class="anchor" id="autotoc_md162"></a>
 &lt;tt&gt;packedByteUtils&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function extractPackByte(byteValue, firstBit, lastBit)</div>
 <div class="line"> </div>
@@ -651,7 +651,7 @@ $(function() {
 <div class="line">    return bit.bor(prepValue, bitsToPack)</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md168"></a>
+<h1><a class="anchor" id="autotoc_md164"></a>
 &lt;tt&gt;normalizeSysExDumpData&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function normalizeSysExDumpData(dataTable)</div>
 <div class="line">    </div>
@@ -689,7 +689,7 @@ $(function() {
 <div class="line">    return processedData</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md170"></a>
+<h1><a class="anchor" id="autotoc_md166"></a>
 &lt;tt&gt;getMidiInOut&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function getMidiInOut(getInput)</div>
 <div class="line"> </div>
@@ -716,7 +716,7 @@ $(function() {
 <div class="line">    return result</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md172"></a>
+<h1><a class="anchor" id="autotoc_md168"></a>
 &lt;tt&gt;bankListPopup&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function bankListPopup(load)</div>
 <div class="line">    </div>
@@ -737,7 +737,7 @@ $(function() {
 <div class="line">    return popupWin</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md174"></a>
+<h1><a class="anchor" id="autotoc_md170"></a>
 &lt;tt&gt;constructPresetBankMenu&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function constructPresetBankMenu(bankNumber, bankName, load)</div>
 <div class="line">    </div>
@@ -758,7 +758,7 @@ $(function() {
 <div class="line">    return popupWin</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md176"></a>
+<h1><a class="anchor" id="autotoc_md172"></a>
 &lt;tt&gt;drawOsc1Waveforms&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function drawOsc1Waveforms(comp, g)</div>
 <div class="line">    </div>
@@ -768,7 +768,7 @@ $(function() {
 <div class="line">    drawSine(comp, g, 76, 5, 2) </div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md178"></a>
+<h1><a class="anchor" id="autotoc_md174"></a>
 &lt;tt&gt;setOsc1Waveform&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function setOsc1Waveform(comp)</div>
 <div class="line"> </div>
@@ -777,7 +777,7 @@ $(function() {
 <div class="line">    setOsc1WaveformByValue(selectedWave)</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md180"></a>
+<h1><a class="anchor" id="autotoc_md176"></a>
 &lt;tt&gt;calculateOscMod&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function calculateOscMod(ring, sync)</div>
 <div class="line">    </div>
@@ -792,7 +792,7 @@ $(function() {
 <div class="line">    end</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md182"></a>
+<h1><a class="anchor" id="autotoc_md178"></a>
 &lt;tt&gt;processOscModData&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function processOscModData(modValue, muteOutput)</div>
 <div class="line">    </div>
@@ -816,7 +816,7 @@ $(function() {
 <div class="line">    dataBuffer[OscModAddress] = packBitsToByte(dataBuffer[OscModAddress], calculateOscMod(ring, sync), 4, 5)</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md184"></a>
+<h1><a class="anchor" id="autotoc_md180"></a>
 &lt;tt&gt;paintSequencer&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function paintSequencer(comp, g)</div>
 <div class="line"> </div>
@@ -926,7 +926,7 @@ $(function() {
 <div class="line">    g:setOpacity(1)</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md186"></a>
+<h1><a class="anchor" id="autotoc_md182"></a>
 &lt;tt&gt;paintSeq2BG&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function paintSeq2BG(mod, g)</div>
 <div class="line"> </div>
@@ -962,14 +962,14 @@ $(function() {
 <div class="line">    end</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md188"></a>
+<h1><a class="anchor" id="autotoc_md184"></a>
 &lt;tt&gt;externalRepaintSequencer&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function externalRepaintSequencer()</div>
 <div class="line">    </div>
 <div class="line">    getComp(&quot;uiSequencerScreen&quot;):repaint()</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md190"></a>
+<h1><a class="anchor" id="autotoc_md186"></a>
 &lt;tt&gt;sequencerMouseDown&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function sequencerMouseDown(comp, event)</div>
 <div class="line"> </div>
@@ -984,14 +984,14 @@ $(function() {
 <div class="line">    sharedValues.isSequencerDragging = true</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md192"></a>
+<h1><a class="anchor" id="autotoc_md188"></a>
 &lt;tt&gt;sequencerMouseUp&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function sequencerMouseUp()</div>
 <div class="line"> </div>
 <div class="line">    sharedValues.isSequencerDragging = false</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md194"></a>
+<h1><a class="anchor" id="autotoc_md190"></a>
 &lt;tt&gt;sequencerMouseDrag&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function sequencerMouseDrag(comp, event)</div>
 <div class="line"> </div>
@@ -1032,7 +1032,7 @@ $(function() {
 <div class="line">    end</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md196"></a>
+<h1><a class="anchor" id="autotoc_md192"></a>
 &lt;tt&gt;selectSequenceByValue&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function selectSequenceByValue(seqNumber)</div>
 <div class="line"> </div>
@@ -1047,7 +1047,7 @@ $(function() {
 <div class="line">    getComp(&quot;uiSequencerScreen&quot;):repaint()</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md198"></a>
+<h1><a class="anchor" id="autotoc_md194"></a>
 &lt;tt&gt;sequencerMouseDblClick&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function sequencerMouseDblClick(comp, event)</div>
 <div class="line">    -- Resetting related knob to its default value by double click</div>
@@ -1060,7 +1060,7 @@ $(function() {
 <div class="line">    setModValue(opKnob, getCompPropN(opKnob, &quot;uiSliderDoubleClickValue&quot;))</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md200"></a>
+<h1><a class="anchor" id="autotoc_md196"></a>
 &lt;tt&gt;paintMidiActivity&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function paintMidiActivity(mod, g)</div>
 <div class="line">    </div>
@@ -1074,7 +1074,7 @@ $(function() {
 <div class="line">    g:fillEllipse(2, 7, 10, 10)</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md202"></a>
+<h1><a class="anchor" id="autotoc_md198"></a>
 &lt;tt&gt;blinkMidiLight&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function blinkMidiLight()</div>
 <div class="line">    </div>
@@ -1083,14 +1083,14 @@ $(function() {
 <div class="line">    blinkMidiLightTimer()</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md204"></a>
+<h1><a class="anchor" id="autotoc_md200"></a>
 &lt;tt&gt;externalRepaintMidiActivity&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function externalRepaintMidiActivity()</div>
 <div class="line">    </div>
 <div class="line">    getComp(&quot;uiMidiActivity&quot;):repaint()</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md206"></a>
+<h1><a class="anchor" id="autotoc_md202"></a>
 &lt;tt&gt;applyVocoderLabels&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function applyVocoderLabels(vocoderSelected)</div>
 <div class="line"> </div>
@@ -1203,7 +1203,7 @@ $(function() {
 <div class="line">    end</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md208"></a>
+<h1><a class="anchor" id="autotoc_md204"></a>
 &lt;tt&gt;paintMIDISettingsButton&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function paintMIDISettingsButton(mod, g)</div>
 <div class="line"> </div>
@@ -1221,21 +1221,21 @@ $(function() {
 <div class="line">    g:drawText(&quot;M&quot;, 5, 3, canvasW - 6, 14, Justification(Justification.left), false)</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md210"></a>
+<h1><a class="anchor" id="autotoc_md206"></a>
 &lt;tt&gt;midiSettingsClick&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function midiSettingsClick()</div>
 <div class="line"> </div>
 <div class="line">    getComp(&quot;btnMidiDeviceDialogHidden&quot;):click()</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md212"></a>
+<h1><a class="anchor" id="autotoc_md208"></a>
 &lt;tt&gt;sendSysExMessage&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function sendSysExMessage(message)</div>
 <div class="line"> </div>
 <div class="line">    panel:sendMidiMessageNow(CtrlrMidiMessage(message))</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md214"></a>
+<h1><a class="anchor" id="autotoc_md210"></a>
 &lt;tt&gt;inputMIDIParser&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function inputMIDIParser(midiMessage)</div>
 <div class="line"> </div>
@@ -1389,7 +1389,7 @@ $(function() {
 <div class="line">    end</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md216"></a>
+<h1><a class="anchor" id="autotoc_md212"></a>
 &lt;tt&gt;getGlobalMidiChannel&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function getGlobalMidiChannel(pureValue)</div>
 <div class="line"> </div>
@@ -1404,7 +1404,7 @@ $(function() {
 <div class="line">    return mcByte + (panel:getPropertyInt(&quot;panelMidiOutputChannelDevice&quot;) - 1)</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md218"></a>
+<h1><a class="anchor" id="autotoc_md214"></a>
 &lt;tt&gt;copySequenceToClipboard&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function copySequenceToClipboard()</div>
 <div class="line"> </div>
@@ -1443,7 +1443,7 @@ $(function() {
 <div class="line">    repaintTimbreCPButtons()</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md220"></a>
+<h1><a class="anchor" id="autotoc_md216"></a>
 &lt;tt&gt;pasteSequenceFromClipboard&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function pasteSequenceFromClipboard()</div>
 <div class="line"> </div>
@@ -1500,7 +1500,7 @@ $(function() {
 <div class="line">    end</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md222"></a>
+<h1><a class="anchor" id="autotoc_md218"></a>
 &lt;tt&gt;assertSeqKnobBounds&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function assertSeqKnobBounds(mod, selectedMode, source)</div>
 <div class="line">    </div>
@@ -1516,7 +1516,7 @@ $(function() {
 <div class="line">    end</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md224"></a>
+<h1><a class="anchor" id="autotoc_md220"></a>
 &lt;tt&gt;getSeqStepMaxVal&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function getSeqStepMaxVal(selectedMode)</div>
 <div class="line"> </div>
@@ -1556,7 +1556,7 @@ $(function() {
 <div class="line">    return {minV, maxV, defV}</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md226"></a>
+<h1><a class="anchor" id="autotoc_md222"></a>
 &lt;tt&gt;assertSysExFormulas&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function assertSysExFormulas(timbreNumber)</div>
 <div class="line"> </div>
@@ -1730,7 +1730,7 @@ $(function() {
 <div class="line">    panel:getInputComparator():rehashComparator()</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md228"></a>
+<h1><a class="anchor" id="autotoc_md224"></a>
 &lt;tt&gt;assertSeqKnobBoundsByValue&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function assertSeqKnobBoundsByValue(knobGroup, selectedMode)</div>
 <div class="line">    </div>
@@ -1764,7 +1764,7 @@ $(function() {
 <div class="line">    externalRepaintSequencer()</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md230"></a>
+<h1><a class="anchor" id="autotoc_md226"></a>
 &lt;tt&gt;applyVocoderData&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function applyVocoderData(dataArray)</div>
 <div class="line"> </div>
@@ -2005,7 +2005,7 @@ $(function() {
 <div class="line">    mutePanelOut(false)</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md232"></a>
+<h1><a class="anchor" id="autotoc_md228"></a>
 &lt;tt&gt;syncVocoderWithBuffer&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function syncVocoderWithBuffer()</div>
 <div class="line"> </div>
@@ -2236,7 +2236,7 @@ $(function() {
 <div class="line"> </div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md234"></a>
+<h1><a class="anchor" id="autotoc_md230"></a>
 &lt;tt&gt;setVocoderMode&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function setVocoderMode(vocoderEnabled)</div>
 <div class="line"> </div>
@@ -2367,7 +2367,7 @@ $(function() {
 <div class="line"> </div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md236"></a>
+<h1><a class="anchor" id="autotoc_md232"></a>
 &lt;tt&gt;initPatchRawData&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function initPatchRawData()</div>
 <div class="line">    </div>
@@ -2422,7 +2422,7 @@ $(function() {
 <div class="line">    }</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md238"></a>
+<h1><a class="anchor" id="autotoc_md234"></a>
 &lt;tt&gt;initPatchData&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function initPatchData()</div>
 <div class="line">    </div>
@@ -2477,7 +2477,7 @@ $(function() {
 <div class="line">    }</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md240"></a>
+<h1><a class="anchor" id="autotoc_md236"></a>
 &lt;tt&gt;initPresetBank&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function initPresetBank()</div>
 <div class="line">    </div>
@@ -2499,7 +2499,7 @@ $(function() {
 <div class="line">    return progBankStorage</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md242"></a>
+<h1><a class="anchor" id="autotoc_md238"></a>
 &lt;tt&gt;initVocoderBuffer&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function initVocoderBuffer()</div>
 <div class="line"> </div>
@@ -2539,7 +2539,7 @@ $(function() {
 <div class="line">    }</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md244"></a>
+<h1><a class="anchor" id="autotoc_md240"></a>
 &lt;tt&gt;resetVocoderControls&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function resetVocoderControls()</div>
 <div class="line"> </div>
@@ -2575,7 +2575,7 @@ $(function() {
 <div class="line">    setModValue(&quot;knobFilterEG1Int&quot;, 0)</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md246"></a>
+<h1><a class="anchor" id="autotoc_md242"></a>
 &lt;tt&gt;initBufferWithInitPatch&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function initBufferWithInitPatch()</div>
 <div class="line"> </div>
@@ -2583,7 +2583,7 @@ $(function() {
 <div class="line">    applyProgramData(dataBuffer, nil, nil, false)</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md248"></a>
+<h1><a class="anchor" id="autotoc_md244"></a>
 &lt;tt&gt;cycleBanks&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function cycleBanks(mod, value, source)</div>
 <div class="line">    </div>
@@ -2615,7 +2615,7 @@ $(function() {
 <div class="line">    end</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md250"></a>
+<h1><a class="anchor" id="autotoc_md246"></a>
 &lt;tt&gt;cycleBankValues&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function cycleBankValues(increase, selectionDest)</div>
 <div class="line"> </div>
@@ -2654,7 +2654,7 @@ $(function() {
 <div class="line">    end</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md252"></a>
+<h1><a class="anchor" id="autotoc_md248"></a>
 &lt;tt&gt;openProgramBankFile&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function openProgramBankFile()</div>
 <div class="line"> </div>
@@ -2696,7 +2696,7 @@ $(function() {
 <div class="line">    end</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md254"></a>
+<h1><a class="anchor" id="autotoc_md250"></a>
 &lt;tt&gt;saveProgramBankFile&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function saveProgramBankFile()</div>
 <div class="line">    </div>
@@ -2714,7 +2714,7 @@ $(function() {
 <div class="line">    dumpFile:replaceWithData(MemoryBlock(prepareBulkDump()))</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md256"></a>
+<h1><a class="anchor" id="autotoc_md252"></a>
 &lt;tt&gt;saveProgramToPatchBank&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function saveProgramToPatchBank(rawNumber)</div>
 <div class="line">    </div>
@@ -2737,7 +2737,7 @@ $(function() {
 <div class="line">    chosenPresetToBuffer(rawNumber, true)</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md258"></a>
+<h1><a class="anchor" id="autotoc_md254"></a>
 &lt;tt&gt;storeProgramBank&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function storeProgramBank()</div>
 <div class="line">    </div>
@@ -2745,7 +2745,7 @@ $(function() {
 <div class="line">    waitForWriteReply(WAIT_BANK_TIMER)</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md260"></a>
+<h1><a class="anchor" id="autotoc_md256"></a>
 &lt;tt&gt;prepareBulkDump&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function prepareBulkDump()</div>
 <div class="line">    </div>
@@ -2768,7 +2768,7 @@ $(function() {
 <div class="line">    return programToMIDIData(bulkDump, DATA_PREAMBLE_BYTES)</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md262"></a>
+<h1><a class="anchor" id="autotoc_md258"></a>
 &lt;tt&gt;getMergedTimbreVocoderData&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function getMergedTimbreVocoderData()</div>
 <div class="line">    </div>
@@ -2785,7 +2785,7 @@ $(function() {
 <div class="line">    return mergedData</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md264"></a>
+<h1><a class="anchor" id="autotoc_md260"></a>
 &lt;tt&gt;checkBulkDumpSize&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function checkBulkDumpSize(dumpSize)</div>
 <div class="line">    </div>
@@ -2805,7 +2805,7 @@ $(function() {
 <div class="line">    return result</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md266"></a>
+<h1><a class="anchor" id="autotoc_md262"></a>
 &lt;tt&gt;cutBytesFromDump&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function cutBytesFromDump(sourceTable, bFrom, bCount)</div>
 <div class="line"> </div>
@@ -2823,7 +2823,7 @@ $(function() {
 <div class="line">    return result</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md268"></a>
+<h1><a class="anchor" id="autotoc_md264"></a>
 &lt;tt&gt;blinkMidiLightTimer&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function blinkMidiLightTimer()</div>
 <div class="line"> </div>
@@ -2840,7 +2840,7 @@ $(function() {
 <div class="line">    timer:stopTimer(BLINKMIDI_TIMER_ID)</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md270"></a>
+<h1><a class="anchor" id="autotoc_md266"></a>
 &lt;tt&gt;requestProgramBank&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function requestProgramBank()</div>
 <div class="line">    </div>
@@ -2869,7 +2869,7 @@ $(function() {
 <div class="line">    timer:stopTimer(WAIT_BANK_TIMER_ID)</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md272"></a>
+<h1><a class="anchor" id="autotoc_md268"></a>
 &lt;tt&gt;captureProgramDumpData&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function captureProgramDumpData(programData)</div>
 <div class="line"> </div>
@@ -2891,7 +2891,7 @@ $(function() {
 <div class="line">    end</div>
 <div class="line">end</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md274"></a>
+<h1><a class="anchor" id="autotoc_md270"></a>
 &lt;tt&gt;captureBulkDumpData&lt;/tt&gt;</h1>
 <div class="fragment"><div class="line">function captureBulkDumpData(programData)</div>
 <div class="line"> </div>

@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Archivo de código fuente Source/MIDI/ABDSynthsSysEx.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a class="el" href="dir_dc3ca98ec04499128e0990907e6131c0.html">MIDI</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle"><div class="title">ABDSynthsSysEx.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="ABDSynthsSysEx_8h.html">Ir a la documentación de este archivo.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &lt;cstdint&gt;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;../../ABDSharedCode/HardwareDrivers/SysExCodec.h&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="MS2000ProgramData_8h.html">MS2000ProgramData.h</a>&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">using </span>abd::hw::SysExCodec;</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceABDMS2000.html">ABDMS2000</a> {</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment"></span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment"> * @brief SysEx **propio de ABDSynths** para los presets del plugin (bloque nativo).</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> * Spec canónica del formato: `DOCS/ABDSynths_SysEx_Spec.md`.</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"> * Por qué existe: el bloque de programa del plugin (`UNPACKED_PROGRAM_SIZE` = 384 B,</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"> * layout denso del motor, hoy v2) **no**</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment"> * es el programa del MS2000 físico (254 B, ver `MS2000HardwareProgram.h`). Emitirlo con</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment"> * la cabecera de Korg (`42 3n 58`) sería disfrazar un formato de otro: un MS2000 real lo</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment"> * recibiría y lo interpretaría mal, y la biblioteca del Bank Manager lo abriría con el</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment"> * tamaño y los offsets equivocados. Así que el formato propio se identifica como lo que</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment"> * es: **fabricante ABDSynths, modelo propio**.</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment"> * Identificadores (los mismos que declara el contrato del host en ABDBankManager, que se</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment"> * genera en `Source/Plugin/HostModelId.gen.h`; el id no se repite aquí a propósito):</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment"> *   - Fabricante `0x7D`: reservado por la especificación MIDI 1.0 para uso</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment"> *     **no comercial / educativo** (escuelas, investigación, proyectos abiertos), sin</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment"> *     registro ni cuota. No es válido para un producto publicado: si ABDSynths se</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment"> *     comercializa habría que registrar un ID de 3 bytes (p. ej. `00 20 xx`).</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment"> *   - Modelo `0x0A`: primer modelo de la casa (ABD MS2000). Los</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment"> *     siguientes van detrás.</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment"> * Trama: `F0 7D 0A [comando] [payload 7→8] F7`</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment"> *   - `0x40` Program Data Dump  (un preset nativo de 384 B → payload de 439 B)</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment"> *   - `0x4C` All Data Dump      (N presets nativos)</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment"> *   - `0x10` Program Dump Request, `0x0E` All Data Dump Request</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="comment"> *   - `0x23` Write Completed (ACK), `0x24` Write Error (NACK): acuse de 5 B que el</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment"> *     receptor devuelve tras **guardar** (o no) un `0x40`/`0x4C`. Llega **después**</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment"> *     del dump, nunca dentro, así que no rompe a un emisor que no lo espere.</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment"> * El empaquetado 7→8 es el de siempre (`abd::hw::SysExCodec`), con el último grupo</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment"> * parcial sin rellenar.</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment"> */</span></div>
+<div class="foldopen" id="foldopen00044" data-start="{" data-end="};">
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1ABDSynthsSysEx.html">   44</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structABDMS2000_1_1ABDSynthsSysEx.html">ABDSynthsSysEx</a></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>{</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1ABDSynthsSysEx.html#a937a35d4754b43e77065c60fa7f6af21">   46</a></span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> uint8_t <a class="code hl_variable" href="structABDMS2000_1_1ABDSynthsSysEx.html#a937a35d4754b43e77065c60fa7f6af21">MANUFACTURER_ID</a> = 0x7D;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1ABDSynthsSysEx.html#a360f865541a730abe6d6ab7c764df2bd">   47</a></span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> uint8_t <a class="code hl_variable" href="structABDMS2000_1_1ABDSynthsSysEx.html#a360f865541a730abe6d6ab7c764df2bd">MODEL_BYTE</a>      = 0x0A;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1ABDSynthsSysEx.html#a357669a44fc767de8f7d3fc06ff3c479">   49</a></span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> uint8_t <a class="code hl_variable" href="structABDMS2000_1_1ABDSynthsSysEx.html#a357669a44fc767de8f7d3fc06ff3c479">CMD_PROGRAM_DUMP</a>     = 0x40;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1ABDSynthsSysEx.html#a5a882c77ffd9f183d1afaaa3de4bd86b">   50</a></span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> uint8_t <a class="code hl_variable" href="structABDMS2000_1_1ABDSynthsSysEx.html#a5a882c77ffd9f183d1afaaa3de4bd86b">CMD_ALL_DUMP</a>         = 0x4C;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1ABDSynthsSysEx.html#a16e9a3ae03236ed355219c3a4f5730ea">   51</a></span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> uint8_t <a class="code hl_variable" href="structABDMS2000_1_1ABDSynthsSysEx.html#a16e9a3ae03236ed355219c3a4f5730ea">CMD_PROGRAM_REQUEST</a>  = 0x10;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1ABDSynthsSysEx.html#ae80c64af5e4ca9376e285f17c2a2a5a1">   52</a></span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> uint8_t <a class="code hl_variable" href="structABDMS2000_1_1ABDSynthsSysEx.html#ae80c64af5e4ca9376e285f17c2a2a5a1">CMD_ALL_REQUEST</a>      = 0x0E;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="comment">// Acuse de escritura (los mismos códigos que usa el MS2000 real, §2 de</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="comment">// `MS2000_SysEx_Spec.md`): `0x23` Write Completed, `0x24` Write Error.</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1ABDSynthsSysEx.html#af2920c841441f6fd21746ed9e49c6e01">   56</a></span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> uint8_t <a class="code hl_variable" href="structABDMS2000_1_1ABDSynthsSysEx.html#af2920c841441f6fd21746ed9e49c6e01">CMD_WRITE_COMPLETED</a>  = 0x23;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1ABDSynthsSysEx.html#a8433ce3e4c98dfaca31477bde985bfc8">   57</a></span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> uint8_t <a class="code hl_variable" href="structABDMS2000_1_1ABDSynthsSysEx.html#a8433ce3e4c98dfaca31477bde985bfc8">CMD_WRITE_ERROR</a>      = 0x24;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment"></span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment">    /** Longitud del payload 7→8 de un bloque nativo (384 B → 439 B). */</span></div>
+<div class="foldopen" id="foldopen00060" data-start="{" data-end="}">
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1ABDSynthsSysEx.html#a7ffb499753d8f3b319d64f88fe247d98">   60</a></span>    <span class="keyword">static</span> <span class="keywordtype">size_t</span> <a class="code hl_function" href="structABDMS2000_1_1ABDSynthsSysEx.html#a7ffb499753d8f3b319d64f88fe247d98">packedProgramPayloadSize</a>()</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    {</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        <span class="keyword">const</span> <span class="keywordtype">size_t</span> n = <a class="code hl_variable" href="structABDMS2000_1_1MS2000ProgramData.html#a6d99c5ab129ed7c468fdbbe24de61ce2">MS2000ProgramData::UNPACKED_PROGRAM_SIZE</a>;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        <span class="keywordflow">return</span> (n / 7) * 8 + ((n % 7 == 0) ? 0 : (1 + (n % 7)));</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    }</div>
+</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="comment"></span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="comment">    /** Longitud de la trama de un preset nativo: `F0 7D 0A [cmd] [payload] F7`. */</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1ABDSynthsSysEx.html#aaf60392ba5222fdbcae7fc15cfc06a07">   67</a></span>    <span class="keyword">static</span> <span class="keywordtype">size_t</span> <a class="code hl_function" href="structABDMS2000_1_1ABDSynthsSysEx.html#aaf60392ba5222fdbcae7fc15cfc06a07">programFrameSize</a>() { <span class="keywordflow">return</span> 4 + <a class="code hl_function" href="structABDMS2000_1_1ABDSynthsSysEx.html#a7ffb499753d8f3b319d64f88fe247d98">packedProgramPayloadSize</a>() + 1; }</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="comment"></span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="comment">    /** ¿Es un acuse de escritura de la casa (`F0 7D 0A 23/24 F7`, 5 B)? */</span></div>
+<div class="foldopen" id="foldopen00070" data-start="{" data-end="}">
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1ABDSynthsSysEx.html#a109006af11caccfe2aca5a7536675305">   70</a></span>    <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="structABDMS2000_1_1ABDSynthsSysEx.html#a109006af11caccfe2aca5a7536675305">isWriteAcknowledgement</a>(<span class="keyword">const</span> uint8_t* data, <span class="keywordtype">size_t</span> size) <span class="keyword">noexcept</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    {</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="structABDMS2000_1_1ABDSynthsSysEx.html#a96478e1e84cab1f52d8529654ed18c4c">isABDSynthsSysEx</a>(data, size) &amp;&amp; size == 5</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>            &amp;&amp; (data[3] == <a class="code hl_variable" href="structABDMS2000_1_1ABDSynthsSysEx.html#af2920c841441f6fd21746ed9e49c6e01">CMD_WRITE_COMPLETED</a> || data[3] == <a class="code hl_variable" href="structABDMS2000_1_1ABDSynthsSysEx.html#a8433ce3e4c98dfaca31477bde985bfc8">CMD_WRITE_ERROR</a>);</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    }</div>
+</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="comment"></span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="comment">    /** ¿Es una trama de ABDSynths (y de este modelo)? Acepta las peticiones de 5 B</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="comment">     *  (`F0 7D 0A [cmd] F7`) además de las tramas con payload. */</span></div>
+<div class="foldopen" id="foldopen00078" data-start="{" data-end="}">
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1ABDSynthsSysEx.html#a96478e1e84cab1f52d8529654ed18c4c">   78</a></span>    <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="structABDMS2000_1_1ABDSynthsSysEx.html#a96478e1e84cab1f52d8529654ed18c4c">isABDSynthsSysEx</a>(<span class="keyword">const</span> uint8_t* data, <span class="keywordtype">size_t</span> size) <span class="keyword">noexcept</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    {</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        <span class="keywordflow">return</span> data != <span class="keyword">nullptr</span> &amp;&amp; size &gt;= 5</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>            &amp;&amp; data[0] == 0xF0</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>            &amp;&amp; data[1] == <a class="code hl_variable" href="structABDMS2000_1_1ABDSynthsSysEx.html#a937a35d4754b43e77065c60fa7f6af21">MANUFACTURER_ID</a></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>            &amp;&amp; data[2] == <a class="code hl_variable" href="structABDMS2000_1_1ABDSynthsSysEx.html#a360f865541a730abe6d6ab7c764df2bd">MODEL_BYTE</a></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>            &amp;&amp; data[size - 1] == 0xF7;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    }</div>
+</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="comment"></span> </div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="comment">    /** `F0 7D 0A 40 [bloque nativo empaquetado] F7` desde un preset nativo. */</span></div>
+<div class="foldopen" id="foldopen00088" data-start="{" data-end="}">
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1ABDSynthsSysEx.html#a04406a44e60455d8911c547c231e9acc">   88</a></span>    <span class="keyword">static</span> std::vector&lt;uint8_t&gt; <a class="code hl_function" href="structABDMS2000_1_1ABDSynthsSysEx.html#a04406a44e60455d8911c547c231e9acc">buildProgramDump</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structABDMS2000_1_1MS2000ProgramData.html">MS2000ProgramData</a>&amp; program)</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    {</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        std::vector&lt;uint8_t&gt; packed;</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        <span class="keywordflow">if</span> (!SysExCodec::pack8to7(program.<a class="code hl_variable" href="structABDMS2000_1_1MS2000ProgramData.html#a54fb03d5f22075ea58512995d5eefe92">rawData</a>.data(), <a class="code hl_variable" href="structABDMS2000_1_1MS2000ProgramData.html#a6d99c5ab129ed7c468fdbbe24de61ce2">MS2000ProgramData::UNPACKED_PROGRAM_SIZE</a>, packed))</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>            <span class="keywordflow">return</span> {};</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        std::vector&lt;uint8_t&gt; sysex;</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        sysex.reserve(5 + packed.size());</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        sysex.push_back(0xF0);</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        sysex.push_back(<a class="code hl_variable" href="structABDMS2000_1_1ABDSynthsSysEx.html#a937a35d4754b43e77065c60fa7f6af21">MANUFACTURER_ID</a>);</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        sysex.push_back(<a class="code hl_variable" href="structABDMS2000_1_1ABDSynthsSysEx.html#a360f865541a730abe6d6ab7c764df2bd">MODEL_BYTE</a>);</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>        sysex.push_back(<a class="code hl_variable" href="structABDMS2000_1_1ABDSynthsSysEx.html#a357669a44fc767de8f7d3fc06ff3c479">CMD_PROGRAM_DUMP</a>);</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        sysex.insert(sysex.end(), packed.begin(), packed.end());</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        sysex.push_back(0xF7);</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        <span class="keywordflow">return</span> sysex;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    }</div>
+</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="comment"></span> </div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="comment">    /** `F0 7D 0A 4C [N bloques nativos empaquetados] F7` desde una memoria completa del plugin. */</span></div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Container&gt;</div>
+<div class="foldopen" id="foldopen00107" data-start="{" data-end="}">
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1ABDSynthsSysEx.html#af8b2c6273ee79edf93f350678b4721ee">  107</a></span>    <span class="keyword">static</span> std::vector&lt;uint8_t&gt; <a class="code hl_function" href="structABDMS2000_1_1ABDSynthsSysEx.html#af8b2c6273ee79edf93f350678b4721ee">buildBankDump</a>(<span class="keyword">const</span> Container&amp; programs)</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    {</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>        std::vector&lt;uint8_t&gt; allRaw;</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>        allRaw.reserve(programs.size() * <a class="code hl_variable" href="structABDMS2000_1_1MS2000ProgramData.html#a6d99c5ab129ed7c468fdbbe24de61ce2">MS2000ProgramData::UNPACKED_PROGRAM_SIZE</a>);</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; program : programs)</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>            allRaw.insert(allRaw.end(), program.rawData.begin(), program.rawData.end());</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        std::vector&lt;uint8_t&gt; packed;</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>        <span class="keywordflow">if</span> (allRaw.empty() || !SysExCodec::pack8to7(allRaw.data(), allRaw.size(), packed))</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>            <span class="keywordflow">return</span> {};</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        std::vector&lt;uint8_t&gt; sysex;</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        sysex.reserve(5 + packed.size());</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        sysex.push_back(0xF0);</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        sysex.push_back(<a class="code hl_variable" href="structABDMS2000_1_1ABDSynthsSysEx.html#a937a35d4754b43e77065c60fa7f6af21">MANUFACTURER_ID</a>);</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        sysex.push_back(<a class="code hl_variable" href="structABDMS2000_1_1ABDSynthsSysEx.html#a360f865541a730abe6d6ab7c764df2bd">MODEL_BYTE</a>);</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        sysex.push_back(<a class="code hl_variable" href="structABDMS2000_1_1ABDSynthsSysEx.html#a5a882c77ffd9f183d1afaaa3de4bd86b">CMD_ALL_DUMP</a>);</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>        sysex.insert(sysex.end(), packed.begin(), packed.end());</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>        sysex.push_back(0xF7);</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        <span class="keywordflow">return</span> sysex;</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    }</div>
+</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="comment"></span> </div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="comment">    /** `F0 7D 0A [cmd] F7` */</span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1ABDSynthsSysEx.html#a067751439045f7848ed20edc7b742c02">  130</a></span>    <span class="keyword">static</span> std::vector&lt;uint8_t&gt; <a class="code hl_function" href="structABDMS2000_1_1ABDSynthsSysEx.html#a067751439045f7848ed20edc7b742c02">buildRequest</a>(uint8_t command) { <span class="keywordflow">return</span> { 0xF0, <a class="code hl_variable" href="structABDMS2000_1_1ABDSynthsSysEx.html#a937a35d4754b43e77065c60fa7f6af21">MANUFACTURER_ID</a>, <a class="code hl_variable" href="structABDMS2000_1_1ABDSynthsSysEx.html#a360f865541a730abe6d6ab7c764df2bd">MODEL_BYTE</a>, command, 0xF7 }; }</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><span class="comment"></span> </div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="comment">    /** `F0 7D 0A 23 F7` — el bloque llegó y se guardó. */</span></div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1ABDSynthsSysEx.html#afbff34832a78f79bd278108c9353ad24">  133</a></span>    <span class="keyword">static</span> std::vector&lt;uint8_t&gt; <a class="code hl_function" href="structABDMS2000_1_1ABDSynthsSysEx.html#afbff34832a78f79bd278108c9353ad24">buildWriteCompleted</a>() { <span class="keywordflow">return</span> <a class="code hl_function" href="structABDMS2000_1_1ABDSynthsSysEx.html#a067751439045f7848ed20edc7b742c02">buildRequest</a>(<a class="code hl_variable" href="structABDMS2000_1_1ABDSynthsSysEx.html#af2920c841441f6fd21746ed9e49c6e01">CMD_WRITE_COMPLETED</a>); }</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="comment"></span> </div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="comment">    /** `F0 7D 0A 24 F7` — el bloque llegó pero no se pudo guardar. */</span></div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno"><a class="line" href="structABDMS2000_1_1ABDSynthsSysEx.html#a0615d65bd594d0eed820c767b0dee0c4">  136</a></span>    <span class="keyword">static</span> std::vector&lt;uint8_t&gt; <a class="code hl_function" href="structABDMS2000_1_1ABDSynthsSysEx.html#a0615d65bd594d0eed820c767b0dee0c4">buildWriteError</a>() { <span class="keywordflow">return</span> <a class="code hl_function" href="structABDMS2000_1_1ABDSynthsSysEx.html#a067751439045f7848ed20edc7b742c02">buildRequest</a>(<a class="code hl_variable" href="structABDMS2000_1_1ABDSynthsSysEx.html#a8433ce3e4c98dfaca31477bde985bfc8">CMD_WRITE_ERROR</a>); }</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>};</div>
+</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>} <span class="comment">// namespace ABDMS2000</span></div>
+<div class="ttc" id="aMS2000ProgramData_8h_html"><div class="ttname"><a href="MS2000ProgramData_8h.html">MS2000ProgramData.h</a></div></div>
+<div class="ttc" id="anamespaceABDMS2000_html"><div class="ttname"><a href="namespaceABDMS2000.html">ABDMS2000</a></div><div class="ttdef"><b>Definition</b> AppLogger.h:15</div></div>
+<div class="ttc" id="astructABDMS2000_1_1ABDSynthsSysEx_html"><div class="ttname"><a href="structABDMS2000_1_1ABDSynthsSysEx.html">ABDMS2000::ABDSynthsSysEx</a></div><div class="ttdoc">SysEx propio de ABDSynths para los presets del plugin (bloque nativo).</div><div class="ttdef"><b>Definition</b> ABDSynthsSysEx.h:45</div></div>
+<div class="ttc" id="astructABDMS2000_1_1ABDSynthsSysEx_html_a04406a44e60455d8911c547c231e9acc"><div class="ttname"><a href="structABDMS2000_1_1ABDSynthsSysEx.html#a04406a44e60455d8911c547c231e9acc">ABDMS2000::ABDSynthsSysEx::buildProgramDump</a></div><div class="ttdeci">static std::vector&lt; uint8_t &gt; buildProgramDump(const MS2000ProgramData &amp;program)</div><div class="ttdef"><b>Definition</b> ABDSynthsSysEx.h:88</div></div>
+<div class="ttc" id="astructABDMS2000_1_1ABDSynthsSysEx_html_a0615d65bd594d0eed820c767b0dee0c4"><div class="ttname"><a href="structABDMS2000_1_1ABDSynthsSysEx.html#a0615d65bd594d0eed820c767b0dee0c4">ABDMS2000::ABDSynthsSysEx::buildWriteError</a></div><div class="ttdeci">static std::vector&lt; uint8_t &gt; buildWriteError()</div><div class="ttdef"><b>Definition</b> ABDSynthsSysEx.h:136</div></div>
+<div class="ttc" id="astructABDMS2000_1_1ABDSynthsSysEx_html_a067751439045f7848ed20edc7b742c02"><div class="ttname"><a href="structABDMS2000_1_1ABDSynthsSysEx.html#a067751439045f7848ed20edc7b742c02">ABDMS2000::ABDSynthsSysEx::buildRequest</a></div><div class="ttdeci">static std::vector&lt; uint8_t &gt; buildRequest(uint8_t command)</div><div class="ttdef"><b>Definition</b> ABDSynthsSysEx.h:130</div></div>
+<div class="ttc" id="astructABDMS2000_1_1ABDSynthsSysEx_html_a109006af11caccfe2aca5a7536675305"><div class="ttname"><a href="structABDMS2000_1_1ABDSynthsSysEx.html#a109006af11caccfe2aca5a7536675305">ABDMS2000::ABDSynthsSysEx::isWriteAcknowledgement</a></div><div class="ttdeci">static bool isWriteAcknowledgement(const uint8_t *data, size_t size) noexcept</div><div class="ttdef"><b>Definition</b> ABDSynthsSysEx.h:70</div></div>
+<div class="ttc" id="astructABDMS2000_1_1ABDSynthsSysEx_html_a16e9a3ae03236ed355219c3a4f5730ea"><div class="ttname"><a href="structABDMS2000_1_1ABDSynthsSysEx.html#a16e9a3ae03236ed355219c3a4f5730ea">ABDMS2000::ABDSynthsSysEx::CMD_PROGRAM_REQUEST</a></div><div class="ttdeci">static constexpr uint8_t CMD_PROGRAM_REQUEST</div><div class="ttdef"><b>Definition</b> ABDSynthsSysEx.h:51</div></div>
+<div class="ttc" id="astructABDMS2000_1_1ABDSynthsSysEx_html_a357669a44fc767de8f7d3fc06ff3c479"><div class="ttname"><a href="structABDMS2000_1_1ABDSynthsSysEx.html#a357669a44fc767de8f7d3fc06ff3c479">ABDMS2000::ABDSynthsSysEx::CMD_PROGRAM_DUMP</a></div><div class="ttdeci">static constexpr uint8_t CMD_PROGRAM_DUMP</div><div class="ttdef"><b>Definition</b> ABDSynthsSysEx.h:49</div></div>
+<div class="ttc" id="astructABDMS2000_1_1ABDSynthsSysEx_html_a360f865541a730abe6d6ab7c764df2bd"><div class="ttname"><a href="structABDMS2000_1_1ABDSynthsSysEx.html#a360f865541a730abe6d6ab7c764df2bd">ABDMS2000::ABDSynthsSysEx::MODEL_BYTE</a></div><div class="ttdeci">static constexpr uint8_t MODEL_BYTE</div><div class="ttdef"><b>Definition</b> ABDSynthsSysEx.h:47</div></div>
+<div class="ttc" id="astructABDMS2000_1_1ABDSynthsSysEx_html_a5a882c77ffd9f183d1afaaa3de4bd86b"><div class="ttname"><a href="structABDMS2000_1_1ABDSynthsSysEx.html#a5a882c77ffd9f183d1afaaa3de4bd86b">ABDMS2000::ABDSynthsSysEx::CMD_ALL_DUMP</a></div><div class="ttdeci">static constexpr uint8_t CMD_ALL_DUMP</div><div class="ttdef"><b>Definition</b> ABDSynthsSysEx.h:50</div></div>
+<div class="ttc" id="astructABDMS2000_1_1ABDSynthsSysEx_html_a7ffb499753d8f3b319d64f88fe247d98"><div class="ttname"><a href="structABDMS2000_1_1ABDSynthsSysEx.html#a7ffb499753d8f3b319d64f88fe247d98">ABDMS2000::ABDSynthsSysEx::packedProgramPayloadSize</a></div><div class="ttdeci">static size_t packedProgramPayloadSize()</div><div class="ttdef"><b>Definition</b> ABDSynthsSysEx.h:60</div></div>
+<div class="ttc" id="astructABDMS2000_1_1ABDSynthsSysEx_html_a8433ce3e4c98dfaca31477bde985bfc8"><div class="ttname"><a href="structABDMS2000_1_1ABDSynthsSysEx.html#a8433ce3e4c98dfaca31477bde985bfc8">ABDMS2000::ABDSynthsSysEx::CMD_WRITE_ERROR</a></div><div class="ttdeci">static constexpr uint8_t CMD_WRITE_ERROR</div><div class="ttdef"><b>Definition</b> ABDSynthsSysEx.h:57</div></div>
+<div class="ttc" id="astructABDMS2000_1_1ABDSynthsSysEx_html_a937a35d4754b43e77065c60fa7f6af21"><div class="ttname"><a href="structABDMS2000_1_1ABDSynthsSysEx.html#a937a35d4754b43e77065c60fa7f6af21">ABDMS2000::ABDSynthsSysEx::MANUFACTURER_ID</a></div><div class="ttdeci">static constexpr uint8_t MANUFACTURER_ID</div><div class="ttdef"><b>Definition</b> ABDSynthsSysEx.h:46</div></div>
+<div class="ttc" id="astructABDMS2000_1_1ABDSynthsSysEx_html_a96478e1e84cab1f52d8529654ed18c4c"><div class="ttname"><a href="structABDMS2000_1_1ABDSynthsSysEx.html#a96478e1e84cab1f52d8529654ed18c4c">ABDMS2000::ABDSynthsSysEx::isABDSynthsSysEx</a></div><div class="ttdeci">static bool isABDSynthsSysEx(const uint8_t *data, size_t size) noexcept</div><div class="ttdef"><b>Definition</b> ABDSynthsSysEx.h:78</div></div>
+<div class="ttc" id="astructABDMS2000_1_1ABDSynthsSysEx_html_aaf60392ba5222fdbcae7fc15cfc06a07"><div class="ttname"><a href="structABDMS2000_1_1ABDSynthsSysEx.html#aaf60392ba5222fdbcae7fc15cfc06a07">ABDMS2000::ABDSynthsSysEx::programFrameSize</a></div><div class="ttdeci">static size_t programFrameSize()</div><div class="ttdef"><b>Definition</b> ABDSynthsSysEx.h:67</div></div>
+<div class="ttc" id="astructABDMS2000_1_1ABDSynthsSysEx_html_ae80c64af5e4ca9376e285f17c2a2a5a1"><div class="ttname"><a href="structABDMS2000_1_1ABDSynthsSysEx.html#ae80c64af5e4ca9376e285f17c2a2a5a1">ABDMS2000::ABDSynthsSysEx::CMD_ALL_REQUEST</a></div><div class="ttdeci">static constexpr uint8_t CMD_ALL_REQUEST</div><div class="ttdef"><b>Definition</b> ABDSynthsSysEx.h:52</div></div>
+<div class="ttc" id="astructABDMS2000_1_1ABDSynthsSysEx_html_af2920c841441f6fd21746ed9e49c6e01"><div class="ttname"><a href="structABDMS2000_1_1ABDSynthsSysEx.html#af2920c841441f6fd21746ed9e49c6e01">ABDMS2000::ABDSynthsSysEx::CMD_WRITE_COMPLETED</a></div><div class="ttdeci">static constexpr uint8_t CMD_WRITE_COMPLETED</div><div class="ttdef"><b>Definition</b> ABDSynthsSysEx.h:56</div></div>
+<div class="ttc" id="astructABDMS2000_1_1ABDSynthsSysEx_html_af8b2c6273ee79edf93f350678b4721ee"><div class="ttname"><a href="structABDMS2000_1_1ABDSynthsSysEx.html#af8b2c6273ee79edf93f350678b4721ee">ABDMS2000::ABDSynthsSysEx::buildBankDump</a></div><div class="ttdeci">static std::vector&lt; uint8_t &gt; buildBankDump(const Container &amp;programs)</div><div class="ttdef"><b>Definition</b> ABDSynthsSysEx.h:107</div></div>
+<div class="ttc" id="astructABDMS2000_1_1ABDSynthsSysEx_html_afbff34832a78f79bd278108c9353ad24"><div class="ttname"><a href="structABDMS2000_1_1ABDSynthsSysEx.html#afbff34832a78f79bd278108c9353ad24">ABDMS2000::ABDSynthsSysEx::buildWriteCompleted</a></div><div class="ttdeci">static std::vector&lt; uint8_t &gt; buildWriteCompleted()</div><div class="ttdef"><b>Definition</b> ABDSynthsSysEx.h:133</div></div>
+<div class="ttc" id="astructABDMS2000_1_1MS2000ProgramData_html"><div class="ttname"><a href="structABDMS2000_1_1MS2000ProgramData.html">ABDMS2000::MS2000ProgramData</a></div><div class="ttdoc">Programa propio del plugin (el sistema native que declara el contrato del host, ver Source/Plugin/Hos...</div><div class="ttdef"><b>Definition</b> MS2000ProgramData.h:46</div></div>
+<div class="ttc" id="astructABDMS2000_1_1MS2000ProgramData_html_a54fb03d5f22075ea58512995d5eefe92"><div class="ttname"><a href="structABDMS2000_1_1MS2000ProgramData.html#a54fb03d5f22075ea58512995d5eefe92">ABDMS2000::MS2000ProgramData::rawData</a></div><div class="ttdeci">std::array&lt; uint8_t, UNPACKED_PROGRAM_SIZE &gt; rawData</div><div class="ttdef"><b>Definition</b> MS2000ProgramData.h:57</div></div>
+<div class="ttc" id="astructABDMS2000_1_1MS2000ProgramData_html_a6d99c5ab129ed7c468fdbbe24de61ce2"><div class="ttname"><a href="structABDMS2000_1_1MS2000ProgramData.html#a6d99c5ab129ed7c468fdbbe24de61ce2">ABDMS2000::MS2000ProgramData::UNPACKED_PROGRAM_SIZE</a></div><div class="ttdeci">static constexpr size_t UNPACKED_PROGRAM_SIZE</div><div class="ttdef"><b>Definition</b> MS2000ProgramData.h:49</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

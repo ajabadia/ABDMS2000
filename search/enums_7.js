@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['osc1type_0',['OSC1Type',['../namespaceABDMS2000.html#af87646d58e636e72aab721a072557c3e',1,'ABDMS2000']]],
-  ['osc2modulationmode_1',['OSC2ModulationMode',['../namespaceABDMS2000.html#adbbc3364c941c8dc96e41f8200ca6f9d',1,'ABDMS2000']]]
+  ['sysexmessagetype_0',['SysExMessageType',['../namespaceABDMS2000.html#a75ff67d10d18351793b50b8827bd2f5a',1,'ABDMS2000']]]
 ];

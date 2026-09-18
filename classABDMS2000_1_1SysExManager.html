@@ -85,6 +85,11 @@ $(function() {
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="SysExManager_8h_source.html">SysExManager.h</a>&gt;</code></p>
+<div class="dynheader">
+Diagrama de colaboración de ABDMS2000::SysExManager:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classABDMS2000_1_1SysExManager__coll__graph.svg" width="252" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a href="graph_legend.html">leyenda</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Métodos públicos</h2></td></tr>
@@ -94,6 +99,14 @@ Métodos públicos</h2></td></tr>
 <tr class="separator:ae6080d368c561427d83b0812b245f51d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a674b8e0be042c6bc830810b40c9cdcd3" id="r_a674b8e0be042c6bc830810b40c9cdcd3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structABDMS2000_1_1SysExParseResult.html">SysExParseResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#a674b8e0be042c6bc830810b40c9cdcd3">parseSysEx</a> (const uint8_t *data, size_t size, juce::AudioProcessorValueTreeState &amp;apvts)</td></tr>
 <tr class="separator:a674b8e0be042c6bc830810b40c9cdcd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa289bb87bc7a3796d7f64b25daf9181" id="r_afa289bb87bc7a3796d7f64b25daf9181"><td class="memItemLeft" align="right" valign="top">std::vector&lt; uint8_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#afa289bb87bc7a3796d7f64b25daf9181">buildProgramDumpResponse</a> (int channel) const</td></tr>
+<tr class="separator:afa289bb87bc7a3796d7f64b25daf9181"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fed6c7c63d741b386def2d6e0487951" id="r_a1fed6c7c63d741b386def2d6e0487951"><td class="memItemLeft" align="right" valign="top">std::vector&lt; uint8_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#a1fed6c7c63d741b386def2d6e0487951">buildAllDataDumpResponse</a> (int channel) const</td></tr>
+<tr class="separator:a1fed6c7c63d741b386def2d6e0487951"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a723cd1ef910925e433f4b14ea9824b89" id="r_a723cd1ef910925e433f4b14ea9824b89"><td class="memItemLeft" align="right" valign="top">std::vector&lt; uint8_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#a723cd1ef910925e433f4b14ea9824b89">buildHardwareBankDumpResponse</a> (int channel, const juce::AudioProcessorValueTreeState &amp;apvts)</td></tr>
+<tr class="separator:a723cd1ef910925e433f4b14ea9824b89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d825cfa5afd952e11b5097dac059bdc" id="r_a2d825cfa5afd952e11b5097dac059bdc"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#a2d825cfa5afd952e11b5097dac059bdc">machineMemoryProgramCount</a> () const noexcept</td></tr>
+<tr class="separator:a2d825cfa5afd952e11b5097dac059bdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5451870643e97fa290f7c03a265ed7a1" id="r_a5451870643e97fa290f7c03a265ed7a1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structABDMS2000_1_1SysExParseResult.html">SysExParseResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#a5451870643e97fa290f7c03a265ed7a1">parseMidiFile</a> (const juce::File &amp;file, juce::AudioProcessorValueTreeState &amp;apvts)</td></tr>
 <tr class="separator:a5451870643e97fa290f7c03a265ed7a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac22f1cb31f361600b35c8b7e7a50347e" id="r_ac22f1cb31f361600b35c8b7e7a50347e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; uint8_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#ac22f1cb31f361600b35c8b7e7a50347e">createProgramDump</a> (int channel, const <a class="el" href="structABDMS2000_1_1MS2000ProgramData.html">MS2000ProgramData</a> &amp;program) const</td></tr>
@@ -118,6 +131,16 @@ Métodos públicos</h2></td></tr>
 <tr class="separator:abb7a7f5197ddfea5363636cea3b1720f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abcf7748053600ed0aba2e047c54a1d7d" id="r_abcf7748053600ed0aba2e047c54a1d7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#abcf7748053600ed0aba2e047c54a1d7d">saveAPVTSIntoCurrentProgram</a> (const juce::AudioProcessorValueTreeState &amp;apvts, const std::string &amp;name)</td></tr>
 <tr class="separator:abcf7748053600ed0aba2e047c54a1d7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a6980931429f78b05e9947acb9c360a" id="r_a7a6980931429f78b05e9947acb9c360a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#a7a6980931429f78b05e9947acb9c360a">hasHardwareProgram</a> () const noexcept</td></tr>
+<tr class="separator:a7a6980931429f78b05e9947acb9c360a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bfaa2b6d179a308bc6580fb399b3224" id="r_a7bfaa2b6d179a308bc6580fb399b3224"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structABDMS2000_1_1MS2000HardwareProgram.html">MS2000HardwareProgram</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#a7bfaa2b6d179a308bc6580fb399b3224">getHardwareProgram</a> () const noexcept</td></tr>
+<tr class="separator:a7bfaa2b6d179a308bc6580fb399b3224"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85a58cd49f66622e063e565df0bc626a" id="r_a85a58cd49f66622e063e565df0bc626a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#a85a58cd49f66622e063e565df0bc626a">setHardwareProgram</a> (const <a class="el" href="structABDMS2000_1_1MS2000HardwareProgram.html">MS2000HardwareProgram</a> &amp;program) noexcept</td></tr>
+<tr class="separator:a85a58cd49f66622e063e565df0bc626a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd480a087dd58b82dd1facb242ff8c6e" id="r_acd480a087dd58b82dd1facb242ff8c6e"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="structABDMS2000_1_1MS2000HardwareProgram.html">MS2000HardwareProgram</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#acd480a087dd58b82dd1facb242ff8c6e">getHardwareBank</a> () const noexcept</td></tr>
+<tr class="separator:acd480a087dd58b82dd1facb242ff8c6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54aee8c000c7e308bc0075418ca52c4e" id="r_a54aee8c000c7e308bc0075418ca52c4e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; uint8_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#a54aee8c000c7e308bc0075418ca52c4e">createHardwareProgramDump</a> (int channel, const juce::AudioProcessorValueTreeState &amp;apvts, const std::string &amp;name={})</td></tr>
+<tr class="separator:a54aee8c000c7e308bc0075418ca52c4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Métodos públicos estáticos</h2></td></tr>
@@ -140,6 +163,12 @@ Atributos privados</h2></td></tr>
 <tr class="separator:ac1d91be04b7ca998d79a688b79713d91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6d51384589cfd15852c0a8a825d2e49" id="r_ab6d51384589cfd15852c0a8a825d2e49"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#ab6d51384589cfd15852c0a8a825d2e49">activeProgramIndex_</a> { 0 }</td></tr>
 <tr class="separator:ab6d51384589cfd15852c0a8a825d2e49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4331bb77ec9775ffed64f7527cef8ef7" id="r_a4331bb77ec9775ffed64f7527cef8ef7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structABDMS2000_1_1MS2000HardwareProgram.html">MS2000HardwareProgram</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#a4331bb77ec9775ffed64f7527cef8ef7">hardwareProgram_</a> {}</td></tr>
+<tr class="separator:a4331bb77ec9775ffed64f7527cef8ef7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07ce3e41fc4c83f4927d64b0f32a86b5" id="r_a07ce3e41fc4c83f4927d64b0f32a86b5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#a07ce3e41fc4c83f4927d64b0f32a86b5">hardwareProgramValid_</a> { false }</td></tr>
+<tr class="separator:a07ce3e41fc4c83f4927d64b0f32a86b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accbd1d97e838a8f29b96a632ced50cdf" id="r_accbd1d97e838a8f29b96a632ced50cdf"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structABDMS2000_1_1MS2000HardwareProgram.html">MS2000HardwareProgram</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html#accbd1d97e838a8f29b96a632ced50cdf">hardwareBank_</a></td></tr>
+<tr class="separator:accbd1d97e838a8f29b96a632ced50cdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Documentación de constructores y destructores</h2>
 <a id="af02af3267b481c7b4f254e538f50ec3a" name="af02af3267b481c7b4f254e538f50ec3a"></a>
@@ -185,6 +214,81 @@ Atributos privados</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Documentación de funciones miembro</h2>
+<a id="a1fed6c7c63d741b386def2d6e0487951" name="a1fed6c7c63d741b386def2d6e0487951"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1fed6c7c63d741b386def2d6e0487951">&#9670;&#160;</a></span>buildAllDataDumpResponse()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; uint8_t &gt; ABDMS2000::SysExManager::buildAllDataDumpResponse </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>channel</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Respuesta a una <code>AllDataDumpRequest</code> <b>de ABDSynths</b> (<code>F0 7D 0A 0E F7</code>): la memoria completa propia (128 presets nativos) con la cabecera de la casa (<code>F0 7D 0A 4C ... F7</code>). </p>
+
+</div>
+</div>
+<a id="a723cd1ef910925e433f4b14ea9824b89" name="a723cd1ef910925e433f4b14ea9824b89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a723cd1ef910925e433f4b14ea9824b89">&#9670;&#160;</a></span>buildHardwareBankDumpResponse()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; uint8_t &gt; ABDMS2000::SysExManager::buildHardwareBankDumpResponse </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>channel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const juce::AudioProcessorValueTreeState &amp;&#160;</td>
+          <td class="paramname"><em>apvts</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Respuesta a una <code>AllDataDumpRequest</code> <b>de Korg</b> (<code>F0 42 3n 58 0E F7</code>): la memoria completa con la cabecera del MS2000 (<code>F0 42 3n 58 4C ... F7</code>). Dos caminos:</p>
+<ol type="1">
+<li>Si llegó memoria del equipo (algún All Data Dump <code>0x4C</code>), sale <b>esa</b> — bytes intactos, incluido lo que el motor no modela — con el <b>programa activo refrescado desde el motor</b> para que el volcado refleje lo que se está oyendo.</li>
+<li>Si nunca llegó, el plugin hace de equipo con <b>su propia memoria</b>: convierte sus 128 presets nativos a programas reales de 254 B (<code><a class="el" href="structABDMS2000_1_1MS2000HardwareProgram.html" title="Programa de fábrica del Korg MS2000 / MS2000R / microKORG — 254 bytes reales.">MS2000HardwareProgram</a>:: fromNativeProgram</code>, conversión aproximada y declarada como tal — lo que el motor no modela sale del INIT Program del equipo). Ver §6.4 de <code>DOCS/ABDSynths_SysEx_Spec.md</code>; falta verificarlo contra hardware real.</li>
+</ol>
+<p>La memoria completa en formato del <b>equipo</b>, para contestar un <code>0x0E</code> de Korg:</p><ul>
+<li>el banco real que haya llegado por MIDI (bytes del equipo intactos) con el programa activo refrescado desde el motor; o</li>
+<li>si nunca llegó memoria del equipo, los 128 presets nativos convertidos a programas reales de 254 B (conversión aproximada, §6.4). </li>
+</ul>
+
+</div>
+</div>
+<a id="afa289bb87bc7a3796d7f64b25daf9181" name="afa289bb87bc7a3796d7f64b25daf9181"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa289bb87bc7a3796d7f64b25daf9181">&#9670;&#160;</a></span>buildProgramDumpResponse()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; uint8_t &gt; ABDMS2000::SysExManager::buildProgramDumpResponse </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>channel</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Respuesta a una <code>ProgramDumpRequest</code> <b>de ABDSynths</b> (<code>F0 7D 0A 10 F7</code>): el preset <b>propio</b> del plugin activo, con la cabecera de la casa (<code>F0 7D 0A 40 ... F7</code>, 444 B). El canal no participa (trama de ABDSynths); se acepta por simetría con el resto de la API. </p>
+
+</div>
+</div>
 <a id="ada6c551c153fa6c51629c0ec0c9cae3d" name="ada6c551c153fa6c51629c0ec0c9cae3d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ada6c551c153fa6c51629c0ec0c9cae3d">&#9670;&#160;</a></span>createAllDataDump()</h2>
 
@@ -200,7 +304,43 @@ Atributos privados</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Creates an All-Data Dump SysEx message (0x4C) for all 128 bank programs. </p>
+<p>Volcado completo de la memoria propia del plugin (128 presets nativos) con la cabecera de ABDSynths. <code>channel</code> no se usa.</p>
+<p>Volcado completo de la memoria <b>propia</b> del plugin (presets nativos, <code>UNPACKED_PROGRAM_SIZE</code> cada uno). </p>
+
+</div>
+</div>
+<a id="a54aee8c000c7e308bc0075418ca52c4e" name="a54aee8c000c7e308bc0075418ca52c4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54aee8c000c7e308bc0075418ca52c4e">&#9670;&#160;</a></span>createHardwareProgramDump()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; uint8_t &gt; ABDMS2000::SysExManager::createHardwareProgramDump </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>channel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const juce::AudioProcessorValueTreeState &amp;&#160;</td>
+          <td class="paramname"><em>apvts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>name</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Construye la trama <b>real</b> del MS2000 para enviarla al equipo: parte de los bytes que vinieron del hardware (si vinieron) y vuelca encima lo que el motor modela, así lo demás viaja intacto. </p>
 
 </div>
 </div>
@@ -229,7 +369,10 @@ Atributos privados</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Creates a 1-Program Data Dump SysEx message (0x40). </p>
+<p>Trama SysEx del preset <b>propio</b> del plugin: fabricante ABDSynths (0x7D), modelo 0x0A, payload de <code><a class="el" href="structABDMS2000_1_1MS2000ProgramData.html#a6d99c5ab129ed7c468fdbbe24de61ce2">MS2000ProgramData::UNPACKED_PROGRAM_SIZE</a></code> (384 B). NO es una trama de MS2000 (para eso está <code>createHardwareProgramDump</code>). <code>channel</code> no se usa.</p>
+<p>Trama del preset <b>propio</b> del plugin: fabricante ABDSynths, modelo 0x0A.</p>
+<p>Antes esto emitía una cabecera de Korg (<code>42 3n 58</code>) para un bloque nativo que <b>no</b> es el programa del MS2000: el equipo real lo recibiría y lo leería mal. El formato del hardware sale de <code><a class="el" href="structABDMS2000_1_1MS2000HardwareProgram.html" title="Programa de fábrica del Korg MS2000 / MS2000R / microKORG — 254 bytes reales.">MS2000HardwareProgram</a></code> (254 B).</p>
+<p><code>channel</code> ya no participa: una trama de ABDSynths no va dirigida a un canal MIDI. </p>
 
 </div>
 </div>
@@ -351,6 +494,57 @@ Atributos privados</h2></td></tr>
 
 </div>
 </div>
+<a id="acd480a087dd58b82dd1facb242ff8c6e" name="acd480a087dd58b82dd1facb242ff8c6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd480a087dd58b82dd1facb242ff8c6e">&#9670;&#160;</a></span>getHardwareBank()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt; <a class="el" href="structABDMS2000_1_1MS2000HardwareProgram.html">MS2000HardwareProgram</a> &gt; &amp; ABDMS2000::SysExManager::getHardwareBank </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Programas de hardware de un All Data Dump (vacío si no ha llegado ninguno). </p>
+
+</div>
+</div>
+<a id="a7bfaa2b6d179a308bc6580fb399b3224" name="a7bfaa2b6d179a308bc6580fb399b3224"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7bfaa2b6d179a308bc6580fb399b3224">&#9670;&#160;</a></span>getHardwareProgram()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="structABDMS2000_1_1MS2000HardwareProgram.html">MS2000HardwareProgram</a> &amp; ABDMS2000::SysExManager::getHardwareProgram </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a451de7d6a6bb41bd7586da2a44420377" name="a451de7d6a6bb41bd7586da2a44420377"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a451de7d6a6bb41bd7586da2a44420377">&#9670;&#160;</a></span>getProgram()</h2>
 
@@ -365,6 +559,31 @@ Atributos privados</h2></td></tr>
           <td>(</td>
           <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7a6980931429f78b05e9947acb9c360a" name="a7a6980931429f78b05e9947acb9c360a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a6980931429f78b05e9947acb9c360a">&#9670;&#160;</a></span>hasHardwareProgram()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ABDMS2000::SysExManager::hasHardwareProgram </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -443,6 +662,32 @@ Atributos privados</h2></td></tr>
 
 </div>
 </div>
+<a id="a2d825cfa5afd952e11b5097dac059bdc" name="a2d825cfa5afd952e11b5097dac059bdc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d825cfa5afd952e11b5097dac059bdc">&#9670;&#160;</a></span>machineMemoryProgramCount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t ABDMS2000::SysExManager::machineMemoryProgramCount </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Cuántos programas lleva la respuesta a un <code>0x0E</code> de Korg: los del banco real si llegó alguno del equipo, o los 128 de la memoria propia convertidos a formato real. </p>
+
+</div>
+</div>
 <a id="a5451870643e97fa290f7c03a265ed7a1" name="a5451870643e97fa290f7c03a265ed7a1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5451870643e97fa290f7c03a265ed7a1">&#9670;&#160;</a></span>parseMidiFile()</h2>
 
@@ -503,7 +748,10 @@ Atributos privados</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Parses raw SysEx bytes (from .syx file or MIDI input). </p>
+<p>Parses raw SysEx bytes (from .syx file or MIDI input).</p>
+<p>Peticiones reconocidas: <code>F0 7D 0A 10/0E F7</code> (ABDSynths) y <code>F0 42 3n 58 10/0E F7</code> (Korg) → <code>ProgramDumpRequest</code> / <code>AllDataDumpRequest</code> con <code>midiChannel</code> del canal pedido. La respuesta se construye con <code>buildProgramDumpResponse</code> / <code>buildAllDataDumpResponse</code>.</p>
+<p>Escrituras (<code>0x40</code>/<code>0x4C</code>) de ambas familias: además de guardarlas, el resultado lleva en <code>reply</code> el acuse que hay que devolver — <code>0x23</code> Write Completed si se guardó, <code>0x24</code> Write Error si no. Los acuses <b>recibidos</b> (<code>0x23</code>/<code>0x24</code>) se reconocen (<code>WriteCompleted</code> / <code>WriteError</code>) y no se contestan. </p>
+<p>Acuse del equipo en el canal del emisor (<code>F0 42 3n 58 23/24 F7</code>).</p>
 
 </div>
 </div>
@@ -575,6 +823,32 @@ Atributos privados</h2></td></tr>
           <td>(</td>
           <td class="paramtype">const std::array&lt; <a class="el" href="structABDMS2000_1_1MS2000ProgramData.html">MS2000ProgramData</a>, <a class="el" href="classABDMS2000_1_1SysExManager.html#a8e56e69c6c6f99df38982f84fbec8279">BANK_SIZE</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>bank</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a85a58cd49f66622e063e565df0bc626a" name="a85a58cd49f66622e063e565df0bc626a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a85a58cd49f66622e063e565df0bc626a">&#9670;&#160;</a></span>setHardwareProgram()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::SysExManager::setHardwareProgram </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structABDMS2000_1_1MS2000HardwareProgram.html">MS2000HardwareProgram</a> &amp;&#160;</td>
+          <td class="paramname"><em>program</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -684,6 +958,72 @@ Atributos privados</h2></td></tr>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="accbd1d97e838a8f29b96a632ced50cdf" name="accbd1d97e838a8f29b96a632ced50cdf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#accbd1d97e838a8f29b96a632ced50cdf">&#9670;&#160;</a></span>hardwareBank_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="structABDMS2000_1_1MS2000HardwareProgram.html">MS2000HardwareProgram</a>&gt; ABDMS2000::SysExManager::hardwareBank_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4331bb77ec9775ffed64f7527cef8ef7" name="a4331bb77ec9775ffed64f7527cef8ef7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4331bb77ec9775ffed64f7527cef8ef7">&#9670;&#160;</a></span>hardwareProgram_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structABDMS2000_1_1MS2000HardwareProgram.html">MS2000HardwareProgram</a> ABDMS2000::SysExManager::hardwareProgram_ {}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a07ce3e41fc4c83f4927d64b0f32a86b5" name="a07ce3e41fc4c83f4927d64b0f32a86b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07ce3e41fc4c83f4927d64b0f32a86b5">&#9670;&#160;</a></span>hardwareProgramValid_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ABDMS2000::SysExManager::hardwareProgramValid_ { false }</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

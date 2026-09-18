@@ -1,16 +1,13 @@
 <map id="Source/DSP/Filters/MultiModeFilter.cpp" name="Source/DSP/Filters/MultiModeFilter.cpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="271,5,425,45"/>
-<area shape="rect" id="Node000002" href="$MultiModeFilter_8h.html" title=" " alt="" coords="221,93,355,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="336,47,307,84,303,81,331,44"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="369,240,431,265"/>
-<area shape="poly" id="edge7_Node000001_Node000005" title=" " alt="" coords="356,45,369,93,398,226,393,227,364,94,351,47"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="175,5,329,45"/>
+<area shape="rect" id="Node000002" href="$MultiModeFilter_8h.html" title=" " alt="" coords="123,93,258,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="239,47,210,84,206,81,235,44"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="282,93,345,119"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="269,44,298,81,294,84,265,47"/>
 <area shape="rect" id="Node000003" href="$FilterResonanceComp_8h.html" title=" " alt="" coords="5,167,181,192"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="258,121,139,164,137,159,256,116"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="177,121,122,160,119,156,173,117"/>
 <area shape="rect" id="Node000004" href="$DSPUtils_8h.html" title=" " alt="" coords="205,167,371,192"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="291,119,291,153,285,153,285,119"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="307,190,371,230,368,235,305,194"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="153,240,239,265"/>
-<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="275,194,223,234,220,229,272,190"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="263,240,329,265"/>
-<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="292,192,296,226,291,227,287,193"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="208,117,262,156,259,160,205,121"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="207,240,369,265"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="291,192,291,226,285,226,285,192"/>
 </map>

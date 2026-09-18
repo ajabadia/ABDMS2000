@@ -1,0 +1,7 @@
+<map id="ABDMS2000::BridgeHost" name="ABDMS2000::BridgeHost">
+<area shape="rect" id="Node000001" title=" " alt="" coords="159,5,342,31"/>
+<area shape="rect" id="Node000002" href="$classABDMS2000_1_1ABDMS2000AudioProcessor.html" title=" " alt="" coords="5,79,232,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="221,40,152,81,149,76,218,36"/>
+<area shape="rect" id="Node000003" href="$classABDMS2000_1_1Tests_1_1FakeBridgeHost.html" title=" " alt="" coords="257,86,509,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="283,35,364,83,362,88,280,40"/>
+</map>

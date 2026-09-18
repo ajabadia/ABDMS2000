@@ -1,5 +1,11 @@
 <map id="ABDMS2000::VoiceParameters" name="ABDMS2000::VoiceParameters">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,93,224,119"/>
-<area shape="rect" id="Node000002" href="$structABDMS2000_1_1PatchSlot.html" title=" " alt="" coords="29,5,200,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,45,117,93,112,93,112,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="208,93,427,119"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,120,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="104,33,193,67,274,91,272,96,191,72,102,38"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="144,5,291,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="243,38,305,91,302,95,240,42"/>
+<area shape="rect" id="Node000004" href="$structABDMS2000_1_1SeqModulation.html" title=" " alt="" coords="315,5,522,31"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="396,42,333,95,330,91,393,38"/>
+<area shape="rect" id="Node000005" href="$structABDMS2000_1_1PatchSlot.html" title=" " alt="" coords="547,5,717,31"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="577,37,360,96,359,91,576,32"/>
 </map>

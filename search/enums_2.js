@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['envelopestage_0',['EnvelopeStage',['../namespaceABDMS2000.html#a75752f8d3da4bbe74867ba77efa547d9',1,'ABDMS2000']]]
+  ['filtertype_0',['FilterType',['../namespaceABDMS2000.html#aa2b1e8d220a1e4a73e04a079ac7bf1f0',1,'ABDMS2000']]]
 ];

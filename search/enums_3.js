@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['filtertype_0',['FilterType',['../namespaceABDMS2000.html#aa2b1e8d220a1e4a73e04a079ac7bf1f0',1,'ABDMS2000']]]
+  ['keysyncmode_0',['KeySyncMode',['../namespaceABDMS2000.html#aeeb8952c9453dc41e0a762e9b21efcba',1,'ABDMS2000']]]
 ];

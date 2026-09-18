@@ -1,5 +1,5 @@
 <map id="ABDMS2000::FactoryPreset" name="ABDMS2000::FactoryPreset">
 <area shape="rect" id="Node000001" title=" " alt="" coords="30,93,229,119"/>
-<area shape="rect" id="Node000002" href="$structABDMS2000_1_1MS2000ProgramData.html" title="Korg MS2000 Program Data — 128&#45;byte Sysex layout with registry&#45;driven encoding." alt="" coords="5,5,253,31"/>
+<area shape="rect" id="Node000002" href="$structABDMS2000_1_1MS2000ProgramData.html" title="Programa propio del plugin (el sistema native que declara el contrato del host, ver Source/Plugin/Hos..." alt="" coords="5,5,253,31"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="132,45,132,93,127,93,127,45"/>
 </map>

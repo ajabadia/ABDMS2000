@@ -1,18 +1,17 @@
 <map id="Source/DSP/Sequencer/ModSequencer.cpp" name="Source/DSP/Sequencer/ModSequencer.cpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="218,5,386,45"/>
-<area shape="rect" id="Node000002" href="$ModSequencer_8h.html" title=" " alt="" coords="5,93,135,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="247,48,118,91,116,86,246,43"/>
-<area shape="rect" id="Node000005" href="$DSPUtils_8h.html" title=" " alt="" coords="159,93,325,119"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="290,47,261,84,257,81,285,44"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="265,167,328,192"/>
-<area shape="poly" id="edge8_Node000001_Node000006" title=" " alt="" coords="319,44,337,78,341,99,339,119,330,140,318,157,314,154,326,137,334,118,336,99,332,80,314,47"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="361,167,446,192"/>
-<area shape="poly" id="edge9_Node000001_Node000007" title=" " alt="" coords="321,44,358,92,393,152,389,155,353,95,317,48"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="42,167,98,192"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="73,119,73,153,67,153,67,119"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="157,167,223,192"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="91,116,160,157,157,162,88,121"/>
-<area shape="poly" id="edge7_Node000005_Node000004" title=" " alt="" coords="236,121,209,157,204,154,231,117"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="253,117,282,154,277,157,249,121"/>
-<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="269,116,366,159,363,163,267,121"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="259,5,427,45"/>
+<area shape="rect" id="Node000002" href="$ModSequencer_8h.html" title=" " alt="" coords="37,93,166,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="286,48,151,92,149,86,284,43"/>
+<area shape="rect" id="Node000005" href="$DSPUtils_8h.html" title=" " alt="" coords="191,93,356,119"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="328,47,295,84,291,81,324,44"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="381,93,443,119"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="361,44,394,81,390,84,357,47"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="468,93,553,119"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="384,43,475,85,472,90,382,48"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,167,61,192"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="92,121,56,158,52,155,88,117"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="85,167,152,192"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="107,118,115,153,110,154,102,120"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="193,167,354,192"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="276,119,276,153,271,153,271,119"/>
 </map>

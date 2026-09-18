@@ -87,107 +87,88 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;../../ABDSharedCode/HardwareDrivers/SysExCodec.h&quot;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">using </span>abd::hw::SysExCodec;</div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="MS2000ProgramData_8h.html">MS2000ProgramData.h</a>&quot;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="SysExManager_8h.html">SysExManager.h</a>&quot;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;array&gt;</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;cstring&gt;</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceABDMS2000.html">ABDMS2000</a> {</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment"></span> </div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> * @brief Exporter for Korg MS2000 / microKORG System Exclusive (.syx) patch files.</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"> * Encodes 8-bit memory structures to 7-bit MIDI safe blocks.</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"> */</span></div>
-<div class="foldopen" id="foldopen00018" data-start="{" data-end="};">
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2000SysExExporter.html">   18</a></span><span class="keyword">class </span><a class="code hl_class" href="classABDMS2000_1_1MS2000SysExExporter.html">MS2000SysExExporter</a> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>{</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2000SysExExporter.html#aa126bcfee39f8e11d43091cafcf616e2">   21</a></span>    <a class="code hl_function" href="classABDMS2000_1_1MS2000SysExExporter.html#aa126bcfee39f8e11d43091cafcf616e2">MS2000SysExExporter</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2000SysExExporter.html#a3a818ae2358abede5babb86f3a0eabe8">   22</a></span>    <a class="code hl_function" href="classABDMS2000_1_1MS2000SysExExporter.html#a3a818ae2358abede5babb86f3a0eabe8">~MS2000SysExExporter</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment"></span> </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">    /**</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment">     * Builds a 1-program SysEx message (.syx) compatible with physical Korg MS2000 hardware.</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment">     * @param apvts Reference to the AudioProcessorValueTreeState containing the current patch parameters.</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment">     * @param programName 12-character ASCII program name to embed in the preset.</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment">     * @param outSysExBuffer MemoryBlock where the resulting packed SysEx message will be written.</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment">     * @param midiChannel Global MIDI channel (1 to 16, default 1).</span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment">     */</span></div>
-<div class="foldopen" id="foldopen00031" data-start="{" data-end="}">
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2000SysExExporter.html#ad784d0c0b0d0a120c07f631efa7b101d">   31</a></span>    <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1MS2000SysExExporter.html#ad784d0c0b0d0a120c07f631efa7b101d">exportSingleProgram</a>(<span class="keyword">const</span> juce::AudioProcessorValueTreeState&amp; apvts, </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>                                     <span class="keyword">const</span> juce::String&amp; programName, </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>                                     juce::MemoryBlock&amp; outSysExBuffer,</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>                                     <span class="keywordtype">int</span> midiChannel = 1)</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    {</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        <span class="comment">// 1. Extract data into the 128-byte raw program buffer</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        <a class="code hl_struct" href="structABDMS2000_1_1MS2000ProgramData.html">MS2000ProgramData</a> progData;</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        progData.extractFromAPVTS(apvts, programName.toStdString());</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        <span class="comment">// 2. Empaquetar de 8-bits a 7-bits (ventanas de 7 bytes -&gt; 1 MSB collector + 7 data bytes)</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        std::vector&lt;uint8_t&gt; packed7Bit;</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        SysExCodec::pack8to7(progData.<a class="code hl_variable" href="structABDMS2000_1_1MS2000ProgramData.html#a54fb03d5f22075ea58512995d5eefe92">rawData</a>.data(), <a class="code hl_variable" href="structABDMS2000_1_1MS2000ProgramData.html#a6d99c5ab129ed7c468fdbbe24de61ce2">MS2000ProgramData::UNPACKED_PROGRAM_SIZE</a>, packed7Bit);</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <span class="comment">// 3. Construir la cabecera oficial de Korg y volcar a MemoryBlock</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        outSysExBuffer.clear();</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        <span class="keywordtype">int</span> ch = std::max(1, std::min(16, midiChannel));</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        outSysExBuffer.appendByte(0xF0); <span class="comment">// Exclusive Status</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        outSysExBuffer.appendByte(0x42); <span class="comment">// Korg ID</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        outSysExBuffer.appendByte(<span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(0x30 | (ch - 1))); <span class="comment">// Channel format 30..3F</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        outSysExBuffer.appendByte(0x58); <span class="comment">// Model ID: MS2000</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        outSysExBuffer.appendByte(0x40); <span class="comment">// 1-Program Data Dump (0x40 / 0x4C)</span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        outSysExBuffer.append(packed7Bit.data(), packed7Bit.size());</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        outSysExBuffer.appendByte(0xF7); <span class="comment">// End of Exclusive</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    }</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="ABDSynthsSysEx_8h.html">ABDSynthsSysEx.h</a>&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="SysExManager_8h.html">SysExManager.h</a>&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;array&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;cstring&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceABDMS2000.html">ABDMS2000</a> {</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"></span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"> * @brief Exportador de presets **propios** del plugin a `.syx`.</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment"> * Emite tramas de **ABDSynths** (fabricante `0x7D`, modelo `0x0A`), no tramas de Korg:</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment"> * el bloque que exporta es el preset nativo del motor (`UNPACKED_PROGRAM_SIZE`, hoy</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment"> * 384 B), que no es el programa de 254 B de un MS2000 real. Para volcar un parche *al* MS2000 está</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment"> * `SysExManager::createHardwareProgramDump` / `MS2000HardwareProgram`. Con la cabecera</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment"> * de Korg un equipo real recibiría estos datos y los interpretaría mal.</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment"> * (El nombre del archivo/ clase se conserva por compatibilidad con lo que ya lo</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment"> * incluía; el formato que emite es el de la casa.)</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment"> */</span></div>
+<div class="foldopen" id="foldopen00027" data-start="{" data-end="};">
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2000SysExExporter.html">   27</a></span><span class="keyword">class </span><a class="code hl_class" href="classABDMS2000_1_1MS2000SysExExporter.html">MS2000SysExExporter</a> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>{</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2000SysExExporter.html#aa126bcfee39f8e11d43091cafcf616e2">   30</a></span>    <a class="code hl_function" href="classABDMS2000_1_1MS2000SysExExporter.html#aa126bcfee39f8e11d43091cafcf616e2">MS2000SysExExporter</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2000SysExExporter.html#a3a818ae2358abede5babb86f3a0eabe8">   31</a></span>    <a class="code hl_function" href="classABDMS2000_1_1MS2000SysExExporter.html#a3a818ae2358abede5babb86f3a0eabe8">~MS2000SysExExporter</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment"></span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">    /**</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">     * Builds a 1-program SysEx message (.syx) compatible with physical Korg MS2000 hardware.</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment">     * @param apvts Reference to the AudioProcessorValueTreeState containing the current patch parameters.</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment">     * @param programName 12-character ASCII program name to embed in the preset.</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="comment">     * @param outSysExBuffer MemoryBlock where the resulting packed SysEx message will be written.</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">     * @param midiChannel Global MIDI channel (1 to 16, default 1).</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment">     */</span></div>
+<div class="foldopen" id="foldopen00040" data-start="{" data-end="}">
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2000SysExExporter.html#ad784d0c0b0d0a120c07f631efa7b101d">   40</a></span>    <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1MS2000SysExExporter.html#ad784d0c0b0d0a120c07f631efa7b101d">exportSingleProgram</a>(<span class="keyword">const</span> juce::AudioProcessorValueTreeState&amp; apvts, </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>                                     <span class="keyword">const</span> juce::String&amp; programName, </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>                                     juce::MemoryBlock&amp; outSysExBuffer,</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>                                     <span class="keywordtype">int</span> midiChannel = 1)</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    {</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        <span class="comment">// 1. Extract data into the raw program buffer (UNPACKED_PROGRAM_SIZE)</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        <a class="code hl_struct" href="structABDMS2000_1_1MS2000ProgramData.html">MS2000ProgramData</a> progData;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        progData.extractFromAPVTS(apvts, programName.toStdString());</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        <span class="comment">// 2. Trama propia de ABDSynths (fabricante 0x7D, modelo 0x0A)</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        <span class="keyword">const</span> <span class="keyword">auto</span> sysex = <a class="code hl_function" href="structABDMS2000_1_1ABDSynthsSysEx.html#a04406a44e60455d8911c547c231e9acc">ABDSynthsSysEx::buildProgramDump</a>(progData);</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        outSysExBuffer.reset(); <span class="comment">// `MemoryBlock` no tiene clear(): este header no compilaba</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        outSysExBuffer.append(sysex.data(), sysex.size());</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        juce::ignoreUnused(midiChannel);</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    }</div>
 </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="comment"></span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment">    /**</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment">     * Exports a full bank of 128 programs to an All-Data Dump (.syx) message.</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="comment">     */</span></div>
-<div class="foldopen" id="foldopen00061" data-start="{" data-end="}">
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2000SysExExporter.html#a82842d9ace2cdaf6f9bdeb57216b53fb">   61</a></span>    <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1MS2000SysExExporter.html#a82842d9ace2cdaf6f9bdeb57216b53fb">exportBank</a>(<span class="keyword">const</span> std::array&lt;MS2000ProgramData, 128&gt;&amp; bank,</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                           juce::MemoryBlock&amp; outSysExBuffer,</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>                           <span class="keywordtype">int</span> midiChannel = 1)</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    {</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        std::vector&lt;uint8_t&gt; allRaw;</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        allRaw.reserve(128 * <a class="code hl_variable" href="structABDMS2000_1_1MS2000ProgramData.html#a6d99c5ab129ed7c468fdbbe24de61ce2">MS2000ProgramData::UNPACKED_PROGRAM_SIZE</a>);</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; prog : bank)</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        {</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>            allRaw.insert(allRaw.end(), prog.rawData.begin(), prog.rawData.end());</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        }</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        std::vector&lt;uint8_t&gt; packed7Bit;</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        SysExCodec::pack8to7(allRaw.data(), allRaw.size(), packed7Bit);</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        outSysExBuffer.clear();</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        <span class="keywordtype">int</span> ch = std::max(1, std::min(16, midiChannel));</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        outSysExBuffer.appendByte(0xF0);</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        outSysExBuffer.appendByte(0x42);</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        outSysExBuffer.appendByte(<span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(0x30 | (ch - 1)));</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        outSysExBuffer.appendByte(0x58);</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        outSysExBuffer.appendByte(0x4C); <span class="comment">// All Data Dump</span></div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        outSysExBuffer.append(packed7Bit.data(), packed7Bit.size());</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        outSysExBuffer.appendByte(0xF7);</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    }</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment"></span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="comment">    /** Exporta la memoria completa (128 presets nativos con byte dirigido) como volcado de ABDSynths. */</span></div>
+<div class="foldopen" id="foldopen00058" data-start="{" data-end="}">
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2000SysExExporter.html#a82842d9ace2cdaf6f9bdeb57216b53fb">   58</a></span>    <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1MS2000SysExExporter.html#a82842d9ace2cdaf6f9bdeb57216b53fb">exportBank</a>(<span class="keyword">const</span> std::array&lt;MS2000ProgramData, 128&gt;&amp; bank,</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                           juce::MemoryBlock&amp; outSysExBuffer,</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>                           <span class="keywordtype">int</span> midiChannel = 1)</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    {</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        <span class="keyword">const</span> <span class="keyword">auto</span> sysex = <a class="code hl_function" href="structABDMS2000_1_1ABDSynthsSysEx.html#af8b2c6273ee79edf93f350678b4721ee">ABDSynthsSysEx::buildBankDump</a>(bank);</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        outSysExBuffer.reset();</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        outSysExBuffer.append(sysex.data(), sysex.size());</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        juce::ignoreUnused(midiChannel);</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    }</div>
 </div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>};</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>};</div>
 </div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>} <span class="comment">// namespace ABDMS2000</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>} <span class="comment">// namespace ABDMS2000</span></div>
+<div class="ttc" id="aABDSynthsSysEx_8h_html"><div class="ttname"><a href="ABDSynthsSysEx_8h.html">ABDSynthsSysEx.h</a></div></div>
 <div class="ttc" id="aMS2000ProgramData_8h_html"><div class="ttname"><a href="MS2000ProgramData_8h.html">MS2000ProgramData.h</a></div></div>
 <div class="ttc" id="aSysExManager_8h_html"><div class="ttname"><a href="SysExManager_8h.html">SysExManager.h</a></div></div>
-<div class="ttc" id="aclassABDMS2000_1_1MS2000SysExExporter_html"><div class="ttname"><a href="classABDMS2000_1_1MS2000SysExExporter.html">ABDMS2000::MS2000SysExExporter</a></div><div class="ttdoc">Exporter for Korg MS2000 / microKORG System Exclusive (.syx) patch files. Encodes 8-bit memory struct...</div><div class="ttdef"><b>Definition</b> MS2000SysExExporter.h:19</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2000SysExExporter_html"><div class="ttname"><a href="classABDMS2000_1_1MS2000SysExExporter.html">ABDMS2000::MS2000SysExExporter</a></div><div class="ttdoc">Exportador de presets propios del plugin a .syx.</div><div class="ttdef"><b>Definition</b> MS2000SysExExporter.h:28</div></div>
 <div class="ttc" id="aclassABDMS2000_1_1MS2000SysExExporter_html_a3a818ae2358abede5babb86f3a0eabe8"><div class="ttname"><a href="classABDMS2000_1_1MS2000SysExExporter.html#a3a818ae2358abede5babb86f3a0eabe8">ABDMS2000::MS2000SysExExporter::~MS2000SysExExporter</a></div><div class="ttdeci">~MS2000SysExExporter()=default</div></div>
-<div class="ttc" id="aclassABDMS2000_1_1MS2000SysExExporter_html_a82842d9ace2cdaf6f9bdeb57216b53fb"><div class="ttname"><a href="classABDMS2000_1_1MS2000SysExExporter.html#a82842d9ace2cdaf6f9bdeb57216b53fb">ABDMS2000::MS2000SysExExporter::exportBank</a></div><div class="ttdeci">static void exportBank(const std::array&lt; MS2000ProgramData, 128 &gt; &amp;bank, juce::MemoryBlock &amp;outSysExBuffer, int midiChannel=1)</div><div class="ttdef"><b>Definition</b> MS2000SysExExporter.h:61</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2000SysExExporter_html_a82842d9ace2cdaf6f9bdeb57216b53fb"><div class="ttname"><a href="classABDMS2000_1_1MS2000SysExExporter.html#a82842d9ace2cdaf6f9bdeb57216b53fb">ABDMS2000::MS2000SysExExporter::exportBank</a></div><div class="ttdeci">static void exportBank(const std::array&lt; MS2000ProgramData, 128 &gt; &amp;bank, juce::MemoryBlock &amp;outSysExBuffer, int midiChannel=1)</div><div class="ttdef"><b>Definition</b> MS2000SysExExporter.h:58</div></div>
 <div class="ttc" id="aclassABDMS2000_1_1MS2000SysExExporter_html_aa126bcfee39f8e11d43091cafcf616e2"><div class="ttname"><a href="classABDMS2000_1_1MS2000SysExExporter.html#aa126bcfee39f8e11d43091cafcf616e2">ABDMS2000::MS2000SysExExporter::MS2000SysExExporter</a></div><div class="ttdeci">MS2000SysExExporter()=default</div></div>
-<div class="ttc" id="aclassABDMS2000_1_1MS2000SysExExporter_html_ad784d0c0b0d0a120c07f631efa7b101d"><div class="ttname"><a href="classABDMS2000_1_1MS2000SysExExporter.html#ad784d0c0b0d0a120c07f631efa7b101d">ABDMS2000::MS2000SysExExporter::exportSingleProgram</a></div><div class="ttdeci">static void exportSingleProgram(const juce::AudioProcessorValueTreeState &amp;apvts, const juce::String &amp;programName, juce::MemoryBlock &amp;outSysExBuffer, int midiChannel=1)</div><div class="ttdef"><b>Definition</b> MS2000SysExExporter.h:31</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2000SysExExporter_html_ad784d0c0b0d0a120c07f631efa7b101d"><div class="ttname"><a href="classABDMS2000_1_1MS2000SysExExporter.html#ad784d0c0b0d0a120c07f631efa7b101d">ABDMS2000::MS2000SysExExporter::exportSingleProgram</a></div><div class="ttdeci">static void exportSingleProgram(const juce::AudioProcessorValueTreeState &amp;apvts, const juce::String &amp;programName, juce::MemoryBlock &amp;outSysExBuffer, int midiChannel=1)</div><div class="ttdef"><b>Definition</b> MS2000SysExExporter.h:40</div></div>
 <div class="ttc" id="anamespaceABDMS2000_html"><div class="ttname"><a href="namespaceABDMS2000.html">ABDMS2000</a></div><div class="ttdef"><b>Definition</b> AppLogger.h:15</div></div>
-<div class="ttc" id="astructABDMS2000_1_1MS2000ProgramData_html"><div class="ttname"><a href="structABDMS2000_1_1MS2000ProgramData.html">ABDMS2000::MS2000ProgramData</a></div><div class="ttdoc">Korg MS2000 Program Data — 128-byte Sysex layout with registry-driven encoding.</div><div class="ttdef"><b>Definition</b> MS2000ProgramData.h:35</div></div>
-<div class="ttc" id="astructABDMS2000_1_1MS2000ProgramData_html_a54fb03d5f22075ea58512995d5eefe92"><div class="ttname"><a href="structABDMS2000_1_1MS2000ProgramData.html#a54fb03d5f22075ea58512995d5eefe92">ABDMS2000::MS2000ProgramData::rawData</a></div><div class="ttdeci">std::array&lt; uint8_t, UNPACKED_PROGRAM_SIZE &gt; rawData</div><div class="ttdef"><b>Definition</b> MS2000ProgramData.h:42</div></div>
-<div class="ttc" id="astructABDMS2000_1_1MS2000ProgramData_html_a6d99c5ab129ed7c468fdbbe24de61ce2"><div class="ttname"><a href="structABDMS2000_1_1MS2000ProgramData.html#a6d99c5ab129ed7c468fdbbe24de61ce2">ABDMS2000::MS2000ProgramData::UNPACKED_PROGRAM_SIZE</a></div><div class="ttdeci">static constexpr size_t UNPACKED_PROGRAM_SIZE</div><div class="ttdef"><b>Definition</b> MS2000ProgramData.h:36</div></div>
+<div class="ttc" id="astructABDMS2000_1_1ABDSynthsSysEx_html_a04406a44e60455d8911c547c231e9acc"><div class="ttname"><a href="structABDMS2000_1_1ABDSynthsSysEx.html#a04406a44e60455d8911c547c231e9acc">ABDMS2000::ABDSynthsSysEx::buildProgramDump</a></div><div class="ttdeci">static std::vector&lt; uint8_t &gt; buildProgramDump(const MS2000ProgramData &amp;program)</div><div class="ttdef"><b>Definition</b> ABDSynthsSysEx.h:88</div></div>
+<div class="ttc" id="astructABDMS2000_1_1ABDSynthsSysEx_html_af8b2c6273ee79edf93f350678b4721ee"><div class="ttname"><a href="structABDMS2000_1_1ABDSynthsSysEx.html#af8b2c6273ee79edf93f350678b4721ee">ABDMS2000::ABDSynthsSysEx::buildBankDump</a></div><div class="ttdeci">static std::vector&lt; uint8_t &gt; buildBankDump(const Container &amp;programs)</div><div class="ttdef"><b>Definition</b> ABDSynthsSysEx.h:107</div></div>
+<div class="ttc" id="astructABDMS2000_1_1MS2000ProgramData_html"><div class="ttname"><a href="structABDMS2000_1_1MS2000ProgramData.html">ABDMS2000::MS2000ProgramData</a></div><div class="ttdoc">Programa propio del plugin (el sistema native que declara el contrato del host, ver Source/Plugin/Hos...</div><div class="ttdef"><b>Definition</b> MS2000ProgramData.h:46</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

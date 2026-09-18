@@ -6,10 +6,6 @@
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="199,44,244,82,241,86,195,48"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="55,167,111,192"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="85,119,85,153,80,153,80,119"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="137,167,199,192"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="252,121,197,161,194,156,249,117"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="224,167,309,192"/>
-<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="269,119,269,153,264,153,264,119"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="333,167,400,192"/>
-<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="284,117,341,156,338,161,281,121"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="186,167,347,192"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="269,119,269,153,264,153,264,119"/>
 </map>

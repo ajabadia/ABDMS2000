@@ -1,9 +1,21 @@
 var searchData=
 [
-  ['off_0',['off',['../namespaceABDMS2000.html#aeeb8952c9453dc41e0a762e9b21efcbaad15305d7a4e34e02489c74a5ef542f36',1,'ABDMS2000::Off'],['../namespaceABDMS2000.html#adbbc3364c941c8dc96e41f8200ca6f9dad15305d7a4e34e02489c74a5ef542f36',1,'ABDMS2000::Off']]],
+  ['off_0',['off',['../namespaceABDMS2000.html#ab30c4f4d8014ea1f4949a9b5ce870a4ead15305d7a4e34e02489c74a5ef542f36',1,'ABDMS2000::Off'],['../namespaceABDMS2000.html#adbbc3364c941c8dc96e41f8200ca6f9dad15305d7a4e34e02489c74a5ef542f36',1,'ABDMS2000::Off'],['../namespaceABDMS2000.html#aeeb8952c9453dc41e0a762e9b21efcbaad15305d7a4e34e02489c74a5ef542f36',1,'ABDMS2000::Off']]],
   ['organ_1',['Organ',['../namespaceABDMS2000.html#ace60b19366c10d097c16040807dbb0a5a0891cabee54d9799e07da860195f67b8',1,'ABDMS2000']]],
   ['organic_2',['Organic',['../namespaceABDMS2000.html#ace60b19366c10d097c16040807dbb0a5a7b291551dc64b95a2c0e172d009384fc',1,'ABDMS2000']]],
-  ['osc1ctrl1_3',['osc1ctrl1',['../namespaceABDMS2000.html#aa530c131cc34285864e95f03cf969614af7015c185d910d503aa7a29158cd5b67',1,'ABDMS2000::OSC1Ctrl1'],['../namespaceABDMS2000.html#a495c6af1070566573e5fb9f7628c8d46af7015c185d910d503aa7a29158cd5b67',1,'ABDMS2000::OSC1Ctrl1']]],
-  ['osc2pitch_4',['osc2pitch',['../namespaceABDMS2000.html#aa530c131cc34285864e95f03cf969614ad02565a905b7d863e5264e6f7b600941',1,'ABDMS2000::OSC2Pitch'],['../namespaceABDMS2000.html#a495c6af1070566573e5fb9f7628c8d46ad02565a905b7d863e5264e6f7b600941',1,'ABDMS2000::OSC2Pitch']]],
-  ['oscillatordirect_5',['OscillatorDirect',['../namespaceABDMS2000.html#a5554928cf64101079576fce8f1d5b8cea8d73c9ff426e63b14dbc9e171dc9369d',1,'ABDMS2000']]]
+  ['osc1_5fctrl1_3',['OSC1_CTRL1',['../structABDMS2000_1_1MS2000HardwareProgram_1_1ti.html#a419a390f4e12b6119fb0e0a27a43dd09a022ea34d84c614ef28409294f73b6456',1,'ABDMS2000::MS2000HardwareProgram::ti']]],
+  ['osc1_5fctrl2_4',['OSC1_CTRL2',['../structABDMS2000_1_1MS2000HardwareProgram_1_1ti.html#a419a390f4e12b6119fb0e0a27a43dd09a378e2cbc7e20198ee9499fa1aebf881e',1,'ABDMS2000::MS2000HardwareProgram::ti']]],
+  ['osc1_5fdwgs_5',['OSC1_DWGS',['../structABDMS2000_1_1MS2000HardwareProgram_1_1ti.html#a419a390f4e12b6119fb0e0a27a43dd09ac1605d8fe633e7e5c2acc37e526db30c',1,'ABDMS2000::MS2000HardwareProgram::ti']]],
+  ['osc1_5fwave_6',['OSC1_WAVE',['../structABDMS2000_1_1MS2000HardwareProgram_1_1ti.html#a419a390f4e12b6119fb0e0a27a43dd09a278fffb0cb09128555970d73c3888bda',1,'ABDMS2000::MS2000HardwareProgram::ti']]],
+  ['osc1ctrl1_7',['osc1ctrl1',['../namespaceABDMS2000.html#aa530c131cc34285864e95f03cf969614af7015c185d910d503aa7a29158cd5b67',1,'ABDMS2000::OSC1Ctrl1'],['../namespaceABDMS2000.html#a495c6af1070566573e5fb9f7628c8d46af7015c185d910d503aa7a29158cd5b67',1,'ABDMS2000::OSC1Ctrl1']]],
+  ['osc1ctrl2_8',['OSC1Ctrl2',['../namespaceABDMS2000.html#a495c6af1070566573e5fb9f7628c8d46af309ce308cc74d6d1c837c09d1f5afbb',1,'ABDMS2000']]],
+  ['osc1level_9',['OSC1Level',['../namespaceABDMS2000.html#a495c6af1070566573e5fb9f7628c8d46a7d2424abb0c8fee0bf157e766ce2ae6f',1,'ABDMS2000']]],
+  ['osc2_5fflags_10',['OSC2_FLAGS',['../structABDMS2000_1_1MS2000HardwareProgram_1_1ti.html#a419a390f4e12b6119fb0e0a27a43dd09a8d7a993054c961890188fc7fdad55980',1,'ABDMS2000::MS2000HardwareProgram::ti']]],
+  ['osc2_5fsemitone_11',['OSC2_SEMITONE',['../structABDMS2000_1_1MS2000HardwareProgram_1_1ti.html#a419a390f4e12b6119fb0e0a27a43dd09a1f0bd454d6db8b7c0a6fc12be5399319',1,'ABDMS2000::MS2000HardwareProgram::ti']]],
+  ['osc2_5ftune_12',['OSC2_TUNE',['../structABDMS2000_1_1MS2000HardwareProgram_1_1ti.html#a419a390f4e12b6119fb0e0a27a43dd09ae5a610cc8ec9c7c21386182dbe98dba0',1,'ABDMS2000::MS2000HardwareProgram::ti']]],
+  ['osc2level_13',['OSC2Level',['../namespaceABDMS2000.html#a495c6af1070566573e5fb9f7628c8d46af9cbdcf0640b57d12e292c051c80ca81',1,'ABDMS2000']]],
+  ['osc2pitch_14',['OSC2Pitch',['../namespaceABDMS2000.html#aa530c131cc34285864e95f03cf969614ad02565a905b7d863e5264e6f7b600941',1,'ABDMS2000']]],
+  ['osc2semi_15',['OSC2Semi',['../namespaceABDMS2000.html#a495c6af1070566573e5fb9f7628c8d46a972d213d668445fe33bb567a4662f047',1,'ABDMS2000']]],
+  ['osc2tune_16',['OSC2Tune',['../namespaceABDMS2000.html#a495c6af1070566573e5fb9f7628c8d46a2d0d2b4b7d4f8bd8fbe06ead9f41bdab',1,'ABDMS2000']]],
+  ['oscillatordirect_17',['OscillatorDirect',['../namespaceABDMS2000.html#a5554928cf64101079576fce8f1d5b8cea8d73c9ff426e63b14dbc9e171dc9369d',1,'ABDMS2000']]]
 ];

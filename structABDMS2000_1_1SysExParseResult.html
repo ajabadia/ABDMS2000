@@ -96,6 +96,8 @@ Atributos públicos</h2></td></tr>
 <tr class="separator:a25da367ce80fa77f7d9c65b44bb53fd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec75e1a0d4a9bf70909dae2afd7f6bc7" id="r_aec75e1a0d4a9bf70909dae2afd7f6bc7"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1SysExParseResult.html#aec75e1a0d4a9bf70909dae2afd7f6bc7">errorMessage</a></td></tr>
 <tr class="separator:aec75e1a0d4a9bf70909dae2afd7f6bc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a795b35fd4129ddc2b61aa53c6b7f6ff7" id="r_a795b35fd4129ddc2b61aa53c6b7f6ff7"><td class="memItemLeft" align="right" valign="top">std::vector&lt; uint8_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1SysExParseResult.html#a795b35fd4129ddc2b61aa53c6b7f6ff7">reply</a></td></tr>
+<tr class="separator:a795b35fd4129ddc2b61aa53c6b7f6ff7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Documentación de datos miembro</h2>
 <a id="aec75e1a0d4a9bf70909dae2afd7f6bc7" name="aec75e1a0d4a9bf70909dae2afd7f6bc7"></a>
@@ -165,6 +167,24 @@ Atributos públicos</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a795b35fd4129ddc2b61aa53c6b7f6ff7" name="a795b35fd4129ddc2b61aa53c6b7f6ff7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a795b35fd4129ddc2b61aa53c6b7f6ff7">&#9670;&#160;</a></span>reply</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;uint8_t&gt; ABDMS2000::SysExParseResult::reply</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Bytes que hay que devolver por el cable por haber recibido este mensaje (vacío si no toca contestar nada):</p><ul>
+<li>el volcado que responde a una petición <code>0x10</code>/<code>0x0E</code>;</li>
+<li>el acuse <code>0x23</code>/<code>0x24</code> de una escritura <code>0x40</code>/<code>0x4C</code> (guardada o no). El transporte MIDI lo manda tal cual; al importar un archivo se ignora. </li>
+</ul>
 
 </div>
 </div>

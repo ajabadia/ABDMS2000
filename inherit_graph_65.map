@@ -1,9 +1,5 @@
 <map id="Gráfico de jerarquía de clases" name="Gráfico de jerarquía de clases">
-<area shape="rect" id="Node000000" title=" " alt="" coords="14,5,173,31"/>
-<area shape="rect" id="Node000001" href="$classABDMS2000_1_1ABDMS2000StandaloneApp_1_1MainWindow.html" title=" " alt="" coords="229,47,492,87"/>
-<area shape="poly" id="edge6_Node000000_Node000001" title=" " alt="" coords="177,31,252,45,251,50,176,36"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,55,181,80"/>
-<area shape="poly" id="edge7_Node000002_Node000001" title=" " alt="" coords="195,65,229,65,229,70,195,70"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="16,104,171,129"/>
-<area shape="poly" id="edge8_Node000003_Node000001" title=" " alt="" coords="176,99,251,85,252,90,177,104"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,13,181,38"/>
+<area shape="rect" id="Node000001" href="$classABDMS2000_1_1ScopeFloatingWindow.html" title="Native floating analytical window embedding the ABDScope WebUI (Multi&#45;Lane &amp; Waterfall)." alt="" coords="229,5,432,45"/>
+<area shape="poly" id="edge10_Node000000_Node000001" title=" " alt="" coords="195,23,229,23,229,28,195,28"/>
 </map>

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Korg MS2000 - Especificación de Mensajes SysEx y Offsets Hexadecimales</title>
+<title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Korg MS2000 — Especificación de Mensajes SysEx y Offsets Hexadecimales</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -69,22 +69,32 @@ $(function() {
 
 </div><!-- top -->
 <div><div class="header">
-  <div class="headertitle"><div class="title">Korg MS2000 - Especificación de Mensajes SysEx y Offsets Hexadecimales</div></div>
+  <div class="headertitle"><div class="title">Korg MS2000 — Especificación de Mensajes SysEx y Offsets Hexadecimales</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md131"></a> Este documento detalla la estructura y el mapeo de memoria de los mensajes de Sistema Exclusivo (SysEx) del Korg MS2000, fundamental para desarrollar el <code>MS2000SysExParser</code> en JUCE.</p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md131"></a> Este documento es la referencia canónica del <b>formato del equipo real</b> para <a class="el" href="namespaceABDMS2000.html">ABDMS2000</a>. Sustituye al mapa anterior, que describía los parámetros del <em>motor</em> del plugin (entonces un bloque de 128 B; hoy 384 B, ver §5) como si fueran los del MS2000. El mapa de aquí está contrastado con un dump real (patch <code>INIT Program</code>) y con el panel ReMS2000 (<code>DOCS/ReMS2000-main/ReMS2000.panel</code>, usado por la comunidad contra hardware de verdad).</p>
+<p>Implementación: <code><a class="el" href="MS2000HardwareProgram_8h.html">Source/MIDI/MS2000HardwareProgram.h</a></code> (modelo + mapeo al motor) y <code><a class="el" href="SysExManager_8cpp.html">Source/MIDI/SysExManager.cpp</a></code> (entrada/salida MIDI).</p>
+<blockquote class="doxtable">
+<p>&zwj;[!IMPORTANT] Hay <b>dos formatos</b> y no se mezclan:</p><ul>
+<li><b>MS2000 real (Korg, 254 B)</b>: lo que sale y entra por MIDI de un MS2000 físico. Cabecera <code>F0 42 3n 58</code>, programa de 254 B.</li>
+<li><b>Preset del plugin (ABDSynths, 384 B)</b>: el bloque propio del motor, sistema <code>native</code> del contrato del host. Cabecera <code>F0 7D 0A</code> (fabricante <code>0x7D</code>, modelo <code>0x0A</code>). <b>No</b> se le pone cabecera de Korg: un MS2000 real lo leería mal. Ver <code><a class="el" href="ABDSynthsSysEx_8h.html">Source/MIDI/ABDSynthsSysEx.h</a></code> y §5. <b>Spec completa del formato propio:</b> <code>DOCS/ABDSynths_SysEx_Spec.md</code>. </li>
+</ul>
+</blockquote>
 <h1><a class="anchor" id="autotoc_md132"></a>
-1. Estructura de Cabecera SysEx</h1>
-<p>Todos los mensajes SysEx del MS2000 comienzan y terminan con la siguiente secuencia de bytes:</p>
+1. Estructura de Cabecera SysEx (MS2000 real)</h1>
 <div class="fragment"><div class="line">F0 42 3n 58 [Comando] [Datos...] F7</div>
 </div><!-- fragment --><ul>
 <li>**<code>F0</code>**: Inicio de SysEx (Exclusive Status).</li>
 <li>**<code>42</code>**: Korg Manufacturer ID.</li>
-<li>**<code>3n</code>**: Device ID y Canal MIDI (donde <code>n</code> es el canal de 0x0 a 0xF).</li>
-<li>**<code>58</code>**: Model ID del MS2000 / MS2000R.</li>
-<li>**<code>[Comando]</code>**: El tipo de operación que se está realizando.</li>
-<li>**<code>[Datos]</code>**: El bloque de información (parámetros o volcados), codificado siempre en 7-bits.</li>
-<li>**<code>F7</code>**: Fin de SysEx (End Of Exclusive).</li>
+<li>**<code>3n</code>**: Device ID y Canal MIDI (donde <code>n</code> es el canal de <code>0x0</code> a <code>0xF</code>, o sea canal MIDI 1 → <code>0x30</code>).<ul>
+<li><b>La lectura desplazada</b> (<code>n = canal − 1</code>) es la de los dos extremos desde <b>2026-09-15</b>: el plugin (<code>MS2000HardwareProgram::korgChannelByte</code>) y el ABD Bank Manager (<code>korgChannelByte</code> en <code>Source/Contracts/Models/korg-ms2000.ts</code>, compartido con el Prophecy). Antes el Banco emitía <code>0x30 | canal</code> (canal 1 → <code>0x31</code>), <b>un desplazado</b> — no coincidía con los 23 de 24 volcados reales de fábrica de Korg del repo (<code>ABDBankManager/fixtures/sysex/</code>, todos <code>F0 42 30</code>) ni podía direccionar el canal 16 (<code>0x30 | 16</code> se colapsa en <code>0x30</code>, porque el bit 4 ya está puesto en la base). El único fixture con otro byte (<code>0x3E</code>) solo encaja como canal 15.</li>
+<li>⚠️ <em>Pendiente de confirmar con el equipo</em> (item 4 del <code>ROADMAP.md</code>): con el MS2000 en canal 1, mandarle <code>F0 42 30 58 10 F7</code> y <code>F0 42 31 58 10 F7</code> y ver cuál contesta. Si contestara al <code>0x31</code>, la corrección se revierte en un punto único por lado (<code>KORG_CHANNEL_ZERO_BASED</code> en el contrato y <code>korgChannelByte</code> en el C++) y su test (<code>WebUI/tests/unit/korgChannelConvention.test.js</code>) fija el comportamiento actual. El C++ ya cubre el eco del byte del emisor para esa misma petición (<code>[Test 22]</code>: <code>F0 42 30 58 10 F7</code> → respuesta en <code>0x30</code>), y desde el mismo día hay un E2E que ata los dos repos: <code>[Test 25]</code> <b>no escribe la fórmula</b> — repetirla es justo como se cuela el desplazamiento —, sino que consume las tramas que <b>emite el contrato del Banco</b>, compiladas a <code><a class="el" href="KorgChannel_8gen_8h.html">Source/MIDI/KorgChannel.gen.h</a></code> por <code>Scripts/generate_korg_channel.js</code> (paso 1 de <code>build.bat</code>, igual que <code><a class="el" href="HostModelId_8gen_8h.html">HostModelId.gen.h</a></code>), y comprueba que el plugin reconoce cada una en su canal y contesta en el <b>mismo</b> byte: los 16 canales y las dos peticiones (<code>0x10</code> y <code>0x0E</code>). Si algún lado se vuelve a desplazar, ese test cae.</li>
+</ul>
+</li>
+<li>**<code>58</code>**: Model ID del MS2000 / MS2000R (el microKORG lo comparte).</li>
+<li>**<code>[Comando]</code>**: el tipo de operación.</li>
+<li>**<code>[Datos]</code>**: el bloque de información, codificado en 7 bits.</li>
+<li>**<code>F7</code>**: Fin de Exclusive.</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md133"></a>
 2. Comandos Principales (Sub-status)</h1>
@@ -92,172 +102,228 @@ $(function() {
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Código Hex   </th><th class="markdownTableHeadNone">Nombre del Comando   </th><th class="markdownTableHeadNone">Descripción    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">**<code>41</code>**   </td><td class="markdownTableBodyNone"><b>Parameter Change</b>   </td><td class="markdownTableBodyNone">Modifica el valor de un solo parámetro en tiempo real. Formato: <code>F0 42 3n 58 41 [Offset Low] [Offset High] [Value] F7</code>.    </td></tr>
+<td class="markdownTableBodyNone">**<code>41</code>**   </td><td class="markdownTableBodyNone"><b>Parameter Change</b>   </td><td class="markdownTableBodyNone">Modifica un solo parámetro en tiempo real: <code>F0 42 3n 58 41 [Offset Low] [Offset High] [Value] F7</code>.    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">**<code>10</code>**   </td><td class="markdownTableBodyNone"><b>Program Data Dump Request</b>   </td><td class="markdownTableBodyNone">Petición desde el software para que el hardware envíe el parche activo.    </td></tr>
+<td class="markdownTableBodyNone">**<code>10</code>**   </td><td class="markdownTableBodyNone"><b>Program Data Dump Request</b>   </td><td class="markdownTableBodyNone">El software pide al hardware el parche activo.    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">**<code>40</code>**   </td><td class="markdownTableBodyNone"><b>Program Data Dump</b>   </td><td class="markdownTableBodyNone">Volcado de un solo parche. Almacena todos los offsets de memoria de forma contigua. Los datos a partir de aquí requieren desempaquetado de 7 a 8 bits.    </td></tr>
+<td class="markdownTableBodyNone">**<code>40</code>**   </td><td class="markdownTableBodyNone"><b>Program Data Dump</b>   </td><td class="markdownTableBodyNone">Volcado de un parche: <b>254 B</b> empaquetados.    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">**<code>0E</code>**   </td><td class="markdownTableBodyNone"><b>All Data Dump Request</b>   </td><td class="markdownTableBodyNone">Petición de volcado completo de la memoria.    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">**<code>4C</code>**   </td><td class="markdownTableBodyNone"><b>All Data Dump</b>   </td><td class="markdownTableBodyNone">Volcado de los 128 parches del hardware.    </td></tr>
+<td class="markdownTableBodyNone">**<code>4C</code>**   </td><td class="markdownTableBodyNone"><b>All Data Dump</b>   </td><td class="markdownTableBodyNone">Volcado de los programas de la memoria (254 B cada uno).    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">**<code>23</code>**   </td><td class="markdownTableBodyNone"><b>Write Completed</b>   </td><td class="markdownTableBodyNone">Confirmación (ACK) de que los datos fueron recibidos y guardados con éxito.    </td></tr>
+<td class="markdownTableBodyNone">**<code>23</code>**   </td><td class="markdownTableBodyNone"><b>Write Completed</b>   </td><td class="markdownTableBodyNone">ACK.    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">**<code>24</code>**   </td><td class="markdownTableBodyNone"><b>Write Error</b>   </td><td class="markdownTableBodyNone">Notificación (NACK) de error al escribir datos en memoria.   </td></tr>
+<td class="markdownTableBodyNone">**<code>24</code>**   </td><td class="markdownTableBodyNone"><b>Write Error</b>   </td><td class="markdownTableBodyNone">NACK.   </td></tr>
 </table>
-<hr  />
-<h1><a class="anchor" id="autotoc_md135"></a>
-3. Mapa de Offsets (Timbre 1 / Program Parameters)</h1>
-<p>Este mapa define la dirección de memoria interna para el <b>Timbre 1</b> y los parámetros globales. Cada parámetro acepta valores decimales de 0 a 127 (7 bits). El Timbre 2 tiene una estructura idéntica pero sumando un desplazamiento (offset) base a estos valores.</p>
-<h2><a class="anchor" id="autotoc_md136"></a>
-3.1 Parámetros Globales (Voice &amp; Arpeggiator)</h2>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadNone">Offset Hex   </th><th class="markdownTableHeadNone">Parámetro   </th><th class="markdownTableHeadNone">Rango / Valores (Dec)    </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>0x00</code>   </td><td class="markdownTableBodyNone">Voice Assign Mode   </td><td class="markdownTableBodyNone">0=Mono, 1=Poly, 2=Unison    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>0x01</code>   </td><td class="markdownTableBodyNone">Arpeggiator Switch   </td><td class="markdownTableBodyNone">0=Off, 127=On    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>0x02</code>   </td><td class="markdownTableBodyNone">Arp Type   </td><td class="markdownTableBodyNone">0=Up, 1=Down, 2=Alt1, 3=Alt2, 4=Random, 5=Trigger    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>0x03</code>   </td><td class="markdownTableBodyNone">Arp Range   </td><td class="markdownTableBodyNone">0=1 Octava, 1=2 Octavas, 2=3 Octavas, 3=4 Octavas    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>0x04</code>   </td><td class="markdownTableBodyNone">Arp Gate   </td><td class="markdownTableBodyNone">0 a 127 (0% a 100% de duración de paso)    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>0x08</code>   </td><td class="markdownTableBodyNone">Unison Detune   </td><td class="markdownTableBodyNone">0 a 99 (cents de desafinación)   </td></tr>
-</table>
-<h2><a class="anchor" id="autotoc_md137"></a>
-3.2 Timbre 1: Osciladores y Mezclador</h2>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadNone">Offset Hex   </th><th class="markdownTableHeadNone">Parámetro   </th><th class="markdownTableHeadNone">Rango / Valores (Dec)    </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>0x0E</code>   </td><td class="markdownTableBodyNone">OSC1 Waveform   </td><td class="markdownTableBodyNone">0=Saw, 1=Pulse, 2=Tri, 3=Sine, 4=Vox, 5=DWGS, 6=Noise, 7=AudioIn    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>0x0F</code>   </td><td class="markdownTableBodyNone">OSC1 Control 1   </td><td class="markdownTableBodyNone">0 a 127 (Ej: Ancho de pulso o parámetro principal)    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>0x10</code>   </td><td class="markdownTableBodyNone">OSC1 Control 2   </td><td class="markdownTableBodyNone">0 a 127 (Si Wave=DWGS, selecciona tabla de 0 a 63)    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>0x11</code>   </td><td class="markdownTableBodyNone">OSC2 Waveform   </td><td class="markdownTableBodyNone">0=Saw, 1=Square, 2=Triangle    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>0x12</code>   </td><td class="markdownTableBodyNone">OSC2 Modulation   </td><td class="markdownTableBodyNone">0=Off, 1=Ring, 2=Sync, 3=Cross Mod    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>0x14</code>   </td><td class="markdownTableBodyNone">OSC2 Semitone   </td><td class="markdownTableBodyNone">-24 a +24 (Offset de semitonos)    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>0x15</code>   </td><td class="markdownTableBodyNone">OSC2 Tune   </td><td class="markdownTableBodyNone">-50 a +50 (Cents)    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>0x18</code>   </td><td class="markdownTableBodyNone">Mixer: OSC1 Level   </td><td class="markdownTableBodyNone">0 a 127    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>0x19</code>   </td><td class="markdownTableBodyNone">Mixer: OSC2 Level   </td><td class="markdownTableBodyNone">0 a 127    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>0x1A</code>   </td><td class="markdownTableBodyNone">Mixer: Noise Level   </td><td class="markdownTableBodyNone">0 a 127   </td></tr>
-</table>
-<h2><a class="anchor" id="autotoc_md138"></a>
-3.3 Timbre 1: Filtro, Amplificador y Distorsión</h2>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadNone">Offset Hex   </th><th class="markdownTableHeadNone">Parámetro   </th><th class="markdownTableHeadNone">Rango / Valores (Dec)    </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>0x1B</code>   </td><td class="markdownTableBodyNone">Filter Type   </td><td class="markdownTableBodyNone">0-31=24dB LPF, 32-63=12dB LPF, 64-95=12dB BPF, 96-127=12dB HPF    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>0x1C</code>   </td><td class="markdownTableBodyNone">Cutoff Frequency   </td><td class="markdownTableBodyNone">0 a 127    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>0x1D</code>   </td><td class="markdownTableBodyNone">Resonance   </td><td class="markdownTableBodyNone">0 a 127 (Atenúa graves. &gt;105 autooscila)    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>0x1E</code>   </td><td class="markdownTableBodyNone">EG1 Intensity   </td><td class="markdownTableBodyNone">-63 a +63 (Ruteo directo EG1 -&gt; Cutoff)    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>0x1F</code>   </td><td class="markdownTableBodyNone">Keyboard Track   </td><td class="markdownTableBodyNone">-63 a +63    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>0x20</code>   </td><td class="markdownTableBodyNone">Amp Level   </td><td class="markdownTableBodyNone">0 a 127    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>0x21</code>   </td><td class="markdownTableBodyNone">Panpot   </td><td class="markdownTableBodyNone">0 a 127 (64 = Centro)    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>0x22</code>   </td><td class="markdownTableBodyNone">Amp Distortion   </td><td class="markdownTableBodyNone">0-63=Off, 64-127=On    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>0x23</code>   </td><td class="markdownTableBodyNone">Amp KBD Track   </td><td class="markdownTableBodyNone">-63 a +63 (Atenuación de volumen por altura de nota)   </td></tr>
-</table>
-<h2><a class="anchor" id="autotoc_md139"></a>
-3.4 Timbre 1: Envolventes (EG) y LFOs</h2>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadNone">Offset Hex   </th><th class="markdownTableHeadNone">Parámetro   </th><th class="markdownTableHeadNone">Rango / Valores (Dec)    </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>0x24</code>   </td><td class="markdownTableBodyNone">EG1 Attack   </td><td class="markdownTableBodyNone">0 a 127    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>0x25</code>   </td><td class="markdownTableBodyNone">EG1 Decay   </td><td class="markdownTableBodyNone">0 a 127    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>0x26</code>   </td><td class="markdownTableBodyNone">EG1 Sustain   </td><td class="markdownTableBodyNone">0 a 127    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>0x27</code>   </td><td class="markdownTableBodyNone">EG1 Release   </td><td class="markdownTableBodyNone">0 a 127    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>0x28</code>   </td><td class="markdownTableBodyNone">EG2 Attack   </td><td class="markdownTableBodyNone">0 a 127    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>0x29</code>   </td><td class="markdownTableBodyNone">EG2 Decay   </td><td class="markdownTableBodyNone">0 a 127    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>0x2A</code>   </td><td class="markdownTableBodyNone">EG2 Sustain   </td><td class="markdownTableBodyNone">0 a 127    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>0x2B</code>   </td><td class="markdownTableBodyNone">EG2 Release   </td><td class="markdownTableBodyNone">0 a 127    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>0x2C</code>   </td><td class="markdownTableBodyNone">LFO1 Waveform   </td><td class="markdownTableBodyNone">0=Saw, 1=Square, 2=Triangle, 3=S&amp;H    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>0x2D</code>   </td><td class="markdownTableBodyNone">LFO1 Frequency   </td><td class="markdownTableBodyNone">0 a 127 (Curva exponencial si Tempo Sync=Off)    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>0x2E</code>   </td><td class="markdownTableBodyNone">LFO1 Key Sync   </td><td class="markdownTableBodyNone">0=Off, 127=On, (Ruteos intermedios)    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>0x2F</code>   </td><td class="markdownTableBodyNone">LFO2 Waveform   </td><td class="markdownTableBodyNone">0=Saw, 1=Square, 2=Sine, 3=S&amp;H    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>0x30</code>   </td><td class="markdownTableBodyNone">LFO2 Frequency   </td><td class="markdownTableBodyNone">0 a 127    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>0x31</code>   </td><td class="markdownTableBodyNone">LFO2 Key Sync   </td><td class="markdownTableBodyNone">0=Off, 127=On   </td></tr>
-</table>
-<h2><a class="anchor" id="autotoc_md140"></a>
-3.5 Timbre 1: Virtual Patch (Matriz de Modulación)</h2>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadNone">Offset Hex   </th><th class="markdownTableHeadNone">Parámetro   </th><th class="markdownTableHeadNone">Rango / Valores (Dec)    </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>0x32</code>   </td><td class="markdownTableBodyNone">Patch 1: Source   </td><td class="markdownTableBodyNone">(EG1, EG2, LFO1, LFO2, Vel, KBD, ModWhl, PitchBend)    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>0x33</code>   </td><td class="markdownTableBodyNone">Patch 1: Destination   </td><td class="markdownTableBodyNone">(Pitch, Osc2Pitch, Osc1Ctrl1, Cutoff, Amp, Pan)    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>0x34</code>   </td><td class="markdownTableBodyNone">Patch 1: Intensity   </td><td class="markdownTableBodyNone">-63 a +63    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>0x35</code> a <code>0x37</code>   </td><td class="markdownTableBodyNone">Patch 2   </td><td class="markdownTableBodyNone">Source, Dest, Intensity    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>0x38</code> a <code>0x3A</code>   </td><td class="markdownTableBodyNone">Patch 3   </td><td class="markdownTableBodyNone">Source, Dest, Intensity    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>0x3B</code> a <code>0x3D</code>   </td><td class="markdownTableBodyNone">Patch 4   </td><td class="markdownTableBodyNone">Source, Dest, Intensity   </td></tr>
-</table>
-<h2><a class="anchor" id="autotoc_md141"></a>
-3.6 Secuenciador de Modulación</h2>
-<p>Los datos globales de las secuencias se definen por offsets consecutivos.</p>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadNone">Offset Hex   </th><th class="markdownTableHeadNone">Parámetro   </th><th class="markdownTableHeadNone">Descripción    </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>0x3E</code>   </td><td class="markdownTableBodyNone">Mod Seq A: Destination   </td><td class="markdownTableBodyNone">Selección del parámetro objetivo    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>0x3F</code>   </td><td class="markdownTableBodyNone">Mod Seq A: Mode   </td><td class="markdownTableBodyNone">0=Step, 1=Smooth    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>0x40</code>   </td><td class="markdownTableBodyNone">Mod Seq B: Destination   </td><td class="markdownTableBodyNone">Selección del parámetro objetivo    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>0x41</code>   </td><td class="markdownTableBodyNone">Mod Seq B: Mode   </td><td class="markdownTableBodyNone">0=Step, 1=Smooth    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>0x42</code>   </td><td class="markdownTableBodyNone">Mod Seq C: Destination   </td><td class="markdownTableBodyNone">Selección del parámetro objetivo    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>0x43</code>   </td><td class="markdownTableBodyNone">Mod Seq C: Mode   </td><td class="markdownTableBodyNone">0=Step, 1=Smooth   </td></tr>
-</table>
-<p><em>Nota sobre datos de secuencia:</em> Los valores exactos de los 16 pasos para las pistas A, B y C se almacenan en un bloque masivo de datos al final del Program Dump que requiere desempaquetado de bloques de 7-bits a 8-bits.</p>
-<hr  />
-<h1><a class="anchor" id="autotoc_md143"></a>
-4. Estrategia de Conversión de Datos SysEx (7-bit a 8-bit)</h1>
-<p>Al recibir un volcado de programa (Program Dump <code>40</code>), el MS2000 no envía los datos crudos, sino empaquetados. Como el protocolo MIDI solo permite 7 bits de datos por byte (el 8º bit es de estado), los bytes de 8-bits se dividen:</p><ul>
-<li>Cada grupo de 7 bytes reales de 8-bits se transmite utilizando 8 bytes MIDI.</li>
-<li>El primer byte contiene los "MSB" (Most Significant Bits) de los siguientes 7 bytes.</li>
-<li>En la implementación de C++, el <code>MS2000SysExCodec</code> deberá decodificar esto desempaquetando los bits de estado para obtener la matriz completa de datos. </li>
+<h2><a class="anchor" id="autotoc_md134"></a>
+2.1 Empaquetado 7→8 (Korg) y tamaños</h2>
+<ul>
+<li>Cada grupo de <b>7 bytes reales</b> viaja como <b>1 byte de MSBs + 7 bytes de datos</b>.</li>
+<li>El <b>último grupo parcial NO se rellena</b>: 254 B → <b>291 B</b> de payload y una trama de <b>297 bytes</b> (<code>F0 42 3n 58 40</code> + 291 + <code>F7</code>).</li>
+<li>Un decodificador que exija payloads múltiplos de 8 (o que descarte el último grupo parcial) <b>pierde los 2 últimos bytes</b> de cada programa. Tolerante en ambos lados: el codec de C++ (<code>ABDSharedCode/HardwareDrivers/SysExCodec.h</code>) y el de TS (<code>ABDBankManager/Source/Contracts/SysEx/codec.ts</code>; el contrato Korg usa <code>pack8to7NoPad</code>/<code>unpack7to8Tolerant</code>, que no descarta el grupo parcial) decodifican el grupo parcial desde 2026-09-13.</li>
 </ul>
+<h1><a class="anchor" id="autotoc_md135"></a>
+3. Mapa del programa real (254 B, &lt;strong&gt;unpacked&lt;/strong&gt;)</h1>
+<p>Layout global:</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Offset   </th><th class="markdownTableHeadNone">Bytes   </th><th class="markdownTableHeadNone">Contenido    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>0x00</code>   </td><td class="markdownTableBodyNone">12   </td><td class="markdownTableBodyNone"><b>Nombre del programa</b> (ASCII, relleno con espacios). Va aquí, no en <code>0x1C</code>.    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>0x0C</code>   </td><td class="markdownTableBodyNone">4   </td><td class="markdownTableBodyNone">Sin uso    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>0x10</code>   </td><td class="markdownTableBodyNone">1   </td><td class="markdownTableBodyNone">Timbre Voice (bits 6,7) + <b>Voice Mode</b> (bits 4,5: 0 Single, 1 Split, 2 Layer, <b>3 Vocoder</b>)    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>0x11</code>   </td><td class="markdownTableBodyNone">1   </td><td class="markdownTableBodyNone">Scale Key (bits 4..7) + Scale Type (bits 0..3)    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>0x12</code>   </td><td class="markdownTableBodyNone">1   </td><td class="markdownTableBodyNone">Split Point    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>0x13</code>   </td><td class="markdownTableBodyNone">1   </td><td class="markdownTableBodyNone">Delay FX: bit 7 tempo sync, bits 0..3 time base    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>0x14</code>   </td><td class="markdownTableBodyNone">1   </td><td class="markdownTableBodyNone">Delay Time    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>0x15</code>   </td><td class="markdownTableBodyNone">1   </td><td class="markdownTableBodyNone">Delay Depth / Feedback    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>0x16</code>   </td><td class="markdownTableBodyNone">1   </td><td class="markdownTableBodyNone">Delay Type (0 Stereo, 1 Cross, 2 L/R)    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>0x17</code>   </td><td class="markdownTableBodyNone">1   </td><td class="markdownTableBodyNone">Mod FX Speed    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>0x18</code>   </td><td class="markdownTableBodyNone">1   </td><td class="markdownTableBodyNone">Mod FX Depth    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>0x19</code>   </td><td class="markdownTableBodyNone">1   </td><td class="markdownTableBodyNone">Mod FX Type (0 Chorus/Flanger, 1 Ensemble, 2 Phaser)    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>0x1A</code>   </td><td class="markdownTableBodyNone">1   </td><td class="markdownTableBodyNone">EQ High Freq (<b>0..29</b>)    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>0x1B</code>   </td><td class="markdownTableBodyNone">1   </td><td class="markdownTableBodyNone">EQ High Gain (<b>+64</b>, 64 = 0 dB)    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>0x1C</code>   </td><td class="markdownTableBodyNone">1   </td><td class="markdownTableBodyNone">EQ Low Freq (0..29)    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>0x1D</code>   </td><td class="markdownTableBodyNone">1   </td><td class="markdownTableBodyNone">EQ Low Gain (+64)    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>0x1E</code>   </td><td class="markdownTableBodyNone">2   </td><td class="markdownTableBodyNone">Arp Tempo MSB + LSB (20..300 BPM)    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>0x20</code>   </td><td class="markdownTableBodyNone">1   </td><td class="markdownTableBodyNone">Arp: bit 7 On/Off, bit 6 Latch, bits 4,5 Target, bit 0 Key Sync    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>0x21</code>   </td><td class="markdownTableBodyNone">1   </td><td class="markdownTableBodyNone">Arp: bits 0..3 Type (0 Up … 5 Trigger), bits 4..7 Range (0..3 = 1..4 octavas)    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>0x22</code>   </td><td class="markdownTableBodyNone">1   </td><td class="markdownTableBodyNone">Arp Gate (0..100 %)    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>0x23</code>   </td><td class="markdownTableBodyNone">1   </td><td class="markdownTableBodyNone">Arp Resolution (0..5 = 1/24, 1/16, 1/12, 1/8, 1/6, 1/4)    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>0x24</code>   </td><td class="markdownTableBodyNone">1   </td><td class="markdownTableBodyNone">Arp Swing (0..127 = 0..+100 %, 128..255 = -100..-1 %)    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>0x25</code>   </td><td class="markdownTableBodyNone">1   </td><td class="markdownTableBodyNone">Sin uso    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>0x26</code>   </td><td class="markdownTableBodyNone"><b>108</b>   </td><td class="markdownTableBodyNone"><b>TIMBRE 1</b>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>0x92</code>   </td><td class="markdownTableBodyNone"><b>108</b>   </td><td class="markdownTableBodyNone"><b>TIMBRE 2</b> (mismo layout)   </td></tr>
+</table>
+<h2><a class="anchor" id="autotoc_md136"></a>
+3.1 Bloque de timbre (108 B)</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Byte   </th><th class="markdownTableHeadNone">Contenido    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0   </td><td class="markdownTableBodyNone">MIDI channel (-1 = GLOBAL, se lee como <code>0xFF</code>)    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">1   </td><td class="markdownTableBodyNone">bits 6,7 Assign (Mono/Poly/Unison) · bit 5 EG2 reset · bit 4 EG1 reset · bit 3 Trigger · bits 0,1 Key Priority    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">2   </td><td class="markdownTableBodyNone">Unison Detune (0..99 cents)    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">3   </td><td class="markdownTableBodyNone">Tune (<b>+64</b> = 0 cents)    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">4   </td><td class="markdownTableBodyNone">Bend Range (+64)    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">5   </td><td class="markdownTableBodyNone">Transpose (+64)    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">6   </td><td class="markdownTableBodyNone">Vibrato Intensity (+64)    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">7   </td><td class="markdownTableBodyNone">OSC1 Wave (0 Saw, 1 Pulse, 2 Tri, 3 Sine, 4 Vox, 5 DWGS, 6 Noise, 7 Audio In)    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">8   </td><td class="markdownTableBodyNone">OSC1 Control 1    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">9   </td><td class="markdownTableBodyNone">OSC1 Control 2    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">10   </td><td class="markdownTableBodyNone">OSC1 DWGS Wave (0..63, cuando Wave = DWGS)    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">11   </td><td class="markdownTableBodyNone">Sin uso    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">12   </td><td class="markdownTableBodyNone">bits 4,5 OSC2 Mod (0 Off, 1 Ring, 2 Sync, 3 Ring+Sync) · bits 0,1 OSC2 Wave    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">13   </td><td class="markdownTableBodyNone">OSC2 Semitone (+64)    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">14   </td><td class="markdownTableBodyNone">OSC2 Tune (+64)    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">15   </td><td class="markdownTableBodyNone">Portamento Time (bits 0..6)    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">16   </td><td class="markdownTableBodyNone">Mixer OSC1 Level    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">17   </td><td class="markdownTableBodyNone">Mixer OSC2 Level    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">18   </td><td class="markdownTableBodyNone">Mixer Noise Level *(en modo vocoder: HPF Level)*    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">19   </td><td class="markdownTableBodyNone">Filter Type (0 24dB LPF, 1 12dB LPF, 2 12dB BPF, 3 12dB HPF)    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">20   </td><td class="markdownTableBodyNone">Cutoff (0..127)    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">21   </td><td class="markdownTableBodyNone">Resonance (0..127; desde ~105 autoscila)    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">22   </td><td class="markdownTableBodyNone">Filter EG1 Intensity (+64) *(en vocoder: Filter Shift 0..4 = 0, +1, +2, -1, -2)*    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">23   </td><td class="markdownTableBodyNone">Filter Velocity Sense (+64) *(en vocoder: Gate Sense)*    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">24   </td><td class="markdownTableBodyNone">Filter Keyboard Track (+64) *(en vocoder: Threshold)*    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">25   </td><td class="markdownTableBodyNone">Amp Level    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">26   </td><td class="markdownTableBodyNone">Amp Pan (+64 = centro)    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">27   </td><td class="markdownTableBodyNone">bit 6 Amp SW (0 EG2, 1 Gate) · bit 0 Distortion On/Off    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">28   </td><td class="markdownTableBodyNone">Amp Velocity Sense (+64) *(en vocoder: Direct Level)*    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">29   </td><td class="markdownTableBodyNone">Amp Keyboard Track (+64)    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">30..33   </td><td class="markdownTableBodyNone">EG1 Attack, Decay, Sustain, Release    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">34..37   </td><td class="markdownTableBodyNone">EG2 Attack, Decay, Sustain, Release    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">38   </td><td class="markdownTableBodyNone">LFO1: bits 4,5 Key Sync (0 Off, 1 Timbre, 2 Voice) · bits 0,1 Wave    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">39   </td><td class="markdownTableBodyNone">LFO1 Frequency    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">40   </td><td class="markdownTableBodyNone">LFO1: bit 7 Tempo Sync · bits 0..4 Sync Note    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">41   </td><td class="markdownTableBodyNone">LFO2 (igual que 38; onda 2 = Sine en vez de Tri)    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">42   </td><td class="markdownTableBodyNone">LFO2 Frequency    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">43   </td><td class="markdownTableBodyNone">LFO2: bit 7 Tempo Sync · bits 0..4 Sync Note    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">44   </td><td class="markdownTableBodyNone">Virtual Patch 1: bits 4..7 Destination · bits 0..3 Source    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">45   </td><td class="markdownTableBodyNone">Virtual Patch 1 Intensity (+64)    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">46 / 48 / 50   </td><td class="markdownTableBodyNone">Virtual Patch 2 / 3 / 4 (mismo empaquetado)    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">47 / 49 / 51   </td><td class="markdownTableBodyNone">Intensidad de Patch 2 / 3 / 4 (+64)    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">52   </td><td class="markdownTableBodyNone">Mod Seq: bit 7 On/Off · bit 6 Run Mode · bits 0..4 Resolution    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">53   </td><td class="markdownTableBodyNone">Mod Seq: bits 4..7 Last Step (0..15) · bits 2,3 Type · bits 0,1 Key Sync    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">54   </td><td class="markdownTableBodyNone">Seq 1 Knob (destino, 0..30)    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">55   </td><td class="markdownTableBodyNone">Seq 1 Motion (bit 0: 0 Smooth, 1 Step)    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">56..71   </td><td class="markdownTableBodyNone">Seq 1 — 16 pasos (+64)    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">72..89   </td><td class="markdownTableBodyNone">Seq 2 (Knob, Motion, 16 pasos)    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">90..107   </td><td class="markdownTableBodyNone">Seq 3 (Knob, Motion, 16 pasos)   </td></tr>
+</table>
+<blockquote class="doxtable">
+<p>&zwj;[!NOTE] <b>En modo Vocoder</b> (<code>0x10</code> bits 4,5 = 3) los bytes 15..29 del timbre 1 son parámetros del vocoder (HPF Level/Gate/Threshold, Filter Shift, Direct Level) y <b>46..61 / 62..77 son el nivel y el pan de las 16 bandas</b>. El mismo bloque, dos lecturas. </p>
+</blockquote>
+<h2><a class="anchor" id="autotoc_md137"></a>
+3.2 Cómo se mapea al motor</h2>
+<ul>
+<li><b>Los dos timbres son el mismo vocabulario.</b> El programa guarda dos bloques de 108 B idénticos en estructura (<code>0x26</code> y <code>0x92</code>), así que el motor declara el espejo del Timbre 2 con el prefijo <code>t2</code> (<code>osc1Wave</code> → <code>t2Osc1Wave</code>) y la <b>misma tabla</b> de campos se lee dos veces, cambiando solo la base (<code>108 × índice</code>). Un <code>Field</code> se clasifica como global o de timbre con <code>isTimbreField()</code>.</li>
+<li><b>Mod Sequence = 3 filas por timbre</b>, con <b>31 destinos reales</b> (<code>NONE, PITCH, STEP LENGTH, PORTAMENTO, OSC1 CTRL1, OSC1 CTRL2, OSC2 SEMI, OSC2 TUNE, OSC1/OSC2/NOISE LEVEL, CUTOFF, RESONANCE, EG1 INT, KBD TRK, AMP LEVEL, PANPOT, EG1/EG2 ATTACK-DECAY-SUSTAIN-RELEASE, LFO1/LFO2 FREQ, PATCH1..4 INT</code>) en su orden exacto: el índice del parámetro <code>seq{N}Dest</code> es el byte del equipo. El rango de cada paso depende del destino (±6 para <code>STEP LENGTH</code>, ±24 para <code>PITCH</code>/<code>OSC2 SEMI</code>, ±63 para el resto) y se guarda como byte <code>64 ± 63</code>.</li>
+<li><b>El bit de movimiento va invertido</b>: el equipo guarda <code>0 = Smooth, 1 = Step</code> y el motor numera <code>Step = 0, Smooth = 1</code> (<code>Xform::SeqMotionInv</code>). El último paso se guarda como <code>valor − 1</code> (<code>Xform::SeqLastStep</code>) y el par Scale Key/Type, el Timbre Voice y las voces comparten byte, así que se escriben por rango de bits.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md138"></a>
+4. Qué hace ABDMS2000 con esto</h1>
+<ul>
+<li><b>Entrada</b> (<code>SysExManager::parseSysEx</code>): una trama <code>0x40</code>/<code>0x4C</code> cuyo payload da 254 B (o múltiplo) se aplica al motor con <code>MS2000HardwareProgram::applyToAPVTS()</code> y sus bytes se guardan; el bloque nativo del plugin (384 B, v2; o 128 B, v1) es otra cosa.</li>
+<li><b>Salida hacia el equipo</b> (<code>createHardwareProgramDump</code>): parte de los bytes que vinieron del hardware y vuelca encima <b>lo que el motor modela de los dos timbres</b> (osciladores, mezcla, filtro con su velocidad, VCA con la suya, EG, LFO, patch, los dos mod sequences, escala/split y el reparto de voces), así que lo que no modela vuelve <b>intacto</b>.</li>
+<li><b>Respuesta al cable</b> (<code>SysExParseResult::reply</code>):<ul>
+<li>una petición <code>0x10</code> se contesta con el <b>programa real</b> de 254 B del canal pedido (<code>createHardwareProgramDump</code> → <code>F0 42 3n 58 40</code>, 297 B);</li>
+<li>una petición <code>0x0E</code> (memoria completa) se contesta con la memoria entera en formato del equipo (<code>buildHardwareBankDumpResponse</code> → <code>F0 42 3n 58 4C ... F7</code>), de dos fuentes:<ul>
+<li>si el plugin tiene cargado un banco <b>real</b> (algún All Data Dump <code>0x4C</code> que le llegó del equipo), sale ese: plazas tal como vinieron, <b>solo la activa refrescada desde el motor</b> (lo que se está oyendo viaja, pero editar un programa no reescribe los otros 127);</li>
+<li>si nunca llegó memoria del equipo, el plugin hace de equipo con <b>la suya</b>: convierte sus 128 presets nativos a programas reales de 254 B (<code>MS2000HardwareProgram::fromNativeProgram</code>). Es una conversión <b>aproximada y declarada como tal</b>: lo que el motor no modela sale con los valores del INIT Program del equipo, y falta verificar contra un MS2000 físico que acepte el volcado (ver <code>ABDSynths_SysEx_Spec.md</code> §6.4 y el roadmap);</li>
+</ul>
+</li>
+<li>una escritura <code>0x40</code>/<code>0x4C</code> recibe su acuse — <code>F0 42 3n 58 23 F7</code> si se guardó, <code>... 24 F7</code> si no — con la cabecera del equipo y el canal del emisor, igual que el MS2000 físico. Un acuse recibido (<code>0x23</code>/<code>0x24</code>) se reconoce (<code>WriteCompleted</code> / <code>WriteError</code>) y <b>no se contesta</b>.</li>
+</ul>
+</li>
+<li><b>Empaquetado del All Data Dump</b>: el 7→8 de Korg se aplica al <b>flujo completo</b> (los <code>N × 254</code> B concatenados), no a cada programa por separado — 254 no es múltiplo de 7, así que empaquetar cada programa y concatenar deja los bytes de MSBs en otro sitio y el receptor descodifica otra cosa. Con los 128 programas del equipo son 32 512 B → 37 157 B de payload y <b>37 163 B</b> de trama. ⚠️ Es la única afirmación de este documento <b>sin verificar contra el equipo</b>: hay que grabar un <code>0x4C</code> real y comparar (ver el roadmap de <a class="el" href="namespaceABDMS2000.html">ABDMS2000</a>).</li>
+<li><b>Lo que el motor no puede aplicar</b> está declarado en <code>MS2000HardwareProgram::unmodelled()</code> y se conserva byte a byte; no se finge que se aplicó. Hoy es: MIDI channel por timbre, Tune, Bend Range, Transpose y Vibrato; EG1/EG2 Reset, Trigger Mode y Key Priority; el Amp SW (EG2/Gate); el swing/target/key sync del arpegiador; el tempo sync y el time base del delay; el Mod FX Feedback y los on/off de Mod FX y Delay; el modo 1Shot/Loop del mod sequence y su destino <code>OSC1 CTRL2</code>; los 30 pasos reales del EQ (el motor tiene 4); la afinación de las escalas (se conservan, pero el motor suena en temperamento igual) y el 4º modo del OSC2 (Ring+Sync ≠ CrossMod del motor).</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md139"></a>
+5. Bloque nativo del plugin (sistema &lt;tt&gt;native&lt;/tt&gt;)</h1>
+<p><code>MS2000ProgramData</code> es la memoria del <b>plugin</b>, no del equipo: 12 B de nombre, un byte de voz (<code>0x0C</code>) y, desde <code>0x0E</code>, <b>un byte por cada parámetro marcado <code>sysex != false</code></b> en <code>schemas/parameters-spec.schema.v1.json</code> (hoy 253, el último en <code>0x10A</code>).</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Versión   </th><th class="markdownTableHeadNone">Tamaño   </th><th class="markdownTableHeadNone">Qué cabe    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">v1   </td><td class="markdownTableBodyNone">128 B   </td><td class="markdownTableBodyNone">Timbre 1 + voz. Los 30 parámetros <code>sysex: false</code> (vocoder entero, mod seq, <code>unisonSpread</code>, <code>masterVolume</code>…) y el Timbre 2 entero no cabían    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><b>v2</b>   </td><td class="markdownTableBodyNone"><b>384 B</b>   </td><td class="markdownTableBodyNone">Timbre 1 <b>y 2</b>, sus dos velocidades, escala/split/reparto de voces y los 3 × 16 pasos de cada secuenciador   </td></tr>
+</table>
+<p>La v2 <b>empieza igual</b> que la v1 y es múltiplo de 128, así que un bloque v1 se sigue leyendo (el resto queda en sus defaults) y la detección de tamaño del <code>SysExManager</code> no cambia. El bloque es <b>opaco</b> para el ABD Bank Manager: viaja en base64 y el tamaño no se declara en el contrato, solo lo conoce el host. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->

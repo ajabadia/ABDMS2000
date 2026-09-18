@@ -124,6 +124,10 @@ Métodos públicos</h2></td></tr>
 <tr class="separator:a8795c9ba969cce46e38b6f0eb69ec83d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac0817e9e3b0feadf063789a591616d3b" id="r_ac0817e9e3b0feadf063789a591616d3b"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structABDMS2000_1_1Voice_1_1DiagnosticStats.html">DiagnosticStats</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#ac0817e9e3b0feadf063789a591616d3b">getDiagnosticStats</a> () const noexcept</td></tr>
 <tr class="separator:ac0817e9e3b0feadf063789a591616d3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b4fb98efd9c0db5698e9f1e5843229c" id="r_a1b4fb98efd9c0db5698e9f1e5843229c"><td class="memItemLeft" align="right" valign="top">const LFO &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#a1b4fb98efd9c0db5698e9f1e5843229c">getLfo1</a> () const noexcept</td></tr>
+<tr class="separator:a1b4fb98efd9c0db5698e9f1e5843229c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf3add101ff3144597bc579abe608193" id="r_abf3add101ff3144597bc579abe608193"><td class="memItemLeft" align="right" valign="top">const LFO &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#abf3add101ff3144597bc579abe608193">getLfo2</a> () const noexcept</td></tr>
+<tr class="separator:abf3add101ff3144597bc579abe608193"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb6c351c69e74d6883130f13e98d3ffb" id="r_acb6c351c69e74d6883130f13e98d3ffb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#acb6c351c69e74d6883130f13e98d3ffb">applyBlockParams</a> (const <a class="el" href="structABDMS2000_1_1VoiceParameters.html">VoiceParameters</a> &amp;params) noexcept</td></tr>
 <tr class="separator:acb6c351c69e74d6883130f13e98d3ffb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7bb4d1c2b6c8168c6d78317107c324e3" id="r_a7bb4d1c2b6c8168c6d78317107c324e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#a7bb4d1c2b6c8168c6d78317107c324e3">renderNextSample</a> (float &amp;leftOut, float &amp;rightOut, int diagPoint=0, float diagTone=0.0f) noexcept</td></tr>
@@ -162,15 +166,15 @@ Atributos privados</h2></td></tr>
 <tr class="separator:ad512a8b6bfa97abbc81e2179048d19bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abcd1ad518c2fd0c606e3265a151ff5fe" id="r_abcd1ad518c2fd0c606e3265a151ff5fe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classABDMS2000_1_1MultiModeFilter.html">MultiModeFilter</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#abcd1ad518c2fd0c606e3265a151ff5fe">filter_</a></td></tr>
 <tr class="separator:abcd1ad518c2fd0c606e3265a151ff5fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0eeb0c14b8c61c22b8e4dfbb761b89b" id="r_ad0eeb0c14b8c61c22b8e4dfbb761b89b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classABDMS2000_1_1ADSREnvelope.html">ADSREnvelope</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#ad0eeb0c14b8c61c22b8e4dfbb761b89b">eg1_</a></td></tr>
+<tr class="memitem:ad0eeb0c14b8c61c22b8e4dfbb761b89b" id="r_ad0eeb0c14b8c61c22b8e4dfbb761b89b"><td class="memItemLeft" align="right" valign="top">ADSREnvelope&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#ad0eeb0c14b8c61c22b8e4dfbb761b89b">eg1_</a></td></tr>
 <tr class="separator:ad0eeb0c14b8c61c22b8e4dfbb761b89b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a437db60b6f01c85dd2a0a2815deecb84" id="r_a437db60b6f01c85dd2a0a2815deecb84"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classABDMS2000_1_1ADSREnvelope.html">ADSREnvelope</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#a437db60b6f01c85dd2a0a2815deecb84">eg2_</a></td></tr>
+<tr class="memitem:a437db60b6f01c85dd2a0a2815deecb84" id="r_a437db60b6f01c85dd2a0a2815deecb84"><td class="memItemLeft" align="right" valign="top">ADSREnvelope&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#a437db60b6f01c85dd2a0a2815deecb84">eg2_</a></td></tr>
 <tr class="separator:a437db60b6f01c85dd2a0a2815deecb84"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6dabbcc09f941d887e1b865e6a151ca" id="r_ae6dabbcc09f941d887e1b865e6a151ca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classABDMS2000_1_1PortamentoGlide.html">PortamentoGlide</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#ae6dabbcc09f941d887e1b865e6a151ca">glide_</a></td></tr>
+<tr class="memitem:ae6dabbcc09f941d887e1b865e6a151ca" id="r_ae6dabbcc09f941d887e1b865e6a151ca"><td class="memItemLeft" align="right" valign="top">PortamentoGlide&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#ae6dabbcc09f941d887e1b865e6a151ca">glide_</a></td></tr>
 <tr class="separator:ae6dabbcc09f941d887e1b865e6a151ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac86516e8bcdfff9fd0fa357a9242eb2" id="r_aac86516e8bcdfff9fd0fa357a9242eb2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classABDMS2000_1_1LFO.html">LFO</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#aac86516e8bcdfff9fd0fa357a9242eb2">lfo1_</a></td></tr>
+<tr class="memitem:aac86516e8bcdfff9fd0fa357a9242eb2" id="r_aac86516e8bcdfff9fd0fa357a9242eb2"><td class="memItemLeft" align="right" valign="top">LFO&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#aac86516e8bcdfff9fd0fa357a9242eb2">lfo1_</a></td></tr>
 <tr class="separator:aac86516e8bcdfff9fd0fa357a9242eb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33e2ef915ba0f012120b502ee30c254e" id="r_a33e2ef915ba0f012120b502ee30c254e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classABDMS2000_1_1LFO.html">LFO</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#a33e2ef915ba0f012120b502ee30c254e">lfo2_</a></td></tr>
+<tr class="memitem:a33e2ef915ba0f012120b502ee30c254e" id="r_a33e2ef915ba0f012120b502ee30c254e"><td class="memItemLeft" align="right" valign="top">LFO&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#a33e2ef915ba0f012120b502ee30c254e">lfo2_</a></td></tr>
 <tr class="separator:a33e2ef915ba0f012120b502ee30c254e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ece6b36436340b3e711e58cb0bf0830" id="r_a2ece6b36436340b3e711e58cb0bf0830"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classABDMS2000_1_1VirtualPatchMatrix.html">VirtualPatchMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#a2ece6b36436340b3e711e58cb0bf0830">patchMatrix_</a></td></tr>
 <tr class="separator:a2ece6b36436340b3e711e58cb0bf0830"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -291,6 +295,56 @@ Atributos privados</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">const <a class="el" href="structABDMS2000_1_1Voice_1_1DiagnosticStats.html">DiagnosticStats</a> &amp; ABDMS2000::Voice::getDiagnosticStats </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1b4fb98efd9c0db5698e9f1e5843229c" name="a1b4fb98efd9c0db5698e9f1e5843229c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b4fb98efd9c0db5698e9f1e5843229c">&#9670;&#160;</a></span>getLfo1()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const LFO &amp; ABDMS2000::Voice::getLfo1 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abf3add101ff3144597bc579abe608193" name="abf3add101ff3144597bc579abe608193"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf3add101ff3144597bc579abe608193">&#9670;&#160;</a></span>getLfo2()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const LFO &amp; ABDMS2000::Voice::getLfo2 </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -686,7 +740,7 @@ Atributos privados</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classABDMS2000_1_1ADSREnvelope.html">ADSREnvelope</a> ABDMS2000::Voice::eg1_</td>
+          <td class="memname">ADSREnvelope ABDMS2000::Voice::eg1_</td>
         </tr>
       </table>
   </td>
@@ -708,7 +762,7 @@ Atributos privados</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classABDMS2000_1_1ADSREnvelope.html">ADSREnvelope</a> ABDMS2000::Voice::eg2_</td>
+          <td class="memname">ADSREnvelope ABDMS2000::Voice::eg2_</td>
         </tr>
       </table>
   </td>
@@ -752,7 +806,7 @@ Atributos privados</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classABDMS2000_1_1PortamentoGlide.html">PortamentoGlide</a> ABDMS2000::Voice::glide_</td>
+          <td class="memname">PortamentoGlide ABDMS2000::Voice::glide_</td>
         </tr>
       </table>
   </td>
@@ -788,7 +842,7 @@ Atributos privados</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classABDMS2000_1_1LFO.html">LFO</a> ABDMS2000::Voice::lfo1_</td>
+          <td class="memname">LFO ABDMS2000::Voice::lfo1_</td>
         </tr>
       </table>
   </td>
@@ -810,7 +864,7 @@ Atributos privados</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classABDMS2000_1_1LFO.html">LFO</a> ABDMS2000::Voice::lfo2_</td>
+          <td class="memname">LFO ABDMS2000::Voice::lfo2_</td>
         </tr>
       </table>
   </td>

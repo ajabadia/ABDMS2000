@@ -1,7 +1,5 @@
 <map id="Source/DSP/Envelopes/EnvelopeCurves.h" name="Source/DSP/Envelopes/EnvelopeCurves.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,172,45"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="8,93,71,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="79,47,56,83,52,80,74,44"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="95,93,181,119"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="103,44,126,80,121,83,98,47"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="27,5,194,45"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,93,216,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,46,113,79,108,79,108,46"/>
 </map>

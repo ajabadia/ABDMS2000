@@ -10,9 +10,11 @@ var searchData=
   ['filterkbdtrack_7',['filterKbdTrack',['../structABDMS2000_1_1VoiceParameters.html#ab242b6d59dda01b344cc848eb221973d',1,'ABDMS2000::VoiceParameters']]],
   ['filterkeytrack_8',['filterKeyTrack',['../namespaceABDMS2000_1_1ParamIDs.html#a39533578ea1548cbc7c97fb1181603ec',1,'ABDMS2000::ParamIDs']]],
   ['filterresonance_9',['filterresonance',['../structABDMS2000_1_1VoiceParameters.html#a3c7841cd446199243b868b25f9e43c65',1,'ABDMS2000::VoiceParameters::filterResonance'],['../namespaceABDMS2000_1_1ParamIDs.html#ad9a6c235b89e15ee54e3cb02ffbf18ce',1,'ABDMS2000::ParamIDs::filterResonance']]],
-  ['filtertype_10',['filtertype',['../namespaceABDMS2000_1_1ParamIDs.html#a38d432e23697c23323c183d209c11059',1,'ABDMS2000::ParamIDs::filterType'],['../structABDMS2000_1_1VoiceParameters.html#ab144ef703647dfcc14704b21374629f4',1,'ABDMS2000::VoiceParameters::filterType']]],
-  ['followers_5f_11',['followers_',['../classABDMS2000_1_1Vocoder16Band.html#a6cec4f4f4079637ba4cc16307259dc20',1,'ABDMS2000::Vocoder16Band']]],
-  ['formants_5f_12',['formants_',['../classABDMS2000_1_1VoxWaveOscillator.html#a5ab0f1b4a3388a4e781ede01bad97eb5',1,'ABDMS2000::VoxWaveOscillator']]],
-  ['formantshift_5f_13',['formantShift_',['../classABDMS2000_1_1Vocoder16Band.html#ad089bed9d8b773b3c87fd104e974f014',1,'ABDMS2000::Vocoder16Band']]],
-  ['frequency_5f_14',['frequency_',['../classABDMS2000_1_1DWGSOscillator.html#a054a687f9a20f5b479491a7bac42fa29',1,'ABDMS2000::DWGSOscillator::frequency_'],['../classABDMS2000_1_1VAOscillator.html#a2c72d252c3973855146e6de44c40f771',1,'ABDMS2000::VAOscillator::frequency_'],['../classABDMS2000_1_1VoxWaveOscillator.html#a4662b9f05d1047d5bcf86c2ac0eeb47f',1,'ABDMS2000::VoxWaveOscillator::frequency_'],['../classABDMS2000_1_1LFO.html#a7dd06cbe8bdbe088b29910cee273136a',1,'ABDMS2000::LFO::frequency_']]]
+  ['filtertype_10',['filtertype',['../structABDMS2000_1_1VoiceParameters.html#ab144ef703647dfcc14704b21374629f4',1,'ABDMS2000::VoiceParameters::filterType'],['../namespaceABDMS2000_1_1ParamIDs.html#a38d432e23697c23323c183d209c11059',1,'ABDMS2000::ParamIDs::filterType']]],
+  ['filtervelo_11',['filterVelo',['../namespaceABDMS2000_1_1ParamIDs.html#aabe88888d8b1f61d9d0a154440a3b3e5',1,'ABDMS2000::ParamIDs']]],
+  ['filtervelosens_12',['filterVeloSens',['../structABDMS2000_1_1VoiceParameters.html#a5ab7e6a1c0d6a958c68a4611db00a34a',1,'ABDMS2000::VoiceParameters']]],
+  ['followers_5f_13',['followers_',['../classABDMS2000_1_1Vocoder16Band.html#a6cec4f4f4079637ba4cc16307259dc20',1,'ABDMS2000::Vocoder16Band']]],
+  ['formants_5f_14',['formants_',['../classABDMS2000_1_1VoxWaveOscillator.html#a5ab0f1b4a3388a4e781ede01bad97eb5',1,'ABDMS2000::VoxWaveOscillator']]],
+  ['formantshift_5f_15',['formantShift_',['../classABDMS2000_1_1Vocoder16Band.html#ad089bed9d8b773b3c87fd104e974f014',1,'ABDMS2000::Vocoder16Band']]],
+  ['frequency_5f_16',['frequency_',['../classABDMS2000_1_1VoxWaveOscillator.html#a4662b9f05d1047d5bcf86c2ac0eeb47f',1,'ABDMS2000::VoxWaveOscillator::frequency_'],['../classABDMS2000_1_1VAOscillator.html#a2c72d252c3973855146e6de44c40f771',1,'ABDMS2000::VAOscillator::frequency_'],['../classABDMS2000_1_1DWGSOscillator.html#a054a687f9a20f5b479491a7bac42fa29',1,'ABDMS2000::DWGSOscillator::frequency_']]]
 ];

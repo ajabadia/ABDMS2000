@@ -83,7 +83,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Korg MS2000 Program Data — 128-byte Sysex layout with registry-driven encoding.  
+<p>Programa <b>propio</b> del plugin (el sistema <code>native</code> que declara el contrato del host, ver <code><a class="el" href="HostModelId_8gen_8h.html">Source/Plugin/HostModelId.gen.h</a></code>): bloque de 384 B con codificación dirigida por el <code><a class="el" href="classABDMS2000_1_1ParameterRegistry.html">ParameterRegistry</a></code>.  
  <a href="structABDMS2000_1_1MS2000ProgramData.html#details">Más...</a></p>
 
 <p><code>#include &lt;<a class="el" href="MS2000ProgramData_8h_source.html">MS2000ProgramData.h</a>&gt;</code></p>
@@ -127,8 +127,10 @@ Atributos públicos</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Atributos públicos estáticos</h2></td></tr>
-<tr class="memitem:a6d99c5ab129ed7c468fdbbe24de61ce2" id="r_a6d99c5ab129ed7c468fdbbe24de61ce2"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1MS2000ProgramData.html#a6d99c5ab129ed7c468fdbbe24de61ce2">UNPACKED_PROGRAM_SIZE</a> = 128</td></tr>
+<tr class="memitem:a6d99c5ab129ed7c468fdbbe24de61ce2" id="r_a6d99c5ab129ed7c468fdbbe24de61ce2"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1MS2000ProgramData.html#a6d99c5ab129ed7c468fdbbe24de61ce2">UNPACKED_PROGRAM_SIZE</a> = 384</td></tr>
 <tr class="separator:a6d99c5ab129ed7c468fdbbe24de61ce2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56bc62f310f817e43dc11b7e8194df5c" id="r_a56bc62f310f817e43dc11b7e8194df5c"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1MS2000ProgramData.html#a56bc62f310f817e43dc11b7e8194df5c">UNPACKED_PROGRAM_SIZE_V1</a> = 128</td></tr>
+<tr class="separator:a56bc62f310f817e43dc11b7e8194df5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a61abe1dc60dcadc97bce402d9b97457a" id="r_a61abe1dc60dcadc97bce402d9b97457a"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1MS2000ProgramData.html#a61abe1dc60dcadc97bce402d9b97457a">NAME_LENGTH</a> = 12</td></tr>
 <tr class="separator:a61abe1dc60dcadc97bce402d9b97457a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade06654d9f6fb4628fd2c6adca181bbb" id="r_ade06654d9f6fb4628fd2c6adca181bbb"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1MS2000ProgramData.html#ade06654d9f6fb4628fd2c6adca181bbb">NAME_END</a> = 12</td></tr>
@@ -139,8 +141,9 @@ Atributos públicos estáticos</h2></td></tr>
 <tr class="separator:acf90d6e1a51a5d5af5a3106b42a198ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Descripción detallada</h2>
-<div class="textblock"><p>Korg MS2000 Program Data — 128-byte Sysex layout with registry-driven encoding. </p>
-<p>Byte Layout (128 bytes): [0x00..0x0B] Program Name (12 bytes, ASCII) [0x0C] <a class="el" href="classABDMS2000_1_1Voice.html" title="Represents a single synth voice in the 4-voice architecture.">Voice</a> Mode byte (packed: voiceMode | unisonDetune | portamentoTime | portamentoOn) [0x0D] Reserved [0x0E..0x4B] Timbre parameters — byte positions driven by <a class="el" href="classABDMS2000_1_1ParameterRegistry.html">ParameterRegistry</a> sysexOffset [0x4C..0x7F] Reserved (future: all-data-dump extensions)</p>
+<div class="textblock"><p>Programa <b>propio</b> del plugin (el sistema <code>native</code> que declara el contrato del host, ver <code><a class="el" href="HostModelId_8gen_8h.html">Source/Plugin/HostModelId.gen.h</a></code>): bloque de 384 B con codificación dirigida por el <code><a class="el" href="classABDMS2000_1_1ParameterRegistry.html">ParameterRegistry</a></code>. </p>
+<p>Byte Layout (384 bytes — v2): [0x00..0x0B] Program Name (12 bytes, ASCII) [0x0C] <a class="el" href="classABDMS2000_1_1Voice.html" title="Represents a single synth voice in the 4-voice architecture.">Voice</a> Mode byte (packed: voiceMode | unisonDetune | portamentoTime | portamentoOn) [0x0D] Reserved [0x0E..0x10A] Parámetros — byte dirigido por el <code>sysexOffset</code> del registro (1 byte por parámetro marcado <code>sysex != false</code>, hoy 253). Cubre Timbre 1 <b>y Timbre 2</b>, velocidades, escala/split y los pasos del mod sequence. [0x10B..0x17F] Reservado</p>
+<p>La v1 (128 B) solo cabía Timbre 1 + voz: los 30 parámetros marcados <code>sysex: false</code> (vocoder entero, <code>modSeqOn/Type</code>, <code>unisonSpread</code>, <code>masterVolume</code>…) ya se perdían, y Timbre 2 ni existía. La v2 es el mismo layout al principio, así que <b>un bloque v1 se sigue leyendo</b> (<code>unpackFromSysexPayload</code> rellena con ceros el resto). El bloque es opaco para el ABD Bank Manager: el tamaño no viaja en el contrato, solo en la carga útil base64.</p>
 <p>Conversion between 8-bit rawData and APVTS is fully automatic: it iterates <a class="el" href="classABDMS2000_1_1ParameterRegistry.html#ac8e7ae1ae111382cc821974b1a0ff3e9">ParameterRegistry::getAllParameters()</a> and reads/writes bytes at the sysexOffset position for each parameter that has a valid offset.</p>
 <p>Special-case signed parameters (bias = 64) are hardcoded in the registry via their min/max ranges and handled by a small lookup set. </p>
 </div><h2 class="groupheader">Documentación de constructores y destructores</h2>
@@ -608,7 +611,7 @@ Atributos públicos estáticos</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr size_t ABDMS2000::MS2000ProgramData::UNPACKED_PROGRAM_SIZE = 128</td>
+          <td class="memname">constexpr size_t ABDMS2000::MS2000ProgramData::UNPACKED_PROGRAM_SIZE = 384</td>
         </tr>
       </table>
   </td>
@@ -617,6 +620,29 @@ Atributos públicos estáticos</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a56bc62f310f817e43dc11b7e8194df5c" name="a56bc62f310f817e43dc11b7e8194df5c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a56bc62f310f817e43dc11b7e8194df5c">&#9670;&#160;</a></span>UNPACKED_PROGRAM_SIZE_V1</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr size_t ABDMS2000::MS2000ProgramData::UNPACKED_PROGRAM_SIZE_V1 = 128</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Bloque de la v1 (solo Timbre 1 + voz). Se sigue leyendo; se escribe en v2. </p>
 
 </div>
 </div>

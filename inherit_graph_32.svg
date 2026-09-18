@@ -11,7 +11,7 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="structABDMS2000_1_1MS2000ProgramData.html" target="_top" xlink:title="Korg MS2000 Program Data — 128&#45;byte Sysex layout with registry&#45;driven encoding.">
+<g id="a_Node000000"><a xlink:href="structABDMS2000_1_1MS2000ProgramData.html" target="_top" xlink:title="Programa propio del plugin (el sistema native que declara el contrato del host, ver Source/Plugin/Hos...">
 <polygon fill="white" stroke="#666666" points="186,-19 0,-19 0,0 186,0 186,-19"/>
 <text text-anchor="middle" x="93" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">ABDMS2000::MS2000ProgramData</text>
 </a>

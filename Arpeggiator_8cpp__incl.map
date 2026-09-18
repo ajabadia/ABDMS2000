@@ -1,17 +1,15 @@
 <map id="Source/DSP/Sequencer/Arpeggiator.cpp" name="Source/DSP/Sequencer/Arpeggiator.cpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="137,5,305,45"/>
-<area shape="rect" id="Node000002" href="$Arpeggiator_8h.html" title=" " alt="" coords="5,93,115,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="184,48,97,90,95,85,182,43"/>
-<area shape="rect" id="Node000005" href="$DSPUtils_8h.html" title=" " alt="" coords="139,93,304,119"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="224,46,224,79,219,79,219,46"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="292,167,377,192"/>
-<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="262,43,292,64,318,92,331,122,337,153,331,154,326,124,314,95,289,68,259,48"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="21,167,83,192"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="61,119,57,153,52,153,56,119"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="108,167,175,192"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="75,117,120,156,116,160,71,121"/>
-<area shape="poly" id="edge7_Node000005_Node000004" title=" " alt="" coords="210,121,166,160,163,156,207,117"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="199,167,262,192"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="226,119,230,153,225,154,220,119"/>
-<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="241,116,306,157,303,162,238,121"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="191,5,359,45"/>
+<area shape="rect" id="Node000002" href="$Arpeggiator_8h.html" title=" " alt="" coords="59,93,169,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="238,48,151,90,149,85,236,43"/>
+<area shape="rect" id="Node000005" href="$DSPUtils_8h.html" title=" " alt="" coords="193,93,358,119"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="278,46,278,79,273,79,273,46"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="382,93,467,119"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="312,43,392,84,389,89,310,48"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,167,68,192"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="103,121,61,159,58,155,100,117"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="93,167,159,192"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="119,119,124,153,119,154,113,119"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="195,167,356,192"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="278,119,278,153,273,153,273,119"/>
 </map>

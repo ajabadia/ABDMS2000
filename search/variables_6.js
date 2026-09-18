@@ -6,6 +6,7 @@ var searchData=
   ['generatedpattern_5f_3',['generatedPattern_',['../classABDMS2000_1_1Arpeggiator.html#a3d82fe27d87476d7885d8c9af9312129',1,'ABDMS2000::Arpeggiator']]],
   ['glide_5f_4',['glide_',['../classABDMS2000_1_1Voice.html#ae6dabbcc09f941d887e1b865e6a151ca',1,'ABDMS2000::Voice']]],
   ['glidetimesec_5f_5',['glideTimeSec_',['../classABDMS2000_1_1VoiceManager.html#a8388491f75fa9cf214b3726dcc20a414',1,'ABDMS2000::VoiceManager']]],
-  ['globaltimecounter_5f_6',['globalTimeCounter_',['../classABDMS2000_1_1VoiceManager.html#a44332aeb85cbe72e475dfb8de6dec7ce',1,'ABDMS2000::VoiceManager']]],
-  ['group_7',['group',['../structABDMS2000_1_1ParameterMeta.html#a688024b50dfa65943a5cf0b54528c7e0',1,'ABDMS2000::ParameterMeta']]]
+  ['global_5fflags_6',['GLOBAL_FLAGS',['../structABDMS2000_1_1MS2000HardwareProgram.html#acfec17ff1b89e046a937627d12c46daa',1,'ABDMS2000::MS2000HardwareProgram']]],
+  ['globaltimecounter_5f_7',['globalTimeCounter_',['../classABDMS2000_1_1VoiceManager.html#a44332aeb85cbe72e475dfb8de6dec7ce',1,'ABDMS2000::VoiceManager']]],
+  ['group_8',['group',['../structABDMS2000_1_1ParameterMeta.html#a688024b50dfa65943a5cf0b54528c7e0',1,'ABDMS2000::ParameterMeta']]]
 ];

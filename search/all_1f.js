@@ -14,10 +14,13 @@ var searchData=
   ['wavetableloader_2eh_11',['WavetableLoader.h',['../WavetableLoader_8h.html',1,'']]],
   ['wavetablememory_5f_12',['wavetableMemory_',['../classABDMS2000_1_1DWGSTables.html#a6f079b1839c9a839d7d2c9a292a14630',1,'ABDMS2000::DWGSTables']]],
   ['wavetables_2064_20ondas_20digitales_13',['6. DWGS Wavetables (64 ondas digitales)',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md63',1,'']]],
-  ['wavetype_5f_14',['waveType_',['../classABDMS2000_1_1LFO.html#a1565b5dab3b60669fc68d8a4f3459d58',1,'ABDMS2000::LFO']]],
-  ['webview_5f_15',['webView_',['../classABDMS2000_1_1ABDMS2000AudioProcessorEditor.html#ab675ab8d1c20db8e01be316a278ece3f',1,'ABDMS2000::ABDMS2000AudioProcessorEditor']]],
-  ['wetmix_5f_16',['wetMix_',['../classABDMS2000_1_1DelayFX.html#a86fdf4836ba04a15467ccb55f2d175d2',1,'ABDMS2000::DelayFX']]],
-  ['whitenoisegen_5f_17',['whiteNoiseGen_',['../classABDMS2000_1_1Vocoder16Band.html#a61b82cb75f3c8a8ea4e89d2fbe6447ca',1,'ABDMS2000::Vocoder16Band']]],
-  ['win32_5flean_5fand_5fmean_18',['WIN32_LEAN_AND_MEAN',['../AppLogger_8h.html#ac7bef5d85e3dcd73eef56ad39ffc84a9',1,'AppLogger.h']]],
-  ['writeindex_5f_19',['writeIndex_',['../classABDMS2000_1_1DelayFX.html#ae2d89b80d734a807203f16049505da02',1,'ABDMS2000::DelayFX']]]
+  ['webview_5f_14',['webView_',['../classABDMS2000_1_1ABDMS2000AudioProcessorEditor.html#ab675ab8d1c20db8e01be316a278ece3f',1,'ABDMS2000::ABDMS2000AudioProcessorEditor']]],
+  ['wetmix_5f_15',['wetMix_',['../classABDMS2000_1_1DelayFX.html#a86fdf4836ba04a15467ccb55f2d175d2',1,'ABDMS2000::DelayFX']]],
+  ['whitenoisegen_5f_16',['whiteNoiseGen_',['../classABDMS2000_1_1Vocoder16Band.html#a61b82cb75f3c8a8ea4e89d2fbe6447ca',1,'ABDMS2000::Vocoder16Band']]],
+  ['win32_5flean_5fand_5fmean_17',['WIN32_LEAN_AND_MEAN',['../AppLogger_8h.html#ac7bef5d85e3dcd73eef56ad39ffc84a9',1,'AppLogger.h']]],
+  ['writecompleted_18',['WriteCompleted',['../namespaceABDMS2000.html#a75ff67d10d18351793b50b8827bd2f5aa045b3b91a01fd383c64f201ead78feb0',1,'ABDMS2000']]],
+  ['writeerror_19',['WriteError',['../namespaceABDMS2000.html#a75ff67d10d18351793b50b8827bd2f5aa4a02ea49d454392fd1e3426e53f14b58',1,'ABDMS2000']]],
+  ['writefield_20',['writeField',['../structABDMS2000_1_1MS2000HardwareProgram.html#a505a7bd1b4660917af43a4caafe7b02f',1,'ABDMS2000::MS2000HardwareProgram']]],
+  ['writeindex_5f_21',['writeIndex_',['../classABDMS2000_1_1DelayFX.html#ae2d89b80d734a807203f16049505da02',1,'ABDMS2000::DelayFX']]],
+  ['writeprogramblob_22',['writeProgramBlob',['../classABDMS2000_1_1BridgeActions.html#a33685402d8abe7ce0dd7702546550d40',1,'ABDMS2000::BridgeActions']]]
 ];

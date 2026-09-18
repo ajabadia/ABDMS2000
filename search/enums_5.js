@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['lfowaveform_0',['LFOWaveform',['../namespaceABDMS2000.html#a58d40dfa6e8651b26e59e510c4430ccb',1,'ABDMS2000']]],
-  ['lfowaveformlfo2_1',['LFOWaveformLFO2',['../namespaceABDMS2000.html#a5ff5c2549a775ac66e8cfcce1871d051',1,'ABDMS2000']]]
+  ['osc1type_0',['OSC1Type',['../namespaceABDMS2000.html#af87646d58e636e72aab721a072557c3e',1,'ABDMS2000']]],
+  ['osc2modulationmode_1',['OSC2ModulationMode',['../namespaceABDMS2000.html#adbbc3364c941c8dc96e41f8200ca6f9d',1,'ABDMS2000']]]
 ];

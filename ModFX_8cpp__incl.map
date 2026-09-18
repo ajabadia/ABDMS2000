@@ -1,19 +1,17 @@
 <map id="Source/DSP/Effects/ModFX.cpp" name="Source/DSP/Effects/ModFX.cpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="179,5,323,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="258,5,402,45"/>
 <area shape="rect" id="Node000002" href="$ModFX_8h.html" title=" " alt="" coords="75,93,153,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="220,48,148,89,145,84,217,43"/>
-<area shape="rect" id="Node000005" href="$DSPUtils_8h.html" title=" " alt="" coords="229,93,394,119"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="268,44,296,81,292,84,264,47"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="185,167,248,192"/>
-<area shape="poly" id="edge8_Node000001_Node000006" title=" " alt="" coords="241,47,229,69,219,94,215,124,216,152,211,153,210,124,214,93,224,67,236,44"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="379,167,465,192"/>
-<area shape="poly" id="edge9_Node000001_Node000007" title=" " alt="" coords="325,40,370,59,390,74,408,92,422,122,426,152,421,153,417,123,404,95,387,78,367,64,323,44"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="279,48,159,91,158,86,277,43"/>
+<area shape="rect" id="Node000005" href="$DSPUtils_8h.html" title=" " alt="" coords="178,93,343,119"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="315,47,282,84,278,81,311,44"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="368,93,431,119"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="349,44,382,81,378,84,345,47"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="455,93,541,119"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="371,43,462,85,460,90,369,48"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="5,167,68,192"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="103,121,61,159,58,155,100,117"/>
 <area shape="rect" id="Node000004" title=" " alt="" coords="93,167,149,192"/>
 <area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="118,119,121,153,116,153,112,119"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="298,121,245,160,242,156,295,117"/>
-<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="331,116,394,157,391,161,328,121"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="278,167,345,192"/>
-<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="314,119,314,153,309,153,309,119"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="180,167,341,192"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="263,119,263,153,258,153,258,119"/>
 </map>
