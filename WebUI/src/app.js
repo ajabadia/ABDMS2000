@@ -15,6 +15,11 @@ import { openWavetableBrowser, syncCatalogFromEngine, getWaveName } from './ui/w
 import { SegmentedSelector, LcdDropdown, WAVE_ICONS, FILTER_ICONS } from './components/customSelectors.js';
 import { diagnosticModal } from './ui/diagnosticModal.js';
 import { BankManagerModal } from './components/bank/BankManagerModal.js';
+
+const IS_DEV = import.meta.env?.DEV === true;
+const devLog = (...args) => {
+  if (IS_DEV) console.log(...args);
+};
 import { OscilloscopeModal } from './components/OscilloscopeModal.js';
 
 let currentTheme = 'ms2000';
@@ -27,7 +32,7 @@ let timbreClipboard = null;
 let globalMidiChannel = 1;
 
 document.addEventListener('DOMContentLoaded', () => {
-  console.log(`[ABDMS2000 App Init] Version: ${BUILD_INFO.version} (Build ${BUILD_INFO.buildNumber})`);
+  devLog(`[ABDMS2000 App Init] Version: ${BUILD_INFO.version} (Build ${BUILD_INFO.buildNumber})`);
 
   setupThemeSelector();
   setupNavbarMenus();
@@ -62,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (data) {
       paramStore.syncAll(data);
       if (lcdProgrammer) lcdProgrammer.updateDisplay();
-      console.log('[ParamStore]: Synced all UI controls with APVTS state');
+      devLog('[ParamStore]: Synced all UI controls with APVTS state');
     }
   });
 
@@ -152,7 +157,7 @@ function setupDashboardCards() {
   });
 
   setupDashboardObservers();
-  console.log('[Dashboard Workspace: All 8 Cards & 19 Sub-actions Mounted]');
+  devLog('[Dashboard Workspace: All 8 Cards & 19 Sub-actions Mounted]');
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -991,9 +996,11 @@ function renderModSeqDrawer(container) {
     options: [{ value: 0, label: 'OFF' }, { value: 1, label: 'ON' }]
   });
 
+  // La transición es **por fila** (bit 0 del byte de movimiento de cada fila): aquí se
+  // edita la de la fila A; B y C tienen su propio `seq2Motion` / `seq3Motion`.
   new SegmentedSelector(container.querySelector('#drawer-sel-modseq-smooth'), {
-    paramId: 'modSeqSmooth',
-    label: 'TRANSICIÓN ENTRE PASOS',
+    paramId: 'seq1Motion',
+    label: 'FILA A: TRANSICIÓN ENTRE PASOS',
     layout: 'row',
     size: 'sm',
     options: [{ value: 0, label: 'STEP (ESCALONADO)' }, { value: 1, label: 'SMOOTH (SUAVE)' }]
@@ -1421,13 +1428,15 @@ function setupDashboardObservers() {
     } else {
       const dirs = ['Forward', 'Reverse', 'Bounce', 'Random'];
       const dir = dirs[paramStore.get('modSeqType') || 0] || 'Forward';
-      const smooth = (paramStore.get('modSeqSmooth') || 0) > 0 ? 'Smooth' : 'Step';
-      txt.textContent = `ON (${dir} / ${smooth})`;
+      const motion = ['Step', 'Smooth'][paramStore.get('seq1Motion') || 0] || 'Step';
+      const last = Math.round(paramStore.get('seqLastStep') || 16);
+      txt.textContent = `ON (${dir} / ${motion} / ${last} pasos)`;
     }
   };
   paramStore.onChange('modSeqOn', updateModSeqCard);
   paramStore.onChange('modSeqType', updateModSeqCard);
-  paramStore.onChange('modSeqSmooth', updateModSeqCard);
+  paramStore.onChange('seq1Motion', updateModSeqCard);
+  paramStore.onChange('seqLastStep', updateModSeqCard);
 
   // Card 7: FX & EQUALIZER
   const updateModFxCard = () => {
@@ -1545,7 +1554,7 @@ function setTheme(mode) {
   paramStore.set('synthMode', modeIdx);
   bridge.setParam('synthMode', modeIdx);
   bankManagerModal?.setTheme(mode);
-  console.log('[Theme Switch]:', mode, 'modeIdx:', modeIdx);
+  devLog('[Theme Switch]:', mode, 'modeIdx:', modeIdx);
 }
 
 function setupNavbarMenus() {
@@ -1606,7 +1615,7 @@ function closeAllDropdowns() {
 }
 
 function handleMenuAction(action) {
-  console.log(`[Menu Action Triggered]: ${action}`);
+  devLog(`[Menu Action Triggered]: ${action}`);
   switch (action) {
     case 'open-bank-manager':
       bankManagerModal?.open();
@@ -1638,7 +1647,7 @@ function handleMenuAction(action) {
       bridge.send('initPatch', {});
       const lcdInit = document.getElementById('lcd-line-2');
       if (lcdInit) lcdInit.textContent = '[Init Synth]    ';
-      console.log('[Preset Reset to Default]');
+      devLog('[Preset Reset to Default]');
       break;
     case 'randomize-patch':
     case 'randomize':
@@ -1646,7 +1655,7 @@ function handleMenuAction(action) {
       bridge.send('randomizePatch', {});
       const lcdRand = document.getElementById('lcd-line-2');
       if (lcdRand) lcdRand.textContent = '[Random Patch]  ';
-      console.log('[Musical Random Patch Generated]');
+      devLog('[Musical Random Patch Generated]');
       break;
     case 'panic':
       bridge.allNotesOff();
@@ -1673,7 +1682,7 @@ function handleMenuAction(action) {
           timbreClipboard[id] = paramStore.get(id);
         }
       });
-      console.log('[Timbre 1 Copied to Clipboard]');
+      devLog('[Timbre 1 Copied to Clipboard]');
       break;
     case 'paste-timbre':
       if (timbreClipboard) {
@@ -1682,7 +1691,7 @@ function handleMenuAction(action) {
           paramStore.set(targetKey, v);
           bridge.setParam(targetKey, v);
         });
-        console.log('[Timbre Pasted to Timbre 2]');
+        devLog('[Timbre Pasted to Timbre 2]');
       }
       break;
     case 'zoom-100':
@@ -1718,7 +1727,7 @@ function saveCurrentPatch() {
   // listener downloads as ms2000_patch.syx.
   if (lcdProgrammer) lcdProgrammer.flashMessage('WRITE COMPLETED', 'PATCH SAVED');
   bridge.send('exportSysexProgram', {});
-  console.log('[Menu Action]: Save Patch - exporting current patch as .syx');
+  devLog('[Menu Action]: Save Patch - exporting current patch as .syx');
 }
 
 function triggerSysexFileInput() {
@@ -1742,7 +1751,7 @@ function triggerSysexFileInput() {
       const base64Data = btoa(binary);
 
       bridge.send('importSysexBase64', { dataBase64: base64Data });
-      console.log(`[SysEx Import Sent]: ${file.name} (${bytes.length} bytes)`);
+      devLog(`[SysEx Import Sent]: ${file.name} (${bytes.length} bytes)`);
     };
     reader.readAsArrayBuffer(file);
   };
@@ -1783,7 +1792,7 @@ function setupSysExEvents() {
 
   bridge.on('sysexImportResult', (data) => {
     if (data && data.success) {
-      console.log(`[SysEx Import Success]: ${data.programName} (${data.programCount} programs)`);
+      devLog(`[SysEx Import Success]: ${data.programName} (${data.programCount} programs)`);
       const lcdLine2 = document.getElementById('lcd-line-2');
       if (lcdLine2 && data.programName) {
         lcdLine2.textContent = `[${data.programName.trim()}]`;
@@ -1808,7 +1817,7 @@ function setupSysExEvents() {
       a.download = 'ms2000_patch.syx';
       a.click();
       URL.revokeObjectURL(url);
-      console.log(`[SysEx Program Exported]: ${bytes.length} bytes downloaded.`);
+      devLog(`[SysEx Program Exported]: ${bytes.length} bytes downloaded.`);
     }
   });
 }
@@ -1877,7 +1886,7 @@ function setupButtons() {
   panicBtn?.addEventListener('click', () => {
     bridge.allNotesOff();
     if (keyboardInstance) keyboardInstance.panic();
-    console.log('[Panic All Notes Off]');
+    devLog('[Panic All Notes Off]');
   });
 
   const randomBtn = document.getElementById('btn-random');
@@ -1889,7 +1898,7 @@ function setupButtons() {
 
   const compareBtn = document.getElementById('btn-compare');
   compareBtn?.addEventListener('click', () => {
-    console.log('[Compare A/B Toggled]');
+    devLog('[Compare A/B Toggled]');
   });
 
 

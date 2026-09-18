@@ -5,9 +5,12 @@
  *   Main thread:  AudioContext + AudioWorkletNode (message passing)
  *   Worklet:      WebAssembly instance rendering audio via _processAudio()
  *
- * The WASM binary is embedded in ms2000_dsp.js (Emscripten SINGLE_FILE build).
- * We extract it on the main thread and transfer it to the worklet as an ArrayBuffer.
+ * The WASM binary is a separate .wasm file (not SINGLE_FILE).
+ * The main thread fetches it and transfers the ArrayBuffer to the worklet,
+ * which instantiates WebAssembly with the required Emscripten imports.
  */
+
+const IS_DEV = import.meta.env?.DEV === true;
 
 export class BridgeWasm {
   constructor() {
@@ -16,6 +19,9 @@ export class BridgeWasm {
     this.masterGain = null;
     this.isInitialized = false;
     this._snapshotCallback = null;
+    this._initPromise = null;
+    this._readyTimeoutMs = 10000;
+    this._pendingMessages = [];
   }
 
   /** Alias for backward compatibility (OscilloscopeModal uses wasmBridge.audioContext) */
@@ -29,7 +35,17 @@ export class BridgeWasm {
 
   async initAudio() {
     if (this.isInitialized) return true;
+    if (this._initPromise) return this._initPromise;
 
+    this._initPromise = this._initAudioPipeline();
+    try {
+      return await this._initPromise;
+    } finally {
+      this._initPromise = null;
+    }
+  }
+
+  async _initAudioPipeline() {
     try {
       // 1. Create AudioContext
       const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -41,32 +57,77 @@ export class BridgeWasm {
       // 2. Register AudioWorklet processor
       await this.audioCtx.audioWorklet.addModule('src/wasm/ms2000Worklet.js');
 
-      // 3. Extract WASM binary from the Emscripten module file
-      const wasmBinary = await this._extractWasmBinary();
+      // 3. Fetch the WASM binary
+      const response = await fetch('src/wasm/ms2000_dsp.wasm');
+      if (!response.ok) {
+        throw new Error(`Failed to fetch WASM: ${response.status}`);
+      }
+      const wasmBinary = await response.arrayBuffer();
+      if (IS_DEV) {
+        console.log(
+          '[BridgeWasm] Fetched WASM binary:',
+          (wasmBinary.byteLength / 1024).toFixed(1),
+          'KB'
+        );
+      }
 
       // 4. Create worklet node
       this.workletNode = new AudioWorkletNode(
         this.audioCtx,
-        'ms2000-worklet-processor'
+        'ms2000-worklet-processor',
+        {
+          numberOfInputs: 0,
+          numberOfOutputs: 1,
+          outputChannelCount: [2],
+        }
       );
 
-      // 5. Set up message handler (telemetry from worklet)
+      // WASM_READY is emitted only after the module, constructors and engine
+      // have initialized. Do not advertise an initialized audio pipeline before it.
+      const readyPromise = new Promise((resolve, reject) => {
+        const timeout = setTimeout(
+          () => reject(new Error('Timed out waiting for WASM_READY')),
+          this._readyTimeoutMs
+        );
+        this._resolveWasmReady = () => {
+          clearTimeout(timeout);
+          resolve();
+        };
+        this._rejectWasmReady = (error) => {
+          clearTimeout(timeout);
+          reject(error);
+        };
+      });
+
+      // 5. Set up message handler (telemetry and initialization status)
       this.workletNode.port.onmessage = (event) => {
         const data = event.data;
         if (data.type === 'WASM_READY') {
-          console.log('[BridgeWasm] WASM engine ready');
+          if (IS_DEV) console.log('[BridgeWasm] WASM engine ready (renderer: raw-wasm-cpp)');
+          this._resolveWasmReady?.();
+          this._resolveWasmReady = null;
+          this._rejectWasmReady = null;
+        } else if (data.type === 'WASM_RENDERING') {
+          if (IS_DEV) {
+            console.log('[BridgeWasm] Audio rendering confirmed by raw C++ WASM:', data.blockSize, 'samples');
+          }
         } else if (data.type === 'SNAPSHOT' && this._snapshotCallback) {
           this._snapshotCallback(data.snapshot);
         } else if (data.type === 'WASM_ERROR') {
-          console.error('[BridgeWasm] WASM error in worklet:', data.error);
+          const error = new Error(data.error || 'WASM initialization failed');
+          console.error('[BridgeWasm] WASM error in worklet:', error.message);
+          this._rejectWasmReady?.(error);
+          this._resolveWasmReady = null;
+          this._rejectWasmReady = null;
         }
       };
 
       // 6. Send WASM binary to worklet for instantiation
       this.workletNode.port.postMessage({
-        type: 'FETCH_WASM',
+        type: 'INIT_WASM',
         binary: wasmBinary,
-        sampleRate: this.audioCtx.sampleRate
+        sampleRate: this.audioCtx.sampleRate,
+        debug: IS_DEV
       });
 
       // 7. Master gain → destination
@@ -75,82 +136,61 @@ export class BridgeWasm {
       this.workletNode.connect(this.masterGain);
       this.masterGain.connect(this.audioCtx.destination);
 
+      await readyPromise;
       this.isInitialized = true;
-      console.log(
-        '[BridgeWasm] WASM AudioWorklet pipeline ready @',
-        this.audioCtx.sampleRate,
-        'Hz'
-      );
+      this._flushPendingMessages();
+      if (IS_DEV) {
+        console.log(
+          '[BridgeWasm] WASM AudioWorklet pipeline ready @',
+          this.audioCtx.sampleRate,
+          'Hz'
+        );
+      }
       return true;
     } catch (err) {
       console.error('[BridgeWasm] Init failed:', err);
+      this.isInitialized = false;
+      this._resolveWasmReady = null;
+      this._rejectWasmReady = null;
+      this._pendingMessages = [];
+      try {
+        this.workletNode?.disconnect();
+        this.masterGain?.disconnect();
+        await this.audioCtx?.close();
+      } catch (_) {
+        // Cleanup is best effort; the next user gesture can retry initialization.
+      }
+      this.workletNode = null;
+      this.masterGain = null;
+      this.audioCtx = null;
       return false;
     }
-  }
-
-  /**
-   * Extract the raw WASM binary from ms2000_dsp.js.
-   * The Emscripten SINGLE_FILE build embeds the WASM binary as a
-   * binary-decoded string inside the findWasmBinary() function.
-   *
-   * NOTE: We use index-based extraction instead of regex because the
-   * binary data contains 115+ embedded single-quote characters that
-   * break [^'] regex patterns. The sequence ')} does NOT appear in
-   * the binary data, making it a reliable end marker.
-   */
-  async _extractWasmBinary() {
-    // Fetch the Emscripten JS file as text
-    const response = await fetch('src/wasm/ms2000_dsp.js');
-    const jsSource = await response.text();
-
-    // Find the binary string boundaries using indexOf
-    const startMarker = "findWasmBinary(){return binaryDecode('";
-    const startIdx = jsSource.indexOf(startMarker);
-    if (startIdx < 0) {
-      throw new Error('Could not find findWasmBinary() in ms2000_dsp.js');
-    }
-    const binStart = startIdx + startMarker.length;
-
-    // The binary string is terminated by ')} — this sequence does not
-    // appear inside the encoded binary data (embedded quotes are never
-    // followed by a closing paren).
-    const binEnd = jsSource.indexOf("')}", binStart);
-    if (binEnd < 0) {
-      throw new Error('Could not find end of binary string in ms2000_dsp.js');
-    }
-
-    const binStr = jsSource.substring(binStart, binEnd);
-    console.log(
-      '[BridgeWasm] Binary string extracted:',
-      binStr.length,
-      'chars'
-    );
-
-    // Decode the binary string to Uint8Array (same as Emscripten's binaryDecode)
-    const bytes = new Uint8Array(binStr.length);
-    for (let i = 0; i < binStr.length; i++) {
-      const c = binStr.charCodeAt(i);
-      bytes[i] = (~c >> 8) & c;
-    }
-
-    // Verify WASM magic bytes (\0asm)
-    if (bytes[0] !== 0x00 || bytes[1] !== 0x61 || bytes[2] !== 0x73 || bytes[3] !== 0x6d) {
-      throw new Error('Extracted data is not a valid WASM binary (bad magic bytes)');
-    }
-
-    console.log(
-      '[BridgeWasm] Extracted WASM binary:',
-      (bytes.length / 1024).toFixed(1),
-      'KB'
-    );
-    return bytes.buffer;
   }
 
   // ─── Command forwarding to WASM worklet ───
 
   _post(msg) {
-    if (this.workletNode) {
+    if (this.isInitialized && this.workletNode) {
       this.workletNode.port.postMessage(msg);
+      return;
+    }
+
+    // Keyboard input can arrive from the same pointer gesture that starts
+    // AudioContext/WASM initialization. Preserve command order instead of
+    // silently dropping the first note while the worklet is still booting.
+    if (this._initPromise || this.workletNode) {
+      this._pendingMessages.push(msg);
+    }
+  }
+
+  _flushPendingMessages() {
+    if (!this.isInitialized || !this.workletNode || this._pendingMessages.length === 0) {
+      return;
+    }
+    const pending = this._pendingMessages;
+    this._pendingMessages = [];
+    for (const message of pending) {
+      this.workletNode.port.postMessage(message);
     }
   }
 
@@ -167,16 +207,13 @@ export class BridgeWasm {
   }
 
   midiCC(cc, value) {
-    // WASM engine handles MIDI CC via setParamById
-    // Map common CCs to parameter IDs
     if (cc === 120 || cc === 123) {
       this.allNotesOff();
     }
   }
 
   pitchBend(value) {
-    // value is -1..+1, map to pitch bend parameter
-    // The WASM engine may handle this via a dedicated function if exported
+    // value is -1..+1
   }
 
   modWheel(value) {
@@ -212,10 +249,20 @@ export class BridgeWasm {
     this._snapshotCallback = callback;
   }
 
-  // ─── Diagnostic (stubs — can be wired to WASM if exported) ───
+  // ─── Diagnostic ───
 
   setDiagnosticTone(point, frequency = 440.0, level = 0.25) {
-    // Not implemented in WASM build yet
+    // Diagnostic controls can be used before the first keyboard note. Start
+    // the pipeline here as well, then queue the command until WASM is ready.
+    if (point > 0 && !this.isInitialized && !this._initPromise) {
+      this.initAudio();
+    }
+    this._post({
+      type: 'DIAGNOSTIC_TONE',
+      point: Math.max(0, Math.min(5, Number(point) || 0)),
+      frequency: Math.max(20, Math.min(10000, Number(frequency) || 440)),
+      level: Math.max(0, Math.min(1, Number(level) || 0)),
+    });
   }
 
   triggerDiagnosticNote(note, velocity = 0.8, isNoteOn = true) {
@@ -227,11 +274,11 @@ export class BridgeWasm {
   }
 
   setDiagnosticBypass(stage, enabled) {
-    // Not implemented in WASM build yet
+    this._post({ type: 'DIAGNOSTIC_BYPASS', stage, enabled: !!enabled });
   }
 
   resetDiagnosticBypasses() {
-    // Not implemented in WASM build yet
+    this._post({ type: 'RESET_DIAGNOSTIC_BYPASSES' });
   }
 }
 

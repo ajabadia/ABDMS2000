@@ -4,8 +4,8 @@
 
 .dashboard-workspace {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
   padding: 0;
   margin: 0;
   max-width: 100%;
@@ -13,7 +13,7 @@
   box-sizing: border-box;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1280px) {
   .dashboard-workspace {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -26,22 +26,23 @@
 }
 
 .dashboard-card {
-  background: linear-gradient(180deg, rgba(30, 36, 48, 0.7) 0%, rgba(18, 22, 30, 0.85) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(8, 12, 18, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 8px;
-  padding: 14px 16px;
+  padding: 11px 13px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s, background 0.2s;
 }
 
 .dashboard-card:hover {
-  border-color: rgba(0, 212, 255, 0.35);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), 0 0 10px rgba(0, 212, 255, 0.15);
+  background: rgba(14, 20, 30, 0.70);
+  border-color: rgba(var(--color-accent-rgb), 0.6);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.7), 0 0 14px rgba(var(--color-accent-rgb), 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.18);
 }
 
 .card-header {
@@ -49,8 +50,8 @@
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  padding-bottom: 8px;
-  margin-bottom: 12px;
+  padding-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .card-title-area {
@@ -85,7 +86,7 @@
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: #f1f5f9;
+  color: var(--color-text-main, #f1f5f9);
 }
 
 .card-badge {
@@ -93,9 +94,9 @@
   font-weight: 600;
   padding: 2px 6px;
   border-radius: 3px;
-  background: rgba(0, 212, 255, 0.15);
-  color: var(--synth-accent, #00d4ff);
-  border: 1px solid rgba(0, 212, 255, 0.3);
+  background: rgba(var(--color-accent-rgb), 0.15);
+  color: var(--color-accent, #00d4ff);
+  border: 1px solid rgba(var(--color-accent-rgb), 0.3);
 }
 
 .card-body {
@@ -115,18 +116,18 @@
 }
 
 .info-label {
-  color: #94a3b8;
+  color: var(--color-text-muted, #94a3b8);
   font-weight: 500;
 }
 
 .info-value {
   font-family: 'Roboto Mono', monospace;
   font-weight: 600;
-  color: #f8fafc;
-  background: rgba(0, 0, 0, 0.4);
+  color: var(--color-text-main, #f8fafc);
+  background: rgba(0, 0, 0, 0.45);
   padding: 2px 6px;
   border-radius: 3px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* Mini Bar meters */
@@ -145,13 +146,13 @@
 
 .mini-meter-label {
   width: 45px;
-  color: #94a3b8;
+  color: var(--color-text-muted, #94a3b8);
 }
 
 .mini-meter-track {
   flex: 1;
   height: 6px;
-  background: #090c10;
+  background: rgba(0, 0, 0, 0.6);
   border-radius: 3px;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -159,7 +160,7 @@
 
 .mini-meter-bar {
   height: 100%;
-  background: linear-gradient(90deg, #0ea5e9, #00d4ff);
+  background: linear-gradient(90deg, var(--color-accent-hover, #0ea5e9), var(--color-accent, #00d4ff));
   border-radius: 3px;
   transition: width 0.15s ease-out;
 }
@@ -173,9 +174,9 @@
 
 .card-action-btn {
   flex: 1;
-  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-  border: 1px solid rgba(0, 212, 255, 0.25);
-  color: #e2e8f0;
+  background: linear-gradient(180deg, var(--color-panel-surface, #1e293b) 0%, var(--color-panel-bg, #0f172a) 100%);
+  border: 1px solid var(--color-panel-border, rgba(0, 212, 255, 0.25));
+  color: var(--color-text-main, #e2e8f0);
   padding: 7px 8px;
   border-radius: 5px;
   font-size: 0.72rem;
@@ -191,10 +192,10 @@
 }
 
 .card-action-btn:hover {
-  background: linear-gradient(180deg, var(--synth-accent, #00d4ff) 0%, #0284c7 100%);
+  background: var(--color-accent, #00d4ff);
   color: #040810;
-  border-color: var(--synth-accent, #00d4ff);
-  box-shadow: 0 0 10px rgba(0, 212, 255, 0.4);
+  border-color: var(--color-accent, #00d4ff);
+  box-shadow: 0 0 10px rgba(var(--color-accent-rgb), 0.4);
   transform: translateY(-1px);
 }
 
@@ -204,9 +205,9 @@
 
 /* Card Action Button (Legacy Single) */
 .card-edit-btn {
-  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-  border: 1px solid rgba(0, 212, 255, 0.3);
-  color: #e2e8f0;
+  background: linear-gradient(180deg, var(--color-panel-surface, #1e293b) 0%, var(--color-panel-bg, #0f172a) 100%);
+  border: 1px solid var(--color-panel-border, rgba(0, 212, 255, 0.3));
+  color: var(--color-text-main, #e2e8f0);
   padding: 8px 14px;
   border-radius: 6px;
   font-size: 0.76rem;
@@ -222,9 +223,9 @@
 }
 
 .card-edit-btn:hover {
-  background: linear-gradient(180deg, var(--synth-accent, #00d4ff) 0%, #0284c7 100%);
+  background: var(--color-accent, #00d4ff);
   color: #040810;
-  border-color: var(--synth-accent, #00d4ff);
-  box-shadow: 0 0 12px rgba(0, 212, 255, 0.4);
+  border-color: var(--color-accent, #00d4ff);
+  box-shadow: 0 0 12px rgba(var(--color-accent-rgb), 0.4);
 }
 

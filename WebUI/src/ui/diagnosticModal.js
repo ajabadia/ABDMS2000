@@ -6,8 +6,9 @@
 
 import { bridge } from '../bridge/bridgeCore.js';
 
-// Configuration flag: set to false to completely hide Test Mode in production release builds
-export const SHOW_DEV_TEST_MODE = true;
+// Vite replaces import.meta.env.DEV with false in production bundles.
+const IS_DEV = import.meta.env?.DEV === true;
+export const SHOW_DEV_TEST_MODE = IS_DEV;
 
 class DiagnosticModalController {
   constructor() {
@@ -151,7 +152,7 @@ class DiagnosticModalController {
       el?.addEventListener('change', (e) => {
         const enabled = e.target.checked;
         bridge.setDiagnosticBypass(stage, enabled);
-        console.log(`[Diagnostic Mode] Bypass ${stage}: ${enabled}`);
+        if (IS_DEV) console.log(`[Diagnostic Mode] Bypass ${stage}: ${enabled}`);
       });
     });
 
@@ -162,7 +163,7 @@ class DiagnosticModalController {
         if (el) el.checked = false;
       });
       bridge.resetDiagnosticBypasses();
-      console.log('[Diagnostic Mode] All bypasses reset to normal operation');
+      if (IS_DEV) console.log('[Diagnostic Mode] All bypasses reset to normal operation');
     });
   }
 
@@ -170,7 +171,9 @@ class DiagnosticModalController {
     const point = this.isToneActive ? this.currentPoint : 0;
     const level = (this.volume / 100.0) * 0.45;
     bridge.setDiagnosticTone(point, this.frequency, level);
-    console.log(`[Diagnostic Mode] Tone Point: ${point}, Freq: ${this.frequency}Hz, Level: ${level.toFixed(3)}`);
+    if (IS_DEV) {
+      console.log(`[Diagnostic Mode] Tone Point: ${point}, Freq: ${this.frequency}Hz, Level: ${level.toFixed(3)}`);
+    }
   }
 
   panic() {

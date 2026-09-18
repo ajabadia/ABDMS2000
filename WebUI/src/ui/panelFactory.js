@@ -534,7 +534,10 @@ function renderPatchMatrix(container, def, bridge) {
 }
 
 function renderModSequencer(container, def, bridge) {
-  const modSeqParams = ['modSeqOn', 'modSeqType', 'modSeqSmooth', 'modSeqResolution'];
+  // El mod sequence es por timbre y cada fila tiene su destino y su transición
+  // (bytes 52..107 del bloque de 108 B); el panel enseña aquí las tres filas del Timbre 1.
+  const modSeqParams = ['modSeqOn', 'modSeqType', 'modSeqResolution', 'seqLastStep',
+                        'seq1Dest', 'seq1Motion', 'seq2Dest', 'seq2Motion', 'seq3Dest', 'seq3Motion'];
 
   let stepsHtml = '';
   for (let s = 1; s <= 16; ++s) {

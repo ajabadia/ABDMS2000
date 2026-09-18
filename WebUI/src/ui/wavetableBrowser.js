@@ -14,6 +14,8 @@
  * then synced live from the engine via bridge.send('getWavetableCatalog').
  */
 
+const IS_DEV = import.meta.env?.DEV === true;
+
 // ─── Category definitions (mirrors WaveCategory.h) ──────────────────────────
 
 const CATEGORIES = [
@@ -464,7 +466,7 @@ export function syncCatalogFromEngine(bridge) {
   bridge.on('wavetableCatalog', (data) => {
     if (data && Array.isArray(data.catalog)) {
       fullCatalog = data.catalog;
-      console.log(`[WavetableBrowser] Synced ${fullCatalog.length} waves from engine`);
+      if (IS_DEV) console.log(`[WavetableBrowser] Synced ${fullCatalog.length} waves from engine`);
       // Re-render if open
       if (isOpen && gridEl) {
         const chipsRow = overlayEl.querySelector('#wt-chips');

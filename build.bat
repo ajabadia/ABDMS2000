@@ -37,6 +37,23 @@ if %ERRORLEVEL% neq 0 (
     exit /b %ERRORLEVEL%
 )
 
+REM Identidad del host (Source/Plugin/HostModelId.gen.h) desde el contrato
+REM canonico ya sincronizado en WebUI/abdbank (fuente unica: korgAbdSm002Contract).
+node Scripts/generate_host_model_id.js
+if %ERRORLEVEL% neq 0 (
+    echo [ERROR] Fallo al generar HostModelId.gen.h.
+    exit /b %ERRORLEVEL%
+)
+
+REM Tramas Korg del contrato (Source/MIDI/KorgChannel.gen.h) desde el mismo contrato
+REM sincronizado: el C++ y el TS tienen que direccionar el equipo con el mismo byte
+REM (Test 25 de DSPCoreTests.cpp consume estas tramas). Ver Scripts/generate_korg_channel.js.
+node Scripts/generate_korg_channel.js
+if %ERRORLEVEL% neq 0 (
+    echo [ERROR] Fallo al generar KorgChannel.gen.h.
+    exit /b %ERRORLEVEL%
+)
+
 echo [2/6] Compilando modulo WebAssembly WASM...
 call wasm\build_wasm.bat
 if %ERRORLEVEL% neq 0 (

@@ -4,11 +4,10 @@
   "type": "module",
   "description": "Virtual Korg MS2000 & microKORG Hybrid Synthesizer",
   "scripts": {
-    "generate": "node Scripts/registry_generator.js",
+    "generate": "node Scripts/registry_generator.js && node Scripts/generate_host_model_id.js",
     "bundle": "node Scripts/build_webui.js",
     "test": "vitest run",
     "test:watch": "vitest",
-    "sync:keyboard": "cp -r ../ABDSharedCode/MidiKeyboard/src/keyboard.js WebUI/src/components/keyboard.js && cp -r ../ABDSharedCode/MidiKeyboard/src/utils.js WebUI/src/components/utils.js && cp -r ../ABDSharedCode/MidiKeyboard/src/keyboard.css WebUI/src/components/keyboard.css",
     "sync:scope": "node Scripts/sync_scope.js"
   },
   "keywords": [

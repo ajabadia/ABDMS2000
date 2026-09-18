@@ -1,6 +1,7 @@
 :root {
   /* Default: MS2000 Blue Theme */
   --color-bg-base: #0a1118;
+  --bg-image-theme: url('../../assets/backgrounds/bg_ms2000.webp');
   --color-panel-bg: #102130;
   --color-panel-surface: #172d42;
   --color-panel-border: rgba(0, 195, 255, 0.2);
@@ -18,10 +19,75 @@
   --font-lcd: 'Courier New', monospace;
   --chassis-radius: 6px;
   --panel-radius: 4px;
+
+  /* Component Integration Tokens */
+  --synth-accent: #00c3ff;
+  --synth-border: rgba(0, 195, 255, 0.3);
+  --kbd-bg: rgba(10, 15, 22, 0.95);
+  --kbd-border: rgba(0, 195, 255, 0.25);
+  --kbd-active-bg: #00c3ff;
+  --kbd-led-color: #00c3ff;
+  --kbd-wheel-label-color: #7e9bb5;
+  --kbd-wheel-value-color: #00c3ff;
+  --kbd-white-top: #fdfcf8;
+  --kbd-white-base: #ffffff;
+  --kbd-white-bottom: #f5f2ea;
+  --kbd-black-top: #2f2f35;
+  --kbd-black-base: #1c1c22;
+  --kbd-black-bottom: #0c0c10;
+  --kbd-sweep-color: #00c3ff;
+  --kbd-panic-color: #ff3344;
+  --kbd-font: var(--font-lcd, 'Share Tech Mono', monospace);
+  --kbd-font-size: 9px;
+  --kbd-chord-color: #ffaa00;
+  --kbd-chord-playing-color: #00ff88;
 }
 
-[data-theme="microkorg"] {
+[data-theme="ms2000"],
+body.skin-ms2000 {
+  --color-bg-base: #0a1118;
+  --bg-image-theme: url('../../assets/backgrounds/bg_ms2000.webp');
+  --color-panel-bg: #102130;
+  --color-panel-surface: #172d42;
+  --color-panel-border: rgba(0, 195, 255, 0.2);
+  --color-scrollbar-thumb: #1e3a54;
+  --color-scrollbar-track: #080e14;
+  --color-accent: #00c3ff;
+  --color-accent-rgb: 0, 195, 255;
+  --color-accent-hover: #38d3ff;
+  --color-text-main: #f0f7ff;
+  --color-text-muted: #7e9bb5;
+  --color-lcd-bg: #1c3322;
+  --color-lcd-text: #54ff72;
+  --color-led-active: #ff3344;
+  --color-led-glow: rgba(255, 51, 68, 0.6);
+
+  --synth-accent: #00c3ff;
+  --synth-border: rgba(0, 195, 255, 0.3);
+  --kbd-bg: rgba(10, 15, 22, 0.95);
+  --kbd-border: rgba(0, 195, 255, 0.25);
+  --kbd-active-bg: #00c3ff;
+  --kbd-led-color: #00c3ff;
+  --kbd-wheel-label-color: #7e9bb5;
+  --kbd-wheel-value-color: #00c3ff;
+  --kbd-white-top: #fdfcf8;
+  --kbd-white-base: #ffffff;
+  --kbd-white-bottom: #f5f2ea;
+  --kbd-black-top: #2f2f35;
+  --kbd-black-base: #1c1c22;
+  --kbd-black-bottom: #0c0c10;
+  --kbd-sweep-color: #00c3ff;
+  --kbd-panic-color: #ff3344;
+  --kbd-font: var(--font-lcd, 'Share Tech Mono', monospace);
+  --kbd-font-size: 9px;
+  --kbd-chord-color: #ffaa00;
+  --kbd-chord-playing-color: #00ff88;
+}
+
+[data-theme="microkorg"],
+body.skin-microkorg {
   --color-bg-base: #14110e;
+  --bg-image-theme: url('../../assets/backgrounds/bg_microkorg.webp');
   --color-panel-bg: #1f1b16;
   --color-panel-surface: #2b251f;
   --color-panel-border: rgba(212, 175, 55, 0.25);
@@ -36,10 +102,34 @@
   --color-lcd-text: #ff2222;
   --color-led-active: #ff2222;
   --color-led-glow: rgba(255, 34, 34, 0.7);
+
+  --synth-accent: #d4af37;
+  --synth-border: rgba(212, 175, 55, 0.35);
+  --kbd-bg: rgba(18, 15, 12, 0.95);
+  --kbd-border: rgba(212, 175, 55, 0.3);
+  --kbd-active-bg: #d4af37;
+  --kbd-led-color: #ff2222;
+  --kbd-wheel-label-color: #a69888;
+  --kbd-wheel-value-color: #d4af37;
+  --kbd-white-top: #fdfcf8;
+  --kbd-white-base: #ffffff;
+  --kbd-white-bottom: #f5f2ea;
+  --kbd-black-top: #2f2f35;
+  --kbd-black-base: #1c1c22;
+  --kbd-black-bottom: #0c0c10;
+  --kbd-sweep-color: #d4af37;
+  --kbd-panic-color: #ff2222;
+  --kbd-font: var(--font-lcd, 'Share Tech Mono', monospace);
+  --kbd-font-size: 9px;
+  --kbd-chord-color: #ffaa00;
+  --kbd-chord-playing-color: #00ff88;
 }
 
-[data-theme="advanced"] {
+[data-theme="advanced"],
+body.skin-advanced,
+body.skin-cyberpunk {
   --color-bg-base: #08080c;
+  --bg-image-theme: url('../../assets/backgrounds/bg_advanced.webp');
   --color-panel-bg: #101018;
   --color-panel-surface: #181824;
   --color-panel-border: rgba(255, 0, 127, 0.25);
@@ -54,5 +144,26 @@
   --color-lcd-text: #00ffff;
   --color-led-active: #00ffff;
   --color-led-glow: rgba(0, 255, 255, 0.7);
+
+  --synth-accent: #ff007f;
+  --synth-border: rgba(255, 0, 127, 0.35);
+  --kbd-bg: rgba(12, 10, 18, 0.95);
+  --kbd-border: rgba(255, 0, 127, 0.3);
+  --kbd-active-bg: #ff007f;
+  --kbd-led-color: #00ffff;
+  --kbd-wheel-label-color: #8c8ca0;
+  --kbd-wheel-value-color: #ff007f;
+  --kbd-white-top: #fdfcf8;
+  --kbd-white-base: #ffffff;
+  --kbd-white-bottom: #f5f2ea;
+  --kbd-black-top: #2f2f35;
+  --kbd-black-base: #1c1c22;
+  --kbd-black-bottom: #0c0c10;
+  --kbd-sweep-color: #ff007f;
+  --kbd-panic-color: #00ffff;
+  --kbd-font: var(--font-lcd, 'Share Tech Mono', monospace);
+  --kbd-font-size: 9px;
+  --kbd-chord-color: #ffaa00;
+  --kbd-chord-playing-color: #00ff88;
 }
 

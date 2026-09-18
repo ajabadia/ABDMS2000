@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { spawnSync } from 'child_process';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -49,3 +50,26 @@ export const BUILD_INFO = Object.freeze({
 fs.writeFileSync(buildJsPath, buildJsContent, 'utf8');
 
 console.log('Build version artifacts updated successfully!');
+
+// 3. Empaquetado Vite del WebUI (Fase 3 del plan DRY): el build nativo embebe
+// dist/ (imports @abdsynths/* ya resueltos) en lugar de los fuentes crudos.
+// Va aqui porque dist debe contener el buildVersion.js recien generado.
+console.log('Bundling WebUI with Vite (WebUI/dist)...');
+const webUiDir = path.join(rootDir, 'WebUI');
+const viteResult = spawnSync(
+  'npx',
+  ['vite', 'build', '--config', 'vite.build.config.js'],
+  { cwd: webUiDir, stdio: 'inherit', shell: true },
+);
+
+if (viteResult.status !== 0) {
+  console.error('[ERROR] Vite build failed — the native build would embed stale or missing dist/.');
+  process.exit(1);
+}
+
+const distIndex = path.join(rootDir, 'WebUI', 'dist', 'index.html');
+if (!fs.existsSync(distIndex)) {
+  console.error(`[ERROR] Vite build did not produce ${distIndex}`);
+  process.exit(1);
+}
+console.log('WebUI bundled: WebUI/dist ready for native embedding.');
