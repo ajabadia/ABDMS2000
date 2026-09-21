@@ -3,6 +3,10 @@
   flex-direction: column;
   width: 100vw;
   height: 100vh;
+  /* Design floor (native editor 1080x680): fluid above it, scaled below it
+     by the shared fitStage (onlyShrink). Do NOT raise: it is the design. */
+  min-width: 1080px;
+  min-height: 680px;
   background-color: var(--color-bg-base);
   background-image: radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.05) 0%, rgba(0, 0, 0, 0.35) 100%), var(--bg-image-theme);
   background-size: cover;

@@ -2,6 +2,8 @@ import { bridge } from './bridge/bridgeCore.js';
 import { BUILD_INFO } from './contracts/buildVersion.js';
 import { PARAM_LOOKUP } from './contracts/registry.gen.js';
 
+import { mountFitStage } from '@abdsynths/shared/components'; // fit al viewport (ABDSharedAssets)
+
 import { createScopePanel } from './panels/panelScope.js';
 import { renderGroupPanel, renderAllPanels } from './ui/panelFactory.js';
 import { paramStore } from './contracts/paramStore.js';
@@ -33,6 +35,11 @@ let globalMidiChannel = 1;
 
 document.addEventListener('DOMContentLoaded', () => {
   devLog(`[ABDMS2000 App Init] Version: ${BUILD_INFO.version} (Build ${BUILD_INFO.buildNumber})`);
+
+  // Fit-to-viewport (shared fitStage): below the 1080x680 design floor the app
+  // scales (whole UI always visible); above it MS2000 stays fluid untouched.
+  // Overlays (drawer, modals) live on document.body — outside the stage.
+  mountFitStage(document.getElementById('app'), { width: 1080, height: 680, onlyShrink: true });
 
   setupThemeSelector();
   setupNavbarMenus();
