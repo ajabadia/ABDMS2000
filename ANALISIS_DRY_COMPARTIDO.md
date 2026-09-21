@@ -203,3 +203,38 @@ Cada fase es independiente y revertible; el orden respeta dependencias (los comp
 - Verificación de `pnpm-workspace.yaml`, enlaces en `node_modules/@abdsynths/` y `package.json` del monorepo.
 - Revisión de `Scripts/{sync_assets,sync_bankmanager,sync_scope,build_webui}.js`, `start.bat`, `build.bat`, `vite.config.js`, `CMakeLists.txt` (raíz y de ambos repos compartidos).
 - Estructura completa de `ABDSharedCode` (7 módulos + MidiKeyboard con 5 suites vitest) y `ABDSharedAssets` (styles/components/contracts/models/brands/icons/docs/demo).
+
+---
+
+## 12. Estado de ejecución (2026-09-19)
+
+> Añadido después del cierre del análisis; la §1–§11 se deja intacta como registro
+> de lo que se decidió el 2026-09-08.
+
+Ejecutado desde entonces:
+
+- ✅ **Fase 1 — duplicidades exactas (§3):** resueltas. `SysExCodec`, `NRPNParser` y
+  `utils.js` existen una sola vez, en `ABDSharedCode`. Ver tareas 9.2 y 9.4–9.6 de
+  `ROADMAP.md`.
+- ✅ **Fase 2 — `SynthCore` creado** y adoptado por MS2000 mediante shims
+  (`Source/DSP/Common/DSPUtils.h`, `Modulation/LFO.h`, `Core/AudioThreadSnapshot.h`,
+  `DSP/Envelopes/ADSREnvelope.h`, …). El código ya no vive duplicado en el synth.
+- ⏳ **Fase 2 — `VoiceAllocator`:** existe en `SynthCore` (403L) y generaliza la
+  política de robo de `VoiceManager`, pero **MS2000 todavía no lo consume**
+  (lo usa ABDEep). Es la Fase 10 del roadmap.
+- ⏳ **Fase 3 — pipeline único:** pendiente.
+
+**Lo que cambió fuera de este análisis, y conviene saber:**
+
+- **`ABDSharedCode` tiene dos módulos nuevos**: `DspCore` (sustrato portado de
+  `juce_core`/`juce_audio_basics`, sin JUCE) y `DspEffects` (Reverb/Chorus/Delay/
+  Saturation sobre él). Los DSP de MS2000 (`ModFX`, `DelayFX`, `Equalizer`) son
+  primos de los efectos compartidos, pero **MS2000 no los enlaza**: es una
+  oportunidad abierta, no una deuda pendiente.
+- **Auditoría de homonimias de cabeceras del ecosistema**: publicada en
+  `ABDSharedCode/docs/homonimias-cabeceras.md`. De los 25 nombres de autoría propia
+  repetidos entre proyectos, MS2000 tiene 3 shims benignos y homonimias reales con
+  ABDCZ101 (`Voice`, `VoiceManager`, `Arpeggiator`, `SysExManager`,
+  `HardwareConstants`).
+- El proyecto con **más** homonimias reales es **ABDCZ101**, que tampoco enlaza
+  ningún módulo de `ABDSharedCode`: es el candidato natural de la siguiente fase.

@@ -287,6 +287,37 @@
 - [x] **Documentar en ROADMAP** qué se sincroniza desde dónde, con qué frecuencia, y qué componente lo consume.
 - [x] **Evaluar** si `sync_assets.js` puede eliminarse a favor del ResourceProvider sirviendo directo desde ABDSharedAssets (como ya hace `bankwebui://`).
 
+#### 9.7 Convergencia DSP transversal: módulos `DspCore` / `DspEffects` (2026-09-19)
+
+> Iniciativa llevada desde **ABDNeural + ABDSharedCode**, no desde este proyecto. Se
+> documenta aquí porque cambia el catálogo de lo que MS2000 puede adoptar, y porque
+> las fases 1/2 de este roadmap describen ficheros que ya son shims
+> (`Envelopes/ADSREnvelope.h`, `Modulation/LFO.h`, `Core/AudioThreadSnapshot.h`).
+
+- [x] **`ABDSharedCode::DspCore`** — sustrato portado de `juce_core`/`juce_audio_basics`
+  (`abd::dsp`: Maths, Range, SmoothedValue, HeapBlock, AudioBuffer,
+  FloatVectorOperations, MidiMessage/Buffer, Debug, LeakedObjectDetector). Header-only,
+  **sin JUCE**, C++17, con tests standalone propios.
+- [x] **`ABDSharedCode::DspEffects`** — efectos sobre ese sustrato (`abd::dsp`):
+  Reverb (Freeverb, port literal de `juce::Reverb`), Chorus, Delay, Saturation.
+  API **por muestra**: la política de producto (suavizado, mapeo de controles, mezcla)
+  se queda en el consumidor.
+- [x] **Verificado sin cambiar comportamiento**: paridad bit a bit (0 ulps) contra
+  referencias congeladas y contra `juce::AudioBuffer` real en `ABDNeural/Tests`.
+- [ ] **Decidir la adopción en MS2000** (no urgente, es aditivo):
+  - `Source/DSP/Effects/{ModFX,DelayFX,Equalizer}` son primos de `dsp::Chorus`/`dsp::Delay`.
+    MS2000 **no** los enlaza hoy, así que no hay deuda: es una oportunidad, no un pendiente.
+  - Si se adopta el delay compartido, `abd::synth::DSPUtils::LinearSmoother` y
+    `dsp::LinearSmoothedValue` acaban en el mismo fichero: hay que decidir si el primero
+    pasa a ser un alias del segundo o se queda como variante documentada.
+  - Enlazar `ABDShared::DspEffects` arrastra `DspCore` por su INTERFACE: es un cambio
+    de include/link, no de código.
+- [x] **Auditoría de homonimias de cabeceras del ecosistema** completada y publicada en
+  `ABDSharedCode/docs/homonimias-cabeceras.md`. Situación de MS2000: **3 shims
+  benignos** (`ADSREnvelope`, `AudioThreadSnapshot`, `LFO` → `SynthCore`) y homonimias
+  **reales** con ABDCZ101 (`Voice`, `VoiceManager`, `Arpeggiator`, `SysExManager`,
+  `HardwareConstants`). Nada de esto bloquea la fase.
+
 ### 🔍 Criterio de Verificación (Definition of Done):
 1. **Web usa WASM real**: Abrir la web en Chrome, pulsar START AUDIO, tocar teclas → el audio se genera por el motor C++ compilado a WASM, no por Web Audio genérico.
 2. **Sonido idéntico VST3 ↔ Web**: Sin diferencias perceptibles en timbre, envolventes, resonancia o efectos.
