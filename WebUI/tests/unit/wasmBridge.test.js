@@ -174,7 +174,11 @@ describe('WASM raw AudioWorklet bootstrap', () => {
     // diagnostic text in the executable's JavaScript bundle.
     expect(productionHtml).not.toContain('btn-diagnostic-test');
     expect(productionHtml).not.toContain('diagnostic-modal');
-    expect(productionBundle).toContain('const tt=!1');
+    // La flag debug del worklet es un const compilado a false (robusto al
+    // renombrado del minificador: se ancla via su uso, no via su nombre).
+    const debugFlag = productionBundle.match(/debug:(\w+)\}/);
+    expect(debugFlag).not.toBeNull();
+    expect(productionBundle).toContain(`const ${debugFlag[1]}=!1`);
     expect(productionBundle).not.toContain('Diagnostic Mode');
   });
 
