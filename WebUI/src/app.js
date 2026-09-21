@@ -1,14 +1,15 @@
 import { bridge } from './bridge/bridgeCore.js';
 import { BUILD_INFO } from './contracts/buildVersion.js';
 import { PARAM_LOOKUP } from './contracts/registry.gen.js';
-
-import { mountFitStage } from '@abdsynths/shared/components'; // fit al viewport (ABDSharedAssets)
+import { MS2000_THEMES, synthModeIndexOf } from './contracts/themes.js'; // datos del selector de temas
 
 import { createScopePanel } from './panels/panelScope.js';
 import { renderGroupPanel, renderAllPanels } from './ui/panelFactory.js';
 import { paramStore } from './contracts/paramStore.js';
 import { LcdProgrammer } from './ui/lcdProgrammer.js';
 import { createKeyboard } from '@abdsynths/midi-keyb'; // Single source: ABDSharedCode/MidiKeyboard — no local fork
+import { ThemeSwitcher, mountFitStage } from '@abdsynths/shared/components'; // Selector universal + fit al viewport (ABDSharedAssets)
+import '@abdsynths/shared/styles/components/widgets.css'; // su CSS (tokens de la cascada compartida)
 import '@abdsynths/midi-keyb/keyboard.css'; // Shared CSS (wheels + kbd-buttons via ABDSharedAssets)
 import { slideDrawer } from './components/slideDrawer.js';
 import { SliderFilmstrip, initFilmstrips } from './components/sliderFilmstrip.js';
@@ -24,7 +25,14 @@ const devLog = (...args) => {
 };
 import { OscilloscopeModal } from './components/OscilloscopeModal.js';
 
-let currentTheme = 'ms2000';
+let themeSwitcher = null; // selector universal (instalado en DOMContentLoaded)
+
+// Tema activo: fuente de verdad el switcher compartido (data-theme en <html>).
+// Igual de barato de leer que la variable que era antes.
+function currentTheme() {
+  return themeSwitcher?.value ?? 'ms2000';
+}
+
 let isAudioActive = false;
 let lcdProgrammer = null;
 let keyboardInstance = null;
@@ -238,7 +246,7 @@ function renderOsc1Drawer(container) {
     onChange: (val) => bridge.setParam('osc1Ctrl2', val)
   });
   new RotaryKnob(container.querySelector('#drawer-ctrl-dwgswave'), {
-    paramId: 'osc1DwgsWave', label: 'DWGS WAVE', min: 0, max: currentTheme === 'advanced' ? 511 : 63, defaultValue: 0, size: 48,
+    paramId: 'osc1DwgsWave', label: 'DWGS WAVE', min: 0, max: currentTheme() === 'advanced' ? 511 : 63, defaultValue: 0, size: 48,
     displayFormatter: (v) => `#${Math.round(v) + 1}`,
     onChange: (val) => {
       bridge.setParam('osc1DwgsWave', val);
@@ -254,7 +262,7 @@ function renderOsc1Drawer(container) {
 
   container.querySelector('#btn-drawer-dwgs-browser')?.addEventListener('click', () => {
     const curSlot = paramStore.get('osc1DwgsWave') || 0;
-    const synthMode = paramStore.get('synthMode') ?? (currentTheme === 'advanced' ? 2 : (currentTheme === 'microkorg' ? 1 : 0));
+    const synthMode = paramStore.get('synthMode') ?? (currentTheme() === 'advanced' ? 2 : (currentTheme() === 'microkorg' ? 1 : 0));
     openWavetableBrowser(bridge, curSlot, (slot) => {
       osc1WaveSel.setValue(5, true);
       bridge.setParam('osc1DwgsWave', slot);
@@ -1538,26 +1546,30 @@ function setupAudioInitButton() {
   });
 }
 
+/**
+ * El selector unico de temas: un <select> compacto en la nav-bar (en vez de
+ * los tres botones .mode-tab, que la interfaz ya no necesita). La MECANICA es
+ * la del ThemeSwitcher compartido; los TEMAS son datos locales (contracts/themes.js)
+ * y los efectos (synthMode al bridge, skin en <body>, bank manager) siguen en casa.
+ */
 function setupThemeSelector() {
-  const tabs = document.querySelectorAll('.mode-tab');
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      setTheme(tab.dataset.mode);
-    });
+  const host = document.getElementById('mode-selector');
+  if (!host) return;
+  host.innerHTML = '';
+
+  themeSwitcher = new ThemeSwitcher(host, {
+    themes: MS2000_THEMES,
+    variant: 'select',
+    onChange: (mode, modeIdx) => applyThemeEffects(mode, modeIdx),
   });
 }
 
-function setTheme(mode) {
-  const tabs = document.querySelectorAll('.mode-tab');
-  tabs.forEach(t => {
-    t.classList.toggle('active', t.dataset.mode === mode);
-  });
-
-  document.documentElement.setAttribute('data-theme', mode);
-  document.body.className = 'skin-' + (mode === 'advanced' ? 'cyberpunk' : mode);
-  currentTheme = mode;
-
-  const modeIdx = mode === 'advanced' ? 2 : (mode === 'microkorg' ? 1 : 0);
+/**
+ * Los efectos del tema — lo que el MS2000 hace CUANDO cambia el tema. La
+ * aplicacion visual (data-theme, clase de skin) la hace el switcher; aqui queda
+ * solo lo del synth: synthMode al store y al nativo, y el bank manager.
+ */
+function applyThemeEffects(mode, modeIdx = synthModeIndexOf(mode)) {
   paramStore.set('synthMode', modeIdx);
   bridge.setParam('synthMode', modeIdx);
   bankManagerModal?.setTheme(mode);
@@ -1640,14 +1652,18 @@ function handleMenuAction(action) {
       openAboutModal();
       break;
     case 'skin-ms2000':
-      setTheme('ms2000');
-      break;
     case 'skin-microkorg':
-      setTheme('microkorg');
+    case 'skin-cyberpunk': {
+      // Ruta unica: el selector universal es el dueno del tema y su onChange
+      // aplica los efectos (no repetirlos aqui). Sin switcher, fallback directo.
+      const themeId = action.replace('skin-', '').replace('cyberpunk', 'advanced');
+      if (themeSwitcher) {
+        themeSwitcher.setValue(themeId);
+      } else {
+        applyThemeEffects(themeId);
+      }
       break;
-    case 'skin-cyberpunk':
-      setTheme('advanced');
-      break;
+    }
     case 'new-patch':
     case 'factory-reset':
       paramStore.generateInit(bridge);
