@@ -25,7 +25,7 @@ jobs:
     # 2. Configuración específica para Windows
     - name: Set up MSVC & WiX (Windows)
       if: matrix.os == 'windows-latest'
-      uses: microsoft/setup-msbuild@v2
+      uses: microsoft/setup-msbuild@v3
 
     # 3. Configuración específica para macOS
     - name: Install macOS Dependencies
