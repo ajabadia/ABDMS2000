@@ -75,3 +75,8 @@ test_results.log
 build-test/
 wasm/WebUI/
 .chrome-test-profile/
+
+# Playwright (QA visual e2e/) — informes y resultados efimeros.
+# Las baselines SI van versionadas: e2e/snapshots/.
+playwright-report/
+test-results/

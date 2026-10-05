@@ -65,7 +65,7 @@ jobs:
       # revisar un fallo de baseline, asi que se suben siempre.
       - name: Upload Playwright report
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: playwright-report
           path: |
