@@ -59,6 +59,62 @@ jobs:
         # Source file with a confusing error.
         echo 'int main() {}' | clang-format-18 -
 
+    - name: Verify pre-commit hooks are installed and functional
+      if: runner.os == 'Linux'
+      run: |
+        # 1. Verify hook files exist in repo (installed)
+        if [ ! -f .githooks/pre-commit ]; then
+          echo "::error::.githooks/pre-commit is missing from the repository"
+          exit 1
+        fi
+        if [ ! -f .githooks/install.sh ]; then
+          echo "::error::.githooks/install.sh is missing from the repository"
+          exit 1
+        fi
+
+        # 2. Verify bash syntax (no syntax errors)
+        bash -n .githooks/pre-commit
+        bash -n .githooks/install.sh
+
+        # 3. Verify the hook contains key safety checks
+        grep -q 'verify version is' .githooks/pre-commit || { echo "::error::Hook missing version check"; exit 1; }
+        grep -q 'Validating .clang-format config' .githooks/pre-commit || { echo "::error::Hook missing config validation"; exit 1; }
+        grep -q 'STAGED_FILES' .githooks/pre-commit || { echo "::error::Hook missing staged file formatting"; exit 1; }
+
+        # 4. Functional test: run the hook on an unformatted file in a temp repo
+        TMPDIR=$(mktemp -d)
+        cd "$TMPDIR"
+        git init -q
+        git config user.email "test@test.com"
+        git config user.name "Test"
+
+        # Copy hook and .clang-format from the repo
+        cp "$GITHUB_WORKSPACE/.clang-format" .
+        cp "$GITHUB_WORKSPACE/.githooks/pre-commit" .git/hooks/pre-commit
+        chmod +x .git/hooks/pre-commit
+
+        # Create unformatted Source file and stage it
+        mkdir -p Source
+        echo 'void foo(int a,int b){return a+b;}' > Source/test.cpp
+        git add Source/test.cpp
+
+        # Run the hook — it should format and re-stage
+        if ! .git/hooks/pre-commit; then
+          echo "::error::Pre-commit hook unexpectedly failed on valid input"
+          rm -rf "$TMPDIR"
+          exit 1
+        fi
+
+        # Verify formatting was applied (spaces added after commas)
+        if ! grep -q 'int a, int b' Source/test.cpp; then
+          echo "::error::Pre-commit hook did not reformat the staged file"
+          rm -rf "$TMPDIR"
+          exit 1
+        fi
+
+        echo "✅ Pre-commit hooks verified: installed and functional"
+        rm -rf "$TMPDIR"
+
     - name: Check formatting (clang-format)
       if: runner.os == 'Linux'
       run: |
