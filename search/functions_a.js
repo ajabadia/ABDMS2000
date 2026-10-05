@@ -14,5 +14,5 @@ var searchData=
   ['loadraw16bitle_11',['loadRaw16BitLE',['../namespaceABDMS2000_1_1WavetableLoader.html#ab0494f2ab2ed734590d62aedeb81f477',1,'ABDMS2000::WavetableLoader']]],
   ['loadwav_12',['loadWav',['../namespaceABDMS2000_1_1WavetableLoader.html#a56620ea654e8c7afc513b575d4ab86f7',1,'ABDMS2000::WavetableLoader']]],
   ['loadwavtoslot_13',['loadWavToSlot',['../classABDMS2000_1_1DWGSTables.html#a5e6856a2cdc83fcb97f203f18c3cbfad',1,'ABDMS2000::DWGSTables']]],
-  ['log_14',['log',['../classABDMS2000_1_1AppLogger.html#ae87ad017a1ff6f8d02bebb5eeb6e25d3',1,'ABDMS2000::AppLogger']]]
+  ['log_14',['log',['../classABDMS2000_1_1AppLogger.html#ae931ae1c0d14e44a9386a6157586d2e2',1,'ABDMS2000::AppLogger::log(const juce::String &amp;message, const char *file, int line)'],['../classABDMS2000_1_1AppLogger.html#ae87ad017a1ff6f8d02bebb5eeb6e25d3',1,'ABDMS2000::AppLogger::log(const juce::String &amp;message)']]]
 ];

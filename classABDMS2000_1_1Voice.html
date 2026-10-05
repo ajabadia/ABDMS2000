@@ -76,14 +76,13 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Clases</a> &#124;
 <a href="#pub-methods">Métodos públicos</a> &#124;
-<a href="#pub-attribs">Atributos públicos</a> &#124;
 <a href="#pri-attribs">Atributos privados</a> &#124;
 <a href="classABDMS2000_1_1Voice-members.html">Lista de todos los miembros</a>  </div>
   <div class="headertitle"><div class="title">Referencia de la clase ABDMS2000::Voice</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Represents a single synth voice in the 4-voice architecture.  
+<p>Voz sintetizadora individual en la arquitectura de 4 voces.  
  <a href="classABDMS2000_1_1Voice.html#details">Más...</a></p>
 
 <p><code>#include &lt;<a class="el" href="Voice_8h_source.html">Voice.h</a>&gt;</code></p>
@@ -102,6 +101,10 @@ Clases</h2></td></tr>
 Métodos públicos</h2></td></tr>
 <tr class="memitem:abc8962f85959463fdd33deb4ebe38c56" id="r_abc8962f85959463fdd33deb4ebe38c56"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#abc8962f85959463fdd33deb4ebe38c56">Voice</a> ()=default</td></tr>
 <tr class="separator:abc8962f85959463fdd33deb4ebe38c56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94d581d160fdfe0ea5f5213399c52930" id="r_a94d581d160fdfe0ea5f5213399c52930"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#a94d581d160fdfe0ea5f5213399c52930">Voice</a> (<a class="el" href="classABDMS2000_1_1Voice.html">Voice</a> &amp;&amp;) noexcept=default</td></tr>
+<tr class="separator:a94d581d160fdfe0ea5f5213399c52930"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c8f20d491eeef856543be07fedff91c" id="r_a3c8f20d491eeef856543be07fedff91c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classABDMS2000_1_1Voice.html">Voice</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#a3c8f20d491eeef856543be07fedff91c">operator=</a> (<a class="el" href="classABDMS2000_1_1Voice.html">Voice</a> &amp;&amp;) noexcept=default</td></tr>
+<tr class="separator:a3c8f20d491eeef856543be07fedff91c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a155507563918468fe90d0b77f8ce5cc4" id="r_a155507563918468fe90d0b77f8ce5cc4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#a155507563918468fe90d0b77f8ce5cc4">prepare</a> (double sampleRate) noexcept</td></tr>
 <tr class="separator:a155507563918468fe90d0b77f8ce5cc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4120f56f34ab098b89f4c7d1c1465793" id="r_a4120f56f34ab098b89f4c7d1c1465793"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#a4120f56f34ab098b89f4c7d1c1465793">reset</a> () noexcept</td></tr>
@@ -135,22 +138,17 @@ Métodos públicos</h2></td></tr>
 <tr class="memitem:a5d24cede58001e8bf95a95a8fff6283c" id="r_a5d24cede58001e8bf95a95a8fff6283c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#a5d24cede58001e8bf95a95a8fff6283c">renderDiagnosticSample</a> (float &amp;leftOut, float &amp;rightOut, int diagPoint, float diagTone) noexcept</td></tr>
 <tr class="separator:a5d24cede58001e8bf95a95a8fff6283c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
-Atributos públicos</h2></td></tr>
-<tr class="memitem:ad6fd71917de6a4dcf7af546c0ef95066" id="r_ad6fd71917de6a4dcf7af546c0ef95066"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structABDMS2000_1_1Voice_1_1DiagnosticStats.html">DiagnosticStats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#ad6fd71917de6a4dcf7af546c0ef95066">lastDiagStats_</a> {}</td></tr>
-<tr class="separator:ad6fd71917de6a4dcf7af546c0ef95066"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Atributos privados</h2></td></tr>
-<tr class="memitem:a01e582dc9c26193074544408fb552946" id="r_a01e582dc9c26193074544408fb552946"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#a01e582dc9c26193074544408fb552946">sampleRate_</a> { 44100.0 }</td></tr>
+<tr class="memitem:a01e582dc9c26193074544408fb552946" id="r_a01e582dc9c26193074544408fb552946"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#a01e582dc9c26193074544408fb552946">sampleRate_</a> {44100.0}</td></tr>
 <tr class="separator:a01e582dc9c26193074544408fb552946"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a854ed9d7c183153f09da0c17c4a8c96e" id="r_a854ed9d7c183153f09da0c17c4a8c96e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#a854ed9d7c183153f09da0c17c4a8c96e">currentMidiNote_</a> { 60 }</td></tr>
+<tr class="memitem:a854ed9d7c183153f09da0c17c4a8c96e" id="r_a854ed9d7c183153f09da0c17c4a8c96e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#a854ed9d7c183153f09da0c17c4a8c96e">currentMidiNote_</a> {60}</td></tr>
 <tr class="separator:a854ed9d7c183153f09da0c17c4a8c96e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a54c1e70ed0a319dfa57ed5093a27b380" id="r_a54c1e70ed0a319dfa57ed5093a27b380"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#a54c1e70ed0a319dfa57ed5093a27b380">velocity_</a> { 0.8f }</td></tr>
+<tr class="memitem:a54c1e70ed0a319dfa57ed5093a27b380" id="r_a54c1e70ed0a319dfa57ed5093a27b380"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#a54c1e70ed0a319dfa57ed5093a27b380">velocity_</a> {0.8f}</td></tr>
 <tr class="separator:a54c1e70ed0a319dfa57ed5093a27b380"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af5a38bd537415f18a345be426634be10" id="r_af5a38bd537415f18a345be426634be10"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#af5a38bd537415f18a345be426634be10">noteAge_</a> { 0 }</td></tr>
+<tr class="memitem:af5a38bd537415f18a345be426634be10" id="r_af5a38bd537415f18a345be426634be10"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#af5a38bd537415f18a345be426634be10">noteAge_</a> {0}</td></tr>
 <tr class="separator:af5a38bd537415f18a345be426634be10"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3529d0bbbe63dac2af07d9bd105e0239" id="r_a3529d0bbbe63dac2af07d9bd105e0239"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#a3529d0bbbe63dac2af07d9bd105e0239">prevMasterPhase_</a> { 0.0f }</td></tr>
+<tr class="memitem:a3529d0bbbe63dac2af07d9bd105e0239" id="r_a3529d0bbbe63dac2af07d9bd105e0239"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#a3529d0bbbe63dac2af07d9bd105e0239">prevMasterPhase_</a> {0.0f}</td></tr>
 <tr class="separator:a3529d0bbbe63dac2af07d9bd105e0239"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23b6f13b526f3b1cf69f8ec056a3ae2a" id="r_a23b6f13b526f3b1cf69f8ec056a3ae2a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structABDMS2000_1_1VoiceParameters.html">VoiceParameters</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#a23b6f13b526f3b1cf69f8ec056a3ae2a">cachedParams_</a></td></tr>
 <tr class="separator:a23b6f13b526f3b1cf69f8ec056a3ae2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -180,10 +178,12 @@ Atributos privados</h2></td></tr>
 <tr class="separator:a2ece6b36436340b3e711e58cb0bf0830"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Descripción detallada</h2>
-<div class="textblock"><p>Represents a single synth voice in the 4-voice architecture. </p>
+<div class="textblock"><p>Voz sintetizadora individual en la arquitectura de 4 voces. </p>
+<p>Cada voice instancia todos los bloques DSP (osciladores, filtro, envolventes, LFOs, patch matrix) y procesa muestras stereo por sample.</p>
+<dl class="section warning"><dt>Atención</dt><dd>No es thread-safe: todas las llamadas a prepare/noteOn/noteOff/process deben provenir del thread de audio. </dd></dl>
 </div><h2 class="groupheader">Documentación de constructores y destructores</h2>
 <a id="abc8962f85959463fdd33deb4ebe38c56" name="abc8962f85959463fdd33deb4ebe38c56"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abc8962f85959463fdd33deb4ebe38c56">&#9670;&#160;</a></span>Voice()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abc8962f85959463fdd33deb4ebe38c56">&#9670;&#160;</a></span>Voice() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -201,6 +201,32 @@ Atributos privados</h2></td></tr>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a94d581d160fdfe0ea5f5213399c52930" name="a94d581d160fdfe0ea5f5213399c52930"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94d581d160fdfe0ea5f5213399c52930">&#9670;&#160;</a></span>Voice() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ABDMS2000::Voice::Voice </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classABDMS2000_1_1Voice.html">Voice</a> &amp;&amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -513,6 +539,32 @@ Atributos privados</h2></td></tr>
 
 </div>
 </div>
+<a id="a3c8f20d491eeef856543be07fedff91c" name="a3c8f20d491eeef856543be07fedff91c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c8f20d491eeef856543be07fedff91c">&#9670;&#160;</a></span>operator=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classABDMS2000_1_1Voice.html">Voice</a> &amp; ABDMS2000::Voice::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classABDMS2000_1_1Voice.html">Voice</a> &amp;&amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a155507563918468fe90d0b77f8ce5cc4" name="a155507563918468fe90d0b77f8ce5cc4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a155507563918468fe90d0b77f8ce5cc4">&#9670;&#160;</a></span>prepare()</h2>
 
@@ -718,7 +770,7 @@ Atributos privados</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int ABDMS2000::Voice::currentMidiNote_ { 60 }</td>
+          <td class="memname">int ABDMS2000::Voice::currentMidiNote_ {60}</td>
         </tr>
       </table>
   </td>
@@ -818,20 +870,6 @@ Atributos privados</h2></td></tr>
 
 </div>
 </div>
-<a id="ad6fd71917de6a4dcf7af546c0ef95066" name="ad6fd71917de6a4dcf7af546c0ef95066"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad6fd71917de6a4dcf7af546c0ef95066">&#9670;&#160;</a></span>lastDiagStats_</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structABDMS2000_1_1Voice_1_1DiagnosticStats.html">DiagnosticStats</a> ABDMS2000::Voice::lastDiagStats_ {}</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="aac86516e8bcdfff9fd0fa357a9242eb2" name="aac86516e8bcdfff9fd0fa357a9242eb2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aac86516e8bcdfff9fd0fa357a9242eb2">&#9670;&#160;</a></span>lfo1_</h2>
 
@@ -908,7 +946,7 @@ Atributos privados</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">uint32_t ABDMS2000::Voice::noteAge_ { 0 }</td>
+          <td class="memname">uint32_t ABDMS2000::Voice::noteAge_ {0}</td>
         </tr>
       </table>
   </td>
@@ -1040,7 +1078,7 @@ Atributos privados</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">float ABDMS2000::Voice::prevMasterPhase_ { 0.0f }</td>
+          <td class="memname">float ABDMS2000::Voice::prevMasterPhase_ {0.0f}</td>
         </tr>
       </table>
   </td>
@@ -1062,7 +1100,7 @@ Atributos privados</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double ABDMS2000::Voice::sampleRate_ { 44100.0 }</td>
+          <td class="memname">double ABDMS2000::Voice::sampleRate_ {44100.0}</td>
         </tr>
       </table>
   </td>
@@ -1084,7 +1122,7 @@ Atributos privados</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">float ABDMS2000::Voice::velocity_ { 0.8f }</td>
+          <td class="memname">float ABDMS2000::Voice::velocity_ {0.8f}</td>
         </tr>
       </table>
   </td>
@@ -1096,9 +1134,8 @@ Atributos privados</h2></td></tr>
 
 </div>
 </div>
-<hr/>La documentación de esta clase está generada de los siguientes archivos:<ul>
+<hr/>La documentación de esta clase está generada del siguiente archivo:<ul>
 <li>Source/Core/<a class="el" href="Voice_8h_source.html">Voice.h</a></li>
-<li>Source/Core/<a class="el" href="Voice_8cpp.html">Voice.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

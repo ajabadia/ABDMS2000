@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['process_5fvocoder_5fband_0',['PROCESS_VOCODER_BAND',['../Vocoder16Band_8cpp.html#ab533367c74236fb512b34c7cb9567a14',1,'Vocoder16Band.cpp']]]
+  ['handle_5fsysex_5fshim_0',['HANDLE_SYSEX_SHIM',['../TestCompat_8h.html#aca61035ef1ad9c6c95c10142b91e18e3',1,'TestCompat.h']]]
 ];

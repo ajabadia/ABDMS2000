@@ -2,17 +2,17 @@
 <area shape="rect" id="Node000001" title="Native floating analytical window embedding the ABDScope WebUI (Multi&#45;Lane &amp; Waterfall)." alt="" coords="1399,288,1601,328"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="1118,271,1294,297"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1308,290,1399,297,1398,302,1308,295"/>
-<area shape="rect" id="Node000003" href="$classABDMS2000_1_1SynthEngine.html" title=" " alt="" coords="1111,321,1301,346"/>
+<area shape="rect" id="Node000003" href="$classABDMS2000_1_1SynthEngine.html" title="Motor de sintetizador principal (abstracción de hardware MS2000/microKORG)." alt="" coords="1111,321,1301,346"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1315,321,1398,314,1399,319,1315,327"/>
-<area shape="rect" id="Node000004" href="$structABDMS2000_1_1VoiceParameters.html" title=" " alt="" coords="337,103,555,129"/>
+<area shape="rect" id="Node000004" href="$structABDMS2000_1_1VoiceParameters.html" title="Parámetros completos de un timbre del MS2000/microKORG." alt="" coords="337,103,555,129"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="491,96,609,60,685,44,768,33,854,31,938,42,979,53,1018,69,1055,90,1089,115,1106,138,1112,162,1110,186,1104,210,1098,235,1095,259,1099,283,1113,306,1128,318,1125,323,1109,310,1094,285,1090,259,1093,234,1099,209,1105,185,1107,162,1101,140,1085,119,1052,94,1016,74,977,58,937,47,854,37,769,38,686,49,610,65,493,101"/>
-<area shape="rect" id="Node000009" href="$classABDMS2000_1_1VoiceManager.html" title="High&#45;performance Voice Manager matching Korg MS2000 / microKORG hardware specs." alt="" coords="738,147,941,173"/>
+<area shape="rect" id="Node000009" href="$classABDMS2000_1_1VoiceManager.html" title="Administrador de voces de alto rendimiento." alt="" coords="738,147,941,173"/>
 <area shape="poly" id="edge9_Node000009_Node000004" title=" " alt="" coords="568,128,583,129,738,147,738,152,582,135,567,133"/>
 <area shape="rect" id="Node000005" title=" " alt="" coords="51,30,166,55"/>
 <area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="180,52,310,79,398,101,397,106,309,84,179,58"/>
 <area shape="rect" id="Node000006" title=" " alt="" coords="35,79,182,105"/>
 <area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="196,95,337,106,336,111,196,101"/>
-<area shape="rect" id="Node000007" href="$structABDMS2000_1_1SeqModulation.html" title=" " alt="" coords="5,129,212,154"/>
+<area shape="rect" id="Node000007" href="$structABDMS2000_1_1SeqModulation.html" title="Modulación del Mod Sequence del timbre." alt="" coords="5,129,212,154"/>
 <area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="226,130,309,124,336,122,337,127,310,129,226,136"/>
 <area shape="rect" id="Node000008" href="$structABDMS2000_1_1PatchSlot.html" title=" " alt="" coords="23,178,194,203"/>
 <area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="199,173,309,151,402,126,403,131,310,156,200,178"/>

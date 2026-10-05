@@ -26,6 +26,5 @@ var searchData=
   ['y_20tracking_23',['7.4 Modulación del Filtro (Intensity y Tracking)',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md73',1,'']]],
   ['y_20valores_20del_20korg_20ms2000_20árbol_20completo_24',['Mapa de Menús, Parámetros y Valores del Korg MS2000 (Árbol Completo)',['../md_DOCS_2korg__ms2000__menu__map.html',1,'']]],
   ['y_20viabilidad_25',['1. Visión General y Viabilidad',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md34',1,'']]],
-  ['y_20vocoder_26',['PARTE 3: EFECTOS (FX), ECUALIZADOR (EQ) Y VOCODER',['../md_DOCS_2korg__ms2000__menu__map.html#autotoc_md16',1,'']]],
-  ['y1_27',['y1',['../structABDMS2000_1_1ModFX_1_1AllPassState.html#a5ad5528a519934a391fe066bb374be0c',1,'ABDMS2000::ModFX::AllPassState']]]
+  ['y_20vocoder_26',['PARTE 3: EFECTOS (FX), ECUALIZADOR (EQ) Y VOCODER',['../md_DOCS_2korg__ms2000__menu__map.html#autotoc_md16',1,'']]]
 ];

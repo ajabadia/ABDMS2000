@@ -18,12 +18,10 @@ var searchData=
   ['up_15',['Up',['../namespaceABDMS2000.html#a60e3bbeecb75743b3cffa5b2789f39b8a258f49887ef8d14ac268c92b02503aaa',1,'ABDMS2000']]],
   ['updatecoefficients_16',['updateCoefficients',['../classABDMS2000_1_1MultiModeFilter.html#aaf7cb553c7e2a6ddfdf79e252e540755',1,'ABDMS2000::MultiModeFilter']]],
   ['updatefilterfrequencies_17',['updateFilterFrequencies',['../classABDMS2000_1_1Vocoder16Band.html#af4e7261d284bf773fdc2f5ea7608eedf',1,'ABDMS2000::Vocoder16Band']]],
-  ['updatehighshelfcoeffs_18',['updateHighShelfCoeffs',['../classABDMS2000_1_1Equalizer.html#a53fd237ffeea133c82686418e67cc5f1',1,'ABDMS2000::Equalizer']]],
-  ['updatehpffilter_19',['updateHPFFilter',['../classABDMS2000_1_1Vocoder16Band.html#a7bea9ecb8b7832eead1bbe2e5706c287',1,'ABDMS2000::Vocoder16Band']]],
-  ['updatelowshelfcoeffs_20',['updateLowShelfCoeffs',['../classABDMS2000_1_1Equalizer.html#a574f8e06a32c0373e0cb0b9c800474fc',1,'ABDMS2000::Equalizer']]],
-  ['updateparametersfromapvts_21',['updateParametersFromAPVTS',['../classABDMS2000_1_1SynthEngine.html#a045561901d899f6e1c159f5abea23f07',1,'ABDMS2000::SynthEngine']]],
-  ['updatevowelcoefficients_22',['updateVowelCoefficients',['../classABDMS2000_1_1VoxWaveOscillator.html#ab78680e235c08279eb1e1f579afbbb37',1,'ABDMS2000::VoxWaveOscillator']]],
-  ['user_23',['User',['../namespaceABDMS2000.html#ace60b19366c10d097c16040807dbb0a5a8f9bfe9d1345237cb3b2b205864da075',1,'ABDMS2000']]],
-  ['user_5fstart_5fslot_24',['USER_START_SLOT',['../classABDMS2000_1_1DWGSTables.html#a302bab3fb1c270078f49b2b706b7c4e4',1,'ABDMS2000::DWGSTables']]],
-  ['usesbitrange_25',['usesBitRange',['../structABDMS2000_1_1MS2000HardwareProgram.html#ab4f3f851524fa39921399245ab5f6245',1,'ABDMS2000::MS2000HardwareProgram']]]
+  ['updatehpffilter_18',['updateHPFFilter',['../classABDMS2000_1_1Vocoder16Band.html#a7bea9ecb8b7832eead1bbe2e5706c287',1,'ABDMS2000::Vocoder16Band']]],
+  ['updateparametersfromapvts_19',['updateParametersFromAPVTS',['../classABDMS2000_1_1SynthEngine.html#a045561901d899f6e1c159f5abea23f07',1,'ABDMS2000::SynthEngine']]],
+  ['updatevowelcoefficients_20',['updateVowelCoefficients',['../classABDMS2000_1_1VoxWaveOscillator.html#ab78680e235c08279eb1e1f579afbbb37',1,'ABDMS2000::VoxWaveOscillator']]],
+  ['user_21',['User',['../namespaceABDMS2000.html#ace60b19366c10d097c16040807dbb0a5a8f9bfe9d1345237cb3b2b205864da075',1,'ABDMS2000']]],
+  ['user_5fstart_5fslot_22',['USER_START_SLOT',['../classABDMS2000_1_1DWGSTables.html#a302bab3fb1c270078f49b2b706b7c4e4',1,'ABDMS2000::DWGSTables']]],
+  ['usesbitrange_23',['usesBitRange',['../structABDMS2000_1_1MS2000HardwareProgram.html#ab4f3f851524fa39921399245ab5f6245',1,'ABDMS2000::MS2000HardwareProgram']]]
 ];

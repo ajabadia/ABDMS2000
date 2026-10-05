@@ -16,5 +16,7 @@ var searchData=
   ['followers_5f_13',['followers_',['../classABDMS2000_1_1Vocoder16Band.html#a6cec4f4f4079637ba4cc16307259dc20',1,'ABDMS2000::Vocoder16Band']]],
   ['formants_5f_14',['formants_',['../classABDMS2000_1_1VoxWaveOscillator.html#a5ab0f1b4a3388a4e781ede01bad97eb5',1,'ABDMS2000::VoxWaveOscillator']]],
   ['formantshift_5f_15',['formantShift_',['../classABDMS2000_1_1Vocoder16Band.html#ad089bed9d8b773b3c87fd104e974f014',1,'ABDMS2000::Vocoder16Band']]],
-  ['frequency_5f_16',['frequency_',['../classABDMS2000_1_1VoxWaveOscillator.html#a4662b9f05d1047d5bcf86c2ac0eeb47f',1,'ABDMS2000::VoxWaveOscillator::frequency_'],['../classABDMS2000_1_1VAOscillator.html#a2c72d252c3973855146e6de44c40f771',1,'ABDMS2000::VAOscillator::frequency_'],['../classABDMS2000_1_1DWGSOscillator.html#a054a687f9a20f5b479491a7bac42fa29',1,'ABDMS2000::DWGSOscillator::frequency_']]]
+  ['frecuenciaalta_5f_16',['frecuenciaAlta_',['../classABDMS2000_1_1Tests_1_1congelado_1_1Equalizer.html#ab54a10023d6327bf8cb8bdc6e743fad7',1,'ABDMS2000::Tests::congelado::Equalizer']]],
+  ['frecuenciabaja_5f_17',['frecuenciaBaja_',['../classABDMS2000_1_1Tests_1_1congelado_1_1Equalizer.html#a8698e13ac408e63548933b68b51d30e2',1,'ABDMS2000::Tests::congelado::Equalizer']]],
+  ['frequency_5f_18',['frequency_',['../classABDMS2000_1_1DWGSOscillator.html#a054a687f9a20f5b479491a7bac42fa29',1,'ABDMS2000::DWGSOscillator::frequency_'],['../classABDMS2000_1_1VAOscillator.html#a2c72d252c3973855146e6de44c40f771',1,'ABDMS2000::VAOscillator::frequency_'],['../classABDMS2000_1_1VoxWaveOscillator.html#a4662b9f05d1047d5bcf86c2ac0eeb47f',1,'ABDMS2000::VoxWaveOscillator::frequency_']]]
 ];

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['osc2modulator_2ecpp_0',['OSC2Modulator.cpp',['../OSC2Modulator_8cpp.html',1,'']]],
-  ['osc2modulator_2eh_1',['OSC2Modulator.h',['../OSC2Modulator_8h.html',1,'']]]
+  ['noisegenerator_2ecpp_0',['NoiseGenerator.cpp',['../NoiseGenerator_8cpp.html',1,'']]],
+  ['noisegenerator_2eh_1',['NoiseGenerator.h',['../NoiseGenerator_8h.html',1,'']]]
 ];

@@ -7,5 +7,6 @@ var searchData=
   ['abdms2000_3a_3aparamids_4',['ParamIDs',['../namespaceABDMS2000_1_1ParamIDs.html',1,'ABDMS2000']]],
   ['abdms2000_3a_3asoftwarepresetprotocol_5',['SoftwarePresetProtocol',['../namespaceABDMS2000_1_1SoftwarePresetProtocol.html',1,'ABDMS2000']]],
   ['abdms2000_3a_3atests_6',['Tests',['../namespaceABDMS2000_1_1Tests.html',1,'ABDMS2000']]],
-  ['abdms2000_3a_3awavetableloader_7',['WavetableLoader',['../namespaceABDMS2000_1_1WavetableLoader.html',1,'ABDMS2000']]]
+  ['abdms2000_3a_3atests_3a_3acongelado_7',['congelado',['../namespaceABDMS2000_1_1Tests_1_1congelado.html',1,'ABDMS2000::Tests']]],
+  ['abdms2000_3a_3awavetableloader_8',['WavetableLoader',['../namespaceABDMS2000_1_1WavetableLoader.html',1,'ABDMS2000']]]
 ];

@@ -21,5 +21,11 @@ var searchData=
   ['eg2sustain_18',['EG2Sustain',['../namespaceABDMS2000.html#a495c6af1070566573e5fb9f7628c8d46a524dbe2adec5313b56261d60a27db905',1,'ABDMS2000']]],
   ['ensemble_19',['Ensemble',['../namespaceABDMS2000.html#ae684545985d7be9cd7d291bcd814f5c4abe5dd267794f8f209543995a5461710f',1,'ABDMS2000']]],
   ['eqfreq_20',['EqFreq',['../structABDMS2000_1_1MS2000HardwareProgram.html#a60d8435af1014a4de6d3b80b5823aefeaa0685092b8e55b76bfb2c5e48d854116',1,'ABDMS2000::MS2000HardwareProgram']]],
-  ['eqgain_21',['EqGain',['../structABDMS2000_1_1MS2000HardwareProgram.html#a60d8435af1014a4de6d3b80b5823aefead2cc7108b1ec0eca669eadb3351de1a4',1,'ABDMS2000::MS2000HardwareProgram']]]
+  ['eqgain_21',['EqGain',['../structABDMS2000_1_1MS2000HardwareProgram.html#a60d8435af1014a4de6d3b80b5823aefead2cc7108b1ec0eca669eadb3351de1a4',1,'ABDMS2000::MS2000HardwareProgram']]],
+  ['eventogananciaalta_22',['eventoGananciaAlta',['../namespaceABDMS2000_1_1Tests.html#accea6ccf4badadd34c33ae96534a3036a9d9dca8f90825959b3d4d8bf1452e0d7',1,'ABDMS2000::Tests']]],
+  ['eventogananciabaja_23',['eventoGananciaBaja',['../namespaceABDMS2000_1_1Tests.html#accea6ccf4badadd34c33ae96534a3036aea513c41388c0aaca8d225601b965960',1,'ABDMS2000::Tests']]],
+  ['eventoindicealto_24',['eventoIndiceAlto',['../namespaceABDMS2000_1_1Tests.html#accea6ccf4badadd34c33ae96534a3036a172dd8306d7908c60974393215f74008',1,'ABDMS2000::Tests']]],
+  ['eventoindicebajo_25',['eventoIndiceBajo',['../namespaceABDMS2000_1_1Tests.html#accea6ccf4badadd34c33ae96534a3036a2a2d8132c1c03e0d7c22cff1c424ff84',1,'ABDMS2000::Tests']]],
+  ['eventoprepare_26',['eventoPrepare',['../namespaceABDMS2000_1_1Tests.html#accea6ccf4badadd34c33ae96534a3036ac5d3f47e89df3505668c1970f2d28ff2',1,'ABDMS2000::Tests']]],
+  ['eventoreset_27',['eventoReset',['../namespaceABDMS2000_1_1Tests.html#accea6ccf4badadd34c33ae96534a3036a4bb852bb109ab2f050f591862c9ee1d5',1,'ABDMS2000::Tests']]]
 ];

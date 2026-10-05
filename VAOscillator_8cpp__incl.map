@@ -1,15 +1,15 @@
 <map id="Source/DSP/Oscillators/VAOscillator.cpp" name="Source/DSP/Oscillators/VAOscillator.cpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="155,5,324,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="154,5,323,45"/>
 <area shape="rect" id="Node000002" href="$VAOscillator_8h.html" title=" " alt="" coords="127,93,239,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="228,47,202,84,197,80,224,44"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="264,93,327,119"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="255,44,281,80,277,84,251,47"/>
-<area shape="rect" id="Node000003" href="$PolyBLEP_8h.html" title=" " alt="" coords="5,167,172,192"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="170,121,117,160,114,156,167,117"/>
-<area shape="rect" id="Node000005" href="$DSPUtils_8h.html" title=" " alt="" coords="197,167,362,192"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="200,117,254,156,251,160,197,121"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="7,240,170,265"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="91,192,91,226,86,226,86,192"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="199,240,360,265"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="282,192,282,226,277,226,277,192"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="227,47,201,84,197,80,223,44"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="263,93,326,119"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="254,44,281,80,276,84,250,47"/>
+<area shape="rect" id="Node000003" href="$DSPUtils_8h.html" title=" " alt="" coords="5,167,171,192"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="169,121,116,160,113,156,166,117"/>
+<area shape="rect" id="Node000005" href="$PolyBLEP_8h.html" title=" " alt="" coords="195,167,362,192"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="200,117,253,156,250,160,197,121"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="7,240,169,265"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="91,192,91,226,85,226,85,192"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="197,240,360,265"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="281,192,281,226,276,226,276,192"/>
 </map>

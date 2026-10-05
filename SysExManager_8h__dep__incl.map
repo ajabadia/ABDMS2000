@@ -1,14 +1,39 @@
 <map id="Source/MIDI/SysExManager.h" name="Source/MIDI/SysExManager.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="349,5,560,31"/>
-<area shape="rect" id="Node000002" href="$MS2000SysExExporter_8h.html" title=" " alt="" coords="5,79,267,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="391,36,188,81,187,76,390,31"/>
-<area shape="rect" id="Node000003" href="$DSPCoreTests_8cpp.html" title=" " alt="" coords="109,152,331,177"/>
-<area shape="poly" id="edge6_Node000001_Node000003" title=" " alt="" coords="415,39,331,81,276,120,234,154,231,150,273,115,328,76,412,34"/>
-<area shape="rect" id="Node000004" href="$SysExManager_8cpp.html" title=" " alt="" coords="341,79,568,104"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="457,44,457,79,452,79,452,44"/>
-<area shape="rect" id="Node000005" href="$BridgeActions_8cpp.html" title=" " alt="" coords="593,79,823,104"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="509,32,668,76,666,81,508,37"/>
-<area shape="rect" id="Node000006" href="$PluginProcessor_8cpp.html" title=" " alt="" coords="848,79,1091,104"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="551,30,887,76,886,81,550,35"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="162,111,208,150,205,154,158,115"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="632,5,843,31"/>
+<area shape="rect" id="Node000002" href="$MS2000SysExExporter_8h.html" title=" " alt="" coords="439,79,700,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="699,38,598,81,596,76,697,34"/>
+<area shape="rect" id="Node000003" href="$DSPCoreTests_8cpp.html" title=" " alt="" coords="295,152,518,177"/>
+<area shape="poly" id="edge18_Node000001_Node000003" title=" " alt="" coords="619,31,505,50,459,63,428,81,417,97,411,116,408,152,403,151,406,115,412,94,425,77,457,59,504,44,618,26"/>
+<area shape="rect" id="Node000004" href="$TestCompat_8cpp.html" title=" " alt="" coords="5,233,216,258"/>
+<area shape="poly" id="edge19_Node000001_Node000004" title=" " alt="" coords="619,34,515,52,409,81,323,118,242,162,128,235,125,230,239,157,320,113,407,76,514,47,618,29"/>
+<area shape="rect" id="Node000005" href="$TestCompat_8h.html" title=" " alt="" coords="790,152,986,177"/>
+<area shape="poly" id="edge20_Node000001_Node000005" title=" " alt="" coords="742,44,749,74,765,102,782,118,801,131,843,149,841,154,799,136,778,122,761,106,744,76,737,45"/>
+<area shape="rect" id="Node000015" href="$SysExManager_8cpp.html" title=" " alt="" coords="775,79,1001,104"/>
+<area shape="poly" id="edge15_Node000001_Node000015" title=" " alt="" coords="775,34,864,76,862,81,773,39"/>
+<area shape="rect" id="Node000016" href="$BridgeActions_8cpp.html" title=" " alt="" coords="1026,79,1257,104"/>
+<area shape="poly" id="edge16_Node000001_Node000016" title=" " alt="" coords="816,30,1077,76,1076,81,815,36"/>
+<area shape="rect" id="Node000017" href="$PluginProcessor_8cpp.html" title=" " alt="" coords="1281,79,1524,104"/>
+<area shape="poly" id="edge17_Node000001_Node000017" title=" " alt="" coords="856,29,1296,76,1295,81,856,35"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="532,112,434,154,432,149,530,107"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="567,118,554,150,544,166,531,180,183,235,182,230,528,175,540,163,550,148,562,116"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="634,104,837,149,836,154,633,110"/>
+<area shape="poly" id="edge14_Node000005_Node000004" title=" " alt="" coords="777,176,525,197,228,228,177,235,177,230,228,223,525,192,776,171"/>
+<area shape="rect" id="Node000006" href="$DSPCoreTests__CalSpec_8cpp.html" title=" " alt="" coords="2001,225,2197,265"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="1000,165,1434,180,1711,197,1990,223,2001,224,2000,229,1989,228,1710,203,1434,186,1000,170"/>
+<area shape="rect" id="Node000007" href="$DSPCoreTests__EqualizerParity_8cpp.html" title=" " alt="" coords="241,225,437,265"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="784,182,448,228,437,230,437,224,448,223,783,176"/>
+<area shape="rect" id="Node000008" href="$DSPCoreTests__Panic_8cpp.html" title=" " alt="" coords="461,225,657,265"/>
+<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="828,183,638,228,637,223,826,178"/>
+<area shape="rect" id="Node000009" href="$DSPCoreTests__Pitch_8cpp.html" title=" " alt="" coords="681,225,877,265"/>
+<area shape="poly" id="edge8_Node000005_Node000009" title=" " alt="" coords="863,187,807,227,803,223,859,183"/>
+<area shape="rect" id="Node000010" href="$DSPCoreTests__Portamento_8cpp.html" title=" " alt="" coords="901,225,1097,265"/>
+<area shape="poly" id="edge9_Node000005_Node000010" title=" " alt="" coords="917,183,974,223,970,227,914,187"/>
+<area shape="rect" id="Node000011" href="$DSPCoreTests__RapidSweep_8cpp.html" title=" " alt="" coords="1121,225,1317,265"/>
+<area shape="poly" id="edge10_Node000005_Node000011" title=" " alt="" coords="950,178,1140,223,1139,228,949,183"/>
+<area shape="rect" id="Node000012" href="$DSPCoreTests__Transfer_8cpp.html" title=" " alt="" coords="1341,225,1537,265"/>
+<area shape="poly" id="edge11_Node000005_Node000012" title=" " alt="" coords="994,176,1330,223,1341,224,1340,230,1329,228,993,182"/>
+<area shape="rect" id="Node000013" href="$DSPCoreTests__VCF_8cpp.html" title=" " alt="" coords="1561,225,1757,265"/>
+<area shape="poly" id="edge12_Node000005_Node000013" title=" " alt="" coords="1000,171,1252,191,1550,223,1561,224,1560,229,1549,228,1252,196,1000,176"/>
+<area shape="rect" id="Node000014" href="$DSPCoreTests__Voice_8cpp.html" title=" " alt="" coords="1781,225,1977,265"/>
+<area shape="poly" id="edge13_Node000005_Node000014" title=" " alt="" coords="1000,167,1344,185,1557,201,1770,223,1781,224,1780,229,1769,228,1556,206,1344,190,1000,173"/>
 </map>

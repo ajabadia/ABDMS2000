@@ -24,7 +24,7 @@ var searchData=
   ['mixosc2level_21',['mixOsc2Level',['../namespaceABDMS2000_1_1ParamIDs.html#a2e240cc768defdced69562b9af208d7d',1,'ABDMS2000::ParamIDs']]],
   ['mode_22',['mode',['../structABDMS2000_1_1ModSeqTrack.html#a7c7cf399911c9e1a80dbea0b5778939a',1,'ABDMS2000::ModSeqTrack']]],
   ['model_5fbyte_23',['MODEL_BYTE',['../structABDMS2000_1_1ABDSynthsSysEx.html#a360f865541a730abe6d6ab7c764df2bd',1,'ABDMS2000::ABDSynthsSysEx']]],
-  ['modfx_5f_24',['modfx_',['../classABDMS2000_1_1WasmEngineInstance.html#ab069925a7949dd39b495424aba4ffde2',1,'ABDMS2000::WasmEngineInstance::modFX_'],['../classABDMS2000_1_1SynthEngine.html#a24388645572a5c0d15691f65da5c49a1',1,'ABDMS2000::SynthEngine::modFX_']]],
+  ['modfx_5f_24',['modfx_',['../classABDMS2000_1_1SynthEngine.html#a24388645572a5c0d15691f65da5c49a1',1,'ABDMS2000::SynthEngine::modFX_'],['../classABDMS2000_1_1WasmEngineInstance.html#ab069925a7949dd39b495424aba4ffde2',1,'ABDMS2000::WasmEngineInstance::modFX_']]],
   ['modfx_5fdepth_25',['MODFX_DEPTH',['../structABDMS2000_1_1MS2000HardwareProgram.html#a4d1849bc192a9c82b708ca7b9b0dc456',1,'ABDMS2000::MS2000HardwareProgram']]],
   ['modfx_5fspeed_26',['MODFX_SPEED',['../structABDMS2000_1_1MS2000HardwareProgram.html#aaf9d786d57c9be70a81167fc541bce2c',1,'ABDMS2000::MS2000HardwareProgram']]],
   ['modfx_5ftype_27',['MODFX_TYPE',['../structABDMS2000_1_1MS2000HardwareProgram.html#a0b25fe76b7585a2f0f527d63a7e9be61',1,'ABDMS2000::MS2000HardwareProgram']]],
@@ -42,5 +42,6 @@ var searchData=
   ['modwheelvalue_5f_39',['modWheelValue_',['../classABDMS2000_1_1SynthEngine.html#a68fb3265e2a53ab453ea77203d1e67b8',1,'ABDMS2000::SynthEngine']]],
   ['motion_40',['motion',['../structABDMS2000_1_1ModSeqTrack.html#abffb1e149d9555fcc817694a83d89867',1,'ABDMS2000::ModSeqTrack']]],
   ['motionid_41',['motionId',['../structABDMS2000_1_1MS2000HardwareProgram_1_1SeqRow.html#a4b7732720e6c04479be291a2b9eb6fca',1,'ABDMS2000::MS2000HardwareProgram::SeqRow']]],
-  ['motionoffset_42',['motionOffset',['../structABDMS2000_1_1MS2000HardwareProgram_1_1SeqRow.html#af019821bc2bb2906980a012f6f0ba0bb',1,'ABDMS2000::MS2000HardwareProgram::SeqRow']]]
+  ['motionoffset_42',['motionOffset',['../structABDMS2000_1_1MS2000HardwareProgram_1_1SeqRow.html#af019821bc2bb2906980a012f6f0ba0bb',1,'ABDMS2000::MS2000HardwareProgram::SeqRow']]],
+  ['multimodefiltertests_43',['multiModeFilterTests',['../namespaceABDMS2000_1_1Tests.html#a6064d0f0374ec0af7a94fb416be9d54d',1,'ABDMS2000::Tests']]]
 ];

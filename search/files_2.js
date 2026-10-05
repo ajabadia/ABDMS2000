@@ -3,9 +3,18 @@ var searchData=
   ['delayfx_2ecpp_0',['DelayFX.cpp',['../DelayFX_8cpp.html',1,'']]],
   ['delayfx_2eh_1',['DelayFX.h',['../DelayFX_8h.html',1,'']]],
   ['dspcoretests_2ecpp_2',['DSPCoreTests.cpp',['../DSPCoreTests_8cpp.html',1,'']]],
-  ['dsputils_2eh_3',['DSPUtils.h',['../DSPUtils_8h.html',1,'']]],
-  ['dwgsoscillator_2ecpp_4',['DWGSOscillator.cpp',['../DWGSOscillator_8cpp.html',1,'']]],
-  ['dwgsoscillator_2eh_5',['DWGSOscillator.h',['../DWGSOscillator_8h.html',1,'']]],
-  ['dwgstables_2ecpp_6',['DWGSTables.cpp',['../DWGSTables_8cpp.html',1,'']]],
-  ['dwgstables_2eh_7',['DWGSTables.h',['../DWGSTables_8h.html',1,'']]]
+  ['dspcoretests_5fcalspec_2ecpp_3',['DSPCoreTests_CalSpec.cpp',['../DSPCoreTests__CalSpec_8cpp.html',1,'']]],
+  ['dspcoretests_5fequalizerparity_2ecpp_4',['DSPCoreTests_EqualizerParity.cpp',['../DSPCoreTests__EqualizerParity_8cpp.html',1,'']]],
+  ['dspcoretests_5fpanic_2ecpp_5',['DSPCoreTests_Panic.cpp',['../DSPCoreTests__Panic_8cpp.html',1,'']]],
+  ['dspcoretests_5fpitch_2ecpp_6',['DSPCoreTests_Pitch.cpp',['../DSPCoreTests__Pitch_8cpp.html',1,'']]],
+  ['dspcoretests_5fportamento_2ecpp_7',['DSPCoreTests_Portamento.cpp',['../DSPCoreTests__Portamento_8cpp.html',1,'']]],
+  ['dspcoretests_5frapidsweep_2ecpp_8',['DSPCoreTests_RapidSweep.cpp',['../DSPCoreTests__RapidSweep_8cpp.html',1,'']]],
+  ['dspcoretests_5ftransfer_2ecpp_9',['DSPCoreTests_Transfer.cpp',['../DSPCoreTests__Transfer_8cpp.html',1,'']]],
+  ['dspcoretests_5fvcf_2ecpp_10',['DSPCoreTests_VCF.cpp',['../DSPCoreTests__VCF_8cpp.html',1,'']]],
+  ['dspcoretests_5fvoice_2ecpp_11',['DSPCoreTests_Voice.cpp',['../DSPCoreTests__Voice_8cpp.html',1,'']]],
+  ['dsputils_2eh_12',['DSPUtils.h',['../DSPUtils_8h.html',1,'']]],
+  ['dwgsoscillator_2ecpp_13',['DWGSOscillator.cpp',['../DWGSOscillator_8cpp.html',1,'']]],
+  ['dwgsoscillator_2eh_14',['DWGSOscillator.h',['../DWGSOscillator_8h.html',1,'']]],
+  ['dwgstables_2ecpp_15',['DWGSTables.cpp',['../DWGSTables_8cpp.html',1,'']]],
+  ['dwgstables_2eh_16',['DWGSTables.h',['../DWGSTables_8h.html',1,'']]]
 ];

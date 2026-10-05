@@ -83,6 +83,7 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Espacios de nombres</h2></td></tr>
 <tr class="memitem:namespaceABDMS2000_1_1Constants" id="r_namespaceABDMS2000_1_1Constants"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html">Constants</a></td></tr>
+<tr class="memdesc:namespaceABDMS2000_1_1Constants"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hardware constants for <a class="el" href="namespaceABDMS2000.html">ABDMS2000</a> and microKORG synthesizers. These constants represent the actual hardware parameters and limits as documented in the Korg MS2000 and microKORG manuals. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceABDMS2000_1_1DSPUtils" id="r_namespaceABDMS2000_1_1DSPUtils"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1DSPUtils.html">DSPUtils</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -135,7 +136,7 @@ Clases</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">High-precision Envelope Follower with configurable release time (Gate Sense).  <a href="classABDMS2000_1_1EnvelopeFollower.html#details">Más...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Equalizer.html">Equalizer</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">2-Band Cascaded Shelving <a class="el" href="classABDMS2000_1_1Equalizer.html" title="2-Band Cascaded Shelving Equalizer based on reverse-engineered Korg MS2000 DSP specs....">Equalizer</a> based on reverse-engineered Korg MS2000 DSP specs. Uses 2nd order Butterworth Shelves (Q = 0.7071) with exact hardware frequency lookup tables:  <a href="classABDMS2000_1_1Equalizer.html#details">Más...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">2-Band Cascaded Shelving <a class="el" href="classABDMS2000_1_1Equalizer.html" title="2-Band Cascaded Shelving Equalizer based on reverse-engineered Korg MS2000 DSP specs....">Equalizer</a> based on reverse-engineered Korg MS2000 DSP specs. Two <code>abd::dsp::ShelfFilter</code> in cascade, Q fixed at Butterworth (0.7071):  <a href="classABDMS2000_1_1Equalizer.html#details">Más...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1FactoryPreset.html">FactoryPreset</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -204,8 +205,10 @@ Clases</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Native floating analytical window embedding the ABDScope WebUI (Multi-Lane &amp; Waterfall).  <a href="classABDMS2000_1_1ScopeFloatingWindow.html#details">Más...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1SeqModulation.html">SeqModulation</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modulación del Mod Sequence del timbre.  <a href="structABDMS2000_1_1SeqModulation.html#details">Más...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html">SynthEngine</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Motor de sintetizador principal (abstracción de hardware MS2000/microKORG).  <a href="classABDMS2000_1_1SynthEngine.html#details">Más...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SysExManager.html">SysExManager</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -221,14 +224,16 @@ Clases</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">16-Band Korg MS2000 Vocoder Engine. Features 16 analysis/synthesis channels, Formant Shift (-2..+2), HPF 8kHz Sibilance Gate, and Pan per band.  <a href="classABDMS2000_1_1Vocoder16Band.html#details">Más...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html">Voice</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a single synth voice in the 4-voice architecture.  <a href="classABDMS2000_1_1Voice.html#details">Más...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Voz sintetizadora individual en la arquitectura de 4 voces.  <a href="classABDMS2000_1_1Voice.html#details">Más...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1VoiceManager.html">VoiceManager</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">High-performance <a class="el" href="classABDMS2000_1_1Voice.html" title="Represents a single synth voice in the 4-voice architecture.">Voice</a> Manager matching Korg MS2000 / microKORG hardware specs.  <a href="classABDMS2000_1_1VoiceManager.html#details">Más...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Administrador de voces de alto rendimiento.  <a href="classABDMS2000_1_1VoiceManager.html#details">Más...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1VoiceParameters.html">VoiceParameters</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parámetros completos de un timbre del MS2000/microKORG.  <a href="structABDMS2000_1_1VoiceParameters.html#details">Más...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1VoiceSlotState.html">VoiceSlotState</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estado de una ranura de voz individual.  <a href="structABDMS2000_1_1VoiceSlotState.html#details">Más...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1VowelFormants.html">VowelFormants</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Formant frequency data for the 5 classic vowel sounds. Frequencies in Hz: F1, F2, F3, F4, F5 for each vowel. Data from MS2000 reverse-engineering measurements.  <a href="structABDMS2000_1_1VowelFormants.html#details">Más...</a><br /></td></tr>
@@ -243,8 +248,8 @@ Clases</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 typedefs</h2></td></tr>
-<tr class="memitem:ab20fd87c146032c3ab14953d5a0da10b" id="r_ab20fd87c146032c3ab14953d5a0da10b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#ab20fd87c146032c3ab14953d5a0da10b">JsMessageSink</a> = std::function&lt; void(const juce::var &amp;message)&gt;</td></tr>
-<tr class="separator:ab20fd87c146032c3ab14953d5a0da10b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3beac5d6a19d44861c93b68dc75d92c0" id="r_a3beac5d6a19d44861c93b68dc75d92c0"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#a3beac5d6a19d44861c93b68dc75d92c0">JsMessageSink</a> = std::function&lt; void(const juce::var &amp;message)&gt;</td></tr>
+<tr class="separator:a3beac5d6a19d44861c93b68dc75d92c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumeraciones</h2></td></tr>
@@ -258,6 +263,7 @@ Enumeraciones</h2></td></tr>
 , <a class="el" href="namespaceABDMS2000.html#a5554928cf64101079576fce8f1d5b8cea8d73c9ff426e63b14dbc9e171dc9369d">OscillatorDirect</a> = 5
 <br />
  }</td></tr>
+<tr class="memdesc:a5554928cf64101079576fce8f1d5b8ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Puntos de inyección de tono diagnóstico en el pipeline DSP.  <a href="namespaceABDMS2000.html#a5554928cf64101079576fce8f1d5b8ce">Más...</a><br /></td></tr>
 <tr class="separator:a5554928cf64101079576fce8f1d5b8ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af87646d58e636e72aab721a072557c3e" id="r_af87646d58e636e72aab721a072557c3e"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#af87646d58e636e72aab721a072557c3e">OSC1Type</a> { <br />
 &#160;&#160;<a class="el" href="namespaceABDMS2000.html#af87646d58e636e72aab721a072557c3eac551a26a97a7440529e861dff6933722">Saw</a> = 0
@@ -271,20 +277,24 @@ Enumeraciones</h2></td></tr>
 , <a class="el" href="namespaceABDMS2000.html#af87646d58e636e72aab721a072557c3ea7a9a2553c9545ae0467de5ecc72ed818">AudioIn</a>
 <br />
  }</td></tr>
+<tr class="memdesc:af87646d58e636e72aab721a072557c3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tipos de onda OSC1 del MS2000/microKORG. Corresponden a los slots de hardware del sintetizador real.  <a href="namespaceABDMS2000.html#af87646d58e636e72aab721a072557c3e">Más...</a><br /></td></tr>
 <tr class="separator:af87646d58e636e72aab721a072557c3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeeb8952c9453dc41e0a762e9b21efcba" id="r_aeeb8952c9453dc41e0a762e9b21efcba"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#aeeb8952c9453dc41e0a762e9b21efcba">KeySyncMode</a> { <a class="el" href="namespaceABDMS2000.html#aeeb8952c9453dc41e0a762e9b21efcbaad15305d7a4e34e02489c74a5ef542f36">Off</a> = 0
 , <a class="el" href="namespaceABDMS2000.html#aeeb8952c9453dc41e0a762e9b21efcbaaea20af6dcd1f907b9ffe0b505672bb85">Timbre</a>
 , <a class="el" href="namespaceABDMS2000.html#aeeb8952c9453dc41e0a762e9b21efcbaad7a3fdf1351b72249a47454751549deb">Voice</a>
  }</td></tr>
+<tr class="memdesc:aeeb8952c9453dc41e0a762e9b21efcba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modos de sincronización de LFO del MS2000. Bits 4-5 del byte de control de LFO en el SysEx real.  <a href="namespaceABDMS2000.html#aeeb8952c9453dc41e0a762e9b21efcba">Más...</a><br /></td></tr>
 <tr class="separator:aeeb8952c9453dc41e0a762e9b21efcba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28040a5818d8f8b96a3a4c36b1c4b988" id="r_a28040a5818d8f8b96a3a4c36b1c4b988"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#a28040a5818d8f8b96a3a4c36b1c4b988">VoiceAssignMode</a> { <a class="el" href="namespaceABDMS2000.html#a28040a5818d8f8b96a3a4c36b1c4b988a5d9b47bd3b65072e0d5daf55f01da086">Mono</a> = 0
 , <a class="el" href="namespaceABDMS2000.html#a28040a5818d8f8b96a3a4c36b1c4b988a7462cd846ee2e800d33ac6250a8ff4af">Poly</a>
 , <a class="el" href="namespaceABDMS2000.html#a28040a5818d8f8b96a3a4c36b1c4b988a634a6ceed2dff57f563b54a769e64db9">Unison</a>
  }</td></tr>
+<tr class="memdesc:a28040a5818d8f8b96a3a4c36b1c4b988"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modos de asignación de voces compatibles con MS2000/microKORG.  <a href="namespaceABDMS2000.html#a28040a5818d8f8b96a3a4c36b1c4b988">Más...</a><br /></td></tr>
 <tr class="separator:a28040a5818d8f8b96a3a4c36b1c4b988"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea9565eccc7efbf2e814ffb602ba19a1" id="r_aea9565eccc7efbf2e814ffb602ba19a1"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#aea9565eccc7efbf2e814ffb602ba19a1">TriggerMode</a> { <a class="el" href="namespaceABDMS2000.html#aea9565eccc7efbf2e814ffb602ba19a1a66ba162102bbf6ae31b522aec561735e">Single</a> = 0
 , <a class="el" href="namespaceABDMS2000.html#aea9565eccc7efbf2e814ffb602ba19a1ace7898536dd0e928d1640ee2ad531cc8">Multi</a>
  }</td></tr>
+<tr class="memdesc:aea9565eccc7efbf2e814ffb602ba19a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modos de gatillo de envolventes.  <a href="namespaceABDMS2000.html#aea9565eccc7efbf2e814ffb602ba19a1">Más...</a><br /></td></tr>
 <tr class="separator:aea9565eccc7efbf2e814ffb602ba19a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89c40c628fb3a8499e3afcb11056dbfd" id="r_a89c40c628fb3a8499e3afcb11056dbfd"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#a89c40c628fb3a8499e3afcb11056dbfd">DelayType</a> { <a class="el" href="namespaceABDMS2000.html#a89c40c628fb3a8499e3afcb11056dbfdabbc45d9b35436f5f0ed9e33499efcea9">Stereo</a> = 0
 , <a class="el" href="namespaceABDMS2000.html#a89c40c628fb3a8499e3afcb11056dbfdae76b449b9fc8536af7557ffa6321d269">Cross</a>
@@ -482,9 +492,9 @@ Funciones</h2></td></tr>
 <tr class="separator:ad03fa145b4d9af607c94843d09928bcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96ead7101e967e4f966759f4d63170b1" id="r_a96ead7101e967e4f966759f4d63170b1"><td class="memItemLeft" align="right" valign="top">juce::var&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#a96ead7101e967e4f966759f4d63170b1">hostInfoMessage</a> ()</td></tr>
 <tr class="separator:a96ead7101e967e4f966759f4d63170b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26d08e7d469ee4b59153f11c1fe6467b" id="r_a26d08e7d469ee4b59153f11c1fe6467b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#a26d08e7d469ee4b59153f11c1fe6467b">answerHostInfoForAction</a> (const juce::String &amp;action, const <a class="el" href="namespaceABDMS2000.html#ab20fd87c146032c3ab14953d5a0da10b">JsMessageSink</a> &amp;sink)</td></tr>
+<tr class="memitem:a26d08e7d469ee4b59153f11c1fe6467b" id="r_a26d08e7d469ee4b59153f11c1fe6467b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#a26d08e7d469ee4b59153f11c1fe6467b">answerHostInfoForAction</a> (const juce::String &amp;action, const <a class="el" href="namespaceABDMS2000.html#a3beac5d6a19d44861c93b68dc75d92c0">JsMessageSink</a> &amp;sink)</td></tr>
 <tr class="separator:a26d08e7d469ee4b59153f11c1fe6467b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84bf5f39069261f721edc3ce03b637fa" id="r_a84bf5f39069261f721edc3ce03b637fa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#a84bf5f39069261f721edc3ce03b637fa">announceHostModelForAction</a> (const juce::String &amp;action, const <a class="el" href="namespaceABDMS2000.html#ab20fd87c146032c3ab14953d5a0da10b">JsMessageSink</a> &amp;sink)</td></tr>
+<tr class="memitem:a84bf5f39069261f721edc3ce03b637fa" id="r_a84bf5f39069261f721edc3ce03b637fa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#a84bf5f39069261f721edc3ce03b637fa">announceHostModelForAction</a> (const juce::String &amp;action, const <a class="el" href="namespaceABDMS2000.html#a3beac5d6a19d44861c93b68dc75d92c0">JsMessageSink</a> &amp;sink)</td></tr>
 <tr class="separator:a84bf5f39069261f721edc3ce03b637fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af91a58f459cc8a3890d4c820dfeac964" id="r_af91a58f459cc8a3890d4c820dfeac964"><td class="memItemLeft" align="right" valign="top">static juce::String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#af91a58f459cc8a3890d4c820dfeac964">getMimeTypeForFilename</a> (const juce::String &amp;filename)</td></tr>
 <tr class="separator:af91a58f459cc8a3890d4c820dfeac964"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -492,25 +502,27 @@ Funciones</h2></td></tr>
 <tr class="separator:a2a37da30b0ee0470c39504883e66daa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5d42614d2c8b37d1260ce440472ef76" id="r_ad5d42614d2c8b37d1260ce440472ef76"><td class="memItemLeft" align="right" valign="top">std::optional&lt; juce::WebBrowserComponent::Resource &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#ad5d42614d2c8b37d1260ce440472ef76">pluginResourceProvider</a> (const juce::String &amp;url)</td></tr>
 <tr class="separator:ad5d42614d2c8b37d1260ce440472ef76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acce320945fbf1f72359b9f7c0464ac64" id="r_acce320945fbf1f72359b9f7c0464ac64"><td class="memItemLeft" align="right" valign="top">std::vector&lt; uint8_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#acce320945fbf1f72359b9f7c0464ac64">exportProgramShim</a> (<a class="el" href="classABDMS2000_1_1MS2000SysExExporter.html">MS2000SysExExporter</a> &amp;exporter, juce::AudioProcessorValueTreeState &amp;apvts, int programIndex, const juce::String &amp;name)</td></tr>
+<tr class="separator:acce320945fbf1f72359b9f7c0464ac64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10c78a00754eca46cbfbb6392cbc6463" id="r_a10c78a00754eca46cbfbb6392cbc6463"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structABDMS2000_1_1SysExParseResult.html">SysExParseResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#a10c78a00754eca46cbfbb6392cbc6463">handleIncomingSysExShim</a> (<a class="el" href="classABDMS2000_1_1SysExManager.html">SysExManager</a> &amp;manager, const uint8_t *data, size_t size, juce::AudioProcessorValueTreeState &amp;apvts)</td></tr>
+<tr class="separator:a10c78a00754eca46cbfbb6392cbc6463"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa478231338cacc949c1b1a3b5a186f0e" id="r_aa478231338cacc949c1b1a3b5a186f0e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#aa478231338cacc949c1b1a3b5a186f0e">panicShim</a> (<a class="el" href="classABDMS2000_1_1SynthEngine.html">SynthEngine</a> &amp;engine)</td></tr>
+<tr class="separator:aa478231338cacc949c1b1a3b5a186f0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f2e70c96dffe91698c6ad3eb45e5d78" id="r_a8f2e70c96dffe91698c6ad3eb45e5d78"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#a8f2e70c96dffe91698c6ad3eb45e5d78">processBlockShim</a> (<a class="el" href="classABDMS2000_1_1SynthEngine.html">SynthEngine</a> &amp;engine, juce::AudioBuffer&lt; float &gt; &amp;buffer, juce::MidiBuffer &amp;midi)</td></tr>
+<tr class="separator:a8f2e70c96dffe91698c6ad3eb45e5d78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:ad5194868aeecc75e8d673102674d47e4" id="r_ad5194868aeecc75e8d673102674d47e4"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#ad5194868aeecc75e8d673102674d47e4">kVersionString</a> = &quot;1.0.0&quot;</td></tr>
 <tr class="separator:ad5194868aeecc75e8d673102674d47e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2074416e5df5b0b08faf22b3e1fa8cd" id="r_af2074416e5df5b0b08faf22b3e1fa8cd"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#af2074416e5df5b0b08faf22b3e1fa8cd">kBuildNumber</a> = &quot;2026.09.15.1757&quot;</td></tr>
+<tr class="memitem:af2074416e5df5b0b08faf22b3e1fa8cd" id="r_af2074416e5df5b0b08faf22b3e1fa8cd"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#af2074416e5df5b0b08faf22b3e1fa8cd">kBuildNumber</a> = &quot;2026.10.03.0310&quot;</td></tr>
 <tr class="separator:af2074416e5df5b0b08faf22b3e1fa8cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02a72a892e307a2813f9f1e46c49869e" id="r_a02a72a892e307a2813f9f1e46c49869e"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#a02a72a892e307a2813f9f1e46c49869e">kBuildTimestamp</a> = &quot;2026-09-15T15:57:49.776Z&quot;</td></tr>
+<tr class="memitem:a02a72a892e307a2813f9f1e46c49869e" id="r_a02a72a892e307a2813f9f1e46c49869e"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#a02a72a892e307a2813f9f1e46c49869e">kBuildTimestamp</a> = &quot;2026-10-03T01:10:01.865Z&quot;</td></tr>
 <tr class="separator:a02a72a892e307a2813f9f1e46c49869e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a6036aec8f819044fc7d94d10c6db3e" id="r_a2a6036aec8f819044fc7d94d10c6db3e"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#a2a6036aec8f819044fc7d94d10c6db3e">kProductName</a> = &quot;ABDMS2000&quot;</td></tr>
 <tr class="separator:a2a6036aec8f819044fc7d94d10c6db3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e142f3f00deca2b313cba8c303074f5" id="r_a0e142f3f00deca2b313cba8c303074f5"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#a0e142f3f00deca2b313cba8c303074f5">kManufacturer</a> = &quot;ajabadia&quot;</td></tr>
 <tr class="separator:a0e142f3f00deca2b313cba8c303074f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae169420964d20446e3202867ce06d327" id="r_ae169420964d20446e3202867ce06d327"><td class="memItemLeft" align="right" valign="top">static const float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#ae169420964d20446e3202867ce06d327">kMS2000LowFreqs</a> [4] = { 160.0f, 250.0f, 400.0f, 600.0f }</td></tr>
-<tr class="separator:ae169420964d20446e3202867ce06d327"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e61dc77e9d2bf26c03677cd1c051703" id="r_a7e61dc77e9d2bf26c03677cd1c051703"><td class="memItemLeft" align="right" valign="top">static const float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#a7e61dc77e9d2bf26c03677cd1c051703">kMS2000HighFreqs</a> [4] = { 4000.0f, 6000.0f, 8000.0f, 12000.0f }</td></tr>
-<tr class="separator:a7e61dc77e9d2bf26c03677cd1c051703"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1510f35dca07da985670ab1540f633d" id="r_aa1510f35dca07da985670ab1540f633d"><td class="memItemLeft" align="right" valign="top">static constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#aa1510f35dca07da985670ab1540f633d">kButterworthQ</a> = 0.70710678f</td></tr>
-<tr class="separator:aa1510f35dca07da985670ab1540f633d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab15dc6d9f3f9547021f69e4dfb77c2dc" id="r_ab15dc6d9f3f9547021f69e4dfb77c2dc"><td class="memItemLeft" align="right" valign="top">static const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#ab15dc6d9f3f9547021f69e4dfb77c2dc">kDWGSStandardNames</a> [64]</td></tr>
 <tr class="separator:ab15dc6d9f3f9547021f69e4dfb77c2dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2a27890506359d4de6a6fd7ce4cecda" id="r_ab2a27890506359d4de6a6fd7ce4cecda"><td class="memItemLeft" align="right" valign="top">static const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#ab2a27890506359d4de6a6fd7ce4cecda">kProphetVSNames</a> [96]</td></tr>
@@ -545,7 +557,7 @@ Variables</h2></td></tr>
 <tr class="separator:a0cf100953c13324d86f577d84d33d296"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6f2ac30b9badba1697d740972b64cee" id="r_ad6f2ac30b9badba1697d740972b64cee"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#ad6f2ac30b9badba1697d740972b64cee">kHostBridgeProtocol</a> = 4</td></tr>
 <tr class="separator:ad6f2ac30b9badba1697d740972b64cee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52397c796df6069b9c8659f5f1932a29" id="r_a52397c796df6069b9c8659f5f1932a29"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#a52397c796df6069b9c8659f5f1932a29">kHostBuildRevision</a> = &quot;5b7d69ce9&quot;</td></tr>
+<tr class="memitem:a52397c796df6069b9c8659f5f1932a29" id="r_a52397c796df6069b9c8659f5f1932a29"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#a52397c796df6069b9c8659f5f1932a29">kHostBuildRevision</a> = &quot;no-git&quot;</td></tr>
 <tr class="separator:a52397c796df6069b9c8659f5f1932a29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19ddc8762d60eea919eeab28cfcb9443" id="r_a19ddc8762d60eea919eeab28cfcb9443"><td class="memItemLeft" align="right" valign="top">static struct <a class="el" href="structABDMS2000_1_1PluginProcStaticInit.html">ABDMS2000::PluginProcStaticInit</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#a19ddc8762d60eea919eeab28cfcb9443">s_procStaticInit</a></td></tr>
 <tr class="separator:a19ddc8762d60eea919eeab28cfcb9443"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -557,16 +569,27 @@ Variables</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Descripción detallada</h2>
 <div class="textblock"><p>Anuncio del modelId del anfitrión al ABD Bank Manager embebido.</p>
 <p>El plugin anfitrión publica su propio <code>modelId</code> por el bridge C++ → JS con la acción <code>hostModel</code>, de modo que el selector de hardware del Bank Manager solo ofrezca modelos compatibles con él (contrato completo en <code>ABDBankManager/DOCS/SYNTH_INTEGRATION_GUIDE.md</code> §PASO 5.1).</p>
-<p>Este header es deliberadamente libre de JUCE GUI: <code><a class="el" href="classABDMS2000_1_1BridgeActions.html">BridgeActions</a></code> lo usa desde <code>handleJsEvent()</code> y así el despacho es compilable y testeable sin WebView ni el resto del plugin (el ejecutable de tests no enlaza juce_gui_extra). </p>
+<p>Este header es deliberadamente libre de JUCE GUI: <code><a class="el" href="classABDMS2000_1_1BridgeActions.html">BridgeActions</a></code> lo usa desde <code>handleJsEvent()</code> y así el despacho es compilable y testeable sin WebView ni el resto del plugin (el ejecutable de tests no enlaza juce_gui_extra).</p>
+<p>@purpose Unit tests for <a class="el" href="namespaceABDMS2000.html">ABDMS2000</a> DSP: CalibrationSpec serialization, validation, factory defaults, parameter transfer curves, round-trip integrity. Ported from ABDEep SynthEngineUnitTests_CalSpec.cpp with adaptations for MS2000 architecture. @classification Test</p>
+<p>@purpose Paridad BIT A BIT del ecualizador del MS2000 tras migrarlo a <code>CascadeShelfEq&lt;MS2000EqProfile&gt;</code>. @classification Test</p>
+<p>QUE COMPRUEBA, Y QUE NO. Que las dos implementaciones producen los MISMOS bits, muestra a muestra y en los dos canales, para el mismo guion de mandos y la misma señal. No es un test de tolerancia: si un coeficiente cambia en el ultimo bit, el filtro entero cambia y este test se pone rojo. Un test con tolerancia de -74 dBFS habria pasado siempre y no habria dicho nada.</p>
+<p>POR QUE HAY UNA COPIA DEL CODIGO ANTIGUO EN ESTE FICHERO, Y NO UN GOLDEN FILE. Un fichero de audio golden solo vale si la referencia se regenero con la version buena, y en una migracion de este tipo la tentacion es regenerarlo con la nueva y dar el asunto por bueno. La referencia va aqui, escrita a mano y CONGELADA: si alguien cambia la copia, el test sigue comparando, pero ya no esta midiendo la migracion, asi que la copia no se toca. Es el mismo criterio que usa <code>namespace frozen</code> en <code>DspEffectsTests.cpp</code> del modulo.</p>
+<p>LO QUE NO SE COMPRUEBA, Y POR QUE NO SE PUEDE. Que el codigo nuevo suene IGUAL que el ecualizador de 1997, con la libm de aquella maquina. Eso ya se perdio en la migracion anterior, que sustituyo <code>std::pow</code>, <code>std::sqrt</code>, <code>std::cos</code> y <code>std::sin</code> por las aproximaciones de <code>DspCore/DspMath.h</code>, y esta medido y escrito en la cabecera de <code><a class="el" href="Equalizer_8h.html">Source/DSP/Effects/Equalizer.h</a></code>: hasta 509 ulps en un coeficiente, 0,012 dB de respuesta. Esta migracion no toca ninguna formula, y por eso no vuelve a abrir ese numero.</p>
+<p>@purpose Unit tests for <a class="el" href="namespaceABDMS2000.html">ABDMS2000</a> DSP: panic/all-notes-off behavior, voice cleanup, MIDI controller reset, stuck note recovery. Ported from ABDEep SynthEngineUnitTests_Panic.cpp with adaptations for MS2000 architecture. @classification Test</p>
+<p>@purpose Unit tests for <a class="el" href="namespaceABDMS2000.html">ABDMS2000</a> DSP: transpose, global tune, pitch bend ranges, voice detune, unison calculations. Ported from ABDEep SynthEngineUnitTests_Pitch.cpp with adaptations for MS2000 architecture. @classification Test</p>
+<p>@purpose Unit tests for <a class="el" href="namespaceABDMS2000.html">ABDMS2000</a> DSP: portamento/glide behavior, modes, time scaling. Ported from ABDEep SynthEngineUnitTests.cpp with adaptations for MS2000 architecture. @classification Test</p>
+<p>@purpose Unit tests for <a class="el" href="namespaceABDMS2000.html">ABDMS2000</a> DSP: rapid parameter sweeps, real-time safety, allocation-free processing, parameter smoothing under modulation. Ported from ABDEep SynthEngineUnitTests_RapidSweep.cpp with adaptations for MS2000 architecture. @classification Test</p>
+<p>@purpose Unit tests for <a class="el" href="namespaceABDMS2000.html">ABDMS2000</a> DSP: <a class="el" href="classABDMS2000_1_1MultiModeFilter.html" title="Zero-Delay Feedback (ZDF/TPT) Multi-Mode Resonant Filter. Accurately models the MS2000 / microKORG fi...">MultiModeFilter</a> (ZDF/TPT SVF), filter models, pole modes, resonance compensation, keytrack, self-oscillation. Ported from ABDEep SynthEngineUnitTests_VCF.cpp with adaptations for MS2000 architecture. @classification Test</p>
+<p>@purpose Unit tests for <a class="el" href="namespaceABDMS2000.html">ABDMS2000</a> DSP: voice management, oscillators, envelopes, LFO, modulation matrix, chord tables, unison, and PolyBLEP. Ported from ABDEep SynthEngineUnitTests_Voice.cpp with adaptations for MS2000 architecture. @classification Test </p>
 </div><h2 class="groupheader">Documentación de «typedef»</h2>
-<a id="ab20fd87c146032c3ab14953d5a0da10b" name="ab20fd87c146032c3ab14953d5a0da10b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab20fd87c146032c3ab14953d5a0da10b">&#9670;&#160;</a></span>JsMessageSink</h2>
+<a id="a3beac5d6a19d44861c93b68dc75d92c0" name="a3beac5d6a19d44861c93b68dc75d92c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3beac5d6a19d44861c93b68dc75d92c0">&#9670;&#160;</a></span>JsMessageSink</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespaceABDMS2000.html#ab20fd87c146032c3ab14953d5a0da10b">ABDMS2000::JsMessageSink</a> = typedef std::function&lt;void(const juce::var&amp; message)&gt;</td>
+          <td class="memname">using <a class="el" href="namespaceABDMS2000.html#a3beac5d6a19d44861c93b68dc75d92c0">ABDMS2000::JsMessageSink</a> = typedef std::function&lt;void(const juce::var &amp;message)&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -651,6 +674,9 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Puntos de inyección de tono diagnóstico en el pipeline DSP. </p>
+<p>Cada punto permite inyectar una onda sinusoidal de prueba para depurar etapas específicas del motor de audio, simulando el hardware de test del MS2000. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Valores de enumeraciones</th></tr><tr><td class="fieldname"><a id="a5554928cf64101079576fce8f1d5b8ceab9f5c797ebbf55adccdd8539a65a0241" name="a5554928cf64101079576fce8f1d5b8ceab9f5c797ebbf55adccdd8539a65a0241"></a>Disabled&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a5554928cf64101079576fce8f1d5b8cea6eeb143918a8dd0b15dff97e2a85cd9c" name="a5554928cf64101079576fce8f1d5b8cea6eeb143918a8dd0b15dff97e2a85cd9c"></a>PostMasterVolume&#160;</td><td class="fielddoc"></td></tr>
@@ -709,6 +735,8 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Modos de sincronización de LFO del MS2000. Bits 4-5 del byte de control de LFO en el SysEx real. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Valores de enumeraciones</th></tr><tr><td class="fieldname"><a id="aeeb8952c9453dc41e0a762e9b21efcbaad15305d7a4e34e02489c74a5ef542f36" name="aeeb8952c9453dc41e0a762e9b21efcbaad15305d7a4e34e02489c74a5ef542f36"></a>Off&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="aeeb8952c9453dc41e0a762e9b21efcbaaea20af6dcd1f907b9ffe0b505672bb85" name="aeeb8952c9453dc41e0a762e9b21efcbaaea20af6dcd1f907b9ffe0b505672bb85"></a>Timbre&#160;</td><td class="fielddoc"></td></tr>
@@ -902,6 +930,8 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Tipos de onda OSC1 del MS2000/microKORG. Corresponden a los slots de hardware del sintetizador real. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Valores de enumeraciones</th></tr><tr><td class="fieldname"><a id="af87646d58e636e72aab721a072557c3eac551a26a97a7440529e861dff6933722" name="af87646d58e636e72aab721a072557c3eac551a26a97a7440529e861dff6933722"></a>Saw&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="af87646d58e636e72aab721a072557c3eaec8374db32bacb4cd9760199ec42819e" name="af87646d58e636e72aab721a072557c3eaec8374db32bacb4cd9760199ec42819e"></a>Pulse&#160;</td><td class="fielddoc"></td></tr>
@@ -1086,6 +1116,12 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Modos de gatillo de envolventes. </p>
+<ul>
+<li>Single: legato, las envolventes no se re-disparan si se mantiene otra tecla</li>
+<li>Multi: las envolventes se re-disparan en cada nueva nota </li>
+</ul>
 <table class="fieldtable">
 <tr><th colspan="2">Valores de enumeraciones</th></tr><tr><td class="fieldname"><a id="aea9565eccc7efbf2e814ffb602ba19a1a66ba162102bbf6ae31b522aec561735e" name="aea9565eccc7efbf2e814ffb602ba19a1a66ba162102bbf6ae31b522aec561735e"></a>Single&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="aea9565eccc7efbf2e814ffb602ba19a1ace7898536dd0e928d1640ee2ad531cc8" name="aea9565eccc7efbf2e814ffb602ba19a1ace7898536dd0e928d1640ee2ad531cc8"></a>Multi&#160;</td><td class="fielddoc"></td></tr>
@@ -1140,6 +1176,8 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Modos de asignación de voces compatibles con MS2000/microKORG. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Valores de enumeraciones</th></tr><tr><td class="fieldname"><a id="a28040a5818d8f8b96a3a4c36b1c4b988a5d9b47bd3b65072e0d5daf55f01da086" name="a28040a5818d8f8b96a3a4c36b1c4b988a5d9b47bd3b65072e0d5daf55f01da086"></a>Mono&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a28040a5818d8f8b96a3a4c36b1c4b988a7462cd846ee2e800d33ac6250a8ff4af" name="a28040a5818d8f8b96a3a4c36b1c4b988a7462cd846ee2e800d33ac6250a8ff4af"></a>Poly&#160;</td><td class="fielddoc"></td></tr>
@@ -1268,7 +1306,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespaceABDMS2000.html#ab20fd87c146032c3ab14953d5a0da10b">JsMessageSink</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespaceABDMS2000.html#a3beac5d6a19d44861c93b68dc75d92c0">JsMessageSink</a> &amp;&#160;</td>
           <td class="paramname"><em>sink</em>&#160;</td>
         </tr>
         <tr>
@@ -1313,7 +1351,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespaceABDMS2000.html#ab20fd87c146032c3ab14953d5a0da10b">JsMessageSink</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespaceABDMS2000.html#a3beac5d6a19d44861c93b68dc75d92c0">JsMessageSink</a> &amp;&#160;</td>
           <td class="paramname"><em>sink</em>&#160;</td>
         </tr>
         <tr>
@@ -1329,6 +1367,46 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Despacho de la ficha del host, invocado junto al anuncio en <code><a class="el" href="classABDMS2000_1_1BridgeActions.html#a06a554d919f5a5019ae79b34db4e2c7d">BridgeActions::handleJsEvent()</a></code>. Responde a <code>requestHostInfo</code>. </p>
+
+</div>
+</div>
+<a id="acce320945fbf1f72359b9f7c0464ac64" name="acce320945fbf1f72359b9f7c0464ac64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acce320945fbf1f72359b9f7c0464ac64">&#9670;&#160;</a></span>exportProgramShim()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; uint8_t &gt; ABDMS2000::exportProgramShim </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classABDMS2000_1_1MS2000SysExExporter.html">MS2000SysExExporter</a> &amp;&#160;</td>
+          <td class="paramname"><em>exporter</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">juce::AudioProcessorValueTreeState &amp;&#160;</td>
+          <td class="paramname"><em>apvts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>programIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const juce::String &amp;&#160;</td>
+          <td class="paramname"><em>name</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -1461,6 +1539,46 @@ Variables</h2></td></tr>
 <span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a10c78a00754eca46cbfbb6392cbc6463" name="a10c78a00754eca46cbfbb6392cbc6463"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10c78a00754eca46cbfbb6392cbc6463">&#9670;&#160;</a></span>handleIncomingSysExShim()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structABDMS2000_1_1SysExParseResult.html">SysExParseResult</a> ABDMS2000::handleIncomingSysExShim </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classABDMS2000_1_1SysExManager.html">SysExManager</a> &amp;&#160;</td>
+          <td class="paramname"><em>manager</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">juce::AudioProcessorValueTreeState &amp;&#160;</td>
+          <td class="paramname"><em>apvts</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
 </div><div class="memdoc">
 
 </div>
@@ -1665,6 +1783,24 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="aa478231338cacc949c1b1a3b5a186f0e" name="aa478231338cacc949c1b1a3b5a186f0e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa478231338cacc949c1b1a3b5a186f0e">&#9670;&#160;</a></span>panicShim()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::panicShim </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classABDMS2000_1_1SynthEngine.html">SynthEngine</a> &amp;&#160;</td>
+          <td class="paramname"><em>engine</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ad5d42614d2c8b37d1260ce440472ef76" name="ad5d42614d2c8b37d1260ce440472ef76"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad5d42614d2c8b37d1260ce440472ef76">&#9670;&#160;</a></span>pluginResourceProvider()</h2>
 
@@ -1677,6 +1813,40 @@ Variables</h2></td></tr>
           <td class="paramtype">const juce::String &amp;&#160;</td>
           <td class="paramname"><em>url</em></td><td>)</td>
           <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8f2e70c96dffe91698c6ad3eb45e5d78" name="a8f2e70c96dffe91698c6ad3eb45e5d78"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f2e70c96dffe91698c6ad3eb45e5d78">&#9670;&#160;</a></span>processBlockShim()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::processBlockShim </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classABDMS2000_1_1SynthEngine.html">SynthEngine</a> &amp;&#160;</td>
+          <td class="paramname"><em>engine</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">juce::AudioBuffer&lt; float &gt; &amp;&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">juce::MidiBuffer &amp;&#160;</td>
+          <td class="paramname"><em>midi</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1782,7 +1952,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr const char* ABDMS2000::kBuildNumber = &quot;2026.09.15.1757&quot;</td>
+          <td class="memname">constexpr const char* ABDMS2000::kBuildNumber = &quot;2026.10.03.0310&quot;</td>
         </tr>
       </table>
   </td>
@@ -1804,34 +1974,12 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr const char* ABDMS2000::kBuildTimestamp = &quot;2026-09-15T15:57:49.776Z&quot;</td>
+          <td class="memname">constexpr const char* ABDMS2000::kBuildTimestamp = &quot;2026-10-03T01:10:01.865Z&quot;</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="aa1510f35dca07da985670ab1540f633d" name="aa1510f35dca07da985670ab1540f633d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa1510f35dca07da985670ab1540f633d">&#9670;&#160;</a></span>kButterworthQ</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr float ABDMS2000::kButterworthQ = 0.70710678f</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1880,15 +2028,14 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <b>Valor inicial:</b><div class="fragment"><div class="line">= {</div>
-<div class="line">    <span class="stringliteral">&quot;SynWave 1&quot;</span>,<span class="stringliteral">&quot;SynWave 2&quot;</span>,<span class="stringliteral">&quot;SynWave 3&quot;</span>,<span class="stringliteral">&quot;SynWave 4&quot;</span>,<span class="stringliteral">&quot;SynWave 5&quot;</span>,<span class="stringliteral">&quot;SynWave 6&quot;</span>,<span class="stringliteral">&quot;SynWave 7&quot;</span>,<span class="stringliteral">&quot;SynWave 8&quot;</span>,</div>
-<div class="line">    <span class="stringliteral">&quot;5th Wave 1&quot;</span>,<span class="stringliteral">&quot;5th Wave 2&quot;</span>,<span class="stringliteral">&quot;5th Wave 3&quot;</span>,<span class="stringliteral">&quot;Digi 1&quot;</span>,<span class="stringliteral">&quot;Digi 2&quot;</span>,<span class="stringliteral">&quot;Digi 3&quot;</span>,<span class="stringliteral">&quot;Digi 4&quot;</span>,<span class="stringliteral">&quot;Digi 5&quot;</span>,</div>
-<div class="line">    <span class="stringliteral">&quot;Digi 6&quot;</span>,<span class="stringliteral">&quot;Digi 7&quot;</span>,<span class="stringliteral">&quot;Digi 8&quot;</span>,<span class="stringliteral">&quot;Endless&quot;</span>,<span class="stringliteral">&quot;E.Organ 1&quot;</span>,<span class="stringliteral">&quot;E.Organ 2&quot;</span>,<span class="stringliteral">&quot;E.Organ 3&quot;</span>,<span class="stringliteral">&quot;E.Organ 4&quot;</span>,</div>
-<div class="line">    <span class="stringliteral">&quot;E.Organ 5&quot;</span>,<span class="stringliteral">&quot;E.Organ 6&quot;</span>,<span class="stringliteral">&quot;E.Organ 7&quot;</span>,<span class="stringliteral">&quot;E.Organ 8&quot;</span>,<span class="stringliteral">&quot;Clav 1&quot;</span>,<span class="stringliteral">&quot;Clav 2&quot;</span>,<span class="stringliteral">&quot;A.Piano 1&quot;</span>,<span class="stringliteral">&quot;A.Piano 2&quot;</span>,</div>
-<div class="line">    <span class="stringliteral">&quot;A.Piano 3&quot;</span>,<span class="stringliteral">&quot;E.P. 1&quot;</span>,<span class="stringliteral">&quot;E.P. 2&quot;</span>,<span class="stringliteral">&quot;E.P. 3&quot;</span>,<span class="stringliteral">&quot;E.P. 4&quot;</span>,<span class="stringliteral">&quot;E.P. 5&quot;</span>,<span class="stringliteral">&quot;Wurl 1&quot;</span>,<span class="stringliteral">&quot;A.Guitar 1&quot;</span>,</div>
-<div class="line">    <span class="stringliteral">&quot;A.Guitar 2&quot;</span>,<span class="stringliteral">&quot;E.Guitar 1&quot;</span>,<span class="stringliteral">&quot;E.Guitar 2&quot;</span>,<span class="stringliteral">&quot;E.Guitar 3&quot;</span>,<span class="stringliteral">&quot;Mute Gt&quot;</span>,<span class="stringliteral">&quot;A.Bass&quot;</span>,<span class="stringliteral">&quot;E.Bass 1&quot;</span>,<span class="stringliteral">&quot;E.Bass 2&quot;</span>,</div>
-<div class="line">    <span class="stringliteral">&quot;Synth Bass 1&quot;</span>,<span class="stringliteral">&quot;Synth Bass 2&quot;</span>,<span class="stringliteral">&quot;Synth Bass 3&quot;</span>,<span class="stringliteral">&quot;Synth Bass 4&quot;</span>,<span class="stringliteral">&quot;Bell 1&quot;</span>,<span class="stringliteral">&quot;Bell 2&quot;</span>,<span class="stringliteral">&quot;Bell 3&quot;</span>,<span class="stringliteral">&quot;Bell 4&quot;</span>,</div>
-<div class="line">    <span class="stringliteral">&quot;Voice 1&quot;</span>,<span class="stringliteral">&quot;Voice 2&quot;</span>,<span class="stringliteral">&quot;Voice 3&quot;</span>,<span class="stringliteral">&quot;Voice 4&quot;</span>,<span class="stringliteral">&quot;Strings 1&quot;</span>,<span class="stringliteral">&quot;Strings 2&quot;</span>,<span class="stringliteral">&quot;Brass&quot;</span>,<span class="stringliteral">&quot;SynBrass&quot;</span></div>
-<div class="line">}</div>
+<div class="line">    <span class="stringliteral">&quot;SynWave 1&quot;</span>,    <span class="stringliteral">&quot;SynWave 2&quot;</span>,    <span class="stringliteral">&quot;SynWave 3&quot;</span>,    <span class="stringliteral">&quot;SynWave 4&quot;</span>,    <span class="stringliteral">&quot;SynWave 5&quot;</span>, <span class="stringliteral">&quot;SynWave 6&quot;</span>, <span class="stringliteral">&quot;SynWave 7&quot;</span>, <span class="stringliteral">&quot;SynWave 8&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;5th Wave 1&quot;</span>,   <span class="stringliteral">&quot;5th Wave 2&quot;</span>,   <span class="stringliteral">&quot;5th Wave 3&quot;</span>,   <span class="stringliteral">&quot;Digi 1&quot;</span>,       <span class="stringliteral">&quot;Digi 2&quot;</span>,    <span class="stringliteral">&quot;Digi 3&quot;</span>,    <span class="stringliteral">&quot;Digi 4&quot;</span>,    <span class="stringliteral">&quot;Digi 5&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;Digi 6&quot;</span>,       <span class="stringliteral">&quot;Digi 7&quot;</span>,       <span class="stringliteral">&quot;Digi 8&quot;</span>,       <span class="stringliteral">&quot;Endless&quot;</span>,      <span class="stringliteral">&quot;E.Organ 1&quot;</span>, <span class="stringliteral">&quot;E.Organ 2&quot;</span>, <span class="stringliteral">&quot;E.Organ 3&quot;</span>, <span class="stringliteral">&quot;E.Organ 4&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;E.Organ 5&quot;</span>,    <span class="stringliteral">&quot;E.Organ 6&quot;</span>,    <span class="stringliteral">&quot;E.Organ 7&quot;</span>,    <span class="stringliteral">&quot;E.Organ 8&quot;</span>,    <span class="stringliteral">&quot;Clav 1&quot;</span>,    <span class="stringliteral">&quot;Clav 2&quot;</span>,    <span class="stringliteral">&quot;A.Piano 1&quot;</span>, <span class="stringliteral">&quot;A.Piano 2&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;A.Piano 3&quot;</span>,    <span class="stringliteral">&quot;E.P. 1&quot;</span>,       <span class="stringliteral">&quot;E.P. 2&quot;</span>,       <span class="stringliteral">&quot;E.P. 3&quot;</span>,       <span class="stringliteral">&quot;E.P. 4&quot;</span>,    <span class="stringliteral">&quot;E.P. 5&quot;</span>,    <span class="stringliteral">&quot;Wurl 1&quot;</span>,    <span class="stringliteral">&quot;A.Guitar 1&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;A.Guitar 2&quot;</span>,   <span class="stringliteral">&quot;E.Guitar 1&quot;</span>,   <span class="stringliteral">&quot;E.Guitar 2&quot;</span>,   <span class="stringliteral">&quot;E.Guitar 3&quot;</span>,   <span class="stringliteral">&quot;Mute Gt&quot;</span>,   <span class="stringliteral">&quot;A.Bass&quot;</span>,    <span class="stringliteral">&quot;E.Bass 1&quot;</span>,  <span class="stringliteral">&quot;E.Bass 2&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;Synth Bass 1&quot;</span>, <span class="stringliteral">&quot;Synth Bass 2&quot;</span>, <span class="stringliteral">&quot;Synth Bass 3&quot;</span>, <span class="stringliteral">&quot;Synth Bass 4&quot;</span>, <span class="stringliteral">&quot;Bell 1&quot;</span>,    <span class="stringliteral">&quot;Bell 2&quot;</span>,    <span class="stringliteral">&quot;Bell 3&quot;</span>,    <span class="stringliteral">&quot;Bell 4&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;Voice 1&quot;</span>,      <span class="stringliteral">&quot;Voice 2&quot;</span>,      <span class="stringliteral">&quot;Voice 3&quot;</span>,      <span class="stringliteral">&quot;Voice 4&quot;</span>,      <span class="stringliteral">&quot;Strings 1&quot;</span>, <span class="stringliteral">&quot;Strings 2&quot;</span>, <span class="stringliteral">&quot;Brass&quot;</span>,     <span class="stringliteral">&quot;SynBrass&quot;</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1925,7 +2072,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr const char* ABDMS2000::kHostBuildRevision = &quot;5b7d69ce9&quot;</td>
+          <td class="memname">constexpr const char* ABDMS2000::kHostBuildRevision = &quot;no-git&quot;</td>
         </tr>
       </table>
   </td>
@@ -2026,22 +2173,22 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <b>Valor inicial:</b><div class="fragment"><div class="line">= {</div>
-<div class="line">    { 0xF0, 0x42, 0x30, 0x58, 0x0E, 0xF7 },</div>
-<div class="line">    { 0xF0, 0x42, 0x31, 0x58, 0x0E, 0xF7 },</div>
-<div class="line">    { 0xF0, 0x42, 0x32, 0x58, 0x0E, 0xF7 },</div>
-<div class="line">    { 0xF0, 0x42, 0x33, 0x58, 0x0E, 0xF7 },</div>
-<div class="line">    { 0xF0, 0x42, 0x34, 0x58, 0x0E, 0xF7 },</div>
-<div class="line">    { 0xF0, 0x42, 0x35, 0x58, 0x0E, 0xF7 },</div>
-<div class="line">    { 0xF0, 0x42, 0x36, 0x58, 0x0E, 0xF7 },</div>
-<div class="line">    { 0xF0, 0x42, 0x37, 0x58, 0x0E, 0xF7 },</div>
-<div class="line">    { 0xF0, 0x42, 0x38, 0x58, 0x0E, 0xF7 },</div>
-<div class="line">    { 0xF0, 0x42, 0x39, 0x58, 0x0E, 0xF7 },</div>
-<div class="line">    { 0xF0, 0x42, 0x3A, 0x58, 0x0E, 0xF7 },</div>
-<div class="line">    { 0xF0, 0x42, 0x3B, 0x58, 0x0E, 0xF7 },</div>
-<div class="line">    { 0xF0, 0x42, 0x3C, 0x58, 0x0E, 0xF7 },</div>
-<div class="line">    { 0xF0, 0x42, 0x3D, 0x58, 0x0E, 0xF7 },</div>
-<div class="line">    { 0xF0, 0x42, 0x3E, 0x58, 0x0E, 0xF7 },</div>
-<div class="line">    { 0xF0, 0x42, 0x3F, 0x58, 0x0E, 0xF7 },</div>
+<div class="line">    {0xF0, 0x42, 0x30, 0x58, 0x0E, 0xF7},</div>
+<div class="line">    {0xF0, 0x42, 0x31, 0x58, 0x0E, 0xF7},</div>
+<div class="line">    {0xF0, 0x42, 0x32, 0x58, 0x0E, 0xF7},</div>
+<div class="line">    {0xF0, 0x42, 0x33, 0x58, 0x0E, 0xF7},</div>
+<div class="line">    {0xF0, 0x42, 0x34, 0x58, 0x0E, 0xF7},</div>
+<div class="line">    {0xF0, 0x42, 0x35, 0x58, 0x0E, 0xF7},</div>
+<div class="line">    {0xF0, 0x42, 0x36, 0x58, 0x0E, 0xF7},</div>
+<div class="line">    {0xF0, 0x42, 0x37, 0x58, 0x0E, 0xF7},</div>
+<div class="line">    {0xF0, 0x42, 0x38, 0x58, 0x0E, 0xF7},</div>
+<div class="line">    {0xF0, 0x42, 0x39, 0x58, 0x0E, 0xF7},</div>
+<div class="line">    {0xF0, 0x42, 0x3A, 0x58, 0x0E, 0xF7},</div>
+<div class="line">    {0xF0, 0x42, 0x3B, 0x58, 0x0E, 0xF7},</div>
+<div class="line">    {0xF0, 0x42, 0x3C, 0x58, 0x0E, 0xF7},</div>
+<div class="line">    {0xF0, 0x42, 0x3D, 0x58, 0x0E, 0xF7},</div>
+<div class="line">    {0xF0, 0x42, 0x3E, 0x58, 0x0E, 0xF7},</div>
+<div class="line">    {0xF0, 0x42, 0x3F, 0x58, 0x0E, 0xF7},</div>
 <div class="line">}</div>
 </div><!-- fragment --><p><code>F0 42 3n 58 0E F7</code> por canal: la peticion de memoria completa (comando 0x0E). </p>
 
@@ -2131,22 +2278,22 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <b>Valor inicial:</b><div class="fragment"><div class="line">= {</div>
-<div class="line">    { 0xF0, 0x42, 0x30, 0x58, 0x10, 0xF7 },</div>
-<div class="line">    { 0xF0, 0x42, 0x31, 0x58, 0x10, 0xF7 },</div>
-<div class="line">    { 0xF0, 0x42, 0x32, 0x58, 0x10, 0xF7 },</div>
-<div class="line">    { 0xF0, 0x42, 0x33, 0x58, 0x10, 0xF7 },</div>
-<div class="line">    { 0xF0, 0x42, 0x34, 0x58, 0x10, 0xF7 },</div>
-<div class="line">    { 0xF0, 0x42, 0x35, 0x58, 0x10, 0xF7 },</div>
-<div class="line">    { 0xF0, 0x42, 0x36, 0x58, 0x10, 0xF7 },</div>
-<div class="line">    { 0xF0, 0x42, 0x37, 0x58, 0x10, 0xF7 },</div>
-<div class="line">    { 0xF0, 0x42, 0x38, 0x58, 0x10, 0xF7 },</div>
-<div class="line">    { 0xF0, 0x42, 0x39, 0x58, 0x10, 0xF7 },</div>
-<div class="line">    { 0xF0, 0x42, 0x3A, 0x58, 0x10, 0xF7 },</div>
-<div class="line">    { 0xF0, 0x42, 0x3B, 0x58, 0x10, 0xF7 },</div>
-<div class="line">    { 0xF0, 0x42, 0x3C, 0x58, 0x10, 0xF7 },</div>
-<div class="line">    { 0xF0, 0x42, 0x3D, 0x58, 0x10, 0xF7 },</div>
-<div class="line">    { 0xF0, 0x42, 0x3E, 0x58, 0x10, 0xF7 },</div>
-<div class="line">    { 0xF0, 0x42, 0x3F, 0x58, 0x10, 0xF7 },</div>
+<div class="line">    {0xF0, 0x42, 0x30, 0x58, 0x10, 0xF7},</div>
+<div class="line">    {0xF0, 0x42, 0x31, 0x58, 0x10, 0xF7},</div>
+<div class="line">    {0xF0, 0x42, 0x32, 0x58, 0x10, 0xF7},</div>
+<div class="line">    {0xF0, 0x42, 0x33, 0x58, 0x10, 0xF7},</div>
+<div class="line">    {0xF0, 0x42, 0x34, 0x58, 0x10, 0xF7},</div>
+<div class="line">    {0xF0, 0x42, 0x35, 0x58, 0x10, 0xF7},</div>
+<div class="line">    {0xF0, 0x42, 0x36, 0x58, 0x10, 0xF7},</div>
+<div class="line">    {0xF0, 0x42, 0x37, 0x58, 0x10, 0xF7},</div>
+<div class="line">    {0xF0, 0x42, 0x38, 0x58, 0x10, 0xF7},</div>
+<div class="line">    {0xF0, 0x42, 0x39, 0x58, 0x10, 0xF7},</div>
+<div class="line">    {0xF0, 0x42, 0x3A, 0x58, 0x10, 0xF7},</div>
+<div class="line">    {0xF0, 0x42, 0x3B, 0x58, 0x10, 0xF7},</div>
+<div class="line">    {0xF0, 0x42, 0x3C, 0x58, 0x10, 0xF7},</div>
+<div class="line">    {0xF0, 0x42, 0x3D, 0x58, 0x10, 0xF7},</div>
+<div class="line">    {0xF0, 0x42, 0x3E, 0x58, 0x10, 0xF7},</div>
+<div class="line">    {0xF0, 0x42, 0x3F, 0x58, 0x10, 0xF7},</div>
 <div class="line">}</div>
 </div><!-- fragment --><p><code>F0 42 3n 58 10 F7</code> por canal: la peticion de programa del Banco (comando 0x10). </p>
 
@@ -2171,12 +2318,16 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Valor inicial:</b><div class="fragment"><div class="line">= {</div>
-<div class="line">    {<span class="stringliteral">&quot;AKWF_0001_0100_m1&quot;</span>,100},{<span class="stringliteral">&quot;AKWF_0101_0200_m1&quot;</span>,100},{<span class="stringliteral">&quot;AKWF_0201_0300_m1&quot;</span>,100},</div>
-<div class="line">    {<span class="stringliteral">&quot;AKWF_0301_0400_m1&quot;</span>,100},{<span class="stringliteral">&quot;AKWF_0401_0500_m1&quot;</span>,100},{<span class="stringliteral">&quot;AKWF_nes_m1&quot;</span>,64},</div>
-<div class="line">    {<span class="stringliteral">&quot;ProphetVS_Wave33_56_m1&quot;</span>,24},{<span class="stringliteral">&quot;ProphetVS_Wave57_80_m1&quot;</span>,24},</div>
-<div class="line">    {<span class="stringliteral">&quot;ProphetVS_Wave81_104_m1&quot;</span>,24},{<span class="stringliteral">&quot;ProphetVS_Wave105_128_m1&quot;</span>,24}</div>
-<div class="line">}</div>
+<b>Valor inicial:</b><div class="fragment"><div class="line">= {{<span class="stringliteral">&quot;AKWF_0001_0100_m1&quot;</span>, 100},</div>
+<div class="line">                                       {<span class="stringliteral">&quot;AKWF_0101_0200_m1&quot;</span>, 100},</div>
+<div class="line">                                       {<span class="stringliteral">&quot;AKWF_0201_0300_m1&quot;</span>, 100},</div>
+<div class="line">                                       {<span class="stringliteral">&quot;AKWF_0301_0400_m1&quot;</span>, 100},</div>
+<div class="line">                                       {<span class="stringliteral">&quot;AKWF_0401_0500_m1&quot;</span>, 100},</div>
+<div class="line">                                       {<span class="stringliteral">&quot;AKWF_nes_m1&quot;</span>, 64},</div>
+<div class="line">                                       {<span class="stringliteral">&quot;ProphetVS_Wave33_56_m1&quot;</span>, 24},</div>
+<div class="line">                                       {<span class="stringliteral">&quot;ProphetVS_Wave57_80_m1&quot;</span>, 24},</div>
+<div class="line">                                       {<span class="stringliteral">&quot;ProphetVS_Wave81_104_m1&quot;</span>, 24},</div>
+<div class="line">                                       {<span class="stringliteral">&quot;ProphetVS_Wave105_128_m1&quot;</span>, 24}}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2222,54 +2373,8 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <b>Valor inicial:</b><div class="fragment"><div class="line">= {</div>
-<div class="line">    12.0f, 8.0f, 6.0f, 4.0f, 3.0f, 2.0f, 1.5f, 1.0f,</div>
-<div class="line">    0.75f, 0.5f, 0.3333f, 0.25f, 0.1667f, 0.125f, 0.0833f, 0.0625f</div>
-<div class="line">}</div>
+<div class="line">    12.0f, 8.0f, 6.0f, 4.0f, 3.0f, 2.0f, 1.5f, 1.0f, 0.75f, 0.5f, 0.3333f, 0.25f, 0.1667f, 0.125f, 0.0833f, 0.0625f}</div>
 </div><!-- fragment -->
-</div>
-</div>
-<a id="a7e61dc77e9d2bf26c03677cd1c051703" name="a7e61dc77e9d2bf26c03677cd1c051703"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7e61dc77e9d2bf26c03677cd1c051703">&#9670;&#160;</a></span>kMS2000HighFreqs</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const float ABDMS2000::kMS2000HighFreqs[4] = { 4000.0f, 6000.0f, 8000.0f, 12000.0f }</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ae169420964d20446e3202867ce06d327" name="ae169420964d20446e3202867ce06d327"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae169420964d20446e3202867ce06d327">&#9670;&#160;</a></span>kMS2000LowFreqs</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const float ABDMS2000::kMS2000LowFreqs[4] = { 160.0f, 250.0f, 400.0f, 600.0f }</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
 </div>
 </div>
 <a id="a9fd219e360f735844cb28038a0e5b4cf" name="a9fd219e360f735844cb28038a0e5b4cf"></a>
@@ -2291,10 +2396,22 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Valor inicial:</b><div class="fragment"><div class="line">= {</div>
-<div class="line">    125.0f, 180.0f, 250.0f, 340.0f, 460.0f, 620.0f, 820.0f, 1050.0f,</div>
-<div class="line">    1350.0f, 1700.0f, 2150.0f, 2700.0f, 3350.0f, 4100.0f, 4900.0f, 5700.0f</div>
-<div class="line">}</div>
+<b>Valor inicial:</b><div class="fragment"><div class="line">= {125.0f,</div>
+<div class="line">                                              180.0f,</div>
+<div class="line">                                              250.0f,</div>
+<div class="line">                                              340.0f,</div>
+<div class="line">                                              460.0f,</div>
+<div class="line">                                              620.0f,</div>
+<div class="line">                                              820.0f,</div>
+<div class="line">                                              1050.0f,</div>
+<div class="line">                                              1350.0f,</div>
+<div class="line">                                              1700.0f,</div>
+<div class="line">                                              2150.0f,</div>
+<div class="line">                                              2700.0f,</div>
+<div class="line">                                              3350.0f,</div>
+<div class="line">                                              4100.0f,</div>
+<div class="line">                                              4900.0f,</div>
+<div class="line">                                              5700.0f}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2339,29 +2456,7 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Valor inicial:</b><div class="fragment"><div class="line">= {</div>
-<div class="line">    </div>
-<div class="line">    <span class="stringliteral">&quot;PVS_Digital 1&quot;</span>,<span class="stringliteral">&quot;PVS_Digital 2&quot;</span>,<span class="stringliteral">&quot;PVS_FM Bell&quot;</span>,<span class="stringliteral">&quot;PVS_Digi Bell&quot;</span>,<span class="stringliteral">&quot;PVS_Syn Mallet&quot;</span>,</div>
-<div class="line">    <span class="stringliteral">&quot;PVS_Metal 1&quot;</span>,<span class="stringliteral">&quot;PVS_Metal 2&quot;</span>,<span class="stringliteral">&quot;PVS_Reso 1&quot;</span>,<span class="stringliteral">&quot;PVS_Reso 2&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 42&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 43&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 44&quot;</span>,</div>
-<div class="line">    <span class="stringliteral">&quot;PVS_Wave 45&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 46&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 47&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 48&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 49&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 50&quot;</span>,</div>
-<div class="line">    <span class="stringliteral">&quot;PVS_Wave 51&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 52&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 53&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 54&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 55&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 56&quot;</span>,</div>
-<div class="line">    </div>
-<div class="line">    <span class="stringliteral">&quot;PVS_Brass 1&quot;</span>,<span class="stringliteral">&quot;PVS_Brass 2&quot;</span>,<span class="stringliteral">&quot;PVS_Wind 1&quot;</span>,<span class="stringliteral">&quot;PVS_Wind 2&quot;</span>,<span class="stringliteral">&quot;PVS_Wind 3&quot;</span>,</div>
-<div class="line">    <span class="stringliteral">&quot;PVS_Strings 1&quot;</span>,<span class="stringliteral">&quot;PVS_Strings 2&quot;</span>,<span class="stringliteral">&quot;PVS_Strings 3&quot;</span>,<span class="stringliteral">&quot;PVS_Strings 4&quot;</span>,<span class="stringliteral">&quot;PVS_Voice 1&quot;</span>,<span class="stringliteral">&quot;PVS_Voice 2&quot;</span>,<span class="stringliteral">&quot;PVS_Voice 3&quot;</span>,</div>
-<div class="line">    <span class="stringliteral">&quot;PVS_Voice 4&quot;</span>,<span class="stringliteral">&quot;PVS_Choir 1&quot;</span>,<span class="stringliteral">&quot;PVS_Choir 2&quot;</span>,<span class="stringliteral">&quot;PVS_Choir 3&quot;</span>,<span class="stringliteral">&quot;PVS_Organ 1&quot;</span>,<span class="stringliteral">&quot;PVS_Organ 2&quot;</span>,</div>
-<div class="line">    <span class="stringliteral">&quot;PVS_Wave 75&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 76&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 77&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 78&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 79&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 80&quot;</span>,</div>
-<div class="line">    </div>
-<div class="line">    <span class="stringliteral">&quot;PVS_Bass 1&quot;</span>,<span class="stringliteral">&quot;PVS_Bass 2&quot;</span>,<span class="stringliteral">&quot;PVS_Bass 3&quot;</span>,<span class="stringliteral">&quot;PVS_Bass 4&quot;</span>,<span class="stringliteral">&quot;PVS_Lead 1&quot;</span>,<span class="stringliteral">&quot;PVS_Lead 2&quot;</span>,</div>
-<div class="line">    <span class="stringliteral">&quot;PVS_Lead 3&quot;</span>,<span class="stringliteral">&quot;PVS_Synth 1&quot;</span>,<span class="stringliteral">&quot;PVS_Synth 2&quot;</span>,<span class="stringliteral">&quot;PVS_Synth 3&quot;</span>,<span class="stringliteral">&quot;PVS_Synth 4&quot;</span>,<span class="stringliteral">&quot;PVS_Synth 5&quot;</span>,</div>
-<div class="line">    <span class="stringliteral">&quot;PVS_Synth 6&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 93&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 94&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 95&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 96&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 97&quot;</span>,</div>
-<div class="line">    <span class="stringliteral">&quot;PVS_Wave 98&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 99&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 100&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 101&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 102&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 103&quot;</span>,</div>
-<div class="line">    </div>
-<div class="line">    <span class="stringliteral">&quot;PVS_FX 1&quot;</span>,<span class="stringliteral">&quot;PVS_FX 2&quot;</span>,<span class="stringliteral">&quot;PVS_FX 3&quot;</span>,<span class="stringliteral">&quot;PVS_FX 4&quot;</span>,<span class="stringliteral">&quot;PVS_FX 5&quot;</span>,<span class="stringliteral">&quot;PVS_FX 6&quot;</span>,</div>
-<div class="line">    <span class="stringliteral">&quot;PVS_FX 7&quot;</span>,<span class="stringliteral">&quot;PVS_FX 8&quot;</span>,<span class="stringliteral">&quot;PVS_Perc 1&quot;</span>,<span class="stringliteral">&quot;PVS_Perc 2&quot;</span>,<span class="stringliteral">&quot;PVS_Perc 3&quot;</span>,<span class="stringliteral">&quot;PVS_Perc 4&quot;</span>,</div>
-<div class="line">    <span class="stringliteral">&quot;PVS_Wave 117&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 118&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 119&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 120&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 121&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 122&quot;</span>,</div>
-<div class="line">    <span class="stringliteral">&quot;PVS_Wave 123&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 124&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 125&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 126&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 127&quot;</span>,<span class="stringliteral">&quot;PVS_Wave 128&quot;</span></div>
-<div class="line">}</div>
-</div><!-- fragment -->
+
 </div>
 </div>
 <a id="a36f152df219048949b8bf516532d0baa" name="a36f152df219048949b8bf516532d0baa"></a>
@@ -2384,22 +2479,22 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <b>Valor inicial:</b><div class="fragment"><div class="line">= {</div>
-<div class="line">    12.0f,  </div>
-<div class="line">    8.0f,   </div>
-<div class="line">    6.0f,   </div>
-<div class="line">    4.0f,   </div>
-<div class="line">    3.0f,   </div>
-<div class="line">    2.0f,   </div>
-<div class="line">    1.5f,   </div>
-<div class="line">    1.0f,   </div>
-<div class="line">    0.75f,  </div>
-<div class="line">    0.5f,   </div>
-<div class="line">    0.3333f,</div>
-<div class="line">    0.25f,  </div>
-<div class="line">    0.1667f,</div>
-<div class="line">    0.125f, </div>
-<div class="line">    0.0833f,</div>
-<div class="line">    0.0625f </div>
+<div class="line">    12.0f,    </div>
+<div class="line">    8.0f,     </div>
+<div class="line">    6.0f,     </div>
+<div class="line">    4.0f,     </div>
+<div class="line">    3.0f,     </div>
+<div class="line">    2.0f,     </div>
+<div class="line">    1.5f,     </div>
+<div class="line">    1.0f,     </div>
+<div class="line">    0.75f,    </div>
+<div class="line">    0.5f,     </div>
+<div class="line">    0.3333f,  </div>
+<div class="line">    0.25f,    </div>
+<div class="line">    0.1667f,  </div>
+<div class="line">    0.125f,   </div>
+<div class="line">    0.0833f,  </div>
+<div class="line">    0.0625f   </div>
 <div class="line">}</div>
 </div><!-- fragment -->
 </div>

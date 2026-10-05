@@ -12,5 +12,6 @@ var searchData=
   ['ms2000hardwareprogram_9',['MS2000HardwareProgram',['../structABDMS2000_1_1MS2000HardwareProgram.html#a7d5ea85a2ac98a938cf5bd2c99c44624',1,'ABDMS2000::MS2000HardwareProgram']]],
   ['ms2000programdata_10',['MS2000ProgramData',['../structABDMS2000_1_1MS2000ProgramData.html#ad5a40ebb1e32f57b7c35ce29d0ae2091',1,'ABDMS2000::MS2000ProgramData']]],
   ['ms2000sysexexporter_11',['MS2000SysExExporter',['../classABDMS2000_1_1MS2000SysExExporter.html#aa126bcfee39f8e11d43091cafcf616e2',1,'ABDMS2000::MS2000SysExExporter']]],
-  ['multimodefilter_12',['MultiModeFilter',['../classABDMS2000_1_1MultiModeFilter.html#a8bd2450fbf2f5dd66b15390f4cb53348',1,'ABDMS2000::MultiModeFilter']]]
+  ['multimodefilter_12',['MultiModeFilter',['../classABDMS2000_1_1MultiModeFilter.html#a8bd2450fbf2f5dd66b15390f4cb53348',1,'ABDMS2000::MultiModeFilter']]],
+  ['multimodefiltertests_13',['MultiModeFilterTests',['../classABDMS2000_1_1Tests_1_1MultiModeFilterTests.html#ac002c49b3ccfd86c8dce8164d79d512b',1,'ABDMS2000::Tests::MultiModeFilterTests']]]
 ];

@@ -83,32 +83,32 @@ $(function() {
 <div class="contents">
 <div class="textblock"><code>#include &lt;juce_audio_processors/juce_audio_processors.h&gt;</code><br />
 <code>#include &quot;../../Core/SynthEngine.h&quot;</code><br />
-<code>#include &quot;<a class="el" href="ParameterRegistry_8gen_8h_source.html">../State/ParameterRegistry.gen.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="MS2000PatchBuilder_8h_source.html">../State/MS2000PatchBuilder.h</a>&quot;</code><br />
+<code>#include &quot;../../Core/VoiceManager.h&quot;</code><br />
 <code>#include &quot;../../DSP/Common/DSPUtils.h&quot;</code><br />
 <code>#include &quot;../../DSP/Envelopes/EnvelopeCurves.h&quot;</code><br />
-<code>#include &quot;../../DSP/Modulation/LFO.h&quot;</code><br />
-<code>#include &quot;../../DSP/Oscillators/VoxWaveOscillator.h&quot;</code><br />
 <code>#include &quot;../../DSP/Filters/FilterResonanceComp.h&quot;</code><br />
 <code>#include &quot;../../DSP/Filters/MultiModeFilter.h&quot;</code><br />
+<code>#include &quot;../../DSP/Modulation/LFO.h&quot;</code><br />
+<code>#include &quot;../../DSP/Oscillators/VoxWaveOscillator.h&quot;</code><br />
 <code>#include &quot;../../DSP/Vocoder/Vocoder16Band.h&quot;</code><br />
-<code>#include &quot;../../Core/VoiceManager.h&quot;</code><br />
 <code>#include &quot;../../MIDI/MIDIMap.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="MS2000PatchBuilder_8h_source.html">../State/MS2000PatchBuilder.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="ParameterRegistry_8gen_8h_source.html">../State/ParameterRegistry.gen.h</a>&quot;</code><br />
 <code>#include &quot;../../ABDSharedCode/HardwareDrivers/NRPNParser.h&quot;</code><br />
 <code>#include &quot;../../ABDSharedCode/HardwareDrivers/SysExCodec.h&quot;</code><br />
-<code>#include &quot;<a class="el" href="LCDMenuFormatter_8h_source.html">../State/LCDMenuFormatter.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="HostModelAnnouncement_8h_source.html">../Plugin/HostModelAnnouncement.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="BridgeActions_8h_source.html">../Plugin/BridgeActions.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="MIDITelemetryManager_8h_source.html">../MIDI/MIDITelemetryManager.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="SysExManager_8h_source.html">../MIDI/SysExManager.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="MS2000HardwareProgram_8h_source.html">../MIDI/MS2000HardwareProgram.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="ABDSynthsSysEx_8h_source.html">../MIDI/ABDSynthsSysEx.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="MIDITelemetryManager_8h_source.html">../MIDI/MIDITelemetryManager.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="MS2000HardwareProgram_8h_source.html">../MIDI/MS2000HardwareProgram.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="MS2000SysExExporter_8h_source.html">../MIDI/MS2000SysExExporter.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="SysExManager_8h_source.html">../MIDI/SysExManager.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="BridgeActions_8h_source.html">../Plugin/BridgeActions.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="HostModelAnnouncement_8h_source.html">../Plugin/HostModelAnnouncement.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="LCDMenuFormatter_8h_source.html">../State/LCDMenuFormatter.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="KorgChannel_8gen_8h_source.html">../MIDI/KorgChannel.gen.h</a>&quot;</code><br />
 <code>#include &quot;WebUIAssets.h&quot;</code><br />
-<code>#include &lt;cmath&gt;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;cassert&gt;</code><br />
+<code>#include &lt;cmath&gt;</code><br />
 <code>#include &lt;cstdio&gt;</code><br />
 <code>#include &lt;memory&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
@@ -140,8 +140,8 @@ Espacios de nombres</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Funciones</h2></td></tr>
-<tr class="memitem:abec382fae96033195e5aefcd331d5389" id="r_abec382fae96033195e5aefcd331d5389"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#abec382fae96033195e5aefcd331d5389">ABDMS2000::Tests::check</a> (bool condition, const char *testName)</td></tr>
-<tr class="separator:abec382fae96033195e5aefcd331d5389"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14275341ce845995addc34a73e4ed454" id="r_a14275341ce845995addc34a73e4ed454"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#a14275341ce845995addc34a73e4ed454">ABDMS2000::Tests::check</a> (bool condition, const char *testName)</td></tr>
+<tr class="separator:a14275341ce845995addc34a73e4ed454"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ef871e45083c53884ef59f602c1090e" id="r_a8ef871e45083c53884ef59f602c1090e"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structABDMS2000_1_1Tests_1_1DummySynthFixture.html">DummySynthFixture</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#a8ef871e45083c53884ef59f602c1090e">ABDMS2000::Tests::dummyFixture</a> ()</td></tr>
 <tr class="separator:a8ef871e45083c53884ef59f602c1090e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1cde43aefa0dd3b5fd79fbc99197851" id="r_aa1cde43aefa0dd3b5fd79fbc99197851"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#aa1cde43aefa0dd3b5fd79fbc99197851">ABDMS2000::Tests::testDspUtils</a> ()</td></tr>
@@ -186,6 +186,8 @@ Funciones</h2></td></tr>
 <tr class="separator:ac00b45b5bc5d74b423efb907ef9ec89f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f8c34372aea0c0a56f3cf2935eef6fe" id="r_a7f8c34372aea0c0a56f3cf2935eef6fe"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#a7f8c34372aea0c0a56f3cf2935eef6fe">ABDMS2000::Tests::testEngineExtension</a> ()</td></tr>
 <tr class="separator:a7f8c34372aea0c0a56f3cf2935eef6fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a071a8681aad4162a784205452acdcfec" id="r_a071a8681aad4162a784205452acdcfec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#a071a8681aad4162a784205452acdcfec">ABDMS2000::Tests::testEqualizerParity</a> ()</td></tr>
+<tr class="separator:a071a8681aad4162a784205452acdcfec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89476fd8fd506d0096cee512b4f9b65d" id="r_a89476fd8fd506d0096cee512b4f9b65d"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#a89476fd8fd506d0096cee512b4f9b65d">ABDMS2000::Tests::runAllTests</a> ()</td></tr>
 <tr class="separator:a89476fd8fd506d0096cee512b4f9b65d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae66f6b31b5ad750f1fe042a706a4e3d4" id="r_ae66f6b31b5ad750f1fe042a706a4e3d4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="DSPCoreTests_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a> ()</td></tr>
@@ -193,9 +195,9 @@ Funciones</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a4ba74ad7f965243686c8193dddb1adcc" id="r_a4ba74ad7f965243686c8193dddb1adcc"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#a4ba74ad7f965243686c8193dddb1adcc">ABDMS2000::Tests::testsPassed</a> = 0</td></tr>
+<tr class="memitem:a4ba74ad7f965243686c8193dddb1adcc" id="r_a4ba74ad7f965243686c8193dddb1adcc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#a4ba74ad7f965243686c8193dddb1adcc">ABDMS2000::Tests::testsPassed</a> = 0</td></tr>
 <tr class="separator:a4ba74ad7f965243686c8193dddb1adcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85d37bd5aea47fbe808403acf9abb3f5" id="r_a85d37bd5aea47fbe808403acf9abb3f5"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#a85d37bd5aea47fbe808403acf9abb3f5">ABDMS2000::Tests::testsFailed</a> = 0</td></tr>
+<tr class="memitem:a85d37bd5aea47fbe808403acf9abb3f5" id="r_a85d37bd5aea47fbe808403acf9abb3f5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#a85d37bd5aea47fbe808403acf9abb3f5">ABDMS2000::Tests::testsFailed</a> = 0</td></tr>
 <tr class="separator:a85d37bd5aea47fbe808403acf9abb3f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d51532dc58706795965360186f59f2d" id="r_a8d51532dc58706795965360186f59f2d"><td class="memItemLeft" align="right" valign="top">static constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#a8d51532dc58706795965360186f59f2d">ABDMS2000::Tests::testSampleRate</a> = 44100.0</td></tr>
 <tr class="separator:a8d51532dc58706795965360186f59f2d"><td class="memSeparator" colspan="2">&#160;</td></tr>

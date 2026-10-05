@@ -1,0 +1,25 @@
+<map id="Source/Tests/JuceHeader.h" name="Source/Tests/JuceHeader.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="997,5,1189,31"/>
+<area shape="rect" id="Node000002" href="$TestCompat_8h.html" title=" " alt="" coords="995,79,1191,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1095,44,1095,79,1090,79,1090,44"/>
+<area shape="rect" id="Node000003" href="$DSPCoreTests__CalSpec_8cpp.html" title=" " alt="" coords="5,152,201,192"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="980,99,637,117,425,133,213,155,202,156,201,151,212,149,425,128,636,112,980,94"/>
+<area shape="rect" id="Node000004" href="$DSPCoreTests__EqualizerParity_8cpp.html" title=" " alt="" coords="225,152,421,192"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="981,103,730,123,433,155,422,156,421,151,432,149,729,117,981,97"/>
+<area shape="rect" id="Node000005" href="$DSPCoreTests__Panic_8cpp.html" title=" " alt="" coords="445,152,641,192"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="988,108,653,155,642,156,641,151,652,149,988,103"/>
+<area shape="rect" id="Node000006" href="$DSPCoreTests__Pitch_8cpp.html" title=" " alt="" coords="665,152,861,192"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="1032,110,843,155,842,149,1031,104"/>
+<area shape="rect" id="Node000007" href="$DSPCoreTests__Portamento_8cpp.html" title=" " alt="" coords="885,152,1081,192"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="1067,114,1011,154,1008,150,1064,110"/>
+<area shape="rect" id="Node000008" href="$DSPCoreTests__RapidSweep_8cpp.html" title=" " alt="" coords="1105,152,1301,192"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="1122,110,1178,150,1175,154,1119,114"/>
+<area shape="rect" id="Node000009" href="$DSPCoreTests__Transfer_8cpp.html" title=" " alt="" coords="1325,152,1521,192"/>
+<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="1154,104,1344,149,1343,155,1153,110"/>
+<area shape="rect" id="Node000010" href="$DSPCoreTests__VCF_8cpp.html" title=" " alt="" coords="1545,152,1741,192"/>
+<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="1198,103,1534,149,1545,151,1545,156,1534,155,1198,108"/>
+<area shape="rect" id="Node000011" href="$DSPCoreTests__Voice_8cpp.html" title=" " alt="" coords="1765,152,1961,192"/>
+<area shape="poly" id="edge10_Node000002_Node000011" title=" " alt="" coords="1205,97,1457,117,1754,149,1765,151,1765,156,1754,155,1456,123,1204,103"/>
+<area shape="rect" id="Node000012" href="$TestCompat_8cpp.html" title=" " alt="" coords="1986,159,2197,185"/>
+<area shape="poly" id="edge11_Node000002_Node000012" title=" " alt="" coords="1205,94,1549,113,1761,129,1974,149,2027,157,2026,162,1974,155,1761,134,1549,118,1204,100"/>
+</map>

@@ -7,6 +7,7 @@ var searchData=
   ['equalizer_4',['Equalizer',['../classABDMS2000_1_1Equalizer.html#abf2d1717f31559d672748bbb93b5c0e9',1,'ABDMS2000::Equalizer']]],
   ['evaluate_5',['evaluate',['../classABDMS2000_1_1VirtualPatchMatrix.html#aa4a6d3b0af5527f6b0b958255b4c0476',1,'ABDMS2000::VirtualPatchMatrix']]],
   ['exportbank_6',['exportBank',['../classABDMS2000_1_1MS2000SysExExporter.html#a82842d9ace2cdaf6f9bdeb57216b53fb',1,'ABDMS2000::MS2000SysExExporter']]],
-  ['exportsingleprogram_7',['exportSingleProgram',['../classABDMS2000_1_1MS2000SysExExporter.html#ad784d0c0b0d0a120c07f631efa7b101d',1,'ABDMS2000::MS2000SysExExporter']]],
-  ['extractbits_8',['extractBits',['../structABDMS2000_1_1MS2000HardwareProgram.html#aaa525e27769777d366ae4c4eba93d05a',1,'ABDMS2000::MS2000HardwareProgram']]]
+  ['exportprogramshim_7',['exportProgramShim',['../namespaceABDMS2000.html#acce320945fbf1f72359b9f7c0464ac64',1,'ABDMS2000']]],
+  ['exportsingleprogram_8',['exportSingleProgram',['../classABDMS2000_1_1MS2000SysExExporter.html#ad784d0c0b0d0a120c07f631efa7b101d',1,'ABDMS2000::MS2000SysExExporter']]],
+  ['extractbits_9',['extractBits',['../structABDMS2000_1_1MS2000HardwareProgram.html#aaa525e27769777d366ae4c4eba93d05a',1,'ABDMS2000::MS2000HardwareProgram']]]
 ];

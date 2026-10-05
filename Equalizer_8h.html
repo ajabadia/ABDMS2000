@@ -79,16 +79,17 @@ $(function() {
   <div class="headertitle"><div class="title">Referencia del archivo Equalizer.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;cstddef&gt;</code><br />
+<div class="textblock"><code>#include &quot;DspEffects/CascadeShelfEq.h&quot;</code><br />
+<code>#include &quot;DspEffects/profiles/MS2000EqProfile.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Gráfico de dependencias incluidas en Equalizer.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="Equalizer_8h__incl.svg" width="155" height="124"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="Equalizer_8h__incl.svg" width="392" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 Gráfico de los archivos que directa o indirectamente incluyen a este archivo:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="Equalizer_8h__dep__incl.svg" width="100%" height="580"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="Equalizer_8h__dep__incl.svg" width="623" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="Equalizer_8h_source.html">Ir al código fuente de este archivo.</a></p>
@@ -96,7 +97,7 @@ Gráfico de los archivos que directa o indirectamente incluyen a este archivo:</
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Clases</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Equalizer.html">ABDMS2000::Equalizer</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">2-Band Cascaded Shelving <a class="el" href="classABDMS2000_1_1Equalizer.html" title="2-Band Cascaded Shelving Equalizer based on reverse-engineered Korg MS2000 DSP specs....">Equalizer</a> based on reverse-engineered Korg MS2000 DSP specs. Uses 2nd order Butterworth Shelves (Q = 0.7071) with exact hardware frequency lookup tables:  <a href="classABDMS2000_1_1Equalizer.html#details">Más...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">2-Band Cascaded Shelving <a class="el" href="classABDMS2000_1_1Equalizer.html" title="2-Band Cascaded Shelving Equalizer based on reverse-engineered Korg MS2000 DSP specs....">Equalizer</a> based on reverse-engineered Korg MS2000 DSP specs. Two <code>abd::dsp::ShelfFilter</code> in cascade, Q fixed at Butterworth (0.7071):  <a href="classABDMS2000_1_1Equalizer.html#details">Más...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>

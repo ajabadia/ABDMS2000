@@ -81,9 +81,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="Vocoder16Band_8h_source.html">Vocoder16Band.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="DSPUtils_8h_source.html">../Common/DSPUtils.h</a>&quot;</code><br />
-<code>#include &lt;cmath&gt;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
+<code>#include &lt;cmath&gt;</code><br />
+<code>#include &quot;<a class="el" href="DSPUtils_8h_source.html">../Common/DSPUtils.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Gráfico de dependencias incluidas en Vocoder16Band.cpp:</div>
 <div class="dyncontent">
@@ -121,15 +121,16 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Valor:</b><div class="fragment"><div class="line">        <span class="keywordflow">do</span> { \</div>
-<div class="line">        <span class="keywordtype">float</span> fMod = analysisFilters_[idx].process(modSample); \</div>
-<div class="line">        <span class="keywordtype">float</span> vEnv = followers_[idx].process(fMod); \</div>
-<div class="line">        <span class="keywordtype">float</span> fCar = synthesisFilters_[idx].process(carrierSample); \</div>
-<div class="line">        <span class="keywordtype">float</span> bAudio = fCar * vEnv * bandLevels_[idx] * 0.5f; \</div>
-<div class="line">        <span class="keywordtype">float</span> pNorm = bandPans_[idx]; \</div>
-<div class="line">        leftAcc  += bAudio * (1.0f - pNorm); \</div>
-<div class="line">        rightAcc += bAudio * pNorm; \</div>
-<div class="line">    } <span class="keywordflow">while</span>(0)</div>
+<b>Valor:</b><div class="fragment"><div class="line">    <span class="keywordflow">do</span>                                                                                                                 \</div>
+<div class="line">    {                                                                                                                  \</div>
+<div class="line">        <span class="keywordtype">float</span> fMod = analysisFilters_[idx].process(modSample);                                                         \</div>
+<div class="line">        <span class="keywordtype">float</span> vEnv = followers_[idx].process(fMod);                                                                    \</div>
+<div class="line">        <span class="keywordtype">float</span> fCar = synthesisFilters_[idx].process(carrierSample);                                                    \</div>
+<div class="line">        <span class="keywordtype">float</span> bAudio = fCar * vEnv * bandLevels_[idx] * 0.5f;                                                          \</div>
+<div class="line">        <span class="keywordtype">float</span> pNorm = bandPans_[idx];                                                                                  \</div>
+<div class="line">        leftAcc += bAudio * (1.0f - pNorm);                                                                            \</div>
+<div class="line">        rightAcc += bAudio * pNorm;                                                                                    \</div>
+<div class="line">    } <span class="keywordflow">while</span> (0)</div>
 </div><!-- fragment -->
 </div>
 </div>

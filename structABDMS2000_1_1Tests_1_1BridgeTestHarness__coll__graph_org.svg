@@ -115,7 +115,7 @@
 <!-- Node6 -->
 <g id="Node000006" class="node">
 <title>Node6</title>
-<g id="a_Node000006"><a xlink:href="classABDMS2000_1_1SynthEngine.html" target="_top" xlink:title=" ">
+<g id="a_Node000006"><a xlink:href="classABDMS2000_1_1SynthEngine.html" target="_top" xlink:title="Motor de sintetizador principal (abstracción de hardware MS2000/microKORG).">
 <polygon fill="white" stroke="#666666" points="1016.5,-282.5 873.5,-282.5 873.5,-263.5 1016.5,-263.5 1016.5,-282.5"/>
 <text text-anchor="middle" x="945" y="-270.5" font-family="Helvetica,sans-Serif" font-size="10.00">ABDMS2000::SynthEngine</text>
 </a>
@@ -134,7 +134,7 @@
 <!-- Node7 -->
 <g id="Node000007" class="node">
 <title>Node7</title>
-<g id="a_Node000007"><a xlink:href="structABDMS2000_1_1VoiceParameters.html" target="_top" xlink:title=" ">
+<g id="a_Node000007"><a xlink:href="structABDMS2000_1_1VoiceParameters.html" target="_top" xlink:title="Parámetros completos de un timbre del MS2000/microKORG.">
 <polygon fill="white" stroke="#666666" points="412.5,-482.5 248.5,-482.5 248.5,-463.5 412.5,-463.5 412.5,-482.5"/>
 <text text-anchor="middle" x="330.5" y="-470.5" font-family="Helvetica,sans-Serif" font-size="10.00">ABDMS2000::VoiceParameters</text>
 </a>
@@ -154,7 +154,7 @@
 <!-- Node12 -->
 <g id="Node000012" class="node">
 <title>Node12</title>
-<g id="a_Node000012"><a xlink:href="classABDMS2000_1_1VoiceManager.html" target="_top" xlink:title="High&#45;performance Voice Manager matching Korg MS2000 / microKORG hardware specs.">
+<g id="a_Node000012"><a xlink:href="classABDMS2000_1_1VoiceManager.html" target="_top" xlink:title="Administrador de voces de alto rendimiento.">
 <polygon fill="white" stroke="#666666" points="706.5,-449.5 554.5,-449.5 554.5,-430.5 706.5,-430.5 706.5,-449.5"/>
 <text text-anchor="middle" x="630.5" y="-437.5" font-family="Helvetica,sans-Serif" font-size="10.00">ABDMS2000::VoiceManager</text>
 </a>
@@ -211,7 +211,7 @@
 <!-- Node10 -->
 <g id="Node000010" class="node">
 <title>Node10</title>
-<g id="a_Node000010"><a xlink:href="structABDMS2000_1_1SeqModulation.html" target="_top" xlink:title=" ">
+<g id="a_Node000010"><a xlink:href="structABDMS2000_1_1SeqModulation.html" target="_top" xlink:title="Modulación del Mod Sequence del timbre.">
 <polygon fill="white" stroke="#666666" points="155,-463.5 0,-463.5 0,-444.5 155,-444.5 155,-463.5"/>
 <text text-anchor="middle" x="77.5" y="-451.5" font-family="Helvetica,sans-Serif" font-size="10.00">ABDMS2000::SeqModulation</text>
 </a>

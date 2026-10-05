@@ -20,7 +20,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classABDMS2000_1_1VoiceManager.html" target="_top" xlink:title="High&#45;performance Voice Manager matching Korg MS2000 / microKORG hardware specs.">
+<g id="a_Node000002"><a xlink:href="classABDMS2000_1_1VoiceManager.html" target="_top" xlink:title="Administrador de voces de alto rendimiento.">
 <polygon fill="white" stroke="#666666" points="701,-241 549,-241 549,-222 701,-222 701,-241"/>
 <text text-anchor="middle" x="625" y="-229" font-family="Helvetica,sans-Serif" font-size="10.00">ABDMS2000::VoiceManager</text>
 </a>
@@ -39,7 +39,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="structABDMS2000_1_1VoiceParameters.html" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="structABDMS2000_1_1VoiceParameters.html" target="_top" xlink:title="Parámetros completos de un timbre del MS2000/microKORG.">
 <polygon fill="white" stroke="#666666" points="412.5,-274 248.5,-274 248.5,-255 412.5,-255 412.5,-274"/>
 <text text-anchor="middle" x="330.5" y="-262" font-family="Helvetica,sans-Serif" font-size="10.00">ABDMS2000::VoiceParameters</text>
 </a>
@@ -106,7 +106,7 @@
 <!-- Node6 -->
 <g id="Node000006" class="node">
 <title>Node6</title>
-<g id="a_Node000006"><a xlink:href="structABDMS2000_1_1SeqModulation.html" target="_top" xlink:title=" ">
+<g id="a_Node000006"><a xlink:href="structABDMS2000_1_1SeqModulation.html" target="_top" xlink:title="Modulación del Mod Sequence del timbre.">
 <polygon fill="white" stroke="#666666" points="155,-255 0,-255 0,-236 155,-236 155,-255"/>
 <text text-anchor="middle" x="77.5" y="-243" font-family="Helvetica,sans-Serif" font-size="10.00">ABDMS2000::SeqModulation</text>
 </a>

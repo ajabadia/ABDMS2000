@@ -142,11 +142,14 @@ var searchData=
   ['timbres_5fstart_139',['TIMBRES_START',['../structABDMS2000_1_1MS2000HardwareProgram.html#acdf25c4e1335be19c3ad9100fb2226bd',1,'ABDMS2000::MS2000HardwareProgram']]],
   ['timbrevoices_140',['timbreVoices',['../namespaceABDMS2000_1_1ParamIDs.html#aa0394d8d7f803a327f8e0647c1331159',1,'ABDMS2000::ParamIDs']]],
   ['timeseconds_5f_141',['timeSeconds_',['../classABDMS2000_1_1DelayFX.html#ab3df7f63fcec85c19295437ac0233c13',1,'ABDMS2000::DelayFX']]],
-  ['total_5fmax_5fsamples_142',['TOTAL_MAX_SAMPLES',['../classABDMS2000_1_1DWGSTables.html#a3e4186219d40746bdae814baee58bb8e',1,'ABDMS2000::DWGSTables']]],
-  ['tracks_5f_143',['tracks_',['../classABDMS2000_1_1ModSequencer.html#a1cc3837c20f6ed62086d37f53b7977f9',1,'ABDMS2000::ModSequencer']]],
-  ['tracks_5fper_5ftimbre_144',['TRACKS_PER_TIMBRE',['../classABDMS2000_1_1ModSequencer.html#a0cb25d450369df9096d3539646ee817a',1,'ABDMS2000::ModSequencer']]],
-  ['triggermode_5f_145',['triggerMode_',['../classABDMS2000_1_1VoiceManager.html#a5eb28727bb999f2dd1e34c6f83bdefab',1,'ABDMS2000::VoiceManager']]],
-  ['triintegrator_5f_146',['triIntegrator_',['../classABDMS2000_1_1VAOscillator.html#af7f28f50c7fe7dd4a419cd96d0dc4ade',1,'ABDMS2000::VAOscillator']]],
-  ['type_147',['type',['../structABDMS2000_1_1ParameterMeta.html#aea0d82bf44aced52cf9732f9055ffe5c',1,'ABDMS2000::ParameterMeta']]],
-  ['type_5f_148',['type_',['../classABDMS2000_1_1DelayFX.html#a0d4c458beaa7ff9f36207398beced841',1,'ABDMS2000::DelayFX::type_'],['../classABDMS2000_1_1ModFX.html#a10a16fbfac0dd857d538f4565052e9a2',1,'ABDMS2000::ModFX::type_'],['../classABDMS2000_1_1MultiModeFilter.html#a7d0a2b381922feaa693801f6f852ef9c',1,'ABDMS2000::MultiModeFilter::type_'],['../classABDMS2000_1_1Arpeggiator.html#aebc559f999d9df1f83fa8d11265cd2e4',1,'ABDMS2000::Arpeggiator::type_']]]
+  ['timestamp_142',['timestamp',['../structABDMS2000_1_1MIDITelemetryManager_1_1PendingTransaction.html#a55aa722d1c846b0fedc36777059cba7d',1,'ABDMS2000::MIDITelemetryManager::PendingTransaction']]],
+  ['tipo_143',['tipo',['../structABDMS2000_1_1Tests_1_1Evento.html#a50586f2b9d1f2cdc9d8aadc9cace6b66',1,'ABDMS2000::Tests::Evento']]],
+  ['total_5fmax_5fsamples_144',['TOTAL_MAX_SAMPLES',['../classABDMS2000_1_1DWGSTables.html#a3e4186219d40746bdae814baee58bb8e',1,'ABDMS2000::DWGSTables']]],
+  ['tracks_5f_145',['tracks_',['../classABDMS2000_1_1ModSequencer.html#a1cc3837c20f6ed62086d37f53b7977f9',1,'ABDMS2000::ModSequencer']]],
+  ['tracks_5fper_5ftimbre_146',['TRACKS_PER_TIMBRE',['../classABDMS2000_1_1ModSequencer.html#a0cb25d450369df9096d3539646ee817a',1,'ABDMS2000::ModSequencer']]],
+  ['transfertests_147',['transferTests',['../namespaceABDMS2000_1_1Tests.html#a5f6ef3eb011e4039964dfbdee4a70c6d',1,'ABDMS2000::Tests']]],
+  ['triggermode_5f_148',['triggerMode_',['../classABDMS2000_1_1VoiceManager.html#a5eb28727bb999f2dd1e34c6f83bdefab',1,'ABDMS2000::VoiceManager']]],
+  ['triintegrator_5f_149',['triIntegrator_',['../classABDMS2000_1_1VAOscillator.html#af7f28f50c7fe7dd4a419cd96d0dc4ade',1,'ABDMS2000::VAOscillator']]],
+  ['type_150',['type',['../structABDMS2000_1_1ParameterMeta.html#aea0d82bf44aced52cf9732f9055ffe5c',1,'ABDMS2000::ParameterMeta']]],
+  ['type_5f_151',['type_',['../classABDMS2000_1_1DelayFX.html#a0d4c458beaa7ff9f36207398beced841',1,'ABDMS2000::DelayFX::type_'],['../classABDMS2000_1_1ModFX.html#a10a16fbfac0dd857d538f4565052e9a2',1,'ABDMS2000::ModFX::type_'],['../classABDMS2000_1_1MultiModeFilter.html#a7d0a2b381922feaa693801f6f852ef9c',1,'ABDMS2000::MultiModeFilter::type_'],['../classABDMS2000_1_1Arpeggiator.html#aebc559f999d9df1f83fa8d11265cd2e4',1,'ABDMS2000::Arpeggiator::type_']]]
 ];

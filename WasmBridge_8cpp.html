@@ -82,25 +82,25 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="WasmBridge_8h_source.html">WasmBridge.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="VoiceManager_8h_source.html">../Core/VoiceManager.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="Voice_8h_source.html">../Core/Voice.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="ModFX_8h_source.html">../DSP/Effects/ModFX.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="DelayFX_8h_source.html">../DSP/Effects/DelayFX.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="Equalizer_8h_source.html">../DSP/Effects/Equalizer.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="Vocoder16Band_8h_source.html">../DSP/Vocoder/Vocoder16Band.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="Arpeggiator_8h_source.html">../DSP/Sequencer/Arpeggiator.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="ModSequencer_8h_source.html">../DSP/Sequencer/ModSequencer.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="MS2000FactoryBank_8h_source.html">../State/MS2000FactoryBank.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="AudioThreadSnapshot_8h_source.html">../Core/AudioThreadSnapshot.h</a>&quot;</code><br />
-<code>#include &lt;memory&gt;</code><br />
-<code>#include &lt;vector&gt;</code><br />
+<code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;cmath&gt;</code><br />
 <code>#include &lt;cstring&gt;</code><br />
-<code>#include &lt;algorithm&gt;</code><br />
+<code>#include &lt;memory&gt;</code><br />
+<code>#include &lt;vector&gt;</code><br />
+<code>#include &quot;<a class="el" href="AudioThreadSnapshot_8h_source.html">../Core/AudioThreadSnapshot.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="Voice_8h_source.html">../Core/Voice.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="VoiceManager_8h_source.html">../Core/VoiceManager.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="DelayFX_8h_source.html">../DSP/Effects/DelayFX.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="Equalizer_8h_source.html">../DSP/Effects/Equalizer.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="ModFX_8h_source.html">../DSP/Effects/ModFX.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="Arpeggiator_8h_source.html">../DSP/Sequencer/Arpeggiator.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="ModSequencer_8h_source.html">../DSP/Sequencer/ModSequencer.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="Vocoder16Band_8h_source.html">../DSP/Vocoder/Vocoder16Band.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="MS2000FactoryBank_8h_source.html">../State/MS2000FactoryBank.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Gráfico de dependencias incluidas en WasmBridge.cpp:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="WasmBridge_8cpp__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="WasmBridge_8cpp__incl.svg" width="100%" height="580"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -125,6 +125,8 @@ Funciones</h2></td></tr>
 <tr class="separator:aa2a2b833c8b0701c3e882e9b383f9eab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b92c1add9763effb18536f49430b368" id="r_a0b92c1add9763effb18536f49430b368"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="WasmBridge_8cpp.html#a0b92c1add9763effb18536f49430b368">allNotesOff</a> ()</td></tr>
 <tr class="separator:a0b92c1add9763effb18536f49430b368"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a217b0c78441c0b6d2754ce7800b1ca42" id="r_a217b0c78441c0b6d2754ce7800b1ca42"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="WasmBridge_8cpp.html#a217b0c78441c0b6d2754ce7800b1ca42">setTempoBPM</a> (float bpm)</td></tr>
+<tr class="separator:a217b0c78441c0b6d2754ce7800b1ca42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3605b542cc3096babdea55741812918c" id="r_a3605b542cc3096babdea55741812918c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="WasmBridge_8cpp.html#a3605b542cc3096babdea55741812918c">setParamNormalized</a> (int paramIndex, float normValue)</td></tr>
 <tr class="separator:a3605b542cc3096babdea55741812918c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adbc5e7acf9381a764d89db7ba61f01cf" id="r_adbc5e7acf9381a764d89db7ba61f01cf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="WasmBridge_8cpp.html#adbc5e7acf9381a764d89db7ba61f01cf">setParamById</a> (const char *paramId, float rawValue)</td></tr>
@@ -415,6 +417,24 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Sets a parameter by its numeric parameter index. </p>
+
+</div>
+</div>
+<a id="a217b0c78441c0b6d2754ce7800b1ca42" name="a217b0c78441c0b6d2754ce7800b1ca42"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a217b0c78441c0b6d2754ce7800b1ca42">&#9670;&#160;</a></span>setTempoBPM()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void setTempoBPM </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>bpm</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>

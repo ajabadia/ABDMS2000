@@ -1,9 +1,13 @@
 var searchData=
 [
-  ['scopefloatingwindow_0',['ScopeFloatingWindow',['../classABDMS2000_1_1ScopeFloatingWindow.html',1,'ABDMS2000']]],
-  ['seqmodulation_1',['SeqModulation',['../structABDMS2000_1_1SeqModulation.html',1,'ABDMS2000']]],
-  ['seqrow_2',['SeqRow',['../structABDMS2000_1_1MS2000HardwareProgram_1_1SeqRow.html',1,'ABDMS2000::MS2000HardwareProgram']]],
-  ['synthengine_3',['SynthEngine',['../classABDMS2000_1_1SynthEngine.html',1,'ABDMS2000']]],
-  ['sysexmanager_4',['SysExManager',['../classABDMS2000_1_1SysExManager.html',1,'ABDMS2000']]],
-  ['sysexparseresult_5',['SysExParseResult',['../structABDMS2000_1_1SysExParseResult.html',1,'ABDMS2000']]]
+  ['panictests_0',['PanicTests',['../classABDMS2000_1_1Tests_1_1PanicTests.html',1,'ABDMS2000::Tests']]],
+  ['parametermeta_1',['ParameterMeta',['../structABDMS2000_1_1ParameterMeta.html',1,'ABDMS2000']]],
+  ['parameterregistry_2',['ParameterRegistry',['../classABDMS2000_1_1ParameterRegistry.html',1,'ABDMS2000']]],
+  ['patchmodulationoutputs_3',['PatchModulationOutputs',['../structABDMS2000_1_1PatchModulationOutputs.html',1,'ABDMS2000']]],
+  ['patchmodulationsources_4',['PatchModulationSources',['../structABDMS2000_1_1PatchModulationSources.html',1,'ABDMS2000']]],
+  ['patchslot_5',['PatchSlot',['../structABDMS2000_1_1PatchSlot.html',1,'ABDMS2000']]],
+  ['pendingtransaction_6',['PendingTransaction',['../structABDMS2000_1_1MIDITelemetryManager_1_1PendingTransaction.html',1,'ABDMS2000::MIDITelemetryManager']]],
+  ['pitchtests_7',['PitchTests',['../classABDMS2000_1_1Tests_1_1PitchTests.html',1,'ABDMS2000::Tests']]],
+  ['pluginprocstaticinit_8',['PluginProcStaticInit',['../structABDMS2000_1_1PluginProcStaticInit.html',1,'ABDMS2000']]],
+  ['portamentotests_9',['PortamentoTests',['../classABDMS2000_1_1Tests_1_1PortamentoTests.html',1,'ABDMS2000::Tests']]]
 ];

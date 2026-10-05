@@ -1,5 +1,13 @@
 var searchData=
 [
-  ['readme_2emd_0',['readme.md',['../DOCS_2MAX_2max4live-main_2GM_01Progam_01Chooser_2README_8md.html',1,'(Espacio de nombres global)'],['../DOCS_2MAX_2max4live-main_2microKORG_2README_8md.html',1,'(Espacio de nombres global)'],['../DOCS_2MAX_2max4live-main_2MS-2000_2README_8md.html',1,'(Espacio de nombres global)'],['../DOCS_2MAX_2max4live-main_2README_8md.html',1,'(Espacio de nombres global)'],['../README_8md.html',1,'(Espacio de nombres global)']]],
-  ['rems2000_5flua_5fanalysis_2emd_1',['ReMS2000_Lua_Analysis.md',['../ReMS2000__Lua__Analysis_8md.html',1,'']]]
+  ['parameterregistry_2egen_2ecpp_0',['ParameterRegistry.gen.cpp',['../ParameterRegistry_8gen_8cpp.html',1,'']]],
+  ['parameterregistry_2egen_2eh_1',['ParameterRegistry.gen.h',['../ParameterRegistry_8gen_8h.html',1,'']]],
+  ['plugineditor_2ecpp_2',['PluginEditor.cpp',['../PluginEditor_8cpp.html',1,'']]],
+  ['plugineditor_2eh_3',['PluginEditor.h',['../PluginEditor_8h.html',1,'']]],
+  ['plugineditor_5fresourceprovider_2ecpp_4',['PluginEditor_ResourceProvider.cpp',['../PluginEditor__ResourceProvider_8cpp.html',1,'']]],
+  ['plugineditor_5fresourceprovider_2eh_5',['PluginEditor_ResourceProvider.h',['../PluginEditor__ResourceProvider_8h.html',1,'']]],
+  ['pluginprocessor_2ecpp_6',['PluginProcessor.cpp',['../PluginProcessor_8cpp.html',1,'']]],
+  ['pluginprocessor_2eh_7',['PluginProcessor.h',['../PluginProcessor_8h.html',1,'']]],
+  ['polyblep_2eh_8',['PolyBLEP.h',['../PolyBLEP_8h.html',1,'']]],
+  ['portamentoglide_2eh_9',['PortamentoGlide.h',['../PortamentoGlide_8h.html',1,'']]]
 ];

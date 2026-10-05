@@ -1,7 +1,9 @@
 <map id="Source/DSP/Effects/ModFX.h" name="Source/DSP/Effects/ModFX.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="6,5,150,45"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,93,68,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="70,47,52,82,47,80,66,44"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="93,93,149,119"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="91,44,110,80,106,83,86,47"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="145,5,289,45"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,93,164,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="186,48,118,88,115,84,184,43"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="189,93,245,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="219,46,219,79,214,79,214,46"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="269,93,332,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="239,44,280,82,276,86,235,48"/>
 </map>
