@@ -5,9 +5,12 @@
   "description": "Virtual Korg MS2000 & microKORG Hybrid Synthesizer",
   "scripts": {
     "generate": "node Scripts/registry_generator.js && node Scripts/generate_host_model_id.js",
+    "check:registry": "node Scripts/registry_generator.js --check",
     "bundle": "node Scripts/build_webui.js",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:visual": "playwright test",
+    "test:visual:update": "playwright test --update-snapshots",
     "sync:scope": "node Scripts/sync_scope.js"
   },
   "keywords": [
@@ -21,13 +24,16 @@
   ],
   "author": "ajabadia",
   "license": "UNLICENSED",
-  "devDependencies": {
+  "dependencies": {
     "@abdsynths/midi-keyb": "workspace:*",
-    "@abdsynths/shared": "workspace:*",
+    "@abdsynths/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.44.0",
     "dexie": "^4.4.5",
     "file-saver": "^2.0.5",
     "jszip": "^3.10.1",
-    "vite": "^5.4.21",
-    "vitest": "^1.6.0"
+    "vite": "^8.3.2",
+    "vitest": "^4.1.11"
   }
 }
