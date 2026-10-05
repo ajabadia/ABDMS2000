@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+#
+# pre-commit hook for ABDMS2000
+#
+# - Validates the .clang-format config parses under clang-format 18
+# - Auto-formats staged Source/**/*.{h,cpp} files in-place
+# - Re-stages the reformatted files so your commit includes clean formatting
+#
+# Install:  git config core.hooksPath .githooks
+# Uninstall: git config --unset core.hooksPath
+#
+
+set -euo pipefail
+
+# --- locate clang-format 18 -----------------------------------------------
+
+CF=""
+for candidate in clang-format-18 clang-format; do
+  if command -v "$candidate" &>/dev/null; then
+    CF="$candidate"
+    break
+  fi
+done
+
+if [ -z "$CF" ]; then
+  echo "⚠️  No clang-format found on PATH."
+  echo "   Install LLVM 18 (e.g. apt install clang-format-18 or"
+  echo "   https://github.com/llvm/llvm-project/releases/tag/llvmorg-18.1.8)"
+  echo "   ...skipping format check."
+  exit 0
+fi
+
+# --- verify version is 18.x ------------------------------------------------
+
+CF_VERSION=$("$CF" --version)
+echo "🔍 Using: $CF version"
+
+if ! echo "$CF_VERSION" | grep -qE 'version (18\.|19\.|20\.)'; then
+  echo "⚠️  clang-format version is not 18+. Expected 18.x for consistent"
+  echo "    formatting with CI. Continuing anyway."
+fi
+
+# --- validate .clang-format config -----------------------------------------
+
+echo "🔧 Validating .clang-format config..."
+
+if [ -f ".clang-format" ]; then
+  if ! echo 'int main() {}' | "$CF" - >/dev/null 2>&1; then
+    echo "❌ ERROR: .clang-format config failed to parse under this version."
+    echo "   Common causes:"
+    echo "     - Standard: Cpp20  (use Standard: c++20 instead)"
+    echo "     - ReferenceBindsToType (removed; use PointerAlignment)"
+    echo "   Fix the .clang-format config and try again."
+    exit 1
+  fi
+  echo "   ✓ .clang-format config is valid"
+else
+  echo "   ⚠️  No .clang-format file found in repo root"
+fi
+
+# --- format staged Source files --------------------------------------------
+
+# Get staged .h and .cpp files under Source/
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACMR \
+  -- 'Source/**/*.h' 'Source/**/*.cpp' 2>/dev/null || true)
+
+if [ -z "$STAGED_FILES" ]; then
+  echo "📄 No staged Source/**/*.{h,cpp} files to format."
+  exit 0
+fi
+
+echo "🎨 Formatting staged Source files..."
+
+FORMAT_COUNT=0
+for file in $STAGED_FILES; do
+  # Only format if the file still exists (might have been deleted)
+  if [ -f "$file" ]; then
+    "$CF" -i "$file"
+    FORMAT_COUNT=$((FORMAT_COUNT + 1))
+  fi
+done
+
+if [ "$FORMAT_COUNT" -gt 0 ]; then
+  # Re-stage the modified files
+  echo "$STAGED_FILES" | while IFS= read -r file; do
+    [ -f "$file" ] && git add "$file"
+  done
+  echo "   ✓ Formatted $FORMAT_COUNT file(s) and re-staged"
+  echo "   (If you meant to commit differently-formatted code, check the diff now.)"
+fi
+
+exit 0
