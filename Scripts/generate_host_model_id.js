@@ -19,6 +19,17 @@
  * Uso: node Scripts/generate_host_model_id.js
  *      (paso 1 de build.bat y de `npm run generate`, siempre tras sincronizar)
  *
+ *      node Scripts/generate_host_model_id.js --check
+ *      NO escribe nada: sale 1 si `Source/Plugin/HostModelId.gen.h` commiteado no es
+ *      lo que saldria de generar.
+ *
+ *      UNA EXCEPCION, Y ES DELIBERADA: el check NO compara la linea
+ *      `kHostBuildRevision`. Ese valor es el `git rev-parse` del momento, asi que
+ *      cambia en cada commit POR DISENO —es un sello, no contenido—, y si se
+ *      comparara el check seria rojo siempre y acabaria sin mirarse. Lo que se
+ *      compara es todo lo demas: el modelId, el nombre, el fabricante, el nivel de
+ *      puente. Si el contrato cambia, el check se pone rojo.
+ *
  * El WebUI del host lee el mismo contrato por su lado
  * (WebUI/src/contracts/hostModel.js), así que nativo y dev server/WASM anuncian
  * el mismo id sin duplicarlo.
@@ -28,9 +39,31 @@ import fs from 'fs';
 import path from 'path';
 import { execFileSync } from 'child_process';
 import { fileURLToPath, pathToFileURL } from 'url';
+import { escribirGenerado, leerFlags } from './syncSeguro.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, '..');
+
+function usage() {
+  console.log([
+    'Emite Source/Plugin/HostModelId.gen.h desde el contrato canonico del host.',
+    '',
+    'Uso: node Scripts/generate_host_model_id.js [--check] [--help]',
+    '',
+    '  (sin flag)  Escribe el header si su contenido cambio.',
+    '  --check     NO escribe. Sale 1 si el commiteado no es lo que se generaria.',
+    '              Compara todo MENOS kHostBuildRevision, que es un sello de git y',
+    '              cambia en cada commit por diseño.',
+  ].join('\n'));
+}
+
+const flags = leerFlags('host model id');
+if (flags.ayuda) { usage(); process.exit(0); }
+if (flags.desconocido) {
+  usage();
+  console.error(`Argumento desconocido: ${flags.desconocido}`);
+  process.exit(2);
+}
 
 /** Artefacto sincronizado que exporta los contratos canónicos. */
 const CONTRACTS_BUNDLE = path.join(
@@ -138,9 +171,18 @@ inline constexpr const char* kHostBuildRevision = "${cppString(gitRevision())}";
 } // namespace ABDMS2000
 `;
 
-fs.mkdirSync(path.dirname(OUTPUT_H), { recursive: true });
-fs.writeFileSync(OUTPUT_H, header, 'utf8');
+// El sello de git se EXCLUYE de la comparacion, no del contenido: el header lo
+// lleva porque el binario lo necesita, pero comparar un valor que cambia en cada
+// commit daria un check rojo permanente. Ver la cabecera del fichero.
+const esSelloDeGit = (linea) => linea.includes('kHostBuildRevision');
 
-console.log(
-  `OK - ${path.relative(rootDir, OUTPUT_H)} (${HOST_CONTRACT_EXPORT}.modelId = "${contract.modelId}")`
-);
+if (!escribirGenerado({
+  destino: OUTPUT_H,
+  contenido: header,
+  ignorar: esSelloDeGit,
+  check: flags.check,
+})) {
+  process.exit(1);
+}
+
+console.log(`   (${HOST_CONTRACT_EXPORT}.modelId = "${contract.modelId}")`);

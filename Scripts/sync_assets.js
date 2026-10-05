@@ -1,6 +1,24 @@
+#!/usr/bin/env node
+/**
+ * ABDMS2000 — sincroniza ABDSharedAssets (modelos y marcas) dentro del WebUI.
+ *
+ * USO
+ *   node Scripts/sync_assets.js --check    # NO escribe. Dice que pondria y que
+ *                                         # BORRARIA, y sale 1 si hay cambios.
+ *   node Scripts/sync_assets.js            # sincroniza de verdad
+ *   node Scripts/sync_assets.js --help
+ *
+ * POR QUE EL FLAG NO ES OPCIONAL. Este script BORRA el destino antes de copiar:
+ * `WebUI/images/` y `WebUI/images/brands/` no se mezclan con lo que hay, se
+ * sustituyen. Un archivo ahi puede ser una foto anadida a mano, un logo retocado,
+ * un placeholder nuevo, y el `rmSync` se lo lleva igual que si fuera una copia
+ * vieja. Sin `--check` no hay forma de preguntar, y un pipeline que quiere
+ * comprobar acaba de sincronizar otra vez.
+ */
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { sincronizarDir, leerFlags } from './syncSeguro.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -20,90 +38,71 @@ function shouldCopy(src) {
   return true;
 }
 
-function countFiles(dir) {
-  let n = 0;
-  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    const full = path.join(dir, entry.name);
-    let isDir;
-    try {
-      isDir = fs.statSync(full).isDirectory();
-    } catch {
-      continue;
-    }
-    if (isDir) {
-      if (!shouldCopy(full)) continue;
-      n += countFiles(full);
-    } else if (shouldCopy(full)) {
-      n += 1;
-    }
-  }
-  return n;
+function usage() {
+  console.log([
+    'Sincroniza ABDSharedAssets/models y /brands dentro de WebUI/images/.',
+    '',
+    'Uso: node Scripts/sync_assets.js [--check] [--help]',
+    '',
+    '  (sin flag)  Sustituye WebUI/images/ y WebUI/images/brands/ por completo.',
+    '  --check     NO escribe. Compara lo que hay con lo que se copiaria y sale 1',
+    '              si algo se anadiria, se borraria o cambiaria.',
+  ].join('\n'));
 }
 
-function syncDir(label, sourceDir, destDir, extra = null) {
-  console.log(`Sincronizando ${label}`);
-  console.log(`  Origen:  ${sourceDir}`);
-  console.log(`  Destino: ${destDir}`);
+const flags = leerFlags('ABDSharedAssets -> WebUI/images');
+if (flags.ayuda) { usage(); process.exit(0); }
+if (flags.desconocido) {
+  usage();
+  console.error(`Argumento desconocido: ${flags.desconocido}`);
+  process.exit(2);
+}
 
-  if (!fs.existsSync(sourceDir)) {
-    console.error(`ERROR: No se encontro la fuente: ${sourceDir}`);
-    return false;
+// Rutas anidadas absolutas usadas por ABDBankManager: /images/models/thumbs/placeholder-*.svg
+// Los placeholders ya estan en images/thumbs/ (espejo de models/thumbs/), se replican
+// tambien en la ruta anidada models/thumbs/ que el codigo referencia como fallback.
+function placeholdersAnidados(dest) {
+  const thumbs = path.join(dest, 'thumbs');
+  const nested = path.join(dest, 'models', 'thumbs');
+  fs.mkdirSync(nested, { recursive: true });
+  for (const f of fs.readdirSync(thumbs).filter((f) => f.startsWith('placeholder-'))) {
+    fs.copyFileSync(path.join(thumbs, f), path.join(nested, f));
   }
-
-  const before = countFiles(sourceDir);
-  console.log(`  Archivos en origen: ${before}`);
-
-  fs.rmSync(destDir, { recursive: true, force: true });
-
-  fs.cpSync(sourceDir, destDir, {
-    recursive: true,
-    dereference: true,
-    filter: (src) => shouldCopy(src),
-  });
-
-  if (extra) extra(destDir);
-
-  const after = countFiles(destDir);
-  console.log(`  Archivos copiados:  ${after}`);
-
-  if (after !== before) {
-    console.warn(`  ADVERTENCIA: conteo difiere (origen ${before} vs destino ${after}).`);
-  }
-  return true;
 }
 
 let ok = true;
 
 // 1) models/ -> WebUI/images/
 //    Da /images/logos, /images/thumbs y las imagenes de modelo en la raiz.
-ok &= syncDir(
-  'ABDSharedAssets/models -> WebUI/images/',
-  path.join(sharedRoot, 'models'),
-  path.join(rootDir, 'WebUI', 'images'),
-  (dest) => {
-    // Rutas anidadas absolutas usadas por ABDBankManager: /images/models/thumbs/placeholder-*.svg
-    // Los placeholders ya estan en images/thumbs/ (espejo de models/thumbs/), se replican
-    // tambien en la ruta anidada models/thumbs/ que el codigo referencia como fallback.
-    const nested = path.join(dest, 'models', 'thumbs');
-    fs.mkdirSync(nested, { recursive: true });
-    fs.readdirSync(path.join(dest, 'thumbs'))
-      .filter((f) => f.startsWith('placeholder-'))
-      .forEach((f) => {
-        fs.copyFileSync(path.join(dest, 'thumbs', f), path.join(nested, f));
-      });
-  }
-);
+//
+//    `brands/` queda FUERA de este sincronizador a proposito, y no por descuido: es
+//    del segundo (abajo), y los dos escriben en el mismo arbol. Sin esta exclusion,
+//    el check de este_sync diria que BORRA los doce logos de `WebUI/images/brands/`,
+//    porque no estan en `models/` — y despues los volveria a crear. Un check que
+//    avisa de una destruccion que no va a ocurrir es peor que no tener check.
+const sinBrands = (src) => shouldCopy(src) && path.basename(src) !== 'brands';
+
+ok = sincronizarDir({
+  etiqueta: 'ABDSharedAssets/models -> WebUI/images/',
+  origen: path.join(sharedRoot, 'models'),
+  destino: path.join(rootDir, 'WebUI', 'images'),
+  filtro: sinBrands,
+  extra: placeholdersAnidados,
+  check: flags.check,
+}) && ok;
 
 // 2) brands/ -> WebUI/images/brands/
 //    Logos de marca (incluye variantes en blanco) disponibles via /images/brands/.
-ok &= syncDir(
-  'ABDSharedAssets/brands -> WebUI/images/brands/',
-  path.join(sharedRoot, 'brands'),
-  path.join(rootDir, 'WebUI', 'images', 'brands')
-);
+ok = sincronizarDir({
+  etiqueta: 'ABDSharedAssets/brands -> WebUI/images/brands',
+  origen: path.join(sharedRoot, 'brands'),
+  destino: path.join(rootDir, 'WebUI', 'images', 'brands'),
+  filtro: shouldCopy,
+  check: flags.check,
+}) && ok;
 
 if (!ok) {
   process.exit(1);
 }
 
-console.log('OK - ABDSharedAssets sincronizados.');
+console.log(flags.check ? 'OK - ABDSharedAssets ya esta sincronizado.' : 'OK - ABDSharedAssets sincronizados.');

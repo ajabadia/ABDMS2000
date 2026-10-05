@@ -31,15 +31,40 @@
  * Uso: node Scripts/generate_korg_channel.js
  *      (paso 1 de build.bat, siempre tras sincronizar)
  *
+ *      node Scripts/generate_korg_channel.js --check
+ *      NO escribe nada: sale 1 si `Source/MIDI/KorgChannel.gen.h` commiteado no es
+ *      lo que saldria de generar. Sin ese flag, este header se regeneraba siempre y
+ *      en rojo permanente, que es como un check deja de mirar.
+ *
  * Ver `DOCS/MS2000_SysEx_Spec.md` §1 y el item 4 de `ROADMAP.md`.
  */
 
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath, pathToFileURL } from 'url';
+import { escribirGenerado, leerFlags } from './syncSeguro.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, '..');
+
+function usage() {
+  console.log([
+    'Emite Source/MIDI/KorgChannel.gen.h desde el contrato canonico de Korg.',
+    '',
+    'Uso: node Scripts/generate_korg_channel.js [--check] [--help]',
+    '',
+    '  (sin flag)  Escribe el header si su contenido cambio.',
+    '  --check     NO escribe. Sale 1 si el commiteado no es lo que se generaria.',
+  ].join('\n'));
+}
+
+const flags = leerFlags('korg channel');
+if (flags.ayuda) { usage(); process.exit(0); }
+if (flags.desconocido) {
+  usage();
+  console.error(`Argumento desconocido: ${flags.desconocido}`);
+  process.exit(2);
+}
 
 /** Artefacto sincronizado que exporta los contratos canónicos. */
 const CONTRACTS_BUNDLE = path.join(
@@ -143,10 +168,10 @@ ${allDataRequests.map(frame => `    { ${hex(frame).join(', ')} },`).join('\n')}
 } // namespace ABDMS2000
 `;
 
-fs.mkdirSync(path.dirname(OUTPUT_H), { recursive: true });
-fs.writeFileSync(OUTPUT_H, header, 'utf8');
+if (!escribirGenerado({ destino: OUTPUT_H, contenido: header, check: flags.check })) {
+  process.exit(1);
+}
 
 console.log(
-  `OK - ${path.relative(rootDir, OUTPUT_H)} ` +
-  `(canal 1 = ${hex([channelBytes[0]])[0]}, canal 16 = ${hex([channelBytes[CHANNELS - 1]])[0]})`
+  `   (canal 1 = ${hex([channelBytes[0]])[0]}, canal 16 = ${hex([channelBytes[CHANNELS - 1]])[0]})`
 );

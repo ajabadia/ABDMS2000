@@ -1,3 +1,16 @@
+// SIN-GUARDIA: este script es un BUILD, no una migracion. Estampa la fecha y la
+// hora del momento en `Source/Core/BuildVersion.h` y en
+// `WebUI/src/contracts/buildVersion.js`, y despues empaqueta con Vite.
+//
+// Que NO tenga `--check` es deliberado, y no un olvido: el contenido de esos dos
+// ficheros cambia en cada ejecucion POR DISENO —el sello de build es lo que son—,
+// asi que un check que los comparara seria rojo siempre. Un guard que solo puede
+// decir que no es un guard. Lo que protege a este script de pisar trabajo no es una
+// pregunta previa sino que los dos ficheros que toca son suyos y estan marcados
+// AUTO-GENERATED, y porque `WebUI/dist/` se reconstruye entero.
+//
+// Si algum dia este script deja de estampar el reloj y pasa a derivar sus salidas
+// de un contrato, esta linea se borra y se le anade `--check` como a los demas.
 import fs from 'fs';
 import path from 'path';
 import { spawnSync } from 'child_process';

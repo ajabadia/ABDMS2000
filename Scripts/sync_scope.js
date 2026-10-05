@@ -1,6 +1,23 @@
-import fs from 'fs';
+#!/usr/bin/env node
+/**
+ * ABDMS2000 — sincroniza el WebUI del ABDScope dentro del WebUI del host.
+ *
+ * USO
+ *   node Scripts/sync_scope.js --check    # NO escribe. Dice que pondria y que
+ *                                         # BORRARIA, y sale 1 si hay cambios.
+ *   node Scripts/sync_scope.js            # sincroniza de verdad
+ *   node Scripts/sync_scope.js --help
+ *
+ * POR QUE EL FLAG NO ES OPCIONAL. `WebUI/abdscope/` se SUSTITUYE, no se copia
+ * encima: el script borra el directorio entero antes de copiar el de al lado. Un
+ * fichero adaptationado a mano dentro del destino —un ajuste de este host que
+ * todavia no esta en ABDScope— se va con el mismo silencio que una copia vieja.
+ * Con `--check` esa lista se ve antes, y el check nombra aparte lo que se borraria,
+ * que es justo lo que despues no se puede recuperar.
+ */
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { sincronizarDir, leerFlags } from './syncSeguro.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -23,52 +40,36 @@ function shouldCopy(src) {
   return true;
 }
 
-function countFiles(dir) {
-  let n = 0;
-  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    const full = path.join(dir, entry.name);
-    let isDir;
-    try {
-      isDir = fs.statSync(full).isDirectory();
-    } catch {
-      continue;
-    }
-    if (isDir) {
-      const rel = toPosix(path.relative(sourceDir, full));
-      if (EXCLUDE_DIRS.has(rel)) continue;
-      n += countFiles(full);
-    } else if (shouldCopy(full)) {
-      n += 1;
-    }
-  }
-  return n;
+function usage() {
+  console.log([
+    'Sincroniza ABDScope/WebUI dentro de WebUI/abdscope/.',
+    '',
+    'Uso: node Scripts/sync_scope.js [--check] [--help]',
+    '',
+    '  (sin flag)  Borra WebUI/abdscope/ entero y lo vuelve a copiar del origen.',
+    '  --check     NO escribe. Compara lo que hay con lo que se copiaria y sale 1',
+    '              si algo se anadiria, se borraria o cambiaria.',
+  ].join('\n'));
 }
 
-console.log('Sincronizando ABDScope WebUI -> WebUI/abdscope/');
-console.log(`  Origen:  ${sourceDir}`);
-console.log(`  Destino: ${destRoot}`);
+const flags = leerFlags('ABDScope -> WebUI/abdscope');
+if (flags.ayuda) { usage(); process.exit(0); }
+if (flags.desconocido) {
+  usage();
+  console.error(`Argumento desconocido: ${flags.desconocido}`);
+  process.exit(2);
+}
 
-if (!fs.existsSync(sourceDir)) {
-  console.error(`ERROR: No se encontro la fuente de ABDScope: ${sourceDir}`);
+const ok = sincronizarDir({
+  etiqueta: 'ABDScope WebUI -> WebUI/abdscope/',
+  origen: sourceDir,
+  destino: destRoot,
+  filtro: shouldCopy,
+  check: flags.check,
+});
+
+if (!ok) {
   process.exit(1);
 }
 
-const before = countFiles(sourceDir);
-console.log(`  Archivos en origen: ${before}`);
-
-fs.rmSync(destRoot, { recursive: true, force: true });
-
-fs.cpSync(sourceDir, destRoot, {
-  recursive: true,
-  dereference: true,
-  filter: (src) => shouldCopy(src),
-});
-
-const after = countFiles(destRoot);
-console.log(`  Archivos copiados:  ${after}`);
-
-if (after !== before) {
-  console.warn(`  ADVERTENCIA: conteo difiere (origen ${before} vs destino ${after}).`);
-}
-
-console.log('OK - ABDScope sincronizado.');
+console.log(flags.check ? 'OK - ABDScope ya esta sincronizado.' : 'OK - ABDScope sincronizado.');

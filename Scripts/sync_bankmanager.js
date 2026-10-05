@@ -1,6 +1,23 @@
-import fs from 'fs';
+#!/usr/bin/env node
+/**
+ * ABDMS2000 — sincroniza el WebUI del ABDBankManager dentro del WebUI del host.
+ *
+ * USO
+ *   node Scripts/sync_bankmanager.js --check    # NO escribe. Dice que pondria y
+ *                                              # que BORRARIA, y sale 1 si hay cambios.
+ *   node Scripts/sync_bankmanager.js            # sincroniza de verdad
+ *   node Scripts/sync_bankmanager.js --help
+ *
+ * POR QUE EL FLAG NO ES OPCIONAL. `WebUI/abdbank/` no se copia encima: se SUSTITUYE.
+ * El script borra el directorio entero antes de copiar el de al lado. Un fichero
+ * anadido ahi dentro —un ajuste del host que nadie sincronizo, un test escrito a
+ * mano— desaparece con el mismo silencio que una copia vieja. Con `--check` se
+ * puede ver esa lista antes de que sea tarde, y el check dice explicitamente lo que
+ * se BORRARIA, que es la parte que no se ve en un `git status` despues.
+ */
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { sincronizarDir, leerFlags } from './syncSeguro.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,52 +36,36 @@ function shouldCopy(src) {
   return true;
 }
 
-function countFiles(dir) {
-  let n = 0;
-  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    const full = path.join(dir, entry.name);
-    let isDir;
-    try {
-      isDir = fs.statSync(full).isDirectory();
-    } catch {
-      continue;
-    }
-    if (isDir) {
-      const rel = toPosix(path.relative(sourceDir, full));
-      if (rel === 'tests') continue;
-      n += countFiles(full);
-    } else if (shouldCopy(full)) {
-      n += 1;
-    }
-  }
-  return n;
+function usage() {
+  console.log([
+    'Sincroniza ABDBankManager/WebUI dentro de WebUI/abdbank/.',
+    '',
+    'Uso: node Scripts/sync_bankmanager.js [--check] [--help]',
+    '',
+    '  (sin flag)  Borra WebUI/abdbank/ entero y lo vuelve a copiar del origen.',
+    '  --check     NO escribe. Compara lo que hay con lo que se copiaria y sale 1',
+    '              si algo se anadiria, se borraria o cambiaria.',
+  ].join('\n'));
 }
 
-console.log('Sincronizando ABDBankManager WebUI -> WebUI/abdbank/');
-console.log(`  Origen:  ${sourceDir}`);
-console.log(`  Destino: ${destRoot}`);
+const flags = leerFlags('ABDBankManager -> WebUI/abdbank');
+if (flags.ayuda) { usage(); process.exit(0); }
+if (flags.desconocido) {
+  usage();
+  console.error(`Argumento desconocido: ${flags.desconocido}`);
+  process.exit(2);
+}
 
-if (!fs.existsSync(sourceDir)) {
-  console.error(`ERROR: No se encontro la fuente de ABDBankManager: ${sourceDir}`);
+const ok = sincronizarDir({
+  etiqueta: 'ABDBankManager WebUI -> WebUI/abdbank/',
+  origen: sourceDir,
+  destino: destRoot,
+  filtro: shouldCopy,
+  check: flags.check,
+});
+
+if (!ok) {
   process.exit(1);
 }
 
-const before = countFiles(sourceDir);
-console.log(`  Archivos en origen: ${before}`);
-
-fs.rmSync(destRoot, { recursive: true, force: true });
-
-fs.cpSync(sourceDir, destRoot, {
-  recursive: true,
-  dereference: true,
-  filter: (src) => shouldCopy(src),
-});
-
-const after = countFiles(destRoot);
-console.log(`  Archivos copiados:  ${after}`);
-
-if (after !== before) {
-  console.warn(`  ADVERTENCIA: conteo difiere (origen ${before} vs destino ${after}).`);
-}
-
-console.log('OK - ABDBankManager sincronizado.');
+console.log(flags.check ? 'OK - ABDBankManager ya esta sincronizado.' : 'OK - ABDBankManager sincronizado.');
