@@ -47,6 +47,7 @@ jobs:
     - name: Check formatting (clang-format)
       if: runner.os == 'Linux'
       run: |
+        shopt -s globstar
         clang-format-18 --dry-run --Werror Source/**/*.h Source/**/*.cpp
 
     - name: Static analysis (cppcheck)
