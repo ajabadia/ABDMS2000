@@ -44,6 +44,21 @@ jobs:
       run: |
         sudo apt-get update && sudo apt-get install -y clang-format-18 cppcheck
 
+    - name: Verify clang-format version & config compatibility
+      if: runner.os == 'Linux'
+      run: |
+        CF_VERSION=$(clang-format-18 --version)
+        echo "$CF_VERSION"
+        if ! echo "$CF_VERSION" | grep -qE 'version 18\.'; then
+          echo "::error::Expected clang-format 18.x for consistent formatting, got: $CF_VERSION"
+          exit 1
+        fi
+        # Validate the .clang-format config parses under this version. Catches
+        # invalid options (e.g. Standard: Cpp20) or unknown keys (e.g.
+        # ReferenceBindsToType from v19) before the dry-run step fails on every
+        # Source file with a confusing error.
+        echo 'int main() {}' | clang-format-18 -
+
     - name: Check formatting (clang-format)
       if: runner.os == 'Linux'
       run: |
