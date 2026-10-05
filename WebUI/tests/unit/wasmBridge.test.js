@@ -174,11 +174,36 @@ describe('WASM raw AudioWorklet bootstrap', () => {
     // diagnostic text in the executable's JavaScript bundle.
     expect(productionHtml).not.toContain('btn-diagnostic-test');
     expect(productionHtml).not.toContain('diagnostic-modal');
-    // La flag debug del worklet es un const compilado a false (robusto al
-    // renombrado del minificador: se ancla via su uso, no via su nombre).
+    // La flag debug del worklet se compila a FALSE en produccion. Se ancla via su
+    // USO (`debug:<flag>`), no via su nombre, para sobrevivir al renombrado del
+    // minificador; y el binding se acepta en CUALQUIER forma de declaracion porque
+    // el minificador fusiona declaradores de nivel superior (`...,nt=!1;`) y esa
+    // forma cambia segun el grafo de modulos: exigir el texto `const nt=!1`
+    // comprobaba el formato de esbuild en vez del invariante.
     const debugFlag = productionBundle.match(/debug:(\w+)\}/);
     expect(debugFlag).not.toBeNull();
-    expect(productionBundle).toContain(`const ${debugFlag[1]}=!1`);
+    const flagName = debugFlag[1];
+    expect(productionBundle).toMatch(new RegExp(`(?:const |let |var )?${flagName}=!1(?:[,;)}])`));
+    // MEDIDO con vite 8 / Rolldown: la prohibicion global `${flagName}=!0` es
+    // INSOSTENIBLE y no se puede arreglar apretando la expresion. El minificador
+    // reutiliza nombres cortos para simbolos sin relacion, asi que la flag se llama
+    // `n` y `n` sale 11 veces como `=!0` (`overlay.hidden=!0`, `this.isOpen=!0`, un
+    // `let n=!0` de otro bucle...). El aserto caia con la flag bien puesta en false
+    // (`var n=!1`), o sea en verde falso.
+    //
+    // El invariante wanted se mantiene entero, pero anclado a los USOS y no al
+    // nombre: todo lo que se pasa como `debug:` tiene que estar unido a un false.
+    const debugUses = [...productionBundle.matchAll(/debug:(\w+)/g)].map((m) => m[1]);
+    expect(debugUses.length, 'no se ha encontrado ningun uso de `debug:` en el bundle')
+      .toBeGreaterThan(0);
+    for (const usado of debugUses) {
+      expect(productionBundle,
+        `lo que se manda como debug: (${usado}) no esta unido a un false: la flag` +
+        ' podria llegar en true al worklet')
+        .toMatch(new RegExp(`(?:const |let |var )${usado}=!1(?:[,;)}])`));
+    }
+    // Y el literal tampoco: si el flag se inlinea, "true" no puede llegar al worklet.
+    expect(productionBundle).not.toContain('debug:!0');
     expect(productionBundle).not.toContain('Diagnostic Mode');
   });
 

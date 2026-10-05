@@ -1,28 +1,30 @@
-import { bridge } from './bridge/bridgeCore.js';
+import { bridge, devLog } from './bridge/bridgeCore.js';
 import { BUILD_INFO } from './contracts/buildVersion.js';
 import { PARAM_LOOKUP } from './contracts/registry.gen.js';
-import { MS2000_THEMES, synthModeIndexOf } from './contracts/themes.js'; // datos del selector de temas
+import { MS2000_THEMES, synthModeIndexOf } from './contracts/themes.js';
 
 import { createScopePanel } from './panels/panelScope.js';
 import { renderGroupPanel, renderAllPanels } from './ui/panelFactory.js';
 import { paramStore } from './contracts/paramStore.js';
 import { LcdProgrammer } from './ui/lcdProgrammer.js';
-import { createKeyboard } from '@abdsynths/midi-keyb'; // Single source: ABDSharedCode/MidiKeyboard — no local fork
-import { ThemeSwitcher, mountFitStage } from '@abdsynths/shared/components'; // Selector universal + fit al viewport (ABDSharedAssets)
-import '@abdsynths/shared/styles/components/widgets.css'; // su CSS (tokens de la cascada compartida)
-import '@abdsynths/midi-keyb/keyboard.css'; // Shared CSS (wheels + kbd-buttons via ABDSharedAssets)
+import { createKeyboard } from '@abdsynths/midi-keyb';
+import { ThemeSwitcher, mountFitStage } from '@abdsynths/shared/components';
+import '@abdsynths/shared/styles/components/widgets.css';
+import '@abdsynths/shared/styles/components/skins-junio.css';
+import '@abdsynths/midi-keyb/keyboard.css';
 import { slideDrawer } from './components/slideDrawer.js';
-import { SliderFilmstrip, initFilmstrips } from './components/sliderFilmstrip.js';
-import { RotaryKnob } from './components/rotaryKnob.js';
+import { createOverlayFocus } from '@abdsynths/shared/components';
 import { openWavetableBrowser, syncCatalogFromEngine, getWaveName } from './ui/wavetableBrowser.js';
-import { SegmentedSelector, LcdDropdown, WAVE_ICONS, FILTER_ICONS } from './components/customSelectors.js';
 import { diagnosticModal } from './ui/diagnosticModal.js';
 import { BankManagerModal } from './components/bank/BankManagerModal.js';
-
-const IS_DEV = import.meta.env?.DEV === true;
-const devLog = (...args) => {
-  if (IS_DEV) console.log(...args);
-};
+import {
+  ABDKnob,
+  ABDSlider,
+  ABDFilmstripFader,
+  ABDSelect,
+  ABDSegmented,
+} from './components/shared/index.js';
+import { WAVE_ICONS, FILTER_ICONS } from '@abdsynths/shared/components';
 import { OscilloscopeModal } from './components/OscilloscopeModal.js';
 
 let themeSwitcher = null; // selector universal (instalado en DOMContentLoaded)
@@ -38,6 +40,8 @@ let lcdProgrammer = null;
 let keyboardInstance = null;
 let bankManagerModal = null;
 let oscilloscopeModal = null;
+// Contrato de foco del About (overlayFocus.js); lo construye setupAboutModal.
+let aboutFocusContract = null;
 let timbreClipboard = null;
 let globalMidiChannel = 1;
 
@@ -85,6 +89,9 @@ document.addEventListener('DOMContentLoaded', () => {
       devLog('[ParamStore]: Synced all UI controls with APVTS state');
     }
   });
+
+  // Expose bridge globally for headless testing / console access
+  window.__ABD_BRIDGE__ = bridge;
 
   // Request full initial state from host
   bridge.send('requestFullState', {});
@@ -216,11 +223,9 @@ function renderOsc1Drawer(container) {
     </div>
   `;
 
-  const osc1WaveSel = new SegmentedSelector(container.querySelector('#drawer-sel-osc1-wave'), {
+  const osc1WaveSel = new ABDSegmented(container.querySelector('#drawer-sel-osc1-wave'), {
     paramId: 'osc1Wave',
     label: 'FORMA DE ONDA',
-    layout: 'grid-4',
-    size: 'sm',
     options: [
       { value: 0, label: 'SAW', iconSvg: WAVE_ICONS.saw },
       { value: 1, label: 'SQR', iconSvg: WAVE_ICONS.square },
@@ -231,21 +236,23 @@ function renderOsc1Drawer(container) {
       { value: 6, label: 'NOISE', iconSvg: WAVE_ICONS.noise },
       { value: 7, label: 'AUDIO IN', iconSvg: WAVE_ICONS.audioIn }
     ],
+    variant: 'strip',
+    size: 'sm',
     onChange: (val) => {
       const dwgsSec = container.querySelector('#drawer-dwgs-section');
       if (dwgsSec) dwgsSec.style.display = Number(val) === 5 ? 'block' : 'none';
     }
   });
 
-  new RotaryKnob(container.querySelector('#drawer-ctrl-osc1ctrl1'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-osc1ctrl1'), {
     paramId: 'osc1Ctrl1', label: 'CONTROL 1', min: 0, max: 127, defaultValue: 64, size: 52,
     onChange: (val) => bridge.setParam('osc1Ctrl1', val)
   });
-  new RotaryKnob(container.querySelector('#drawer-ctrl-osc1ctrl2'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-osc1ctrl2'), {
     paramId: 'osc1Ctrl2', label: 'CONTROL 2', min: 0, max: 127, defaultValue: 0, size: 52,
     onChange: (val) => bridge.setParam('osc1Ctrl2', val)
   });
-  new RotaryKnob(container.querySelector('#drawer-ctrl-dwgswave'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-dwgswave'), {
     paramId: 'osc1DwgsWave', label: 'DWGS WAVE', min: 0, max: currentTheme() === 'advanced' ? 511 : 63, defaultValue: 0, size: 48,
     displayFormatter: (v) => `#${Math.round(v) + 1}`,
     onChange: (val) => {
@@ -300,37 +307,37 @@ function renderOsc2Drawer(container) {
     </div>
   `;
 
-  new SegmentedSelector(container.querySelector('#drawer-sel-osc2-wave'), {
+  new ABDSegmented(container.querySelector('#drawer-sel-osc2-wave'), {
     paramId: 'osc2Wave',
     label: 'FORMA DE ONDA OSC 2',
-    layout: 'row',
-    size: 'md',
     options: [
       { value: 0, label: 'SAW', iconSvg: WAVE_ICONS.saw },
       { value: 1, label: 'SQUARE', iconSvg: WAVE_ICONS.square },
       { value: 2, label: 'TRIANGLE', iconSvg: WAVE_ICONS.triangle }
-    ]
+    ],
+    variant: 'strip',
+    size: 'md',
   });
 
-  new SegmentedSelector(container.querySelector('#drawer-sel-osc2-mod'), {
+  new ABDSegmented(container.querySelector('#drawer-sel-osc2-mod'), {
     paramId: 'osc2ModType',
     label: 'TIPO DE MODULACIÓN',
-    layout: 'row',
-    size: 'md',
     options: [
       { value: 0, label: 'OFF' },
       { value: 1, label: 'RING MOD' },
       { value: 2, label: 'SYNC' },
       { value: 3, label: 'CROSS MOD' }
-    ]
+    ],
+    variant: 'strip',
+    size: 'md',
   });
 
-  new RotaryKnob(container.querySelector('#drawer-ctrl-osc2semi'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-osc2semi'), {
     paramId: 'osc2Semitone', label: 'SEMITONO', min: -24, max: 24, defaultValue: 0, size: 52, isBipolar: true,
     displayFormatter: (v) => `${Math.round(v)} st`,
     onChange: (val) => bridge.setParam('osc2Semitone', val)
   });
-  new RotaryKnob(container.querySelector('#drawer-ctrl-osc2tune'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-osc2tune'), {
     paramId: 'osc2Tune', label: 'FINE TUNE', min: -50, max: 50, defaultValue: 0, size: 52, isBipolar: true,
     displayFormatter: (v) => `${Math.round(v)} cents`,
     onChange: (val) => bridge.setParam('osc2Tune', val)
@@ -349,15 +356,15 @@ function renderMixerDrawer(container) {
     </div>
   `;
 
-  new RotaryKnob(container.querySelector('#drawer-ctrl-mixosc1'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-mixosc1'), {
     paramId: 'mixOsc1Level', label: 'OSC 1 VOL', min: 0, max: 127, defaultValue: 127, size: 54,
     onChange: (val) => bridge.setParam('mixOsc1Level', val)
   });
-  new RotaryKnob(container.querySelector('#drawer-ctrl-mixosc2'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-mixosc2'), {
     paramId: 'mixOsc2Level', label: 'OSC 2 VOL', min: 0, max: 127, defaultValue: 0, size: 54,
     onChange: (val) => bridge.setParam('mixOsc2Level', val)
   });
-  new RotaryKnob(container.querySelector('#drawer-ctrl-mixnoise'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-mixnoise'), {
     paramId: 'mixNoiseLevel', label: 'NOISE VOL', min: 0, max: 127, defaultValue: 0, size: 54,
     onChange: (val) => bridge.setParam('mixNoiseLevel', val)
   });
@@ -386,51 +393,51 @@ function renderVocoderConfigDrawer(container) {
     </div>
   `;
 
-  new SegmentedSelector(container.querySelector('#drawer-sel-vocoder-mode'), {
+  new ABDSegmented(container.querySelector('#drawer-sel-vocoder-mode'), {
     paramId: 'synthVocoderMode',
     label: 'MODO SINTETIZADOR',
-    layout: 'row',
-    size: 'md',
     options: [
       { value: 0, label: 'SYNTH (NORMAL)' },
       { value: 1, label: 'VOCODER (VOCAL)' }
-    ]
+    ],
+    variant: 'strip',
+    size: 'md',
   });
 
-  new SegmentedSelector(container.querySelector('#drawer-sel-vocoder-carrier'), {
+  new ABDSegmented(container.querySelector('#drawer-sel-vocoder-carrier'), {
     paramId: 'vocoderCarrierSrc',
     label: 'CARRIER SOURCE',
-    layout: 'row',
-    size: 'md',
     options: [
       { value: 0, label: 'INTERNAL SYNTH' },
       { value: 1, label: 'EXTERNAL AUDIO IN' }
-    ]
+    ],
+    variant: 'strip',
+    size: 'md',
   });
 
-  new SegmentedSelector(container.querySelector('#drawer-sel-vocoder-shift'), {
+  new ABDSegmented(container.querySelector('#drawer-sel-vocoder-shift'), {
     paramId: 'vocoderFormantShift',
     label: 'FORMANT SHIFT',
-    layout: 'row',
-    size: 'md',
     options: [
       { value: 0, label: '-2 (GRAVE)' },
       { value: 1, label: '-1' },
       { value: 2, label: '0 (NORMAL)' },
       { value: 3, label: '+1' },
       { value: 4, label: '+2 (AGUDO)' }
-    ]
+    ],
+    variant: 'strip',
+    size: 'md',
   });
 
-  new RotaryKnob(container.querySelector('#drawer-ctrl-vochpf'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-vochpf'), {
     paramId: 'vocoderHpfLevel', label: 'HPF LEVEL', min: 0, max: 127, defaultValue: 64, size: 48,
     onChange: (val) => bridge.setParam('vocoderHpfLevel', val)
   });
-  new RotaryKnob(container.querySelector('#drawer-ctrl-vocgate'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-vocgate'), {
     paramId: 'vocoderGateSense', label: 'GATE SENSE', min: 0, max: 127, defaultValue: 50, size: 48,
     onChange: (val) => bridge.setParam('vocoderGateSense', val)
   });
-  new RotaryKnob(container.querySelector('#drawer-ctrl-vocdirect'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-vocdirect'), {
     paramId: 'vocoderDirectLevel', label: 'DIRECT LEVEL', min: 0, max: 127, defaultValue: 0, size: 48,
     onChange: (val) => bridge.setParam('vocoderDirectLevel', val)
   });
@@ -485,7 +492,15 @@ function renderVocoderBandsDrawer(container) {
   });
 
   // Apply photorealistic hardware filmstrip sprites to all band sliders
-  initFilmstrips(container);
+  import('@abdsynths/shared/utils').then(({ enhanceRangeInputs }) => {
+    enhanceRangeInputs(container, {
+      spriteUrl: 'assets/ST_Fader_58x107_128.png',
+      frameWidth: 58,
+      frameHeight: 107,
+      frames: 128,
+      orientation: 'vertical',
+    });
+  });
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -503,20 +518,20 @@ function renderFilterMainDrawer(container) {
     </div>
   `;
 
-  new SegmentedSelector(container.querySelector('#drawer-sel-filter-type'), {
+  new ABDSegmented(container.querySelector('#drawer-sel-filter-type'), {
     paramId: 'filterType',
     label: 'TIPO DE FILTRO',
-    layout: 'grid-4',
-    size: 'md',
     options: [
       { value: 0, label: 'LPF 24dB', iconSvg: FILTER_ICONS.lpf24 },
       { value: 1, label: 'LPF 12dB', iconSvg: FILTER_ICONS.lpf12 },
       { value: 2, label: 'BPF 12dB', iconSvg: FILTER_ICONS.bpf12 },
       { value: 3, label: 'HPF 12dB', iconSvg: FILTER_ICONS.hpf12 }
-    ]
+    ],
+    variant: 'strip',
+    size: 'md',
   });
 
-  new RotaryKnob(container.querySelector('#drawer-ctrl-cutoff'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-cutoff'), {
     paramId: 'filterCutoff', label: 'CUTOFF', min: 0, max: 127, defaultValue: 127, size: 56,
     displayFormatter: (v) => {
       const hz = Math.round(20 * Math.pow(1000, v / 127));
@@ -524,7 +539,7 @@ function renderFilterMainDrawer(container) {
     },
     onChange: (val) => bridge.setParam('filterCutoff', val)
   });
-  new RotaryKnob(container.querySelector('#drawer-ctrl-reso'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-reso'), {
     paramId: 'filterResonance', label: 'RESONANCIA', min: 0, max: 127, defaultValue: 0, size: 56,
     onChange: (val) => bridge.setParam('filterResonance', val)
   });
@@ -542,17 +557,17 @@ function renderFilterModDrawer(container) {
     </div>
   `;
 
-  new RotaryKnob(container.querySelector('#drawer-ctrl-eg1int'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-eg1int'), {
     paramId: 'filterEg1Int', label: 'EG1 INT', min: -63, max: 63, defaultValue: 0, size: 52, isBipolar: true,
     displayFormatter: (v) => `${Math.round(v)}`,
     onChange: (val) => bridge.setParam('filterEg1Int', val)
   });
-  new RotaryKnob(container.querySelector('#drawer-ctrl-keytrack'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-keytrack'), {
     paramId: 'filterKeyTrack', label: 'KEY TRACK', min: -63, max: 63, defaultValue: 0, size: 52, isBipolar: true,
     displayFormatter: (v) => `${Math.round(v)}`,
     onChange: (val) => bridge.setParam('filterKeyTrack', val)
   });
-  new RotaryKnob(container.querySelector('#drawer-ctrl-velsens'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-velsens'), {
     paramId: 'filterVelSens', label: 'VEL SENS', min: -63, max: 63, defaultValue: 0, size: 52, isBipolar: true,
     displayFormatter: (v) => `${Math.round(v)}`,
     onChange: (val) => bridge.setParam('filterVelSens', val)
@@ -575,21 +590,21 @@ function renderAmpMainDrawer(container) {
     </div>
   `;
 
-  new RotaryKnob(container.querySelector('#drawer-ctrl-amplevel'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-amplevel'), {
     paramId: 'ampLevel', label: 'NIVEL AMP', min: 0, max: 127, defaultValue: 100, size: 50,
     onChange: (val) => bridge.setParam('ampLevel', val)
   });
-  new RotaryKnob(container.querySelector('#drawer-ctrl-amppan'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-amppan'), {
     paramId: 'ampPan', label: 'PANORAMA', min: -64, max: 63, defaultValue: 0, size: 50, isBipolar: true,
     displayFormatter: (v) => `${Math.round(v)}`,
     onChange: (val) => bridge.setParam('ampPan', val)
   });
-  new RotaryKnob(container.querySelector('#drawer-ctrl-ampdist'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-ampdist'), {
     paramId: 'ampDistortion', label: 'DISTORTION', min: 0, max: 1, defaultValue: 0, size: 50,
     displayFormatter: (v) => v > 0.5 ? 'ON' : 'OFF',
     onChange: (val) => bridge.setParam('ampDistortion', val)
   });
-  new RotaryKnob(container.querySelector('#drawer-ctrl-ampkeytrack'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-ampkeytrack'), {
     paramId: 'ampKeyTrack', label: 'KEY TRACK', min: -63, max: 63, defaultValue: 0, size: 50, isBipolar: true,
     displayFormatter: (v) => `${Math.round(v)}`,
     onChange: (val) => bridge.setParam('ampKeyTrack', val)
@@ -608,19 +623,19 @@ function renderEg1Drawer(container) {
       </div>
     </div>
   `;
-  new RotaryKnob(container.querySelector('#drawer-ctrl-eg1a'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-eg1a'), {
     paramId: 'eg1Attack', label: 'ATTACK', min: 0, max: 127, defaultValue: 0, size: 48,
     onChange: (val) => bridge.setParam('eg1Attack', val)
   });
-  new RotaryKnob(container.querySelector('#drawer-ctrl-eg1d'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-eg1d'), {
     paramId: 'eg1Decay', label: 'DECAY', min: 0, max: 127, defaultValue: 64, size: 48,
     onChange: (val) => bridge.setParam('eg1Decay', val)
   });
-  new RotaryKnob(container.querySelector('#drawer-ctrl-eg1s'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-eg1s'), {
     paramId: 'eg1Sustain', label: 'SUSTAIN', min: 0, max: 127, defaultValue: 0, size: 48,
     onChange: (val) => bridge.setParam('eg1Sustain', val)
   });
-  new RotaryKnob(container.querySelector('#drawer-ctrl-eg1r'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-eg1r'), {
     paramId: 'eg1Release', label: 'RELEASE', min: 0, max: 127, defaultValue: 40, size: 48,
     onChange: (val) => bridge.setParam('eg1Release', val)
   });
@@ -638,19 +653,19 @@ function renderEg2Drawer(container) {
       </div>
     </div>
   `;
-  new RotaryKnob(container.querySelector('#drawer-ctrl-eg2a'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-eg2a'), {
     paramId: 'eg2Attack', label: 'ATTACK', min: 0, max: 127, defaultValue: 0, size: 48,
     onChange: (val) => bridge.setParam('eg2Attack', val)
   });
-  new RotaryKnob(container.querySelector('#drawer-ctrl-eg2d'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-eg2d'), {
     paramId: 'eg2Decay', label: 'DECAY', min: 0, max: 127, defaultValue: 64, size: 48,
     onChange: (val) => bridge.setParam('eg2Decay', val)
   });
-  new RotaryKnob(container.querySelector('#drawer-ctrl-eg2s'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-eg2s'), {
     paramId: 'eg2Sustain', label: 'SUSTAIN', min: 0, max: 127, defaultValue: 127, size: 48,
     onChange: (val) => bridge.setParam('eg2Sustain', val)
   });
-  new RotaryKnob(container.querySelector('#drawer-ctrl-eg2r'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-eg2r'), {
     paramId: 'eg2Release', label: 'RELEASE', min: 0, max: 127, defaultValue: 20, size: 48,
     onChange: (val) => bridge.setParam('eg2Release', val)
   });
@@ -689,49 +704,49 @@ function renderLfo1Drawer(container) {
     </div>
   `;
 
-  new SegmentedSelector(container.querySelector('#drawer-sel-lfo1-wave'), {
+  new ABDSegmented(container.querySelector('#drawer-sel-lfo1-wave'), {
     paramId: 'lfo1Wave',
     label: 'FORMA DE ONDA LFO 1',
-    layout: 'row',
-    size: 'md',
     options: [
       { value: 0, label: 'SAW', iconSvg: WAVE_ICONS.saw },
       { value: 1, label: 'SQUARE', iconSvg: WAVE_ICONS.square },
       { value: 2, label: 'TRIANGLE', iconSvg: WAVE_ICONS.triangle },
       { value: 3, label: 'S&H', iconSvg: WAVE_ICONS.sh }
-    ]
+    ],
+    variant: 'strip',
+    size: 'md',
   });
 
-  new SegmentedSelector(container.querySelector('#drawer-sel-lfo1-keysync'), {
+  new ABDSegmented(container.querySelector('#drawer-sel-lfo1-keysync'), {
     paramId: 'lfo1KeySync',
     label: 'KEY SYNC',
-    layout: 'row',
-    size: 'sm',
     options: [
       { value: 0, label: 'OFF' },
       { value: 1, label: 'TIMBRE' },
       { value: 2, label: 'VOICE' }
-    ]
+    ],
+    variant: 'strip',
+    size: 'sm',
   });
 
-  new SegmentedSelector(container.querySelector('#drawer-sel-lfo1-temposync'), {
+  new ABDSegmented(container.querySelector('#drawer-sel-lfo1-temposync'), {
     paramId: 'lfo1TempoSync',
     label: 'TEMPO SYNC',
-    layout: 'row',
-    size: 'sm',
     options: [
       { value: 0, label: 'OFF (LIBRE)' },
       { value: 1, label: 'ON (BPM)' }
-    ]
+    ],
+    variant: 'strip',
+    size: 'sm',
   });
 
-  new LcdDropdown(container.querySelector('#drawer-sel-lfo1-syncnote'), {
+  new ABDSelect(container.querySelector('#drawer-sel-lfo1-syncnote'), {
     paramId: 'lfo1SyncNote',
     label: 'DIVISIÓN RÍTMICA (SYNC NOTE)',
-    options: syncNotes
+    options: syncNotes,
   });
 
-  new RotaryKnob(container.querySelector('#drawer-ctrl-lfo1freq'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-lfo1freq'), {
     paramId: 'lfo1Freq', label: 'FRECUENCIA', min: 0, max: 127, defaultValue: 30, size: 52,
     displayFormatter: (v) => `${(0.01 + Math.pow(v / 127, 2) * 20).toFixed(2)} Hz`,
     onChange: (val) => bridge.setParam('lfo1Freq', val)
@@ -768,49 +783,49 @@ function renderLfo2Drawer(container) {
     </div>
   `;
 
-  new SegmentedSelector(container.querySelector('#drawer-sel-lfo2-wave'), {
+  new ABDSegmented(container.querySelector('#drawer-sel-lfo2-wave'), {
     paramId: 'lfo2Wave',
     label: 'FORMA DE ONDA LFO 2',
-    layout: 'row',
-    size: 'md',
     options: [
       { value: 0, label: 'SAW', iconSvg: WAVE_ICONS.saw },
       { value: 1, label: 'SQR+', iconSvg: WAVE_ICONS.square },
       { value: 2, label: 'SINE', iconSvg: WAVE_ICONS.sine },
       { value: 3, label: 'S&H', iconSvg: WAVE_ICONS.sh }
-    ]
+    ],
+    variant: 'strip',
+    size: 'md',
   });
 
-  new SegmentedSelector(container.querySelector('#drawer-sel-lfo2-keysync'), {
+  new ABDSegmented(container.querySelector('#drawer-sel-lfo2-keysync'), {
     paramId: 'lfo2KeySync',
     label: 'KEY SYNC',
-    layout: 'row',
-    size: 'sm',
     options: [
       { value: 0, label: 'OFF' },
       { value: 1, label: 'TIMBRE' },
       { value: 2, label: 'VOICE' }
-    ]
+    ],
+    variant: 'strip',
+    size: 'sm',
   });
 
-  new SegmentedSelector(container.querySelector('#drawer-sel-lfo2-temposync'), {
+  new ABDSegmented(container.querySelector('#drawer-sel-lfo2-temposync'), {
     paramId: 'lfo2TempoSync',
     label: 'TEMPO SYNC',
-    layout: 'row',
-    size: 'sm',
     options: [
       { value: 0, label: 'OFF (LIBRE)' },
       { value: 1, label: 'ON (BPM)' }
-    ]
+    ],
+    variant: 'strip',
+    size: 'sm',
   });
 
-  new LcdDropdown(container.querySelector('#drawer-sel-lfo2-syncnote'), {
+  new ABDSelect(container.querySelector('#drawer-sel-lfo2-syncnote'), {
     paramId: 'lfo2SyncNote',
     label: 'DIVISIÓN RÍTMICA (SYNC NOTE)',
-    options: syncNotes
+    options: syncNotes,
   });
 
-  new RotaryKnob(container.querySelector('#drawer-ctrl-lfo2freq'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-lfo2freq'), {
     paramId: 'lfo2Freq', label: 'FRECUENCIA', min: 0, max: 127, defaultValue: 50, size: 52,
     displayFormatter: (v) => `${(0.01 + Math.pow(v / 127, 2) * 20).toFixed(2)} Hz`,
     onChange: (val) => bridge.setParam('lfo2Freq', val)
@@ -864,23 +879,23 @@ function renderModMatrixDrawer(container) {
   `;
 
   for (let s = 1; s <= 4; s++) {
-    new SegmentedSelector(container.querySelector(`#drawer-patch${s}-src-sel`), {
+    new ABDSegmented(container.querySelector(`#drawer-patch${s}-src-sel`), {
       paramId: `patch${s}Source`,
       label: 'FUENTE',
-      layout: 'grid-4',
+      options: sources,
+      variant: 'strip',
       size: 'sm',
-      options: sources
     });
 
-    new SegmentedSelector(container.querySelector(`#drawer-patch${s}-dest-sel`), {
+    new ABDSegmented(container.querySelector(`#drawer-patch${s}-dest-sel`), {
       paramId: `patch${s}Destination`,
       label: 'DESTINO',
-      layout: 'grid-4',
+      options: dests,
+      variant: 'strip',
       size: 'sm',
-      options: dests
     });
 
-    new RotaryKnob(container.querySelector(`#drawer-ctrl-patch${s}-int`), {
+    new ABDKnob(container.querySelector(`#drawer-ctrl-patch${s}-int`), {
       paramId: `patch${s}Intensity`, label: 'INT', min: -63, max: 63, defaultValue: 0, size: 44, isBipolar: true,
       displayFormatter: (v) => `${Math.round(v)}`,
       onChange: (val) => bridge.setParam(`patch${s}Intensity`, val)
@@ -920,40 +935,38 @@ function renderArpDrawer(container) {
     </div>
   `;
 
-  new SegmentedSelector(container.querySelector('#drawer-sel-arp-on'), {
+  new ABDSegmented(container.querySelector('#drawer-sel-arp-on'), {
     paramId: 'arpOn',
     label: 'ARPEGGIATOR',
-    layout: 'row',
+    options: [{ value: 0, label: 'OFF' }, { value: 1, label: 'ON' }],
+    variant: 'strip',
     size: 'sm',
-    options: [{ value: 0, label: 'OFF' }, { value: 1, label: 'ON' }]
   });
 
-  new SegmentedSelector(container.querySelector('#drawer-sel-arp-latch'), {
+  new ABDSegmented(container.querySelector('#drawer-sel-arp-latch'), {
     paramId: 'arpLatch',
     label: 'LATCH',
-    layout: 'row',
+    options: [{ value: 0, label: 'OFF' }, { value: 1, label: 'ON' }],
+    variant: 'strip',
     size: 'sm',
-    options: [{ value: 0, label: 'OFF' }, { value: 1, label: 'ON' }]
   });
 
-  new SegmentedSelector(container.querySelector('#drawer-sel-arp-range'), {
+  new ABDSegmented(container.querySelector('#drawer-sel-arp-range'), {
     paramId: 'arpRange',
     label: 'OCTAVAS (RANGE)',
-    layout: 'row',
-    size: 'sm',
     options: [
       { value: 1, label: '1 OCT' },
       { value: 2, label: '2 OCT' },
       { value: 3, label: '3 OCT' },
       { value: 4, label: '4 OCT' }
-    ]
+    ],
+    variant: 'strip',
+    size: 'sm',
   });
 
-  new SegmentedSelector(container.querySelector('#drawer-sel-arp-type'), {
+  new ABDSegmented(container.querySelector('#drawer-sel-arp-type'), {
     paramId: 'arpType',
     label: 'TIPO DE ARPEGIO',
-    layout: 'grid-4',
-    size: 'md',
     options: [
       { value: 0, label: 'UP' },
       { value: 1, label: 'DOWN' },
@@ -961,21 +974,23 @@ function renderArpDrawer(container) {
       { value: 3, label: 'ALT 2' },
       { value: 4, label: 'RANDOM' },
       { value: 5, label: 'TRIGGER' }
-    ]
+    ],
+    variant: 'strip',
+    size: 'md',
   });
 
-  new LcdDropdown(container.querySelector('#drawer-sel-arp-res'), {
+  new ABDSelect(container.querySelector('#drawer-sel-arp-res'), {
     paramId: 'arpResolution',
     label: 'RESOLUCIÓN RÍTMICA',
     options: arpResolutions
   });
 
-  new RotaryKnob(container.querySelector('#drawer-ctrl-arptempo'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-arptempo'), {
     paramId: 'arpTempo', label: 'TEMPO', min: 20, max: 300, defaultValue: 120, size: 50,
     displayFormatter: (v) => `${Math.round(v)} BPM`,
     onChange: (val) => bridge.setParam('arpTempo', val)
   });
-  new RotaryKnob(container.querySelector('#drawer-ctrl-arpgate'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-arpgate'), {
     paramId: 'arpGate', label: 'GATE TIME', min: 0, max: 127, defaultValue: 100, size: 50,
     displayFormatter: (v) => `${Math.round((v / 127) * 100)}%`,
     onChange: (val) => bridge.setParam('arpGate', val)
@@ -1003,38 +1018,38 @@ function renderModSeqDrawer(container) {
     </div>
   `;
 
-  new SegmentedSelector(container.querySelector('#drawer-sel-modseq-on'), {
+  new ABDSegmented(container.querySelector('#drawer-sel-modseq-on'), {
     paramId: 'modSeqOn',
     label: 'MOD SEQUENCER',
-    layout: 'row',
+    options: [{ value: 0, label: 'OFF' }, { value: 1, label: 'ON' }],
+    variant: 'strip',
     size: 'sm',
-    options: [{ value: 0, label: 'OFF' }, { value: 1, label: 'ON' }]
   });
 
   // La transición es **por fila** (bit 0 del byte de movimiento de cada fila): aquí se
   // edita la de la fila A; B y C tienen su propio `seq2Motion` / `seq3Motion`.
-  new SegmentedSelector(container.querySelector('#drawer-sel-modseq-smooth'), {
+  new ABDSegmented(container.querySelector('#drawer-sel-modseq-smooth'), {
     paramId: 'seq1Motion',
     label: 'FILA A: TRANSICIÓN ENTRE PASOS',
-    layout: 'row',
+    options: [{ value: 0, label: 'STEP (ESCALONADO)' }, { value: 1, label: 'SMOOTH (SUAVE)' }],
+    variant: 'strip',
     size: 'sm',
-    options: [{ value: 0, label: 'STEP (ESCALONADO)' }, { value: 1, label: 'SMOOTH (SUAVE)' }]
   });
 
-  new SegmentedSelector(container.querySelector('#drawer-sel-modseq-type'), {
+  new ABDSegmented(container.querySelector('#drawer-sel-modseq-type'), {
     paramId: 'modSeqType',
     label: 'DIRECCIÓN DE SECUENCIA',
-    layout: 'row',
-    size: 'md',
     options: [
       { value: 0, label: 'FORWARD' },
       { value: 1, label: 'REVERSE' },
       { value: 2, label: 'BOUNCE' },
       { value: 3, label: 'RANDOM' }
-    ]
+    ],
+    variant: 'strip',
+    size: 'md',
   });
 
-  new LcdDropdown(container.querySelector('#drawer-sel-modseq-res'), {
+  new ABDSelect(container.querySelector('#drawer-sel-modseq-res'), {
     paramId: 'modSeqResolution',
     label: 'RESOLUCIÓN TEMPORAL',
     options: modSeqResolutions
@@ -1063,35 +1078,35 @@ function renderModFxDrawer(container) {
     </div>
   `;
 
-  new SegmentedSelector(container.querySelector('#drawer-sel-modfx-on'), {
+  new ABDSegmented(container.querySelector('#drawer-sel-modfx-on'), {
     paramId: 'modFxOn',
     label: 'MOD FX POWER',
-    layout: 'row',
+    options: [{ value: 0, label: 'BYPASS' }, { value: 1, label: 'ACTIVE (ON)' }],
+    variant: 'strip',
     size: 'sm',
-    options: [{ value: 0, label: 'BYPASS' }, { value: 1, label: 'ACTIVE (ON)' }]
   });
 
-  new SegmentedSelector(container.querySelector('#drawer-sel-modfx-type'), {
+  new ABDSegmented(container.querySelector('#drawer-sel-modfx-type'), {
     paramId: 'modFxType',
     label: 'ALGORITMO DE MODULACIÓN',
-    layout: 'row',
-    size: 'md',
     options: [
       { value: 0, label: 'CHORUS / FLANGER' },
       { value: 1, label: 'ENSEMBLE' },
       { value: 2, label: 'PHASER' }
-    ]
+    ],
+    variant: 'strip',
+    size: 'md',
   });
 
-  new RotaryKnob(container.querySelector('#drawer-ctrl-modfxspeed'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-modfxspeed'), {
     paramId: 'modFxSpeed', label: 'SPEED', min: 0, max: 127, defaultValue: 40, size: 50,
     onChange: (val) => bridge.setParam('modFxSpeed', val)
   });
-  new RotaryKnob(container.querySelector('#drawer-ctrl-modfxdepth'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-modfxdepth'), {
     paramId: 'modFxDepth', label: 'DEPTH', min: 0, max: 127, defaultValue: 64, size: 50,
     onChange: (val) => bridge.setParam('modFxDepth', val)
   });
-  new RotaryKnob(container.querySelector('#drawer-ctrl-modfxfb'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-modfxfb'), {
     paramId: 'modFxFeedback', label: 'FEEDBACK', min: 0, max: 127, defaultValue: 0, size: 50,
     onChange: (val) => bridge.setParam('modFxFeedback', val)
   });
@@ -1116,35 +1131,35 @@ function renderDelayFxDrawer(container) {
     </div>
   `;
 
-  new SegmentedSelector(container.querySelector('#drawer-sel-delay-on'), {
+  new ABDSegmented(container.querySelector('#drawer-sel-delay-on'), {
     paramId: 'delayOn',
     label: 'DELAY POWER',
-    layout: 'row',
+    options: [{ value: 0, label: 'BYPASS' }, { value: 1, label: 'ACTIVE (ON)' }],
+    variant: 'strip',
     size: 'sm',
-    options: [{ value: 0, label: 'BYPASS' }, { value: 1, label: 'ACTIVE (ON)' }]
   });
 
-  new SegmentedSelector(container.querySelector('#drawer-sel-delay-type'), {
+  new ABDSegmented(container.querySelector('#drawer-sel-delay-type'), {
     paramId: 'delayType',
     label: 'TIPO DE DELAY',
-    layout: 'row',
-    size: 'md',
     options: [
       { value: 0, label: 'STEREO DELAY' },
       { value: 1, label: 'CROSS (PING-PONG)' },
       { value: 2, label: 'LEFT / RIGHT' }
-    ]
+    ],
+    variant: 'strip',
+    size: 'md',
   });
 
-  new RotaryKnob(container.querySelector('#drawer-ctrl-delaytime'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-delaytime'), {
     paramId: 'delayTime', label: 'TIME', min: 0, max: 127, defaultValue: 40, size: 50,
     onChange: (val) => bridge.setParam('delayTime', val)
   });
-  new RotaryKnob(container.querySelector('#drawer-ctrl-delaydepth'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-delaydepth'), {
     paramId: 'delayDepth', label: 'DEPTH (WET)', min: 0, max: 127, defaultValue: 50, size: 50,
     onChange: (val) => bridge.setParam('delayDepth', val)
   });
-  new RotaryKnob(container.querySelector('#drawer-ctrl-delayfb'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-delayfb'), {
     paramId: 'delayFeedback', label: 'FEEDBACK', min: 0, max: 127, defaultValue: 40, size: 50,
     onChange: (val) => bridge.setParam('delayFeedback', val)
   });
@@ -1176,29 +1191,29 @@ function renderEqDrawer(container) {
     </div>
   `;
 
-  new SegmentedSelector(container.querySelector('#drawer-sel-eq-lowfreq'), {
+  new ABDSegmented(container.querySelector('#drawer-sel-eq-lowfreq'), {
     paramId: 'eqLowFreq',
     label: 'FREC. GRAVES (LOW)',
-    layout: 'grid-2',
+    options: lowFreqs,
+    variant: 'strip',
     size: 'sm',
-    options: lowFreqs
   });
 
-  new RotaryKnob(container.querySelector('#drawer-ctrl-eqlowgain'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-eqlowgain'), {
     paramId: 'eqLowGain', label: 'LOW GAIN', min: 0, max: 127, defaultValue: 64, size: 50, isBipolar: true,
     displayFormatter: (v) => `${((v - 64) * (12 / 64)).toFixed(1)} dB`,
     onChange: (val) => bridge.setParam('eqLowGain', val)
   });
 
-  new SegmentedSelector(container.querySelector('#drawer-sel-eq-highfreq'), {
+  new ABDSegmented(container.querySelector('#drawer-sel-eq-highfreq'), {
     paramId: 'eqHighFreq',
     label: 'FREC. AGUDOS (HIGH)',
-    layout: 'grid-2',
+    options: highFreqs,
+    variant: 'strip',
     size: 'sm',
-    options: highFreqs
   });
 
-  new RotaryKnob(container.querySelector('#drawer-ctrl-eqhighgain'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-eqhighgain'), {
     paramId: 'eqHighGain', label: 'HIGH GAIN', min: 0, max: 127, defaultValue: 64, size: 50, isBipolar: true,
     displayFormatter: (v) => `${((v - 64) * (12 / 64)).toFixed(1)} dB`,
     onChange: (val) => bridge.setParam('eqHighGain', val)
@@ -1226,36 +1241,36 @@ function renderVoiceDrawer(container) {
     </div>
   `;
 
-  new SegmentedSelector(container.querySelector('#drawer-sel-voice-mode'), {
+  new ABDSegmented(container.querySelector('#drawer-sel-voice-mode'), {
     paramId: 'voiceMode',
     label: 'VOICE ASSIGN (POLIFONÍA)',
-    layout: 'row',
-    size: 'md',
     options: [
       { value: 0, label: 'MONO' },
       { value: 1, label: 'POLY (4V)' },
       { value: 2, label: 'UNISON (4V)' }
-    ]
+    ],
+    variant: 'strip',
+    size: 'md',
   });
 
-  new SegmentedSelector(container.querySelector('#drawer-sel-synth-profile'), {
+  new ABDSegmented(container.querySelector('#drawer-sel-synth-profile'), {
     paramId: 'synthMode',
     label: 'SYNTH PROFILE / ARQUITECTURA',
-    layout: 'row',
-    size: 'md',
     options: [
       { value: 0, label: 'MS2000' },
       { value: 1, label: 'MICROKORG' },
       { value: 2, label: 'ADVANCED' }
-    ]
+    ],
+    variant: 'strip',
+    size: 'md',
   });
 
-  new RotaryKnob(container.querySelector('#drawer-ctrl-unisondetune'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-unisondetune'), {
     paramId: 'unisonDetune', label: 'UNISON DETUNE', min: 0, max: 99, defaultValue: 10, size: 50,
     displayFormatter: (v) => `${Math.round(v)} c`,
     onChange: (val) => bridge.setParam('unisonDetune', val)
   });
-  new RotaryKnob(container.querySelector('#drawer-ctrl-unisonspread'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-unisonspread'), {
     paramId: 'unisonSpread', label: 'UNISON SPREAD', min: 0, max: 1, defaultValue: 0.5, size: 50,
     displayFormatter: (v) => `${Math.round(v * 100)}%`,
     onChange: (val) => bridge.setParam('unisonSpread', val)
@@ -1273,15 +1288,15 @@ function renderPitchDrawer(container) {
     </div>
   `;
 
-  new SegmentedSelector(container.querySelector('#drawer-sel-porta-on'), {
+  new ABDSegmented(container.querySelector('#drawer-sel-porta-on'), {
     paramId: 'portamentoOn',
     label: 'PORTAMENTO',
-    layout: 'row',
+    options: [{ value: 0, label: 'OFF' }, { value: 1, label: 'ON' }],
+    variant: 'strip',
     size: 'sm',
-    options: [{ value: 0, label: 'OFF' }, { value: 1, label: 'ON' }]
   });
 
-  new RotaryKnob(container.querySelector('#drawer-ctrl-portatime'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-portatime'), {
     paramId: 'portamentoTime', label: 'PORTA TIME', min: 0, max: 127, defaultValue: 0, size: 52,
     onChange: (val) => bridge.setParam('portamentoTime', val)
   });
@@ -1299,25 +1314,25 @@ function renderGlobalMasterDrawer(container) {
     </div>
   `;
 
-  new RotaryKnob(container.querySelector('#drawer-ctrl-mastervol'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-mastervol'), {
     paramId: 'masterVolume', label: 'MASTER VOL', min: 0, max: 1, defaultValue: 0.8, size: 54,
     displayFormatter: (v) => `${Math.round(v * 100)}%`,
     onChange: (val) => bridge.setParam('masterVolume', val)
   });
-  new RotaryKnob(container.querySelector('#drawer-ctrl-pedal'), {
+  new ABDKnob(container.querySelector('#drawer-ctrl-pedal'), {
     paramId: 'assignablePedal', label: 'ASSIGN PEDAL', min: 0, max: 127, defaultValue: 0, size: 54,
     onChange: (val) => bridge.setParam('assignablePedal', val)
   });
 
-  new SegmentedSelector(container.querySelector('#drawer-ctrl-assign-switch'), {
+  new ABDSegmented(container.querySelector('#drawer-ctrl-assign-switch'), {
     paramId: 'assignableSwitch',
     label: 'ASSIGN SWITCH',
-    layout: 'row',
-    size: 'md',
     options: [
       { value: 0, label: 'OFF' },
       { value: 1, label: 'ON' }
-    ]
+    ],
+    variant: 'strip',
+    size: 'md',
   });
 }
 
@@ -1793,21 +1808,54 @@ function setupAboutModal() {
     buildVersionSpan.textContent = `${BUILD_INFO.version} (Build ${BUILD_INFO.buildNumber} - ${BUILD_INFO.buildDate})`;
   }
 
+  if (modal) {
+    // 2026-09-27: el About entra en el CONTRATO DE FOCO de la familia
+    // (overlayFocus.js, el mismo del cajon compartido): cerrado va `inert` +
+    // `aria-hidden` (nace cerrado: nace inerte), al abrir el foco entra al
+    // primer control y al cerrar vuelve al disparador. El cierre visible solo
+    // ensena/oculta (un display:none con !important gana al inert; el atributo
+    // queda para el DOM), la RESPONSABILIDAD del foco es del contrato.
+    aboutFocusContract = createOverlayFocus({
+      root: modal,
+      isClosed: () => modal.classList.contains('hidden'),
+      onEscape: () => closeAboutModal(),
+    });
+    aboutFocusContract.setInert();
+    aboutFocusContract.attach();
+  }
+
   closeBtn?.addEventListener('click', () => {
-    if (modal) {
-      modal.style.setProperty('display', 'none', 'important');
-      modal.classList.add('hidden');
-    }
+    closeAboutModal();
   });
 
   modal?.addEventListener('click', (e) => {
     if (e.target === modal) {
-      modal.style.setProperty('display', 'none', 'important');
-      modal.classList.add('hidden');
+      closeAboutModal();
     }
   });
 
   setupSysExEvents();
+}
+
+function openAboutModal() {
+  const modal = document.getElementById('about-modal');
+  if (!modal) return;
+
+  aboutFocusContract?.rememberTrigger();
+  modal.classList.remove('hidden');
+  modal.style.setProperty('display', 'flex', 'important');
+  aboutFocusContract?.releaseInert();
+  aboutFocusContract?.focusFirst();
+}
+
+function closeAboutModal() {
+  const modal = document.getElementById('about-modal');
+  if (!modal || modal.classList.contains('hidden')) return;   // cierre ya hecho: no-op
+
+  aboutFocusContract?.restoreFocus();
+  aboutFocusContract?.setInert();
+  modal.style.setProperty('display', 'none', 'important');
+  modal.classList.add('hidden');
 }
 
 function setupSysExEvents() {
@@ -1845,14 +1893,6 @@ function setupSysExEvents() {
   });
 }
 
-
-function openAboutModal() {
-  const modal = document.getElementById('about-modal');
-  if (modal) {
-    modal.classList.remove('hidden');
-    modal.style.setProperty('display', 'flex', 'important');
-  }
-}
 
 function setupKeyboard() {
   keyboardInstance = createKeyboard({
@@ -1895,7 +1935,7 @@ function setupKeyboard() {
       enableIvoryTexture: true,
       enableQwerty: true,
       enableTouch: true,
-      enableResizeObserver: false
+      enableResizeObserver: true
     }
   });
   // Expose globally so LCD programmer and other modules can trigger animations
@@ -1975,11 +2015,7 @@ function setupKeyboardShortcuts() {
       closeAllDropdowns();
       diagnosticModal.close();
       bankManagerModal?.close();
-      const modal = document.getElementById('about-modal');
-      if (modal) {
-        modal.style.setProperty('display', 'none', 'important');
-        modal.classList.add('hidden');
-      }
+      closeAboutModal();   // por el contrato: foco al disparador + inert
     }
   });
 }

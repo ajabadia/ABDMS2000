@@ -5,6 +5,10 @@
  */
 
 import { bridge } from '../bridge/bridgeCore.js';
+// 2026-09-27: el CONTRATO DE FOCO de la familia (overlayFocus.js, el mismo del
+// cajon compartido): al cerrar el modal va `inert` + `aria-hidden`, al abrir
+// el foco entra al primer control y al cerrar vuelve al disparador.
+import { createOverlayFocus } from '@abdsynths/shared/components';
 
 // Vite replaces import.meta.env.DEV with false in production bundles.
 const IS_DEV = import.meta.env?.DEV === true;
@@ -14,6 +18,7 @@ class DiagnosticModalController {
   constructor() {
     this.modal = null;
     this.btnNav = null;
+    this.focusContract = null;
     this.isToneActive = false;
     this.currentPoint = 2; // Default to Pre-Master Volume
     this.frequency = 440;
@@ -31,6 +36,16 @@ class DiagnosticModalController {
       if (this.modal) this.modal.style.display = 'none';
       return;
     }
+
+    // Cerrado (su estado de arranque): inerte. El Escape propio NO pisa al del
+    // host: si el host tambien cierra, este cierre ya esta hecho y es no-op.
+    this.focusContract = createOverlayFocus({
+      root: this.modal,
+      isClosed: () => this.modal.classList.contains('hidden'),
+      onEscape: () => this.close(),
+    });
+    this.focusContract.setInert();
+    this.focusContract.attach();
 
     if (this.btnNav) {
       this.btnNav.addEventListener('click', () => this.open());
@@ -185,12 +200,19 @@ class DiagnosticModalController {
 
   open() {
     if (!this.modal) return;
+    this.focusContract?.rememberTrigger();
     this.modal.style.display = 'flex';
     this.modal.classList.remove('hidden');
+    this.focusContract?.releaseInert();
+    this.focusContract?.focusFirst();
   }
 
   close() {
     if (!this.modal) return;
+    // El foco sale ANTES del inert (hacer inerte un contenedor con el foco
+    // dentro lo tiraria a <body>) y vuelve al disparador.
+    this.focusContract?.restoreFocus();
+    this.focusContract?.setInert();
     this.modal.style.display = 'none';
     this.modal.classList.add('hidden');
     // If latch notes are active, release them upon closing

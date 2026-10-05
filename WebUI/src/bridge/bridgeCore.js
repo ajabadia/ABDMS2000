@@ -3,7 +3,7 @@ import { paramStore } from '../contracts/paramStore.js';
 import { announcesHostModel, hostModelPayload, answersHostInfo, hostInfoPayload } from '../contracts/hostModel.js';
 
 const IS_DEV = import.meta.env?.DEV === true;
-const devLog = (...args) => {
+export const devLog = (...args) => {
   if (IS_DEV) console.log(...args);
 };
 
@@ -99,6 +99,9 @@ export class BridgeCore {
         case 'resetDiagnosticBypasses':
           this.wasmBridge.resetDiagnosticBypasses();
           break;
+        case 'setTempoBPM':
+          this.wasmBridge.setTempoBPM(payload.bpm);
+          break;
         case 'selectProgram':
           // In the browser, LcdProgrammer already sends the complete UI patch
           // through setAllParams/setParam. Do not apply the separate native
@@ -165,6 +168,10 @@ export class BridgeCore {
 
   modWheel(value) {
     this.send('modWheel', { value });
+  }
+
+  setTempoBPM(bpm) {
+    this.send('setTempoBPM', { bpm });
   }
 
   sendMidiCC(cc, value) {

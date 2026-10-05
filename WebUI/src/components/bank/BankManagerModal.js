@@ -23,6 +23,113 @@ function resolveDefaultIframeSrc() {
   }
 }
 
+/**
+ * Motor del CONTRATO DE FOCO de los overlays de la familia ABD (inline).
+ *
+ * Fuente unica: ABDSharedAssets/components/overlayFocus.js — el mismo contrato
+ * que usa el cajon compartido (createDrawer), el slideDrawer de ABDMS2000 y el
+ * block-drawer de CZ101. Va copiado aqui porque la WebUI estatica de este repo
+ * se sirve con CSP `default-src 'self'` y su importmap no resuelve
+ * @abdsynths/shared; el test de drift (packages/ui/tests/drift.test.js)
+ * verifica los invariantes del contrato contra este motor. Semantica:
+ *
+ *   1. CERRADO: `inert` + `aria-hidden="true"` (fuera de tabulacion y del
+ *      arbol de accesibilidad, sin sacar nada del DOM). Al abrir se suelta;
+ *      al cerrar se restaura DESPUES de devolver el foco.
+ *   2. AL ABRIR: el foco entra en el primer control del cuerpo (aqui, el
+ *      cierre del encabezado; el iframe no es tabulable por el selector).
+ *   3. ABIERTO: Tab/Shift+Tab ciclan por los controles y no se escapan; la
+ *      trampa solo actua con el foco DENTRO (varios overlays no se secuestran
+ *      el teclado).
+ *   4. AL CERRAR: el foco vuelve al DISPARADOR (document.activeElement al
+ *      abrir, fuera del overlay; se limpia en cada cierre y un nodo muerto no
+ *      se toca).
+ */
+function createOverlayFocusContract({ root, body = null, isClosed, onEscape = null }) {
+  const FOCUSABLE_SELECTOR = [
+    'a[href]',
+    'button:not([disabled])',
+    'input:not([disabled])',
+    'select:not([disabled])',
+    'textarea:not([disabled])',
+    '[tabindex]:not([tabindex="-1"])',
+  ].join(', ');
+
+  function focusableWithin(container) {
+    return Array.from(container.querySelectorAll(FOCUSABLE_SELECTOR)).filter((node) => {
+      if (node.closest('[hidden]')) return false;
+      const style = window.getComputedStyle(node);
+      return style.display !== 'none' && style.visibility !== 'hidden';
+    });
+  }
+
+  let lastFocused = null;
+
+  function trapTab(event) {
+    if (!root.contains(document.activeElement)) return;
+
+    const controls = focusableWithin(root);
+    if (controls.length === 0) {
+      event.preventDefault();
+      root.focus({ preventScroll: true });
+      return;
+    }
+
+    const first = controls[0];
+    const last = controls[controls.length - 1];
+    const active = document.activeElement;
+
+    if (event.shiftKey && active === first) {
+      event.preventDefault();
+      last.focus({ preventScroll: true });
+    } else if (!event.shiftKey && active === last) {
+      event.preventDefault();
+      first.focus({ preventScroll: true });
+    }
+  }
+
+  function handleKeydown(event) {
+    if (isClosed()) return;
+    if (event.key === 'Escape') onEscape?.();
+    else if (event.key === 'Tab') trapTab(event);
+  }
+
+  return {
+    focusFirst() {
+      const target =
+        (body ? focusableWithin(body)[0] : undefined) ??
+        focusableWithin(root)[0] ?? root;
+      target.focus({ preventScroll: true });
+    },
+    restoreFocus() {
+      const target = lastFocused;
+      lastFocused = null;
+      if (target?.isConnected && typeof target.focus === 'function') {
+        target.focus({ preventScroll: true });
+      }
+    },
+    rememberTrigger() {
+      const active = document.activeElement;
+      lastFocused =
+        active && active !== document.body && !root.contains(active) ? active : null;
+    },
+    setInert() {
+      root.setAttribute('inert', '');
+      root.setAttribute('aria-hidden', 'true');
+    },
+    releaseInert() {
+      root.removeAttribute('inert');
+      root.setAttribute('aria-hidden', 'false');
+    },
+    attach() {
+      document.addEventListener('keydown', handleKeydown);
+    },
+    detach() {
+      document.removeEventListener('keydown', handleKeydown);
+    },
+  };
+}
+
 export class BankManagerModal {
   constructor(options = {}) {
     this.container = options.container || document.body;
@@ -36,6 +143,18 @@ export class BankManagerModal {
     }
 
     this._createDOM();
+
+    // 2026-09-27: el contrato de foco de la familia, atado al overlay (que
+    // nace cerrado, o sea, inerte). El Escape propio NO pisa al del host: si
+    // el host tambien cierra, este cierre ya esta hecho y es un no-op.
+    this._focusContract = createOverlayFocusContract({
+      root: this.overlay,
+      body: this.modal,
+      isClosed: () => !this.isOpen,
+      onEscape: () => this.close(),
+    });
+    this._focusContract.setInert();
+    this._focusContract.attach();
   }
 
   _createDOM() {
@@ -92,19 +211,33 @@ export class BankManagerModal {
   }
 
   open() {
+    // El disparador se apunta ANTES de mostrar el overlay (el activeElement de
+    // fuera aun es el boton que abre el banco).
+    this._focusContract.rememberTrigger();
+
     this.isOpen = true;
     this.overlay.hidden = false;
-    this.overlay.setAttribute('aria-hidden', 'false');
     this.overlay.classList.add('is-active');
+    // El contrato suelta inert + aria-hidden; un contenedor inert es sordo y
+    // no dejaria entrar el foco de aqui abajo.
+    this._focusContract.releaseInert();
     const currentTheme = document.documentElement.getAttribute('data-theme') || 'ms2000';
     this.setTheme(currentTheme);
+
+    // El foco entra al primer control del dialogo (el cierre del encabezado).
+    this._focusContract.focusFirst();
   }
 
   close() {
+    // El foco sale ANTES del inert y de ocultar (hacer inerte un contenedor
+    // con el foco dentro lo tiraria a <body>) y vuelve al disparador. Doble
+    // cierre (el host tambien llama a close en su Escape): no-op seguro.
+    this._focusContract.restoreFocus();
+    this._focusContract.setInert();
+
     this.isOpen = false;
     this.overlay.classList.remove('is-active');
     this.overlay.hidden = true;
-    this.overlay.setAttribute('aria-hidden', 'true');
   }
 
   toggle() {

@@ -709,12 +709,12 @@
   color: #000;
 }
 
-/* Vocoder Sliders */
+/* Vocoder Sliders (filmstrip faders) */
 .voc-bands-container {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  height: 90px;
+  height: 110px;
   background: rgba(0, 0, 0, 0.3);
   padding: 6px;
   border-radius: 4px;
@@ -736,13 +736,29 @@
   color: var(--color-text-muted);
 }
 
-.voc-slider-v {
-  writing-mode: bt-lr;
-  appearance: slider-vertical;
-  width: 12px;
+/* Filmstrip fader inside vocoder band */
+.voc-band-col .abd-filmstrip-fader {
   flex: 1;
-  accent-color: var(--color-accent);
-  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.voc-band-col .abd-filmstrip-fader__viewport {
+  width: var(--abd-fader-vw, 32px);
+  height: var(--abd-fader-vh, 76px);
+}
+
+/* Let the inline style from filmstripFader.js handle background-size */
+
+.voc-band-col .abd-filmstrip-fader__label {
+  font-size: 7px;
+  margin-bottom: 1px;
+}
+
+.voc-band-col .abd-filmstrip-fader__value {
+  font-size: 7px;
+  margin-top: 1px;
 }
 
 .voc-band-freq {

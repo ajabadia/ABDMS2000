@@ -19,7 +19,7 @@
  *   "custom"     — user-supplied renderFn handles HTML, factory only wires events
  */
 
-import { RotaryKnob } from '../components/rotaryKnob.js';
+import { ABDKnob, ABDSelect, ABDToggle, ABDFilmstripFader } from '../components/shared/index.js';
 import { PARAM_LOOKUP } from '../contracts/registry.gen.js';
 import { paramStore } from '../contracts/paramStore.js';
 import { openWavetableBrowser, syncCatalogFromEngine } from './wavetableBrowser.js';
@@ -33,13 +33,7 @@ function esc(str) {
 
 function selectHtml(param, extraClass = '') {
   if (!param.choices || param.choices.length === 0) return '';
-  const opts = param.choices.map((c, i) =>
-    `<option value="${i}"${i === param.default ? ' selected' : ''}>${esc(c)}</option>`
-  ).join('');
-  return `<div class="select-row">
-    <label>${esc(param.name)}</label>
-    <select id="param-${param.id}" class="ui-select ${extraClass}">${opts}</select>
-  </div>`;
+  return `<div id="select-${param.id}" class="select-row"></div>`;
 }
 
 function toggleHtml(param) {
@@ -67,16 +61,25 @@ function submoduleEnd() {
 function wireCheckbox(container, paramId, bridge) {
   const el = container.querySelector(`#param-${paramId}`);
   if (!el) return;
-  el.addEventListener('change', (e) => {
-    bridge.setParam(paramId, e.target.checked ? 1 : 0);
+
+  new ABDToggle(el.parentElement, {
+    paramId,
+    onChange: (val) => bridge.setParam(paramId, val),
   });
 }
 
 function wireSelect(container, paramId, bridge, parser = parseInt) {
-  const el = container.querySelector(`#param-${paramId}`);
+  const el = container.querySelector(`#select-${paramId}`);
   if (!el) return;
-  el.addEventListener('change', (e) => {
-    bridge.setParam(paramId, parser(e.target.value, 10));
+
+  const param = PARAM_LOOKUP[paramId];
+  if (!param || !param.choices) return;
+
+  new ABDSelect(el, {
+    paramId,
+    label: param.name,
+    options: param.choices,
+    onChange: (val) => bridge.setParam(paramId, parser(val, 10)),
   });
 }
 
@@ -89,13 +92,45 @@ function createKnob(container, param, bridge, opts = {}) {
     ? Math.round((param.max + param.min) / 2)
     : param.default;
 
-  return new RotaryKnob(el, {
+  return new ABDKnob(el, {
     paramId: param.id,
     label: opts.label || param.name.split(' ').pop().toUpperCase(),
     min: param.min,
     max: param.max,
     defaultValue: defaultKnob,
     isBipolar,
+    step: param.step || 1,
+    onChange: (val) => bridge.setParam(param.id, Math.round(val)),
+  });
+}
+
+function createFilmstripFader(container, param, bridge, opts = {}) {
+  const el = container.querySelector(`#fader-${param.id}`);
+  if (!el) return null;
+
+  const isVertical = opts.orientation !== 'horizontal';
+  const spriteUrl = opts.spriteUrl || (isVertical
+    ? 'assets/ST_Fader_58x107_128.png'
+    : 'assets/ST_Fader_230x69_128f.png');
+  const frameWidth = opts.frameWidth || (isVertical ? 58 : 230);
+  const frameHeight = opts.frameHeight || (isVertical ? 107 : 69);
+  const frames = opts.frames || 128;
+  const viewportWidth = opts.viewportWidth || (isVertical ? 36 : 140);
+  const viewportHeight = opts.viewportHeight || (isVertical ? 80 : 32);
+
+  return new ABDFilmstripFader(el, {
+    paramId: param.id,
+    label: opts.label || param.name.split(' ').pop().toUpperCase(),
+    min: param.min,
+    max: param.max,
+    defaultValue: param.default,
+    orientation: isVertical ? 'vertical' : 'horizontal',
+    spriteUrl,
+    frameWidth,
+    frameHeight,
+    frames,
+    viewportWidth,
+    viewportHeight,
     onChange: (val) => bridge.setParam(param.id, Math.round(val)),
   });
 }
@@ -372,21 +407,22 @@ function render2ColPanel(container, def, bridge) {
 
   render2ColLayout(container, def.title, def.badge, leftParams, rightParams, def.leftTitle, def.rightTitle, bridge);
 
-  // Mixer knobs in OSC panel
-  if (def.mixerGroup) {
-    const mixParams = ['mixOsc1Level', 'mixOsc2Level', 'mixNoiseLevel'].map(id => PARAM_LOOKUP[id]).filter(Boolean);
-    const rightBox = container.querySelectorAll('.submodule-box')[1];
-    if (rightBox) {
-      const knobsRow = document.createElement('div');
-      knobsRow.className = 'knobs-row';
-      rightBox.appendChild(knobsRow);
-      mixParams.forEach(p => {
-        const wrapper = document.createElement('div');
-        wrapper.id = `knob-${p.id}`;
-        knobsRow.appendChild(wrapper);
-        createKnob(container, p, bridge);
-      });
-    }
+// Mixer knobs in OSC panel
+    if (def.mixerGroup) {
+      const mixParams = ['mixOsc1Level', 'mixOsc2Level', 'mixNoiseLevel'].map(id => PARAM_LOOKUP[id]).filter(Boolean);
+      const rightBox = container.querySelectorAll('.submodule-box')[1];
+      if (rightBox) {
+        const fadersRow = document.createElement('div');
+        fadersRow.className = 'faders-row';
+        fadersRow.style.cssText = 'display:flex;flex-direction:column;gap:12px;margin-top:8px;';
+        rightBox.appendChild(fadersRow);
+        mixParams.forEach(p => {
+          const wrapper = document.createElement('div');
+          wrapper.id = `fader-${p.id}`;
+          fadersRow.appendChild(wrapper);
+          createFilmstripFader(container, p, bridge, { orientation: 'vertical' });
+        });
+      }
 
     // Wavetable Browse button next to osc1DwgsWave knob
     const dwgsKnobEl = container.querySelector('#knob-osc1DwgsWave');
@@ -599,12 +635,12 @@ function renderVocoder(container, def, bridge) {
 
   const bandFreqs = ['125', '180', '250', '350', '500', '700', '1k', '1.4k', '2k', '2.8k', '3.6k', '4.2k', '4.8k', '5.2k', '5.5k', '5.7k'];
 
-  let bandSlidersHtml = '';
+  let bandFadersHtml = '';
   for (let i = 0; i < 16; ++i) {
-    bandSlidersHtml += `
+    bandFadersHtml += `
       <div class="voc-band-col">
         <span class="voc-band-num">${i + 1}</span>
-        <input type="range" min="0" max="127" value="127" class="voc-slider-v" id="voc-level-${i + 1}" orient="vertical">
+        <div id="fader-vocoderBandLevel${i + 1}"></div>
         <span class="voc-band-freq">${bandFreqs[i]}</span>
       </div>`;
   }
@@ -624,7 +660,7 @@ function renderVocoder(container, def, bridge) {
     else html += knobContainerHtml(p);
   });
 
-  html += `</div><div class="voc-bands-container">${bandSlidersHtml}</div></div>`;
+  html += `</div><div class="voc-bands-container">${bandFadersHtml}</div></div>`;
   container.innerHTML = html;
 
   // Wire params
@@ -636,13 +672,11 @@ function renderVocoder(container, def, bridge) {
     else createKnob(container, p, bridge);
   });
 
-  // Band sliders
+  // Band faders (filmstrip)
   for (let i = 1; i <= 16; ++i) {
-    const slider = container.querySelector(`#voc-level-${i}`);
-    if (slider) {
-      slider.addEventListener('input', (e) => {
-        bridge.setParam(`vocoderBandLevel${i}`, parseInt(e.target.value, 10));
-      });
+    const p = PARAM_LOOKUP[`vocoderBandLevel${i}`];
+    if (p) {
+      createFilmstripFader(container, p, bridge, { orientation: 'vertical' });
     }
   }
 }

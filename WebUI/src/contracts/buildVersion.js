@@ -2,8 +2,8 @@
 
 export const BUILD_INFO = Object.freeze({
   version: "1.0.0",
-  buildNumber: "2026.09.15.1757",
-  timestamp: "2026-09-15T15:57:49.776Z",
+  buildNumber: "2026.10.03.0310",
+  timestamp: "2026-10-03T01:10:01.865Z",
   productName: "ABDMS2000",
   manufacturer: "ajabadia"
 });
