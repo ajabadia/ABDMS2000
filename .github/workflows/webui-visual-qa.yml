@@ -1,0 +1,75 @@
+name: WebUI Visual QA
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+    paths:
+      - "e2e/**"
+      - "WebUI/**"
+      - "Scripts/build_webui.js"
+      - "playwright.config.js"
+      - "vite.config.js"
+      - "package.json"
+      - ".github/workflows/webui-visual-qa.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: webui-visual-qa-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  visual-regression:
+    name: Playwright visual regression (Chromium)
+    # Las baselines de e2e/snapshots/ se generaron en Chromium/Windows. Se corre
+    # en Windows para no pelear con diferencias de rasterizado de fuentes entre
+    # SO: un baseline de Windows en un runner Linux puede fallar por antialiasing.
+    runs-on: windows-latest
+    timeout-minutes: 30
+
+    env:
+      CI: true
+
+    steps:
+      # ── Layout del monorepo ────────────────────────────────────────────────
+      # El WebUI importa @abdsynths/shared y @abdsynths/midi-keyb, declarados
+      # como "workspace:*". Esos paquetes NO estan publicados en ningun
+      # registry: solo existen como hermanos dentro del workspace pnpm de la
+      # suite (en local, node_modules/@abdsynths/* son symlinks a ../).
+      # Sin ellos `pnpm install` falla y el bundle del WebUI no se puede
+      # construir, asi que el job reproduce el mismo layout de hermanos.
+      # La accion vive en ABDSharedCode — el repo paraguas de los modulos
+      # compartidos de la suite — y es exactamente la que usa ABDEep.
+      - name: Bootstrap pnpm workspace (multi-repo)
+        uses: ajabadia/ABDSharedCode/.github/actions/pnpm-workspace-bootstrap@master
+        with:
+          project: ABDMS2000
+
+      - name: Build WebUI bundle
+        working-directory: ABDMS2000
+        run: pnpm run bundle
+
+      - name: Install Playwright Chromium
+        working-directory: ABDMS2000
+        run: pnpm exec playwright install chromium
+
+      - name: Run visual regression suite
+        working-directory: ABDMS2000
+        run: pnpm exec playwright test --reporter=list
+
+      # El informe HTML y las imagenes de diff son justo lo que hace falta para
+      # revisar un fallo de baseline, asi que se suben siempre.
+      - name: Upload Playwright report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v6
+        with:
+          name: playwright-report
+          path: |
+            ABDMS2000/playwright-report/
+            ABDMS2000/test-results/
+          if-no-files-found: ignore
+          retention-days: 14

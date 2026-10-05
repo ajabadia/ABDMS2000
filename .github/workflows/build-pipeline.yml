@@ -18,14 +18,14 @@ jobs:
     steps:
     # 1. Descargar el código fuente del repositorio incluyendo submódulos (JUCE)
     - name: Checkout Code
-      uses: actions/checkout@v7
+      uses: actions/checkout@v4
       with:
         submodules: recursive
 
     # 2. Configuración específica para Windows
     - name: Set up MSVC & WiX (Windows)
       if: matrix.os == 'windows-latest'
-      uses: microsoft/setup-msbuild@v3
+      uses: microsoft/setup-msbuild@v2
 
     # 3. Configuración específica para macOS
     - name: Install macOS Dependencies
@@ -89,7 +89,7 @@ jobs:
 
     # 9. Publicar los instaladores y binarios como artefactos descargables
     - name: Upload Build Artifacts
-      uses: actions/upload-artifact@v7
+      uses: actions/upload-artifact@v4
       with:
         name: ABDMS2000-Installers-${{ matrix.os }}
         path: |
@@ -108,7 +108,7 @@ jobs:
       contents: write
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v7
+        uses: actions/checkout@v4
 
       - name: Install Doxygen and Graphviz
         run: |

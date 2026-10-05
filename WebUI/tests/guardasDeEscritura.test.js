@@ -91,11 +91,11 @@ import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..\\..");
+const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 
 const CARPETAS = [
   path.join(RAIZ, "Scripts"),
-  path.join(RAIZ, "WebUI\\scripts"),
+  path.join(RAIZ, "WebUI/scripts"),
   path.join(RAIZ, "tools"),
 ];
 
