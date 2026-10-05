@@ -63,7 +63,7 @@ Verificado con `diff` byte a byte y `diff -w` (ignorando espacios/CR):
 | 2 | `Source/MIDI/NRPNParser.{h,cpp}` | `ABDSharedCode/HardwareDrivers/NRPNParser.{h,cpp}` | **Idénticos** salvo namespace |
 | 3 | `WebUI/src/components/utils.js` | `ABDSharedCode/MidiKeyboard/src/utils.js` | **Idénticos** byte a byte |
 | 4 | `WebUI/src/components/keyboard.js` | `MidiKeyboard/src/keyboard.js` | ~60 líneas de diferencia: la copia del synth **re-implementa las ruedas inline**; la compartida delega en `createWheel` de `@abdsynths/shared` (fuente única) |
-| 5 | `WebUI/src/components/keyboard.css` | `MidiKeyboard/src/keyboard.css` | Divergencia grande (~1.400 líneas): la compartida importa `wheels.css`/`kbd-buttons.css` de ABDSharedAssets; la del synth duplica esas reglas localmente |
+| 5 | `WebUI/src/components/keyboard.css` | `MidiKeyboard/src/keyboard.css` | **ELIMINADO** (huérfano, sin importadores tras fix devLog). La compartida en `ABDSharedAssets/components/` es ahora la única fuente; el synth importa `@abdsynths/midi-keyb/keyboard.css` desde el paquete compartido |
 | 6 | Tokens de `WebUI/src/styles/themes.css` | `ABDSharedAssets/styles/tokens.css` + `themes/ms2000.css` | Mismos valores duplicados; la cascada compartida solo actúa en dev Vite |
 
 **Impacto del fork ya existente (caso 4):** la versión compartida del teclado usa la rueda filmstrip compartida (con `destroy()` correcto); la copia local mantiene la implementación antigua embebida. Cualquier mejora futura de ruedas en `ABDSharedAssets/components/wheel.js` **no llegará** al MS2000 compilado nativo.

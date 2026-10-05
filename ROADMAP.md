@@ -356,3 +356,16 @@
   - *Dónde:* `ABDBankManager/Source/Contracts/Models/korg-ms2000.ts`, `ABDMS2000/Source/MIDI/MS2000HardwareProgram.h`, `Source/Tests/DSPCoreTests.cpp` y `ABDBankManager/WebUI/tests/unit/korgChannelConvention.test.js`.
 
 **Criterio de cierre:** con un MS2000 conectado, un `0x0E` del emulador y uno del equipo producen volcados que el otro extremo acepta sin perder bytes, y queda escrito en `DOCS/MS2000_SysEx_Spec.md` qué era hipótesis y qué está comprobado.
+
+## 2026-09-27 — el contrato de foco/inert de los overlays (overlayFocus compartido)
+
+El slideDrawer y los modales (About, Diagnostico, BankManager) entran en el MISMO
+contrato de foco que el cajon compartido `createDrawer` de la familia
+(ABDSharedAssets/components/overlayFocus.js + su test): cerrados van `inert` +
+`aria-hidden` (el contenido sigue en el DOM, fuera del orden de tabulacion), al abrir
+el foco entra en el primer control del cuerpo, Tab no se escapa con el overlay
+abierto y al cerrar vuelve al disparador. En el slideDrawer, cuyo contenido se
+reconstruye por apertura, el `inert` de cierre evita el modo clasico: los controles
+del render ANTERIOR quedaban tabulables dentro de un dialogo aria-modal oculto. El
+Escape del About/Diagnostico/BankManager queda centralizado (el del host delega en
+los cierres del contrato; doble cierre = no-op). Suite: vitest **134/134**.
