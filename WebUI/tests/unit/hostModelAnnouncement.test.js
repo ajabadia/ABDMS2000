@@ -240,7 +240,7 @@ describe('canal nativo → JS del WebView2 — guard de dirección (JUCE 8)', ()
     // El sumidero tiene que seguir cableado al emisor real: si se rompe, no sale
     // ningún mensaje cppToWebui del plugin.
     expect(editor).toContain(
-      'bridge_->setJsMessageSink([this](const juce::var& message) { emitEventToWebView(message); })'
+      'bridge_->setJsMessageSink([this](const juce::var &message) { emitEventToWebView(message); })'
     );
   });
 

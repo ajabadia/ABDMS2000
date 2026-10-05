@@ -11,15 +11,14 @@
 
 #pragma once
 
-namespace ABDMS2000
-{
+namespace ABDMS2000 {
 
 /** modelId canonico del host: lo que anuncia la accion bridge `hostModel`. */
-inline constexpr const char *kHostModelId = "abd-sm002";
+inline constexpr const char* kHostModelId = "abd-sm002";
 
 /** Nombre y fabricante del contrato (diagnostico / logs). */
-inline constexpr const char *kHostModelDisplayName = "ABD MS2000 (SM002)";
-inline constexpr const char *kHostModelManufacturer = "ABDSynths";
+inline constexpr const char* kHostModelDisplayName = "ABD MS2000 (SM002)";
+inline constexpr const char* kHostModelManufacturer = "ABDSynths";
 
 /**
  * Nivel de puente del host (capacidades, no fechas). El Bank Manager embebido
@@ -29,7 +28,7 @@ inline constexpr const char *kHostModelManufacturer = "ABDSynths";
 inline constexpr int kHostBridgeProtocol = 4;
 
 /** Revision del codigo en el momento de generar este header. */
-inline constexpr const char *kHostBuildRevision = "no-git";
+inline constexpr const char* kHostBuildRevision = "14523ad06";
 
 /**
  * Sello de build del binario: la unidad que incluya este header se compila con
@@ -38,4 +37,4 @@ inline constexpr const char *kHostBuildRevision = "no-git";
  */
 #define ABD_HOST_BUILD_STAMP (__DATE__ " " __TIME__)
 
-}  // namespace ABDMS2000
+} // namespace ABDMS2000
