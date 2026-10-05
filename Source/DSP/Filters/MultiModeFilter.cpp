@@ -5,7 +5,7 @@ namespace ABDMS2000 {
 
 void MultiModeFilter::prepare(double sampleRate) noexcept
 {
-    sampleRate_ = (sampleRate > 1000.0) ? sampleRate : 44100.0;
+    sampleRate_ = DSPUtils::validateSampleRate(sampleRate);
     reset();
     updateCoefficients();
 }
@@ -44,8 +44,8 @@ void MultiModeFilter::updateCoefficients() noexcept
     // Damping / Feedback
     float feedback = FilterResonanceComp::computeEffectiveFeedback(resonance_);
     // R = 2 - 2 * resonance damping
-    R_ = 2.0f * (1.0f - (feedback * 0.245f));
-    if (R_ < 0.01f) R_ = 0.01f;
+    R_ = 2.0f * (1.0f - (feedback * DSPUtils::kResonanceFeedbackScale));
+    if (R_ < DSPUtils::kResonanceMinFeedback) R_ = DSPUtils::kResonanceMinFeedback;
 
     h_ = 1.0f / (1.0f + 2.0f * R_ * g_ + g_ * g_);
 }

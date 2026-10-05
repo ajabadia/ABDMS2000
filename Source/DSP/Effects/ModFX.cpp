@@ -7,7 +7,7 @@ namespace ABDMS2000 {
 
 void ModFX::prepare(double sampleRate) noexcept
 {
-    sampleRate_ = (sampleRate > 1000.0) ? sampleRate : 44100.0;
+    sampleRate_ = DSPUtils::validateSampleRate(sampleRate);
     chorusMaxSamples_ = static_cast<size_t>(sampleRate_ * 0.05); // 50ms buffer
     chorusBufferL_.assign(chorusMaxSamples_, 0.0f);
     chorusBufferR_.assign(chorusMaxSamples_, 0.0f);
@@ -19,7 +19,13 @@ void ModFX::prepare(double sampleRate) noexcept
         ensembleLinesR_[i].assign(ensembleMaxSamples_, 0.0f);
     }
 
+    phaser_.prepare (sampleRate_);
+    phaser_.setSweepRange (200.0f, 5500.0f);   // el barrido del MS2000
+
     setSpeed(speed_);
+    setDepth (depth_);
+    setFeedback (rawFeedback_);
+
     reset();
 }
 
@@ -40,27 +46,41 @@ void ModFX::reset() noexcept
     ensemblePhaseSlow_ = 0.0;
     ensemblePhaseFast_ = 0.0;
 
-    for (auto& ap : phaserAPFL_) ap.clear();
-    for (auto& ap : phaserAPFR_) ap.clear();
-    phaserFeedbackL_ = phaserFeedbackR_ = 0.0f;
+    phaser_.reset();
 }
 
 void ModFX::setSpeed(float speed0to1) noexcept
 {
     speed_ = DSPUtils::clamp(speed0to1, 0.0f, 1.0f);
     // Speed range: 0.02 Hz to 15.0 Hz log scale
-    float rateHz = 0.02f * std::pow(750.0f, speed_);
+    float rateHz = 0.02f * std::pow(DSPUtils::kSpeedLogScaleMax, speed_);
     lfoIncrement_ = rateHz / sampleRate_;
+
+    // Y el phaser recibe HERCIOS, no el mando: el mapeo logaritmico es de este
+    // producto, no del motor. Se usa `dsp::pow` y no `std::pow` para que el
+    // mapeo tambien sea determinista; son 4 ulps en 1.001 puntos, y con eso el
+    // barrido suena igual en nativo y en WASM.
+    phaser_.setRateHz (0.02f * abd::dsp::pow (DSPUtils::kSpeedLogScaleMax, speed_));
 }
 
 void ModFX::setDepth(float depth0to1) noexcept
 {
     depth_ = DSPUtils::clamp(depth0to1, 0.0f, 1.0f);
+    phaser_.setDepth (depth_);
 }
 
 void ModFX::setFeedback(float feedback0to127) noexcept
 {
     rawFeedback_ = DSPUtils::clamp(feedback0to127, 0.0f, 127.0f);
+
+    // 0..127 a 0..1, y el 0,90 que multiplicaba la ganancia del lazo lo aplica
+    // el MOTOR, no esta clase. Con el tope aqui, otro producto podria subirlo a
+    // 1,2 y reventar el motor sin enterarse; con el tope en el motor, el motor
+    // es el que no se deja reventar.
+    //
+    // El numero es el mismo que antes —`(raw/127) * 0,90`—, asi que la
+    // realimentacion del MS2000 no cambia ni un ulp.
+    phaser_.setFeedback (rawFeedback_ / 127.0f);
 }
 
 float ModFX::readInterpolated(const std::vector<float>& buf, float readPos, size_t bufLen) const noexcept
@@ -93,8 +113,8 @@ void ModFX::processChorusFlanger(float& left, float& right) noexcept
 
     // 2. Base delay: transitions from 7.5ms (lush chorus) down to 1.8ms (jet flanger) as feedback increases
     float fbNorm = rawFeedback_ / 127.0f;
-    float baseDelaySec = 0.0075f - (0.0057f * fbNorm);
-    float excursionSec = (0.0035f - (0.0020f * fbNorm)) * depth_;
+    float baseDelaySec = DSPUtils::kChorusBaseDelaySec - (DSPUtils::kFlangerDelayRangeSec * fbNorm);
+    float excursionSec = (DSPUtils::kChorusExcursionSec - (DSPUtils::kFlangerExcursionRangeSec * fbNorm)) * depth_;
 
     float baseDelaySamples = baseDelaySec * static_cast<float>(sampleRate_);
     float modExcursionSamples = excursionSec * static_cast<float>(sampleRate_);
@@ -181,46 +201,15 @@ void ModFX::processEnsemble(float& left, float& right) noexcept
 
 void ModFX::processPhaser(float& left, float& right) noexcept
 {
-    // 1. Quadrature LFOs: Left channel (0 deg) and Right channel (+90 deg / PI_2)
-    float lfoL = static_cast<float>(std::sin(DSPUtils::TWO_PI * lfoPhase_));
-    float lfoR = static_cast<float>(std::sin(DSPUtils::TWO_PI * lfoPhase_ + (DSPUtils::PI * 0.5f)));
-
-    lfoPhase_ += lfoIncrement_;
-    if (lfoPhase_ >= 1.0) lfoPhase_ -= 1.0;
-
-    // 2. Logarithmic notch sweep from 200 Hz to 5.5 kHz
-    const float minHz = 200.0f;
-    const float maxHz = 5500.0f;
-    float cutoffHzL = minHz * std::pow(maxHz / minHz, (lfoL * 0.5f + 0.5f) * depth_);
-    float cutoffHzR = minHz * std::pow(maxHz / minHz, (lfoR * 0.5f + 0.5f) * depth_);
-
-    // 3. Feedback loop
-    float fbGain = (rawFeedback_ / 127.0f) * 0.90f; // Max 90%
-    float xL = left + (phaserFeedbackL_ * fbGain);
-    float xR = right + (phaserFeedbackR_ * fbGain);
-
-    // 4. 4-Stage 1st-order Allpass Filters in cascade
-    auto updateAPF = [this](AllPassState& state, float in, float cutoffHz) noexcept -> float {
-        float tanVal = std::tan(DSPUtils::PI * cutoffHz / static_cast<float>(sampleRate_));
-        float alpha = (tanVal - 1.0f) / (tanVal + 1.0f);
-        float out = alpha * in + state.x1 - alpha * state.y1;
-        state.x1 = in;
-        state.y1 = out;
-        return out;
-    };
-
-    for (int i = 0; i < 4; ++i)
-    {
-        xL = updateAPF(phaserAPFL_[i], xL, cutoffHzL);
-        xR = updateAPF(phaserAPFR_[i], xR, cutoffHzR);
-    }
-
-    phaserFeedbackL_ = xL;
-    phaserFeedbackR_ = xR;
-
-    // 5. 50% Wet blend for perfect notch cancellation
-    left  = (left * 0.5f) + (xL * 0.5f);
-    right = (right * 0.5f) + (xR * 0.5f);
+    // El phaser entero son DOS llamadas. Todo lo que hay antes —el LFO en
+    // cuadratura, el barrido logaritmico de 200 Hz a 5,5 kHz, los cuatro
+    // todo-pasos, el 50 % de mezcla humeda y la realimentacion— esta dentro de
+    // `Phaser4`.
+    //
+    // Y LA MEZCLA SIGUE SIENDO LA MISMA, al 50 %, porque la mezcla es lo que
+    // cancela la muesca: con mezcla ajustable, por debajo de 0,5 la muesca
+    // desaparece y el efecto deja de ser un phaser. No es un mando del motor.
+    phaser_.processFrame (left, right);
 }
 
 } // namespace ABDMS2000

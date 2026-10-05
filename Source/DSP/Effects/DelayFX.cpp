@@ -7,7 +7,7 @@ namespace ABDMS2000 {
 
 void DelayFX::prepare(double sampleRate) noexcept
 {
-    sampleRate_ = (sampleRate > 1000.0) ? sampleRate : 44100.0;
+    sampleRate_ = DSPUtils::validateSampleRate(sampleRate);
     // 1400ms max buffer size with headroom
     maxDelaySamples_ = static_cast<size_t>(sampleRate_ * 1.5);
     delayBufferL_.assign(maxDelaySamples_, 0.0f);

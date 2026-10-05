@@ -1,4 +1,4 @@
-#pragma once
+"#pragma once
 #include "../DSP/Oscillators/VAOscillator.h"
 #include "../DSP/Oscillators/DWGSOscillator.h"
 #include "../DSP/Oscillators/VoxWaveOscillator.h"
@@ -12,6 +12,10 @@
 
 namespace ABDMS2000 {
 
+/**
+ * @brief Tipos de onda OSC1 del MS2000/microKORG.
+ * Corresponden a los slots de hardware del sintetizador real.
+ */
 enum class OSC1Type {
     Saw = 0,
     Pulse,
@@ -23,8 +27,10 @@ enum class OSC1Type {
     AudioIn     // External audio input for Vocoder (HW slot 7)
 };
 
-// MS2000 Hardware SysEx: packed byte bits 4-5 for Key Sync on LFOs
-// Also applies to Mod Sequencer Key Sync
+/**
+ * @brief Modos de sincronización de LFO del MS2000.
+ * Bits 4-5 del byte de control de LFO en el SysEx real.
+ */
 enum class KeySyncMode {
     Off = 0,    // LFO free-runs, never resets
     Timbre,     // Reset on first note of the timbre (not on legato in Mono mode)
@@ -32,12 +38,10 @@ enum class KeySyncMode {
 };
 
 /**
- * Modulación del **Mod Sequence** del timbre, ya traducida por el motor a las mismas
- * unidades que la matriz de patch (bipolar −1..+1 por destino). Las escalas concretas
- * (octavas, semitonos, pan) las aplica `Voice::renderNextSample`.
- *
- * El secuenciador es por timbre (3 filas A/B/C dentro del bloque de 108 B del programa
- * real), así que cada `VoiceParameters` lleva la suya.
+ * @brief Modulación del Mod Sequence del timbre.
+ * 
+ * El secuenciador es por timbre (3 filas A/B/C dentro del bloque de 108 B
+ * del programa real), así que cada VoiceParameters lleva la suya.
  */
 struct SeqModulation {
     float pitch{ 0.0f };
@@ -53,6 +57,12 @@ struct SeqModulation {
     float lfo2Freq{ 0.0f };
 };
 
+/**
+ * @brief Parámetros completos de un timbre del MS2000/microKORG.
+ * 
+ * Todos los valores están normalizados a rangos de 0.0-1.0 donde es posible,
+ * coincidiendo con la representación interna del hardware (bytes 0-127).
+ */
 struct VoiceParameters {
     // OSC 1
     OSC1Type osc1Type{ OSC1Type::Saw };
@@ -133,11 +143,19 @@ struct VoiceParameters {
 };
 
 /**
- * @brief Represents a single synth voice in the 4-voice architecture.
+ * @brief Voz sintetizadora individual en la arquitectura de 4 voces.
+ * 
+ * Cada voice instancia todos los bloques DSP (osciladores, filtro, envolventes,
+ * LFOs, patch matrix) y procesa muestras stereo por sample.
+ * 
+ * @warning No es thread-safe: todas las llamadas a prepare/noteOn/noteOff/process
+ *          deben provenir del thread de audio.
  */
 class Voice {
 public:
     Voice() = default;
+    Voice(Voice&&) noexcept = default;
+    Voice& operator=(Voice&&) noexcept = default;
 
     void prepare(double sampleRate) noexcept;
     void reset() noexcept;
@@ -146,11 +164,11 @@ public:
     void noteOff() noexcept;
     void stopImmediately() noexcept;
 
-    bool isActive() const noexcept;
-    bool isInRelease() const noexcept { return eg2_.getStage() == EnvelopeStage::Release; }
-    int getCurrentNote() const noexcept { return currentMidiNote_; }
-    uint32_t getNoteOnAge() const noexcept { return noteAge_; }
-    float getCurrentAmpLevel() const noexcept;
+    [[nodiscard]] bool isActive() const noexcept;
+    [[nodiscard]] bool isInRelease() const noexcept { return eg2_.getStage() == EnvelopeStage::Release; }
+    [[nodiscard]] int getCurrentNote() const noexcept { return currentMidiNote_; }
+    [[nodiscard]] uint32_t getNoteOnAge() const noexcept { return noteAge_; }
+    [[nodiscard]] float getCurrentAmpLevel() const noexcept;
 
     struct DiagnosticStats {
         float basePitch{ 0.0f };
@@ -165,12 +183,12 @@ public:
         float leftOutSample{ 0.0f };
         float rightOutSample{ 0.0f };
     };
-    DiagnosticStats lastDiagStats_{};
-    const DiagnosticStats& getDiagnosticStats() const noexcept { return lastDiagStats_; }
+    
+    [[nodiscard]] const DiagnosticStats& getDiagnosticStats() const noexcept { return lastDiagStats_; }
 
     // Read-only access to the per-voice LFOs (used by the analytical scope taps).
-    const LFO& getLfo1() const noexcept { return lfo1_; }
-    const LFO& getLfo2() const noexcept { return lfo2_; }
+    [[nodiscard]] const LFO& getLfo1() const noexcept { return lfo1_; }
+    [[nodiscard]] const LFO& getLfo2() const noexcept { return lfo2_; }
 
     // Call once per audio block to apply all static/structure parameters.
     // Must be called before any renderNextSample() calls in the same block.
@@ -205,4 +223,4 @@ private:
     VirtualPatchMatrix patchMatrix_;
 };
 
-} // namespace ABDMS2000
+} // namespace ABDMS2000"

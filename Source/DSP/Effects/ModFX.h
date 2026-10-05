@@ -1,4 +1,6 @@
 #pragma once
+#include "DspEffects/Phaser4.h"
+
 #include <vector>
 #include <array>
 
@@ -62,16 +64,18 @@ private:
     size_t chorusWriteIndex_{ 0 };
     size_t chorusMaxSamples_{ 4410 };
 
-    // 4-stage Phaser allpass filter states (Direct Form I)
-    struct AllPassState {
-        float x1{ 0.0f };
-        float y1{ 0.0f };
-        void clear() noexcept { x1 = y1 = 0.0f; }
-    };
-    std::array<AllPassState, 4> phaserAPFL_{};
-    std::array<AllPassState, 4> phaserAPFR_{};
-    float phaserFeedbackL_{ 0.0f };
-    float phaserFeedbackR_{ 0.0f };
+    // El phaser de cuatro etapas ya NO esta aqui: vive en
+    // `ABDSharedCode/DspEffects/Phaser4.h`, namespace `abd::dsp`. Antes eran
+    // ocho estados mas cuatro `std::tan` y dos `std::pow` POR MUESTRA, y el
+    // coeficiente se recalculaba ocho veces cuando hay dos valores distintos.
+    // Ahora el motor entero son 27,4 ns por muestra, un 2,8 % de un nucleo, y
+    // el coeficiente se recalcula cada 16.
+    //
+    // Y NO SE GUARDA NADA DEL PHASER AQUI, ni la fase del LFO ni el incremento:
+    // los dos estan dentro del motor, y duplicarlos seria tener el barrido en
+    // dos sitios. `lfoPhase_` y `lfoIncrement_` siguen existiendo para el coro y
+    // el ensemble, que no estan migrados.
+    abd::dsp::Phaser4<4> phaser_;
 
     float readInterpolated(const std::vector<float>& buf, float readPos, size_t bufLen) const noexcept;
 

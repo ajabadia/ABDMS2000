@@ -5,7 +5,7 @@ namespace ABDMS2000 {
 
 void VAOscillator::prepare(double sampleRate) noexcept
 {
-    sampleRate_ = (sampleRate > 1000.0) ? sampleRate : 44100.0;
+    sampleRate_ = DSPUtils::validateSampleRate(sampleRate);
     setFrequency(frequency_);
 }
 
@@ -36,9 +36,12 @@ void VAOscillator::setControl1(float ctrl1) noexcept
     control1_ = DSPUtils::clamp(ctrl1, 0.0f, 1.0f);
 }
 
-void VAOscillator::syncPhase(float /*masterPhaseDelta*/) noexcept
+void VAOscillator::syncPhase(float masterPhaseDelta) noexcept
 {
-    phase_ = 0.0f;
+    // Hard sync: reset phase based on master oscillator's phase increment
+    // masterPhaseDelta = phaseIncrement_ of master at sync moment
+    // For saw/pulse: half-period sync (reset to ~0.5 * master phase increment)
+    phase_ = masterPhaseDelta * 0.5f;
 }
 
 float VAOscillator::generateSaw() noexcept

@@ -1,21 +1,33 @@
-#pragma once
+"#pragma once
 #include "Voice.h"
 #include <array>
 #include <vector>
 
 namespace ABDMS2000 {
 
+/**
+ * @brief Modos de asignación de voces compatibles con MS2000/microKORG.
+ */
 enum class VoiceAssignMode {
     Mono = 0,
     Poly,
     Unison
 };
 
+/**
+ * @brief Modos de gatillo de envolventes.
+ * 
+ * - Single: legato, las envolventes no se re-disparan si se mantiene otra tecla
+ * - Multi: las envolventes se re-disparan en cada nueva nota
+ */
 enum class TriggerMode {
     Single = 0, // Legato (envelopes do not retrigger if another key is held)
     Multi       // Retrigger envelopes on every note press
 };
 
+/**
+ * @brief Estado de una ranura de voz individual.
+ */
 struct VoiceSlotState {
     int currentMidiNote{ -1 };
     uint32_t noteOnTime{ 0 };
@@ -25,18 +37,18 @@ struct VoiceSlotState {
 };
 
 /**
- * @brief High-performance Voice Manager matching Korg MS2000 / microKORG hardware specs.
- *
- * Capabilities:
- * - 4-voice authentic hardware polyphony (expandable up to 32 voices in Advanced Mode)
- * - Intelligent MS2000 Voice Stealing:
- *   1. Repeated Note Protection (Re-triggering same voice)
- *   2. Steal Latch/Hold voices where key was released
- *   3. Release Phase Stealing (steals voice closest to silence)
- *   4. FIFO Sustain Stealing (steals oldest held note)
- * - Anti-click rapid ramp-down on stolen voices
- * - Portamento Glide: Fingered/Legato in Mono/Unison, Per-Voice Memory Glide in Poly
- * - Hold / Latch buffer support
+ * @brief Administrador de voces de alto rendimiento.
+ * 
+ * Implementa la asignación de voces idéntica al hardware Korg MS2000 / microKORG:
+ * - 4 voces de polifonía auténtica (ampliable a 32 en modo avanzado)
+ * - Sistema inteligente de "voice stealing":
+ *   1. Protección de re- triggering de notas repetidas
+ *   2. Robo de voces marcadas con HOLD cuya tecla fue liberada
+ *   3. Robo en fase de release (voz más cercana al silencio)
+ *   4. Robo FIFO de notas sostenidas más antiguas
+ * - Anti-click con rampa descendente rápida en voces robadas
+ * - Portamento con glide (fingered/legato en Mono/Unison, per-voice en Poly)
+ * - Soporte de HOLD / Latch
  */
 class VoiceManager {
 public:
@@ -64,7 +76,7 @@ public:
 
     // Advanced mode polyphony configuration (4..32)
     void setMaxPolyphony(size_t numVoices) noexcept;
-    size_t getMaxPolyphony() const noexcept { return activeVoiceCapacity_; }
+    [[nodiscard]] size_t getMaxPolyphony() const noexcept { return activeVoiceCapacity_; }
 
     void noteOn(int midiNote, float velocity) noexcept;
     void noteOff(int midiNote) noexcept;
@@ -76,8 +88,8 @@ public:
     // Process one stereo sample across all active voices
     void process(float& leftOut, float& rightOut, int diagPoint = 0, float diagTone = 0.0f) noexcept;
 
-    size_t getActiveVoiceCount() const noexcept;
-    const Voice& getVoice(size_t index) const noexcept { return voices_[index % MAX_EXPANDED_VOICES]; }
+    [[nodiscard]] size_t getActiveVoiceCount() const noexcept;
+    [[nodiscard]] const Voice& getVoice(size_t index) const noexcept { return voices_[index % MAX_EXPANDED_VOICES]; }
 
 private:
     double sampleRate_{ 44100.0 };
@@ -103,8 +115,8 @@ private:
     int lastMonoNote_{ -1 };
 
     int findVoiceToSteal(int incomingNote) noexcept;
-    bool anyKeyPressed() const noexcept;
+    [[nodiscard]] bool anyKeyPressed() const noexcept;
     void releaseVoiceSlot(size_t index) noexcept;
 };
 
-} // namespace ABDMS2000
+} // namespace ABDMS2000"

@@ -1,15 +1,17 @@
-#pragma once
+"#pragma once
 #include <juce_audio_processors/juce_audio_processors.h>
 #include "AudioThreadSnapshot.h"
 #include "HardwareConstants.h"
 #include "VoiceManager.h"
-#include "../DSP/Sequencer/ModSequencer.h"
-#include "../DSP/Sequencer/Arpeggiator.h"
-#include "../DSP/Effects/ModFX.h"
-#include "../DSP/Effects/DelayFX.h"
-#include "../DSP/Effects/Equalizer.h"
-#include "../DSP/Vocoder/Vocoder16Band.h"
-#include "../State/ParameterRegistry.gen.h"
+#include "Voice.h"
+#include "AppLogger.h"
+#include "DSP/Sequencer/ModSequencer.h"
+#include "DSP/Sequencer/Arpeggiator.h"
+#include "DSP/Effects/ModFX.h"
+#include "DSP/Effects/DelayFX.h"
+#include "DSP/Effects/Equalizer.h"
+#include "DSP/Vocoder/Vocoder16Band.h"
+#include "State/ParameterRegistry.gen.h"
 #include <ScopeDataCollector.h>
 #include <memory>
 #include <atomic>
@@ -17,42 +19,62 @@
 
 namespace ABDMS2000 {
 
+/**
+ * @brief Puntos de inyección de tono diagnóstico en el pipeline DSP.
+ * 
+ * Cada punto permite inyectar una onda sinusoidal de prueba para depurar
+ * etapas específicas del motor de audio, simulando el hardware de test del MS2000.
+ */
 enum class DiagnosticTonePoint {
     Disabled = 0,
-    PostMasterVolume = 1, // At the very end of processBlock (after master volume)
-    PreMasterVolume  = 2, // Before master volume attenuation
-    PreEffects       = 3, // After Voices/Vocoder, before ModFX / DelayFX / MasterEQ
-    PreFilter        = 4, // Inside Voice: replaces mixedAudio before filter_
-    OscillatorDirect = 5  // Inside Voice: replaces OSC1 output before mixer & VCF
+    PostMasterVolume = 1, // Al final del processBlock (después del master volume)
+    PreMasterVolume  = 2, // Antes de la atenuación del master volume
+    PreEffects       = 3, // Después de Voices/Vocoder, antes de ModFX/DelayFX/EQ
+    PreFilter        = 4, // Dentro de Voice: reemplaza mixedAudio antes del filtro
+    OscillatorDirect = 5  // Dentro de Voice: reemplaza la salida de OSC1
 };
 
+/**
+ * @brief Motor de sintetizador principal (abstracción de hardware MS2000/microKORG).
+ * 
+ * La arquitectura de dos timbres (Single/Split/Layer) replica exactamente el
+ * comportamiento del equipo físico: cada timbre tiene sus propios parámetros y su
+ * propio juego de voces, con modo y reparto de voces globales del programa.
+ * 
+ * @note Este motor es completamente thread-safe para el thread de audio y
+ *       proporciona snapshoting a 60 FPS para ABDScope.
+ */
 class SynthEngine {
 public:
     explicit SynthEngine(juce::AudioProcessorValueTreeState& apvts);
     ~SynthEngine() = default;
 
+    // Inicialización del motor con buffer size de la DAW
     void prepare(double sampleRate, int samplesPerBlock);
     void reset();
+    
+    // Procesa un bloque de audio completo (thread de audio)
     void processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages,
                       juce::AudioPlayHead* playHead = nullptr);
 
+    // Snapshot de telemetría para ABDScope (lock-free, POE)
     const AudioThreadSnapshot& getSnapshot() const noexcept { return currentSnapshot_; }
 
+    // Eventos MIDI de alto nivel
     void noteOn(int midiChannel, int midiNoteNumber, float velocity);
     void noteOff(int midiChannel, int midiNoteNumber, float velocity, bool allowTailOff = true);
     void allNotesOff();
+    
+    // Ruedas de control (no bloqueantes)
     void setPitchBend(float bendMinus1to1) noexcept { pitchBendValue_.store(bendMinus1to1, std::memory_order_relaxed); }
     void setModWheel(float mod0to1) noexcept { modWheelValue_.store(mod0to1, std::memory_order_relaxed); }
-    void setTestToneEnabled(bool enabled) noexcept { 
-        diagTonePoint_.store(enabled ? DiagnosticTonePoint::PreMasterVolume : DiagnosticTonePoint::Disabled, std::memory_order_relaxed); 
-    }
-    void setDiagnosticTone(int point, float freqHz = 440.0f, float level = 0.25f) noexcept {
-        diagTonePoint_.store(static_cast<DiagnosticTonePoint>(std::max(0, std::min(5, point))), std::memory_order_relaxed);
-        testToneFrequency_.store(std::max(20.0f, std::min(10000.0f, freqHz)), std::memory_order_relaxed);
-        testToneLevel_.store(std::max(0.0f, std::min(1.0f, level)), std::memory_order_relaxed);
-    }
-    int getDiagnosticTonePoint() const noexcept { return static_cast<int>(diagTonePoint_.load(std::memory_order_relaxed)); }
+    
+    // Diagnóstico (solo en desarrollo)
+    void setTestToneEnabled(bool enabled) noexcept; 
+    void setDiagnosticTone(int point, float freqHz = 440.0f, float level = 0.25f) noexcept;
+    [[nodiscard]] int getDiagnosticTonePoint() const noexcept { return static_cast<int>(diagTonePoint_.load(std::memory_order_relaxed)); }
 
+    // Bypasses por etapa DSP
     void setDiagnosticBypass(const juce::String& stage, bool enabled) noexcept {
         if (stage == "filter") diagBypassFilter_.store(enabled, std::memory_order_relaxed);
         else if (stage == "vca") diagBypassVCA_.store(enabled, std::memory_order_relaxed);
@@ -62,7 +84,6 @@ public:
         else if (stage == "delayfx") diagBypassDelayFX_.store(enabled, std::memory_order_relaxed);
         else if (stage == "eq") diagBypassMasterEQ_.store(enabled, std::memory_order_relaxed);
     }
-
     void resetAllDiagnosticBypasses() noexcept {
         diagBypassFilter_.store(false, std::memory_order_relaxed);
         diagBypassVCA_.store(false, std::memory_order_relaxed);
@@ -73,23 +94,24 @@ public:
         diagBypassMasterEQ_.store(false, std::memory_order_relaxed);
     }
 
-    // Accessors for DSP modules
-    ModSequencer& getModSequencer() noexcept { return modSeq_; }
-    Arpeggiator& getArpeggiator() noexcept { return arpeggiator_; }
-    ModFX& getModFX() noexcept { return modFX_; }
-    DelayFX& getDelayFX() noexcept { return delayFX_; }
-    Equalizer& getMasterEQ() noexcept { return masterEQ_; }
-    Vocoder16Band& getVocoder() noexcept { return vocoder_; }
+    // Accessores para módulos DSP (para testing/depuración)
+    [[nodiscard]] ModSequencer& getModSequencer() noexcept { return modSeq_; }
+    [[nodiscard]] Arpeggiator& getArpeggiator() noexcept { return arpeggiator_; }
+    [[nodiscard]] ModFX& getModFX() noexcept { return modFX_; }
+    [[nodiscard]] DelayFX& getDelayFX() noexcept { return delayFX_; }
+    [[nodiscard]] Equalizer& getMasterEQ() noexcept { return masterEQ_; }
+    [[nodiscard]] Vocoder16Band& getVocoder() noexcept { return vocoder_; }
 
-    // ABDScope analytical multi-lane scope: shared tap collector feeding the
-    // native floating window and the web WASM build from ONE source.
-    abd::scope::ScopeDataCollector& getScopeCollector() noexcept { return scopeCollector_; }
+    // ABDScope analytical multi-lane scope
+    [[nodiscard]] abd::scope::ScopeDataCollector& getScopeCollector() noexcept { return scopeCollector_; }
 
     [[nodiscard]] double getSampleRate() const noexcept { return sampleRate_; }
 
+    // Sincronización completa de parámetros desde APVTS
     void updateParametersFromAPVTS() noexcept;
     void triggerArpNote(int note, float velocity, bool isNoteOn) noexcept;
 
+    // Referencias públicas (evitar copia en el thread de audio)
     juce::AudioProcessorValueTreeState& apvts_;
     double sampleRate_{ 44100.0 };
     int samplesPerBlock_{ 512 };
@@ -171,6 +193,5 @@ public:
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SynthEngine)
 };
-
 
 } // namespace ABDMS2000

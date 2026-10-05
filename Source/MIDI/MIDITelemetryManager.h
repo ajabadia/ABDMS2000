@@ -60,6 +60,18 @@ private:
     NRPNParser nrpnParser_;
     std::atomic<bool> isInternalMidiUpdate_{ false };
 
+    // TTL-based echo suppression (300ms window)
+    struct PendingTransaction {
+        int ccNum{ -1 };
+        int channel{ 1 };
+        float value{ 0 };
+        uint64_t timestamp{ 0 };
+    };
+    static constexpr size_t kMaxPendingTransactions = 32;
+    std::array<PendingTransaction, kMaxPendingTransactions> pendingTransactions_;
+    std::atomic<size_t> pendingWritePos_{ 0 };
+    static constexpr uint64_t kEchoTTLMs = 300; // 300ms TTL
+
     // Thread-safe lock-free outgoing queue
     static constexpr size_t kMaxOutgoingEvents = 256;
     struct QueuedMidiEvent {
@@ -73,6 +85,9 @@ private:
     std::function<void(const MidiActivityEvent&)> activityCallback_;
 
     void pushOutgoingMessage(const juce::MidiMessage& msg, int sampleOffset = 0) noexcept;
+
+    bool isEcho(const juce::MidiMessage& msg) noexcept;
+    void registerEcho(const juce::MidiMessage& msg) noexcept;
 };
 
 } // namespace ABDMS2000

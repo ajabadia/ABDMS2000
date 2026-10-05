@@ -86,5 +86,5 @@ target_compile_definitions(ms2000_dsp PRIVATE
 set_target_properties(ms2000_dsp PROPERTIES
     OUTPUT_NAME "ms2000_dsp"
     SUFFIX ""
-    LINK_FLAGS "-s MALLOC=emmalloc -s ALLOW_MEMORY_GROWTH=1 -s INITIAL_MEMORY=16777216 -s EXPORTED_RUNTIME_METHODS=['ccall','cwrap','getValue','setValue'] -s EXPORTED_FUNCTIONS=['_initEngine','_processAudio','_noteOn','_noteOff','_allNotesOff','_setParamNormalized','_setParamById','_getAudioSnapshot','_loadProgram','_initPatch','_randomizePatch','_malloc','_free'] -O2"
+    LINK_FLAGS "-s MALLOC=emmalloc -s ALLOW_MEMORY_GROWTH=1 -s INITIAL_MEMORY=16777216 -s EXPORTED_RUNTIME_METHODS=['ccall','cwrap','getValue','setValue','HEAPF32'] -s EXPORTED_FUNCTIONS=['_initEngine','_processAudio','_noteOn','_noteOff','_allNotesOff','_setParamNormalized','_setParamById','_getAudioSnapshot','_loadProgram','_initPatch','_randomizePatch','_malloc','_free'] -O2"
 )

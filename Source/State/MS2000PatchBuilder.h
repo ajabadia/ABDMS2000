@@ -3,7 +3,6 @@
 #if ABD_HAS_JUCE
 #include <juce_audio_processors/juce_audio_processors.h>
 #endif
-#include <random>
 
 namespace ABDMS2000 {
 
@@ -112,58 +111,72 @@ public:
      */
     static void buildMusicalRandomPatch(juce::AudioProcessorValueTreeState& apvts)
     {
-        juce::Random r;
+        // Use deterministic LCG for WASM compatibility (juce::Random default constructor
+        // seeks system entropy which is unavailable in AudioWorklet/WASM).
+        uint32_t seed = static_cast<uint32_t>(juce::Time::getMillisecondCounterHiRes() * 1000);
+        auto nextFloat = [&seed]() -> float {
+            seed = seed * 1664525u + 1013904223u;
+            return static_cast<float>(seed & 0xFFFFFF) / 16777216.0f;
+        };
+        auto nextInt = [&seed](int maxExclusive) -> int {
+            seed = seed * 1664525u + 1013904223u;
+            return static_cast<int>(seed % static_cast<uint32_t>(maxExclusive));
+        };
+        auto nextBool = [&seed]() -> bool {
+            seed = seed * 1664525u + 1013904223u;
+            return (seed & 0x80000000) != 0;
+        };
 
         // 1. Oscillators: ensure audible tone
-        setParam(apvts, ParamIDs::osc1Wave, static_cast<float>(r.nextInt(6))); // Saw, Pulse, Tri, Sin, Vox, DWGS
-        setParam(apvts, ParamIDs::osc1Ctrl1, r.nextFloat() * 127.0f);
-        setParam(apvts, ParamIDs::osc1DwgsWave, static_cast<float>(r.nextInt(64)));
+        setParam(apvts, ParamIDs::osc1Wave, static_cast<float>(nextInt(6))); // Saw, Pulse, Tri, Sin, Vox, DWGS
+        setParam(apvts, ParamIDs::osc1Ctrl1, nextFloat() * 127.0f);
+        setParam(apvts, ParamIDs::osc1DwgsWave, static_cast<float>(nextInt(64)));
 
-        setParam(apvts, ParamIDs::osc2Wave, static_cast<float>(r.nextInt(3)));
-        setParam(apvts, ParamIDs::osc2ModType, static_cast<float>(r.nextInt(4)));
-        setParam(apvts, ParamIDs::osc2Semitone, static_cast<float>(r.nextInt(25) - 12)); // +/- 12 semitones
-        setParam(apvts, ParamIDs::osc2Tune, static_cast<float>(r.nextInt(41) - 20));
+        setParam(apvts, ParamIDs::osc2Wave, static_cast<float>(nextInt(3)));
+        setParam(apvts, ParamIDs::osc2ModType, static_cast<float>(nextInt(4)));
+        setParam(apvts, ParamIDs::osc2Semitone, static_cast<float>(nextInt(25) - 12)); // +/- 12 semitones
+        setParam(apvts, ParamIDs::osc2Tune, static_cast<float>(nextInt(41) - 20));
 
         // Mixer: HOT range for OSC1 (80..127), optional OSC2 and subtle noise
-        setParam(apvts, ParamIDs::mixOsc1Level, r.nextFloat() * 47.0f + 80.0f);
-        setParam(apvts, ParamIDs::mixOsc2Level, r.nextFloat() * 127.0f);
-        setParam(apvts, ParamIDs::mixNoiseLevel, r.nextFloat() * 30.0f); // Max 30 noise
+        setParam(apvts, ParamIDs::mixOsc1Level, nextFloat() * 47.0f + 80.0f);
+        setParam(apvts, ParamIDs::mixOsc2Level, nextFloat() * 127.0f);
+        setParam(apvts, ParamIDs::mixNoiseLevel, nextFloat() * 30.0f); // Max 30 noise
 
         // 2. Filter: Bounded sweet spot (Cutoff 40..127, Resonance <= 85)
-        setParam(apvts, ParamIDs::filterType, static_cast<float>(r.nextInt(4)));
-        setParam(apvts, ParamIDs::filterCutoff, r.nextFloat() * 87.0f + 40.0f);
-        setParam(apvts, ParamIDs::filterResonance, r.nextFloat() * 85.0f);
-        setParam(apvts, ParamIDs::filterEg1Int, static_cast<float>(r.nextInt(81) - 40));
-        setParam(apvts, ParamIDs::filterKeyTrack, static_cast<float>(r.nextInt(61) - 30));
+        setParam(apvts, ParamIDs::filterType, static_cast<float>(nextInt(4)));
+        setParam(apvts, ParamIDs::filterCutoff, nextFloat() * 87.0f + 40.0f);
+        setParam(apvts, ParamIDs::filterResonance, nextFloat() * 85.0f);
+        setParam(apvts, ParamIDs::filterEg1Int, static_cast<float>(nextInt(81) - 40));
+        setParam(apvts, ParamIDs::filterKeyTrack, static_cast<float>(nextInt(61) - 30));
 
         // 3. Envelopes: Coupled ADSR to prevent zero-gating
-        setParam(apvts, ParamIDs::eg1Attack, r.nextFloat() * 70.0f);
-        setParam(apvts, ParamIDs::eg1Decay, r.nextFloat() * 90.0f + 20.0f);
-        setParam(apvts, ParamIDs::eg1Sustain, r.nextFloat() * 127.0f);
-        setParam(apvts, ParamIDs::eg1Release, r.nextFloat() * 80.0f + 10.0f);
+        setParam(apvts, ParamIDs::eg1Attack, nextFloat() * 70.0f);
+        setParam(apvts, ParamIDs::eg1Decay, nextFloat() * 90.0f + 20.0f);
+        setParam(apvts, ParamIDs::eg1Sustain, nextFloat() * 127.0f);
+        setParam(apvts, ParamIDs::eg1Release, nextFloat() * 80.0f + 10.0f);
 
-        float eg2Sustain = r.nextFloat() * 127.0f;
+        float eg2Sustain = nextFloat() * 127.0f;
         setParam(apvts, ParamIDs::eg2Sustain, eg2Sustain);
         if (eg2Sustain < 30.0f) {
-            setParam(apvts, ParamIDs::eg2Decay, r.nextFloat() * 60.0f + 50.0f); // Extended decay
+            setParam(apvts, ParamIDs::eg2Decay, nextFloat() * 60.0f + 50.0f); // Extended decay
         } else {
-            setParam(apvts, ParamIDs::eg2Decay, r.nextFloat() * 100.0f);
+            setParam(apvts, ParamIDs::eg2Decay, nextFloat() * 100.0f);
         }
-        setParam(apvts, ParamIDs::eg2Attack, r.nextFloat() * 40.0f); // Snappy attack
-        setParam(apvts, ParamIDs::eg2Release, r.nextFloat() * 70.0f + 10.0f);
+        setParam(apvts, ParamIDs::eg2Attack, nextFloat() * 40.0f); // Snappy attack
+        setParam(apvts, ParamIDs::eg2Release, nextFloat() * 70.0f + 10.0f);
 
         // 4. LFOs
-        setParam(apvts, ParamIDs::lfo1Wave, static_cast<float>(r.nextInt(4)));
-        setParam(apvts, ParamIDs::lfo1Freq, r.nextFloat() * 90.0f + 10.0f);
-        setParam(apvts, ParamIDs::lfo2Wave, static_cast<float>(r.nextInt(4)));
-        setParam(apvts, ParamIDs::lfo2Freq, r.nextFloat() * 90.0f + 10.0f);
+        setParam(apvts, ParamIDs::lfo1Wave, static_cast<float>(nextInt(4)));
+        setParam(apvts, ParamIDs::lfo1Freq, nextFloat() * 90.0f + 10.0f);
+        setParam(apvts, ParamIDs::lfo2Wave, static_cast<float>(nextInt(4)));
+        setParam(apvts, ParamIDs::lfo2Freq, nextFloat() * 90.0f + 10.0f);
 
         // 5. Virtual Patch Matrix (50% probability per slot, moderate intensity -40..+40)
         auto randomPatchSlot = [&](const char* srcId, const char* destId, const char* intId) {
-            if (r.nextBool()) {
-                setParam(apvts, srcId, static_cast<float>(r.nextInt(8)));
-                setParam(apvts, destId, static_cast<float>(r.nextInt(8)));
-                setParam(apvts, intId, static_cast<float>(r.nextInt(81) - 40));
+            if (nextBool()) {
+                setParam(apvts, srcId, static_cast<float>(nextInt(8)));
+                setParam(apvts, destId, static_cast<float>(nextInt(8)));
+                setParam(apvts, intId, static_cast<float>(nextInt(81) - 40));
             } else {
                 setParam(apvts, intId, 0.0f);
             }
@@ -175,7 +188,7 @@ public:
         randomPatchSlot(ParamIDs::patch4Source, ParamIDs::patch4Destination, ParamIDs::patch4Intensity);
 
         // Subtle 15% overdrive chance
-        setParam(apvts, ParamIDs::ampDistortion, (r.nextFloat() > 0.85f) ? 1.0f : 0.0f);
+        setParam(apvts, ParamIDs::ampDistortion, (nextFloat() > 0.85f) ? 1.0f : 0.0f);
     }
 
 private:

@@ -1,8 +1,18 @@
+// ============================================================
+// Voice.cpp - Implementación del motor DSP de voz individual del MS2000/microKORG
+// ============================================================
+
 #include "Voice.h"
 #include <cmath>
 
 namespace ABDMS2000 {
 
+/**
+ * @brief Prepara el Voice para un nuevo sample rate.
+ * 
+ * Inicializa todos los osciladores, envolventes, LFOs y el generador de ruido.
+ * @param sampleRate Nuevo sample rate (se asegura que sea > 1000 Hz).
+ */
 void Voice::prepare(double sampleRate) noexcept
 {
     sampleRate_ = (sampleRate > 1000.0) ? sampleRate : 44100.0;
@@ -20,6 +30,11 @@ void Voice::prepare(double sampleRate) noexcept
     reset();
 }
 
+/**
+ * @brief Restablece el Voice a su estado inicial.
+ * 
+ * Apaga todos los osciladores, filtros, envolventes, LFOs y reinicia el generador de ruido.
+ */
 void Voice::reset() noexcept
 {
     osc1VA_.reset();
@@ -36,6 +51,16 @@ void Voice::reset() noexcept
     prevMasterPhase_ = 0.0f;
 }
 
+/**
+ * @brief Inicia una nueva nota (noteOn MIDI).
+ * 
+ * Configura la nota, velocidad, tiempo de glide y arranca las envolventes (a menos que sea legato).
+ * @param midiNote Nota MIDI (0-127).
+ * @param velocity Velocidad (0.0-1.0).
+ * @param glideEnabled true si el tiempo de glide está activado.
+ * @param isFirstTimbreNote true si esta es la primera nota del timbre actual.
+ * @param isLegato true si la nota es parte de un legato (no se reinician envolventes).
+ */
 void Voice::noteOn(int midiNote, float velocity, bool glideEnabled, bool isFirstTimbreNote, bool isLegato) noexcept
 {
     currentMidiNote_ = midiNote;
@@ -60,28 +85,51 @@ void Voice::noteOn(int midiNote, float velocity, bool glideEnabled, bool isFirst
     lfo2_.triggerKeySync(isFirstTimbreNote);
 }
 
+/**
+ * @brief Detiene una nota (noteOff MIDI).
+ * 
+ * Solo detiene las envolventes (la liberación continúa hacia silence).
+ */
 void Voice::noteOff() noexcept
 {
     eg1_.noteOff();
     eg2_.noteOff();
 }
 
+/**
+ * @brief Detiene inmediatamente la voz (usar en stealage).
+ */
 void Voice::stopImmediately() noexcept
 {
     eg1_.reset();
     eg2_.reset();
 }
 
+/**
+ * @brief Indica si la voz está aún activa (en release o attack).
+ * @return true si la envolvente principal aún está activa.
+ */
 bool Voice::isActive() const noexcept
 {
     return !eg2_.isIdle();
 }
 
+/**
+ * @brief Obtiene el nivel actual de la envolvente principal (VCA).
+ * @return Nivel de la envolvente 2 (0.0-1.0).
+ */
 float Voice::getCurrentAmpLevel() const noexcept
 {
     return eg2_.getCurrentLevel();
 }
 
+/**
+ * @brief Aplica todos los parámetros estáticos del bloque actual.
+ * 
+ * Este método se llama una vez por bloque de audio y establece todos los valores
+ * no por muestra (tiempos de envolvente, tipos de onda, índices de wave, etc.).
+ * @param params Parámetros completos del VoiceParameters.
+ */
 void Voice::applyBlockParams(const VoiceParameters& params) noexcept
 {
     cachedParams_ = params;
@@ -138,6 +186,16 @@ void Voice::applyBlockParams(const VoiceParameters& params) noexcept
     filter_.setResonance(params.filterResonance);
 }
 
+/**
+ * @brief Renderiza una muestra mono- o stereo- por muestra.
+ * 
+ * Este es el método central del motor: calcula pitch, envolventes, LFOs,
+ * realiza el ruteo de modulación, renderiza osciladores y aplica el procesamiento DSP completo.
+ * @param leftOut Referencia al acumulador de salida izquierda (additivo).
+ * @param rightOut Referencia al acumulador de salida derecha (additivo).
+ * @param diagPoint Punto de inyección de tono diagnóstico (0-5) o 0 si no.
+ * @param diagTone Valor del tono de diagnóstico a inyectar.
+ */
 void Voice::renderNextSample(float& leftOut, float& rightOut, int diagPoint, float diagTone) noexcept
 {
     const VoiceParameters& p = cachedParams_;
@@ -281,79 +339,4 @@ void Voice::renderNextSample(float& leftOut, float& rightOut, int diagPoint, flo
         float veloOctaves  = p.filterVeloSens * velocity_ * 5.0f;
         float cutoffHz     = baseHz * std::pow(2.0f, egOctaves + kbdOctaves + patchOctaves + veloOctaves);
 
-        filter_.setCutoff(cutoffHz);
-        filtered = filter_.process(mixedAudio);
-    }
-
-    // 12. Distortion — between Filter and VCA per MS2000 block diagram (Section 5.1)
-    //     MS2000 distortion is a fixed-drive on/off toggle that saturates the post-filter signal.
-    if (p.distortionOn && !p.diagBypassDistortion)
-    {
-        filtered = DSPUtils::ampDistortion(filtered, 0.85f);
-    }
-
-    // 13. VCA (Amp) stage
-    float vcaOut = filtered;
-    if (!p.diagBypassVCA)
-    {
-        float amp = DSPUtils::clamp(p.ampLevel + mod.ampMod + p.seq.amp, 0.0f, 1.0f);
-        // AMP VELO del byte 28 (±63): con intensidad positiva la velocidad abre el VCA
-        // (a fondo: −63 dB a velocidad 0) y con negativa lo cierra al subir la velocidad.
-        // A 0 queda plano: la única vía de la velocidad al nivel es este control.
-        const float veloSens = p.ampVeloSens;
-        const float veloGain = DSPUtils::clamp((veloSens >= 0.0f)
-            ? ((1.0f - veloSens) + (veloSens * velocity_))
-            : (1.0f + (veloSens * velocity_)), 0.0f, 1.0f);
-        vcaOut = filtered * eg2Raw * amp * veloGain;
-    }
-
-    // 14. Stereo pan — Constant Equal-Power law (trigonometric -3dB quadrant)
-    float effPan = DSPUtils::clamp(p.panpot + (mod.panMod * 0.5f) + (p.seq.pan * 0.5f), -1.0f, 1.0f);
-    float angle  = (effPan * 0.5f + 0.5f) * (DSPUtils::PI * 0.5f); // [0, PI/2]
-    float lGain  = std::cos(angle);
-    float rGain  = std::sin(angle);
-
-    leftOut  += vcaOut * lGain;
-    rightOut += vcaOut * rGain;
-
-    lastDiagStats_ = { basePitch, osc1Sig, mixedAudio, filtered, eg1Val, eg2Val, vcaOut, lGain, rGain, vcaOut * lGain, vcaOut * rGain };
-}
-
-void Voice::renderDiagnosticSample(float& leftOut, float& rightOut, int diagPoint, float diagTone) noexcept
-{
-    const auto& p = cachedParams_;
-    float mixedAudio = diagTone;
-    if (diagPoint == 5) // OscillatorDirect: apply osc1Level
-    {
-        float osc1Level = p.diagBypassOscMixer ? 1.0f : p.osc1Level;
-        mixedAudio = diagTone * osc1Level;
-    }
-
-    // Filter stage
-    float filtered = mixedAudio;
-    if (!p.diagBypassFilter)
-    {
-        float baseHz = DSPUtils::convertSysExToCutoffHz(p.filterCutoffNorm);
-        filter_.setCutoff(baseHz);
-        filtered = filter_.process(mixedAudio);
-    }
-
-    // VCA stage
-    float vcaOut = filtered;
-    if (!p.diagBypassVCA)
-    {
-        float amp = DSPUtils::clamp(p.ampLevel, 0.0f, 1.0f);
-        vcaOut = filtered * amp;
-    }
-
-    // Pan
-    float angle = (p.panpot * 0.5f + 0.5f) * (DSPUtils::PI * 0.5f);
-    float lGain = std::cos(angle);
-    float rGain = std::sin(angle);
-    leftOut += vcaOut * lGain;
-    rightOut += vcaOut * rGain;
-
-    lastDiagStats_ = { 60.0f, 0.0f, mixedAudio, filtered, 0.0f, 1.0f, vcaOut, lGain, rGain, vcaOut * lGain, vcaOut * rGain };
-}
-
-} // namespace ABDMS2000
+        filter

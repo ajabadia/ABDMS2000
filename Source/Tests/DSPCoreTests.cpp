@@ -44,10 +44,13 @@ using abd::hw::SysExCodec;
 namespace ABDMS2000 {
 namespace Tests {
 
-static int testsPassed = 0;
-static int testsFailed = 0;
+// Ni los contadores ni `check` son `static` desde que la suite tiene mas de un
+// fichero: `DSPCoreTests_EqualizerParity.cpp` llama a `check` desde el suyo, y
+// un `static` aqui lo dejaria sin ver. Se declaran en `TestCompat.h`.
+int testsPassed = 0;
+int testsFailed = 0;
 
-static void check(bool condition, const char* testName) {
+void check(bool condition, const char* testName) {
     if (condition) {
         testsPassed++;
         printf("  [PASS] %s\n", testName);
@@ -2219,11 +2222,19 @@ static void testEngineExtension() {
  * pila de cada uno se libera al volver, así que no hace falta tocar el tamaño de pila del
  * ejecutable (ver DOCS/ABDSYNTHS_SYSEX_GUIDE.md §10).
  */
+/** Los casos que viven en OTRO fichero, y por eso no son `static` como los de
+    arriba. La paridad del ecualizador esta en
+    `DSPCoreTests_EqualizerParity.cpp` porque lleva consigo una copia congelada
+    de la implementacion anterior, y esa copia no tiene nada que ver con esta
+    horquilla. */
+void testEqualizerParity();
+
 static void runAllTests()
 {
     testDspUtils();
     testEnvelopeCurves();
     testLfo();
+    testEqualizerParity();
     testFilterResonanceComp();
     testVoxWaveOscillator();
     testMidiMapTelemetry();

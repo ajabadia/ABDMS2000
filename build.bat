@@ -12,29 +12,29 @@ REM Ver Scripts/SYNC_DOCUMENTATION.md para el inventario completo de sincronizac
 node Scripts/sync_bankmanager.js
 if %ERRORLEVEL% neq 0 (
     echo [ERROR] Fallo al sincronizar ABDBankManager.
-    exit /b %ERRORLEVEL%
+    goto error_exit
 )
 node Scripts/sync_bankmanager_ui.js
 if %ERRORLEVEL% neq 0 (
     echo [ERROR] Fallo al sincronizar BankManagerModal desde packages/ui.
-    exit /b %ERRORLEVEL%
+    goto error_exit
 )
 node Scripts/sync_scope.js
 if %ERRORLEVEL% neq 0 (
     echo [ERROR] Fallo al sincronizar ABDScope.
-    exit /b %ERRORLEVEL%
+    goto error_exit
 )
 node Scripts/sync_assets.js
 if %ERRORLEVEL% neq 0 (
     echo [ERROR] Fallo al sincronizar ABDSharedAssets.
-    exit /b %ERRORLEVEL%
+    goto error_exit
 )
 
 echo [1/6] Generando registros y contratos...
 node Scripts/registry_generator.js
 if %ERRORLEVEL% neq 0 (
     echo [ERROR] Fallo al generar los registros.
-    exit /b %ERRORLEVEL%
+    goto error_exit
 )
 
 REM Identidad del host (Source/Plugin/HostModelId.gen.h) desde el contrato
@@ -42,7 +42,7 @@ REM canonico ya sincronizado en WebUI/abdbank (fuente unica: korgAbdSm002Contrac
 node Scripts/generate_host_model_id.js
 if %ERRORLEVEL% neq 0 (
     echo [ERROR] Fallo al generar HostModelId.gen.h.
-    exit /b %ERRORLEVEL%
+    goto error_exit
 )
 
 REM Tramas Korg del contrato (Source/MIDI/KorgChannel.gen.h) desde el mismo contrato
@@ -51,35 +51,37 @@ REM (Test 25 de DSPCoreTests.cpp consume estas tramas). Ver Scripts/generate_kor
 node Scripts/generate_korg_channel.js
 if %ERRORLEVEL% neq 0 (
     echo [ERROR] Fallo al generar KorgChannel.gen.h.
-    exit /b %ERRORLEVEL%
+    goto error_exit
 )
 
 echo [2/6] Compilando modulo WebAssembly WASM...
-call wasm\build_wasm.bat
+pushd wasm
+call build_wasm.bat
+popd
 if %ERRORLEVEL% neq 0 (
     echo [ERROR] Fallo en la compilacion WebAssembly WASM.
-    exit /b %ERRORLEVEL%
+    goto error_exit
 )
 
 echo [3/6] Actualizando version de build y empaquetado WebUI...
 node Scripts/build_webui.js
 if %ERRORLEVEL% neq 0 (
     echo [ERROR] Fallo al empaquetar WebUI.
-    exit /b %ERRORLEVEL%
+    goto error_exit
 )
 
 echo [4/6] Configurando CMake...
 cmake -B build -S . -DCMAKE_BUILD_TYPE=Release
 if %ERRORLEVEL% neq 0 (
     echo [ERROR] Fallo en la configuracion de CMake.
-    exit /b %ERRORLEVEL%
+    goto error_exit
 )
 
 echo [5/6] Compilando Standalone y VST3...
 cmake --build build --config Release --target ABDMS2000_All
 if %ERRORLEVEL% neq 0 (
     echo [ERROR] Fallo en la compilacion de Standalone y VST3.
-    exit /b %ERRORLEVEL%
+    goto error_exit
 )
 
 echo =======================================================
@@ -89,5 +91,16 @@ echo  VST3:       build\ABDMS2000_artefacts\Release\VST3\ABDMS2000.vst3
 echo =======================================================
 
 echo.
+echo Presione una tecla para cerrar esta ventana...
+pause >nul
+
 echo [LANZANDO] Iniciando ABDMS2000 Standalone...
 start "" "build\ABDMS2000_artefacts\Release\Standalone\ABDMS2000.exe"
+
+exit /b 0
+
+:error_exit
+echo.
+echo [ERROR] Presione una tecla para cerrar esta ventana...
+pause >nul
+exit /b %ERRORLEVEL%

@@ -47,6 +47,10 @@ void MIDITelemetryManager::processIncomingMidi(juce::MidiBuffer& midiMessages) n
             int ccNum = msg.getControllerNumber();
             int ccVal = msg.getControllerValue();
 
+            // Echo suppression with TTL (300ms window)
+            if (echoSuppressionEnabled_ && isEcho(msg))
+                continue;
+
             // 1. Check for NRPN sequence
             if (ccNum == 99 || ccNum == 98 || ccNum == 6 || ccNum == 38)
             {
@@ -91,6 +95,7 @@ void MIDITelemetryManager::processIncomingMidi(juce::MidiBuffer& midiMessages) n
                     }
                 }
             }
+            registerEcho(msg);
         }
     }
 }
@@ -160,6 +165,48 @@ void MIDITelemetryManager::parameterChanged(const juce::String& parameterID, flo
             activityCallback_({ midiChannel_, -1, midiVal, false, info->paramId });
         }
     }
+}
+
+bool MIDITelemetryManager::isEcho(const juce::MidiMessage& msg) noexcept
+{
+    if (!msg.isController())
+        return false;
+
+    uint64_t now = juce::Time::getMillisecondCounterHiRes() * 1000;
+    int ccNum = msg.getControllerNumber();
+    int ch = msg.getChannel();
+
+    size_t writePos = pendingWritePos_.load(std::memory_order_relaxed);
+    for (size_t i = 0; i < kMaxPendingTransactions; ++i)
+    {
+        size_t idx = (writePos + kMaxPendingTransactions - 1 - i) % kMaxPendingTransactions;
+        const auto& t = pendingTransactions_[idx];
+        if (t.timestamp == 0)
+            break;
+
+        if (now - t.timestamp > kEchoTTLMs * 1000)
+            break;
+
+        if (t.ccNum == ccNum && t.channel == ch)
+            return true;
+    }
+    return false;
+}
+
+void MIDITelemetryManager::registerEcho(const juce::MidiMessage& msg) noexcept
+{
+    if (!msg.isController())
+        return;
+
+    PendingTransaction t;
+    t.ccNum = msg.getControllerNumber();
+    t.channel = msg.getChannel();
+    t.value = static_cast<float>(msg.getControllerValue()) / 127.0f;
+    t.timestamp = juce::Time::getMillisecondCounterHiRes() * 1000;
+
+    size_t writePos = pendingWritePos_.load(std::memory_order_relaxed);
+    pendingTransactions_[writePos] = t;
+    pendingWritePos_.store((writePos + 1) % kMaxPendingTransactions, std::memory_order_release);
 }
 
 } // namespace ABDMS2000

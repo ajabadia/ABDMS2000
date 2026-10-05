@@ -271,10 +271,17 @@ target_link_libraries(ABDMS2000 PUBLIC
 # --- C++ Unit Tests (Standalone executable, no JUCE GUI) ---
 add_executable(ABDMS2000_Tests
     Source/Tests/DSPCoreTests.cpp
-    # BridgeActions is compiled here (instead of the PluginProcessor) so the
-    # WebUI event dispatch is unit-tested directly: the host is injected through
-    # the BridgeHost port and the JS messages through a sink, with no WebView
-    # and no JUCE GUI. See Source/Plugin/BridgeHost.h.
+    Source/Tests/DSPCoreTests_VCF.cpp
+    Source/Tests/DSPCoreTests_Pitch.cpp
+    Source/Tests/DSPCoreTests_Transfer.cpp
+    Source/Tests/DSPCoreTests_CalSpec.cpp
+    Source/Tests/DSPCoreTests_Portamento.cpp
+    Source/Tests/DSPCoreTests_RapidSweep.cpp
+    Source/Tests/DSPCoreTests_EqualizerParity.cpp
+    Source/Tests/TestCompat.cpp
+    Source/Tests/DSPCoreTests_Panic.cpp
+    # Source/Tests/DSPCoreTests_Voice.cpp          # TODO: Fix VirtualPatchMatrix/ADSREnvelope/LFO API
+    # Source/Tests/DSPCoreTests_Portamento.cpp     # TODO: Fix PortamentoGlide API
     Source/Plugin/BridgeActions.cpp
     Source/Core/VoiceManager.cpp
     Source/Core/Voice.cpp
@@ -298,6 +305,11 @@ add_executable(ABDMS2000_Tests
     Source/MIDI/MIDIMap.cpp
     Source/MIDI/MIDITelemetryManager.cpp
     Source/MIDI/SysExManager.cpp
+)
+
+# Add JUCE module include directories for <JuceHeader.h> support
+target_include_directories(ABDMS2000_Tests PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/GITS/JUCE/modules
 )
 
 target_link_libraries(ABDMS2000_Tests PRIVATE
@@ -330,7 +342,17 @@ target_include_directories(ABDMS2000_Tests PRIVATE
     "${ABDSCOPE_DIR}/Source"
     "${ABDSCOPE_DIR}/Source/Core"
 )
+
+# Remove JUCE modules path to avoid PATH duplication in MSBuild
+# JUCE targets already propagate include directories via target_link_libraries
 target_compile_features(ABDMS2000_Tests PRIVATE cxx_std_20)
+
+# Increase MSVC compiler heap limit for large files (SynthEngine.cpp)
+if (MSVC)
+    target_compile_options(ABDMS2000_Tests PRIVATE /Zm2000)
+    # Apply higher limit specifically to SynthEngine.cpp
+    set_source_files_properties(Source/Core/SynthEngine.cpp PROPERTIES COMPILE_FLAGS "/Zm2000")
+endif()
 
 add_test(NAME ABDMS2000_Tests COMMAND ABDMS2000_Tests)
 

@@ -36,7 +36,7 @@ float BiquadBPF::process(float in) noexcept
 
 void Vocoder16Band::prepare(double sampleRate) noexcept
 {
-    sampleRate_ = (sampleRate > 1000.0) ? sampleRate : 44100.0;
+    sampleRate_ = DSPUtils::validateSampleRate(sampleRate);
     whiteNoiseGen_.reset(0xABCDEF12);
 
     for (size_t i = 0; i < NUM_BANDS; ++i)

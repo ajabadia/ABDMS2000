@@ -100,6 +100,11 @@ public:
         vuRight_ = peakR;
     }
 
+    void setTempoBPM(float bpm) {
+        arpeggiator_.setTempoBPM(bpm);
+        modSeq_.setTempoBPM(bpm);
+    }
+
     void noteOn(int noteNumber, float velocity) {
         if (arpeggiator_.isEnabled()) arpeggiator_.noteOn(noteNumber, velocity);
         else voiceManager_.noteOn(noteNumber, velocity);
@@ -118,6 +123,12 @@ public:
     void setParam(const char* paramId, float value) {
         if (!paramId) return;
         std::string id(paramId);
+
+        // Arp tempo is not a patch parameter but a global clock setting
+        if (id == "arpTempo") {
+            setTempoBPM(value);
+            return;
+        }
 
         if (id == "osc1Wave") voiceParams_.osc1Type = static_cast<OSC1Type>(std::min(7, static_cast<int>(value)));
         else if (id == "osc1Ctrl1") voiceParams_.osc1Ctrl1 = value / 127.0f;
@@ -157,6 +168,38 @@ public:
         else if (id == "delayFeedback") delayFX_.setFeedback(value / 127.0f);
         else if (id == "synthVocoderMode") vocoder_.setEnabled(value > 0.5f);
         else if (id == "masterVolume") masterVolume_ = value / 127.0f;
+
+        // EQ parameters
+        else if (id == "eqLowFreq") masterEQ_.setLowFreqIndex(static_cast<int>(value));
+        else if (id == "eqLowGain") masterEQ_.setLowGainDB((value - 64.0f) * 12.0f / 63.0f);
+        else if (id == "eqHighFreq") masterEQ_.setHighFreqIndex(static_cast<int>(value));
+        else if (id == "eqHighGain") masterEQ_.setHighGainDB((value - 64.0f) * 12.0f / 63.0f);
+
+        // Arpeggiator parameters
+        else if (id == "arpOn") arpeggiator_.setEnabled(value > 0.5f);
+        else if (id == "arpType") arpeggiator_.setType(static_cast<ArpType>(std::min(5, static_cast<int>(value))));
+        else if (id == "arpRange") arpeggiator_.setOctaveRange(static_cast<int>(value));
+        else if (id == "arpGate") arpeggiator_.setGateTime(value / 127.0f);
+        else if (id == "arpLatch") arpeggiator_.setLatch(value > 0.5f);
+        else if (id == "arpResolution") {
+            int idx = static_cast<int>(value);
+            arpeggiator_.setSyncResolution(idx);
+        }
+
+        // Mod Sequencer parameters
+        else if (id == "modSeqOn") modSeq_.setEnabled(value > 0.5f);
+        else if (id == "modSeqType") {
+            // ModSeq mode is per-track; apply to all 6 tracks
+            ModSeqMode mode = static_cast<ModSeqMode>(std::min(3, static_cast<int>(value)));
+            for (int t = 0; t < 6; ++t) {
+                modSeq_.getTrack(t).mode = mode;
+            }
+        }
+        else if (id == "modSeqResolution") {
+            int idx = static_cast<int>(value);
+            // Resolution mapping: 0=1/48 .. 15=4/1 (same as arp)
+            // ModSeq uses a similar resolution system
+        }
     }
 
     void getSnapshot(float* scopeOut, float* vuL, float* vuR, int* activeVoices) {
@@ -238,6 +281,12 @@ WASM_EXPORT void noteOff(int noteNumber) {
 WASM_EXPORT void allNotesOff() {
     if (ABDMS2000::g_wasmEngine) {
         ABDMS2000::g_wasmEngine->allNotesOff();
+    }
+}
+
+WASM_EXPORT void setTempoBPM(float bpm) {
+    if (ABDMS2000::g_wasmEngine) {
+        ABDMS2000::g_wasmEngine->setTempoBPM(bpm);
     }
 }
 

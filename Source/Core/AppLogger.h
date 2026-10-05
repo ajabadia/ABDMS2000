@@ -54,5 +54,62 @@ public:
 #define ABD_LOG(msg) ::ABDMS2000::AppLogger::log(msg)
 
 } // namespace ABDMS2000
+#pragma once
+#include <juce_core/juce_core.h>
+#include <fstream>
+#include <iostream>
+#include <mutex>
+#include <chrono>
+#include <iomanip>
+#include <sstream>
+#include <filesystem>
 
+namespace ABDMS2000 {
 
+class AppLogger {
+public:
+    static void log(const juce::String& message, const char* file, int line) {
+        static std::mutex logMutex;
+        std::lock_guard<std::mutex> lock(logMutex);
+
+        auto now = std::chrono::system_clock::now();
+        auto now_time = std::chrono::system_clock::to_time_t(now);
+        auto now_ms = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
+
+        std::ostringstream timeStream;
+        timeStream << std::put_time(std::localtime(&now_time), "[%Y-%m-%d %H:%M:%S") << "." << std::setfill('0') << std::setw(3) << now_ms.count() << "] ";
+
+        std::string fullStr = timeStream.str() + message.toRawUTF8() + " [" + file + ":" + std::to_string(line) + "]\n";
+        const char* utf8 = fullStr.c_str();
+
+        std::cout << utf8;
+        std::cout.flush();
+
+        static const std::vector<std::string> logPaths = {
+            "standalone_debug.log",
+            "D:\\\\desarrollos\\\\ABDSynths\\\\ABDMS2000\\\\standalone_debug.log",
+            "C:\\\\Users\\\\ajaba\\\\AppData\\\\Local\\\\Temp\\\\ABDMS2000_debug.log"
+        };
+
+        for (const auto& path : logPaths) {
+            try {
+                std::filesystem::path logPath(path);
+                if (!std::filesystem::exists(logPath.parent_path())) {
+                    std::filesystem::create_directories(logPath.parent_path());
+                }
+
+                std::ofstream logFile(logPath, std::ios::app);
+                if (logFile.is_open()) {
+                    logFile << utf8;
+                    logFile.flush();
+                }
+            } catch (const std::exception& e) {
+                std::cerr << "Error writing to log file " << path << ": " << e.what() << std::endl;
+            }
+        }
+    }
+};
+
+#define ABD_LOG(msg) ::ABDMS2000::AppLogger::log(msg, __FILE__, __LINE__)
+
+} // namespace ABDMS2000
