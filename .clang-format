@@ -5,7 +5,7 @@
 
 BasedOnStyle: LLVM
 Language: Cpp
-Standard: Cpp20
+Standard: c++20
 
 # Indentation
 IndentWidth: 4
@@ -82,11 +82,9 @@ PenaltyBreakString: 1000
 PenaltyExcessCharacter: 1000000
 PenaltyReturnTypeOnItsOwnLine: 60
 PointerBindsToType: false
-ReferenceBindsToType: false
 SortIncludes: CaseSensitive
 SpaceAfterTemplateKeyword: true
 SpaceBeforeCpp11BracedList: true
-SpaceBeforeParens: ControlStatements
 SpaceBeforeRangeBasedForLoopColon: true
 SpacesBeforeTrailingComments: 2
 SpacesInCStyleCastParentheses: false
