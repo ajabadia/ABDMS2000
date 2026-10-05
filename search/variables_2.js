@@ -10,7 +10,7 @@ var searchData=
   ['ccnum_7',['ccNum',['../structABDMS2000_1_1MIDITelemetryManager_1_1PendingTransaction.html#aa0d04c6221a4ecd2eea8336bab79061f',1,'ABDMS2000::MIDITelemetryManager::PendingTransaction']]],
   ['ccnumber_8',['ccnumber',['../structABDMS2000_1_1MidiActivityEvent.html#ac5ad40750e032896c2c8e4ae61167260',1,'ABDMS2000::MidiActivityEvent::ccNumber'],['../structABDMS2000_1_1MIDICCInfo.html#a619ce108f21df31bb5c246493b1bab36',1,'ABDMS2000::MIDICCInfo::ccNumber']]],
   ['channel_9',['channel',['../structABDMS2000_1_1MidiActivityEvent.html#a8d129f1bc92e55ff9d1eb11268d57fd2',1,'ABDMS2000::MidiActivityEvent::channel'],['../structABDMS2000_1_1MIDITelemetryManager_1_1PendingTransaction.html#af33e56e4f7974bb9307da7b957244397',1,'ABDMS2000::MIDITelemetryManager::PendingTransaction::channel']]],
-  ['choices_10',['choices',['../structABDMS2000_1_1ParameterMeta.html#a0dd8e8f54c0053164cc1b7213d00160e',1,'ABDMS2000::ParameterMeta']]],
+  ['choices_10',['choices',['../structABDMS2000_1_1ParameterMeta.html#aadd3885c90ffaf8682a661079dfe9060',1,'ABDMS2000::ParameterMeta']]],
   ['chorusbufferl_5f_11',['chorusBufferL_',['../classABDMS2000_1_1ModFX.html#acdb415a5d15a3b58bdda190b5cf8dd39',1,'ABDMS2000::ModFX']]],
   ['chorusbufferr_5f_12',['chorusBufferR_',['../classABDMS2000_1_1ModFX.html#a3f04fc01eca9e93e5ef964eb472a3fcd',1,'ABDMS2000::ModFX']]],
   ['chorusmaxsamples_5f_13',['chorusMaxSamples_',['../classABDMS2000_1_1ModFX.html#af5181940a007c95d1bc204097f40aa7f',1,'ABDMS2000::ModFX']]],

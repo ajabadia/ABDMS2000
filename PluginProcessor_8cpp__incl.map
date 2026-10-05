@@ -45,9 +45,9 @@
 <area shape="poly" id="edge10_Node000008_Node000010" title=" " alt="" coords="1581,363,1553,371,1451,384,1315,396,989,413,452,429,452,424,989,408,1314,391,1450,379,1552,365,1580,358"/>
 <area shape="poly" id="edge11_Node000008_Node000011" title=" " alt="" coords="1578,363,1553,371,1431,400,1327,421,1326,416,1430,395,1552,365,1577,358"/>
 <area shape="poly" id="edge17_Node000015_Node000010" title=" " alt="" coords="404,361,409,402,403,402,399,361"/>
-<area shape="poly" id="edge19_Node000015_Node000011" title=" " alt="" coords="477,358,536,365,942,402,1237,422,1237,427,942,407,535,371,476,363"/>
+<area shape="poly" id="edge18_Node000015_Node000011" title=" " alt="" coords="477,358,536,365,942,402,1237,422,1237,427,942,407,535,371,476,363"/>
 <area shape="rect" id="Node000016" title=" " alt="" coords="231,416,355,441"/>
-<area shape="poly" id="edge18_Node000015_Node000016" title=" " alt="" coords="386,363,321,410,318,406,383,359"/>
+<area shape="poly" id="edge19_Node000015_Node000016" title=" " alt="" coords="386,363,321,410,318,406,383,359"/>
 <area shape="poly" id="edge21_Node000017_Node000003" title=" " alt="" coords="2858,272,2426,334,2425,329,2857,266"/>
 <area shape="rect" id="Node000018" href="$HardwareMidiTransport_8h.html" title=" " alt="" coords="3461,335,3647,361"/>
 <area shape="poly" id="edge22_Node000017_Node000018" title=" " alt="" coords="2965,264,3177,289,3449,325,3480,330,3479,336,3448,331,3176,294,2965,270"/>

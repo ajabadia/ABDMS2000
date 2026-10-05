@@ -28,7 +28,7 @@ var searchData=
   ['checkhardsync_25',['checkHardSync',['../classABDMS2000_1_1OSC2Modulator.html#a5fbdc124824c8f6ab55e233c03ae68cd',1,'ABDMS2000::OSC2Modulator']]],
   ['chip8bit_26',['Chip8Bit',['../namespaceABDMS2000.html#ace60b19366c10d097c16040807dbb0a5ae87c3c77b684e6cab82a1f59de869e4d',1,'ABDMS2000']]],
   ['choice_27',['Choice',['../namespaceABDMS2000.html#a0dcdf0d091b26a2cc31824179dcb7070a458b9dcc0921f46b1192427426d59c10',1,'ABDMS2000']]],
-  ['choices_28',['choices',['../structABDMS2000_1_1ParameterMeta.html#a0dd8e8f54c0053164cc1b7213d00160e',1,'ABDMS2000::ParameterMeta']]],
+  ['choices_28',['choices',['../structABDMS2000_1_1ParameterMeta.html#aadd3885c90ffaf8682a661079dfe9060',1,'ABDMS2000::ParameterMeta']]],
   ['chooser_29',['GM Program Chooser',['../index.html',1,'']]],
   ['chorus_20mod_20fx_20efectos_20de_20modulación_30',['10. CHORUS/MOD FX (Efectos de Modulación)',['../md_DOCS_2korg__ms2000__menu__map.html#autotoc_md17',1,'']]],
   ['chorusbufferl_5f_31',['chorusBufferL_',['../classABDMS2000_1_1ModFX.html#acdb415a5d15a3b58bdda190b5cf8dd39',1,'ABDMS2000::ModFX']]],
