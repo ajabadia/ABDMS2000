@@ -1,0 +1,348 @@
+name: Sibling Sync Check
+
+# QUE COMPRUEBA, Y POR QUE HACE FALTA
+#
+# ABDMS2000 tiene dentro de si cuatro directorios que NO son suyos: los logos y
+# las imagenes de modelo vienen de ABDSharedAssets, el WebUI del bank manager de
+# ABDBankManager, el modal del paquete @abdsynths/bank-manager-ui, y el WebUI de
+# ABDScope. Los cuatro se copian con `Scripts/sync_*.js`, y los cuatro BORRAN el
+# destino antes de copiar — es una sustitucion, no una copia encima.
+#
+# Este workflow comprueba el unico desfase que se puede dejar committed: que lo que
+# hay commiteado en este repo sea lo que sale de los origenes. El nombre de los
+# scripts lo dice: `sync_assets`, `sync_bankmanager`, `sync_bankmanager_ui`,
+# `sync_scope`.
+#
+# LO QUE ESTE JOB HACE, Y POR QUE NO ES "LANZAR LOS --check"
+#
+# La idea obvia seria clonar los hermanos y ejecutar los cuatro `--check`. En un
+# checkout limpio eso NO funciona, y no por una casualidad del entorno: por la
+# forma en que estan declarados los destinos.
+#
+#   · `WebUI/abdbank/` y `WebUI/abdscope/` estan en `.gitignore`. En un clon limpio
+#     no existen, asi que su `--check` responde «se anadirian 87» / «se anadirian 22»
+#     y sale en rojo siempre. Ese rojo no es un desfase: es que la carpeta no esta,
+#     y el unico modo de callarlo —sincronizar antes de comprobar— es precisamente
+#     lo que hace este job.
+#   · `sync_bankmanager_ui` no tiene origen en ningun clon. Ver abajo.
+#
+# Asi que el orden es el inverso del intuitivo, y a proposito:
+#
+#     1. SINCRONIZAR de verdad, con los scripts de verdad.
+#     2. MIRAR si eso ha cambiado algo COMMITTED. Si lo ha cambiado, hay un desfase
+#        y el job falla nombrando los ficheros.
+#     3. Solo entonces, lanzar los `--check`: tienen que salir verdes, porque acabamos
+#        de dejar el arbol en el estado que ellos describen. Es la comprobacion de que
+#        la sincronizacion es idempotente y de que el `--check` sabe decir «al dia».
+#
+# El paso 2 es el que detecta el problema real, y funciona precisamente porque el
+# clon empieza limpio: cualquier cambio que aparezca es algo que este repo tiene mal.
+#
+# LO QUE ESTE JOB NO COMPRUEBA, Y LO DICE EN VOZ ALTA
+#
+#   · `WebUI/abdbank/` y `WebUI/abdscope/` no estan versionados. No hay nada
+#     committed que pueda estar desfasado, porque no hay nada committed. El job
+#     verifica que la copia se produce y es reproducible, y su exit code es real,
+#     pero NO puede decir que el destino que se sirve al navegador sea el que
+#     alguien espera. El paso "Informe" lo dice con un `::notice::`, porque un paso
+#     que pasa en verde sin decir que no puede mirar lo que uno creeria que mira es
+#     como un guard se vuelve decorativo sin que nadie se entere.
+#   · `sync_bankmanager_ui` no se ejecuta. Su origen es
+#     `ABDBankManager/packages/ui/src`, y de todo `packages/ui/` lo unico
+#     versionado es `package.json`: los fuentes del paquete canonico NO estan en el
+#     repo. El clon de este job no puede verlos, ni este ni ningun otro CI. El paso
+#     "Informe" lo comprueba cada vez y avisa si algun dia dejan de estar sin
+#     versionar, que es la unica forma de que este job se entere solo.
+#
+# EL SHA DE LOS HERMANOS, Y POR QUE NO UNA RAMA
+#
+# Mismo criterio que `ABDSharedAssets/siblings.json`, con el mismo motivo escrito
+# alli: una rama se mueve sola. Contra `main` de ABDSharedAssets, este job pasaria en
+# verde hoy y en rojo dentro de dos dias sin que nadie haya tocado nada en ABDMS2000,
+# y un rojo que no se puede atribuir a un commit no sirve para nada.
+#
+# Cuando cambie una cabecera, un logo o un componente de uno de los tres, hay que
+# subir SU SHA aqui, regenerar el destino en ABDMS2000 y commitear el resultado, en el
+# MISMO commit. Si se sube el SHA sin regenerar, este job dice exactamente cual de
+# los dos pasos falta, porque separa «cambio el origen» de «regenere el destino».
+#
+# POR QUE UN WORKFLOW APARTE Y NO UN PASO EN build-pipeline.yml
+#
+# El de la build corre en macOS y Windows, con JUCE de submodulo, y dura media hora
+# larga. Este corre en Ubuntu, sin instalar nada, en menos de un minuto. Y el rojo
+# tiene NOMBRE PROPIO en la pestana: un rojo que se llama «Sync: los destinos
+# reflejan los origenes» no hay que abrirlo para saber si lo que se ha roto es el
+# destino sincronizado o el motor que lo consume.
+#
+# Y NO lleva `paths:` a proposito: un check requerido que no llega a ejecutarse deja
+# el PR bloqueado para siempre. Si se cambia un logo sin tocar nada de este repo —que
+# es el caso normal- el workflow tiene que correr igual, porque el destino puede haber
+# derivado sin que ningun commit de ABDMS2000 lo delate.
+#
+# POR QUE NO HAY `npm install`
+#
+# Los cuatro scripts y su nucleo (`syncSeguro.mjs`) importan `fs`, `path` y `url`.
+# Cero dependencias. Instalar el arbol de este repo —JUCE, vitest, playwright— para
+# correrlos seria pagar tiempo y una clase de fallos nueva (lockfiles
+# desincronizados) a cambio de nada.
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+      - develop
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sibling-sync-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sibling-sync:
+    name: "Sync: los destinos reflejan los origenes"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      # El layout del monorepo, no el del repo: los cuatro scripts calculan sus
+      # origenes como `path.resolve(rootDir, '..', '<hermano>')`, o sea SIEMPRE un
+      # nivel por encima de ABDMS2000. Por eso `path:` y no el checkout por defecto —
+      # con el checkout por defecto ABDMS2000 caeria en la raiz del workspace y los
+      # hermanos no tendrian sitio al lado, y los cuatro scripts responderian «no se
+      # encontro la fuente», que no es un veredicto sobre nada.
+      - name: Checkout Code
+        uses: actions/checkout@v7
+        with:
+          path: monorepo/ABDMS2000
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          # Fijado, no `20` a secas. Un flotante puede cambiar de version entre dos
+          # corridas del mismo workflow, y un rojo que solo aparece en una de ellas es
+          # la clase de fallo mas dificil de leer que tiene un CI.
+          node-version: '20.11'
+
+      # LOS TRES HERMANOS, UN SHA FIJO CADA UNO.
+      #
+      # `init` + `fetch --depth 1 <sha>` en vez de `clone --branch`: un `--branch`
+      # acepta ramas y tags, y aqui lo que se quiere es exactamente una revision.
+      # Con esto no hay forma de que el job clone otra cosa por accidente, y el
+      # historial entero del hermano no baja.
+      - name: "Clonar los tres hermanos en su revision fijada"
+        env:
+          MONOREPO: ${{ github.workspace }}/monorepo
+          # SHA de `main` de cada uno en el momento de escribir esto. Subir el de un
+          # hermano obliga a regenerar su destino en ABDMS2000 en el MISMO commit.
+          SHA_ASSETS: '9a99cbbb5d001321395ab14c1bea94e954e9168f'
+          SHA_BANK: 'b5a3d9ec356d31c985107456e7f890a1e05694f0'
+          SHA_SCOPE: '5748c739401a7d07191493bd072fc0a9463578e5'
+        run: |
+          set -euo pipefail
+          mkdir -p "${MONOREPO}"
+          clonar() {
+            local repo="$1" sha="$2"
+            local dir="${MONOREPO}/${repo}"
+            rm -rf "${dir}"
+            git init -q "${dir}"
+            git -C "${dir}" remote add origin "https://github.com/ajabadia/${repo}.git"
+            if ! git -C "${dir}" fetch -q --depth 1 origin "${sha}"; then
+              echo "::error::No se ha podido traer ${repo} en ${sha}. O ese commit no esta en el remoto, o se ha reescrito la historia. Comprueba el SHA de este workflow."
+              exit 1
+            fi
+            git -C "${dir}" checkout -q FETCH_HEAD
+          }
+          clonar ABDSharedAssets "${SHA_ASSETS}"
+          clonar ABDBankManager  "${SHA_BANK}"
+          clonar ABDScope        "${SHA_SCOPE}"
+
+      # Decir QUE se ha clonado. Un `--check` que sale en rojo porque el hermano se
+      # clono en una revision que no es la que se cree, sin este paso, es un rojo que
+      # se lee como «el destino esta desfasado» y no lo es.
+      - name: "Informe: que revision se ha clonado de cada hermano"
+        run: |
+          set -euo pipefail
+          MONOREPO="${{ github.workspace }}/monorepo"
+          for repo in ABDSharedAssets ABDBankManager ABDScope; do
+            sha="$(git -C "${MONOREPO}/${repo}" rev-parse HEAD)"
+            echo "::notice::${repo} clonado en ${sha}"
+          done
+
+      # PASO 1 DE 3 — SINCRONIZAR DE VERDAD.
+      #
+      # Es lo que hace un checkout de desarrollo: los destinos que estan en
+      # `.gitignore` no vienen con el repo, y sin ellos sus `--check` no tienen nada
+      # que mirar. Los tres que se ejecutan son los que tienen origen alcanzable.
+      #
+      # `sync_bankmanager_ui` NO esta, y su ausencia es intencionada: su origen
+      # (`ABDBankManager/packages/ui/src`) no esta versionado en el hermano, asi que
+      # este script solo puede responder «no se encontro la fuente». El paso
+      # "Informe" de mas abajo lo dice con nombre y apellidos.
+      - name: Sincronizar de verdad los tres destinos con origen alcanzable
+        working-directory: monorepo/ABDMS2000
+        run: |
+          set -uo pipefail
+          fallo=0
+          for sync in sync_assets sync_bankmanager sync_scope; do
+            echo "--- ${sync} ---"
+            if ! node "Scripts/${sync}.js"; then
+              echo "::error::Scripts/${sync}.js ha fallado al sincronizar. El log de arriba dice por que; casi siempre es que el SHA del hermano esta desfasado respecto de lo que este repo tiene commiteado."
+              fallo=1
+            fi
+          done
+          exit "${fallo}"
+
+      # PASO 2 DE 3 — Y AQUI ESTA EL VEREDICTO.
+      #
+      # El clon estaba limpio y los unicos destinos versionados son
+      # `WebUI/images/` y `WebUI/src/components/bank/`. Si la sincronizacion ha
+      # cambiado algo ahi, es que lo commiteado no es lo que sale del origen: el
+      # desfase. Y si no ha cambiado nada, lo commiteado esta al dia.
+      #
+      # `abdbank/` y `abdscope/` no aparecen en este `git status` porque estan
+      # ignorados. Es lo que hace posible que este paso sea un veredicto y no una
+      # lista de 400 ficheros que nadie se lee: lo que no esta versionado no puede
+      # estar desfasado, y sale en la pantalla del paso siguiente diciendolo.
+      - name: "Guard: lo commiteado no ha cambiado al sincronizar"
+        working-directory: monorepo/ABDMS2000
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "::error::El destino sincronizado NO es lo que sale del origen: estos ficheros commiteados no coinciden con los repos hermanos."
+            echo "::group::Ficheros que la sincronizacion cambiaria"
+            git status --porcelain
+            echo "::endgroup::"
+            echo "::group::Que cambia exactamente"
+            git --no-pager diff --stat
+            echo "::endgroup::"
+            echo "Arreglo: sube el SHA del hermano correspondiente en este workflow, ejecuta el sincronizador SIN --check y commitea lo resultante. Si el SHA ya estaba subido, lo que hay commiteado se genero con una revision que no es la que hay aqui."
+            exit 1
+          fi
+          echo "OK - lo commiteado ya es exactamente lo que sale de los origenes."
+
+      # LO QUE ESTE JOB PUEDE Y NO PUEDE MIRAR.
+      #
+      # Sin este paso, un job que sincroniza 400 ficheros y sale en verde se lee como
+      # «el destino commiteado esta verificado». Y es verdad, pero solo para una
+      # cuarta parte de los destinos: los otros dos no estan versionados, y el
+      # cuarto ni siquiera tiene origen. Eso se dice aqui, en el sitio donde alguien
+      # va a mirar cuando salga en rojo, en vez de dejarlo para que se entere por el
+      # camino.
+      - name: "Informe: que comprueba este job y que no"
+        run: |
+          set -euo pipefail
+          MONOREPO="${{ github.workspace }}/monorepo"
+          cd "${MONOREPO}/ABDMS2000"
+
+          for dir in WebUI/images WebUI/src/components/bank WebUI/abdbank WebUI/abdscope; do
+            n="$(git ls-files "$dir" | wc -l | tr -d ' ')"
+            if [ "${n}" -gt 0 ]; then
+              echo "::notice::${dir}: ${n} fichero(s) versionado(s). ESTE JOB LO COMPRUEBA de verdad."
+            else
+              echo "::notice::${dir}: 0 ficheros versionados (esta en .gitignore). Este job NO PUEDE comprobar que su contenido sea el esperado: no hay nada commiteado que pueda estar desfasado. Solo comprueba que la copia se produce sin errores."
+            fi
+          done
+
+          # El caso que puede cambiar solo, asi que se mira cada vez en vez de dejarlo
+          # escrito como una verdad permanente.
+          ui="$(git -C "${MONOREPO}/ABDBankManager" ls-files packages/ui/src | wc -l | tr -d ' ')"
+          if [ "${ui}" -eq 0 ]; then
+            echo "::warning::ABDBankManager/packages/ui/src NO esta versionado (solo lo esta packages/ui/package.json). sync_bankmanager_ui no se ha ejecutado en este job: sin sus origenes solo puede decir «no se encontro la fuente». Si se versionan esos fuentes, este job dejara de avisar y habra que anadir el cuarto sincronizador aqui."
+          else
+            echo "::warning::ABDBankManager/packages/ui/src AHORA SI esta versionado (${ui} ficheros). sync_bankmanager_ui se ha vuelto comprobable: anadelo a los bucles de este workflow, que hoy lo ignoran en silencio."
+          fi
+
+      # PASO 3 DE 3 — LOS --CHECK, QUE TIENEN QUE SALIR VERDES.
+      #
+      # Ya no miran si el destino esta al dia: lo esta, porque el paso 1 lo acaba de
+      # dejar asi. Lo que miran es otra cosa —que la sincronizacion sea idempotente y
+      # que el `--check` sepa decir «esto ya esta»— que es justo el fallo que haria que
+      # el paso 2 no encontrara nada en el futuro y pareciera que todo iba bien.
+      #
+      # El bucle NO se detiene en el primer fallo, a proposito: un `--check` que
+      # nombra sus ficheros es un check que se lee, y si para en el primero el segundo
+      # solo se ve en la siguiente corrida, cuando ya se ha arreglado el primero.
+      - name: "Los --check tienen que salir verdes tras sincronizar"
+        working-directory: monorepo/ABDMS2000
+        run: |
+          set -uo pipefail
+          fallo=0
+          for sync in sync_assets sync_bankmanager sync_scope; do
+            echo "--- ${sync} --check ---"
+            if ! node "Scripts/${sync}.js" --check; then
+              echo "::error::Scripts/${sync}.js --check sale en rojo DESPUES de sincronizar. O la sincronizacion no es idempotente, o el --check no sabe reconocer su propio resultado."
+              fallo=1
+            fi
+          done
+          exit "${fallo}"
+
+      # LOS DOS .gen QUE LEEN DE `WebUI/abdbank/`
+      #
+      # Vivian en `registry-generation.yml` y de ahi salen, por dos razones que se
+      # pueden medir:
+      #
+      #   · `generate_korg_channel.js` y `generate_host_model_id.js` leen su contrato
+      #     canonico de `WebUI/abdbank/src/contracts/gen/modelContracts.gen.js`. Ese
+      #     directorio esta en `.gitignore`, asi que en el clon limpio de ahi —que no
+      #     trae hermanos— no existe, y su `--check` no tiene nada que leer. Solo un
+      #     workflow que clona ABDBankManager y sincroniza puede comprobarlos.
+      #   · Por lo tanto tampoco cabian alli de paso, y el comentario de aquel
+      #     workflow decia que `WebUI/abdbank/` "SI esta commiteado en este repo".
+      #     No lo esta. Es un `.gitignore` de toda la vida y el comentario llevaba
+      #     razon en contra sin que nadie lo comprobara.
+      #
+      # El de `korgChannel` compara todo. El del host model ignora a proposito la
+      # linea `kHostBuildRevision` —es un sello de git que cambia en cada commit por
+      # diseno— y lo dice en su cabecera. Un check que compara un valor que cambia
+      # siempre es un check rojo siempre, que es como un check deja de mirar.
+      #
+      # ESTE PASO ROJO HOY, Y POR QUE ES EL ROJO QUE TOCABA
+      #
+      # Los `.gen` commiteados se generaron contra un `modelContracts.gen.js` que no
+      # esta en ABDBankManager: solo existe en el disco de quien lo genero, porque alli
+      # el hermano tiene trabajo sin commitear. Contra el hermano COMITEADO dan
+      # `DESFASADO`, y ese es el veredicto correcto: un `.gen` que no se puede
+      # reproducir desde lo que esta publicado no es un artefacto, es una copia.
+      #
+      # Por eso este paso sale en rojo y el workflow no lo disimula: o se commitea el
+      # hermano y se regenera aqui contra el resultado, o el rojo sigue ahi. Lo que
+      # no puede ser es que el workflow diga «OK - ABDSharedAssets ya esta
+      # sincronizado» mientras dos headers que salen de ahi no cuadran.
+      - name: "Comprobar los dos .gen que se generan desde el hermano"
+        working-directory: monorepo/ABDMS2000
+        run: |
+          set -uo pipefail
+          fallo=0
+          for gen in generate_korg_channel generate_host_model_id; do
+            echo "--- ${gen} --check ---"
+            if ! node "Scripts/${gen}.js" --check; then
+              echo "::error::El .gen de Scripts/${gen}.js esta DESFASADO respecto al ABDBankManager COMITEADO en el SHA de este workflow."
+              fallo=1
+            fi
+          done
+          if [ "${fallo}" -ne 0 ]; then
+            echo "::error::Arreglo, en este orden: (1) commitear en ABDBankManager el modelContracts.gen.js que produce, si es que hay cambios que publicar; (2) subir el SHA de ABDBankManager en este workflow; (3) aquí, node Scripts/registry_generator.js y los otros dos, y commitear los .gen. Si el paso 3 no cambia nada, el .gen ya era correcto y lo que falla es el SHA del hermano."
+          fi
+          exit "${fallo}"
+
+      # Lo ULTIMO, y por lo ultimo: que correr los --check no haya modificado nada.
+      #
+      # `--check` compara y no escribe, que es lo que lo hace utilizable desde un
+      # pipeline sin ensuciar el checkout. Si alguien le quita el flag para «hacerlo
+      # mas rapido», este paso lo dice en el propio pipeline, en vez de dejar un
+      # checkout modificado que no se nota hasta el siguiente.
+      - name: "Guard: los --check no han modificado nada"
+        working-directory: monorepo/ABDMS2000
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "::error::Los --check han modificado el checkout. Un --check tiene que COMPARAR, no escribir:"
+            git status --porcelain
+            echo "::group::Diff introducido por los checks"
+            git --no-pager diff || true
+            echo "::endgroup::"
+            exit 1
+          fi
+          echo "OK - correr los --check no ha escrito nada."

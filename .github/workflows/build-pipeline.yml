@@ -18,14 +18,14 @@ jobs:
     steps:
     # 1. Descargar el código fuente del repositorio incluyendo submódulos (JUCE)
     - name: Checkout Code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
       with:
         submodules: recursive
 
     # 2. Configuración específica para Windows
     - name: Set up MSVC & WiX (Windows)
       if: matrix.os == 'windows-latest'
-      uses: microsoft/setup-msbuild@v2
+      uses: microsoft/setup-msbuild@v3
 
     # 3. Configuración específica para macOS
     - name: Install macOS Dependencies
@@ -38,7 +38,23 @@ jobs:
       run: |
         cmake -B build -DCMAKE_BUILD_TYPE=Release .
 
-    # 5. Compilación en paralelo optimizada en modo Release
+    # 5. Linting y análisis estático (solo Linux - clang-format/cppcheck no en Windows runners base)
+    - name: Install clang-format & cppcheck
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt-get update && sudo apt-get install -y clang-format-18 cppcheck
+
+    - name: Check formatting (clang-format)
+      if: runner.os == 'Linux'
+      run: |
+        clang-format-18 --dry-run --Werror Source/**/*.h Source/**/*.cpp
+
+    - name: Static analysis (cppcheck)
+      if: runner.os == 'Linux'
+      run: |
+        cppcheck --enable=warning,performance,portability --std=c++20 --suppress=missingIncludeSystem Source/
+
+    # 6. Compilación en paralelo optimizada en modo Release
     - name: Build Plugin (Release)
       run: |
         cmake --build build --config Release --parallel
@@ -89,7 +105,7 @@ jobs:
 
     # 9. Publicar los instaladores y binarios como artefactos descargables
     - name: Upload Build Artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: ABDMS2000-Installers-${{ matrix.os }}
         path: |
@@ -108,7 +124,7 @@ jobs:
       contents: write
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Install Doxygen and Graphviz
         run: |

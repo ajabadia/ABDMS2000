@@ -1,0 +1,176 @@
+name: Registry Generation CI
+
+# Registry Generation CI - los tres .gen del registro de parametros commiteados
+# tienen que estar AL DIA con su fuente, y el generador tiene que saber decirlo.
+#
+# QUE COMPRUEBA, Y QUE NO
+#
+# Corre `node Scripts/registry_generator.js --check`, que compara los tres
+# artefactos commiteados con lo que sale de leer el spec, y sale con 1 nombrando
+# los que no cuadran. Eso es TODO lo que comprueba este workflow, y es
+# suficiente para lo que se le pide: que nadie cambie `schemas/` y se olvide de un
+# `.gen` sin regenerar.
+#
+# Lo que NO comprueba, y conviene no creer sin mirar:
+#
+#   · Que el `.gen` siga siendo lo que consume el resto del repo. El generador
+#     compara lo suyo contra lo suyo: si su `OUT` se moviera de sitio, el
+#     `--check` seguiria en verde mientras el `.gen` de verdad se queda viejo.
+#     Lo que cubre ese hueco es el paso "Guard" de mas abajo, que mira que las
+#     rutas declaradas existan en el checkout.
+#   · `generate_host_model_id.js` y `generate_korg_channel.js`. Los dos leen su
+#     contrato canonico de `WebUI/abdbank/src/contracts/gen/modelContracts.gen.js`, y
+#     `WebUI/abdbank/` esta en `.gitignore`: no existe en un clon limpio, asi que su
+#     `--check` no tiene nada que leer. Estan en `sibling-sync-check.yml`, que si
+#     clona los hermanos y sincroniza antes de comprobar. Este workflow no puede
+#     hacerlo, porque no trae los repos HERMANOS (ABDSharedAssets, ABDBankManager,
+#     ABDScope) y clonar tres repos para comprobar dos headers no es su trabajo.
+#   · Los cuatro sincronizadores (`sync_assets.js`, `sync_bankmanager.js`,
+#     `sync_bankmanager_ui.js`, `sync_scope.js`). Por el mismo motivo: necesitan los
+#     hermanos en disco. Los comprueba `sibling-sync-check.yml`.
+#
+# POR QUE UN WORKFLOW APARTE Y NO UN PASO EN build-pipeline.yml
+#
+# El de la build corre en macOS y Windows, con JUCE de submodulo, y dura la
+# media hora larga. Este corre en Ubuntu, sin instalar nada, en segundos. Encajar
+# un check de un segundo dentro de un job de treinta minutos es la forma de que
+# nadie lo mire cuando se pone rojo, y de que el dia que se rompa el checkout
+# entero se lea como un fallo de compilacion.
+#
+# Ademas asi el check tiene NOMBRE PROPIO en la pestana: un rojo que se llama
+# "Registry: los .gen estan al dia" no hay que abrirlo para saber si lo que se
+# ha roto es el registro o el plugin.
+#
+# Y NO lleva `paths:` a proposito, por el mismo motivo que el registry CI de
+# ABDEep: un check requerido que no llega a ejecutarse deja el PR bloqueado
+# para siempre. Si se tocara el generador sin tocar el spec -que es justo el
+# caso que vigila- el workflow tiene que CORRER IGUAL.
+#
+# POR QUE NO HAY `npm install`
+#
+# El generador y su nucleo importan solo `fs`, `path` y `url`: cero dependencias.
+# Instalar el arbol de este repo (JUCE, vitest, playwright) para correr un
+# script que no importa nada de eso seria pagar treinta segundos y una clase de
+# fallos nueva -la de un lockfile desincronizado- a cambio de nada. El
+# `npm install` que de verdad hace falta es el de `test:`, en otro workflow.
+#
+# POR QUE `ubuntu-latest` Y NO WINDOWS
+#
+# El generador es multiplataforma, asi que correrlo en Linux no dice nada que no
+# diga en Windows -salvo que COMPILARA mal en un caso que aqui funciona, que si
+# es una comprobacion real-. Y Linux es el que llega antes: el rojo se ve antes.
+# El repo tiene su propio job en Windows, que es el que dice si el motor
+# compila.
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+      - develop
+
+permissions:
+  contents: read
+
+# Un PR que toca el spec dos veces seguidas no necesita el job dos veces, y un
+# push que llega mientras el PR ya ha creado su propio commit no vuelve a
+# hacer el trabajo. `cancel-in-progress` con el grupo por ref, igual que el
+# visual QA de este repo.
+concurrency:
+  group: registry-generation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  registry-check:
+    name: "Registry: los .gen estan al dia"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v7
+
+      # El generador es ESM y calcula sus rutas con `import.meta.dirname`, que
+      # existe desde Node 20.11. Fijado, no `20` a secas: un flotante puede
+      # cambiar de version entre dos corridas del mismo workflow, y un rojo que
+      # solo aparece en una de ellas es la clase de fallo mas dificil de leer
+      # que tiene un CI.
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '20.11'
+
+      # EL CHECK. Sale con 1 y NOMBRA el fichero desfasado, asi que el mensaje
+      # de este workflow solo tiene que traducirlo a un `::error::` con la
+      # instruccion de arreglo.
+      #
+      # Sale por el NOMBRE de `package.json` y no por la ruta del script a
+      # proposito: el mensaje de fallo del generador cita `node
+      # Scripts/registry_generator.js`, y que el comando que se ejecuta sea el
+      # mismo que se cita es lo que hace que ese mensaje sirva para algo en vez
+      # de ser una pista que hay que traducir.
+      - name: Comprobar que los .gen commiteados estan al dia
+        run: |
+          if ! npm run --silent check:registry; then
+            echo "::error::Los .gen del registro estan DESFASADOS: o se ha cambiado el spec y no se ha regenerado, o se ha editado un .gen a mano. Arreglo: npm run generate, y commit de Source/State/ParameterRegistry.gen.h, Source/State/ParameterRegistry.gen.cpp y WebUI/src/contracts/registry.gen.js dentro de este repo."
+            exit 1
+          fi
+
+      # EL GUARD, Y POR QUE NO LO CUBRE EL --CHECK
+      #
+      # El `--check` compara lo que el generador produce contra lo que el
+      # generador tiene delante. Si su `OUT` se hubiera movido -o si declarara una
+      # ruta que en el checkout no esta- los dos lados se equivocarian a la vez y
+      # saldrian en verde. Este paso mira el disco de verdad, que es la unica
+      # mitad que el generador no puede comprobar por si mismo.
+      #
+      # Medido, no supuesto: borrando `WebUI/src/contracts/registry.gen.js` el
+      # `--check` tambien falla hoy, porque su `verificarRutas()` mira los
+      # directorios de salida antes de generar. Ese guard sale AHORA, no por
+      # redundancia: es lo que agarra el caso de que esa comprobacion interna se
+      # quede atras, y las dos cosas miran cosas distintas -una mira el checkout,
+      # otra el `OUT` con el que el generador calcula- asi que cuando
+      # se separen, cada una ve la mitad que la otra no.
+      #
+      # Las tres rutas estan escritas aqui A MANO y no salen del generador, y si
+      # es el unico sitio donde se repiten es el unico sitio donde pueden
+      # separarse. Por eso el paso de al lado dice de quien son: si un dia el
+      # generador anade una salida, este paso no lo vera, y el fallo se vera como
+      # «el .gen nuevo no lo vigila nadie», que es justo el nombre del problema.
+      - name: "Guard: los .gen declarados existen y son de verdad generados"
+        run: |
+          artifacts=(
+            'Source/State/ParameterRegistry.gen.h'
+            'Source/State/ParameterRegistry.gen.cpp'
+            'WebUI/src/contracts/registry.gen.js'
+          )
+          for f in "${artifacts[@]}"; do
+            if [ ! -f "$f" ]; then
+              echo "::error::$f esta AUSENTE - el generador declara que lo produce, pero no esta en el checkout. O se ha movido, o se ha borrado."
+              exit 1
+            fi
+            if ! grep -qE 'AUTO-GENERATED|AUTO-GENERATED BY|DO NOT EDIT' "$f"; then
+              echo "::error::$f no lleva ninguna marca de generado. Un .gen sin marca no lo ha escrito el generador, y por eso no se puede ni comprobar si esta al dia."
+              exit 1
+            fi
+          done
+          echo "OK - los 3 .gen declarados estan en su sitio y son generados."
+
+      # Lo ULTIMO, y por lo ultimo: que correr el check no haya modificado nada.
+      #
+      # `--check` compara y no escribe, que es justo lo que lo hace utilizable
+      # desde un pipeline sin ensuciar el checkout. Si algun dia alguien le quita
+      # el flag para «hacerlo mas rapido», este paso lo dira en el propio pipeline
+      # en vez de dejar un checkout modificado que no se nota hasta el siguiente.
+      - name: "Guard: el check no ha modificado nada"
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "::error::El check ha modificado el checkout. --check tiene que COMPARAR, no escribir:"
+            git status --porcelain
+            echo "::group::Diff introducido por el check"
+            git diff || true
+            echo "::endgroup::"
+            exit 1
+          fi
+          echo "OK - correr el check no ha escrito nada."
