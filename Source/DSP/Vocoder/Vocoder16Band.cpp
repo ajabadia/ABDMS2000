@@ -1,15 +1,28 @@
 #include "Vocoder16Band.h"
-#include "../Common/DSPUtils.h"
-#include <cmath>
 #include <algorithm>
+#include <cmath>
+#include "../Common/DSPUtils.h"
 
-namespace ABDMS2000 {
+namespace ABDMS2000
+{
 
 // Exact 16 MS2000 measured bandpass center frequencies
-static const float kMS2000VocoderFreqs[16] = {
-    125.0f, 180.0f, 250.0f, 340.0f, 460.0f, 620.0f, 820.0f, 1050.0f,
-    1350.0f, 1700.0f, 2150.0f, 2700.0f, 3350.0f, 4100.0f, 4900.0f, 5700.0f
-};
+static const float kMS2000VocoderFreqs[16] = {125.0f,
+                                              180.0f,
+                                              250.0f,
+                                              340.0f,
+                                              460.0f,
+                                              620.0f,
+                                              820.0f,
+                                              1050.0f,
+                                              1350.0f,
+                                              1700.0f,
+                                              2150.0f,
+                                              2700.0f,
+                                              3350.0f,
+                                              4100.0f,
+                                              4900.0f,
+                                              5700.0f};
 
 void BiquadBPF::setBandpass(float centerFreq, float q, double sampleRate) noexcept
 {
@@ -43,25 +56,27 @@ void Vocoder16Band::prepare(double sampleRate) noexcept
     {
         followers_[i].prepare(sampleRate_);
         bandLevels_[i] = 1.0f;
-        bandPans_[i] = 0.5f; // Center
+        bandPans_[i] = 0.5f;  // Center
     }
 
     updateFilterFrequencies();
     updateHPFFilter();
     sibilanceFollower_.prepare(sampleRate_);
-    sibilanceFollower_.setReleaseTime(0.010f); // 10ms fast release
+    sibilanceFollower_.setReleaseTime(0.010f);  // 10ms fast release
     reset();
 }
 
 void Vocoder16Band::reset() noexcept
 {
-    for (auto& f : analysisFilters_) f.reset();
-    for (auto& f : synthesisFilters_) f.reset();
-    for (auto& f : followers_) f.reset();
+    for (auto &f : analysisFilters_)
+        f.reset();
+    for (auto &f : synthesisFilters_)
+        f.reset();
+    for (auto &f : followers_)
+        f.reset();
     sibilanceFollower_.reset();
     hpfS1_ = hpfS2_ = 0.0f;
 }
-
 
 void Vocoder16Band::setFormantShift(int shiftValue) noexcept
 {
@@ -74,7 +89,7 @@ void Vocoder16Band::setGateSense(float gateSense0to1) noexcept
     float norm = DSPUtils::clamp(gateSense0to1, 0.0f, 1.0f);
     // Gate Sense maps to 0.005s .. 0.200s
     float releaseSec = 0.005f + (0.195f * norm);
-    for (auto& f : followers_)
+    for (auto &f : followers_)
     {
         f.setReleaseTime(releaseSec);
     }
@@ -107,7 +122,7 @@ void Vocoder16Band::setBandPan(size_t bandIndex, float pan0to1) noexcept
 
 void Vocoder16Band::updateFilterFrequencies() noexcept
 {
-    const float Q = 6.5f; // Constant-Q bandwidth for sharp band isolation
+    const float Q = 6.5f;  // Constant-Q bandwidth for sharp band isolation
 
     for (size_t i = 0; i < NUM_BANDS; ++i)
     {
@@ -136,9 +151,10 @@ void Vocoder16Band::updateHPFFilter() noexcept
     hpfA2_ = (1.0f - alpha) / a0;
 }
 
-void Vocoder16Band::process(float modSample, float carrierSample, float& outLeft, float& outRight) noexcept
+void Vocoder16Band::process(float modSample, float carrierSample, float &outLeft, float &outRight) noexcept
 {
-    if (!enabled_) return;
+    if (!enabled_)
+        return;
 
     // 1. Sibilance Detection (8kHz High-Pass on Modulator)
     float modHighFreqs = hpfB0_ * modSample + hpfS1_;
@@ -167,16 +183,18 @@ void Vocoder16Band::process(float modSample, float carrierSample, float& outLeft
     float leftAcc = 0.0f;
     float rightAcc = 0.0f;
 
-    // 2. Unrolled 16-Stage Vocoder Engine (Zero Branch Overhead)
-    #define PROCESS_VOCODER_BAND(idx) do { \
-        float fMod = analysisFilters_[idx].process(modSample); \
-        float vEnv = followers_[idx].process(fMod); \
-        float fCar = synthesisFilters_[idx].process(carrierSample); \
-        float bAudio = fCar * vEnv * bandLevels_[idx] * 0.5f; \
-        float pNorm = bandPans_[idx]; \
-        leftAcc  += bAudio * (1.0f - pNorm); \
-        rightAcc += bAudio * pNorm; \
-    } while(0)
+// 2. Unrolled 16-Stage Vocoder Engine (Zero Branch Overhead)
+#define PROCESS_VOCODER_BAND(idx)                                                                                      \
+    do                                                                                                                 \
+    {                                                                                                                  \
+        float fMod = analysisFilters_[idx].process(modSample);                                                         \
+        float vEnv = followers_[idx].process(fMod);                                                                    \
+        float fCar = synthesisFilters_[idx].process(carrierSample);                                                    \
+        float bAudio = fCar * vEnv * bandLevels_[idx] * 0.5f;                                                          \
+        float pNorm = bandPans_[idx];                                                                                  \
+        leftAcc += bAudio * (1.0f - pNorm);                                                                            \
+        rightAcc += bAudio * pNorm;                                                                                    \
+    } while (0)
 
     PROCESS_VOCODER_BAND(0);
     PROCESS_VOCODER_BAND(1);
@@ -195,16 +213,14 @@ void Vocoder16Band::process(float modSample, float carrierSample, float& outLeft
     PROCESS_VOCODER_BAND(14);
     PROCESS_VOCODER_BAND(15);
 
-    #undef PROCESS_VOCODER_BAND
+#undef PROCESS_VOCODER_BAND
 
     // 3. Dry Modulator blend (Direct Level) + Sibilance parallel bus (centered)
-    leftAcc  += (modSample * directLevel_) + sibilanceSignal;
+    leftAcc += (modSample * directLevel_) + sibilanceSignal;
     rightAcc += (modSample * directLevel_) + sibilanceSignal;
 
     outLeft = leftAcc;
     outRight = rightAcc;
 }
 
-
-} // namespace ABDMS2000
-
+}  // namespace ABDMS2000

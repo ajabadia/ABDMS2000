@@ -1,7 +1,8 @@
 #include "MultiModeFilter.h"
 #include <cmath>
 
-namespace ABDMS2000 {
+namespace ABDMS2000
+{
 
 void MultiModeFilter::prepare(double sampleRate) noexcept
 {
@@ -45,7 +46,8 @@ void MultiModeFilter::updateCoefficients() noexcept
     float feedback = FilterResonanceComp::computeEffectiveFeedback(resonance_);
     // R = 2 - 2 * resonance damping
     R_ = 2.0f * (1.0f - (feedback * DSPUtils::kResonanceFeedbackScale));
-    if (R_ < DSPUtils::kResonanceMinFeedback) R_ = DSPUtils::kResonanceMinFeedback;
+    if (R_ < DSPUtils::kResonanceMinFeedback)
+        R_ = DSPUtils::kResonanceMinFeedback;
 
     h_ = 1.0f / (1.0f + 2.0f * R_ * g_ + g_ * g_);
 }
@@ -62,35 +64,35 @@ float MultiModeFilter::process(float inputSample) noexcept
     // --- First 2-pole SVF stage ---
     float hp1 = (in - (2.0f * R_ + g_) * s1_1_ - s1_2_) * h_;
     float bp1 = g_ * hp1 + s1_1_;
-    s1_1_ = g_ * hp1 + bp1; // Integrator 1 state update
+    s1_1_ = g_ * hp1 + bp1;  // Integrator 1 state update
     float lp1 = g_ * bp1 + s1_2_;
-    s1_2_ = g_ * bp1 + lp1; // Integrator 2 state update
+    s1_2_ = g_ * bp1 + lp1;  // Integrator 2 state update
 
     switch (type_)
     {
-        case FilterType::LPF12:
-            return lp1;
+    case FilterType::LPF12:
+        return lp1;
 
-        case FilterType::BPF12:
-            return bp1;
+    case FilterType::BPF12:
+        return bp1;
 
-        case FilterType::HPF12:
-            return hp1;
+    case FilterType::HPF12:
+        return hp1;
 
-        case FilterType::LPF24:
-        default:
-        {
-            // Cascade into Second 2-pole SVF stage for -24dB/oct LPF
-            float in2 = lp1;
-            float hp2 = (in2 - (2.0f * R_ + g_) * s2_1_ - s2_2_) * h_;
-            float bp2 = g_ * hp2 + s2_1_;
-            s2_1_ = g_ * hp2 + bp2;
-            float lp2 = g_ * bp2 + s2_2_;
-            s2_2_ = g_ * bp2 + lp2;
+    case FilterType::LPF24:
+    default:
+    {
+        // Cascade into Second 2-pole SVF stage for -24dB/oct LPF
+        float in2 = lp1;
+        float hp2 = (in2 - (2.0f * R_ + g_) * s2_1_ - s2_2_) * h_;
+        float bp2 = g_ * hp2 + s2_1_;
+        s2_1_ = g_ * hp2 + bp2;
+        float lp2 = g_ * bp2 + s2_2_;
+        s2_2_ = g_ * bp2 + lp2;
 
-            return lp2;
-        }
+        return lp2;
+    }
     }
 }
 
-} // namespace ABDMS2000
+}  // namespace ABDMS2000

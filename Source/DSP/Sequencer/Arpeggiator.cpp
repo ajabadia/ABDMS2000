@@ -1,35 +1,37 @@
 #include "Arpeggiator.h"
-#include "../Common/DSPUtils.h"
 #include <algorithm>
+#include "../Common/DSPUtils.h"
 
-namespace ABDMS2000 {
+namespace ABDMS2000
+{
 
 // ═══════════════════════════════════════════════════════════════
 // MS2000 canonical Arp/Seq Resolution → steps per beat
 // SysEx: 0=1/48 .. 15=4/1
 // ═══════════════════════════════════════════════════════════════
 static constexpr float kResolutionStepsPerBeat[16] = {
-    12.0f,  // 0:  1/48
-    8.0f,   // 1:  1/32
-    6.0f,   // 2:  1/24
-    4.0f,   // 3:  1/16 (canonical 16th note arpeggio: 4 steps per beat)
-    3.0f,   // 4:  1/12
-    2.0f,   // 5:  1/8  (8th note arpeggio: 2 steps per beat)
-    1.5f,   // 6:  1/6
-    1.0f,   // 7:  1/4  (quarter note: 1 step per beat)
-    0.75f,  // 8:  1/3
-    0.5f,   // 9:  1/2
-    0.3333f,// 10: 3/4
-    0.25f,  // 11: 1/1  (whole note: 1 step every 4 beats)
-    0.1667f,// 12: 3/2
-    0.125f, // 13: 2/1
-    0.0833f,// 14: 3/1
-    0.0625f // 15: 4/1
+    12.0f,    // 0:  1/48
+    8.0f,     // 1:  1/32
+    6.0f,     // 2:  1/24
+    4.0f,     // 3:  1/16 (canonical 16th note arpeggio: 4 steps per beat)
+    3.0f,     // 4:  1/12
+    2.0f,     // 5:  1/8  (8th note arpeggio: 2 steps per beat)
+    1.5f,     // 6:  1/6
+    1.0f,     // 7:  1/4  (quarter note: 1 step per beat)
+    0.75f,    // 8:  1/3
+    0.5f,     // 9:  1/2
+    0.3333f,  // 10: 3/4
+    0.25f,    // 11: 1/1  (whole note: 1 step every 4 beats)
+    0.1667f,  // 12: 3/2
+    0.125f,   // 13: 2/1
+    0.0833f,  // 14: 3/1
+    0.0625f   // 15: 4/1
 };
 
 float Arpeggiator::syncResolutionToStepsPerBeat(int idx) noexcept
 {
-    if (idx < 0 || idx > 15) return kResolutionStepsPerBeat[3];
+    if (idx < 0 || idx > 15)
+        return kResolutionStepsPerBeat[3];
     return kResolutionStepsPerBeat[idx];
 }
 
@@ -84,9 +86,10 @@ void Arpeggiator::setTempoBPM(float bpm) noexcept
 
 void Arpeggiator::setSyncResolution(int idx) noexcept
 {
-    if (idx < 0 || idx > 15) idx = 3;
+    if (idx < 0 || idx > 15)
+        idx = 3;
     syncStepsPerBeat_ = kResolutionStepsPerBeat[idx];
-    setTempoBPM(bpm_); // re-evaluate samplesPerStep
+    setTempoBPM(bpm_);  // re-evaluate samplesPerStep
 }
 
 void Arpeggiator::noteOn(int midiNote, float /*velocity*/) noexcept
@@ -116,7 +119,8 @@ void Arpeggiator::noteOn(int midiNote, float /*velocity*/) noexcept
 
 void Arpeggiator::noteOff(int midiNote) noexcept
 {
-    if (physicallyHeldCount_ > 0) physicallyHeldCount_--;
+    if (physicallyHeldCount_ > 0)
+        physicallyHeldCount_--;
 
     if (!latch_)
     {
@@ -140,7 +144,8 @@ void Arpeggiator::allNotesOff() noexcept
 void Arpeggiator::rebuildPattern() noexcept
 {
     generatedPattern_.clear();
-    if (heldNotes_.empty()) return;
+    if (heldNotes_.empty())
+        return;
 
     for (int oct = 0; oct < octaveRange_; ++oct)
     {
@@ -156,13 +161,13 @@ void Arpeggiator::rebuildPattern() noexcept
     }
 }
 
-bool Arpeggiator::processStep(int numSamples, std::vector<ArpNoteEvent>& outEvents) noexcept
+bool Arpeggiator::processStep(int numSamples, std::vector<ArpNoteEvent> &outEvents) noexcept
 {
     if (!enabled_ || generatedPattern_.empty())
     {
         if (currentNoteActive_ && currentPlayingNote_ >= 0)
         {
-            outEvents.push_back({ currentPlayingNote_, 0.0f, false });
+            outEvents.push_back({currentPlayingNote_, 0.0f, false});
             currentNoteActive_ = false;
             currentPlayingNote_ = -1;
         }
@@ -175,7 +180,7 @@ bool Arpeggiator::processStep(int numSamples, std::vector<ArpNoteEvent>& outEven
     double gateSamples = samplesPerStep_ * gateTime_;
     if (currentNoteActive_ && stepSampleCounter_ >= gateSamples)
     {
-        outEvents.push_back({ currentPlayingNote_, 0.0f, false });
+        outEvents.push_back({currentPlayingNote_, 0.0f, false});
         currentNoteActive_ = false;
     }
 
@@ -184,66 +189,68 @@ bool Arpeggiator::processStep(int numSamples, std::vector<ArpNoteEvent>& outEven
     {
         stepSampleCounter_ -= samplesPerStep_;
 
-        if (generatedPattern_.empty()) return !outEvents.empty();
+        if (generatedPattern_.empty())
+            return !outEvents.empty();
 
         int noteToPlay = generatedPattern_[0];
 
         switch (type_)
         {
-            case ArpType::Up:
-            case ArpType::Down:
-                noteToPlay = generatedPattern_[patternIndex_ % generatedPattern_.size()];
-                patternIndex_ = (patternIndex_ + 1) % generatedPattern_.size();
-                break;
+        case ArpType::Up:
+        case ArpType::Down:
+            noteToPlay = generatedPattern_[patternIndex_ % generatedPattern_.size()];
+            patternIndex_ = (patternIndex_ + 1) % generatedPattern_.size();
+            break;
 
-            case ArpType::Alt1:
-            case ArpType::Alt2:
-                noteToPlay = generatedPattern_[patternIndex_];
-                if (patternDirection_)
+        case ArpType::Alt1:
+        case ArpType::Alt2:
+            noteToPlay = generatedPattern_[patternIndex_];
+            if (patternDirection_)
+            {
+                patternIndex_++;
+                if (patternIndex_ >= generatedPattern_.size())
                 {
-                    patternIndex_++;
-                    if (patternIndex_ >= generatedPattern_.size())
-                    {
-                        patternIndex_ = (type_ == ArpType::Alt1) ? (generatedPattern_.size() - 1) : (generatedPattern_.size() - 2);
-                        patternDirection_ = false;
-                    }
+                    patternIndex_ =
+                        (type_ == ArpType::Alt1) ? (generatedPattern_.size() - 1) : (generatedPattern_.size() - 2);
+                    patternDirection_ = false;
+                }
+            }
+            else
+            {
+                if (patternIndex_ == 0)
+                {
+                    patternIndex_ = (type_ == ArpType::Alt1) ? 0 : 1;
+                    patternDirection_ = true;
                 }
                 else
                 {
-                    if (patternIndex_ == 0)
-                    {
-                        patternIndex_ = (type_ == ArpType::Alt1) ? 0 : 1;
-                        patternDirection_ = true;
-                    }
-                    else
-                    {
-                        patternIndex_--;
-                    }
+                    patternIndex_--;
                 }
-                break;
+            }
+            break;
 
-            case ArpType::Random:
-                DSPUtils::randomBipolar(rngState_); // Advance LCG
-                noteToPlay = generatedPattern_[rngState_ % generatedPattern_.size()];
-                break;
+        case ArpType::Random:
+            DSPUtils::randomBipolar(rngState_);  // Advance LCG
+            noteToPlay = generatedPattern_[rngState_ % generatedPattern_.size()];
+            break;
 
-            case ArpType::Trigger:
-                // Chord trigger mode
-                for (int n : generatedPattern_)
-                {
-                    outEvents.push_back({ n, 0.85f, true });
-                }
-                currentNoteActive_ = true;
-                currentPlayingNote_ = generatedPattern_[0];
-                return true;
+        case ArpType::Trigger:
+            // Chord trigger mode
+            for (int n : generatedPattern_)
+            {
+                outEvents.push_back({n, 0.85f, true});
+            }
+            currentNoteActive_ = true;
+            currentPlayingNote_ = generatedPattern_[0];
+            return true;
         }
 
         currentPlayingNote_ = noteToPlay;
         currentNoteActive_ = true;
-        outEvents.push_back({ noteToPlay, 0.85f, true });
+        outEvents.push_back({noteToPlay, 0.85f, true});
     }
 
     return !outEvents.empty();
 }
 
-} // namespace ABDMS2000
+}  // namespace ABDMS2000

@@ -12,5 +12,5 @@
 
 namespace ABDMS2000
 {
-    using abd::synth::PolyBLEP;
+using abd::synth::PolyBLEP;
 }

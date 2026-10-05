@@ -1,8 +1,9 @@
 #include "DWGSOscillator.h"
-#include "../Common/DSPUtils.h"
 #include <algorithm>
+#include "../Common/DSPUtils.h"
 
-namespace ABDMS2000 {
+namespace ABDMS2000
+{
 
 void DWGSOscillator::prepare(double sampleRate) noexcept
 {
@@ -15,8 +16,10 @@ void DWGSOscillator::prepare(double sampleRate) noexcept
 void DWGSOscillator::reset(float initialPhase) noexcept
 {
     phase_ = static_cast<double>(initialPhase);
-    while (phase_ >= 1.0) phase_ -= 1.0;
-    while (phase_ < 0.0)  phase_ += 1.0;
+    while (phase_ >= 1.0)
+        phase_ -= 1.0;
+    while (phase_ < 0.0)
+        phase_ += 1.0;
 }
 
 void DWGSOscillator::setFrequency(float frequencyHz) noexcept
@@ -32,7 +35,8 @@ void DWGSOscillator::setWaveIndex(int index) noexcept
 
 float DWGSOscillator::getNextSample() noexcept
 {
-    if (tableData_ == nullptr) return 0.0f;
+    if (tableData_ == nullptr)
+        return 0.0f;
 
     const size_t tableOffset = currentWaveIndex_ * DWGSTables::SAMPLES_PER_TABLE;
     const double scaledIndex = phase_ * static_cast<double>(DWGSTables::SAMPLES_PER_TABLE);
@@ -55,4 +59,4 @@ float DWGSOscillator::getNextSample() noexcept
     return out;
 }
 
-} // namespace ABDMS2000
+}  // namespace ABDMS2000

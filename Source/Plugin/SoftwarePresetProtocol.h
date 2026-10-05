@@ -4,7 +4,8 @@
 
 #include <cstddef>
 
-namespace ABDMS2000 {
+namespace ABDMS2000
+{
 
 /**
  * Protocolo del transporte de software: los verbos con los que el ABD Bank Manager
@@ -42,62 +43,62 @@ namespace ABDMS2000 {
  */
 namespace SoftwarePresetProtocol
 {
-    // ─── Acciones (WebUI → host) ─────────────────────────────────────────────
-    inline constexpr const char* kReadPreset    = "preset.read";
-    inline constexpr const char* kWritePreset   = "preset.write";
-    inline constexpr const char* kReadBank      = "bank.read";
-    inline constexpr const char* kWriteBank     = "bank.write";
-    inline constexpr const char* kCapturePreset = "preset.capture";
+// ─── Acciones (WebUI → host) ─────────────────────────────────────────────
+inline constexpr const char *kReadPreset = "preset.read";
+inline constexpr const char *kWritePreset = "preset.write";
+inline constexpr const char *kReadBank = "bank.read";
+inline constexpr const char *kWriteBank = "bank.write";
+inline constexpr const char *kCapturePreset = "preset.capture";
 
-    // ─── Respuestas (host → WebUI) ───────────────────────────────────────────
-    inline constexpr const char* kPresetData     = "preset.data";
-    inline constexpr const char* kPresetWritten  = "preset.written";
-    inline constexpr const char* kBankData       = "bank.data";
-    inline constexpr const char* kBankWritten    = "bank.written";
-    inline constexpr const char* kPresetCaptured = "preset.captured";
-    inline constexpr const char* kError          = "preset.error";
+// ─── Respuestas (host → WebUI) ───────────────────────────────────────────
+inline constexpr const char *kPresetData = "preset.data";
+inline constexpr const char *kPresetWritten = "preset.written";
+inline constexpr const char *kBankData = "bank.data";
+inline constexpr const char *kBankWritten = "bank.written";
+inline constexpr const char *kPresetCaptured = "preset.captured";
+inline constexpr const char *kError = "preset.error";
 
-    // ─── Sistema de presets declarado por el contrato del host (HostModelId.gen.h) ──
-    inline constexpr const char* kPresetSystem = "native";
+// ─── Sistema de presets declarado por el contrato del host (HostModelId.gen.h) ──
+inline constexpr const char *kPresetSystem = "native";
 
-    // ─── Códigos de error ────────────────────────────────────────────────────
-    /** Acción o sistema que este host no habla → el Bank Manager cae al verbo por slot. */
-    inline constexpr const char* kUnsupportedAction = "unsupported-action";
-    inline constexpr const char* kInvalidSlot       = "invalid-slot";
-    inline constexpr const char* kInvalidPayload    = "invalid-payload";
+// ─── Códigos de error ────────────────────────────────────────────────────
+/** Acción o sistema que este host no habla → el Bank Manager cae al verbo por slot. */
+inline constexpr const char *kUnsupportedAction = "unsupported-action";
+inline constexpr const char *kInvalidSlot = "invalid-slot";
+inline constexpr const char *kInvalidPayload = "invalid-payload";
 
-    /** ¿El `system` que pide el Bank Manager es el que este host expone? */
-    inline bool isSupportedSystem(const juce::String& system)
-    {
-        return system.isEmpty() || system == kPresetSystem;
-    }
-
-    /**
-     * Bloque de programa en base64 estándar (el que entiende `atob` en el WebUI).
-     * `juce::Base64::toBase64` produce exactamente eso; `MemoryBlock` no.
-     */
-    inline juce::String encodePayload(const void* data, size_t size)
-    {
-        if (data == nullptr || size == 0)
-            return {};
-
-        return juce::Base64::toBase64(data, size);
-    }
-
-    /** Decodifica el `payload` del Bank Manager. Devuelve false si no hay bytes. */
-    inline bool decodePayload(const juce::String& base64, juce::MemoryBlock& out)
-    {
-        out.reset();
-        if (base64.isEmpty())
-            return false;
-
-        juce::MemoryOutputStream stream;
-        if (! juce::Base64::convertFromBase64(stream, base64) || stream.getDataSize() == 0)
-            return false;
-
-        out = juce::MemoryBlock(stream.getData(), stream.getDataSize());
-        return true;
-    }
+/** ¿El `system` que pide el Bank Manager es el que este host expone? */
+inline bool isSupportedSystem(const juce::String &system)
+{
+    return system.isEmpty() || system == kPresetSystem;
 }
 
-} // namespace ABDMS2000
+/**
+ * Bloque de programa en base64 estándar (el que entiende `atob` en el WebUI).
+ * `juce::Base64::toBase64` produce exactamente eso; `MemoryBlock` no.
+ */
+inline juce::String encodePayload(const void *data, size_t size)
+{
+    if (data == nullptr || size == 0)
+        return {};
+
+    return juce::Base64::toBase64(data, size);
+}
+
+/** Decodifica el `payload` del Bank Manager. Devuelve false si no hay bytes. */
+inline bool decodePayload(const juce::String &base64, juce::MemoryBlock &out)
+{
+    out.reset();
+    if (base64.isEmpty())
+        return false;
+
+    juce::MemoryOutputStream stream;
+    if (!juce::Base64::convertFromBase64(stream, base64) || stream.getDataSize() == 0)
+        return false;
+
+    out = juce::MemoryBlock(stream.getData(), stream.getDataSize());
+    return true;
+}
+}  // namespace SoftwarePresetProtocol
+
+}  // namespace ABDMS2000

@@ -11,7 +11,7 @@
 
 namespace ABDMS2000
 {
-    using abd::synth::LFOWaveform;
-    using abd::synth::LFOWaveformLFO2;
-    using abd::synth::LFO;
-}
+using abd::synth::LFO;
+using abd::synth::LFOWaveform;
+using abd::synth::LFOWaveformLFO2;
+}  // namespace ABDMS2000

@@ -1,7 +1,8 @@
 #include "NoiseGenerator.h"
 #include "../Common/DSPUtils.h"
 
-namespace ABDMS2000 {
+namespace ABDMS2000
+{
 
 void NoiseGenerator::reset(uint32_t seed) noexcept
 {
@@ -28,7 +29,7 @@ float NoiseGenerator::getPinkNoise() noexcept
     float pink = b0_ + b1_ + b2_ + b3_ + b4_ + b5_ + b6_ + white * 0.5362f;
     b6_ = white * 0.115926f;
 
-    return pink * 0.11f; // Normalize roughly to [-1.0, 1.0]
+    return pink * 0.11f;  // Normalize roughly to [-1.0, 1.0]
 }
 
-} // namespace ABDMS2000
+}  // namespace ABDMS2000

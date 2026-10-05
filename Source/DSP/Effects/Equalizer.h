@@ -70,7 +70,8 @@
 #include "DspEffects/CascadeShelfEq.h"
 #include "DspEffects/profiles/MS2000EqProfile.h"
 
-namespace ABDMS2000 {
+namespace ABDMS2000
+{
 
 /**
  * @brief 2-Band Cascaded Shelving Equalizer based on reverse-engineered Korg MS2000 DSP specs.
@@ -82,8 +83,9 @@ namespace ABDMS2000 {
  * The biquad lives in the shared module, and so do the numbers: what is left
  * here is the shape of the API, which is the product's.
  */
-class Equalizer {
-public:
+class Equalizer
+{
+  public:
     Equalizer() = default;
 
     void prepare(double sampleRate) noexcept;
@@ -94,9 +96,9 @@ public:
     void setHighFreqIndex(int index0to3) noexcept;
     void setHighGainDB(float gainDB) noexcept;
 
-    void process(float& leftSample, float& rightSample) noexcept;
+    void process(float &leftSample, float &rightSample) noexcept;
 
-private:
+  private:
     /** La última posición del selector, leída del perfil y no escrita aquí.
 
         El panel tiene cuatro posiciones porque las tiene el hardware, y el
@@ -107,11 +109,11 @@ private:
 
     // La posición que tiene puesta el panel. NO es el estado del motor: es su
     // memoria, y existe por una sola razón, que está explicada en `prepare`.
-    int lowFreqIndex_  = abd::dsp::MS2000EqProfile::defaultLowIndex;   // 250 Hz
+    int lowFreqIndex_ = abd::dsp::MS2000EqProfile::defaultLowIndex;    // 250 Hz
     int highFreqIndex_ = abd::dsp::MS2000EqProfile::defaultHighIndex;  // 8.0 kHz
 
     // Las dos repisas en cascada, con los números del hardware dentro.
     abd::dsp::CascadeShelfEq<abd::dsp::MS2000EqProfile> eq_;
 };
 
-} // namespace ABDMS2000
+}  // namespace ABDMS2000

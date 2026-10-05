@@ -1,21 +1,23 @@
 #pragma once
-#include <cmath>
 #include <algorithm>
+#include <cmath>
 
-namespace ABDMS2000 {
+namespace ABDMS2000
+{
 
 /**
  * @brief High-precision Envelope Follower with configurable release time (Gate Sense).
  */
-class EnvelopeFollower {
-public:
+class EnvelopeFollower
+{
+  public:
     EnvelopeFollower() = default;
 
     void prepare(double sampleRate) noexcept
     {
         sampleRate_ = (sampleRate > 1000.0) ? sampleRate : 44100.0;
         envelope_ = 0.0f;
-        setReleaseTime(0.05f); // 50ms default
+        setReleaseTime(0.05f);  // 50ms default
     }
 
     void reset() noexcept
@@ -44,12 +46,15 @@ public:
         return envelope_;
     }
 
-    float getCurrentLevel() const noexcept { return envelope_; }
+    float getCurrentLevel() const noexcept
+    {
+        return envelope_;
+    }
 
-private:
-    double sampleRate_{ 44100.0 };
-    float envelope_{ 0.0f };
-    float releaseCoef_{ 0.999f };
+  private:
+    double sampleRate_ {44100.0};
+    float envelope_ {0.0f};
+    float releaseCoef_ {0.999f};
 };
 
-} // namespace ABDMS2000
+}  // namespace ABDMS2000

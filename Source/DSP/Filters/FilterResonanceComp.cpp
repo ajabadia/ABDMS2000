@@ -1,7 +1,8 @@
 #include "FilterResonanceComp.h"
 #include <algorithm>
 
-namespace ABDMS2000 {
+namespace ABDMS2000
+{
 
 float FilterResonanceComp::computeGainCompensation(float resonance0to1) noexcept
 {
@@ -17,9 +18,9 @@ float FilterResonanceComp::computeEffectiveFeedback(float resonance0to1) noexcep
     if (res > 0.82f)
     {
         float excess = (res - 0.82f) / 0.18f;
-        return 3.92f + (excess * 0.25f); // Resonance > 4.0 causes pure self-oscillation
+        return 3.92f + (excess * 0.25f);  // Resonance > 4.0 causes pure self-oscillation
     }
     return res * 3.90f;
 }
 
-} // namespace ABDMS2000
+}  // namespace ABDMS2000

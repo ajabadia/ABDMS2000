@@ -1,28 +1,31 @@
 #include "PluginProcessor.h"
-#include "PluginEditor.h"
+#include <utility>
+#include <vector>
+#include "../Core/AppLogger.h"
 #include "../MIDI/MIDITelemetryManager.h"
 #include "../MIDI/SysExManager.h"
 #include "../State/MS2000PatchBuilder.h"
-#include "../Core/AppLogger.h"
-#include <utility>
-#include <vector>
+#include "PluginEditor.h"
 
-namespace ABDMS2000 {
+namespace ABDMS2000
+{
 
-static struct PluginProcStaticInit {
-    PluginProcStaticInit() {
+static struct PluginProcStaticInit
+{
+    PluginProcStaticInit()
+    {
         ABD_LOG("=== [PROCESSOR STATIC INIT] PluginProcessor.cpp static init ===");
     }
 } s_procStaticInit;
 
 ABDMS2000AudioProcessor::ABDMS2000AudioProcessor()
     : AudioProcessor(BusesProperties()
-                     .withInput("Input", juce::AudioChannelSet::stereo(), false)
-                     .withOutput("Output", juce::AudioChannelSet::stereo(), true)),
-      apvts_(*this, nullptr, "Parameters", ParameterRegistry::createParameterLayout()),
-      engine_(apvts_),
-      midiTelemetry_(std::make_unique<MIDITelemetryManager>(apvts_)),
-      sysexManager_(std::make_unique<SysExManager>())
+                         .withInput("Input", juce::AudioChannelSet::stereo(), false)
+                         .withOutput("Output", juce::AudioChannelSet::stereo(), true))
+    , apvts_(*this, nullptr, "Parameters", ParameterRegistry::createParameterLayout())
+    , engine_(apvts_)
+    , midiTelemetry_(std::make_unique<MIDITelemetryManager>(apvts_))
+    , sysexManager_(std::make_unique<SysExManager>())
 {
     ABD_LOG("[PROCESSOR] ABDMS2000AudioProcessor constructor start.");
     ABD_LOG("[PROCESSOR] APVTS layout created with 105 parameters.");
@@ -32,7 +35,6 @@ ABDMS2000AudioProcessor::ABDMS2000AudioProcessor()
     ABD_LOG("[PROCESSOR] Init patch built successfully into APVTS.");
 }
 
-
 ABDMS2000AudioProcessor::~ABDMS2000AudioProcessor()
 {
     ABD_LOG("[PROCESSOR] ABDMS2000AudioProcessor destructor called.");
@@ -40,7 +42,7 @@ ABDMS2000AudioProcessor::~ABDMS2000AudioProcessor()
     sysexManager_.reset();
 }
 
-MIDITelemetryManager& ABDMS2000AudioProcessor::getMIDITelemetry() noexcept
+MIDITelemetryManager &ABDMS2000AudioProcessor::getMIDITelemetry() noexcept
 {
     return *midiTelemetry_;
 }
@@ -88,7 +90,7 @@ void ABDMS2000AudioProcessor::setCurrentProgram(int index)
         sysexManager_->loadCurrentProgramIntoAPVTS(apvts_);
 
         // Unless this is specifically a vocoder program (like index 4: A.05 Vocoder), disable vocoder mode
-        if (auto* p = apvts_.getParameter(ParamIDs::synthVocoderMode))
+        if (auto *p = apvts_.getParameter(ParamIDs::synthVocoderMode))
         {
             p->setValueNotifyingHost((index == 4) ? 1.0f : 0.0f);
         }
@@ -104,7 +106,7 @@ const juce::String ABDMS2000AudioProcessor::getProgramName(int index)
     return "Init Synth";
 }
 
-void ABDMS2000AudioProcessor::changeProgramName(int index, const juce::String& newName)
+void ABDMS2000AudioProcessor::changeProgramName(int index, const juce::String &newName)
 {
     if (sysexManager_)
     {
@@ -116,7 +118,8 @@ void ABDMS2000AudioProcessor::changeProgramName(int index, const juce::String& n
 
 void ABDMS2000AudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
-    ABD_LOG(juce::String("[PROCESSOR] prepareToPlay called. SampleRate: ") + juce::String(sampleRate) + ", BlockSize: " + juce::String(samplesPerBlock));
+    ABD_LOG(juce::String("[PROCESSOR] prepareToPlay called. SampleRate: ") + juce::String(sampleRate)
+            + ", BlockSize: " + juce::String(samplesPerBlock));
     engine_.prepare(sampleRate, samplesPerBlock);
 }
 
@@ -126,17 +129,16 @@ void ABDMS2000AudioProcessor::releaseResources()
     engine_.reset();
 }
 
-bool ABDMS2000AudioProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const
+bool ABDMS2000AudioProcessor::isBusesLayoutSupported(const BusesLayout &layouts) const
 {
-    const auto& mainOutput = layouts.getMainOutputChannelSet();
-    if (mainOutput != juce::AudioChannelSet::mono()
-     && mainOutput != juce::AudioChannelSet::stereo())
+    const auto &mainOutput = layouts.getMainOutputChannelSet();
+    if (mainOutput != juce::AudioChannelSet::mono() && mainOutput != juce::AudioChannelSet::stereo())
         return false;
 
     return true;
 }
 
-void ABDMS2000AudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+void ABDMS2000AudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, juce::MidiBuffer &midiMessages)
 {
     juce::ScopedNoDenormals noDenormals;
 
@@ -153,7 +155,7 @@ void ABDMS2000AudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
             auto msg = meta.getMessage();
             if (msg.isSysEx())
             {
-                auto res = sysexManager_->parseSysEx(static_cast<const uint8_t*>(msg.getSysExData()),
+                auto res = sysexManager_->parseSysEx(static_cast<const uint8_t *>(msg.getSysExData()),
                                                      static_cast<size_t>(msg.getSysExDataSize()),
                                                      apvts_);
                 if (!res.reply.empty())
@@ -163,9 +165,8 @@ void ABDMS2000AudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 
         // Salida MIDI: el plugin ya escribe aquí (arpegiador y telemetría), así que el
         // acuse viaja por el mismo camino y llega a quien mandó el dump.
-        for (const auto& [bytes, samplePosition] : sysExReplies)
-            midiMessages.addEvent(juce::MidiMessage::createSysExMessage(bytes.data(),
-                                                                        static_cast<int>(bytes.size())),
+        for (const auto &[bytes, samplePosition] : sysExReplies)
+            midiMessages.addEvent(juce::MidiMessage::createSysExMessage(bytes.data(), static_cast<int>(bytes.size())),
                                   samplePosition);
     }
 
@@ -182,21 +183,19 @@ void ABDMS2000AudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
     }
 }
 
-
-
 bool ABDMS2000AudioProcessor::hasEditor() const
 {
     ABD_LOG("[PROCESSOR] hasEditor query -> returning true");
     return true;
 }
 
-juce::AudioProcessorEditor* ABDMS2000AudioProcessor::createEditor()
+juce::AudioProcessorEditor *ABDMS2000AudioProcessor::createEditor()
 {
     ABD_LOG("[PROCESSOR] createEditor called -> instantiating ABDMS2000AudioProcessorEditor");
     return new ABDMS2000AudioProcessorEditor(*this);
 }
 
-void ABDMS2000AudioProcessor::getStateInformation(juce::MemoryBlock& destData)
+void ABDMS2000AudioProcessor::getStateInformation(juce::MemoryBlock &destData)
 {
     // 1. Crear una copia instantánea del árbol de parámetros APVTS
     auto state = apvts_.copyState();
@@ -205,10 +204,12 @@ void ABDMS2000AudioProcessor::getStateInformation(juce::MemoryBlock& destData)
     if (sysexManager_)
     {
         state.setProperty("currentProgramIndex", sysexManager_->getActiveProgramIndex(), nullptr);
-        state.setProperty("currentProgramName", juce::String(sysexManager_->getProgram(sysexManager_->getActiveProgramIndex()).getName()), nullptr);
+        state.setProperty("currentProgramName",
+                          juce::String(sysexManager_->getProgram(sysexManager_->getActiveProgramIndex()).getName()),
+                          nullptr);
 
         // Serializar los 128 programas del banco activo en memoria (36 KB binarios)
-        const auto& allProgs = sysexManager_->getAllPrograms();
+        const auto &allProgs = sysexManager_->getAllPrograms();
         juce::MemoryBlock bankBlock(allProgs.data(), sizeof(MS2000ProgramData) * SysExManager::BANK_SIZE);
         state.setProperty("bankDataBlob", bankBlock.toBase64Encoding(), nullptr);
     }
@@ -221,9 +222,10 @@ void ABDMS2000AudioProcessor::getStateInformation(juce::MemoryBlock& destData)
     }
 }
 
-void ABDMS2000AudioProcessor::setStateInformation(const void* data, int sizeInBytes)
+void ABDMS2000AudioProcessor::setStateInformation(const void *data, int sizeInBytes)
 {
-    if (data == nullptr || sizeInBytes <= 0) return;
+    if (data == nullptr || sizeInBytes <= 0)
+        return;
 
     // 1. Reconstruir XML desde el bloque binario del DAW
     std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
@@ -240,10 +242,12 @@ void ABDMS2000AudioProcessor::setStateInformation(const void* data, int sizeInBy
             {
                 auto b64 = newTree.getProperty("bankDataBlob").toString();
                 juce::MemoryOutputStream mem;
-                if (juce::Base64::convertFromBase64(mem, b64) && mem.getDataSize() >= sizeof(MS2000ProgramData) * SysExManager::BANK_SIZE)
+                if (juce::Base64::convertFromBase64(mem, b64)
+                    && mem.getDataSize() >= sizeof(MS2000ProgramData) * SysExManager::BANK_SIZE)
                 {
                     std::array<MS2000ProgramData, SysExManager::BANK_SIZE> restoredBank;
-                    std::memcpy(restoredBank.data(), mem.getData(), sizeof(MS2000ProgramData) * SysExManager::BANK_SIZE);
+                    std::memcpy(
+                        restoredBank.data(), mem.getData(), sizeof(MS2000ProgramData) * SysExManager::BANK_SIZE);
                     sysexManager_->setAllPrograms(restoredBank);
                 }
             }
@@ -264,11 +268,10 @@ void ABDMS2000AudioProcessor::setStateInformation(const void* data, int sizeInBy
     }
 }
 
-
-} // namespace ABDMS2000
+}  // namespace ABDMS2000
 
 // JUCE Entry Point
-juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
+juce::AudioProcessor *JUCE_CALLTYPE createPluginFilter()
 {
     ABD_LOG("[ENTRY] createPluginFilter() called - instantiating new ABDMS2000AudioProcessor.");
     return new ABDMS2000::ABDMS2000AudioProcessor();

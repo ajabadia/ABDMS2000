@@ -11,6 +11,6 @@
 
 namespace ABDMS2000
 {
-    using abd::synth::EnvelopeStage;
-    using abd::synth::ADSREnvelope;
-}
+using abd::synth::ADSREnvelope;
+using abd::synth::EnvelopeStage;
+}  // namespace ABDMS2000

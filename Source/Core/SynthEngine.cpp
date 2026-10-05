@@ -1,19 +1,20 @@
 #include "SynthEngine.h"
-#include "AppLogger.h"
 #include <algorithm>
 #include <cmath>
+#include "AppLogger.h"
 
-namespace ABDMS2000 {
+namespace ABDMS2000
+{
 
-SynthEngine::SynthEngine(juce::AudioProcessorValueTreeState& apvts)
-    : apvts_(apvts)
+SynthEngine::SynthEngine(juce::AudioProcessorValueTreeState &apvts) : apvts_(apvts)
 {
     ABD_LOG("[ENGINE] SynthEngine constructor called.");
 }
 
 void SynthEngine::prepare(double sampleRate, int samplesPerBlock)
 {
-    ABD_LOG(juce::String("[ENGINE] SynthEngine::prepare start. SR: ") + juce::String(sampleRate) + " Block: " + juce::String(samplesPerBlock));
+    ABD_LOG(juce::String("[ENGINE] SynthEngine::prepare start. SR: ") + juce::String(sampleRate)
+            + " Block: " + juce::String(samplesPerBlock));
     sampleRate_ = (sampleRate > 1000.0) ? sampleRate : 44100.0;
     samplesPerBlock_ = samplesPerBlock;
     smoothedMasterGain_.reset(sampleRate_, 0.02);
@@ -58,7 +59,7 @@ void SynthEngine::reset()
     vocoder_.reset();
     debugFilter_.reset();
     testTonePhase_ = 0.0;
-    currentSnapshot_ = AudioThreadSnapshot{};
+    currentSnapshot_ = AudioThreadSnapshot {};
 }
 
 void SynthEngine::registerScopeTaps()
@@ -72,11 +73,12 @@ void SynthEngine::registerScopeTaps()
     // enough to satisfy the 512-sample frame pull at 1:1 audio rate.
     const size_t cap = static_cast<size_t>(std::max(1, samplesPerBlock_));
     tapMaster_ = scopeCollector_.registerTap("Master Output", abd::scope::ScopeTapType::StereoAudio, cap, "master_out");
-    tapPreFx_  = scopeCollector_.registerTap("Pre FX",       abd::scope::ScopeTapType::StereoAudio, cap, "pre_fx");
+    tapPreFx_ = scopeCollector_.registerTap("Pre FX", abd::scope::ScopeTapType::StereoAudio, cap, "pre_fx");
     tapOscMix_ = scopeCollector_.registerTap("Voice 1 Osc Mix", abd::scope::ScopeTapType::MonoAudio, cap, "osc_mix");
-    tapPostFilter_ = scopeCollector_.registerTap("Voice 1 Post Filter", abd::scope::ScopeTapType::MonoAudio, cap, "post_filter");
-    tapPostVca_ = scopeCollector_.registerTap("Voice 1 Post VCA",   abd::scope::ScopeTapType::MonoAudio, cap, "post_vca");
-    tapLfo1_   = scopeCollector_.registerTap("Voice 1 LFO1", abd::scope::ScopeTapType::ControlSignal, cap, "lfo1");
+    tapPostFilter_ =
+        scopeCollector_.registerTap("Voice 1 Post Filter", abd::scope::ScopeTapType::MonoAudio, cap, "post_filter");
+    tapPostVca_ = scopeCollector_.registerTap("Voice 1 Post VCA", abd::scope::ScopeTapType::MonoAudio, cap, "post_vca");
+    tapLfo1_ = scopeCollector_.registerTap("Voice 1 LFO1", abd::scope::ScopeTapType::ControlSignal, cap, "lfo1");
 }
 
 void SynthEngine::flushScopeTaps(int numSamples) noexcept
@@ -99,7 +101,6 @@ void SynthEngine::flushScopeTaps(int numSamples) noexcept
         tapLfo1_->write(scopeBufLfo1_.data(), n);
 }
 
-
 namespace
 {
 /** `osc1Wave` → `t2Osc1Wave`: el id del mismo parámetro en el Timbre 2. */
@@ -109,20 +110,21 @@ juce::String timbre2ParamId(juce::String id)
         id = id.substring(0, 1).toUpperCase() + id.substring(1);
     return "t2" + id;
 }
-} // namespace
+}  // namespace
 
-float SynthEngine::paramValueById(const juce::String& id, float defaultVal) const noexcept
+float SynthEngine::paramValueById(const juce::String &id, float defaultVal) const noexcept
 {
-    if (auto* p = apvts_.getRawParameterValue(id))
+    if (auto *p = apvts_.getRawParameterValue(id))
         return p->load(std::memory_order_relaxed);
     juce::ignoreUnused(defaultVal);
     return defaultVal;
 }
 
-float SynthEngine::paramValue(bool second, const char* id, float defaultVal) const noexcept
+float SynthEngine::paramValue(bool second, const char *id, float defaultVal) const noexcept
 {
     juce::String key(id);
-    if (second) key = timbre2ParamId(key);
+    if (second)
+        key = timbre2ParamId(key);
     return paramValueById(key, defaultVal);
 }
 
@@ -131,9 +133,9 @@ float SynthEngine::paramValue(bool second, const char* id, float defaultVal) con
  * ids tal cual y el otro con el prefijo `t2`, que es exactamente cómo el programa real
  * guarda dos bloques de 108 B idénticos en estructura.
  */
-void SynthEngine::readTimbreParams(bool second, VoiceParameters& vp) noexcept
+void SynthEngine::readTimbreParams(bool second, VoiceParameters &vp) noexcept
 {
-    auto P = [this, second](const char* id, float def) { return paramValue(second, id, def); };
+    auto P = [this, second](const char *id, float def) { return paramValue(second, id, def); };
 
     const bool portaOn = (paramValueById(ParamIDs::portamentoOn, 1.0f) > 0.5f);
     vp.portamentoTime = portaOn ? P(ParamIDs::portamentoTime, 0.0f) : 0.0f;
@@ -209,18 +211,21 @@ void SynthEngine::readTimbreParams(bool second, VoiceParameters& vp) noexcept
     vp.modWheelValue = modWheelValue_.load(std::memory_order_relaxed);
 
     // Virtual Patch Slots 1-4
-    const char* slotSource[4] = { ParamIDs::patch1Source, ParamIDs::patch2Source,
-                                  ParamIDs::patch3Source, ParamIDs::patch4Source };
-    const char* slotDestination[4] = { ParamIDs::patch1Destination, ParamIDs::patch2Destination,
-                                       ParamIDs::patch3Destination, ParamIDs::patch4Destination };
-    const char* slotIntensity[4] = { ParamIDs::patch1Intensity, ParamIDs::patch2Intensity,
-                                     ParamIDs::patch3Intensity, ParamIDs::patch4Intensity };
-    const float sourceDefault[4] = { 0.0f, 1.0f, 2.0f, 3.0f };
-    const float destinationDefault[4] = { 4.0f, 4.0f, 0.0f, 7.0f };
+    const char *slotSource[4] = {
+        ParamIDs::patch1Source, ParamIDs::patch2Source, ParamIDs::patch3Source, ParamIDs::patch4Source};
+    const char *slotDestination[4] = {ParamIDs::patch1Destination,
+                                      ParamIDs::patch2Destination,
+                                      ParamIDs::patch3Destination,
+                                      ParamIDs::patch4Destination};
+    const char *slotIntensity[4] = {
+        ParamIDs::patch1Intensity, ParamIDs::patch2Intensity, ParamIDs::patch3Intensity, ParamIDs::patch4Intensity};
+    const float sourceDefault[4] = {0.0f, 1.0f, 2.0f, 3.0f};
+    const float destinationDefault[4] = {4.0f, 4.0f, 0.0f, 7.0f};
     for (size_t s = 0; s < 4; ++s)
     {
         vp.patchSlots[s].source = static_cast<PatchSource>(static_cast<int>(P(slotSource[s], sourceDefault[s])));
-        vp.patchSlots[s].destination = static_cast<PatchDestination>(static_cast<int>(P(slotDestination[s], destinationDefault[s])));
+        vp.patchSlots[s].destination =
+            static_cast<PatchDestination>(static_cast<int>(P(slotDestination[s], destinationDefault[s])));
         vp.patchSlots[s].intensity = P(slotIntensity[s], 0.0f) / 63.0f;
     }
 }
@@ -233,21 +238,21 @@ void SynthEngine::readTimbreParams(bool second, VoiceParameters& vp) noexcept
 void SynthEngine::configureTimbreSeq(bool second, size_t firstTrack) noexcept
 {
     const int mode = static_cast<int>(paramValue(second, ParamIDs::modSeqType, 0.0f));
-    const int lastStep = static_cast<int>(std::max(1.0f, std::min(16.0f,
-                              paramValue(second, ParamIDs::seqLastStep, 16.0f))));
+    const int lastStep =
+        static_cast<int>(std::max(1.0f, std::min(16.0f, paramValue(second, ParamIDs::seqLastStep, 16.0f))));
 
     for (size_t row = 0; row < ModSequencer::TRACKS_PER_TIMBRE; ++row)
     {
-        ModSeqTrack& track = modSeq_.getTrack(firstTrack + row);
+        ModSeqTrack &track = modSeq_.getTrack(firstTrack + row);
         const juce::String base("seq" + juce::String(static_cast<int>(row) + 1));
         const juce::String destId = base + "Dest";
         const juce::String motionId = base + "Motion";
 
-        const int destIndex = static_cast<int>(std::max(0.0f, std::min(30.0f,
-            paramValueById(second ? timbre2ParamId(destId) : destId, 0.0f))));
+        const int destIndex = static_cast<int>(
+            std::max(0.0f, std::min(30.0f, paramValueById(second ? timbre2ParamId(destId) : destId, 0.0f))));
         track.destination = static_cast<ModSeqDest>(destIndex);
-        track.motion = static_cast<ModSeqMotion>(static_cast<int>(
-            paramValueById(second ? timbre2ParamId(motionId) : motionId, 0.0f)));
+        track.motion = static_cast<ModSeqMotion>(
+            static_cast<int>(paramValueById(second ? timbre2ParamId(motionId) : motionId, 0.0f)));
         track.mode = static_cast<ModSeqMode>(std::min(3, mode));
         track.length = lastStep;
 
@@ -270,7 +275,7 @@ void SynthEngine::configureTimbreSeq(bool second, size_t firstTrack) noexcept
  * mismas que la matriz de patch (±24 st de pitch, ±5 octavas de cutoff, ±1 de amp).
  * `OSC1 CTRL2` y `STEP RUN` no tienen equivalente y se declaran no modelados.
  */
-void SynthEngine::applySeqModulation(bool second, VoiceParameters& vp) noexcept
+void SynthEngine::applySeqModulation(bool second, VoiceParameters &vp) noexcept
 {
     const size_t firstTrack = second ? ModSequencer::TIMBRE2_TRACK : ModSequencer::TIMBRE1_TRACK;
     bool lengthModulated = false;
@@ -279,73 +284,119 @@ void SynthEngine::applySeqModulation(bool second, VoiceParameters& vp) noexcept
     for (size_t row = 0; row < ModSequencer::TRACKS_PER_TIMBRE; ++row)
     {
         const ModSeqDest dest = modSeq_.getTrack(firstTrack + row).destination;
-        if (dest == ModSeqDest::None) continue;
+        if (dest == ModSeqDest::None)
+            continue;
 
-        const float value = DSPUtils::clamp(
-            (modSeq_.getTrackOutput(firstTrack + row) - 0.5f) * 2.0f, -1.0f, 1.0f);
+        const float value = DSPUtils::clamp((modSeq_.getTrackOutput(firstTrack + row) - 0.5f) * 2.0f, -1.0f, 1.0f);
 
         switch (dest)
         {
-            case ModSeqDest::Pitch:      vp.seq.pitch = value; break;
-            case ModSeqDest::OSC2Semi:   vp.seq.osc2Pitch = value; break;
-            case ModSeqDest::OSC2Tune:   vp.seq.osc2Tune = value * 0.5f; break;   // ±50 cents
-            case ModSeqDest::OSC1Ctrl1:  vp.seq.osc1Ctrl1 = value; break;
-            case ModSeqDest::OSC1Level:  vp.seq.osc1Level = value; break;
-            case ModSeqDest::OSC2Level:  vp.seq.osc2Level = value; break;
-            case ModSeqDest::NoiseLevel: vp.seq.noiseLevel = value; break;
-            case ModSeqDest::Cutoff:     vp.seq.cutoff = value; break;
-            case ModSeqDest::AmpLevel:   vp.seq.amp = value; break;
-            case ModSeqDest::Panpot:     vp.seq.pan = value; break;
-            case ModSeqDest::LFO2Freq:   vp.seq.lfo2Freq = value; break;
+        case ModSeqDest::Pitch:
+            vp.seq.pitch = value;
+            break;
+        case ModSeqDest::OSC2Semi:
+            vp.seq.osc2Pitch = value;
+            break;
+        case ModSeqDest::OSC2Tune:
+            vp.seq.osc2Tune = value * 0.5f;
+            break;  // ±50 cents
+        case ModSeqDest::OSC1Ctrl1:
+            vp.seq.osc1Ctrl1 = value;
+            break;
+        case ModSeqDest::OSC1Level:
+            vp.seq.osc1Level = value;
+            break;
+        case ModSeqDest::OSC2Level:
+            vp.seq.osc2Level = value;
+            break;
+        case ModSeqDest::NoiseLevel:
+            vp.seq.noiseLevel = value;
+            break;
+        case ModSeqDest::Cutoff:
+            vp.seq.cutoff = value;
+            break;
+        case ModSeqDest::AmpLevel:
+            vp.seq.amp = value;
+            break;
+        case ModSeqDest::Panpot:
+            vp.seq.pan = value;
+            break;
+        case ModSeqDest::LFO2Freq:
+            vp.seq.lfo2Freq = value;
+            break;
 
-            case ModSeqDest::Resonance:
-                vp.filterResonance = DSPUtils::clamp(vp.filterResonance + value, 0.0f, 1.0f);
-                break;
-            case ModSeqDest::EG1Int:
-                vp.eg1FilterIntensity = DSPUtils::clamp(vp.eg1FilterIntensity + value, -1.0f, 1.0f);
-                break;
-            case ModSeqDest::KbdTrk:
-                vp.filterKbdTrack = DSPUtils::clamp(vp.filterKbdTrack + value, -1.0f, 1.0f);
-                break;
-            case ModSeqDest::Portamento:
-                vp.portamentoTime = DSPUtils::clamp(vp.portamentoTime + (value * 64.0f), 0.0f, 127.0f);
-                break;
-            case ModSeqDest::LFO1Freq:
-                vp.lfo1FreqHz = DSPUtils::clamp(vp.lfo1FreqHz * std::pow(2.0f, value * 4.0f), 0.01f, 20000.0f);
-                break;
+        case ModSeqDest::Resonance:
+            vp.filterResonance = DSPUtils::clamp(vp.filterResonance + value, 0.0f, 1.0f);
+            break;
+        case ModSeqDest::EG1Int:
+            vp.eg1FilterIntensity = DSPUtils::clamp(vp.eg1FilterIntensity + value, -1.0f, 1.0f);
+            break;
+        case ModSeqDest::KbdTrk:
+            vp.filterKbdTrack = DSPUtils::clamp(vp.filterKbdTrack + value, -1.0f, 1.0f);
+            break;
+        case ModSeqDest::Portamento:
+            vp.portamentoTime = DSPUtils::clamp(vp.portamentoTime + (value * 64.0f), 0.0f, 127.0f);
+            break;
+        case ModSeqDest::LFO1Freq:
+            vp.lfo1FreqHz = DSPUtils::clamp(vp.lfo1FreqHz * std::pow(2.0f, value * 4.0f), 0.01f, 20000.0f);
+            break;
 
-            // Tiempos de envolvente: escalan el valor normalizado (factor hasta ×2 / ×0).
-            case ModSeqDest::EG1Attack:  vp.eg1Attack  = DSPUtils::clamp(vp.eg1Attack  * (1.0f + value), 0.0f, 1.0f); break;
-            case ModSeqDest::EG1Decay:   vp.eg1Decay   = DSPUtils::clamp(vp.eg1Decay   * (1.0f + value), 0.0f, 1.0f); break;
-            case ModSeqDest::EG1Sustain: vp.eg1Sustain = DSPUtils::clamp(vp.eg1Sustain * (1.0f + value), 0.0f, 1.0f); break;
-            case ModSeqDest::EG1Release: vp.eg1Release = DSPUtils::clamp(vp.eg1Release * (1.0f + value), 0.0f, 1.0f); break;
-            case ModSeqDest::EG2Attack:  vp.eg2Attack  = DSPUtils::clamp(vp.eg2Attack  * (1.0f + value), 0.0f, 1.0f); break;
-            case ModSeqDest::EG2Decay:   vp.eg2Decay   = DSPUtils::clamp(vp.eg2Decay   * (1.0f + value), 0.0f, 1.0f); break;
-            case ModSeqDest::EG2Sustain: vp.eg2Sustain = DSPUtils::clamp(vp.eg2Sustain * (1.0f + value), 0.0f, 1.0f); break;
-            case ModSeqDest::EG2Release: vp.eg2Release = DSPUtils::clamp(vp.eg2Release * (1.0f + value), 0.0f, 1.0f); break;
+        // Tiempos de envolvente: escalan el valor normalizado (factor hasta ×2 / ×0).
+        case ModSeqDest::EG1Attack:
+            vp.eg1Attack = DSPUtils::clamp(vp.eg1Attack * (1.0f + value), 0.0f, 1.0f);
+            break;
+        case ModSeqDest::EG1Decay:
+            vp.eg1Decay = DSPUtils::clamp(vp.eg1Decay * (1.0f + value), 0.0f, 1.0f);
+            break;
+        case ModSeqDest::EG1Sustain:
+            vp.eg1Sustain = DSPUtils::clamp(vp.eg1Sustain * (1.0f + value), 0.0f, 1.0f);
+            break;
+        case ModSeqDest::EG1Release:
+            vp.eg1Release = DSPUtils::clamp(vp.eg1Release * (1.0f + value), 0.0f, 1.0f);
+            break;
+        case ModSeqDest::EG2Attack:
+            vp.eg2Attack = DSPUtils::clamp(vp.eg2Attack * (1.0f + value), 0.0f, 1.0f);
+            break;
+        case ModSeqDest::EG2Decay:
+            vp.eg2Decay = DSPUtils::clamp(vp.eg2Decay * (1.0f + value), 0.0f, 1.0f);
+            break;
+        case ModSeqDest::EG2Sustain:
+            vp.eg2Sustain = DSPUtils::clamp(vp.eg2Sustain * (1.0f + value), 0.0f, 1.0f);
+            break;
+        case ModSeqDest::EG2Release:
+            vp.eg2Release = DSPUtils::clamp(vp.eg2Release * (1.0f + value), 0.0f, 1.0f);
+            break;
 
-            case ModSeqDest::Patch1Int: vp.patchSlots[0].intensity = DSPUtils::clamp(vp.patchSlots[0].intensity + value, -1.0f, 1.0f); break;
-            case ModSeqDest::Patch2Int: vp.patchSlots[1].intensity = DSPUtils::clamp(vp.patchSlots[1].intensity + value, -1.0f, 1.0f); break;
-            case ModSeqDest::Patch3Int: vp.patchSlots[2].intensity = DSPUtils::clamp(vp.patchSlots[2].intensity + value, -1.0f, 1.0f); break;
-            case ModSeqDest::Patch4Int: vp.patchSlots[3].intensity = DSPUtils::clamp(vp.patchSlots[3].intensity + value, -1.0f, 1.0f); break;
+        case ModSeqDest::Patch1Int:
+            vp.patchSlots[0].intensity = DSPUtils::clamp(vp.patchSlots[0].intensity + value, -1.0f, 1.0f);
+            break;
+        case ModSeqDest::Patch2Int:
+            vp.patchSlots[1].intensity = DSPUtils::clamp(vp.patchSlots[1].intensity + value, -1.0f, 1.0f);
+            break;
+        case ModSeqDest::Patch3Int:
+            vp.patchSlots[2].intensity = DSPUtils::clamp(vp.patchSlots[2].intensity + value, -1.0f, 1.0f);
+            break;
+        case ModSeqDest::Patch4Int:
+            vp.patchSlots[3].intensity = DSPUtils::clamp(vp.patchSlots[3].intensity + value, -1.0f, 1.0f);
+            break;
 
-            case ModSeqDest::StepLength:
-                lengthModulated = true;
-                lengthAmount = value;
-                break;
+        case ModSeqDest::StepLength:
+            lengthModulated = true;
+            lengthAmount = value;
+            break;
 
-            case ModSeqDest::OSC1Ctrl2:
-            case ModSeqDest::None:
-            default:
-                break; // declarado no modelado (ver `MS2000HardwareProgram::unmodelled()`)
+        case ModSeqDest::OSC1Ctrl2:
+        case ModSeqDest::None:
+        default:
+            break;  // declarado no modelado (ver `MS2000HardwareProgram::unmodelled()`)
         }
     }
 
     // "STEP LENGTH" desplaza el último paso de las tres filas del timbre (±6, real).
     if (lengthModulated)
     {
-        const int lastStep = static_cast<int>(std::max(1.0f, std::min(16.0f,
-                                  paramValue(second, ParamIDs::seqLastStep, 16.0f))));
+        const int lastStep =
+            static_cast<int>(std::max(1.0f, std::min(16.0f, paramValue(second, ParamIDs::seqLastStep, 16.0f))));
         const int shifted = static_cast<int>(std::round(lastStep + (lengthAmount * 6.0f)));
         const int length = std::max(1, std::min(16, shifted));
         for (size_t row = 0; row < ModSequencer::TRACKS_PER_TIMBRE; ++row)
@@ -355,8 +406,9 @@ void SynthEngine::applySeqModulation(bool second, VoiceParameters& vp) noexcept
 
 void SynthEngine::updateParametersFromAPVTS() noexcept
 {
-    auto getParam = [this](const char* id, float defaultVal = 0.0f) -> float {
-        if (auto* p = apvts_.getRawParameterValue(id))
+    auto getParam = [this](const char *id, float defaultVal = 0.0f) -> float
+    {
+        if (auto *p = apvts_.getRawParameterValue(id))
             return p->load(std::memory_order_relaxed);
         return defaultVal;
     };
@@ -371,7 +423,6 @@ void SynthEngine::updateParametersFromAPVTS() noexcept
 
     const int vMode = static_cast<int>(getParam(ParamIDs::voiceMode, 1.0f));
 
-
     // Unison: el Timbre 2 tiene su propio detune; el reparto estéreo es común.
     voiceManagerA_.setUnisonDetune(getParam(ParamIDs::unisonDetune, 10.0f));
     voiceManagerB_.setUnisonDetune(paramValue(true, ParamIDs::unisonDetune, 10.0f));
@@ -380,7 +431,7 @@ void SynthEngine::updateParametersFromAPVTS() noexcept
 
     // ── Timbre 1 y Timbre 2, cada uno con sus parámetros ──
     readTimbreParams(false, voiceParamsA_);
-    readTimbreParams(true,  voiceParamsB_);
+    readTimbreParams(true, voiceParamsB_);
 
     // ── Modo de programa (Single / Split / Layer) y reparto de voces ──
     timbreMode_ = static_cast<int>(std::max(0.0f, std::min(2.0f, getParam(ParamIDs::timbreMode, 0.0f))));
@@ -389,17 +440,18 @@ void SynthEngine::updateParametersFromAPVTS() noexcept
     // "Timbre Voice" (byte 0x10 bits 6,7): 1+3, 2+2 o 3+1 de las 4 voces del equipo
     // entre los dos timbres. En Advanced Mode se reparte por mitades.
     const int voiceSplit = static_cast<int>(std::max(0.0f, std::min(2.0f, getParam(ParamIDs::timbreVoices, 0.0f))));
-    const size_t polyA = (synthMode == 2) ? (totalPolyphony / 2)
-                                          : static_cast<size_t>(1 + voiceSplit);
-    const size_t polyB = (synthMode == 2) ? (totalPolyphony - totalPolyphony / 2)
-                                         : static_cast<size_t>(3 - voiceSplit);
+    const size_t polyA = (synthMode == 2) ? (totalPolyphony / 2) : static_cast<size_t>(1 + voiceSplit);
+    const size_t polyB = (synthMode == 2) ? (totalPolyphony - totalPolyphony / 2) : static_cast<size_t>(3 - voiceSplit);
     voiceManagerA_.setMaxPolyphony(std::max<size_t>(1, polyA));
     voiceManagerB_.setMaxPolyphony(std::max<size_t>(1, polyB));
 
     // Asignación por timbre (`voiceMode` y `t2VoiceMode`: Mono/Poly/Unison)
-    const auto assignModeOf = [](int mode) {
-        if (mode == 0) return VoiceAssignMode::Mono;
-        if (mode == 2) return VoiceAssignMode::Unison;
+    const auto assignModeOf = [](int mode)
+    {
+        if (mode == 0)
+            return VoiceAssignMode::Mono;
+        if (mode == 2)
+            return VoiceAssignMode::Unison;
         return VoiceAssignMode::Poly;
     };
     voiceManagerA_.setAssignMode(assignModeOf(vMode));
@@ -418,7 +470,7 @@ void SynthEngine::updateParametersFromAPVTS() noexcept
     // Mod Sequencer: tres filas por timbre (el reloj —tempo y resolución— es común;
     // en el equipo real la resolución también vive dentro de cada bloque de timbre).
     configureTimbreSeq(false, ModSequencer::TIMBRE1_TRACK);
-    configureTimbreSeq(true,  ModSequencer::TIMBRE2_TRACK);
+    configureTimbreSeq(true, ModSequencer::TIMBRE2_TRACK);
     modSeq_.setTempoBPM(tempoBpm);
     modSeq_.setEnabled((getParam(ParamIDs::modSeqOn, 0.0f) > 0.5f)
                        || (paramValue(true, ParamIDs::modSeqOn, 0.0f) > 0.5f));
@@ -465,16 +517,22 @@ void SynthEngine::updateParametersFromAPVTS() noexcept
         vocoder_.setHPFThreshold(getParam(ParamIDs::vocoderGateSense, 50.0f) / 127.0f);
         vocoder_.setDirectLevel(getParam(ParamIDs::vocoderDirectLevel, 0.0f) / 127.0f);
 
-        const char* bandParamIds[16] = {
-            ParamIDs::vocoderBandLevel1,  ParamIDs::vocoderBandLevel2,
-            ParamIDs::vocoderBandLevel3,  ParamIDs::vocoderBandLevel4,
-            ParamIDs::vocoderBandLevel5,  ParamIDs::vocoderBandLevel6,
-            ParamIDs::vocoderBandLevel7,  ParamIDs::vocoderBandLevel8,
-            ParamIDs::vocoderBandLevel9,  ParamIDs::vocoderBandLevel10,
-            ParamIDs::vocoderBandLevel11, ParamIDs::vocoderBandLevel12,
-            ParamIDs::vocoderBandLevel13, ParamIDs::vocoderBandLevel14,
-            ParamIDs::vocoderBandLevel15, ParamIDs::vocoderBandLevel16
-        };
+        const char *bandParamIds[16] = {ParamIDs::vocoderBandLevel1,
+                                        ParamIDs::vocoderBandLevel2,
+                                        ParamIDs::vocoderBandLevel3,
+                                        ParamIDs::vocoderBandLevel4,
+                                        ParamIDs::vocoderBandLevel5,
+                                        ParamIDs::vocoderBandLevel6,
+                                        ParamIDs::vocoderBandLevel7,
+                                        ParamIDs::vocoderBandLevel8,
+                                        ParamIDs::vocoderBandLevel9,
+                                        ParamIDs::vocoderBandLevel10,
+                                        ParamIDs::vocoderBandLevel11,
+                                        ParamIDs::vocoderBandLevel12,
+                                        ParamIDs::vocoderBandLevel13,
+                                        ParamIDs::vocoderBandLevel14,
+                                        ParamIDs::vocoderBandLevel15,
+                                        ParamIDs::vocoderBandLevel16};
         for (size_t b = 0; b < 16; ++b)
         {
             vocoder_.setBandLevel(b, getParam(bandParamIds[b], 127.0f) / 127.0f);
@@ -482,9 +540,9 @@ void SynthEngine::updateParametersFromAPVTS() noexcept
     }
 }
 
-
-void SynthEngine::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages,
-                               juce::AudioPlayHead* playHead)
+void SynthEngine::processBlock(juce::AudioBuffer<float> &buffer,
+                               juce::MidiBuffer &midiMessages,
+                               juce::AudioPlayHead *playHead)
 {
     const int numSamples = buffer.getNumSamples();
     const int numChannels = buffer.getNumChannels();
@@ -566,24 +624,24 @@ void SynthEngine::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffe
         arpEventsBuffer_.clear();
         if (arpeggiator_.processStep(numSamples, arpEventsBuffer_))
         {
-            for (const auto& ev : arpEventsBuffer_)
+            for (const auto &ev : arpEventsBuffer_)
             {
                 triggerArpNote(ev.midiNote, ev.velocity, ev.isNoteOn);
             }
         }
     }
 
-    const float* inL = (numChannels > 0) ? buffer.getReadPointer(0) : nullptr;
-    const float* inR = (numChannels > 1) ? buffer.getReadPointer(1) : inL;
+    const float *inL = (numChannels > 0) ? buffer.getReadPointer(0) : nullptr;
+    const float *inR = (numChannels > 1) ? buffer.getReadPointer(1) : inL;
 
     buffer.clear();
 
-    float* channelL = buffer.getWritePointer(0);
-    float* channelR = (numChannels > 1) ? buffer.getWritePointer(1) : nullptr;
+    float *channelL = buffer.getWritePointer(0);
+    float *channelR = (numChannels > 1) ? buffer.getWritePointer(1) : nullptr;
 
     const bool isVocoderActive = vocoder_.isEnabled();
-    const bool isExternalCarrier = apvts_.getRawParameterValue("vocoderCarrierSrc") &&
-                                   apvts_.getRawParameterValue("vocoderCarrierSrc")->load() > 0.5f;
+    const bool isExternalCarrier = apvts_.getRawParameterValue("vocoderCarrierSrc")
+                                   && apvts_.getRawParameterValue("vocoderCarrierSrc")->load() > 0.5f;
 
     const DiagnosticTonePoint diagPoint = diagTonePoint_.load(std::memory_order_relaxed);
     const float diagFreq = testToneFrequency_.load(std::memory_order_relaxed);
@@ -598,7 +656,8 @@ void SynthEngine::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffe
         {
             diagTone = static_cast<float>(std::sin(DSPUtils::TWO_PI * testTonePhase_)) * diagLevel;
             testTonePhase_ += diagFreq / sampleRate_;
-            if (testTonePhase_ >= 1.0) testTonePhase_ -= 1.0;
+            if (testTonePhase_ >= 1.0)
+                testTonePhase_ -= 1.0;
         }
 
         // Forward diagnostic tone directly into voice if pre-filter or oscillator-override is selected
@@ -615,14 +674,14 @@ void SynthEngine::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffe
 
         // ── ABDScope taps: capture Voice-0 stage signals per sample ──
         {
-            const auto& v0 = voiceManagerA_.getVoice(0).getDiagnosticStats();
+            const auto &v0 = voiceManagerA_.getVoice(0).getDiagnosticStats();
             scopeBufOscMix_[s] = v0.mixedAudio;
             scopeBufPostFilter_[s] = v0.filtered;
             scopeBufPostVca_[s] = v0.vcaOut;
             scopeBufLfo1_[s] = voiceManagerA_.getVoice(0).getLfo1().getCurrentValue();
         }
 
-        if (timbreMode_ == 1 || timbreMode_ == 2) // Split or Dual
+        if (timbreMode_ == 1 || timbreMode_ == 2)  // Split or Dual
         {
             float leftB = 0.0f, rightB = 0.0f;
             voiceManagerB_.process(leftB, rightB, diagPt, diagTone);
@@ -690,13 +749,15 @@ void SynthEngine::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffe
         scopeBufMasterR_[s] = rightSample;
 
         currentSnapshot_.scopeBuffer[currentSnapshot_.scopeWriteIndex] = leftSample;
-        currentSnapshot_.scopeWriteIndex = (currentSnapshot_.scopeWriteIndex + 1) % AudioThreadSnapshot::kScopeBufferSize;
+        currentSnapshot_.scopeWriteIndex =
+            (currentSnapshot_.scopeWriteIndex + 1) % AudioThreadSnapshot::kScopeBufferSize;
     }
 
     // Flush the captured per-sample scratch buffers into the ABDScope taps once per block.
     flushScopeTaps(numSamples);
 
-    currentSnapshot_.activeVoiceCount = static_cast<uint32_t>(voiceManagerA_.getActiveVoiceCount() + voiceManagerB_.getActiveVoiceCount());
+    currentSnapshot_.activeVoiceCount =
+        static_cast<uint32_t>(voiceManagerA_.getActiveVoiceCount() + voiceManagerB_.getActiveVoiceCount());
     currentSnapshot_.vuLeft = buffer.getMagnitude(0, 0, numSamples);
     currentSnapshot_.vuRight = (numChannels > 1) ? buffer.getMagnitude(1, 0, numSamples) : currentSnapshot_.vuLeft;
 
@@ -706,26 +767,22 @@ void SynthEngine::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffe
         s_blockCounter = 0;
         uint32_t activeV = currentSnapshot_.activeVoiceCount;
         float peak = currentSnapshot_.vuLeft;
-        if (activeV > 0 || diagPoint != DiagnosticTonePoint::Disabled || peak > 0.0001f || diagBypassVCA_.load(std::memory_order_relaxed))
+        if (activeV > 0 || diagPoint != DiagnosticTonePoint::Disabled || peak > 0.0001f
+            || diagBypassVCA_.load(std::memory_order_relaxed))
         {
-            const auto& v0 = voiceManagerA_.getVoice(0).getDiagnosticStats();
+            const auto &v0 = voiceManagerA_.getVoice(0).getDiagnosticStats();
             ABD_LOG(juce::String("[DSP-AUDIT] ActiveVoices: ") + juce::String(activeV)
-                    + " DiagPt: " + juce::String(static_cast<int>(diagPoint))
-                    + " PeakOut: " + juce::String(peak)
+                    + " DiagPt: " + juce::String(static_cast<int>(diagPoint)) + " PeakOut: " + juce::String(peak)
                     + " MasterGain: " + juce::String(masterVolume_.load())
                     + " VocoderActive: " + juce::String(isVocoderActive ? "1" : "0")
                     + " Bypasses [Filt:" + juce::String(diagBypassFilter_.load() ? "1" : "0")
                     + " VCA:" + juce::String(diagBypassVCA_.load() ? "1" : "0")
                     + " Mix:" + juce::String(diagBypassOscMixer_.load() ? "1" : "0") + "]"
-                    + " Voice0 [Pitch:" + juce::String(v0.basePitch, 1)
-                    + " Osc1:" + juce::String(v0.osc1Sig, 4)
-                    + " EG2:" + juce::String(v0.eg2Val, 4)
-                    + " Filt:" + juce::String(v0.filtered, 4)
-                    + " VCA:" + juce::String(v0.vcaOut, 4)
-                    + " LOut:" + juce::String(v0.leftOutSample, 4) + "]"
-                    + " Params [CutoffNorm:" + juce::String(voiceParamsA_.filterCutoffNorm)
-                    + " AmpLvl:" + juce::String(voiceParamsA_.ampLevel)
-                    + " Osc1Lvl:" + juce::String(voiceParamsA_.osc1Level)
+                    + " Voice0 [Pitch:" + juce::String(v0.basePitch, 1) + " Osc1:" + juce::String(v0.osc1Sig, 4)
+                    + " EG2:" + juce::String(v0.eg2Val, 4) + " Filt:" + juce::String(v0.filtered, 4)
+                    + " VCA:" + juce::String(v0.vcaOut, 4) + " LOut:" + juce::String(v0.leftOutSample, 4) + "]"
+                    + " Params [CutoffNorm:" + juce::String(voiceParamsA_.filterCutoffNorm) + " AmpLvl:"
+                    + juce::String(voiceParamsA_.ampLevel) + " Osc1Lvl:" + juce::String(voiceParamsA_.osc1Level)
                     + " Osc1Wave:" + juce::String(static_cast<int>(voiceParamsA_.osc1Type)) + "]");
         }
     }
@@ -733,10 +790,8 @@ void SynthEngine::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffe
 
 void SynthEngine::noteOn(int midiChannel, int midiNoteNumber, float velocity)
 {
-    ABD_LOG(juce::String("[ENGINE] noteOn: ch=") + juce::String(midiChannel)
-            + " note=" + juce::String(midiNoteNumber)
-            + " vel=" + juce::String(velocity)
-            + " arp=" + juce::String(arpeggiator_.isEnabled() ? "ON" : "OFF")
+    ABD_LOG(juce::String("[ENGINE] noteOn: ch=") + juce::String(midiChannel) + " note=" + juce::String(midiNoteNumber)
+            + " vel=" + juce::String(velocity) + " arp=" + juce::String(arpeggiator_.isEnabled() ? "ON" : "OFF")
             + " timbreMode=" + juce::String(timbreMode_)
             + " maxPoly=" + juce::String(voiceManagerA_.getMaxPolyphony()));
 
@@ -753,32 +808,38 @@ void SynthEngine::noteOn(int midiChannel, int midiNoteNumber, float velocity)
     }
     else
     {
-        if (timbreMode_ == 1) // Split
+        if (timbreMode_ == 1)  // Split
         {
-            if (midiNoteNumber < splitKey_) voiceManagerA_.noteOn(midiNoteNumber, velocity);
-            else voiceManagerB_.noteOn(midiNoteNumber, velocity);
+            if (midiNoteNumber < splitKey_)
+                voiceManagerA_.noteOn(midiNoteNumber, velocity);
+            else
+                voiceManagerB_.noteOn(midiNoteNumber, velocity);
         }
-        else if (timbreMode_ == 2) // Dual / Layer
+        else if (timbreMode_ == 2)  // Dual / Layer
         {
             voiceManagerA_.noteOn(midiNoteNumber, velocity);
             voiceManagerB_.noteOn(midiNoteNumber, velocity);
         }
-        else // Single / Vocoder
+        else  // Single / Vocoder
         {
             voiceManagerA_.noteOn(midiNoteNumber, velocity);
         }
     }
 
-    const auto keySyncTimbre = [this](bool second, bool plays, bool firstOfTimbre) {
-        if (!plays) return;
+    const auto keySyncTimbre = [this](bool second, bool plays, bool firstOfTimbre)
+    {
+        if (!plays)
+            return;
         const int sync = static_cast<int>(paramValue(second, ParamIDs::seqKeySync, 0.0f));
-        if (sync == static_cast<int>(ModSeqKeySync::Off)) return;
-        if (sync == static_cast<int>(ModSeqKeySync::Timbre) && !firstOfTimbre) return;
+        if (sync == static_cast<int>(ModSeqKeySync::Off))
+            return;
+        if (sync == static_cast<int>(ModSeqKeySync::Timbre) && !firstOfTimbre)
+            return;
         const size_t first = second ? ModSequencer::TIMBRE2_TRACK : ModSequencer::TIMBRE1_TRACK;
         modSeq_.triggerKeySync(first, ModSequencer::TRACKS_PER_TIMBRE);
     };
     keySyncTimbre(false, playsA, firstNoteOfA);
-    keySyncTimbre(true,  playsB, firstNoteOfB);
+    keySyncTimbre(true, playsB, firstNoteOfB);
 }
 
 void SynthEngine::noteOff(int midiChannel, int midiNoteNumber, float velocity, bool allowTailOff)
@@ -791,17 +852,19 @@ void SynthEngine::noteOff(int midiChannel, int midiNoteNumber, float velocity, b
     }
     else
     {
-        if (timbreMode_ == 1) // Split
+        if (timbreMode_ == 1)  // Split
         {
-            if (midiNoteNumber < splitKey_) voiceManagerA_.noteOff(midiNoteNumber);
-            else voiceManagerB_.noteOff(midiNoteNumber);
+            if (midiNoteNumber < splitKey_)
+                voiceManagerA_.noteOff(midiNoteNumber);
+            else
+                voiceManagerB_.noteOff(midiNoteNumber);
         }
-        else if (timbreMode_ == 2) // Dual / Layer
+        else if (timbreMode_ == 2)  // Dual / Layer
         {
             voiceManagerA_.noteOff(midiNoteNumber);
             voiceManagerB_.noteOff(midiNoteNumber);
         }
-        else // Single / Vocoder
+        else  // Single / Vocoder
         {
             voiceManagerA_.noteOff(midiNoteNumber);
         }
@@ -814,8 +877,10 @@ void SynthEngine::triggerArpNote(int note, float velocity, bool isNoteOn) noexce
     {
         if (timbreMode_ == 1)
         {
-            if (note < splitKey_) voiceManagerA_.noteOn(note, velocity);
-            else voiceManagerB_.noteOn(note, velocity);
+            if (note < splitKey_)
+                voiceManagerA_.noteOn(note, velocity);
+            else
+                voiceManagerB_.noteOn(note, velocity);
         }
         else if (timbreMode_ == 2)
         {
@@ -831,8 +896,10 @@ void SynthEngine::triggerArpNote(int note, float velocity, bool isNoteOn) noexce
     {
         if (timbreMode_ == 1)
         {
-            if (note < splitKey_) voiceManagerA_.noteOff(note);
-            else voiceManagerB_.noteOff(note);
+            if (note < splitKey_)
+                voiceManagerA_.noteOff(note);
+            else
+                voiceManagerB_.noteOff(note);
         }
         else if (timbreMode_ == 2)
         {
@@ -853,4 +920,4 @@ void SynthEngine::allNotesOff()
     arpeggiator_.allNotesOff();
 }
 
-} // namespace ABDMS2000
+}  // namespace ABDMS2000

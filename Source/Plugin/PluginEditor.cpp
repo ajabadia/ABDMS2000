@@ -1,9 +1,10 @@
 #include "PluginEditor.h"
-#include "../MIDI/MIDITelemetryManager.h"
 #include "../Core/AppLogger.h"
 #include "../Core/BuildVersion.h"
+#include "../MIDI/MIDITelemetryManager.h"
 
-namespace ABDMS2000 {
+namespace ABDMS2000
+{
 
 namespace
 {
@@ -21,11 +22,9 @@ void purgeStaleWebView2CacheIfStandalone()
     juce::File webView2Folder = exeDir.getChildFile(exeFile.getFileName() + ".WebView2");
     juce::File markerFile = exeDir.getChildFile(exeFile.getFileName() + ".WebView2.buildver");
 
-    const juce::String currentBuild = juce::String(ABDMS2000::kBuildNumber)
-                                    + "|" + juce::String(ABDMS2000::kBuildTimestamp);
-    const juce::String lastBuild = markerFile.existsAsFile()
-                                   ? markerFile.loadFileAsString().trim()
-                                   : juce::String();
+    const juce::String currentBuild =
+        juce::String(ABDMS2000::kBuildNumber) + "|" + juce::String(ABDMS2000::kBuildTimestamp);
+    const juce::String lastBuild = markerFile.existsAsFile() ? markerFile.loadFileAsString().trim() : juce::String();
 
     if (currentBuild != lastBuild)
     {
@@ -43,10 +42,9 @@ void purgeStaleWebView2CacheIfStandalone()
         ABD_LOG(juce::String("[EDITOR] WebView2 cache up-to-date for build ") + currentBuild);
     }
 }
-} // namespace
+}  // namespace
 
-
-ABDMS2000AudioProcessorEditor::ABDMS2000AudioProcessorEditor(ABDMS2000AudioProcessor& p)
+ABDMS2000AudioProcessorEditor::ABDMS2000AudioProcessorEditor(ABDMS2000AudioProcessor &p)
     : AudioProcessorEditor(&p), audioProcessor_(p)
 {
     ABD_LOG("[EDITOR] ABDMS2000AudioProcessorEditor constructor start.");
@@ -65,29 +63,33 @@ ABDMS2000AudioProcessorEditor::ABDMS2000AudioProcessorEditor(ABDMS2000AudioProce
     ABD_LOG("[EDITOR] Creating BridgeActions.");
     bridge_ = std::make_unique<BridgeActions>(audioProcessor_);
     // El bridge no conoce la WebView: el Editor le inyecta el sumidero de eventos JS.
-    bridge_->setJsMessageSink([this](const juce::var& message) { emitEventToWebView(message); });
+    bridge_->setJsMessageSink([this](const juce::var &message) { emitEventToWebView(message); });
     bridge_->setOnToggleScope([this]() { toggleScopeWindow(); });
 
     // Hardware MIDI del Bank Manager embebido: sin esto su puente MIDI no tenía
     // otro extremo y el fetch de un banco real solo podía morir por timeout.
     bindHardwareMidi();
 
-    audioProcessor_.getMIDITelemetry().setActivityCallback([this](const MidiActivityEvent& ev) {
-        juce::MessageManager::callAsync([this, ev]() {
-            if (bridge_ != nullptr)
-            {
-                juce::DynamicObject::Ptr obj = new juce::DynamicObject();
-                obj->setProperty(juce::Identifier("channel"), ev.channel);
-                obj->setProperty(juce::Identifier("cc"), ev.ccNumber);
-                obj->setProperty(juce::Identifier("value"), ev.value);
-                obj->setProperty(juce::Identifier("isIncoming"), ev.isIncoming);
-                if (ev.paramId != nullptr)
-                    obj->setProperty(juce::Identifier("paramId"), juce::String(ev.paramId));
+    audioProcessor_.getMIDITelemetry().setActivityCallback(
+        [this](const MidiActivityEvent &ev)
+        {
+            juce::MessageManager::callAsync(
+                [this, ev]()
+                {
+                    if (bridge_ != nullptr)
+                    {
+                        juce::DynamicObject::Ptr obj = new juce::DynamicObject();
+                        obj->setProperty(juce::Identifier("channel"), ev.channel);
+                        obj->setProperty(juce::Identifier("cc"), ev.ccNumber);
+                        obj->setProperty(juce::Identifier("value"), ev.value);
+                        obj->setProperty(juce::Identifier("isIncoming"), ev.isIncoming);
+                        if (ev.paramId != nullptr)
+                            obj->setProperty(juce::Identifier("paramId"), juce::String(ev.paramId));
 
-                bridge_->sendEventToJs("midiActivity", juce::var(obj.get()));
-            }
+                        bridge_->sendEventToJs("midiActivity", juce::var(obj.get()));
+                    }
+                });
         });
-    });
 
     auto rootUrl = juce::WebBrowserComponent::getResourceProviderRoot();
     ABD_LOG(juce::String("[EDITOR] Navigating webView_ to URL: ") + rootUrl);
@@ -123,31 +125,30 @@ ABDMS2000AudioProcessorEditor::~ABDMS2000AudioProcessorEditor()
 
 void ABDMS2000AudioProcessorEditor::bindHardwareMidi()
 {
-    auto& transport = audioProcessor_.getHardwareMidiTransport();
+    auto &transport = audioProcessor_.getHardwareMidiTransport();
 
     transport.setPortListFunction([this]() { return listHardwareMidiPorts(); });
 
     transport.bind(
-        [this](const juce::MemoryBlock& bytes) -> HardwareMidiTransport::Outcome
+        [this](const juce::MemoryBlock &bytes) -> HardwareMidiTransport::Outcome
         {
-            if (! openHardwareMidiOutput())
-                return { false, "Selected MIDI output device is unavailable" };
+            if (!openHardwareMidiOutput())
+                return {false, "Selected MIDI output device is unavailable"};
 
-            hardwareMidiOutput_->sendMessageNow(
-                juce::MidiMessage(bytes.getData(), static_cast<int>(bytes.getSize())));
+            hardwareMidiOutput_->sendMessageNow(juce::MidiMessage(bytes.getData(), static_cast<int>(bytes.getSize())));
 
-            ABD_LOG(juce::String("[HWMIDI] sent ") + juce::String(static_cast<int>(bytes.getSize()))
-                    + " bytes to " + hardwareMidiOutput_->getName());
-            return { true, hardwareMidiOutput_->getName() };
+            ABD_LOG(juce::String("[HWMIDI] sent ") + juce::String(static_cast<int>(bytes.getSize())) + " bytes to "
+                    + hardwareMidiOutput_->getName());
+            return {true, hardwareMidiOutput_->getName()};
         },
         [this]() -> HardwareMidiTransport::Outcome
         {
-            if (! openHardwareMidiInput())
-                return { false, "Selected MIDI input device is unavailable" };
+            if (!openHardwareMidiInput())
+                return {false, "Selected MIDI input device is unavailable"};
 
-            return { true, hardwareMidiInput_->getName() };
+            return {true, hardwareMidiInput_->getName()};
         },
-        [this](const juce::var& message)
+        [this](const juce::var &message)
         {
             // Los bytes llegan en el hilo de MIDI; el WebView es de mensajes.
             juce::MessageManager::callAsync([this, message]() { emitEventToWebView(message); });
@@ -160,14 +161,14 @@ juce::var ABDMS2000AudioProcessorEditor::listHardwareMidiPorts() const
     juce::Array<juce::var> outputs;
     juce::Array<juce::var> inputs;
 
-    for (const auto& device : juce::MidiOutput::getAvailableDevices())
+    for (const auto &device : juce::MidiOutput::getAvailableDevices())
     {
         juce::DynamicObject::Ptr port = new juce::DynamicObject();
         port->setProperty("identifier", device.identifier);
         port->setProperty("name", device.name);
         outputs.add(juce::var(port.get()));
     }
-    for (const auto& device : juce::MidiInput::getAvailableDevices())
+    for (const auto &device : juce::MidiInput::getAvailableDevices())
     {
         juce::DynamicObject::Ptr port = new juce::DynamicObject();
         port->setProperty("identifier", device.identifier);
@@ -180,17 +181,17 @@ juce::var ABDMS2000AudioProcessorEditor::listHardwareMidiPorts() const
     return juce::var(result.get());
 }
 
-bool ABDMS2000AudioProcessorEditor::isHardwareOutputAvailable(const juce::String& identifier) const
+bool ABDMS2000AudioProcessorEditor::isHardwareOutputAvailable(const juce::String &identifier) const
 {
-    for (const auto& device : juce::MidiOutput::getAvailableDevices())
+    for (const auto &device : juce::MidiOutput::getAvailableDevices())
         if (device.identifier == identifier)
             return true;
     return false;
 }
 
-bool ABDMS2000AudioProcessorEditor::isHardwareInputAvailable(const juce::String& identifier) const
+bool ABDMS2000AudioProcessorEditor::isHardwareInputAvailable(const juce::String &identifier) const
 {
-    for (const auto& device : juce::MidiInput::getAvailableDevices())
+    for (const auto &device : juce::MidiInput::getAvailableDevices())
         if (device.identifier == identifier)
             return true;
     return false;
@@ -198,10 +199,10 @@ bool ABDMS2000AudioProcessorEditor::isHardwareInputAvailable(const juce::String&
 
 void ABDMS2000AudioProcessorEditor::refreshHardwareMidiAvailability()
 {
-    auto& transport = audioProcessor_.getHardwareMidiTransport();
+    auto &transport = audioProcessor_.getHardwareMidiTransport();
     bool changed = false;
 
-    if (hardwareMidiOutput_ != nullptr && ! isHardwareOutputAvailable(openedHardwareOutputId_))
+    if (hardwareMidiOutput_ != nullptr && !isHardwareOutputAvailable(openedHardwareOutputId_))
     {
         hardwareMidiOutput_.reset();
         openedHardwareOutputId_.clear();
@@ -210,7 +211,7 @@ void ABDMS2000AudioProcessorEditor::refreshHardwareMidiAvailability()
             bridge_->sendEventToJs("hardware.error", juce::var("Selected MIDI output device disappeared"));
     }
 
-    if (hardwareMidiInput_ != nullptr && ! isHardwareInputAvailable(openedHardwareInputId_))
+    if (hardwareMidiInput_ != nullptr && !isHardwareInputAvailable(openedHardwareInputId_))
     {
         hardwareMidiInput_->stop();
         hardwareMidiInput_.reset();
@@ -237,10 +238,10 @@ bool ABDMS2000AudioProcessorEditor::openHardwareMidiOutput()
     }
 
     const auto identifier = audioProcessor_.getHardwareMidiTransport().getSelectedOutputId();
-    if (identifier.isEmpty() || ! isHardwareOutputAvailable(identifier))
+    if (identifier.isEmpty() || !isHardwareOutputAvailable(identifier))
         return false;
 
-    for (const auto& candidate : juce::MidiOutput::getAvailableDevices())
+    for (const auto &candidate : juce::MidiOutput::getAvailableDevices())
     {
         if (candidate.identifier == identifier)
         {
@@ -270,10 +271,10 @@ bool ABDMS2000AudioProcessorEditor::openHardwareMidiInput()
     }
 
     const auto identifier = audioProcessor_.getHardwareMidiTransport().getSelectedInputId();
-    if (identifier.isEmpty() || ! isHardwareInputAvailable(identifier))
+    if (identifier.isEmpty() || !isHardwareInputAvailable(identifier))
         return false;
 
-    for (const auto& candidate : juce::MidiInput::getAvailableDevices())
+    for (const auto &candidate : juce::MidiInput::getAvailableDevices())
     {
         if (candidate.identifier == identifier)
         {
@@ -288,25 +289,23 @@ bool ABDMS2000AudioProcessorEditor::openHardwareMidiInput()
     return false;
 }
 
-
-void ABDMS2000AudioProcessorEditor::handleIncomingMidiMessage(juce::MidiInput* /*source*/,
-                                                             const juce::MidiMessage& message)
+void ABDMS2000AudioProcessorEditor::handleIncomingMidiMessage(juce::MidiInput * /*source*/,
+                                                              const juce::MidiMessage &message)
 {
-    if (! message.isSysEx())
+    if (!message.isSysEx())
         return;
 
-    const auto* raw = message.getSysExData();
+    const auto *raw = message.getSysExData();
     const auto size = static_cast<int>(message.getSysExDataSize());
     if (raw == nullptr || size <= 0)
         return;
 
     // El transporte filtra: hasta que el Bank Manager no manda `hardware.listen`
     // no hay nadie suscrito al otro lado.
-    audioProcessor_.getHardwareMidiTransport().deliverIncoming(
-        juce::MemoryBlock(raw, static_cast<std::size_t>(size)));
+    audioProcessor_.getHardwareMidiTransport().deliverIncoming(juce::MemoryBlock(raw, static_cast<std::size_t>(size)));
 }
 
-void ABDMS2000AudioProcessorEditor::emitEventToWebView(const juce::var& message)
+void ABDMS2000AudioProcessorEditor::emitEventToWebView(const juce::var &message)
 {
     if (webView_ == nullptr)
         return;
@@ -327,10 +326,12 @@ void ABDMS2000AudioProcessorEditor::showScopeWindow()
 {
     if (scopeWindow_ == nullptr)
     {
-        scopeWindow_ = std::make_unique<ScopeFloatingWindow>(
-            audioProcessor_.getEngine(),
-            [this]() { if (scopeWindow_) scopeWindow_->setVisible(false); }
-        );
+        scopeWindow_ = std::make_unique<ScopeFloatingWindow>(audioProcessor_.getEngine(),
+                                                             [this]()
+                                                             {
+                                                                 if (scopeWindow_)
+                                                                     scopeWindow_->setVisible(false);
+                                                             });
         scopeWindow_->addToDesktop();
     }
     scopeWindow_->syncSampleRate();
@@ -347,30 +348,33 @@ void ABDMS2000AudioProcessorEditor::toggleScopeWindow()
         showScopeWindow();
 }
 
-
 void ABDMS2000AudioProcessorEditor::setupWebBrowserBindings()
 {
     purgeStaleWebView2CacheIfStandalone();
     ABD_LOG("[EDITOR] setupWebBrowserBindings: Configuring WebBrowserComponent options...");
-    auto options = juce::WebBrowserComponent::Options{}
-        .withBackend(juce::WebBrowserComponent::Options::Backend::webview2)
-        .withNativeIntegrationEnabled(true)
-        .withResourceProvider(pluginResourceProvider)
-        .withEventListener("nativeEvent", [this](const juce::var& msg) {
-            ABD_LOG(juce::String("[BRIDGE] nativeEvent received from JS: ") + juce::JSON::toString(msg));
-            if (bridge_ != nullptr)
-                bridge_->handleJsEvent(msg);
-        });
+    auto options = juce::WebBrowserComponent::Options {}
+                       .withBackend(juce::WebBrowserComponent::Options::Backend::webview2)
+                       .withNativeIntegrationEnabled(true)
+                       .withResourceProvider(pluginResourceProvider)
+                       .withEventListener("nativeEvent",
+                                          [this](const juce::var &msg)
+                                          {
+                                              ABD_LOG(juce::String("[BRIDGE] nativeEvent received from JS: ")
+                                                      + juce::JSON::toString(msg));
+                                              if (bridge_ != nullptr)
+                                                  bridge_->handleJsEvent(msg);
+                                          });
 
     ABD_LOG("[EDITOR] setupWebBrowserBindings: Instantiating WebBrowserComponent (WebView2)...");
     webView_ = std::make_unique<juce::WebBrowserComponent>(options);
     ABD_LOG("[EDITOR] setupWebBrowserBindings: WebBrowserComponent created.");
 }
 
-void ABDMS2000AudioProcessorEditor::paint(juce::Graphics& g)
+void ABDMS2000AudioProcessorEditor::paint(juce::Graphics &g)
 {
     static bool firstPaint = true;
-    if (firstPaint) {
+    if (firstPaint)
+    {
         ABD_LOG("[EDITOR] paint() called for the first time.");
         firstPaint = false;
     }
@@ -380,7 +384,8 @@ void ABDMS2000AudioProcessorEditor::paint(juce::Graphics& g)
 void ABDMS2000AudioProcessorEditor::resized()
 {
     static bool firstResize = true;
-    if (firstResize) {
+    if (firstResize)
+    {
         ABD_LOG(juce::String("[EDITOR] resized() called. Bounds: ") + getLocalBounds().toString());
         firstResize = false;
     }
@@ -396,7 +401,7 @@ void ABDMS2000AudioProcessorEditor::timerCallback()
 
     if (bridge_ != nullptr)
     {
-        const auto& snap = audioProcessor_.getEngine().getSnapshot();
+        const auto &snap = audioProcessor_.getEngine().getSnapshot();
         juce::DynamicObject::Ptr obj = new juce::DynamicObject();
         obj->setProperty("activeVoices", static_cast<int>(snap.activeVoiceCount));
         obj->setProperty("vuLeft", static_cast<double>(snap.vuLeft));
@@ -405,5 +410,4 @@ void ABDMS2000AudioProcessorEditor::timerCallback()
     }
 }
 
-} // namespace ABDMS2000
-
+}  // namespace ABDMS2000

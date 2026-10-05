@@ -11,5 +11,5 @@
 
 namespace ABDMS2000
 {
-    using abd::synth::AudioThreadSnapshot;
+using abd::synth::AudioThreadSnapshot;
 }

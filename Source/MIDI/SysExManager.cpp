@@ -1,10 +1,11 @@
 #include "SysExManager.h"
-#include "ABDSynthsSysEx.h"
-#include "../State/MS2000FactoryBank.h"
 #include <iomanip>
 #include <sstream>
+#include "../State/MS2000FactoryBank.h"
+#include "ABDSynthsSysEx.h"
 
-namespace ABDMS2000 {
+namespace ABDMS2000
+{
 
 SysExManager::SysExManager()
 {
@@ -25,23 +26,27 @@ SysExManager::SysExManager()
     }
 }
 
-
-bool SysExManager::isKorgHeader(const uint8_t* data, size_t size, int& outChannel, uint8_t& outFunction) const noexcept
+bool SysExManager::isKorgHeader(const uint8_t *data, size_t size, int &outChannel, uint8_t &outFunction) const noexcept
 {
-    if (data == nullptr || size < 6) return false;
-    if (data[0] != 0xF0) return false;
-    if (data[1] != 0x42) return false; // Korg
-    if ((data[2] & 0xF0) != 0x30) return false; // Global channel format 30..3F
-    
+    if (data == nullptr || size < 6)
+        return false;
+    if (data[0] != 0xF0)
+        return false;
+    if (data[1] != 0x42)
+        return false;  // Korg
+    if ((data[2] & 0xF0) != 0x30)
+        return false;  // Global channel format 30..3F
+
     // Model ID: 0x58 (MS2000 / MS2000R) or 0x71 (microKORG)
-    if (data[3] != 0x58 && data[3] != 0x71) return false;
+    if (data[3] != 0x58 && data[3] != 0x71)
+        return false;
 
     outChannel = (data[2] & 0x0F) + 1;
     outFunction = data[4];
     return true;
 }
 
-SysExParseResult SysExManager::parseSysEx(const uint8_t* data, size_t size, juce::AudioProcessorValueTreeState& apvts)
+SysExParseResult SysExManager::parseSysEx(const uint8_t *data, size_t size, juce::AudioProcessorValueTreeState &apvts)
 {
     SysExParseResult result;
     // 5 B = la trama mínima con significado: `F0 7D 0A [cmd] F7` (petición de la casa,
@@ -89,13 +94,12 @@ SysExParseResult SysExManager::parseSysEx(const uint8_t* data, size_t size, juce
         // actuar como "servidor de presets" respondiendo con sus tramas propias.
         if (data[3] == ABDSynthsSysEx::CMD_PROGRAM_REQUEST || data[3] == ABDSynthsSysEx::CMD_ALL_REQUEST)
         {
-            result.messageType = (data[3] == ABDSynthsSysEx::CMD_ALL_REQUEST)
-                ? SysExMessageType::AllDataDumpRequest : SysExMessageType::ProgramDumpRequest;
+            result.messageType = (data[3] == ABDSynthsSysEx::CMD_ALL_REQUEST) ? SysExMessageType::AllDataDumpRequest
+                                                                              : SysExMessageType::ProgramDumpRequest;
             result.success = true;
             result.programName = bank_[activeProgramIndex_].getName();
-            result.reply = (data[3] == ABDSynthsSysEx::CMD_ALL_REQUEST)
-                ? buildAllDataDumpResponse(1)
-                : buildProgramDumpResponse(1);
+            result.reply = (data[3] == ABDSynthsSysEx::CMD_ALL_REQUEST) ? buildAllDataDumpResponse(1)
+                                                                        : buildProgramDumpResponse(1);
             return result;
         }
 
@@ -141,8 +145,8 @@ SysExParseResult SysExManager::parseSysEx(const uint8_t* data, size_t size, juce
 
         bank_[activeProgramIndex_].applyToAPVTS(apvts);
 
-        result.messageType = (data[3] == ABDSynthsSysEx::CMD_ALL_DUMP)
-            ? SysExMessageType::AllDataDump : SysExMessageType::ProgramDump;
+        result.messageType =
+            (data[3] == ABDSynthsSysEx::CMD_ALL_DUMP) ? SysExMessageType::AllDataDump : SysExMessageType::ProgramDump;
         result.success = true;
         result.programCount = static_cast<int>(toLoad);
         result.programName = bank_[activeProgramIndex_].getName();
@@ -162,10 +166,7 @@ SysExParseResult SysExManager::parseSysEx(const uint8_t* data, size_t size, juce
     result.midiChannel = channel;
 
     /** Acuse del equipo en el canal del emisor (`F0 42 3n 58 23/24 F7`). */
-    const auto korgAck = [channel](bool ok)
-    {
-        return MS2000HardwareProgram::buildWriteAcknowledgement(channel, ok);
-    };
+    const auto korgAck = [channel](bool ok) { return MS2000HardwareProgram::buildWriteAcknowledgement(channel, ok); };
 
     // Acuses **recibidos** del equipo (`F0 42 3n 58 23/24 F7`, 6 B, sin payload): el
     // MS2000 los manda tras guardar un volcado nuestro. Se reconocen para que quien lo
@@ -188,8 +189,8 @@ SysExParseResult SysExManager::parseSysEx(const uint8_t* data, size_t size, juce
     // de 254 B); la memoria propia del plugin no viaja con cabecera Korg nunca.
     if (func == 0x10 || func == 0x0E)
     {
-        result.messageType = (func == 0x0E)
-            ? SysExMessageType::AllDataDumpRequest : SysExMessageType::ProgramDumpRequest;
+        result.messageType =
+            (func == 0x0E) ? SysExMessageType::AllDataDumpRequest : SysExMessageType::ProgramDumpRequest;
         result.success = true;
         if (func == 0x10 && hasHardwareProgram())
             result.programName = hardwareProgram_.getName();
@@ -211,10 +212,10 @@ SysExParseResult SysExManager::parseSysEx(const uint8_t* data, size_t size, juce
     }
 
     // Isolate payload between header (5 bytes) and 0xF7
-    const uint8_t* payload = data + 5;
+    const uint8_t *payload = data + 5;
     size_t payloadLen = size - 6;
 
-    if (func == 0x40) // 1-Program Data Dump
+    if (func == 0x40)  // 1-Program Data Dump
     {
         result.messageType = SysExMessageType::ProgramDump;
 
@@ -268,7 +269,7 @@ SysExParseResult SysExManager::parseSysEx(const uint8_t* data, size_t size, juce
         result.reply = korgAck(true);
         return result;
     }
-    else if (func == 0x4C) // All-Data Dump (128 Programs)
+    else if (func == 0x4C)  // All-Data Dump (128 Programs)
     {
         result.messageType = SysExMessageType::AllDataDump;
 
@@ -293,13 +294,15 @@ SysExParseResult SysExManager::parseSysEx(const uint8_t* data, size_t size, juce
             {
                 MS2000HardwareProgram hw;
                 std::copy_n(unpacked.data() + (p * MS2000HardwareProgram::PROGRAM_SIZE),
-                            MS2000HardwareProgram::PROGRAM_SIZE, hw.raw.begin());
+                            MS2000HardwareProgram::PROGRAM_SIZE,
+                            hw.raw.begin());
                 hardwareBank_.push_back(hw);
             }
 
             // El motor solo puede sonar un programa a la vez: se aplica el activo.
             const int lastIndex = static_cast<int>(numHardwarePrograms) - 1;
-            hardwareProgram_ = hardwareBank_[static_cast<size_t>(std::max(0, std::min(lastIndex, activeProgramIndex_)))];
+            hardwareProgram_ =
+                hardwareBank_[static_cast<size_t>(std::max(0, std::min(lastIndex, activeProgramIndex_)))];
             hardwareProgramValid_ = true;
             hardwareProgram_.applyToAPVTS(apvts);
             bank_[activeProgramIndex_].extractFromAPVTS(apvts, hardwareProgram_.getName());
@@ -313,8 +316,7 @@ SysExParseResult SysExManager::parseSysEx(const uint8_t* data, size_t size, juce
 
         // Bloque nativo: v2 (384 B) o, si el volcado es anterior, v1 (128 B).
         size_t blockSize = MS2000ProgramData::UNPACKED_PROGRAM_SIZE;
-        if (unpacked.size() % blockSize != 0
-            && unpacked.size() % MS2000ProgramData::UNPACKED_PROGRAM_SIZE_V1 == 0)
+        if (unpacked.size() % blockSize != 0 && unpacked.size() % MS2000ProgramData::UNPACKED_PROGRAM_SIZE_V1 == 0)
             blockSize = MS2000ProgramData::UNPACKED_PROGRAM_SIZE_V1;
 
         size_t numPrograms = unpacked.size() / blockSize;
@@ -323,7 +325,7 @@ SysExParseResult SysExManager::parseSysEx(const uint8_t* data, size_t size, juce
         for (size_t p = 0; p < numPrograms; ++p)
         {
             MS2000ProgramData prog;
-            const uint8_t* pStart = unpacked.data() + (p * blockSize);
+            const uint8_t *pStart = unpacked.data() + (p * blockSize);
             std::copy_n(pStart, blockSize, prog.rawData.begin());
             bank_[p] = prog;
         }
@@ -337,7 +339,7 @@ SysExParseResult SysExManager::parseSysEx(const uint8_t* data, size_t size, juce
         result.reply = korgAck(true);
         return result;
     }
-    else if (func == 0x41) // Parameter Change
+    else if (func == 0x41)  // Parameter Change
     {
         result.messageType = SysExMessageType::ParameterChange;
         result.success = true;
@@ -348,7 +350,7 @@ SysExParseResult SysExManager::parseSysEx(const uint8_t* data, size_t size, juce
     return result;
 }
 
-SysExParseResult SysExManager::parseMidiFile(const juce::File& file, juce::AudioProcessorValueTreeState& apvts)
+SysExParseResult SysExManager::parseMidiFile(const juce::File &file, juce::AudioProcessorValueTreeState &apvts)
 {
     SysExParseResult result;
     if (!file.existsAsFile())
@@ -376,15 +378,16 @@ SysExParseResult SysExManager::parseMidiFile(const juce::File& file, juce::Audio
 
     for (int t = 0; t < midiFile.getNumTracks(); ++t)
     {
-        const auto* track = midiFile.getTrack(t);
-        if (track == nullptr) continue;
+        const auto *track = midiFile.getTrack(t);
+        if (track == nullptr)
+            continue;
 
         for (int i = 0; i < track->getNumEvents(); ++i)
         {
-            const auto& msg = track->getEventPointer(i)->message;
+            const auto &msg = track->getEventPointer(i)->message;
             if (msg.isSysEx())
             {
-                auto subRes = parseSysEx(static_cast<const uint8_t*>(msg.getSysExData()),
+                auto subRes = parseSysEx(static_cast<const uint8_t *>(msg.getSysExData()),
                                          static_cast<size_t>(msg.getSysExDataSize()),
                                          apvts);
                 if (subRes.success)
@@ -419,17 +422,17 @@ SysExParseResult SysExManager::parseMidiFile(const juce::File& file, juce::Audio
  *
  * `channel` ya no participa: una trama de ABDSynths no va dirigida a un canal MIDI.
  */
-std::vector<uint8_t> SysExManager::createProgramDump(int /*channel*/, const MS2000ProgramData& program) const
+std::vector<uint8_t> SysExManager::createProgramDump(int /*channel*/, const MS2000ProgramData &program) const
 {
     return ABDSynthsSysEx::buildProgramDump(program);
 }
 
 std::vector<uint8_t> SysExManager::createHardwareProgramDump(int channel,
-                                                             const juce::AudioProcessorValueTreeState& apvts,
-                                                             const std::string& name)
+                                                             const juce::AudioProcessorValueTreeState &apvts,
+                                                             const std::string &name)
 {
     if (!hardwareProgramValid_)
-        hardwareProgram_ = MS2000HardwareProgram{}; // plantilla "INIT Program"
+        hardwareProgram_ = MS2000HardwareProgram {};  // plantilla "INIT Program"
 
     hardwareProgram_.captureFromAPVTS(apvts, name);
     hardwareProgramValid_ = true;
@@ -463,7 +466,7 @@ std::vector<uint8_t> SysExManager::buildAllDataDumpResponse(int /*channel*/) con
  *    reales de 254 B (conversión aproximada, §6.4).
  */
 std::vector<uint8_t> SysExManager::buildHardwareBankDumpResponse(int channel,
-                                                                const juce::AudioProcessorValueTreeState& apvts)
+                                                                 const juce::AudioProcessorValueTreeState &apvts)
 {
     std::vector<MS2000HardwareProgram> programs;
     programs.reserve(BANK_SIZE);
@@ -475,8 +478,8 @@ std::vector<uint8_t> SysExManager::buildHardwareBankDumpResponse(int channel,
         // El motor solo es autoridad sobre el programa activo: se refresca con lo que hay
         // en el APVTS (los mismos bytes que devuelve `createHardwareProgramDump`), sin tocar
         // las demás plazas, que se conservan tal como vinieron del equipo.
-        const auto active = static_cast<size_t>(std::max(0, std::min(static_cast<int>(BANK_SIZE) - 1,
-                                                                    activeProgramIndex_)));
+        const auto active =
+            static_cast<size_t>(std::max(0, std::min(static_cast<int>(BANK_SIZE) - 1, activeProgramIndex_)));
         if (active < programs.size())
             programs[active].captureFromAPVTS(apvts, bank_[active].getName());
 
@@ -486,15 +489,16 @@ std::vector<uint8_t> SysExManager::buildHardwareBankDumpResponse(int channel,
     // Sin memoria de equipo: el plugin hace de equipo con la suya (§6.4). La memoria
     // nativa manda (el motor solo es autoridad sobre el preset activo), así que aquí no
     // se refresca nada: cada preset nativo se convierte tal cual está guardado.
-    for (const auto& preset : bank_)
+    for (const auto &preset : bank_)
         programs.push_back(MS2000HardwareProgram::fromNativeProgram(preset));
 
     return MS2000HardwareProgram::buildAllDataDump(channel, programs);
 }
 
-std::string SysExManager::formatHexDump(const uint8_t* data, size_t size, size_t bytesPerLine)
+std::string SysExManager::formatHexDump(const uint8_t *data, size_t size, size_t bytesPerLine)
 {
-    if (data == nullptr || size == 0) return "Empty Buffer\n";
+    if (data == nullptr || size == 0)
+        return "Empty Buffer\n";
 
     std::ostringstream oss;
     size_t offset = 0;
@@ -510,14 +514,14 @@ std::string SysExManager::formatHexDump(const uint8_t* data, size_t size, size_t
         {
             if (i < lineBytes)
             {
-                oss << std::hex << std::setw(2) << std::setfill('0')
-                    << static_cast<int>(data[offset + i]) << " ";
+                oss << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(data[offset + i]) << " ";
             }
             else
             {
                 oss << "   ";
             }
-            if (i == 7) oss << " ";
+            if (i == 7)
+                oss << " ";
         }
 
         oss << " |";
@@ -526,8 +530,10 @@ std::string SysExManager::formatHexDump(const uint8_t* data, size_t size, size_t
         for (size_t i = 0; i < lineBytes; ++i)
         {
             char c = static_cast<char>(data[offset + i]);
-            if (c >= 32 && c <= 126) oss << c;
-            else oss << '.';
+            if (c >= 32 && c <= 126)
+                oss << c;
+            else
+                oss << '.';
         }
 
         oss << "|\n";
@@ -537,14 +543,14 @@ std::string SysExManager::formatHexDump(const uint8_t* data, size_t size, size_t
     return oss.str();
 }
 
-void SysExManager::loadCurrentProgramIntoAPVTS(juce::AudioProcessorValueTreeState& apvts) const
+void SysExManager::loadCurrentProgramIntoAPVTS(juce::AudioProcessorValueTreeState &apvts) const
 {
     bank_[activeProgramIndex_].applyToAPVTS(apvts);
 }
 
-void SysExManager::saveAPVTSIntoCurrentProgram(const juce::AudioProcessorValueTreeState& apvts, const std::string& name)
+void SysExManager::saveAPVTSIntoCurrentProgram(const juce::AudioProcessorValueTreeState &apvts, const std::string &name)
 {
     bank_[activeProgramIndex_].extractFromAPVTS(apvts, name);
 }
 
-} // namespace ABDMS2000
+}  // namespace ABDMS2000

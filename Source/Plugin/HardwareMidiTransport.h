@@ -5,7 +5,8 @@
 #include <functional>
 #include <utility>
 
-namespace ABDMS2000 {
+namespace ABDMS2000
+{
 
 /**
  * Transporte MIDI de hardware del anfitrión: el otro extremo del puente MIDI del
@@ -29,7 +30,7 @@ namespace ABDMS2000 {
  */
 class HardwareMidiTransport
 {
-public:
+  public:
     /** Resultado de una operación: `detail` es el dispositivo (si ok) o el motivo. */
     struct Outcome
     {
@@ -38,13 +39,13 @@ public:
     };
 
     /** WebUI → hardware. Devuelve ok=false con el motivo cuando no se pudo enviar. */
-    using SendFunction = std::function<Outcome(const juce::MemoryBlock&)>;
+    using SendFunction = std::function<Outcome(const juce::MemoryBlock &)>;
     /** El Bank Manager ya escucha: abre la entrada. `detail` = nombre del dispositivo. */
     using ListenFunction = std::function<Outcome()>;
     /** Enumeración de puertos para `hardware.listPorts`; devuelve `{ inputs, outputs }`. */
     using PortListFunction = std::function<juce::var()>;
     /** Envoltorio JS ya formado (`{ type, data }`) para los bytes que llegan. */
-    using ReceiveSink = std::function<void(const juce::var&)>;
+    using ReceiveSink = std::function<void(const juce::var &)>;
 
     /** Inyecta el hardware. Sin argumentos válidos, `send`/`listen` fallan con motivo. */
     void bind(SendFunction send, ListenFunction listen, ReceiveSink sink)
@@ -57,7 +58,10 @@ public:
     }
 
     /** Instala la enumeración que solo conoce el Editor JUCE. */
-    void setPortListFunction(PortListFunction fn) { portListFunction = std::move(fn); }
+    void setPortListFunction(PortListFunction fn)
+    {
+        portListFunction = std::move(fn);
+    }
 
     /** Lista los puertos actuales; una ausencia de proveedor devuelve un objeto vacío. */
     juce::var listPorts() const
@@ -68,7 +72,7 @@ public:
     }
 
     /** Selección explícita del Bank Manager. No se elige ningún primer puerto implícitamente. */
-    void selectPorts(const juce::String& outputId, const juce::String& inputId)
+    void selectPorts(const juce::String &outputId, const juce::String &inputId)
     {
         selectedOutputId = outputId;
         selectedInputId = inputId;
@@ -76,13 +80,25 @@ public:
         lastDetail.clear();
     }
 
-    const juce::String& getSelectedOutputId() const noexcept { return selectedOutputId; }
-    const juce::String& getSelectedInputId() const noexcept { return selectedInputId; }
-    bool hasSelectedOutput() const noexcept { return selectedOutputId.isNotEmpty(); }
-    bool hasSelectedInput() const noexcept { return selectedInputId.isNotEmpty(); }
+    const juce::String &getSelectedOutputId() const noexcept
+    {
+        return selectedOutputId;
+    }
+    const juce::String &getSelectedInputId() const noexcept
+    {
+        return selectedInputId;
+    }
+    bool hasSelectedOutput() const noexcept
+    {
+        return selectedOutputId.isNotEmpty();
+    }
+    bool hasSelectedInput() const noexcept
+    {
+        return selectedInputId.isNotEmpty();
+    }
 
     /** La entrada seleccionada desapareció: no se deben reenviar datos obsoletos. */
-    void markInputUnavailable(const juce::String& reason)
+    void markInputUnavailable(const juce::String &reason)
     {
         listening = false;
         lastDetail = reason;
@@ -99,17 +115,26 @@ public:
         lastDetail.clear();
     }
 
-    bool isBound() const noexcept { return static_cast<bool>(sendFunction); }
-    bool isListening() const noexcept { return listening; }
-    const juce::String& getLastDetail() const noexcept { return lastDetail; }
+    bool isBound() const noexcept
+    {
+        return static_cast<bool>(sendFunction);
+    }
+    bool isListening() const noexcept
+    {
+        return listening;
+    }
+    const juce::String &getLastDetail() const noexcept
+    {
+        return lastDetail;
+    }
 
     /** WebUI → hardware. */
-    bool send(const juce::MemoryBlock& message)
+    bool send(const juce::MemoryBlock &message)
     {
         if (message.isEmpty())
             return fail("Empty MIDI message");
 
-        if (! sendFunction)
+        if (!sendFunction)
             return fail("No MIDI output device available for the hardware transfer");
 
         auto outcome = sendFunction(message);
@@ -120,7 +145,7 @@ public:
     /** El Bank Manager ha pedido escuchar: arranca la entrada y reenvía lo que llegue. */
     bool listen()
     {
-        if (! listenFunction)
+        if (!listenFunction)
             return fail("No MIDI input device available for the hardware transfer");
 
         auto outcome = listenFunction();
@@ -133,9 +158,9 @@ public:
      * Bytes del hardware → WebUI, con la misma forma que el core del Bank Manager
      * standalone: `{ type: 'hardware.receive', data: { payload: <base64>, size } }`.
      */
-    void deliverIncoming(const juce::MemoryBlock& message)
+    void deliverIncoming(const juce::MemoryBlock &message)
     {
-        if (! listening || message.isEmpty() || ! receiveSink)
+        if (!listening || message.isEmpty() || !receiveSink)
             return;
 
         juce::DynamicObject::Ptr data = new juce::DynamicObject();
@@ -149,8 +174,8 @@ public:
         receiveSink(juce::var(envelope.get()));
     }
 
-private:
-    bool fail(const juce::String& reason)
+  private:
+    bool fail(const juce::String &reason)
     {
         lastDetail = reason;
         return false;
@@ -166,4 +191,4 @@ private:
     juce::String selectedInputId;
 };
 
-} // namespace ABDMS2000
+}  // namespace ABDMS2000

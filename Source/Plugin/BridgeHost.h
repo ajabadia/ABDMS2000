@@ -4,7 +4,8 @@
 
 #include "HardwareMidiTransport.h"
 
-namespace ABDMS2000 {
+namespace ABDMS2000
+{
 
 class SynthEngine;
 class MIDITelemetryManager;
@@ -20,13 +21,13 @@ class SysExManager;
  */
 class BridgeHost
 {
-public:
+  public:
     virtual ~BridgeHost() = default;
 
-    virtual juce::AudioProcessorValueTreeState& getAPVTS() = 0;
-    virtual SynthEngine& getEngine() = 0;
-    virtual MIDITelemetryManager& getMIDITelemetry() = 0;
-    virtual SysExManager& getSysExManager() = 0;
+    virtual juce::AudioProcessorValueTreeState &getAPVTS() = 0;
+    virtual SynthEngine &getEngine() = 0;
+    virtual MIDITelemetryManager &getMIDITelemetry() = 0;
+    virtual SysExManager &getSysExManager() = 0;
 
     /**
      * Hardware MIDI del anfitrión, para el puente MIDI del Bank Manager embebido
@@ -34,12 +35,12 @@ public:
      * enlazados el transporte falla con motivo, que es lo que la WebUI necesita
      * para explicar que no habrá fetch en lugar de esperar un timeout.
      */
-    virtual HardwareMidiTransport& getHardwareMidiTransport() = 0;
+    virtual HardwareMidiTransport &getHardwareMidiTransport() = 0;
 
     // Programa activo (los provee juce::AudioProcessor en el plugin real).
     virtual int getCurrentProgram() = 0;
     virtual void setCurrentProgram(int index) = 0;
-    virtual void changeProgramName(int index, const juce::String& newName) = 0;
+    virtual void changeProgramName(int index, const juce::String &newName) = 0;
 };
 
-} // namespace ABDMS2000
+}  // namespace ABDMS2000

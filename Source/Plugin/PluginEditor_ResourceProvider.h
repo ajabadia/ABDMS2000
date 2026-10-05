@@ -2,8 +2,9 @@
 #include <juce_gui_extra/juce_gui_extra.h>
 #include <optional>
 
-namespace ABDMS2000 {
+namespace ABDMS2000
+{
 
-std::optional<juce::WebBrowserComponent::Resource> pluginResourceProvider(const juce::String& url);
+std::optional<juce::WebBrowserComponent::Resource> pluginResourceProvider(const juce::String &url);
 
-} // namespace ABDMS2000
+}  // namespace ABDMS2000

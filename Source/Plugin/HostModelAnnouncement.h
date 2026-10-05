@@ -20,10 +20,11 @@
  * resto del plugin (el ejecutable de tests no enlaza juce_gui_extra).
  */
 
-namespace ABDMS2000 {
+namespace ABDMS2000
+{
 
 /** Sumidero de mensajes JS: recibe `{ type, data }` listo para el WebUI. */
-using JsMessageSink = std::function<void(const juce::var& message)>;
+using JsMessageSink = std::function<void(const juce::var &message)>;
 
 /**
  * modelId canónico de este plugin, según el contrato `korgAbdSm002Contract`
@@ -47,7 +48,7 @@ inline juce::String hostModelId()
  *  - `requestFullState`: handshake inicial de la WebUI anfitriona. Es
  *    idempotente y cubre el orden inverso de carga.
  */
-inline bool actionAnnouncesHostModel(const juce::String& action)
+inline bool actionAnnouncesHostModel(const juce::String &action)
 {
     return action == "requestState" || action == "requestFullState";
 }
@@ -97,7 +98,7 @@ inline juce::var hostModelMessage()
  * responde a una pregunta: es lo que permite decir si el binario de al lado es
  * antiguo en lugar de insinuarlo cuando el catálogo queda bloqueado.
  */
-inline bool actionAnswersHostInfo(const juce::String& action)
+inline bool actionAnswersHostInfo(const juce::String &action)
 {
     return action == "requestHostInfo";
 }
@@ -118,9 +119,9 @@ inline juce::var hostInfoMessage()
  * Despacho de la ficha del host, invocado junto al anuncio en
  * `BridgeActions::handleJsEvent()`. Responde a `requestHostInfo`.
  */
-inline bool answerHostInfoForAction(const juce::String& action, const JsMessageSink& sink)
+inline bool answerHostInfoForAction(const juce::String &action, const JsMessageSink &sink)
 {
-    if (! actionAnswersHostInfo(action))
+    if (!actionAnswersHostInfo(action))
         return false;
 
     if (sink != nullptr)
@@ -138,9 +139,9 @@ inline bool answerHostInfoForAction(const juce::String& action, const JsMessageS
  * @param sink    sumidero de mensajes JS (puede estar vacío: no emite nada)
  * @returns true si la acción debía anunciar el modelId del host
  */
-inline bool announceHostModelForAction(const juce::String& action, const JsMessageSink& sink)
+inline bool announceHostModelForAction(const juce::String &action, const JsMessageSink &sink)
 {
-    if (! actionAnnouncesHostModel(action))
+    if (!actionAnnouncesHostModel(action))
         return false;
 
     if (sink != nullptr)
@@ -149,4 +150,4 @@ inline bool announceHostModelForAction(const juce::String& action, const JsMessa
     return true;
 }
 
-} // namespace ABDMS2000
+}  // namespace ABDMS2000

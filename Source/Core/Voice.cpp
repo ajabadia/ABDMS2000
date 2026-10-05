@@ -5,11 +5,12 @@
 #include "Voice.h"
 #include <cmath>
 
-namespace ABDMS2000 {
+namespace ABDMS2000
+{
 
 /**
  * @brief Prepara el Voice para un nuevo sample rate.
- * 
+ *
  * Inicializa todos los osciladores, envolventes, LFOs y el generador de ruido.
  * @param sampleRate Nuevo sample rate (se asegura que sea > 1000 Hz).
  */
@@ -32,7 +33,7 @@ void Voice::prepare(double sampleRate) noexcept
 
 /**
  * @brief Restablece el Voice a su estado inicial.
- * 
+ *
  * Apaga todos los osciladores, filtros, envolventes, LFOs y reinicia el generador de ruido.
  */
 void Voice::reset() noexcept
@@ -53,7 +54,7 @@ void Voice::reset() noexcept
 
 /**
  * @brief Inicia una nueva nota (noteOn MIDI).
- * 
+ *
  * Configura la nota, velocidad, tiempo de glide y arranca las envolventes (a menos que sea legato).
  * @param midiNote Nota MIDI (0-127).
  * @param velocity Velocidad (0.0-1.0).
@@ -87,7 +88,7 @@ void Voice::noteOn(int midiNote, float velocity, bool glideEnabled, bool isFirst
 
 /**
  * @brief Detiene una nota (noteOff MIDI).
- * 
+ *
  * Solo detiene las envolventes (la liberación continúa hacia silence).
  */
 void Voice::noteOff() noexcept
@@ -125,12 +126,12 @@ float Voice::getCurrentAmpLevel() const noexcept
 
 /**
  * @brief Aplica todos los parámetros estáticos del bloque actual.
- * 
+ *
  * Este método se llama una vez por bloque de audio y establece todos los valores
  * no por muestra (tiempos de envolvente, tipos de onda, índices de wave, etc.).
  * @param params Parámetros completos del VoiceParameters.
  */
-void Voice::applyBlockParams(const VoiceParameters& params) noexcept
+void Voice::applyBlockParams(const VoiceParameters &params) noexcept
 {
     cachedParams_ = params;
 
@@ -168,9 +169,8 @@ void Voice::applyBlockParams(const VoiceParameters& params) noexcept
     // Virtual Patch Matrix: 4 mod slot routings
     for (size_t s = 0; s < 4; ++s)
     {
-        patchMatrix_.setSlot(s, params.patchSlots[s].source,
-                             params.patchSlots[s].destination,
-                             params.patchSlots[s].intensity);
+        patchMatrix_.setSlot(
+            s, params.patchSlots[s].source, params.patchSlots[s].destination, params.patchSlots[s].intensity);
     }
 
     // OSC 1: waveform type and DWGS index
@@ -188,7 +188,7 @@ void Voice::applyBlockParams(const VoiceParameters& params) noexcept
 
 /**
  * @brief Renderiza una muestra mono- o stereo- por muestra.
- * 
+ *
  * Este es el método central del motor: calcula pitch, envolventes, LFOs,
  * realiza el ruteo de modulación, renderiza osciladores y aplica el procesamiento DSP completo.
  * @param leftOut Referencia al acumulador de salida izquierda (additivo).
@@ -196,10 +196,11 @@ void Voice::applyBlockParams(const VoiceParameters& params) noexcept
  * @param diagPoint Punto de inyección de tono diagnóstico (0-5) o 0 si no.
  * @param diagTone Valor del tono de diagnóstico a inyectar.
  */
-void Voice::renderNextSample(float& leftOut, float& rightOut, int diagPoint, float diagTone) noexcept
+void Voice::renderNextSample(float &leftOut, float &rightOut, int diagPoint, float diagTone) noexcept
 {
-    const VoiceParameters& p = cachedParams_;
-    if (!isActive() && !p.diagBypassVCA) return;
+    const VoiceParameters &p = cachedParams_;
+    if (!isActive() && !p.diagBypassVCA)
+        return;
 
     noteAge_++;
 
@@ -208,8 +209,8 @@ void Voice::renderNextSample(float& leftOut, float& rightOut, int diagPoint, flo
 
     // 2. Step LFO1 and Envelopes
     float lfo1Val = lfo1_.getNextSample();
-    float eg1Val  = eg1_.getNextSample();
-    float eg2Val  = eg2_.getNextSample();
+    float eg1Val = eg1_.getNextSample();
+    float eg2Val = eg2_.getNextSample();
     // El VCA y el filtro usan el nivel **crudo** del EG (sin su ganancia por velocidad):
     // el MS2000 tiene sus propios controles de sensibilidad (AMP VELO / FILTER VELO) y
     // con ellos a 0 la velocidad no cambia el sonido. Los EG como fuente de patch siguen
@@ -219,14 +220,14 @@ void Voice::renderNextSample(float& leftOut, float& rightOut, int diagPoint, flo
 
     // 3. Evaluate LFO2 with potential Virtual Patch frequency cross-modulation
     PatchModulationSources prelimSources;
-    prelimSources.eg1       = eg1Val;
-    prelimSources.eg2       = eg2Val;
-    prelimSources.lfo1      = lfo1Val;
-    prelimSources.lfo2      = lfo2_.getCurrentValue();
-    prelimSources.velocity  = velocity_;
-    prelimSources.kbdTrack  = (basePitch - 60.0f) / 64.0f;
+    prelimSources.eg1 = eg1Val;
+    prelimSources.eg2 = eg2Val;
+    prelimSources.lfo1 = lfo1Val;
+    prelimSources.lfo2 = lfo2_.getCurrentValue();
+    prelimSources.velocity = velocity_;
+    prelimSources.kbdTrack = (basePitch - 60.0f) / 64.0f;
     prelimSources.pitchBend = p.pitchBendValue;
-    prelimSources.modWheel  = p.modWheelValue;
+    prelimSources.modWheel = p.modWheelValue;
 
     PatchModulationOutputs prelimMod = patchMatrix_.evaluate(prelimSources);
     float lfo2Freq = p.lfo2FreqHz * std::pow(2.0f, (prelimMod.lfo2FreqMod + p.seq.lfo2Freq) * 4.0f);
@@ -240,16 +241,14 @@ void Voice::renderNextSample(float& leftOut, float& rightOut, int diagPoint, flo
 
     // 5. Portamento + LFO + Virtual Patch Pitch Modulation + Mod Seq + Voice Detune
     float voiceDetuneSemitones = p.voiceDetuneCents / 100.0f;
-    const float seqPitchSemis = p.seq.pitch * 24.0f;      // "PITCH" del seq: ±24 st
-    const float seqOsc2Semis  = p.seq.osc2Pitch * 24.0f;  // "OSC2 SEMI" del seq: ±24 st
-    float osc1PitchMod = (p.pitchBendValue * 2.0f) + (mod.pitchMod * 24.0f) + voiceDetuneSemitones
-                       + seqPitchSemis;
+    const float seqPitchSemis = p.seq.pitch * 24.0f;     // "PITCH" del seq: ±24 st
+    const float seqOsc2Semis = p.seq.osc2Pitch * 24.0f;  // "OSC2 SEMI" del seq: ±24 st
+    float osc1PitchMod = (p.pitchBendValue * 2.0f) + (mod.pitchMod * 24.0f) + voiceDetuneSemitones + seqPitchSemis;
     float osc1FinalPitch = basePitch + osc1PitchMod;
     float osc1Freq = DSPUtils::midiNoteToFrequency(osc1FinalPitch);
 
-    float osc2PitchMod = (p.pitchBendValue * 2.0f) + (mod.pitchMod * 24.0f) + voiceDetuneSemitones
-                       + seqPitchSemis + seqOsc2Semis
-                       + p.osc2Semitone + ((p.osc2Tune + (p.seq.osc2Tune * 100.0f)) / 100.0f);
+    float osc2PitchMod = (p.pitchBendValue * 2.0f) + (mod.pitchMod * 24.0f) + voiceDetuneSemitones + seqPitchSemis
+                         + seqOsc2Semis + p.osc2Semitone + ((p.osc2Tune + (p.seq.osc2Tune * 100.0f)) / 100.0f);
     float osc2FinalPitch = basePitch + osc2PitchMod;
     float osc2Freq = DSPUtils::midiNoteToFrequency(osc2FinalPitch);
 
@@ -263,33 +262,33 @@ void Voice::renderNextSample(float& leftOut, float& rightOut, int diagPoint, flo
     float osc1Sig = 0.0f;
     switch (p.osc1Type)
     {
-        case OSC1Type::Saw:
-        case OSC1Type::Pulse:
-        case OSC1Type::Triangle:
-        case OSC1Type::Sine:
-            osc1VA_.setWaveform(static_cast<VAWaveform>(p.osc1Type));
-            osc1VA_.setControl1(DSPUtils::clamp(p.osc1Ctrl1 + mod.osc1Ctrl1Mod + p.seq.osc1Ctrl1, 0.0f, 1.0f));
-            osc1Sig = osc1VA_.getNextSample();
-            break;
+    case OSC1Type::Saw:
+    case OSC1Type::Pulse:
+    case OSC1Type::Triangle:
+    case OSC1Type::Sine:
+        osc1VA_.setWaveform(static_cast<VAWaveform>(p.osc1Type));
+        osc1VA_.setControl1(DSPUtils::clamp(p.osc1Ctrl1 + mod.osc1Ctrl1Mod + p.seq.osc1Ctrl1, 0.0f, 1.0f));
+        osc1Sig = osc1VA_.getNextSample();
+        break;
 
-        case OSC1Type::DWGS:
-            osc1DWGS_.setWaveIndex(p.osc1DwgsIndex);
-            osc1Sig = osc1DWGS_.getNextSample();
-            break;
+    case OSC1Type::DWGS:
+        osc1DWGS_.setWaveIndex(p.osc1DwgsIndex);
+        osc1Sig = osc1DWGS_.getNextSample();
+        break;
 
-        case OSC1Type::VoxWave:
-            osc1VoxWave_.setVowel(DSPUtils::clamp(p.osc1Ctrl1 + mod.osc1Ctrl1Mod + p.seq.osc1Ctrl1, 0.0f, 1.0f));
-            osc1Sig = osc1VoxWave_.getNextSample();
-            break;
+    case OSC1Type::VoxWave:
+        osc1VoxWave_.setVowel(DSPUtils::clamp(p.osc1Ctrl1 + mod.osc1Ctrl1Mod + p.seq.osc1Ctrl1, 0.0f, 1.0f));
+        osc1Sig = osc1VoxWave_.getNextSample();
+        break;
 
-        case OSC1Type::Noise:
-            osc1Sig = noiseGen_.getWhiteNoise();
-            break;
+    case OSC1Type::Noise:
+        osc1Sig = noiseGen_.getWhiteNoise();
+        break;
 
-        case OSC1Type::AudioIn:
-        default:
-            osc1Sig = 0.0f;
-            break;
+    case OSC1Type::AudioIn:
+    default:
+        osc1Sig = 0.0f;
+        break;
     }
 
     // 8. Render OSC 2 with modulation mode
@@ -298,30 +297,30 @@ void Voice::renderNextSample(float& leftOut, float& rightOut, int diagPoint, flo
     {
         if (p.osc2ModMode == OSC2ModulationMode::Sync)
         {
-            if (osc1VA_.getPhase() < prevMasterPhase_) osc2_.reset();
+            if (osc1VA_.getPhase() < prevMasterPhase_)
+                osc2_.reset();
         }
         osc2Sig = osc2_.getNextSample();
     }
     prevMasterPhase_ = osc1VA_.getPhase();
 
-    if (diagPoint == 5) // Diagnostic Point 5: Override OSC1
+    if (diagPoint == 5)  // Diagnostic Point 5: Override OSC1
     {
         osc1Sig = diagTone;
     }
 
     // 9. Noise
     float noiseLevel = DSPUtils::clamp(p.noiseLevel + mod.noiseLevelMod + p.seq.noiseLevel, 0.0f, 1.0f);
-    float noiseSig   = (noiseLevel > 0.001f) ? noiseGen_.getWhiteNoise() : 0.0f;
+    float noiseSig = (noiseLevel > 0.001f) ? noiseGen_.getWhiteNoise() : 0.0f;
 
     // 10. Mixer stage — sum OSC1, OSC2, Noise
-    float osc1Level = p.diagBypassOscMixer ? 1.0f
-                                           : DSPUtils::clamp(p.osc1Level + p.seq.osc1Level, 0.0f, 1.0f);
+    float osc1Level = p.diagBypassOscMixer ? 1.0f : DSPUtils::clamp(p.osc1Level + p.seq.osc1Level, 0.0f, 1.0f);
     float osc1Mixed = osc1Sig * osc1Level;
     float osc2Level = DSPUtils::clamp(p.osc2Level + p.seq.osc2Level, 0.0f, 1.0f);
     float osc2Mixed = osc2Sig * osc2Level;
     float mixedAudio = osc1Mixed + osc2Mixed + (noiseSig * noiseLevel);
 
-    if (diagPoint == 4) // Diagnostic Point 4: PreFilter (Bypasses OSC & Mixer)
+    if (diagPoint == 4)  // Diagnostic Point 4: PreFilter (Bypasses OSC & Mixer)
     {
         mixedAudio = diagTone;
     }
@@ -330,13 +329,13 @@ void Voice::renderNextSample(float& leftOut, float& rightOut, int diagPoint, flo
     float filtered = mixedAudio;
     if (!p.diagBypassFilter)
     {
-        float baseHz       = DSPUtils::convertSysExToCutoffHz(p.filterCutoffNorm);
-        float egOctaves    = eg1Raw * (p.eg1FilterIntensity * 5.0f);
-        float kbdOctaves   = ((basePitch - 60.0f) / 12.0f) * p.filterKbdTrack;
+        float baseHz = DSPUtils::convertSysExToCutoffHz(p.filterCutoffNorm);
+        float egOctaves = eg1Raw * (p.eg1FilterIntensity * 5.0f);
+        float kbdOctaves = ((basePitch - 60.0f) / 12.0f) * p.filterKbdTrack;
         float patchOctaves = (mod.cutoffMod + p.seq.cutoff) * 5.0f;
         // FILTER VELO del byte 23 (±63 → ±5 octavas a fondo): la velocidad abre el
         // filtro con intensidad positiva y lo cierra con negativa. A 0, sin efecto.
-        float veloOctaves  = p.filterVeloSens * velocity_ * 5.0f;
-        float cutoffHz     = baseHz * std::pow(2.0f, egOctaves + kbdOctaves + patchOctaves + veloOctaves);
+        float veloOctaves = p.filterVeloSens * velocity_ * 5.0f;
+        float cutoffHz = baseHz * std::pow(2.0f, egOctaves + kbdOctaves + patchOctaves + veloOctaves);
 
         filter

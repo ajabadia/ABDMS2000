@@ -1,9 +1,10 @@
 #include "DelayFX.h"
-#include "../Common/DSPUtils.h"
-#include <cmath>
 #include <algorithm>
+#include <cmath>
+#include "../Common/DSPUtils.h"
 
-namespace ABDMS2000 {
+namespace ABDMS2000
+{
 
 void DelayFX::prepare(double sampleRate) noexcept
 {
@@ -32,7 +33,7 @@ void DelayFX::reset() noexcept
 
 void DelayFX::setTimeSeconds(float timeSec) noexcept
 {
-    timeSeconds_ = DSPUtils::clamp(timeSec, 0.001f, 1.400f); // 1400ms max limit
+    timeSeconds_ = DSPUtils::clamp(timeSec, 0.001f, 1.400f);  // 1400ms max limit
     float targetSamplesL = timeSeconds_ * static_cast<float>(sampleRate_);
     float targetSamplesR = targetSamplesL;
 
@@ -55,9 +56,10 @@ void DelayFX::setFeedback(float feedbackGain0to1) noexcept
     feedbackGain_ = DSPUtils::clamp(feedbackGain0to1, 0.0f, 0.95f);
 }
 
-float DelayFX::readInterpolated(const std::vector<float>& buf, float readPos) const noexcept
+float DelayFX::readInterpolated(const std::vector<float> &buf, float readPos) const noexcept
 {
-    while (readPos < 0.0f) readPos += static_cast<float>(maxDelaySamples_);
+    while (readPos < 0.0f)
+        readPos += static_cast<float>(maxDelaySamples_);
 
     size_t idx0 = static_cast<size_t>(readPos) % maxDelaySamples_;
     size_t idx1 = (idx0 + 1) % maxDelaySamples_;
@@ -66,9 +68,10 @@ float DelayFX::readInterpolated(const std::vector<float>& buf, float readPos) co
     return buf[idx0] + frac * (buf[idx1] - buf[idx0]);
 }
 
-void DelayFX::process(float& leftSample, float& rightSample) noexcept
+void DelayFX::process(float &leftSample, float &rightSample) noexcept
 {
-    if (!enabled_ || maxDelaySamples_ == 0) return;
+    if (!enabled_ || maxDelaySamples_ == 0)
+        return;
 
     float currentDelayL = smoothedDelaySamplesL_.getNextValue();
     float currentDelayR = smoothedDelaySamplesR_.getNextValue();
@@ -88,26 +91,26 @@ void DelayFX::process(float& leftSample, float& rightSample) noexcept
 
     switch (type_)
     {
-        case DelayType::Stereo:
-            delayBufferL_[writeIndex_] = inL + (dampingStateL_ * feedbackGain_);
-            delayBufferR_[writeIndex_] = inR + (dampingStateR_ * feedbackGain_);
-            break;
+    case DelayType::Stereo:
+        delayBufferL_[writeIndex_] = inL + (dampingStateL_ * feedbackGain_);
+        delayBufferR_[writeIndex_] = inR + (dampingStateR_ * feedbackGain_);
+        break;
 
-        case DelayType::Cross: // Ping-Pong with Inverted Feedback on Left
-            delayBufferL_[writeIndex_] = inL - (dampingStateR_ * feedbackGain_);
-            delayBufferR_[writeIndex_] = inR + (dampingStateL_ * feedbackGain_);
-            break;
+    case DelayType::Cross:  // Ping-Pong with Inverted Feedback on Left
+        delayBufferL_[writeIndex_] = inL - (dampingStateR_ * feedbackGain_);
+        delayBufferR_[writeIndex_] = inR + (dampingStateL_ * feedbackGain_);
+        break;
 
-        case DelayType::LeftRight:
-            delayBufferL_[writeIndex_] = inL + (dampingStateL_ * feedbackGain_);
-            delayBufferR_[writeIndex_] = inR + (dampingStateR_ * feedbackGain_);
-            break;
+    case DelayType::LeftRight:
+        delayBufferL_[writeIndex_] = inL + (dampingStateL_ * feedbackGain_);
+        delayBufferR_[writeIndex_] = inR + (dampingStateR_ * feedbackGain_);
+        break;
     }
 
     writeIndex_ = (writeIndex_ + 1) % maxDelaySamples_;
 
-    leftSample  = inL + (delayedL * wetMix_ * 0.88f);
+    leftSample = inL + (delayedL * wetMix_ * 0.88f);
     rightSample = inR + (delayedR * wetMix_ * 0.88f);
 }
 
-} // namespace ABDMS2000
+}  // namespace ABDMS2000

@@ -11,10 +11,10 @@
 
 namespace ABDMS2000
 {
-    // Historical code calls EnvelopeCurves::getAttackTimeSeconds(...) inside
-    // namespace ABDMS2000 — re-export as a nested namespace, not a flat using.
-    namespace EnvelopeCurves
-    {
-        using namespace abd::synth::EnvelopeCurves;
-    }
+// Historical code calls EnvelopeCurves::getAttackTimeSeconds(...) inside
+// namespace ABDMS2000 — re-export as a nested namespace, not a flat using.
+namespace EnvelopeCurves
+{
+using namespace abd::synth::EnvelopeCurves;
 }
+}  // namespace ABDMS2000

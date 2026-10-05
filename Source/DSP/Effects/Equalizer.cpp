@@ -1,7 +1,8 @@
 #include "Equalizer.h"
 #include "../Common/DSPUtils.h"
 
-namespace ABDMS2000 {
+namespace ABDMS2000
+{
 
 /*
  * El motor —el biquad, los coeficientes, la banda muerta de 0,05 dB, la forma II
@@ -37,7 +38,7 @@ void Equalizer::prepare(double sampleRate) noexcept
     // no sea absurdo. Se pasa el valor ya validado, no el que dio el host.
     const double valido = DSPUtils::validateSampleRate(sampleRate);
 
-    eq_.prepare (valido);
+    eq_.prepare(valido);
 
     // ESTA ES LA UNICA LINEA DE ESTE FICHERO QUE NO ES UNA DELEGACION, Y ESTA
     // PORQUE. `CascadeShelfEq::prepare` pone los indices de FABRICA del perfil
@@ -52,8 +53,8 @@ void Equalizer::prepare(double sampleRate) noexcept
     // precisamente este caso (mover el selector, llamar a `prepare` y poner la
     // ganancia) y se puso rojo al quitarlas, en la muestra en la que ocurre el
     // `prepare`. Ese es el motivo de que el caso exista.
-    eq_.setLowIndex  (lowFreqIndex_);
-    eq_.setHighIndex (highFreqIndex_);
+    eq_.setLowIndex(lowFreqIndex_);
+    eq_.setHighIndex(highFreqIndex_);
 
     // La ganancia la reinicia la maquina a los 0 dB del perfil, que es lo que
     // hacia el anterior. `reset` es el estado de audio; el anterior lo llamaba
@@ -73,7 +74,7 @@ void Equalizer::setLowFreqIndex(int index0to3) noexcept
         return;
 
     lowFreqIndex_ = recortado;
-    eq_.setLowIndex (recortado);
+    eq_.setLowIndex(recortado);
 }
 
 void Equalizer::setLowGainDB(float gainDB) noexcept
@@ -81,7 +82,7 @@ void Equalizer::setLowGainDB(float gainDB) noexcept
     // El recorte y la banda muerta los hace el motor. Aqui solo se le pasa el
     // valor: duplicar el recorte seria tener la regla en dos sitios, y el sitio
     // que importa es el que esta en el modulo, que es el que tienen los demas.
-    eq_.setLowGainDB (gainDB);
+    eq_.setLowGainDB(gainDB);
 }
 
 void Equalizer::setHighFreqIndex(int index0to3) noexcept
@@ -91,20 +92,20 @@ void Equalizer::setHighFreqIndex(int index0to3) noexcept
         return;
 
     highFreqIndex_ = recortado;
-    eq_.setHighIndex (recortado);
+    eq_.setHighIndex(recortado);
 }
 
 void Equalizer::setHighGainDB(float gainDB) noexcept
 {
-    eq_.setHighGainDB (gainDB);
+    eq_.setHighGainDB(gainDB);
 }
 
-void Equalizer::process(float& leftSample, float& rightSample) noexcept
+void Equalizer::process(float &leftSample, float &rightSample) noexcept
 {
     // Las dos repisas en cascada, con estado separado por canal en cada una.
     // El motor ya trae los cuatro estados y el bucle de audio del original, asi
     // que esto es una llamada y nada mas.
-    eq_.processFrame (leftSample, rightSample);
+    eq_.processFrame(leftSample, rightSample);
 }
 
-} // namespace ABDMS2000
+}  // namespace ABDMS2000

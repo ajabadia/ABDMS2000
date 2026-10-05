@@ -1,19 +1,20 @@
 #pragma once
+#include <array>
 #include <cstdint>
 #include <cstring>
 #include <string>
 #include <vector>
-#include <array>
 #include "../State/ParameterRegistry.gen.h"
 #if ABD_HAS_JUCE
 #include <juce_audio_processors/juce_audio_processors.h>
 #endif
 #include "../../ABDSharedCode/HardwareDrivers/SysExCodec.h"
 using abd::hw::SysExCodec;
-#include <sstream>
 #include <iomanip>
+#include <sstream>
 
-namespace ABDMS2000 {
+namespace ABDMS2000
+{
 
 /**
  * @brief Programa **propio** del plugin (el sistema `native` que declara el contrato
@@ -43,7 +44,8 @@ namespace ABDMS2000 {
  * Special-case signed parameters (bias = 64) are hardcoded in the registry
  * via their min/max ranges and handled by a small lookup set.
  */
-struct MS2000ProgramData {
+struct MS2000ProgramData
+{
     // v2: cabe todo lo que el motor modela (253 parámetros con byte propio).
     // Es múltiplo de 128 a propósito: el bloque v1 (128 B) sigue siendo un subconjunto.
     static constexpr size_t UNPACKED_PROGRAM_SIZE = 384;
@@ -54,9 +56,12 @@ struct MS2000ProgramData {
     static constexpr uint8_t VOICE_BYTE = 0x0C;
     static constexpr uint8_t TIMBRE_START = 0x0E;
 
-    std::array<uint8_t, UNPACKED_PROGRAM_SIZE> rawData{};
+    std::array<uint8_t, UNPACKED_PROGRAM_SIZE> rawData {};
 
-    MS2000ProgramData() { reset(); }
+    MS2000ProgramData()
+    {
+        reset();
+    }
 
     /** Resets to the canonical "Init Synth" state. */
     void reset()
@@ -65,15 +70,17 @@ struct MS2000ProgramData {
         setName("Init Synth");
 
         // Voice defaults
-        rawData[VOICE_BYTE] = 1; // Poly (mode 1)
-        rawData[VOICE_BYTE + 2] = 0; // Portamento time 0
+        rawData[VOICE_BYTE] = 1;      // Poly (mode 1)
+        rawData[VOICE_BYTE + 2] = 0;  // Portamento time 0
 
         // Populate default values from ParameterRegistry
-        for (const auto& meta : ParameterRegistry::getAllParameters())
+        for (const auto &meta : ParameterRegistry::getAllParameters())
         {
-            if (meta.sysexOffset < 0 || isVoiceByteParam(meta.id)) continue;
+            if (meta.sysexOffset < 0 || isVoiceByteParam(meta.id))
+                continue;
             const auto off = TIMBRE_START + static_cast<size_t>(meta.sysexOffset);
-            if (off >= UNPACKED_PROGRAM_SIZE) continue;
+            if (off >= UNPACKED_PROGRAM_SIZE)
+                continue;
 
             if (meta.type == ParamType::Boolean)
                 rawData[off] = (meta.defaultValue > 0.5f) ? 64 : 0;
@@ -86,10 +93,11 @@ struct MS2000ProgramData {
 
     // ─── Name ────────────────────────────────────────────────────────────────
 
-    void setName(const std::string& newName)
+    void setName(const std::string &newName)
     {
         std::string padded = newName.substr(0, NAME_LENGTH);
-        while (padded.length() < NAME_LENGTH) padded += ' ';
+        while (padded.length() < NAME_LENGTH)
+            padded += ' ';
         for (size_t i = 0; i < NAME_LENGTH; ++i)
             rawData[i] = static_cast<uint8_t>(padded[i]);
     }
@@ -105,20 +113,27 @@ struct MS2000ProgramData {
         }
         // El nombre viaja en 12 B rellenas con espacios, pero no se devuelve el relleno:
         // el Bank Manager lo muestra tal cual (igual que `MS2000HardwareProgram::getName`).
-        while (!res.empty() && res.back() == ' ') res.pop_back();
+        while (!res.empty() && res.back() == ' ')
+            res.pop_back();
         return res;
     }
 
     // ─── Byte-level access ───────────────────────────────────────────────────
 
     /** Read a raw byte at the given sysexOffset position. */
-    uint8_t getByte(uint8_t offset) const { return rawData[offset]; }
+    uint8_t getByte(uint8_t offset) const
+    {
+        return rawData[offset];
+    }
 
     /** Write a raw byte at the given sysexOffset position. */
-    void setByte(uint8_t offset, uint8_t value) { rawData[offset] = value; }
+    void setByte(uint8_t offset, uint8_t value)
+    {
+        rawData[offset] = value;
+    }
 
     /** Convenient parameter setter by ID */
-    void setParam(const char* id, float value)
+    void setParam(const char *id, float value)
     {
         if (std::strcmp(id, ParamIDs::voiceMode) == 0)
         {
@@ -132,7 +147,8 @@ struct MS2000ProgramData {
         }
         if (std::strcmp(id, ParamIDs::portamentoOn) == 0)
         {
-            rawData[VOICE_BYTE] = (rawData[VOICE_BYTE] & ~(0x01 << 6)) | ((static_cast<uint8_t>(value > 0.5f ? 1 : 0) & 0x01) << 6);
+            rawData[VOICE_BYTE] =
+                (rawData[VOICE_BYTE] & ~(0x01 << 6)) | ((static_cast<uint8_t>(value > 0.5f ? 1 : 0) & 0x01) << 6);
             return;
         }
         if (std::strcmp(id, ParamIDs::portamentoTime) == 0)
@@ -141,10 +157,12 @@ struct MS2000ProgramData {
             return;
         }
 
-        const auto* meta = ParameterRegistry::getParameter(id);
-        if (!meta || meta->sysexOffset < 0) return;
+        const auto *meta = ParameterRegistry::getParameter(id);
+        if (!meta || meta->sysexOffset < 0)
+            return;
         const auto off = TIMBRE_START + static_cast<size_t>(meta->sysexOffset);
-        if (off >= UNPACKED_PROGRAM_SIZE) return;
+        if (off >= UNPACKED_PROGRAM_SIZE)
+            return;
 
         if (meta->type == ParamType::Boolean)
             rawData[off] = (value > 0.5f) ? 64 : 0;
@@ -156,37 +174,39 @@ struct MS2000ProgramData {
 
     // ─── APVTS ↔ RawData (registry-driven) ───────────────────────────────────
 
-    static bool isVoiceByteParam(const char* id) noexcept
+    static bool isVoiceByteParam(const char *id) noexcept
     {
-        return id == ParamIDs::voiceMode
-            || id == ParamIDs::unisonDetune
-            || id == ParamIDs::portamentoOn
-            || id == ParamIDs::portamentoTime;
+        return id == ParamIDs::voiceMode || id == ParamIDs::unisonDetune || id == ParamIDs::portamentoOn
+               || id == ParamIDs::portamentoTime;
     }
 
 #if ABD_HAS_JUCE
-    void applyToAPVTS(juce::AudioProcessorValueTreeState& apvts) const
+    void applyToAPVTS(juce::AudioProcessorValueTreeState &apvts) const
     {
         // 1. Unpack the voice byte
         const uint8_t voiceByte = rawData[VOICE_BYTE];
-        auto setChoice = [&](const char* id, float rawVal) {
-            if (auto* p = apvts.getParameter(id))
+        auto setChoice = [&](const char *id, float rawVal)
+        {
+            if (auto *p = apvts.getParameter(id))
                 p->setValueNotifyingHost(p->convertTo0to1(rawVal));
         };
-        setChoice(ParamIDs::voiceMode,    static_cast<float>(voiceByte & 0x03));
+        setChoice(ParamIDs::voiceMode, static_cast<float>(voiceByte & 0x03));
         setChoice(ParamIDs::unisonDetune, static_cast<float>((voiceByte >> 2) & 0x0F));
         setChoice(ParamIDs::portamentoOn, static_cast<float>((voiceByte >> 6) & 0x01));
 
-        if (auto* p = apvts.getParameter(ParamIDs::portamentoTime))
+        if (auto *p = apvts.getParameter(ParamIDs::portamentoTime))
             p->setValueNotifyingHost(p->convertTo0to1(static_cast<float>(rawData[VOICE_BYTE + 2])));
 
         // 2. Iterate registry for all other timbre parameters
-        for (const auto& meta : ParameterRegistry::getAllParameters())
+        for (const auto &meta : ParameterRegistry::getAllParameters())
         {
-            if (meta.sysexOffset < 0) continue;
-            if (isVoiceByteParam(meta.id)) continue;
+            if (meta.sysexOffset < 0)
+                continue;
+            if (isVoiceByteParam(meta.id))
+                continue;
             const auto off = TIMBRE_START + static_cast<size_t>(meta.sysexOffset);
-            if (off >= UNPACKED_PROGRAM_SIZE) continue;
+            if (off >= UNPACKED_PROGRAM_SIZE)
+                continue;
 
             float value;
             if (meta.type == ParamType::Boolean)
@@ -207,39 +227,42 @@ struct MS2000ProgramData {
                 value = static_cast<float>(rawData[off]);
             }
 
-            if (auto* p = apvts.getParameter(meta.id))
+            if (auto *p = apvts.getParameter(meta.id))
                 p->setValueNotifyingHost(p->convertTo0to1(value));
         }
     }
 
-    void extractFromAPVTS(const juce::AudioProcessorValueTreeState& apvts,
-                          const std::string& progName)
+    void extractFromAPVTS(const juce::AudioProcessorValueTreeState &apvts, const std::string &progName)
     {
         setName(progName);
 
         // 1. Pack voice parameters into voiceByte
-        auto getChoice = [&](const char* id) -> uint8_t {
-            if (auto* p = apvts.getRawParameterValue(id))
+        auto getChoice = [&](const char *id) -> uint8_t
+        {
+            if (auto *p = apvts.getRawParameterValue(id))
                 return static_cast<uint8_t>(p->load());
             return 0;
         };
         rawData[VOICE_BYTE] = (getChoice(ParamIDs::voiceMode) & 0x03)
-            | ((getChoice(ParamIDs::unisonDetune) & 0x0F) << 2)
-            | ((getChoice(ParamIDs::portamentoOn) & 0x01) << 6);
+                              | ((getChoice(ParamIDs::unisonDetune) & 0x0F) << 2)
+                              | ((getChoice(ParamIDs::portamentoOn) & 0x01) << 6);
 
-        if (auto* p = apvts.getRawParameterValue(ParamIDs::portamentoTime))
+        if (auto *p = apvts.getRawParameterValue(ParamIDs::portamentoTime))
             rawData[VOICE_BYTE + 2] = static_cast<uint8_t>(p->load());
 
         // 2. Iterate registry for all other timbre parameters
-        for (const auto& meta : ParameterRegistry::getAllParameters())
+        for (const auto &meta : ParameterRegistry::getAllParameters())
         {
-            if (meta.sysexOffset < 0) continue;
-            if (isVoiceByteParam(meta.id)) continue;
+            if (meta.sysexOffset < 0)
+                continue;
+            if (isVoiceByteParam(meta.id))
+                continue;
             const auto off = TIMBRE_START + static_cast<size_t>(meta.sysexOffset);
-            if (off >= UNPACKED_PROGRAM_SIZE) continue;
+            if (off >= UNPACKED_PROGRAM_SIZE)
+                continue;
 
             float native = 0.0f;
-            if (auto* p = apvts.getRawParameterValue(meta.id))
+            if (auto *p = apvts.getRawParameterValue(meta.id))
                 native = p->load();
 
             if (meta.type == ParamType::Boolean)
@@ -269,7 +292,7 @@ struct MS2000ProgramData {
      * Unpacks a 7-bit encoded SysEx payload into this 128-byte rawData buffer.
      * @return true on success.
      */
-    bool unpackFromSysexPayload(const uint8_t* payload, size_t payloadLen)
+    bool unpackFromSysexPayload(const uint8_t *payload, size_t payloadLen)
     {
         std::vector<uint8_t> unpacked;
         if (!SysExCodec::unpack7to8(payload, payloadLen, unpacked) || unpacked.empty())
@@ -283,7 +306,7 @@ struct MS2000ProgramData {
      * Packs this 128-byte rawData buffer into a 7-bit SysEx payload.
      * @return true on success.
      */
-    bool packToSysexPayload(std::vector<uint8_t>& outPayload) const
+    bool packToSysexPayload(std::vector<uint8_t> &outPayload) const
     {
         return SysExCodec::pack8to7(rawData.data(), UNPACKED_PROGRAM_SIZE, outPayload);
     }
@@ -299,26 +322,30 @@ struct MS2000ProgramData {
         // Check name bytes are printable
         for (size_t i = 0; i < NAME_LENGTH; ++i)
         {
-            if (rawData[i] > 127) return "Name byte " + std::to_string(i) + " out of range";
+            if (rawData[i] > 127)
+                return "Name byte " + std::to_string(i) + " out of range";
         }
         // Voice mode (byte 0) must be 0..2
         if (rawData[VOICE_BYTE] > 2)
-            return "Voice mode byte out of range (expected 0..2, got " +
-                   std::to_string(rawData[VOICE_BYTE]) + ")";
+            return "Voice mode byte out of range (expected 0..2, got " + std::to_string(rawData[VOICE_BYTE]) + ")";
         return {};
     }
 
     /**
      * Returns the voice mode name from the raw voice byte.
      */
-    const char* getVoiceModeName() const
+    const char *getVoiceModeName() const
     {
         switch (rawData[VOICE_BYTE] & 0x03)
         {
-            case 0: return "Mono";
-            case 1: return "Poly";
-            case 2: return "Unison";
-            default: return "Unknown";
+        case 0:
+            return "Mono";
+        case 1:
+            return "Poly";
+        case 2:
+            return "Unison";
+        default:
+            return "Unknown";
         }
     }
 
@@ -341,10 +368,12 @@ struct MS2000ProgramData {
             for (size_t i = 0; i < bytesPerLine; ++i)
             {
                 if (i < lineBytes)
-                    oss << std::hex << std::setw(2) << std::setfill('0')
-                        << static_cast<int>(rawData[offset + i]) << " ";
-                else oss << "   ";
-                if (i == 7) oss << " ";
+                    oss << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(rawData[offset + i])
+                        << " ";
+                else
+                    oss << "   ";
+                if (i == 7)
+                    oss << " ";
             }
             oss << " |";
             for (size_t i = 0; i < lineBytes; ++i)
@@ -359,4 +388,4 @@ struct MS2000ProgramData {
     }
 };
 
-} // namespace ABDMS2000
+}  // namespace ABDMS2000

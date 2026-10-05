@@ -27,41 +27,45 @@
  * de respuesta. Esta migracion no toca ninguna formula, y por eso no vuelve a
  * abrir ese numero.
  */
-#include "TestCompat.h"
-#include "../DSP/Effects/Equalizer.h"
 #include "../DSP/Common/DSPUtils.h"
+#include "../DSP/Effects/Equalizer.h"
+#include "TestCompat.h"
 
 #include <bit>
 #include <cstdint>
 #include <cstdio>
 #include <vector>
 
-namespace ABDMS2000 {
-namespace Tests {
+namespace ABDMS2000
+{
+namespace Tests
+{
 
 //==============================================================================
 /** LA COPIA CONGELADA. `Equalizer.{h,cpp}` tal como estaban antes de la
     migración, con sus dos `ShelfFilter` y sus dos tablas. Sin tocar. */
-namespace congelado {
+namespace congelado
+{
 
-class Equalizer {
-public:
+class Equalizer
+{
+  public:
     void prepare(double sampleRate) noexcept
     {
         const double valido = DSPUtils::validateSampleRate(sampleRate);
 
-        bajo_.prepare (valido);
-        alto_.prepare (valido);
+        bajo_.prepare(valido);
+        alto_.prepare(valido);
 
-        bajo_.setMode (abd::dsp::ShelfMode::Low);
-        alto_.setMode (abd::dsp::ShelfMode::High);
+        bajo_.setMode(abd::dsp::ShelfMode::Low);
+        alto_.setMode(abd::dsp::ShelfMode::High);
 
         frecuenciaBaja_ = kMS2000LowFreqs[lowFreqIndex_];
         frecuenciaAlta_ = kMS2000HighFreqs[highFreqIndex_];
         aplicaFrecuencias();
 
-        bajo_.setGainDB (0.0f);
-        alto_.setGainDB (0.0f);
+        bajo_.setGainDB(0.0f);
+        alto_.setGainDB(0.0f);
 
         reset();
     }
@@ -83,7 +87,10 @@ public:
         aplicaFrecuencias();
     }
 
-    void setLowGainDB(float gainDB) noexcept          { bajo_.setGainDB (gainDB); }
+    void setLowGainDB(float gainDB) noexcept
+    {
+        bajo_.setGainDB(gainDB);
+    }
     void setHighFreqIndex(int index0to3) noexcept
     {
         const int recortado = index0to3 < 0 ? 0 : (index0to3 > 3 ? 3 : index0to3);
@@ -95,88 +102,103 @@ public:
         aplicaFrecuencias();
     }
 
-    void setHighGainDB(float gainDB) noexcept         { alto_.setGainDB (gainDB); }
-
-    void process(float& leftSample, float& rightSample) noexcept
+    void setHighGainDB(float gainDB) noexcept
     {
-        bajo_.processFrame (leftSample, rightSample);
-        alto_.processFrame (leftSample, rightSample);
+        alto_.setGainDB(gainDB);
     }
 
-private:
-    static constexpr float kMS2000LowFreqs[4]  = { 160.0f, 250.0f, 400.0f, 600.0f };
-    static constexpr float kMS2000HighFreqs[4] = { 4000.0f, 6000.0f, 8000.0f, 12000.0f };
+    void process(float &leftSample, float &rightSample) noexcept
+    {
+        bajo_.processFrame(leftSample, rightSample);
+        alto_.processFrame(leftSample, rightSample);
+    }
 
-    int   lowFreqIndex_  = 1;
-    int   highFreqIndex_ = 2;
+  private:
+    static constexpr float kMS2000LowFreqs[4] = {160.0f, 250.0f, 400.0f, 600.0f};
+    static constexpr float kMS2000HighFreqs[4] = {4000.0f, 6000.0f, 8000.0f, 12000.0f};
+
+    int lowFreqIndex_ = 1;
+    int highFreqIndex_ = 2;
 
     float frecuenciaBaja_ = 250.0f;
     float frecuenciaAlta_ = 8000.0f;
 
     void aplicaFrecuencias() noexcept
     {
-        bajo_.setFrequencyHz (frecuenciaBaja_);
-        alto_.setFrequencyHz (frecuenciaAlta_);
+        bajo_.setFrequencyHz(frecuenciaBaja_);
+        alto_.setFrequencyHz(frecuenciaAlta_);
     }
 
     abd::dsp::ShelfFilter bajo_;
     abd::dsp::ShelfFilter alto_;
 };
 
-} // namespace congelado
+}  // namespace congelado
 
 //==============================================================================
 /** Ruido reproducible. Un LCG con los parametros clasicos de Numerical Recipes:
     el mismo en las dos maquinas, y el mismo en cada ejecucion y en cada
     plataforma. Un `std::mt19937` sembrado con el reloj serviria para medir
     ruido, no para comparar dos motores muestra a muestra. */
-class Generador {
-public:
-    explicit Generador (std::uint32_t semilla) : estado_ (semilla) {}
+class Generador
+{
+  public:
+    explicit Generador(std::uint32_t semilla) : estado_(semilla) {}
 
     float siguiente() noexcept
     {
         estado_ = estado_ * 1664525u + 1014535269u;
-        return (float) ((estado_ >> 8) & 0xFFFFu) / 32768.0f - 1.0f;   // [-1, 1)
+        return (float) ((estado_ >> 8) & 0xFFFFu) / 32768.0f - 1.0f;  // [-1, 1)
     }
 
-private:
+  private:
     std::uint32_t estado_;
 };
 
 //==============================================================================
 enum TipoEvento
 {
-    eventoPrepare      = 0,
-    eventoIndiceBajo   = 1,
+    eventoPrepare = 0,
+    eventoIndiceBajo = 1,
     eventoGananciaBaja = 2,
-    eventoIndiceAlto   = 3,
+    eventoIndiceAlto = 3,
     eventoGananciaAlta = 4,
-    eventoReset        = 5
+    eventoReset = 5
 };
 
 struct Evento
 {
-    int   enMuestra = 0;     // 0 = antes de la primera muestra
-    int   tipo      = eventoPrepare;
-    int   valorInt  = 0;
+    int enMuestra = 0;  // 0 = antes de la primera muestra
+    int tipo = eventoPrepare;
+    int valorInt = 0;
     float valorFloat = 0.0f;
 };
 
 /** Los dos motores tienen los mismos nombres de metodo, asi que el guion se
     aplica con una sola plantilla. Si alguno cambiara de nombre, esto no
     compilaria, que es justo la aviso que se quiere antes que un test verde. */
-template <typename Motor>
-static inline void aplica (Motor& motor, const Evento& e) noexcept
+template <typename Motor> static inline void aplica(Motor &motor, const Evento &e) noexcept
 {
     switch (e.tipo)
     {
-        case eventoPrepare:      motor.prepare      (e.valorFloat); break;
-        case eventoIndiceBajo:   motor.setLowFreqIndex (e.valorInt); break;
-        case eventoGananciaBaja: motor.setLowGainDB    (e.valorFloat); break;
-        case eventoIndiceAlto:   motor.setHighFreqIndex (e.valorInt); break;
-        case eventoGananciaAlta: motor.setHighGainDB   (e.valorFloat); break;
-        case eventoReset:        motor.reset(); break;
+    case eventoPrepare:
+        motor.prepare(e.valorFloat);
+        break;
+    case eventoIndiceBajo:
+        motor.setLowFreqIndex(e.valorInt);
+        break;
+    case eventoGananciaBaja:
+        motor.setLowGainDB(e.valorFloat);
+        break;
+    case eventoIndiceAlto:
+        motor.setHighFreqIndex(e.valorInt);
+        break;
+    case eventoGananciaAlta:
+        motor.setHighGainDB(e.valorFloat);
+        break;
+    case eventoReset:
+        motor.reset();
+        break;
     }
 }
 
@@ -184,11 +206,11 @@ static inline void aplica (Motor& motor, const Evento& e) noexcept
 struct Resultado
 {
     long comparadas = 0;
-    int  primeraDiferencia = -1;
-    int  canalDiferente = -1;
+    int primeraDiferencia = -1;
+    int canalDiferente = -1;
     float antes = 0.0f;
     float ahora = 0.0f;
-    int  eventos = 0;
+    int eventos = 0;
 };
 
 /** Corre el mismo guion y la misma señal por los dos motores, y mira el
@@ -196,17 +218,18 @@ struct Resultado
     -0,0 donde antes habia un +0,0 pasaria por igual, y en un estado de un
     biquad eso ya es una diferencia de bits. */
 template <typename Antes, typename Ahora>
-static Resultado compara (Antes& antes, Ahora& ahora,
-                          const std::vector<Evento>& guion,
-                          int numMuestras,
-                          std::uint32_t semillaL,
-                          std::uint32_t semillaR)
+static Resultado compara(Antes &antes,
+                         Ahora &ahora,
+                         const std::vector<Evento> &guion,
+                         int numMuestras,
+                         std::uint32_t semillaL,
+                         std::uint32_t semillaR)
 {
     Resultado r;
     r.eventos = (int) guion.size();
 
-    Generador genL (semillaL);
-    Generador genR (semillaR);
+    Generador genL(semillaL);
+    Generador genR(semillaR);
 
     std::size_t siguienteEvento = 0;
 
@@ -216,8 +239,8 @@ static Resultado compara (Antes& antes, Ahora& ahora,
         // mismo orden: el guion es el contrato, no una guia.
         while (siguienteEvento < guion.size() && guion[siguienteEvento].enMuestra == i)
         {
-            aplica (antes, guion[siguienteEvento]);
-            aplica (ahora,  guion[siguienteEvento]);
+            aplica(antes, guion[siguienteEvento]);
+            aplica(ahora, guion[siguienteEvento]);
             ++siguienteEvento;
         }
 
@@ -230,21 +253,21 @@ static Resultado compara (Antes& antes, Ahora& ahora,
         float la = l, lb = b;
         float ha = l, hb = b;
 
-        antes.process (la, lb);
-        ahora.process  (ha, hb);
+        antes.process(la, lb);
+        ahora.process(ha, hb);
 
         r.comparadas += 2;
 
         if (r.primeraDiferencia < 0)
         {
-            if (std::bit_cast<std::uint32_t> (la) != std::bit_cast<std::uint32_t> (ha))
+            if (std::bit_cast<std::uint32_t>(la) != std::bit_cast<std::uint32_t>(ha))
             {
                 r.primeraDiferencia = i;
                 r.canalDiferente = 0;
                 r.antes = la;
                 r.ahora = ha;
             }
-            else if (std::bit_cast<std::uint32_t> (lb) != std::bit_cast<std::uint32_t> (hb))
+            else if (std::bit_cast<std::uint32_t>(lb) != std::bit_cast<std::uint32_t>(hb))
             {
                 r.primeraDiferencia = i;
                 r.canalDiferente = 1;
@@ -260,25 +283,30 @@ static Resultado compara (Antes& antes, Ahora& ahora,
 /** Traduce el resultado a un `check` con un mensaje que dice DONDE ha fallado,
     no solo que ha fallado. Un test de paridad que dice "FAIL" sin decir en que
     muestra obliga a repetir el trabajo a mano. */
-static void informa (bool ok, const Resultado& r, const char* que, long& total)
+static void informa(bool ok, const Resultado &r, const char *que, long &total)
 {
     total += r.comparadas;
 
     if (ok)
     {
         char msg[256];
-        snprintf (msg, sizeof (msg), "%s: %ld muestras identicas bit a bit", que, r.comparadas);
-        check (true, msg);
+        snprintf(msg, sizeof(msg), "%s: %ld muestras identicas bit a bit", que, r.comparadas);
+        check(true, msg);
         return;
     }
 
     char msg[320];
-    snprintf (msg, sizeof (msg),
-              "%s: DIFIERE en la muestra %d (canal %d): antes %.9g, ahora %.9g  [0x%08X vs 0x%08X]",
-              que, r.primeraDiferencia, r.canalDiferente, r.antes, r.ahora,
-              std::bit_cast<std::uint32_t> (r.antes),
-              std::bit_cast<std::uint32_t> (r.ahora));
-    check (false, msg);
+    snprintf(msg,
+             sizeof(msg),
+             "%s: DIFIERE en la muestra %d (canal %d): antes %.9g, ahora %.9g  [0x%08X vs 0x%08X]",
+             que,
+             r.primeraDiferencia,
+             r.canalDiferente,
+             r.antes,
+             r.ahora,
+             std::bit_cast<std::uint32_t>(r.antes),
+             std::bit_cast<std::uint32_t>(r.ahora));
+    check(false, msg);
 }
 
 //==============================================================================
@@ -290,7 +318,7 @@ static void informa (bool ok, const Resultado& r, const char* que, long& total)
 static void testParidadDePosiciones()
 {
     long total = 0;
-    const double sampleRates[3] = { 32000.0, 44100.0, 48000.0 };
+    const double sampleRates[3] = {32000.0, 44100.0, 48000.0};
 
     for (int sr = 0; sr < 3; ++sr)
     {
@@ -302,28 +330,27 @@ static void testParidadDePosiciones()
                 Equalizer ahora;
 
                 std::vector<Evento> guion;
-                guion.push_back ({ 0, eventoPrepare, 0, (float) sampleRates[sr] });
-                guion.push_back ({ 0, eventoIndiceBajo, lo, 0.0f });
-                guion.push_back ({ 0, eventoIndiceAlto, hi, 0.0f });
+                guion.push_back({0, eventoPrepare, 0, (float) sampleRates[sr]});
+                guion.push_back({0, eventoIndiceBajo, lo, 0.0f});
+                guion.push_back({0, eventoIndiceAlto, hi, 0.0f});
                 // La ganancia VARIAN con la posicion, para que las dieciseis
                 // combinaciones no sean la misma prueba repetida dieciseis
                 // veces con distinto nombre.
-                guion.push_back ({ 0, eventoGananciaBaja, 0, -3.0f * (float) lo - 1.5f });
-                guion.push_back ({ 0, eventoGananciaAlta, 0,  2.0f * (float) hi + 0.5f });
+                guion.push_back({0, eventoGananciaBaja, 0, -3.0f * (float) lo - 1.5f});
+                guion.push_back({0, eventoGananciaAlta, 0, 2.0f * (float) hi + 0.5f});
 
                 char nombre[96];
-                snprintf (nombre, sizeof (nombre),
-                          "posiciones %d/%d a %.0f Hz", lo, hi, sampleRates[sr]);
+                snprintf(nombre, sizeof(nombre), "posiciones %d/%d a %.0f Hz", lo, hi, sampleRates[sr]);
 
-                const Resultado r = compara (antes, ahora, guion, 1024, 0x13579BDFu, 0x2468ACE0u);
-                informa (r.primeraDiferencia < 0, r, nombre, total);
+                const Resultado r = compara(antes, ahora, guion, 1024, 0x13579BDFu, 0x2468ACE0u);
+                informa(r.primeraDiferencia < 0, r, nombre, total);
             }
         }
     }
 
     char msg[128];
-    snprintf (msg, sizeof (msg), "posiciones: %ld muestras comparadas en total", total);
-    check (total == 16 * 3 * 2 * 1024, msg);
+    snprintf(msg, sizeof(msg), "posiciones: %ld muestras comparadas en total", total);
+    check(total == 16 * 3 * 2 * 1024, msg);
 }
 
 /**
@@ -334,7 +361,7 @@ static void testParidadDePosiciones()
 static void testParidadDeGanancia()
 {
     long total = 0;
-    const double sampleRates[2] = { 44100.0, 32000.0 };
+    const double sampleRates[2] = {44100.0, 32000.0};
 
     for (int sr = 0; sr < 2; ++sr)
     {
@@ -342,24 +369,24 @@ static void testParidadDeGanancia()
         Equalizer ahora;
 
         std::vector<Evento> guion;
-        guion.push_back ({ 0, eventoPrepare, 0, (float) sampleRates[sr] });
-        guion.push_back ({ 0, eventoIndiceBajo, 1, 0.0f });
-        guion.push_back ({ 0, eventoIndiceAlto, 2, 0.0f });
+        guion.push_back({0, eventoPrepare, 0, (float) sampleRates[sr]});
+        guion.push_back({0, eventoIndiceBajo, 1, 0.0f});
+        guion.push_back({0, eventoIndiceAlto, 2, 0.0f});
 
         // 0,02 dB por muestra durante 1201 muestras: pasa por los -12, por el
         // 0, por los +12, y va metiendo la banda muerta en cada paso.
         for (int i = 0; i < 1201; ++i)
         {
             const float db = -12.0f + 0.02f * (float) i;
-            guion.push_back ({ i, eventoGananciaBaja, 0, db });
-            guion.push_back ({ i, eventoGananciaAlta, 0, -db });
+            guion.push_back({i, eventoGananciaBaja, 0, db});
+            guion.push_back({i, eventoGananciaAlta, 0, -db});
         }
 
         char nombre[96];
-        snprintf (nombre, sizeof (nombre), "barrido de ganancia a %.0f Hz", sampleRates[sr]);
+        snprintf(nombre, sizeof(nombre), "barrido de ganancia a %.0f Hz", sampleRates[sr]);
 
-        const Resultado r = compara (antes, ahora, guion, 1201, 0x0BADC0DEu, 0x0BADC0DFu);
-        informa (r.primeraDiferencia < 0, r, nombre, total);
+        const Resultado r = compara(antes, ahora, guion, 1201, 0x0BADC0DEu, 0x0BADC0DFu);
+        informa(r.primeraDiferencia < 0, r, nombre, total);
     }
 
     // Los valores que NO tienen que mover nada: dentro de la banda muerta.
@@ -368,14 +395,14 @@ static void testParidadDeGanancia()
         Equalizer ahora;
 
         std::vector<Evento> guion;
-        guion.push_back ({ 0, eventoPrepare, 0, 44100.0f });
-        guion.push_back ({ 0, eventoGananciaBaja, 0, 6.0f });
-        guion.push_back ({ 0, eventoGananciaBaja, 0, 6.04f });   // dentro: no se aplica
-        guion.push_back ({ 0, eventoGananciaBaja, 0, 6.06f });   // fuera: se aplica
-        guion.push_back ({ 0, eventoGananciaBaja, 0, 6.02f });   // dentro otra vez
+        guion.push_back({0, eventoPrepare, 0, 44100.0f});
+        guion.push_back({0, eventoGananciaBaja, 0, 6.0f});
+        guion.push_back({0, eventoGananciaBaja, 0, 6.04f});  // dentro: no se aplica
+        guion.push_back({0, eventoGananciaBaja, 0, 6.06f});  // fuera: se aplica
+        guion.push_back({0, eventoGananciaBaja, 0, 6.02f});  // dentro otra vez
 
-        const Resultado r = compara (antes, ahora, guion, 512, 0x5EED0001u, 0x5EED0002u);
-        informa (r.primeraDiferencia < 0, r, "banda muerta de 0,05 dB en el borde", total);
+        const Resultado r = compara(antes, ahora, guion, 512, 0x5EED0001u, 0x5EED0002u);
+        informa(r.primeraDiferencia < 0, r, "banda muerta de 0,05 dB en el borde", total);
     }
 }
 
@@ -393,25 +420,25 @@ static void testParidadDeIndicesEnCaliente()
 {
     long total = 0;
 
-    const int secuencia[] = { 0, 3, 3, -1, 4, 1, 1, 2, 0, 99, -99, 3 };
+    const int secuencia[] = {0, 3, 3, -1, 4, 1, 1, 2, 0, 99, -99, 3};
 
     congelado::Equalizer antes;
     Equalizer ahora;
 
     std::vector<Evento> guion;
-    guion.push_back ({ 0, eventoPrepare, 0, 48000.0f });
+    guion.push_back({0, eventoPrepare, 0, 48000.0f});
 
-    for (int i = 0; i < (int) (sizeof (secuencia) / sizeof (secuencia[0])); ++i)
+    for (int i = 0; i < (int) (sizeof(secuencia) / sizeof(secuencia[0])); ++i)
     {
         const int enMuestra = 128 * i;
-        guion.push_back ({ enMuestra, eventoIndiceBajo, secuencia[i], 0.0f });
-        guion.push_back ({ enMuestra, eventoIndiceAlto, secuencia[11 - i], 0.0f });
-        guion.push_back ({ enMuestra, eventoGananciaBaja, 0, 4.0f * (float) i - 6.0f });
-        guion.push_back ({ enMuestra, eventoGananciaAlta, 0, -3.0f * (float) i + 5.0f });
+        guion.push_back({enMuestra, eventoIndiceBajo, secuencia[i], 0.0f});
+        guion.push_back({enMuestra, eventoIndiceAlto, secuencia[11 - i], 0.0f});
+        guion.push_back({enMuestra, eventoGananciaBaja, 0, 4.0f * (float) i - 6.0f});
+        guion.push_back({enMuestra, eventoGananciaAlta, 0, -3.0f * (float) i + 5.0f});
     }
 
-    const Resultado r = compara (antes, ahora, guion, 2048, 0xC0FFEE01u, 0xC0FFEE02u);
-    informa (r.primeraDiferencia < 0, r, "indices movidos en caliente, con recorte", total);
+    const Resultado r = compara(antes, ahora, guion, 2048, 0xC0FFEE01u, 0xC0FFEE02u);
+    informa(r.primeraDiferencia < 0, r, "indices movidos en caliente, con recorte", total);
 }
 
 /**
@@ -425,15 +452,15 @@ static void testParidadDeReset()
     Equalizer ahora;
 
     std::vector<Evento> guion;
-    guion.push_back ({ 0, eventoPrepare, 0, 44100.0f });
-    guion.push_back ({ 0, eventoIndiceBajo, 0, 0.0f });
-    guion.push_back ({ 0, eventoIndiceAlto, 3, 0.0f });
-    guion.push_back ({ 0, eventoGananciaBaja, 0,  9.0f });
-    guion.push_back ({ 0, eventoGananciaAlta, 0, -9.0f });
-    guion.push_back ({ 500, eventoReset, 0, 0.0f });
+    guion.push_back({0, eventoPrepare, 0, 44100.0f});
+    guion.push_back({0, eventoIndiceBajo, 0, 0.0f});
+    guion.push_back({0, eventoIndiceAlto, 3, 0.0f});
+    guion.push_back({0, eventoGananciaBaja, 0, 9.0f});
+    guion.push_back({0, eventoGananciaAlta, 0, -9.0f});
+    guion.push_back({500, eventoReset, 0, 0.0f});
 
-    const Resultado r = compara (antes, ahora, guion, 1024, 0xABCD1234u, 0xABCD5678u);
-    informa (r.primeraDiferencia < 0, r, "reset con audio dentro", total);
+    const Resultado r = compara(antes, ahora, guion, 1024, 0xABCD1234u, 0xABCD5678u);
+    informa(r.primeraDiferencia < 0, r, "reset con audio dentro", total);
 }
 
 /**
@@ -454,12 +481,12 @@ static void testPrepareConservaLaPosicionDelPanel()
     Equalizer ahora;
 
     std::vector<Evento> guion;
-    guion.push_back ({ 0, eventoPrepare, 0, 44100.0f });
-    guion.push_back ({ 0, eventoIndiceBajo, 3, 0.0f });     // 600 Hz
-    guion.push_back ({ 0, eventoIndiceAlto, 0, 0.0f });     // 4 kHz
-    guion.push_back ({ 0, eventoGananciaBaja, 0, 7.0f });
-    guion.push_back ({ 0, eventoGananciaAlta, 0, -7.0f });
-    guion.push_back ({ 300, eventoPrepare, 0, 44100.0f });   // el host reinicia el audio
+    guion.push_back({0, eventoPrepare, 0, 44100.0f});
+    guion.push_back({0, eventoIndiceBajo, 3, 0.0f});  // 600 Hz
+    guion.push_back({0, eventoIndiceAlto, 0, 0.0f});  // 4 kHz
+    guion.push_back({0, eventoGananciaBaja, 0, 7.0f});
+    guion.push_back({0, eventoGananciaAlta, 0, -7.0f});
+    guion.push_back({300, eventoPrepare, 0, 44100.0f});  // el host reinicia el audio
 
     // Y AQUI, DELIBERADAMENTE, NO SE REESCRIBEN LOS INDICES. La primera version
     // de este caso los reescribia justo despues del `prepare`, y hacia que
@@ -476,11 +503,11 @@ static void testPrepareConservaLaPosicionDelPanel()
     // `prepare` se vuelve a poner la ganancia —que es lo que hace
     // `SynthEngine` en su siguiente actualizacion de parametro— y NO el indice.
     // Asi la frecuencia que hay que conservar es la que sostiene el sonido.
-    guion.push_back ({ 300, eventoGananciaBaja, 0, 7.0f });
-    guion.push_back ({ 300, eventoGananciaAlta, 0, -7.0f });
+    guion.push_back({300, eventoGananciaBaja, 0, 7.0f});
+    guion.push_back({300, eventoGananciaAlta, 0, -7.0f});
 
-    const Resultado r = compara (antes, ahora, guion, 1024, 0xFEEDFACEu, 0xFEEDFACDu);
-    informa (r.primeraDiferencia < 0, r, "prepare a mitad de sesion conserva la posicion", total);
+    const Resultado r = compara(antes, ahora, guion, 1024, 0xFEEDFACEu, 0xFEEDFACDu);
+    informa(r.primeraDiferencia < 0, r, "prepare a mitad de sesion conserva la posicion", total);
 }
 
 /** El caso vacio, que tambien tiene que ser bit a bit: sin eventos, la salida
@@ -491,24 +518,24 @@ static void testParidadSinManearNada()
 
     for (int sr = 0; sr < 3; ++sr)
     {
-        const double sampleRates[3] = { 32000.0, 44100.0, 48000.0 };
+        const double sampleRates[3] = {32000.0, 44100.0, 48000.0};
         congelado::Equalizer antes;
         Equalizer ahora;
 
         std::vector<Evento> guion;
-        guion.push_back ({ 0, eventoPrepare, 0, (float) sampleRates[sr] });
+        guion.push_back({0, eventoPrepare, 0, (float) sampleRates[sr]});
 
         char nombre[96];
-        snprintf (nombre, sizeof (nombre), "sin manear nada a %.0f Hz", sampleRates[sr]);
+        snprintf(nombre, sizeof(nombre), "sin manear nada a %.0f Hz", sampleRates[sr]);
 
-        const Resultado r = compara (antes, ahora, guion, 2048, 0x11111111u, 0x22222222u);
-        informa (r.primeraDiferencia < 0, r, nombre, total);
+        const Resultado r = compara(antes, ahora, guion, 2048, 0x11111111u, 0x22222222u);
+        informa(r.primeraDiferencia < 0, r, nombre, total);
     }
 }
 
 void testEqualizerParity()
 {
-    printf ("\n--- Equalizer: paridad bit a bit con la implementacion anterior ---\n");
+    printf("\n--- Equalizer: paridad bit a bit con la implementacion anterior ---\n");
 
     testParidadSinManearNada();
     testParidadDePosiciones();
@@ -518,5 +545,5 @@ void testEqualizerParity()
     testPrepareConservaLaPosicionDelPanel();
 }
 
-} // namespace Tests
-} // namespace ABDMS2000
+}  // namespace Tests
+}  // namespace ABDMS2000

@@ -1,26 +1,22 @@
 #include "BridgeActions.h"
-#include "SoftwarePresetProtocol.h"
 #include "../Core/AppLogger.h"
 #include "../Core/SynthEngine.h"
-#include "../MIDI/MIDITelemetryManager.h"
-#include "../MIDI/SysExManager.h"
-#include "../MIDI/MS2000ProgramData.h"
-#include "../State/MS2000PatchBuilder.h"
 #include "../DSP/Oscillators/DWGSTables.h"
+#include "../MIDI/MIDITelemetryManager.h"
+#include "../MIDI/MS2000ProgramData.h"
+#include "../MIDI/SysExManager.h"
+#include "../State/MS2000PatchBuilder.h"
+#include "SoftwarePresetProtocol.h"
 
-namespace ABDMS2000 {
-
-
-
-
-BridgeActions::BridgeActions(BridgeHost& host)
-    : host_(host)
+namespace ABDMS2000
 {
-}
 
-void BridgeActions::handleJsEvent(const juce::var& message)
+BridgeActions::BridgeActions(BridgeHost &host) : host_(host) {}
+
+void BridgeActions::handleJsEvent(const juce::var &message)
 {
-    if (!message.isObject()) return;
+    if (!message.isObject())
+        return;
 
     auto action = message.getProperty("action", "").toString();
     ABD_LOG(juce::String("[BRIDGE] handleJsEvent action: ") + action);
@@ -28,19 +24,19 @@ void BridgeActions::handleJsEvent(const juce::var& message)
     // Anuncio del modelId del host (cppToWebui `hostModel`). Se resuelve antes del
     // despacho concreto para que `requestState` (que no tiene otro handler) y
     // `requestFullState` lo emitan siempre. Ver HostModelAnnouncement.h.
-    announceHostModelForAction(action, [this](const juce::var& hostMessage) { emitJsMessage(hostMessage); });
+    announceHostModelForAction(action, [this](const juce::var &hostMessage) { emitJsMessage(hostMessage); });
 
     // Ficha del host (cppToWebui `hostInfo`): responde a `requestHostInfo`. Es lo
     // que permite al Bank Manager embebido saber si el binario que lo hospeda es
     // anterior al anuncio en vez de suponerlo. Ver HostModelAnnouncement.h.
-    answerHostInfoForAction(action, [this](const juce::var& hostInfo) { emitJsMessage(hostInfo); });
+    answerHostInfoForAction(action, [this](const juce::var &hostInfo) { emitJsMessage(hostInfo); });
 
     if (action == "setParam")
     {
         auto paramId = message.getProperty("paramId", "").toString();
         float rawValue = static_cast<float>(message.getProperty("value", 0.0));
 
-        if (auto* param = host_.getAPVTS().getParameter(paramId))
+        if (auto *param = host_.getAPVTS().getParameter(paramId))
         {
             float normValue = param->convertTo0to1(rawValue);
             param->setValueNotifyingHost(normValue);
@@ -80,7 +76,8 @@ void BridgeActions::handleJsEvent(const juce::var& message)
         int point = static_cast<int>(message.getProperty("point", 0));
         float freq = static_cast<float>(message.getProperty("frequency", 440.0));
         float level = static_cast<float>(message.getProperty("level", 0.25));
-        ABD_LOG(juce::String("[BRIDGE] setDiagnosticTone: point=") + juce::String(point) + " freq=" + juce::String(freq) + " level=" + juce::String(level));
+        ABD_LOG(juce::String("[BRIDGE] setDiagnosticTone: point=") + juce::String(point) + " freq=" + juce::String(freq)
+                + " level=" + juce::String(level));
         host_.getEngine().setDiagnosticTone(point, freq, level);
     }
     else if (action == "triggerDiagnosticNote")
@@ -88,7 +85,8 @@ void BridgeActions::handleJsEvent(const juce::var& message)
         int note = static_cast<int>(message.getProperty("note", 60));
         float vel = static_cast<float>(message.getProperty("velocity", 0.8));
         bool isNoteOn = static_cast<bool>(message.getProperty("isNoteOn", true));
-        ABD_LOG(juce::String("[BRIDGE] triggerDiagnosticNote: note=") + juce::String(note) + " vel=" + juce::String(vel) + (isNoteOn ? " ON" : " OFF"));
+        ABD_LOG(juce::String("[BRIDGE] triggerDiagnosticNote: note=") + juce::String(note) + " vel=" + juce::String(vel)
+                + (isNoteOn ? " ON" : " OFF"));
         if (isNoteOn)
         {
             host_.getEngine().noteOn(1, note, vel);
@@ -102,7 +100,8 @@ void BridgeActions::handleJsEvent(const juce::var& message)
     {
         auto stage = message.getProperty("stage", "").toString();
         bool enabled = static_cast<bool>(message.getProperty("enabled", false));
-        ABD_LOG(juce::String("[BRIDGE] setDiagnosticBypass: stage=") + stage + " enabled=" + (enabled ? "true" : "false"));
+        ABD_LOG(juce::String("[BRIDGE] setDiagnosticBypass: stage=") + stage
+                + " enabled=" + (enabled ? "true" : "false"));
         host_.getEngine().setDiagnosticBypass(stage, enabled);
     }
     else if (action == "resetDiagnosticBypasses")
@@ -140,7 +139,7 @@ void BridgeActions::handleJsEvent(const juce::var& message)
     }
     else if (action == "hardware.listen")
     {
-        auto& transport = host_.getHardwareMidiTransport();
+        auto &transport = host_.getHardwareMidiTransport();
         const bool listening = transport.listen();
 
         juce::DynamicObject::Ptr ack = new juce::DynamicObject();
@@ -148,17 +147,16 @@ void BridgeActions::handleJsEvent(const juce::var& message)
         ack->setProperty("device", transport.getLastDetail());
         sendEventToJs("hardware.listen.ack", juce::var(ack.get()));
 
-        if (! listening)
+        if (!listening)
             sendEventToJs("hardware.error", juce::var(transport.getLastDetail()));
     }
     else if (action == "hardware.send")
     {
         const auto payload = message.getProperty("payload", juce::var());
 
-        if (! payload.isString())
+        if (!payload.isString())
         {
-            sendEventToJs("hardware.error",
-                          juce::var("hardware.send: payload must be a base64 string"));
+            sendEventToJs("hardware.error", juce::var("hardware.send: payload must be a base64 string"));
         }
         else
         {
@@ -168,12 +166,11 @@ void BridgeActions::handleJsEvent(const juce::var& message)
 
             if (block.isEmpty())
             {
-                sendEventToJs("hardware.error",
-                              juce::var("hardware.send: payload is empty or not valid base64"));
+                sendEventToJs("hardware.error", juce::var("hardware.send: payload is empty or not valid base64"));
             }
             else
             {
-                auto& transport = host_.getHardwareMidiTransport();
+                auto &transport = host_.getHardwareMidiTransport();
                 if (transport.send(block))
                     sendEventToJs("hardware.sent", juce::var(static_cast<int>(block.getSize())));
                 else
@@ -193,10 +190,7 @@ void BridgeActions::handleJsEvent(const juce::var& message)
         if (juce::Base64::convertFromBase64(mem, b64))
         {
             auto res = host_.getSysExManager().parseSysEx(
-                static_cast<const uint8_t*>(mem.getData()),
-                mem.getDataSize(),
-                host_.getAPVTS()
-            );
+                static_cast<const uint8_t *>(mem.getData()), mem.getDataSize(), host_.getAPVTS());
 
             juce::DynamicObject::Ptr resObj = new juce::DynamicObject();
             resObj->setProperty("success", res.success);
@@ -234,9 +228,9 @@ void BridgeActions::handleJsEvent(const juce::var& message)
     }
     else if (action == "getWavetableCatalog")
     {
-        const auto& catalog = DWGSTables::getCatalog();
+        const auto &catalog = DWGSTables::getCatalog();
         juce::Array<juce::var> catalogArray;
-        for (const auto& entry : catalog)
+        for (const auto &entry : catalog)
         {
             juce::DynamicObject::Ptr item = new juce::DynamicObject();
             item->setProperty("slot", static_cast<int>(entry.slot));
@@ -367,7 +361,7 @@ void BridgeActions::sendHostModel()
     emitJsMessage(hostModelMessage());
 }
 
-void BridgeActions::emitJsMessage(const juce::var& message)
+void BridgeActions::emitJsMessage(const juce::var &message)
 {
     if (jsEventSink != nullptr)
         jsEventSink(message);
@@ -385,20 +379,24 @@ bool BridgeActions::isValidProgramSlot(int slot)
     return slot >= 0 && slot < static_cast<int>(SysExManager::BANK_SIZE);
 }
 
-juce::MemoryBlock BridgeActions::readProgramBlob(int slot, juce::String& name) const
+juce::MemoryBlock BridgeActions::readProgramBlob(int slot, juce::String &name) const
 {
-    const auto& program = host_.getSysExManager().getProgram(static_cast<size_t>(slot));
+    const auto &program = host_.getSysExManager().getProgram(static_cast<size_t>(slot));
     name = juce::String(program.getName()).trim();
     return juce::MemoryBlock(program.rawData.data(), program.rawData.size());
 }
 
-bool BridgeActions::writeProgramBlob(int slot, const juce::MemoryBlock& blob, const juce::String& name,
-                                     PresetWriteMode mode, juce::String& error, bool syncParams)
+bool BridgeActions::writeProgramBlob(int slot,
+                                     const juce::MemoryBlock &blob,
+                                     const juce::String &name,
+                                     PresetWriteMode mode,
+                                     juce::String &error,
+                                     bool syncParams)
 {
     if (blob.getSize() < MS2000ProgramData::UNPACKED_PROGRAM_SIZE)
     {
-        error = "payload must be at least "
-              + juce::String(static_cast<int>(MS2000ProgramData::UNPACKED_PROGRAM_SIZE)) + " bytes";
+        error = "payload must be at least " + juce::String(static_cast<int>(MS2000ProgramData::UNPACKED_PROGRAM_SIZE))
+                + " bytes";
         return false;
     }
 
@@ -434,11 +432,11 @@ bool BridgeActions::writeProgramBlob(int slot, const juce::MemoryBlock& blob, co
     return true;
 }
 
-void BridgeActions::sendPresetError(const juce::var& message, const juce::String& code, const juce::String& reason)
+void BridgeActions::sendPresetError(const juce::var &message, const juce::String &code, const juce::String &reason)
 {
     juce::DynamicObject::Ptr data = new juce::DynamicObject();
     const auto requestId = message.getProperty("requestId", juce::var());
-    if (! requestId.isVoid())
+    if (!requestId.isVoid())
         data->setProperty("requestId", requestId);
     data->setProperty("code", code);
     data->setProperty("message", reason);
@@ -447,20 +445,22 @@ void BridgeActions::sendPresetError(const juce::var& message, const juce::String
     sendEventToJs(SoftwarePresetProtocol::kError, juce::var(data.get()));
 }
 
-void BridgeActions::handlePresetRead(const juce::var& message)
+void BridgeActions::handlePresetRead(const juce::var &message)
 {
-    if (! SoftwarePresetProtocol::isSupportedSystem(message.getProperty("system", "").toString()))
+    if (!SoftwarePresetProtocol::isSupportedSystem(message.getProperty("system", "").toString()))
     {
-        sendPresetError(message, SoftwarePresetProtocol::kUnsupportedAction,
+        sendPresetError(message,
+                        SoftwarePresetProtocol::kUnsupportedAction,
                         juce::String("This synth exposes the '") + SoftwarePresetProtocol::kPresetSystem
                             + "' preset system");
         return;
     }
 
     const int slot = static_cast<int>(message.getProperty("slot", 0));
-    if (! isValidProgramSlot(slot))
+    if (!isValidProgramSlot(slot))
     {
-        sendPresetError(message, SoftwarePresetProtocol::kInvalidSlot,
+        sendPresetError(message,
+                        SoftwarePresetProtocol::kInvalidSlot,
                         "slot " + juce::String(slot) + " is outside the synth memory (0..127)");
         return;
     }
@@ -470,7 +470,7 @@ void BridgeActions::handlePresetRead(const juce::var& message)
 
     juce::DynamicObject::Ptr data = new juce::DynamicObject();
     const auto requestId = message.getProperty("requestId", juce::var());
-    if (! requestId.isVoid())
+    if (!requestId.isVoid())
         data->setProperty("requestId", requestId);
     data->setProperty("slot", slot);
     data->setProperty("name", name);
@@ -479,11 +479,12 @@ void BridgeActions::handlePresetRead(const juce::var& message)
     sendEventToJs(SoftwarePresetProtocol::kPresetData, juce::var(data.get()));
 }
 
-void BridgeActions::handleBankRead(const juce::var& message)
+void BridgeActions::handleBankRead(const juce::var &message)
 {
-    if (! SoftwarePresetProtocol::isSupportedSystem(message.getProperty("system", "").toString()))
+    if (!SoftwarePresetProtocol::isSupportedSystem(message.getProperty("system", "").toString()))
     {
-        sendPresetError(message, SoftwarePresetProtocol::kUnsupportedAction,
+        sendPresetError(message,
+                        SoftwarePresetProtocol::kUnsupportedAction,
                         juce::String("This synth exposes the '") + SoftwarePresetProtocol::kPresetSystem
                             + "' preset system");
         return;
@@ -505,43 +506,45 @@ void BridgeActions::handleBankRead(const juce::var& message)
 
     juce::DynamicObject::Ptr data = new juce::DynamicObject();
     const auto requestId = message.getProperty("requestId", juce::var());
-    if (! requestId.isVoid())
+    if (!requestId.isVoid())
         data->setProperty("requestId", requestId);
     data->setProperty("slots", slots);
 
     sendEventToJs(SoftwarePresetProtocol::kBankData, juce::var(data.get()));
 }
 
-void BridgeActions::handlePresetWrite(const juce::var& message)
+void BridgeActions::handlePresetWrite(const juce::var &message)
 {
-    if (! SoftwarePresetProtocol::isSupportedSystem(message.getProperty("system", "").toString()))
+    if (!SoftwarePresetProtocol::isSupportedSystem(message.getProperty("system", "").toString()))
     {
-        sendPresetError(message, SoftwarePresetProtocol::kUnsupportedAction,
+        sendPresetError(message,
+                        SoftwarePresetProtocol::kUnsupportedAction,
                         juce::String("This synth exposes the '") + SoftwarePresetProtocol::kPresetSystem
                             + "' preset system");
         return;
     }
 
     const int slot = static_cast<int>(message.getProperty("slot", -1));
-    if (! isValidProgramSlot(slot))
+    if (!isValidProgramSlot(slot))
     {
-        sendPresetError(message, SoftwarePresetProtocol::kInvalidSlot,
+        sendPresetError(message,
+                        SoftwarePresetProtocol::kInvalidSlot,
                         "slot " + juce::String(slot) + " is outside the synth memory (0..127)");
         return;
     }
 
     juce::MemoryBlock blob;
-    if (! SoftwarePresetProtocol::decodePayload(message.getProperty("payload", "").toString(), blob))
+    if (!SoftwarePresetProtocol::decodePayload(message.getProperty("payload", "").toString(), blob))
     {
-        sendPresetError(message, SoftwarePresetProtocol::kInvalidPayload,
-                        "preset.write arrived without a decodable payload");
+        sendPresetError(
+            message, SoftwarePresetProtocol::kInvalidPayload, "preset.write arrived without a decodable payload");
         return;
     }
 
     const bool audition = static_cast<bool>(message.getProperty("audition", false));
     juce::String error;
     const auto mode = audition ? PresetWriteMode::Audition : PresetWriteMode::StoreAndLoad;
-    if (! writeProgramBlob(slot, blob, message.getProperty("name", "").toString(), mode, error))
+    if (!writeProgramBlob(slot, blob, message.getProperty("name", "").toString(), mode, error))
     {
         sendPresetError(message, SoftwarePresetProtocol::kInvalidPayload, error);
         return;
@@ -549,46 +552,47 @@ void BridgeActions::handlePresetWrite(const juce::var& message)
 
     juce::DynamicObject::Ptr data = new juce::DynamicObject();
     const auto requestId = message.getProperty("requestId", juce::var());
-    if (! requestId.isVoid())
+    if (!requestId.isVoid())
         data->setProperty("requestId", requestId);
     data->setProperty("slot", slot);
-    data->setProperty("name", juce::String(host_.getSysExManager().getProgram(static_cast<size_t>(slot)).getName()).trim());
+    data->setProperty("name",
+                      juce::String(host_.getSysExManager().getProgram(static_cast<size_t>(slot)).getName()).trim());
     data->setProperty("audition", audition);
 
     sendEventToJs(SoftwarePresetProtocol::kPresetWritten, juce::var(data.get()));
 }
 
-void BridgeActions::handleBankWrite(const juce::var& message)
+void BridgeActions::handleBankWrite(const juce::var &message)
 {
-    if (! SoftwarePresetProtocol::isSupportedSystem(message.getProperty("system", "").toString()))
+    if (!SoftwarePresetProtocol::isSupportedSystem(message.getProperty("system", "").toString()))
     {
-        sendPresetError(message, SoftwarePresetProtocol::kUnsupportedAction,
+        sendPresetError(message,
+                        SoftwarePresetProtocol::kUnsupportedAction,
                         juce::String("This synth exposes the '") + SoftwarePresetProtocol::kPresetSystem
                             + "' preset system");
         return;
     }
 
     const auto slots = message.getProperty("slots", juce::var());
-    if (! slots.isArray())
+    if (!slots.isArray())
     {
-        sendPresetError(message, SoftwarePresetProtocol::kInvalidPayload,
-                        "bank.write needs a 'slots' array");
+        sendPresetError(message, SoftwarePresetProtocol::kInvalidPayload, "bank.write needs a 'slots' array");
         return;
     }
 
     int written = 0;
     juce::StringArray failures;
-    for (const auto& item : *slots.getArray())
+    for (const auto &item : *slots.getArray())
     {
         const int slot = static_cast<int>(item.getProperty("slot", -1));
-        if (! isValidProgramSlot(slot))
+        if (!isValidProgramSlot(slot))
         {
             failures.add("slot " + juce::String(slot) + " out of range");
             continue;
         }
 
         juce::MemoryBlock blob;
-        if (! SoftwarePresetProtocol::decodePayload(item.getProperty("payload", "").toString(), blob))
+        if (!SoftwarePresetProtocol::decodePayload(item.getProperty("payload", "").toString(), blob))
         {
             failures.add("slot " + juce::String(slot) + " without payload");
             continue;
@@ -597,8 +601,8 @@ void BridgeActions::handleBankWrite(const juce::var& message)
         juce::String error;
         // Un lote escribe memoria, no lo que suena: no se toca el patch activo ni el
         // motor, y la WebUI se sincroniza una sola vez (no 128 veces).
-        if (! writeProgramBlob(slot, blob, item.getProperty("name", "").toString(),
-                              PresetWriteMode::StoreOnly, error, false))
+        if (!writeProgramBlob(
+                slot, blob, item.getProperty("name", "").toString(), PresetWriteMode::StoreOnly, error, false))
         {
             failures.add("slot " + juce::String(slot) + ": " + error);
             continue;
@@ -607,7 +611,7 @@ void BridgeActions::handleBankWrite(const juce::var& message)
         ++written;
     }
 
-    if (written == 0 && ! failures.isEmpty())
+    if (written == 0 && !failures.isEmpty())
     {
         sendPresetError(message, SoftwarePresetProtocol::kInvalidPayload, failures.joinIntoString("; "));
         return;
@@ -615,31 +619,33 @@ void BridgeActions::handleBankWrite(const juce::var& message)
 
     juce::DynamicObject::Ptr data = new juce::DynamicObject();
     const auto requestId = message.getProperty("requestId", juce::var());
-    if (! requestId.isVoid())
+    if (!requestId.isVoid())
         data->setProperty("requestId", requestId);
     data->setProperty("count", written);
-    if (! failures.isEmpty())
+    if (!failures.isEmpty())
         data->setProperty("warnings", failures.joinIntoString("; "));
 
     sendEventToJs(SoftwarePresetProtocol::kBankWritten, juce::var(data.get()));
 }
 
-void BridgeActions::handlePresetCapture(const juce::var& message)
+void BridgeActions::handlePresetCapture(const juce::var &message)
 {
-    if (! SoftwarePresetProtocol::isSupportedSystem(message.getProperty("system", "").toString()))
+    if (!SoftwarePresetProtocol::isSupportedSystem(message.getProperty("system", "").toString()))
     {
-        sendPresetError(message, SoftwarePresetProtocol::kUnsupportedAction,
+        sendPresetError(message,
+                        SoftwarePresetProtocol::kUnsupportedAction,
                         juce::String("This synth exposes the '") + SoftwarePresetProtocol::kPresetSystem
                             + "' preset system");
         return;
     }
 
     const auto slotValue = message.getProperty("slot", juce::var());
-    const bool hasSlot = ! slotValue.isVoid();
+    const bool hasSlot = !slotValue.isVoid();
     const int slot = hasSlot ? static_cast<int>(slotValue) : -1;
-    if (hasSlot && ! isValidProgramSlot(slot))
+    if (hasSlot && !isValidProgramSlot(slot))
     {
-        sendPresetError(message, SoftwarePresetProtocol::kInvalidSlot,
+        sendPresetError(message,
+                        SoftwarePresetProtocol::kInvalidSlot,
                         "slot " + juce::String(slot) + " is outside the synth memory (0..127)");
         return;
     }
@@ -664,7 +670,7 @@ void BridgeActions::handlePresetCapture(const juce::var& message)
     juce::MemoryBlock blob(program.rawData.data(), program.rawData.size());
     juce::DynamicObject::Ptr data = new juce::DynamicObject();
     const auto requestId = message.getProperty("requestId", juce::var());
-    if (! requestId.isVoid())
+    if (!requestId.isVoid())
         data->setProperty("requestId", requestId);
     data->setProperty("slot", hasSlot ? slot : activeIndex);
     data->setProperty("name", juce::String(program.getName()).trim());
@@ -676,9 +682,9 @@ void BridgeActions::handlePresetCapture(const juce::var& message)
 void BridgeActions::sendFullParamSync()
 {
     juce::DynamicObject::Ptr paramsObj = new juce::DynamicObject();
-    for (const auto& meta : ParameterRegistry::getAllParameters())
+    for (const auto &meta : ParameterRegistry::getAllParameters())
     {
-        if (auto* p = host_.getAPVTS().getRawParameterValue(meta.id))
+        if (auto *p = host_.getAPVTS().getRawParameterValue(meta.id))
         {
             paramsObj->setProperty(juce::Identifier(meta.id), static_cast<double>(p->load()));
         }
@@ -686,7 +692,7 @@ void BridgeActions::sendFullParamSync()
     sendEventToJs("syncAllParams", juce::var(paramsObj.get()));
 }
 
-void BridgeActions::sendEventToJs(const juce::String& eventType, const juce::var& payload)
+void BridgeActions::sendEventToJs(const juce::String &eventType, const juce::var &payload)
 {
     juce::DynamicObject::Ptr obj = new juce::DynamicObject();
     obj->setProperty("type", eventType);
@@ -695,5 +701,4 @@ void BridgeActions::sendEventToJs(const juce::String& eventType, const juce::var
     emitJsMessage(juce::var(obj.get()));
 }
 
-} // namespace ABDMS2000
-
+}  // namespace ABDMS2000

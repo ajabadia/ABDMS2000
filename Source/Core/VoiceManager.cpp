@@ -1,9 +1,10 @@
 #include "VoiceManager.h"
-#include "../Common/DSPUtils.h"
-#include <cmath>
 #include <algorithm>
+#include <cmath>
+#include "../Common/DSPUtils.h"
 
-namespace ABDMS2000 {
+namespace ABDMS2000
+{
 
 void VoiceManager::prepare(double sampleRate) noexcept
 {
@@ -17,13 +18,13 @@ void VoiceManager::prepare(double sampleRate) noexcept
 
 void VoiceManager::reset() noexcept
 {
-    for (auto& v : voices_)
+    for (auto &v : voices_)
     {
         v.reset();
     }
-    for (auto& s : slotStates_)
+    for (auto &s : slotStates_)
     {
-        s = VoiceSlotState{};
+        s = VoiceSlotState {};
     }
     heldNotesStack_.clear();
     lastMonoNote_ = -1;
@@ -63,14 +64,16 @@ bool VoiceManager::anyKeyPressed() const noexcept
 {
     for (size_t i = 0; i < activeVoiceCapacity_; ++i)
     {
-        if (slotStates_[i].isKeyPressed) return true;
+        if (slotStates_[i].isKeyPressed)
+            return true;
     }
     return false;
 }
 
 void VoiceManager::releaseVoiceSlot(size_t index) noexcept
 {
-    if (index >= activeVoiceCapacity_) return;
+    if (index >= activeVoiceCapacity_)
+        return;
     slotStates_[index].currentMidiNote = -1;
     slotStates_[index].isKeyPressed = false;
     slotStates_[index].isHeldByLatch = false;
@@ -148,7 +151,8 @@ void VoiceManager::noteOn(int midiNote, float velocity) noexcept
     {
         bool isLegato = (lastMonoNote_ != -1 && anyKeyPressed());
         auto dup = std::find(heldNotesStack_.begin(), heldNotesStack_.end(), midiNote);
-        if (dup != heldNotesStack_.end()) heldNotesStack_.erase(dup);
+        if (dup != heldNotesStack_.end())
+            heldNotesStack_.erase(dup);
         heldNotesStack_.push_back(midiNote);
 
         slotStates_[0].isKeyPressed = true;
@@ -166,7 +170,8 @@ void VoiceManager::noteOn(int midiNote, float velocity) noexcept
     {
         bool isLegato = (lastMonoNote_ != -1 && anyKeyPressed());
         auto dup = std::find(heldNotesStack_.begin(), heldNotesStack_.end(), midiNote);
-        if (dup != heldNotesStack_.end()) heldNotesStack_.erase(dup);
+        if (dup != heldNotesStack_.end())
+            heldNotesStack_.erase(dup);
         heldNotesStack_.push_back(midiNote);
 
         bool glideOn = (glideTimeSec_ > 0.001f);
@@ -182,7 +187,7 @@ void VoiceManager::noteOn(int midiNote, float velocity) noexcept
         }
         lastMonoNote_ = midiNote;
     }
-    else // VoiceAssignMode::Poly
+    else  // VoiceAssignMode::Poly
     {
         int voiceIdx = findVoiceToSteal(midiNote);
         if (voiceIdx < 0 || static_cast<size_t>(voiceIdx) >= activeVoiceCapacity_)
@@ -204,7 +209,8 @@ void VoiceManager::noteOff(int midiNote) noexcept
 {
     if (assignMode_ == VoiceAssignMode::Mono || assignMode_ == VoiceAssignMode::Unison)
     {
-        heldNotesStack_.erase(std::remove(heldNotesStack_.begin(), heldNotesStack_.end(), midiNote), heldNotesStack_.end());
+        heldNotesStack_.erase(std::remove(heldNotesStack_.begin(), heldNotesStack_.end(), midiNote),
+                              heldNotesStack_.end());
 
         if (slotStates_[0].currentMidiNote == midiNote)
         {
@@ -256,7 +262,7 @@ void VoiceManager::noteOff(int midiNote) noexcept
             }
         }
     }
-    else // VoiceAssignMode::Poly
+    else  // VoiceAssignMode::Poly
     {
         for (size_t i = 0; i < activeVoiceCapacity_; ++i)
         {
@@ -289,7 +295,7 @@ void VoiceManager::allNotesOff() noexcept
     }
 }
 
-void VoiceManager::applyBlockParams(const VoiceParameters& params) noexcept
+void VoiceManager::applyBlockParams(const VoiceParameters &params) noexcept
 {
     baseBlockParams_ = params;
     setPortamentoTime(params.portamentoTime);
@@ -298,8 +304,8 @@ void VoiceManager::applyBlockParams(const VoiceParameters& params) noexcept
     {
         // Compute Unison Detune and Stereo Spread offsets per voice
         const size_t numUnison = std::min(activeVoiceCapacity_, size_t(4));
-        const float detuneOffsets[4] = { -unisonDetune_, unisonDetune_ * 0.33f, -unisonDetune_ * 0.33f, unisonDetune_ };
-        const float panOffsets[4]    = { -unisonSpread_, unisonSpread_ * 0.5f, -unisonSpread_ * 0.5f, unisonSpread_ };
+        const float detuneOffsets[4] = {-unisonDetune_, unisonDetune_ * 0.33f, -unisonDetune_ * 0.33f, unisonDetune_};
+        const float panOffsets[4] = {-unisonSpread_, unisonSpread_ * 0.5f, -unisonSpread_ * 0.5f, unisonSpread_};
 
         for (size_t i = 0; i < activeVoiceCapacity_; ++i)
         {
@@ -319,7 +325,7 @@ void VoiceManager::applyBlockParams(const VoiceParameters& params) noexcept
     }
 }
 
-void VoiceManager::process(float& leftOut, float& rightOut, int diagPoint, float diagTone) noexcept
+void VoiceManager::process(float &leftOut, float &rightOut, int diagPoint, float diagTone) noexcept
 {
     leftOut = 0.0f;
     rightOut = 0.0f;
@@ -374,9 +380,10 @@ size_t VoiceManager::getActiveVoiceCount() const noexcept
     size_t count = 0;
     for (size_t i = 0; i < activeVoiceCapacity_; ++i)
     {
-        if (voices_[i].isActive()) count++;
+        if (voices_[i].isActive())
+            count++;
     }
     return count;
 }
 
-} // namespace ABDMS2000
+}  // namespace ABDMS2000

@@ -1,7 +1,8 @@
 #include "VAOscillator.h"
 #include <cmath>
 
-namespace ABDMS2000 {
+namespace ABDMS2000
+{
 
 void VAOscillator::prepare(double sampleRate) noexcept
 {
@@ -12,8 +13,10 @@ void VAOscillator::prepare(double sampleRate) noexcept
 void VAOscillator::reset(float initialPhase) noexcept
 {
     phase_ = initialPhase;
-    while (phase_ >= 1.0f) phase_ -= 1.0f;
-    while (phase_ < 0.0f)  phase_ += 1.0f;
+    while (phase_ >= 1.0f)
+        phase_ -= 1.0f;
+    while (phase_ < 0.0f)
+        phase_ += 1.0f;
 }
 
 void VAOscillator::setFrequency(float frequencyHz) noexcept
@@ -63,7 +66,8 @@ float VAOscillator::generatePulse() noexcept
     raw += PolyBLEP::getResidual(phase_, phaseIncrement_);
 
     float phaseShifted = phase_ - pw;
-    if (phaseShifted < 0.0f) phaseShifted += 1.0f;
+    if (phaseShifted < 0.0f)
+        phaseShifted += 1.0f;
     raw -= PolyBLEP::getResidual(phaseShifted, phaseIncrement_);
 
     return raw;
@@ -77,7 +81,8 @@ float VAOscillator::generateTriangle() noexcept
     raw += PolyBLEP::getResidualIntegrated(phase_, phaseIncrement_);
 
     float phaseHalf = phase_ - 0.5f;
-    if (phaseHalf < 0.0f) phaseHalf += 1.0f;
+    if (phaseHalf < 0.0f)
+        phaseHalf += 1.0f;
     raw -= PolyBLEP::getResidualIntegrated(phaseHalf, phaseIncrement_);
 
     return raw;
@@ -95,11 +100,21 @@ float VAOscillator::getNextSample() noexcept
 
     switch (waveform_)
     {
-        case VAWaveform::Sawtooth: out = generateSaw(); break;
-        case VAWaveform::Pulse:    out = generatePulse(); break;
-        case VAWaveform::Triangle: out = generateTriangle(); break;
-        case VAWaveform::Sine:     out = generateSine(); break;
-        default:                   out = generateSaw(); break;
+    case VAWaveform::Sawtooth:
+        out = generateSaw();
+        break;
+    case VAWaveform::Pulse:
+        out = generatePulse();
+        break;
+    case VAWaveform::Triangle:
+        out = generateTriangle();
+        break;
+    case VAWaveform::Sine:
+        out = generateSine();
+        break;
+    default:
+        out = generateSaw();
+        break;
     }
 
     phase_ += phaseIncrement_;
@@ -111,4 +126,4 @@ float VAOscillator::getNextSample() noexcept
     return out;
 }
 
-} // namespace ABDMS2000
+}  // namespace ABDMS2000

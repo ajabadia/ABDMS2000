@@ -2,10 +2,11 @@
 
 #include <juce_gui_extra/juce_gui_extra.h>
 #include <JUCE/JuceWebScopeComponent.h>
-#include "../Core/SynthEngine.h"
 #include <functional>
+#include "../Core/SynthEngine.h"
 
-namespace ABDMS2000 {
+namespace ABDMS2000
+{
 
 /**
  * @class ScopeFloatingWindow
@@ -17,21 +18,16 @@ namespace ABDMS2000 {
  */
 class ScopeFloatingWindow : public juce::DocumentWindow
 {
-public:
-    ScopeFloatingWindow(SynthEngine& engineRef, std::function<void()> onClose = nullptr)
-        : DocumentWindow("ABDScope - ABDMS2000 Telemetry",
-                         juce::Colour(0xff12141a),
-                         DocumentWindow::allButtons),
-          engine(engineRef),
-          onCloseCallback(std::move(onClose))
+  public:
+    ScopeFloatingWindow(SynthEngine &engineRef, std::function<void()> onClose = nullptr)
+        : DocumentWindow("ABDScope - ABDMS2000 Telemetry", juce::Colour(0xff12141a), DocumentWindow::allButtons)
+        , engine(engineRef)
+        , onCloseCallback(std::move(onClose))
     {
         setUsingNativeTitleBar(true);
 
         auto webScope = std::make_unique<abd::scope::JuceWebScopeComponent>(
-            engineRef.getScopeCollector(),
-            engineRef.getSampleRate(),
-            30
-        );
+            engineRef.getScopeCollector(), engineRef.getSampleRate(), 30);
         webScope->setTheme("ms2000");
         setContentOwned(webScope.release(), true);
 
@@ -55,10 +51,10 @@ public:
     {
         for (size_t i = 0; i < engine.getScopeCollector().getTapCount(); ++i)
         {
-            if (auto* tap = const_cast<abd::scope::ScopeTap*>(engine.getScopeCollector().getTap(i)))
+            if (auto *tap = const_cast<abd::scope::ScopeTap *>(engine.getScopeCollector().getTap(i)))
                 tap->setActive(true);
         }
-        if (auto* ws = dynamic_cast<abd::scope::JuceWebScopeComponent*>(getContentComponent()))
+        if (auto *ws = dynamic_cast<abd::scope::JuceWebScopeComponent *>(getContentComponent()))
         {
             ws->setSampleRate(engine.getSampleRate());
             ws->setTheme("ms2000");
@@ -67,15 +63,15 @@ public:
 
     void syncSampleRate()
     {
-        if (auto* ws = dynamic_cast<abd::scope::JuceWebScopeComponent*>(getContentComponent()))
+        if (auto *ws = dynamic_cast<abd::scope::JuceWebScopeComponent *>(getContentComponent()))
             ws->setSampleRate(engine.getSampleRate());
     }
 
-private:
-    SynthEngine& engine;
+  private:
+    SynthEngine &engine;
     std::function<void()> onCloseCallback;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ScopeFloatingWindow)
 };
 
-} // namespace ABDMS2000
+}  // namespace ABDMS2000
