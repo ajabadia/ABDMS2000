@@ -101,9 +101,6 @@
         [[nodiscard]] const abd::scope::ScopeDataCollector &getScopeCollector() const noexcept;
         [[nodiscard]] double getSampleRate() const noexcept;
 
-      private:
-        std::atomic<bool> testToneEnabled_ {false};
-
         [[nodiscard]] ModSequencer &getModSequencer() noexcept
         {
             return modSeq_;
