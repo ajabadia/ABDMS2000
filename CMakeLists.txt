@@ -65,18 +65,15 @@ if(NOT ABDSHAREDCODE_SKIP_ADD_SUBDIRECTORY)
 endif()
 
 # --- ABDScope Integration (analytical multi-lane scope, native C++ taps) ---
-# ABDScope es un proyecto hermano que empaqueta el core C++ header-only (ScopeTap,
-# ScopeDataCollector, ScopeFrameSerializer) + componente JUCE WebView2 listo
-# (JuceWebScopeComponent) + WebUI embebido como binary data. Se resuelve como
-# dependencia local fija (../ABDScope). Targets: ABDScope::ABDScopeCore y
-# ABDScope::ABDScopeWebAssets (linkado INTERFACE al core).
-set(ABDSCOPE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../ABDScope")
-if(EXISTS "${ABDSCOPE_DIR}/CMakeLists.txt")
-    message(STATUS "ABDScope: Using local at ${ABDSCOPE_DIR}")
-    add_subdirectory("${ABDSCOPE_DIR}" "${CMAKE_BINARY_DIR}/ABDScope")
-else()
-    message(FATAL_ERROR "ABDScope not found at ${ABDSCOPE_DIR}; ABDMS2000 scope integration requires the ABDScope repo.")
-endif()
+# El modulo Scope vive AHORA en ABDSharedCode (subtree desde v0.4.0) y se
+# registra al anadir ABDSharedCode mas arriba: targets ABDShared::ScopeCore
+# (core header-only + glue JUCE + WebUI embebida) y ABDShared::ScopeCoreHeaders
+# (solo el core, sin JUCE, que es lo que enlazan los tests).
+#
+# Antes habia aqui un add_subdirectory(../ABDScope) con target
+# ABDScope::ABDScopeCore. No se puede mantener: dos add_subdirectory del mismo
+# modulo en un mismo build mueren en "add_library cannot create target
+# ABDScopeCore...". Fuente unica de verdad, un solo registro, en ABDSharedCode.
 
 # Create JUCE Plugin
 # Lista DSP compartida con el build WASM (single-source, anti-drift):
@@ -274,7 +271,7 @@ target_link_libraries(ABDMS2000 PUBLIC
     ABDBankManager::ABDBankManagerCore
     ABDShared::SynthCore
     ABDShared::HardwareDrivers
-    ABDScope::ABDScopeCore
+    ABDShared::ScopeCore
 )
 
 # --- C++ Unit Tests (Standalone executable, no JUCE GUI) ---
@@ -332,6 +329,9 @@ target_link_libraries(ABDMS2000_Tests PRIVATE
     WebUIAssets
     ABDShared::SynthCore
     ABDShared::HardwareDrivers
+    # Core de Scope header-only (SynthEngine.h incluye <ScopeDataCollector.h>):
+    # propaga .../Scope/Source y .../Source/Core sin arrastrar el glue JUCE.
+    ABDShared::ScopeCoreHeaders
 )
 
 # BridgeActions.h/BridgeHost.h live in Source/Plugin for the tests too.
@@ -348,9 +348,12 @@ target_include_directories(ABDMS2000_Tests PRIVATE
     Source/MIDI
     Source/State
     Source/Tests
-    "${ABDSCOPE_DIR}/Source"
-    "${ABDSCOPE_DIR}/Source/Core"
 )
+
+# El core de Scope (ScopeDataCollector.h, <ScopeDataCollector.h> a pelo) llega
+# por target y no por path: ABDShared::ScopeCoreHeaders propaga
+# ABDSharedCode/Scope/Source y .../Source/Core, igual que hacian las dos lineas
+# de ABDSCOPE_DIR que aqui se borraban.
 
 # Remove JUCE modules path to avoid PATH duplication in MSBuild
 # JUCE targets already propagate include directories via target_link_libraries
