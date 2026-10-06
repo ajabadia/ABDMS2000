@@ -1,4 +1,4 @@
-"#pragma once
+#pragma once
 #include <array>
 #include <vector>
 #include "Voice.h"
@@ -139,4 +139,4 @@
         void releaseVoiceSlot(size_t index) noexcept;
     };
 
-}  // namespace ABDMS2000"
+}  // namespace ABDMS2000

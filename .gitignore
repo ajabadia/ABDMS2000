@@ -80,3 +80,18 @@ wasm/WebUI/
 # Las baselines SI van versionadas: e2e/snapshots/.
 playwright-report/
 test-results/
+
+# Herramienta externa / metadatos de sesion (Freebuff)
+.freebuff/
+
+# Scripts de build no oficiales / experimentales (no forman parte del build estandar)
+build_fix.bat
+test_cmake.bat
+tmp_build_native.bat
+
+# Logs y outputs de herramientas de analisis / experimentacion
+build_log.txt
+graphify-out/
+
+# Experimentos / scratch de diagnostico (no es fuente del proyecto)
+tmp_ph/

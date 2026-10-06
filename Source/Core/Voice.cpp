@@ -338,4 +338,25 @@ void Voice::renderNextSample(float &leftOut, float &rightOut, int diagPoint, flo
         float veloOctaves = p.filterVeloSens * velocity_ * 5.0f;
         float cutoffHz = baseHz * std::pow(2.0f, egOctaves + kbdOctaves + patchOctaves + veloOctaves);
 
-        filter
+        filter_.setCutoff(cutoffHz);
+        filtered = filter_.process(mixedAudio);
+    }
+
+    // 12. Envelope 2 (VCA) - apply amplitude envelope
+    float vcaOut = filtered * eg2Val * p.ampLevel;
+
+    // 13. Pan and stereo positioning
+    float panGainL = 1.0f - (p.panpot * 0.5f);
+    float panGainR = 1.0f + (p.panpot * 0.5f);
+    leftOut = vcaOut * panGainL;
+    rightOut = vcaOut * panGainR;
+}
+
+void Voice::renderDiagnosticSample(float &leftOut, float &rightOut, int /*diagPoint*/, float diagTone) noexcept
+{
+    // Diagnostic sample override - bypasses all normal DSP processing
+    leftOut = diagTone;
+    rightOut = diagTone;
+}
+
+}  // namespace ABDMS2000

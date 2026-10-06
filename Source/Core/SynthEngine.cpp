@@ -62,6 +62,61 @@ void SynthEngine::reset()
     currentSnapshot_ = AudioThreadSnapshot {};
 }
 
+void SynthEngine::setTestToneEnabled(bool enabled) noexcept
+{
+    testToneEnabled_.store(enabled, std::memory_order_relaxed);
+}
+
+const abd::scope::ScopeDataCollector &SynthEngine::getScopeCollector() const noexcept
+{
+    return scopeCollector_;
+}
+
+double SynthEngine::getSampleRate() const noexcept
+{
+    return sampleRate_;
+}
+
+void SynthEngine::setDiagnosticTone(int point, float freqHz, float level) noexcept
+{
+    diagTonePoint_.store(static_cast<DiagnosticTonePoint>(point), std::memory_order_relaxed);
+    testToneFrequency_.store(freqHz, std::memory_order_relaxed);
+    testToneLevel_.store(level, std::memory_order_relaxed);
+}
+
+void SynthEngine::setDiagnosticBypass(const juce::String &stage, bool enabled) noexcept
+{
+    juce::ignoreUnused(stage);
+    if (stage == "filter")
+        diagBypassFilter_.store(enabled, std::memory_order_relaxed);
+    else if (stage == "vca")
+        diagBypassVCA_.store(enabled, std::memory_order_relaxed);
+    else if (stage == "oscMixer")
+        diagBypassOscMixer_.store(enabled, std::memory_order_relaxed);
+    else if (stage == "distortion")
+        diagBypassDistortion_.store(enabled, std::memory_order_relaxed);
+    else if (stage == "modFX")
+        diagBypassModFX_.store(enabled, std::memory_order_relaxed);
+    else if (stage == "delayFX")
+        diagBypassDelayFX_.store(enabled, std::memory_order_relaxed);
+    else if (stage == "masterEQ")
+        diagBypassMasterEQ_.store(enabled, std::memory_order_relaxed);
+}
+
+void SynthEngine::resetAllDiagnosticBypasses() noexcept
+{
+    diagBypassFilter_.store(false, std::memory_order_relaxed);
+    diagBypassVCA_.store(false, std::memory_order_relaxed);
+    diagBypassOscMixer_.store(false, std::memory_order_relaxed);
+    diagBypassDistortion_.store(false, std::memory_order_relaxed);
+    diagBypassModFX_.store(false, std::memory_order_relaxed);
+    diagBypassDelayFX_.store(false, std::memory_order_relaxed);
+    diagBypassMasterEQ_.store(false, std::memory_order_relaxed);
+}
+
+
+
+
 void SynthEngine::registerScopeTaps()
 {
     if (scopeTapsRegistered_)
@@ -71,7 +126,7 @@ void SynthEngine::registerScopeTaps()
     // Fase A tap set: Master out, Pre-FX, and Voice 0 stage taps
     // (LFO1 control, Osc.Mix, Post-Filter, Post-VCA). Capacity = block size,
     // enough to satisfy the 512-sample frame pull at 1:1 audio rate.
-    const size_t cap = static_cast<size_t>(std::max(1, samplesPerBlock_));
+    const size_t cap = static_cast<size_t>(samplesPerBlock_);
     tapMaster_ = scopeCollector_.registerTap("Master Output", abd::scope::ScopeTapType::StereoAudio, cap, "master_out");
     tapPreFx_ = scopeCollector_.registerTap("Pre FX", abd::scope::ScopeTapType::StereoAudio, cap, "pre_fx");
     tapOscMix_ = scopeCollector_.registerTap("Voice 1 Osc Mix", abd::scope::ScopeTapType::MonoAudio, cap, "osc_mix");
@@ -918,6 +973,4 @@ void SynthEngine::allNotesOff()
     voiceManagerA_.allNotesOff();
     voiceManagerB_.allNotesOff();
     arpeggiator_.allNotesOff();
-}
-
-}  // namespace ABDMS2000
+}}  // namespace ABDMS2000

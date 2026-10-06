@@ -27,7 +27,7 @@ class ScopeFloatingWindow : public juce::DocumentWindow
         setUsingNativeTitleBar(true);
 
         auto webScope = std::make_unique<abd::scope::JuceWebScopeComponent>(
-            engineRef.getScopeCollector(), engineRef.getSampleRate(), 30);
+            const_cast<abd::scope::ScopeDataCollector &>(engineRef.getScopeCollector()), engineRef.getSampleRate(), 30);
         webScope->setTheme("ms2000");
         setContentOwned(webScope.release(), true);
 

@@ -139,7 +139,7 @@ jobs:
           # SHA de `main` de cada uno en el momento de escribir esto. Subir el de un
           # hermano obliga a regenerar su destino en ABDMS2000 en el MISMO commit.
           SHA_ASSETS: '9a99cbbb5d001321395ab14c1bea94e954e9168f'
-          SHA_BANK: 'b5a3d9ec356d31c985107456e7f890a1e05694f0'
+          SHA_BANK: 'bee70cb5cbfa79e44d9f0e7c3a5a13b4102449b3'
           SHA_SCOPE: '5748c739401a7d07191493bd072fc0a9463578e5'
         run: |
           set -euo pipefail

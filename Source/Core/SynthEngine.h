@@ -1,4 +1,4 @@
-"#pragma once
+#pragma once
 #include <juce_audio_processors/juce_audio_processors.h>
 #include <ScopeDataCollector.h>
 #include <atomic>
@@ -56,6 +56,16 @@
         void prepare(double sampleRate, int samplesPerBlock);
         void reset();
 
+      public:
+        // Helpers publicos usados por la suite de C++.
+        [[nodiscard]] ModSequencer &testGetModSequencer() const noexcept { return const_cast<SynthEngine &>(*this).modSeq_; }
+        [[nodiscard]] const VoiceParameters &testGetVoiceParamsA() const noexcept { return voiceParamsA_; }
+        [[nodiscard]] const VoiceParameters &testGetVoiceParamsB() const noexcept { return voiceParamsB_; }
+        void testApplySeqModulation(bool second, VoiceParameters &out) const noexcept { const_cast<SynthEngine &>(*this).applySeqModulation(second, out); }
+
+      private:
+        std::atomic<bool> testToneEnabled_ {false};
+
         // Procesa un bloque de audio completo (thread de audio)
         void processBlock(juce::AudioBuffer<float> &buffer,
                           juce::MidiBuffer &midiMessages,
@@ -85,45 +95,20 @@
         // Diagnóstico (solo en desarrollo)
         void setTestToneEnabled(bool enabled) noexcept;
         void setDiagnosticTone(int point, float freqHz = 440.0f, float level = 0.25f) noexcept;
-        [[nodiscard]] int getDiagnosticTonePoint() const noexcept
-        {
-            return static_cast<int>(diagTonePoint_.load(std::memory_order_relaxed));
-        }
+        void setDiagnosticBypass(const juce::String &stage, bool enabled) noexcept;
+        void resetAllDiagnosticBypasses() noexcept;
+        [[nodiscard]] int getDiagnosticTonePoint() const noexcept;
+        [[nodiscard]] const abd::scope::ScopeDataCollector &getScopeCollector() const noexcept;
+        [[nodiscard]] double getSampleRate() const noexcept;
 
-        // Bypasses por etapa DSP
-        void setDiagnosticBypass(const juce::String &stage, bool enabled) noexcept
-        {
-            if (stage == "filter")
-                diagBypassFilter_.store(enabled, std::memory_order_relaxed);
-            else if (stage == "vca")
-                diagBypassVCA_.store(enabled, std::memory_order_relaxed);
-            else if (stage == "mixer" || stage == "osc")
-                diagBypassOscMixer_.store(enabled, std::memory_order_relaxed);
-            else if (stage == "distortion")
-                diagBypassDistortion_.store(enabled, std::memory_order_relaxed);
-            else if (stage == "modfx")
-                diagBypassModFX_.store(enabled, std::memory_order_relaxed);
-            else if (stage == "delayfx")
-                diagBypassDelayFX_.store(enabled, std::memory_order_relaxed);
-            else if (stage == "eq")
-                diagBypassMasterEQ_.store(enabled, std::memory_order_relaxed);
-        }
-        void resetAllDiagnosticBypasses() noexcept
-        {
-            diagBypassFilter_.store(false, std::memory_order_relaxed);
-            diagBypassVCA_.store(false, std::memory_order_relaxed);
-            diagBypassOscMixer_.store(false, std::memory_order_relaxed);
-            diagBypassDistortion_.store(false, std::memory_order_relaxed);
-            diagBypassModFX_.store(false, std::memory_order_relaxed);
-            diagBypassDelayFX_.store(false, std::memory_order_relaxed);
-            diagBypassMasterEQ_.store(false, std::memory_order_relaxed);
-        }
+      private:
+        std::atomic<bool> testToneEnabled_ {false};
 
-        // Accessores para módulos DSP (para testing/depuración)
         [[nodiscard]] ModSequencer &getModSequencer() noexcept
         {
             return modSeq_;
         }
+
         [[nodiscard]] Arpeggiator &getArpeggiator() noexcept
         {
             return arpeggiator_;
@@ -145,23 +130,29 @@
             return vocoder_;
         }
 
-        // ABDScope analytical multi-lane scope
-        [[nodiscard]] abd::scope::ScopeDataCollector &getScopeCollector() noexcept
-        {
-            return scopeCollector_;
-        }
-
-        [[nodiscard]] double getSampleRate() const noexcept
-        {
-            return sampleRate_;
-        }
-
+      protected:
         // Sincronización completa de parámetros desde APVTS
         void updateParametersFromAPVTS() noexcept;
         void triggerArpNote(int note, float velocity, bool isNoteOn) noexcept;
 
         // Referencias públicas (evitar copia en el thread de audio)
         juce::AudioProcessorValueTreeState &apvts_;
+
+        // Helpers pinchados por DSPCoreTests (timbre params + mod-seq apply).
+        float paramValueById(const juce::String &id, float defaultVal) const noexcept;
+        float paramValue(bool second, const char *id, float defaultVal = 0.0f) const noexcept;
+
+        /** Vuelca en `out` todos los parámetros del timbre (1 si `second` es false, 2 si no). */
+        void readTimbreParams(bool second, VoiceParameters &out) noexcept;
+
+        /** Lee las 3 filas del mod sequence del timbre en sus pistas del secuenciador. */
+        void configureTimbreSeq(bool second, size_t firstTrack) noexcept;
+
+        /** Aplica la salida de las 3 filas del timbre a sus parámetros de voz. */
+        void applySeqModulation(bool second, VoiceParameters &out) noexcept;
+
+      public:
+      private:
         double sampleRate_ {44100.0};
         int samplesPerBlock_ {512};
 
@@ -223,24 +214,8 @@
         void registerScopeTaps();
         void flushScopeTaps(int numSamples) noexcept;
 
-        // ── Lectura de parámetros por timbre ─────────────────────────────────────
-        //
-        // Los dos timbres comparten vocabulario: el Timbre 2 usa el mismo id con el
-        // prefijo `t2` y la inicial en mayúscula (`osc1Wave` → `t2Osc1Wave`), que es
-        // como el registro declara su espejo. Así no hay dos listas que mantener.
-        float paramValueById(const juce::String &id, float defaultVal) const noexcept;
-        float paramValue(bool second, const char *id, float defaultVal = 0.0f) const noexcept;
-
-        /** Vuelca en `out` todos los parámetros del timbre (1 si `second` es false, 2 si no). */
-        void readTimbreParams(bool second, VoiceParameters &out) noexcept;
-
-        /** Lee las 3 filas del mod sequence del timbre en sus pistas del secuenciador. */
-        void configureTimbreSeq(bool second, size_t firstTrack) noexcept;
-
-        /** Aplica la salida de las 3 filas del timbre a sus parámetros de voz. */
-        void applySeqModulation(bool second, VoiceParameters &out) noexcept;
-
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SynthEngine)
     };
 
-}  // namespace ABDMS2000
+    }  // namespace ABDMS2000
+

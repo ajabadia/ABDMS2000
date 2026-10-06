@@ -2327,26 +2327,29 @@ static void testEngineExtension()
         setSeq(ParamIDs::t2Seq3Dest, 15.0f);  // AMP LEVEL en el Timbre 2
         setSeq(ParamIDs::t2Seq3Step1, 63.0f);
 
-        SynthEngine seqEngine(seqApvts);
+        ABDMS2000::SynthEngine &seqEngine = static_cast<ABDMS2000::SynthEngine &>(seqApvts);
         seqEngine.prepare(48000.0, 512);
         seqEngine.updateParametersFromAPVTS();
-        seqEngine.getModSequencer().advanceClock(512);
+        seqEngine.testGetModSequencer().advanceClock(512);
 
-        const auto &rowA = seqEngine.getModSequencer().getTrack(ModSequencer::TIMBRE1_TRACK);
-        const auto &rowC2 = seqEngine.getModSequencer().getTrack(ModSequencer::TIMBRE2_TRACK + 2);
+        const auto &rowA = seqEngine.testGetModSequencer().getTrack(ModSequencer::TIMBRE1_TRACK);
+        const auto &rowC2 = seqEngine.testGetModSequencer().getTrack(ModSequencer::TIMBRE2_TRACK + 2);
         check(static_cast<int>(rowA.destination) == 11 && rowA.length == 8 && rowA.motion == ModSeqMotion::Step,
               "the engine reads each row's destination, motion and last step from its parameters");
         check(std::abs(rowA.steps[0] - 0.0f) < 1e-6f && std::abs(rowC2.steps[0] - 1.0f) < 1e-6f,
               "the −63..+63 step bytes land as the row's 0..1 step values");
-        check(seqEngine.getModSequencer().getTrack(ModSequencer::TIMBRE1_TRACK + 1).steps[0] == 0.5f,
+        check(seqEngine.testGetModSequencer().getTrack(ModSequencer::TIMBRE1_TRACK + 1).steps[0] == 0.5f,
               "a step byte of 0 (the INIT value) is the centre of the row");
 
-        seqEngine.applySeqModulation(false, seqEngine.voiceParamsA_);
-        seqEngine.applySeqModulation(true, seqEngine.voiceParamsB_);
-        check(seqEngine.voiceParamsA_.seq.cutoff == -1.0f,
+        VoiceParameters tmpA = seqEngine.testGetVoiceParamsA();
+        VoiceParameters tmpB = seqEngine.testGetVoiceParamsB();
+        seqEngine.testApplySeqModulation(false, tmpA);
+        seqEngine.testApplySeqModulation(true, tmpB);
+        check(tmpA.seq.cutoff == -1.0f,
               "the Timbre 1 row drives its own cutoff (full −1 at the bottom step)");
-        check(seqEngine.voiceParamsB_.seq.amp == 1.0f && seqEngine.voiceParamsA_.seq.amp == 0.0f,
+        check(tmpB.seq.amp == 1.0f && tmpA.seq.amp == 0.0f,
               "the Timbre 2 rows drive the Timbre 2 parameters, not the Timbre 1 ones");
+        (void)rowC2;
     }
 }
 

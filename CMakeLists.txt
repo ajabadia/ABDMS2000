@@ -9,13 +9,15 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(JUCE_USE_WIN_WEBVIEW2 ON CACHE BOOL "Use WebView2 on Windows" FORCE)
 
-# Include JUCE 8
+# --- JUCE 9 discovery/setup ---
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/GITS/JUCE/CMakeLists.txt")
     add_subdirectory(GITS/JUCE)
+elseif(EXISTS "${JUCE_PATH}/CMakeLists.txt")
+    add_subdirectory(${JUCE_PATH} JUCE)
 elseif(EXISTS "C:/JUCE/CMakeLists.txt")
     add_subdirectory("C:/JUCE" JUCE)
 else()
-    find_package(JUCE 8 CONFIG REQUIRED)
+    find_package(JUCE 9 CONFIG REQUIRED)
 endif()
 
 # --- ABDBankManager Integration (Direct local subdirectory + WebUI source-of-truth) ---
@@ -40,18 +42,26 @@ else()
 endif()
 
 # --- ABDSharedCode Integration ---
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../ABDBankManager/cpp/CMakeLists.txt")
+    # ABDBankManager ya incluye ABDSharedCode; evitar duplicacion de targets
+    set(ABDSHAREDCODE_SKIP_ADD_SUBDIRECTORY ON CACHE INTERNAL "" FORCE)
+    set(ABDSHARED_CODE_DIR "" CACHE INTERNAL "" FORCE)
+    message(STATUS "ABDSharedCode: Skipping (included by ABDBankManager)")
+endif()
 set(ABDSHARED_CODE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../ABDSharedCode")
-if(EXISTS "${ABDSHARED_CODE_DIR}/CMakeLists.txt")
-    message(STATUS "ABDSharedCode: Using local at ${ABDSHARED_CODE_DIR}")
-    add_subdirectory("${ABDSHARED_CODE_DIR}" "${CMAKE_BINARY_DIR}/ABDSharedCode")
-else()
-    include(FetchContent)
-    FetchContent_Declare(
-      ABDSharedCode
-      GIT_REPOSITORY https://github.com/ajabadia/ABDSharedCode.git
-      GIT_TAG        master
-    )
-    FetchContent_MakeAvailable(ABDSharedCode)
+if(NOT ABDSHAREDCODE_SKIP_ADD_SUBDIRECTORY)
+    if(EXISTS "${ABDSHARED_CODE_DIR}/CMakeLists.txt")
+        message(STATUS "ABDSharedCode: Using local at ${ABDSHARED_CODE_DIR}")
+        add_subdirectory("${ABDSHARED_CODE_DIR}" "${CMAKE_BINARY_DIR}/ABDSharedCode")
+    else()
+        include(FetchContent)
+        FetchContent_Declare(
+          ABDSharedCode
+          GIT_REPOSITORY https://github.com/ajabadia/ABDSharedCode.git
+          GIT_TAG        master
+        )
+        FetchContent_MakeAvailable(ABDSharedCode)
+    endif()
 endif()
 
 # --- ABDScope Integration (analytical multi-lane scope, native C++ taps) ---
@@ -262,7 +272,6 @@ target_link_libraries(ABDMS2000 PUBLIC
     juce::juce_recommended_lto_flags
     juce::juce_recommended_warning_flags
     ABDBankManager::ABDBankManagerCore
-    ABDShared::AutoUpdater
     ABDShared::SynthCore
     ABDShared::HardwareDrivers
     ABDScope::ABDScopeCore

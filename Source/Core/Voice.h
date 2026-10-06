@@ -1,4 +1,4 @@
-"#pragma once
+#pragma once
 #include "../DSP/Envelopes/ADSREnvelope.h"
 #include "../DSP/Filters/MultiModeFilter.h"
 #include "../DSP/Modulation/LFO.h"
@@ -238,6 +238,8 @@
         // Cached snapshot of the last applied block parameters
         VoiceParameters cachedParams_;
 
+        DiagnosticStats lastDiagStats_;
+
         VAOscillator osc1VA_;
         DWGSOscillator osc1DWGS_;
         VoxWaveOscillator osc1VoxWave_;
@@ -252,4 +254,4 @@
         VirtualPatchMatrix patchMatrix_;
     };
 
-}  // namespace ABDMS2000"
+}  // namespace ABDMS2000
