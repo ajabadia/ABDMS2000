@@ -17,9 +17,9 @@
  */
 function resolveDefaultIframeSrc() {
   try {
-    return new URL('abdbank/index.html', window.location.href).href;
+    return new URL('abdbank/root.html', window.location.href).href;
   } catch (e) {
-    return 'bankwebui://index.html';
+    return 'abdbank/root.html';
   }
 }
 
