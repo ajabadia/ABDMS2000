@@ -1,9 +1,11 @@
 // ============================================================
 // Voice.cpp - Implementación del motor DSP de voz individual del MS2000/microKORG
+// Canonical schema-driven VCA & HardwareConstants integration
 // ============================================================
 
 #include "Voice.h"
 #include <cmath>
+#include "HardwareConstants.h"
 
 namespace ABDMS2000
 {
@@ -78,8 +80,8 @@ void Voice::noteOn(int midiNote, float velocity, bool glideEnabled, bool isFirst
         osc2_.reset();
         filter_.reset();
 
-        eg1_.noteOn(velocity);
-        eg2_.noteOn(velocity);
+        eg1_.noteOn(1.0f);
+        eg2_.noteOn(1.0f);
     }
 
     lfo1_.triggerKeySync(isFirstTimbreNote);
@@ -225,12 +227,12 @@ void Voice::renderNextSample(float &leftOut, float &rightOut, int diagPoint, flo
     prelimSources.lfo1 = lfo1Val;
     prelimSources.lfo2 = lfo2_.getCurrentValue();
     prelimSources.velocity = velocity_;
-    prelimSources.kbdTrack = (basePitch - 60.0f) / 64.0f;
+    prelimSources.kbdTrack = (basePitch - Constants::kMidiMiddleC) / Constants::kKbdTrackSpanSemitones;
     prelimSources.pitchBend = p.pitchBendValue;
     prelimSources.modWheel = p.modWheelValue;
 
     PatchModulationOutputs prelimMod = patchMatrix_.evaluate(prelimSources);
-    float lfo2Freq = p.lfo2FreqHz * std::pow(2.0f, (prelimMod.lfo2FreqMod + p.seq.lfo2Freq) * 4.0f);
+    float lfo2Freq = p.lfo2FreqHz * std::pow(2.0f, (prelimMod.lfo2FreqMod + p.seq.lfo2Freq) * Constants::kLfoModMaxOctaves);
     lfo2_.setFrequencyHz(lfo2Freq);
     float lfo2Val = lfo2_.getNextSample();
 
@@ -240,15 +242,15 @@ void Voice::renderNextSample(float &leftOut, float &rightOut, int diagPoint, flo
     PatchModulationOutputs mod = patchMatrix_.evaluate(sources);
 
     // 5. Portamento + LFO + Virtual Patch Pitch Modulation + Mod Seq + Voice Detune
-    float voiceDetuneSemitones = p.voiceDetuneCents / 100.0f;
-    const float seqPitchSemis = p.seq.pitch * 24.0f;     // "PITCH" del seq: ±24 st
-    const float seqOsc2Semis = p.seq.osc2Pitch * 24.0f;  // "OSC2 SEMI" del seq: ±24 st
-    float osc1PitchMod = (p.pitchBendValue * 2.0f) + (mod.pitchMod * 24.0f) + voiceDetuneSemitones + seqPitchSemis;
+    float voiceDetuneSemitones = p.voiceDetuneCents / Constants::kCentsPerSemitone;
+    const float seqPitchSemis = p.seq.pitch * Constants::kVirtualPatchMaxPitchSemitones;     // "PITCH" del seq: ±24 st
+    const float seqOsc2Semis = p.seq.osc2Pitch * Constants::kVirtualPatchMaxPitchSemitones;  // "OSC2 SEMI" del seq: ±24 st
+    float osc1PitchMod = (p.pitchBendValue * Constants::kPitchBendDefaultSemitones) + (mod.pitchMod * Constants::kVirtualPatchMaxPitchSemitones) + voiceDetuneSemitones + seqPitchSemis;
     float osc1FinalPitch = basePitch + osc1PitchMod;
     float osc1Freq = DSPUtils::midiNoteToFrequency(osc1FinalPitch);
 
-    float osc2PitchMod = (p.pitchBendValue * 2.0f) + (mod.pitchMod * 24.0f) + voiceDetuneSemitones + seqPitchSemis
-                         + seqOsc2Semis + p.osc2Semitone + ((p.osc2Tune + (p.seq.osc2Tune * 100.0f)) / 100.0f);
+    float osc2PitchMod = (p.pitchBendValue * Constants::kPitchBendDefaultSemitones) + (mod.pitchMod * Constants::kVirtualPatchMaxPitchSemitones) + voiceDetuneSemitones + seqPitchSemis
+                         + seqOsc2Semis + p.osc2Semitone + ((p.osc2Tune + (p.seq.osc2Tune * Constants::kCentsPerSemitone)) / Constants::kCentsPerSemitone);
     float osc2FinalPitch = basePitch + osc2PitchMod;
     float osc2Freq = DSPUtils::midiNoteToFrequency(osc2FinalPitch);
 
@@ -330,12 +332,12 @@ void Voice::renderNextSample(float &leftOut, float &rightOut, int diagPoint, flo
     if (!p.diagBypassFilter)
     {
         float baseHz = DSPUtils::convertSysExToCutoffHz(p.filterCutoffNorm);
-        float egOctaves = eg1Raw * (p.eg1FilterIntensity * 5.0f);
-        float kbdOctaves = ((basePitch - 60.0f) / 12.0f) * p.filterKbdTrack;
-        float patchOctaves = (mod.cutoffMod + p.seq.cutoff) * 5.0f;
+        float egOctaves = eg1Raw * (p.eg1FilterIntensity * Constants::kFilterModMaxOctaves);
+        float kbdOctaves = ((basePitch - Constants::kMidiMiddleC) / Constants::kSemitonesPerOctave) * p.filterKbdTrack;
+        float patchOctaves = (mod.cutoffMod + p.seq.cutoff) * Constants::kFilterModMaxOctaves;
         // FILTER VELO del byte 23 (±63 → ±5 octavas a fondo): la velocidad abre el
         // filtro con intensidad positiva y lo cierra con negativa. A 0, sin efecto.
-        float veloOctaves = p.filterVeloSens * velocity_ * 5.0f;
+        float veloOctaves = p.filterVeloSens * velocity_ * Constants::kFilterModMaxOctaves;
         float cutoffHz = baseHz * std::pow(2.0f, egOctaves + kbdOctaves + patchOctaves + veloOctaves);
 
         filter_.setCutoff(cutoffHz);
@@ -343,11 +345,21 @@ void Voice::renderNextSample(float &leftOut, float &rightOut, int diagPoint, flo
     }
 
     // 12. Envelope 2 (VCA) - apply amplitude envelope
-    float vcaOut = filtered * eg2Val * p.ampLevel;
+    // En MS2000 el VCA modula su ganancia según ampVeloSens (byte 28, ±63):
+    // Con ampVeloSens = 0, el nivel es independiente de la velocidad (como el hardware).
+    // Con ampVeloSens > 0, la velocidad abre el VCA progresivamente.
+    // Con ampVeloSens < 0, la respuesta a la velocidad se invierte.
+    float vcaVelocity = 1.0f;
+    if (p.ampVeloSens > 0.0f)
+        vcaVelocity = 1.0f - p.ampVeloSens * (1.0f - velocity_);
+    else if (p.ampVeloSens < 0.0f)
+        vcaVelocity = 1.0f + p.ampVeloSens * velocity_;
+
+    float vcaOut = filtered * eg2Raw * p.ampLevel * vcaVelocity;
 
     // 13. Pan and stereo positioning
-    float panGainL = 1.0f - (p.panpot * 0.5f);
-    float panGainR = 1.0f + (p.panpot * 0.5f);
+    float panGainL = 1.0f - (p.panpot * Constants::kPanHalfWidth);
+    float panGainR = 1.0f + (p.panpot * Constants::kPanHalfWidth);
     leftOut = vcaOut * panGainL;
     rightOut = vcaOut * panGainR;
 }

@@ -233,6 +233,15 @@ struct ParameterMeta {
     ParamType type;
     const char* unit;
     int sysexOffset; // -1 if none (auto-computed by generator)
+    // Nuevos campos para el sistema schema-driven (ABDEep-style):
+    int wire;          // -1=None, 0=CC, 1=SysEx, 2=Nrpn
+    int wireCodec;     // 0=Value, 1=Bipolar, 2=Enum
+    int curve;         // 0=Linear, 1=Exp, 2=Pow, 3=Lut
+    float curveP0;     // parametro P0 de la curva (ej. escala para Exp)
+    float curveP1;     // parametro P1 de la curva (ej. exponente para Pow)
+    float domainMin;   // minimo fisico (ej. 20.0 Hz)
+    float domainMax;   // maximo fisico (ej. 20000.0 Hz)
+    int smoothing;     // 0=Linear, 1=Log
     std::vector<const char*> choices;
 };
 
@@ -270,6 +279,33 @@ static const std::vector<ParameterMeta> kAllParameters = {
 withOffsets.forEach((p, idx) => {
   const ccVal = (p.cc !== null && p.cc !== undefined) ? p.cc : -1;
   const sysexVal = p.sysexOffset;
+  // Nuevos campos schema-driven (mapear strings a enteros de C++):
+  const wireMap = { 'None': -1, 'CC': 0, 'SysEx': 1, 'Nrpn': 2 };
+  const wireCodecMap = { 'Value': 0, 'Bipolar': 1, 'Enum': 2 };
+  const curveMap = { 'Linear': 0, 'Exp': 1, 'Pow': 2, 'Lut': 3 };
+  const smoothingMap = { 'Linear': 0, 'Log': 1 };
+
+  let wireVal = -1;
+  if (typeof p.wire === 'number') wireVal = p.wire;
+  else if (typeof p.wire === 'string' && wireMap[p.wire] !== undefined) wireVal = wireMap[p.wire];
+
+  let wireCodecVal = 0;
+  if (typeof p.wireCodec === 'number') wireCodecVal = p.wireCodec;
+  else if (typeof p.wireCodec === 'string' && wireCodecMap[p.wireCodec] !== undefined) wireCodecVal = wireCodecMap[p.wireCodec];
+
+  let curveVal = 0;
+  if (typeof p.curve === 'number') curveVal = p.curve;
+  else if (typeof p.curve === 'string' && curveMap[p.curve] !== undefined) curveVal = curveMap[p.curve];
+
+  const curveP0Val = p.curveP0 !== null && p.curveP0 !== undefined ? formatFloat(p.curveP0) : 0.0;
+  const curveP1Val = p.curveP1 !== null && p.curveP1 !== undefined ? formatFloat(p.curveP1) : 0.0;
+  const domainMinVal = p.domainMin !== null && p.domainMin !== undefined ? formatFloat(p.domainMin) : 0.0;
+  const domainMaxVal = p.domainMax !== null && p.domainMax !== undefined ? formatFloat(p.domainMax) : 0.0;
+
+  let smoothingVal = 0;
+  if (typeof p.smoothing === 'number') smoothingVal = p.smoothing;
+  else if (typeof p.smoothing === 'string' && smoothingMap[p.smoothing] !== undefined) smoothingVal = smoothingMap[p.smoothing];
+
   const minVal = formatFloat(p.min);
   const maxVal = formatFloat(p.max);
   const defVal = formatFloat(p.default);
@@ -286,7 +322,7 @@ withOffsets.forEach((p, idx) => {
     choicesInit = `{ ${p.choices.map(c => `"${c}"`).join(', ')} }`;
   }
 
-  cppContent += `    { "${p.id}", "${p.name}", "${p.group}", ${ccVal}, ${minVal}, ${maxVal}, ${defVal}, ${skewVal}, ${typeEnum}, ${unitVal}, ${sysexVal}, ${choicesInit} }`;
+  cppContent += `    { "${p.id}", "${p.name}", "${p.group}", ${ccVal}, ${minVal}, ${maxVal}, ${defVal}, ${skewVal}, ${typeEnum}, ${unitVal}, ${sysexVal}, ${wireVal}, ${wireCodecVal}, ${curveVal}, ${curveP0Val}, ${curveP1Val}, ${domainMinVal}, ${domainMaxVal}, ${smoothingVal}, ${choicesInit} }`;
   if (idx < params.length - 1) cppContent += ',';
   cppContent += '\n';
 });

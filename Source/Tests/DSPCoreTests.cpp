@@ -2327,7 +2327,7 @@ static void testEngineExtension()
         setSeq(ParamIDs::t2Seq3Dest, 15.0f);  // AMP LEVEL en el Timbre 2
         setSeq(ParamIDs::t2Seq3Step1, 63.0f);
 
-        ABDMS2000::SynthEngine &seqEngine = static_cast<ABDMS2000::SynthEngine &>(seqApvts);
+        ABDMS2000::SynthEngine seqEngine(seqApvts);
         seqEngine.prepare(48000.0, 512);
         seqEngine.updateParametersFromAPVTS();
         seqEngine.testGetModSequencer().advanceClock(512);

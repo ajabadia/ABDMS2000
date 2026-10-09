@@ -91,7 +91,7 @@ void MIDITelemetryManager::processIncomingMidi(juce::MidiBuffer &midiMessages) n
 
                     if (activityCallback_)
                     {
-                        activityCallback_({ch, ccNum, ccVal, true, info->paramId});
+                        activityCallback_({ch, ccNum, ccVal, true, info ? info->paramId : nullptr});
                     }
                 }
             }

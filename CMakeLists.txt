@@ -304,9 +304,9 @@ add_executable(ABDMS2000_Tests
     Source/DSP/Sequencer/ModSequencer.cpp
     Source/DSP/Sequencer/Arpeggiator.cpp
     Source/DSP/Effects/ModFX.cpp
-    Source/DSP/Effects/DelayFX.cpp
+    Source/DSP/Effects/MS2KDelay.cpp
     Source/DSP/Effects/Equalizer.cpp
-    Source/DSP/Vocoder/Vocoder16Band.cpp
+    Source/DSP/Vocoder/MS2KVocoder16Band.cpp
     Source/State/ParameterRegistry.gen.cpp
     Source/MIDI/MIDIMap.cpp
     Source/MIDI/MIDITelemetryManager.cpp
@@ -339,6 +339,7 @@ target_include_directories(ABDMS2000_Tests PRIVATE Source/Plugin)
 
 target_include_directories(ABDMS2000_Tests PRIVATE
     Source
+    Source/Core
     Source/DSP
     Source/DSP/Common
     Source/DSP/Oscillators

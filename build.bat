@@ -55,12 +55,16 @@ if %ERRORLEVEL% neq 0 (
 )
 
 echo [2/6] Compilando modulo WebAssembly WASM...
-pushd wasm
-call build_wasm.bat
-popd
-if %ERRORLEVEL% neq 0 (
-    echo [ERROR] Fallo en la compilacion WebAssembly WASM.
-    goto error_exit
+if defined SKIP_WASM (
+    echo [SKIP] WASM omitido (SKIP_WASM=1). Continuing con los pasos nativos.
+) else (
+    pushd wasm
+    call build_wasm.bat
+    popd
+    if %ERRORLEVEL% neq 0 (
+        echo [ERROR] Fallo en la compilacion WebAssembly WASM.
+        goto error_exit
+    )
 )
 
 echo [3/6] Actualizando version de build y empaquetado WebUI...

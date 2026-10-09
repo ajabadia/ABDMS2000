@@ -31,6 +31,15 @@ struct ParameterMeta {
     ParamType type;
     const char* unit;
     int sysexOffset; // -1 if none (auto-computed by generator)
+    // Nuevos campos para el sistema schema-driven (ABDEep-style):
+    int wire;          // -1=None, 0=CC, 1=SysEx, 2=Nrpn
+    int wireCodec;     // 0=Value, 1=Bipolar, 2=Enum
+    int curve;         // 0=Linear, 1=Exp, 2=Pow, 3=Lut
+    float curveP0;     // parametro P0 de la curva (ej. escala para Exp)
+    float curveP1;     // parametro P1 de la curva (ej. exponente para Pow)
+    float domainMin;   // minimo fisico (ej. 20.0 Hz)
+    float domainMax;   // maximo fisico (ej. 20000.0 Hz)
+    int smoothing;     // 0=Linear, 1=Log
     std::vector<const char*> choices;
 };
 
