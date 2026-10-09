@@ -1,39 +1,40 @@
 {
-  "name": "abdms2000",
-  "version": "1.0.0",
-  "type": "module",
-  "description": "Virtual Korg MS2000 & microKORG Hybrid Synthesizer",
-  "scripts": {
-    "generate": "node Scripts/registry_generator.js && node Scripts/generate_host_model_id.js",
-    "check:registry": "node Scripts/registry_generator.js --check",
-    "bundle": "node Scripts/build_webui.js",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:visual": "playwright test",
-    "test:visual:update": "playwright test --update-snapshots",
-    "sync:scope": "node Scripts/sync_scope.js"
-  },
-  "keywords": [
-    "synth",
-    "korg",
-    "ms2000",
-    "microkorg",
-    "juce8",
-    "webview2",
-    "wasm"
-  ],
-  "author": "ajabadia",
-  "license": "UNLICENSED",
-  "dependencies": {
-    "@abdsynths/midi-keyb": "workspace:*",
-    "@abdsynths/shared": "workspace:*"
-  },
-  "devDependencies": {
-    "@playwright/test": "^1.44.0",
-    "dexie": "^4.4.5",
-    "file-saver": "^2.0.5",
-    "jszip": "^3.10.1",
-    "vite": "^8.3.2",
-    "vitest": "^4.1.11"
-  }
+    "name":  "abdms2000",
+    "version":  "1.0.0",
+    "type":  "module",
+    "description":  "Virtual Korg MS2000 \u0026 microKORG Hybrid Synthesizer",
+    "scripts":  {
+                    "generate":  "node Scripts/registry_generator.js \u0026\u0026 node Scripts/generate_host_model_id.js",
+                    "check:registry":  "node Scripts/registry_generator.js --check",
+                    "bundle":  "node Scripts/build_webui.js",
+                    "test":  "vitest run",
+                    "test:watch":  "vitest",
+                    "test:visual":  "playwright test",
+                    "test:visual:update":  "playwright test --update-snapshots",
+                    "sync:scope":  "node Scripts/sync_scope.js"
+                },
+    "keywords":  [
+                     "synth",
+                     "korg",
+                     "ms2000",
+                     "microkorg",
+                     "juce8",
+                     "webview2",
+                     "wasm"
+                 ],
+    "author":  "ajabadia",
+    "license":  "UNLICENSED",
+    "dependencies":  {
+                         "@abdsynths/bank-manager-ui":  "workspace:*",
+                         "@abdsynths/midi-keyb":  "workspace:*",
+                         "@abdsynths/shared":  "workspace:*"
+                     },
+    "devDependencies":  {
+                            "@playwright/test":  "^1.44.0",
+                            "dexie":  "^4.4.5",
+                            "file-saver":  "^2.0.5",
+                            "jszip":  "^3.10.1",
+                            "vite":  "^8.3.2",
+                            "vitest":  "^4.1.11"
+                        }
 }
