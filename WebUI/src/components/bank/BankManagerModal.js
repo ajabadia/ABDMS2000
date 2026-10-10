@@ -135,9 +135,12 @@ export class BankManagerModal {
     this.container = options.container || document.body;
     this.iframeSrc = options.iframeSrc || resolveDefaultIframeSrc();
     this.synthBridge = options.synthBridge || null;
+    this.mode = options.mode || 'iframe';
+    this._mountFn = options.mount || null;
+    this._mounted = false;
     this.isOpen = false;
 
-    // Expose bridge globally to child iframe
+    // Expose bridge globally to child iframe / direct components
     if (this.synthBridge && !window.__synthBridge) {
       window.__synthBridge = this.synthBridge;
     }
@@ -171,16 +174,29 @@ export class BankManagerModal {
     this.modal = document.createElement('div');
     this.modal.className = 'abdbank-modal-container';
 
-    this.modal.innerHTML = `
-      <header class="abdbank-modal-header">
-        <div class="abdbank-modal-heading">
-          <span class="abdbank-modal-title">ABD BANK MANAGER</span>
-          <span class="abdbank-modal-subtitle">Biblioteca universal de bancos y parches</span>
-        </div>
-        <button class="abdbank-close-floating-btn" id="abdbank-close-floating-btn" title="Cerrar (Esc)">&times;</button>
-      </header>
-      <iframe class="abdbank-iframe" id="abdbank-iframe" src="${this.iframeSrc}"></iframe>
-    `;
+    if (this.mode === 'dom') {
+      this.modal.innerHTML = `
+        <header class="abdbank-modal-header">
+          <div class="abdbank-modal-heading">
+            <span class="abdbank-modal-title">ABD BANK MANAGER</span>
+            <span class="abdbank-modal-subtitle">Biblioteca universal de bancos y parches</span>
+          </div>
+          <button class="abdbank-close-floating-btn" id="abdbank-close-floating-btn" title="Cerrar (Esc)">&times;</button>
+        </header>
+        <div class="abdbank-embedded-content" id="abdbank-embedded-content"></div>
+      `;
+    } else {
+      this.modal.innerHTML = `
+        <header class="abdbank-modal-header">
+          <div class="abdbank-modal-heading">
+            <span class="abdbank-modal-title">ABD BANK MANAGER</span>
+            <span class="abdbank-modal-subtitle">Biblioteca universal de bancos y parches</span>
+          </div>
+          <button class="abdbank-close-floating-btn" id="abdbank-close-floating-btn" title="Cerrar (Esc)">&times;</button>
+        </header>
+        <iframe class="abdbank-iframe" id="abdbank-iframe" src="${this.iframeSrc}"></iframe>
+      `;
+    }
 
     this.overlay.appendChild(this.modal);
     this.container.appendChild(this.overlay);
@@ -190,15 +206,34 @@ export class BankManagerModal {
       if (e.target === this.overlay) this.close();
     });
 
-    const iframe = this.modal.querySelector('#abdbank-iframe');
-    iframe.addEventListener('load', () => {
-      const currentTheme = document.documentElement.getAttribute('data-theme') || 'ms2000';
-      this.setTheme(currentTheme);
-    });
+    if (this.mode !== 'dom') {
+      const iframe = this.modal.querySelector('#abdbank-iframe');
+      iframe?.addEventListener('load', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'ms2000';
+        this.setTheme(currentTheme);
+      });
+    }
+  }
+
+  async _ensureMounted() {
+    if (this.mode === 'dom' && !this._mounted) {
+      this._mounted = true;
+      const target = this.modal.querySelector('#abdbank-embedded-content');
+      if (typeof this._mountFn === 'function') {
+        this._unmountInstance = await this._mountFn(target, { bridge: this.synthBridge, theme: this.currentTheme });
+      } else {
+        const { mountBankManager } = await import('./mountBankManager.js');
+        this._unmountInstance = await mountBankManager(target, { bridge: this.synthBridge, theme: this.currentTheme });
+      }
+    }
   }
 
   setTheme(theme) {
     this.currentTheme = theme;
+    if (this.mode === 'dom') {
+      this.modal?.setAttribute('data-theme', theme);
+      return;
+    }
     const iframe = this.modal?.querySelector('#abdbank-iframe');
     if (iframe && iframe.contentDocument) {
       try {
@@ -224,6 +259,10 @@ export class BankManagerModal {
     const currentTheme = document.documentElement.getAttribute('data-theme') || 'ms2000';
     this.setTheme(currentTheme);
 
+    if (this.mode === 'dom') {
+      this._ensureMounted();
+    }
+
     // El foco entra al primer control del dialogo (el cierre del encabezado).
     this._focusContract.focusFirst();
   }
@@ -243,5 +282,13 @@ export class BankManagerModal {
   toggle() {
     if (this.isOpen) this.close();
     else this.open();
+  }
+
+  destroy() {
+    if (this._unmountInstance && typeof this._unmountInstance.unmount === 'function') {
+      this._unmountInstance.unmount();
+      this._unmountInstance = null;
+    }
+    this.overlay?.remove();
   }
 }

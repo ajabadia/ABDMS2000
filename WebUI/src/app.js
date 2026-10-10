@@ -12,11 +12,12 @@ import { ThemeSwitcher, mountFitStage } from '@abdsynths/shared/components';
 import '@abdsynths/shared/styles/components/widgets.css';
 import '@abdsynths/shared/styles/components/skins-junio.css';
 import '@abdsynths/midi-keyb/keyboard.css';
+import '@abdsynths/shared/styles/components/bank.css';
 import { slideDrawer } from './components/slideDrawer.js';
 import { createOverlayFocus } from '@abdsynths/shared/components';
 import { openWavetableBrowser, syncCatalogFromEngine, getWaveName } from './ui/wavetableBrowser.js';
 import { diagnosticModal } from './ui/diagnosticModal.js';
-import { BankManagerModal } from './components/bank/BankManagerModal.js';
+import { BankManagerModal } from '@abdsynths/bank-manager-ui';
 import {
   ABDKnob,
   ABDSlider,
@@ -65,9 +66,9 @@ document.addEventListener('DOMContentLoaded', () => {
   oscilloscopeModal = new OscilloscopeModal(bridge);
 
   // Instantiate Universal Bank Manager Modal (Full Native ABDBankManager WebUI).
-  // The iframe URL resolves automatically to the same-origin /abdbank/ copy so
-  // it works inside JUCE WebView2 (https://juce.backend/...) and in the browser.
+  // Supports direct DOM mounting (mode: 'dom') or sandboxed iframe (mode: 'iframe').
   bankManagerModal = new BankManagerModal({
+    mode: 'dom',
     synthBridge: bridge
   });
 
