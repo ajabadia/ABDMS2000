@@ -37,7 +37,7 @@ inline constexpr int kNumVirtualPatchSlotsAdvanced = 8;  // Extended slots
 // Korg SysEx constants
 inline constexpr uint8_t kKorgManufacturerId = 0x42;  // Korg manufacturer ID
 inline constexpr uint8_t kMS2000ModelId = 0x58;       // MS2000 model ID
-inline constexpr uint8_t kMicroKorgModelId = 0x5E;    // microKORG model ID
+inline constexpr uint8_t kMicroKorgModelId = 0x71;    // microKORG model ID (0x71 native, 0x58 legacy)
 
 // Modulation range constants
 inline constexpr float kMinPitchBend = -8192.0f;  // Pitch bend range minimum
