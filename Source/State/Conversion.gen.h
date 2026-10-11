@@ -21,13 +21,14 @@ inline float normalizedToDomain (const ParameterMeta& entry, float t) noexcept
     // Clamp t to [0,1] para evitar desbordamiento o NaN
     float tClamped = std::clamp(t, 0.0f, 1.0f);
 
-    // Si wire es None (-1), no hay conversion de wire -> dominio; devolvemos tClamped.
-    if (entry.wire == -1) {
-        if (entry.domainMin < entry.domainMax) {
-            return std::clamp(t, entry.domainMin, entry.domainMax);
-        }
-        return t;
-    }
+    // NOTA: wire (transporte: -1=None, 0=CC, 1=SysEx, 2=Nrpn) es ORTOGONOAL al
+    // mapeo de dominio y NO debe cortar aqui. Antes existia un branch
+    // `if (wire == -1)` que devolvia clamp(t, domainMin, domainMax) — unidades
+    // mezcladas (t normalizado 0..1 clamped a un rango fisico como [-12,+12]
+    // dB), lo que rompia normalizedToDomain de todo param sin transporte
+    // (p.ej. eqLowGain/eqHighGain: el master EQ recibia 0..1 en vez de
+    // -12..+12 dB). Todos los params caen ahora al mismo curve switch de
+    // abajo, que ya resuelve el caso sin rango fisico (devuelve t).
 
     // Extremos matematicos exactos (evita errores de redondeo float en e^(p1) o pow)
     if (entry.domainMin < entry.domainMax) {
