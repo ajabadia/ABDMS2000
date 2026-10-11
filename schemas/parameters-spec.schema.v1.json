@@ -202,7 +202,13 @@
       "min": 0,
       "max": 127,
       "default": 127,
-      "type": "integer"
+      "type": "integer",
+      "wire": "CC",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0,
+      "smoothing": "Linear"
     },
     {
       "id": "mixOsc2Level",
@@ -212,7 +218,13 @@
       "min": 0,
       "max": 127,
       "default": 0,
-      "type": "integer"
+      "type": "integer",
+      "wire": "CC",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0,
+      "smoothing": "Linear"
     },
     {
       "id": "mixNoiseLevel",
@@ -222,7 +234,13 @@
       "min": 0,
       "max": 127,
       "default": 0,
-      "type": "integer"
+      "type": "integer",
+      "wire": "CC",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0,
+      "smoothing": "Linear"
     },
     {
       "id": "filterType",
@@ -311,7 +329,13 @@
       "min": 0,
       "max": 127,
       "default": 100,
-      "type": "integer"
+      "type": "integer",
+      "wire": "None",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0,
+      "smoothing": "Linear"
     },
     {
       "id": "ampPan",
@@ -321,7 +345,13 @@
       "min": -64,
       "max": 63,
       "default": 0,
-      "type": "integer"
+      "type": "integer",
+      "wire": "CC",
+      "wireCodec": "Bipolar",
+      "curve": "Linear",
+      "domainMin": -1.0,
+      "domainMax": 1.0,
+      "smoothing": "Linear"
     },
     {
       "id": "ampDistortion",
@@ -2567,7 +2597,13 @@
       "min": 0,
       "max": 127,
       "default": 127,
-      "type": "integer"
+      "type": "integer",
+      "wire": "None",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0,
+      "smoothing": "Linear"
     },
     {
       "id": "t2MixOsc2Level",
@@ -2577,7 +2613,13 @@
       "min": 0,
       "max": 127,
       "default": 0,
-      "type": "integer"
+      "type": "integer",
+      "wire": "None",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0,
+      "smoothing": "Linear"
     },
     {
       "id": "t2MixNoiseLevel",
@@ -2587,7 +2629,13 @@
       "min": 0,
       "max": 127,
       "default": 0,
-      "type": "integer"
+      "type": "integer",
+      "wire": "None",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0,
+      "smoothing": "Linear"
     },
     {
       "id": "t2FilterType",
@@ -2680,7 +2728,13 @@
       "min": 0,
       "max": 127,
       "default": 100,
-      "type": "integer"
+      "type": "integer",
+      "wire": "None",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0,
+      "smoothing": "Linear"
     },
     {
       "id": "t2AmpPan",
@@ -2690,7 +2744,13 @@
       "min": -64,
       "max": 63,
       "default": 0,
-      "type": "integer"
+      "type": "integer",
+      "wire": "None",
+      "wireCodec": "Bipolar",
+      "curve": "Linear",
+      "domainMin": -1.0,
+      "domainMax": 1.0,
+      "smoothing": "Linear"
     },
     {
       "id": "t2AmpDistortion",

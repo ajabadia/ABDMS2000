@@ -2490,6 +2490,35 @@ static void testDspConversionsAndClamping()
         check(g1 == 12.0f, "eqLowGain t=1 is +12dB");
     }
 
+    // 2d. Mixer Levels & Amp (Linear [0.0 .. 1.0], ampPan Bipolar [-1.0 .. +1.0])
+    if (const auto* mix1 = ParameterRegistry::getParameter("mixOsc1Level"))
+    {
+        float m0 = conversion::normalizedToDomain(*mix1, 0.0f);
+        float mMid = conversion::normalizedToDomain(*mix1, 0.5f);
+        float m1 = conversion::normalizedToDomain(*mix1, 1.0f);
+        check(m0 == 0.0f, "mixOsc1Level t=0 is 0.0");
+        check(std::abs(mMid - 0.5f) < 1e-4f, "mixOsc1Level t=0.5 is 0.5");
+        check(m1 == 1.0f, "mixOsc1Level t=1 is 1.0");
+    }
+
+    if (const auto* aLevel = ParameterRegistry::getParameter("ampLevel"))
+    {
+        float a0 = conversion::normalizedToDomain(*aLevel, 0.0f);
+        float a1 = conversion::normalizedToDomain(*aLevel, 1.0f);
+        check(a0 == 0.0f, "ampLevel t=0 is 0.0");
+        check(a1 == 1.0f, "ampLevel t=1 is 1.0");
+    }
+
+    if (const auto* aPan = ParameterRegistry::getParameter("ampPan"))
+    {
+        float p0 = conversion::normalizedToDomain(*aPan, 0.0f);
+        float pMid = conversion::normalizedToDomain(*aPan, 0.5f);
+        float p1 = conversion::normalizedToDomain(*aPan, 1.0f);
+        check(p0 == -1.0f, "ampPan t=0 is -1.0 (L)");
+        check(std::abs(pMid - 0.0f) < 1e-4f, "ampPan t=0.5 is 0.0 (C)");
+        check(p1 == 1.0f, "ampPan t=1 is 1.0 (R)");
+    }
+
     // 3. Robustez masiva sobre todos los parámetros registrados (DSP.10)
     const auto& allParams = ParameterRegistry::getAllParameters();
     bool allValid = true;

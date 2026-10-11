@@ -83,6 +83,11 @@ los cierres del contrato; doble cierre = no-op). Suite: vitest **134/134**.
 - [x] DSP.12 - Migrar parámetros de EQ (`eqLowGain`, `eqHighGain`) y ModFX (`modFxDepth`) en `SynthEngine.cpp` a `conversion::normalizedToDomain()`
 - [x] DSP.13 - Tests de paridad para `modFxSpeed` (Exp $[0.02\text{ Hz} \dots 15.0\text{ Hz}]$) y `eqLowGain` ($\pm 12\text{ dB}$) en `DSPCoreTests.cpp` (395 tests C++)
 
+**Iteración 4** (Completada):
+- [x] DSP.14 - Metadatos canónicos de dominio para bloques Mixer y Amp (`mixOsc1Level`, `mixOsc2Level`, `mixNoiseLevel`, `ampLevel`, `ampPan`, y espejos de Timbre 2 `t2*` con `wire: None`)
+- [x] DSP.15 - Migración en `SynthEngine.cpp` de niveles de mezclador (`osc1Level`, `osc2Level`, `noiseLevel`) y `ampLevel` a `conversion::normalizedToDomain()`
+- [x] DSP.16 - Tests de paridad para Mixer (Linear $[0.0 \dots 1.0]$), Amp Level ($[0.0 \dots 1.0]$) y Amp Pan (Bipolar Linear $[-1.0 \dots +1.0]$) en `DSPCoreTests.cpp` (Case 29)
+
 ---
 
 ## 📌 Tareas Futuras y Validación Cruzada (Backlog)

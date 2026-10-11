@@ -216,6 +216,12 @@ export const PARAMETERS_SPEC = {
       "max": 127,
       "default": 127,
       "type": "integer",
+      "wire": "CC",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0,
+      "domainMax": 1,
+      "smoothing": "Linear",
       "sysexOffset": 11
     },
     {
@@ -227,6 +233,12 @@ export const PARAMETERS_SPEC = {
       "max": 127,
       "default": 0,
       "type": "integer",
+      "wire": "CC",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0,
+      "domainMax": 1,
+      "smoothing": "Linear",
       "sysexOffset": 12
     },
     {
@@ -238,6 +250,12 @@ export const PARAMETERS_SPEC = {
       "max": 127,
       "default": 0,
       "type": "integer",
+      "wire": "CC",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0,
+      "domainMax": 1,
+      "smoothing": "Linear",
       "sysexOffset": 13
     },
     {
@@ -333,6 +351,12 @@ export const PARAMETERS_SPEC = {
       "max": 127,
       "default": 100,
       "type": "integer",
+      "wire": "None",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0,
+      "domainMax": 1,
+      "smoothing": "Linear",
       "sysexOffset": 19
     },
     {
@@ -344,6 +368,12 @@ export const PARAMETERS_SPEC = {
       "max": 63,
       "default": 0,
       "type": "integer",
+      "wire": "CC",
+      "wireCodec": "Bipolar",
+      "curve": "Linear",
+      "domainMin": -1,
+      "domainMax": 1,
+      "smoothing": "Linear",
       "sysexOffset": 20
     },
     {
@@ -2657,6 +2687,12 @@ export const PARAMETERS_SPEC = {
       "max": 127,
       "default": 127,
       "type": "integer",
+      "wire": "None",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0,
+      "domainMax": 1,
+      "smoothing": "Linear",
       "sysexOffset": 151
     },
     {
@@ -2668,6 +2704,12 @@ export const PARAMETERS_SPEC = {
       "max": 127,
       "default": 0,
       "type": "integer",
+      "wire": "None",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0,
+      "domainMax": 1,
+      "smoothing": "Linear",
       "sysexOffset": 152
     },
     {
@@ -2679,6 +2721,12 @@ export const PARAMETERS_SPEC = {
       "max": 127,
       "default": 0,
       "type": "integer",
+      "wire": "None",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0,
+      "domainMax": 1,
+      "smoothing": "Linear",
       "sysexOffset": 153
     },
     {
@@ -2778,6 +2826,12 @@ export const PARAMETERS_SPEC = {
       "max": 127,
       "default": 100,
       "type": "integer",
+      "wire": "None",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0,
+      "domainMax": 1,
+      "smoothing": "Linear",
       "sysexOffset": 160
     },
     {
@@ -2789,6 +2843,12 @@ export const PARAMETERS_SPEC = {
       "max": 63,
       "default": 0,
       "type": "integer",
+      "wire": "None",
+      "wireCodec": "Bipolar",
+      "curve": "Linear",
+      "domainMin": -1,
+      "domainMax": 1,
+      "smoothing": "Linear",
       "sysexOffset": 161
     },
     {

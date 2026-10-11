@@ -202,7 +202,7 @@ void SynthEngine::readTimbreParams(bool second, VoiceParameters &vp) noexcept
     vp.osc1DwgsIndex = static_cast<int>(P(ParamIDs::osc1DwgsWave, 0.0f));
     vp.osc1Ctrl1 = P(ParamIDs::osc1Ctrl1, 0.0f) / 127.0f;
     vp.osc1Ctrl2 = P(ParamIDs::osc1Ctrl2, 0.0f) / 127.0f;
-    vp.osc1Level = P(ParamIDs::mixOsc1Level, 127.0f) / 127.0f;
+    vp.osc1Level = conversion::normalizedToDomain("mixOsc1Level", P(ParamIDs::mixOsc1Level, 127.0f) / 127.0f);
 
     // OSC 2
     int o2w = static_cast<int>(P(ParamIDs::osc2Wave, 0.0f));
@@ -211,10 +211,10 @@ void SynthEngine::readTimbreParams(bool second, VoiceParameters &vp) noexcept
     vp.osc2Tune = P(ParamIDs::osc2Tune, 0.0f);
     int modMode = static_cast<int>(P(ParamIDs::osc2ModType, 0.0f));
     vp.osc2ModMode = static_cast<OSC2ModulationMode>(std::min(modMode, 3));
-    vp.osc2Level = P(ParamIDs::mixOsc2Level, 0.0f) / 127.0f;
+    vp.osc2Level = conversion::normalizedToDomain("mixOsc2Level", P(ParamIDs::mixOsc2Level, 0.0f) / 127.0f);
 
     // Noise
-    vp.noiseLevel = P(ParamIDs::mixNoiseLevel, 0.0f) / 127.0f;
+    vp.noiseLevel = conversion::normalizedToDomain("mixNoiseLevel", P(ParamIDs::mixNoiseLevel, 0.0f) / 127.0f);
 
     // Filter
     int fType = static_cast<int>(P(ParamIDs::filterType, 0.0f));
@@ -257,7 +257,7 @@ void SynthEngine::readTimbreParams(bool second, VoiceParameters &vp) noexcept
     vp.lfo2SyncNote = static_cast<int>(P(ParamIDs::lfo2SyncNote, 4.0f));
 
     // Amp
-    vp.ampLevel = P(ParamIDs::ampLevel, 100.0f) / 127.0f;
+    vp.ampLevel = conversion::normalizedToDomain("ampLevel", P(ParamIDs::ampLevel, 100.0f) / 127.0f);
     vp.panpot = P(ParamIDs::ampPan, 0.0f) / 64.0f;
     vp.distortionOn = (P(ParamIDs::ampDistortion, 0.0f) > 0.5f);
     vp.ampKeyTrack = P(ParamIDs::ampKeyTrack, 0.0f) / 63.0f;
