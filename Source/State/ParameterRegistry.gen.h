@@ -118,6 +118,15 @@ namespace ParamIDs {
     inline constexpr const char* arpGate = "arpGate";
     inline constexpr const char* arpLatch = "arpLatch";
     inline constexpr const char* arpResolution = "arpResolution";
+    inline constexpr const char* arpLastStep = "arpLastStep";
+    inline constexpr const char* arpStep1 = "arpStep1";
+    inline constexpr const char* arpStep2 = "arpStep2";
+    inline constexpr const char* arpStep3 = "arpStep3";
+    inline constexpr const char* arpStep4 = "arpStep4";
+    inline constexpr const char* arpStep5 = "arpStep5";
+    inline constexpr const char* arpStep6 = "arpStep6";
+    inline constexpr const char* arpStep7 = "arpStep7";
+    inline constexpr const char* arpStep8 = "arpStep8";
     inline constexpr const char* modSeqResolution = "modSeqResolution";
     inline constexpr const char* assignablePedal = "assignablePedal";
     inline constexpr const char* assignableSwitch = "assignableSwitch";

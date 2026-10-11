@@ -9,6 +9,7 @@ using abd::hw::SysExCodec;
 #include <vector>
 #include "MS2000HardwareProgram.h"
 #include "MS2000ProgramData.h"
+#include "MicroKorgHardwareProgram.h"
 
 namespace ABDMS2000
 {
@@ -210,15 +211,35 @@ class SysExManager
                                                    const juce::AudioProcessorValueTreeState &apvts,
                                                    const std::string &name = {});
 
+    // ─── Formato físico microKORG (254 B especializados) ─────────────────────
+    void setSynthMode(int mode) noexcept { synthMode_ = mode; }
+    int getSynthMode() const noexcept { return synthMode_; }
+
+    bool hasMicrokorgProgram() const noexcept { return microkorgProgramValid_; }
+    const MicroKorgHardwareProgram &getMicrokorgProgram() const noexcept { return microkorgProgram_; }
+    void setMicrokorgProgram(const MicroKorgHardwareProgram &program) noexcept
+    {
+        microkorgProgram_ = program;
+        microkorgProgramValid_ = true;
+    }
+
+    std::vector<uint8_t> createMicrokorgProgramDump(int channel,
+                                                    const juce::AudioProcessorValueTreeState &apvts,
+                                                    const std::string &name = {});
+
   private:
     std::array<MS2000ProgramData, BANK_SIZE> bank_ {};
     int activeProgramIndex_ {0};
+    int synthMode_ {0};
 
     MS2000HardwareProgram hardwareProgram_ {};
     bool hardwareProgramValid_ {false};
     std::vector<MS2000HardwareProgram> hardwareBank_;
 
-    bool isKorgHeader(const uint8_t *data, size_t size, int &outChannel, uint8_t &outFunction) const noexcept;
+    MicroKorgHardwareProgram microkorgProgram_ {};
+    bool microkorgProgramValid_ {false};
+
+    bool isKorgHeader(const uint8_t *data, size_t size, int &outChannel, uint8_t &outFunction, uint8_t &outModelId) const noexcept;
 };
 
 }  // namespace ABDMS2000

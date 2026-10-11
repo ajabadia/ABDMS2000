@@ -63,9 +63,6 @@
         [[nodiscard]] const VoiceParameters &testGetVoiceParamsB() const noexcept { return voiceParamsB_; }
         void testApplySeqModulation(bool second, VoiceParameters &out) const noexcept { const_cast<SynthEngine &>(*this).applySeqModulation(second, out); }
 
-      private:
-        std::atomic<bool> testToneEnabled_ {false};
-
         // Procesa un bloque de audio completo (thread de audio)
         void processBlock(juce::AudioBuffer<float> &buffer,
                           juce::MidiBuffer &midiMessages,
@@ -127,7 +124,6 @@
             return vocoder_;
         }
 
-      protected:
         // Sincronización completa de parámetros desde APVTS
         void updateParametersFromAPVTS() noexcept;
         void triggerArpNote(int note, float velocity, bool isNoteOn) noexcept;
@@ -180,6 +176,7 @@
         std::atomic<DiagnosticTonePoint> diagTonePoint_ {DiagnosticTonePoint::Disabled};
         std::atomic<float> testToneFrequency_ {440.0f};
         std::atomic<float> testToneLevel_ {0.25f};
+        std::atomic<bool> testToneEnabled_ {false};
         std::atomic<bool> diagBypassFilter_ {false};
         std::atomic<bool> diagBypassVCA_ {false};
         std::atomic<bool> diagBypassOscMixer_ {false};

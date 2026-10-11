@@ -10,3 +10,5 @@ export { ABDFilmstripFader } from './ABDFilmstripFader.js';
 export { ABDSelect } from './ABDSelect.js';
 export { ABDSegmented } from './ABDSegmented.js';
 export { ABDToggle } from './ABDToggle.js';
+export { ABDSwitch } from './ABDSwitch.js';
+export { ABDVerticalSlider } from './ABDVerticalSlider.js';

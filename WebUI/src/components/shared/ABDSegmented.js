@@ -65,12 +65,24 @@ export class ABDSegmented {
             onChange: (idx) => this.handleChange(idx),
         });
 
+        if (this.layout && this.layout !== 'row') {
+            this.segmented.wrapper.classList.add(`abd-segmented--${this.layout}`);
+        }
+        if (options.className) {
+            this.segmented.wrapper.classList.add(options.className);
+        }
+
         // Store value mapping for getValue/setValue
         this.valueToIndex = new Map();
         this.indexToValue = new Map();
         this.rawOptions.forEach((opt, idx) => {
-            this.valueToIndex.set(opt.value, idx);
-            this.indexToValue.set(idx, opt.value);
+            if (typeof opt === 'object' && opt !== null && opt.value !== undefined) {
+                this.valueToIndex.set(opt.value, idx);
+                this.indexToValue.set(idx, opt.value);
+            } else {
+                this.valueToIndex.set(idx, idx);
+                this.indexToValue.set(idx, idx);
+            }
         });
 
         if (this.paramId) {
@@ -79,8 +91,14 @@ export class ABDSegmented {
     }
 
     findIndexByValue(value) {
+        const n = Math.round(Number(value));
         for (let i = 0; i < this.rawOptions.length; i++) {
-            if (this.rawOptions[i].value === value) return i;
+            const opt = this.rawOptions[i];
+            if (typeof opt === 'object' && opt !== null) {
+                if (opt.value === value || opt.value === n) return i;
+            } else if (i === value || i === n) {
+                return i;
+            }
         }
         return 0;
     }
@@ -98,10 +116,18 @@ export class ABDSegmented {
 
     /** Programmatic update — does NOT fire onChange. */
     setValue(value, notify = false) {
-        const idx = this.valueToIndex.get(value) ?? this.findIndexByValue(value);
-        this.segmented.setValue(idx);
+        let idx = this.valueToIndex.get(value);
+        if (idx === undefined) {
+            const num = Math.round(Number(value));
+            idx = this.valueToIndex.get(num);
+        }
+        if (idx === undefined) {
+            idx = this.findIndexByValue(value);
+        }
+        this.segmented.setValue(idx ?? 0);
         if (notify && this.onChange) {
-            this.onChange(value, this.paramId);
+            const realVal = this.indexToValue.get(idx) ?? idx;
+            this.onChange(realVal, this.paramId);
         }
     }
 

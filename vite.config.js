@@ -7,7 +7,7 @@ export default defineConfig({
     port: 8384,
     strictPort: true,
     fs: {
-      allow: ['..']
+      allow: ['..', '../..']
     }
   },
   plugins: [

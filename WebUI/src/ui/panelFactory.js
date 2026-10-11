@@ -19,7 +19,7 @@
  *   "custom"     — user-supplied renderFn handles HTML, factory only wires events
  */
 
-import { ABDKnob, ABDSelect, ABDToggle, ABDFilmstripFader } from '../components/shared/index.js';
+import { ABDKnob, ABDSelect, ABDToggle, ABDFilmstripFader, ABDSegmented, ABDVerticalSlider } from '../components/shared/index.js';
 import { PARAM_LOOKUP } from '../contracts/registry.gen.js';
 import { paramStore } from '../contracts/paramStore.js';
 import { openWavetableBrowser, syncCatalogFromEngine } from './wavetableBrowser.js';
@@ -32,6 +32,9 @@ function esc(str) {
 }
 
 function selectHtml(param, extraClass = '') {
+  if (param.id === 'seqLastStep' || param.id === 't2SeqLastStep') {
+    return `<div id="select-${param.id}" class="select-row"></div>`;
+  }
   if (!param.choices || param.choices.length === 0) return '';
   return `<div id="select-${param.id}" class="select-row"></div>`;
 }
@@ -43,6 +46,10 @@ function toggleHtml(param) {
       <span class="korg-toggle-btn">${esc(param.name).toUpperCase()}</span>
     </label>
   </div>`;
+}
+
+function segmentedHtml(param) {
+  return `<div id="segmented-${param.id}" class="segmented-row" style="margin: 4px 0; width: 100%;"></div>`;
 }
 
 function knobContainerHtml(param) {
@@ -72,6 +79,18 @@ function wireSelect(container, paramId, bridge, parser = parseInt) {
   const el = container.querySelector(`#select-${paramId}`);
   if (!el) return;
 
+  if (paramId === 'seqLastStep' || paramId === 't2SeqLastStep') {
+    new ABDSelect(el, {
+      paramId,
+      label: 'LAST STEP',
+      options: Array.from({ length: 16 }, (_, i) => ({
+        value: i + 1,
+        label: `${i + 1} STEPS`
+      })),
+    });
+    return;
+  }
+
   const param = PARAM_LOOKUP[paramId];
   if (!param || !param.choices) return;
 
@@ -81,6 +100,244 @@ function wireSelect(container, paramId, bridge, parser = parseInt) {
     options: param.choices,
     onChange: (val) => bridge.setParam(paramId, parser(val, 10)),
   });
+}
+
+const SEGMENTED_PARAM_IDS = new Set([
+  'arpRange',
+  'arpResolution',
+  'arpType',
+  'modFxType',
+  'delayType',
+  'osc2Wave',
+  'osc2ModType',
+  'filterType',
+  'voiceMode',
+  'lfo1Wave',
+  'lfo2Wave',
+  'lfo1KeySync',
+  'lfo2KeySync',
+  'modSeqType',
+  'vocoderCarrierSrc',
+  'vocoderFormantShift',
+]);
+
+function isSegmented(paramId) {
+  return SEGMENTED_PARAM_IDS.has(paramId);
+}
+
+function wireSegmented(container, paramId, bridge) {
+  const el = container.querySelector(`#segmented-${paramId}`);
+  if (!el) return;
+
+  if (paramId === 'arpRange') {
+    new ABDSegmented(el, {
+      paramId: 'arpRange',
+      label: 'RANGE',
+      options: [
+        { value: 1, label: '1 OCT' },
+        { value: 2, label: '2 OCT' },
+        { value: 3, label: '3 OCT' },
+        { value: 4, label: '4 OCT' },
+      ],
+      variant: 'strip',
+      size: 'sm',
+      onChange: (val) => bridge.setParam('arpRange', val),
+    });
+  } else if (paramId === 'arpResolution') {
+    new ABDSegmented(el, {
+      paramId: 'arpResolution',
+      label: 'RESOLUTION',
+      options: [
+        { value: 2, label: '1/24' },
+        { value: 3, label: '1/16' },
+        { value: 4, label: '1/12' },
+        { value: 5, label: '1/8' },
+        { value: 6, label: '1/6' },
+        { value: 7, label: '1/4' },
+      ],
+      variant: 'strip',
+      size: 'sm',
+      onChange: (val) => bridge.setParam('arpResolution', val),
+    });
+  } else if (paramId === 'arpType') {
+    new ABDSegmented(el, {
+      paramId: 'arpType',
+      label: 'TYPE',
+      options: [
+        { value: 0, label: 'UP' },
+        { value: 1, label: 'DOWN' },
+        { value: 2, label: 'ALT 1' },
+        { value: 3, label: 'ALT 2' },
+        { value: 4, label: 'RANDOM' },
+        { value: 5, label: 'TRIGGER' },
+      ],
+      variant: 'strip',
+      size: 'sm',
+      onChange: (val) => bridge.setParam('arpType', val),
+    });
+  } else if (paramId === 'modFxType') {
+    new ABDSegmented(el, {
+      paramId: 'modFxType',
+      label: 'TYPE',
+      options: [
+        { value: 0, label: 'CHORUS' },
+        { value: 1, label: 'ENSEMBLE' },
+        { value: 2, label: 'PHASER' },
+      ],
+      variant: 'strip',
+      size: 'sm',
+      onChange: (val) => bridge.setParam('modFxType', val),
+    });
+  } else if (paramId === 'delayType') {
+    new ABDSegmented(el, {
+      paramId: 'delayType',
+      label: 'TYPE',
+      options: [
+        { value: 0, label: 'STEREO' },
+        { value: 1, label: 'CROSS' },
+        { value: 2, label: 'L / R' },
+      ],
+      variant: 'strip',
+      size: 'sm',
+      onChange: (val) => bridge.setParam('delayType', val),
+    });
+  } else if (paramId === 'osc2Wave') {
+    new ABDSegmented(el, {
+      paramId: 'osc2Wave',
+      label: 'WAVEFORM',
+      options: [
+        { value: 0, label: 'SAW' },
+        { value: 1, label: 'SQUARE' },
+        { value: 2, label: 'TRIANGLE' },
+      ],
+      variant: 'strip',
+      size: 'sm',
+      onChange: (val) => bridge.setParam('osc2Wave', val),
+    });
+  } else if (paramId === 'osc2ModType') {
+    new ABDSegmented(el, {
+      paramId: 'osc2ModType',
+      label: 'MODULATION',
+      options: [
+        { value: 0, label: 'OFF' },
+        { value: 1, label: 'RING' },
+        { value: 2, label: 'SYNC' },
+        { value: 3, label: 'CROSS' },
+      ],
+      variant: 'strip',
+      size: 'sm',
+      onChange: (val) => bridge.setParam('osc2ModType', val),
+    });
+  } else if (paramId === 'filterType') {
+    new ABDSegmented(el, {
+      paramId: 'filterType',
+      label: 'FILTER TYPE',
+      options: [
+        { value: 0, label: 'LPF 24dB' },
+        { value: 1, label: 'LPF 12dB' },
+        { value: 2, label: 'BPF 12dB' },
+        { value: 3, label: 'HPF 12dB' },
+      ],
+      variant: 'strip',
+      size: 'sm',
+      onChange: (val) => bridge.setParam('filterType', val),
+    });
+  } else if (paramId === 'voiceMode') {
+    new ABDSegmented(el, {
+      paramId: 'voiceMode',
+      label: 'VOICE ASSIGN',
+      options: [
+        { value: 0, label: 'MONO' },
+        { value: 1, label: 'POLY' },
+        { value: 2, label: 'UNISON' },
+      ],
+      variant: 'strip',
+      size: 'sm',
+      onChange: (val) => bridge.setParam('voiceMode', val),
+    });
+  } else if (paramId === 'lfo1Wave') {
+    new ABDSegmented(el, {
+      paramId: 'lfo1Wave',
+      label: 'WAVEFORM',
+      options: [
+        { value: 0, label: 'SAW' },
+        { value: 1, label: 'SQUARE' },
+        { value: 2, label: 'TRIANGLE' },
+        { value: 3, label: 'S&H' },
+      ],
+      variant: 'strip',
+      size: 'sm',
+      onChange: (val) => bridge.setParam('lfo1Wave', val),
+    });
+  } else if (paramId === 'lfo2Wave') {
+    new ABDSegmented(el, {
+      paramId: 'lfo2Wave',
+      label: 'WAVEFORM',
+      options: [
+        { value: 0, label: 'SAW' },
+        { value: 1, label: 'SQUARE' },
+        { value: 2, label: 'SINE' },
+        { value: 3, label: 'S&H' },
+      ],
+      variant: 'strip',
+      size: 'sm',
+      onChange: (val) => bridge.setParam('lfo2Wave', val),
+    });
+  } else if (paramId === 'lfo1KeySync' || paramId === 'lfo2KeySync') {
+    new ABDSegmented(el, {
+      paramId,
+      label: 'KEY SYNC',
+      options: [
+        { value: 0, label: 'OFF' },
+        { value: 1, label: 'TIMBRE' },
+        { value: 2, label: 'VOICE' },
+      ],
+      variant: 'strip',
+      size: 'sm',
+      onChange: (val) => bridge.setParam(paramId, val),
+    });
+  } else if (paramId === 'modSeqType') {
+    new ABDSegmented(el, {
+      paramId: 'modSeqType',
+      label: 'SEQ TYPE',
+      options: [
+        { value: 0, label: 'FORWARD' },
+        { value: 1, label: 'REVERSE' },
+        { value: 2, label: 'BOUNCE' },
+        { value: 3, label: 'RANDOM' },
+      ],
+      variant: 'strip',
+      size: 'sm',
+      onChange: (val) => bridge.setParam('modSeqType', val),
+    });
+  } else if (paramId === 'vocoderCarrierSrc') {
+    new ABDSegmented(el, {
+      paramId: 'vocoderCarrierSrc',
+      label: 'CARRIER',
+      options: [
+        { value: 0, label: 'SYNTH' },
+        { value: 1, label: 'EXT AUDIO' },
+      ],
+      variant: 'strip',
+      size: 'sm',
+      onChange: (val) => bridge.setParam('vocoderCarrierSrc', val),
+    });
+  } else if (paramId === 'vocoderFormantShift') {
+    new ABDSegmented(el, {
+      paramId: 'vocoderFormantShift',
+      label: 'FORMANT SHIFT',
+      options: [
+        { value: 0, label: '-2' },
+        { value: 1, label: '-1' },
+        { value: 2, label: '0' },
+        { value: 3, label: '+1' },
+        { value: 4, label: '+2' },
+      ],
+      variant: 'strip',
+      size: 'sm',
+      onChange: (val) => bridge.setParam('vocoderFormantShift', val),
+    });
+  }
 }
 
 function createKnob(container, param, bridge, opts = {}) {
@@ -205,6 +462,7 @@ function render2ColLayout(container, title, badge, leftParams, rightParams, left
   html += submoduleStart(leftTitle);
   leftParams.forEach(p => {
     if (p.type === 'boolean') html += toggleHtml(p);
+    else if (isSegmented(p.id)) html += segmentedHtml(p);
     else if (p.type === 'choice') html += selectHtml(p);
     else html += knobContainerHtml(p);
   });
@@ -214,6 +472,7 @@ function render2ColLayout(container, title, badge, leftParams, rightParams, left
   html += submoduleStart(rightTitle);
   rightParams.forEach(p => {
     if (p.type === 'boolean') html += toggleHtml(p);
+    else if (isSegmented(p.id)) html += segmentedHtml(p);
     else if (p.type === 'choice') html += selectHtml(p);
     else html += knobContainerHtml(p);
   });
@@ -225,6 +484,7 @@ function render2ColLayout(container, title, badge, leftParams, rightParams, left
   // Wire
   [...leftParams, ...rightParams].forEach(p => {
     if (p.type === 'boolean') wireCheckbox(container, p.id, bridge);
+    else if (isSegmented(p.id)) wireSegmented(container, p.id, bridge);
     else if (p.type === 'choice') wireSelect(container, p.id, bridge);
     else createKnob(container, p, bridge);
   });
@@ -516,6 +776,7 @@ function render3ColPanel(container, def, bridge) {
     html += submoduleStart(section.title);
     params.forEach(p => {
       if (p.type === 'boolean') html += toggleHtml(p);
+      else if (isSegmented(p.id)) html += segmentedHtml(p);
       else if (p.type === 'choice') html += selectHtml(p);
       else html += knobContainerHtml(p);
     });
@@ -531,6 +792,7 @@ function render3ColPanel(container, def, bridge) {
       const p = PARAM_LOOKUP[id];
       if (!p) return;
       if (p.type === 'boolean') wireCheckbox(container, p.id, bridge);
+      else if (isSegmented(p.id)) wireSegmented(container, p.id, bridge);
       else if (p.type === 'choice') wireSelect(container, p.id, bridge);
       else createKnob(container, p, bridge);
     });
@@ -595,7 +857,8 @@ function renderModSequencer(container, def, bridge) {
     const p = PARAM_LOOKUP[id];
     if (!p) return;
     if (p.type === 'boolean') html += toggleHtml(p);
-    else if (p.type === 'choice') html += selectHtml(p);
+    else if (isSegmented(p.id)) html += segmentedHtml(p);
+    else if (p.type === 'choice' || p.id === 'seqLastStep' || p.id === 't2SeqLastStep') html += selectHtml(p);
     else html += knobContainerHtml(p);
   });
 
@@ -607,7 +870,8 @@ function renderModSequencer(container, def, bridge) {
     const p = PARAM_LOOKUP[id];
     if (!p) return;
     if (p.type === 'boolean') wireCheckbox(container, p.id, bridge);
-    else if (p.type === 'choice') wireSelect(container, p.id, bridge);
+    else if (isSegmented(p.id)) wireSegmented(container, p.id, bridge);
+    else if (p.type === 'choice' || p.id === 'seqLastStep' || p.id === 't2SeqLastStep') wireSelect(container, p.id, bridge);
     else createKnob(container, p, bridge);
   });
 
@@ -656,6 +920,7 @@ function renderVocoder(container, def, bridge) {
     const p = PARAM_LOOKUP[id];
     if (!p) return;
     if (p.type === 'boolean') html += toggleHtml(p);
+    else if (isSegmented(p.id)) html += segmentedHtml(p);
     else if (p.type === 'choice') html += selectHtml(p);
     else html += knobContainerHtml(p);
   });
@@ -668,15 +933,30 @@ function renderVocoder(container, def, bridge) {
     const p = PARAM_LOOKUP[id];
     if (!p) return;
     if (p.type === 'boolean') wireCheckbox(container, p.id, bridge);
+    else if (isSegmented(p.id)) wireSegmented(container, p.id, bridge);
     else if (p.type === 'choice') wireSelect(container, p.id, bridge);
     else createKnob(container, p, bridge);
   });
 
-  // Band faders (filmstrip)
+  // Band faders (vertical vector sliders)
   for (let i = 1; i <= 16; ++i) {
     const p = PARAM_LOOKUP[`vocoderBandLevel${i}`];
     if (p) {
-      createFilmstripFader(container, p, bridge, { orientation: 'vertical' });
+      const el = container.querySelector(`#fader-${p.id}`);
+      if (el) {
+        new ABDVerticalSlider(el, {
+          paramId: p.id,
+          min: p.min,
+          max: p.max,
+          defaultValue: p.default,
+          height: 64,
+          trackWidth: 4,
+          thumbSize: 12,
+          showLabel: false,
+          showValue: false,
+          onChange: (val) => bridge.setParam(p.id, Math.round(val)),
+        });
+      }
     }
   }
 }

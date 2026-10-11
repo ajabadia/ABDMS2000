@@ -265,18 +265,105 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   VOCODER 16-BAND GRAPHIC CONSOLE & HARDWARE FILMSTRIP FADERS
+   VERTICAL TACTILE SLIDER (Vector, matches horizontal abd-slider)
+   ═══════════════════════════════════════════════════════════════ */
+.abd-vslider {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  user-select: none;
+  outline: none;
+  width: 100%;
+}
+
+.abd-vslider:focus-visible .abd-vslider__track {
+  box-shadow: 0 0 0 1px var(--color-accent, #00d4ff), inset 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.abd-vslider__label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--color-text-muted, #94a3b8);
+  margin-bottom: 4px;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.abd-vslider__track-container {
+  position: relative;
+  width: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.abd-vslider__track {
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  width: 6px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 3px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+}
+
+.abd-vslider__fill {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background: linear-gradient(180deg, var(--color-accent, #00d4ff) 0%, rgba(0, 212, 255, 0.25) 100%);
+  border-radius: 3px;
+  box-shadow: 0 0 6px var(--color-accent, #00d4ff);
+  pointer-events: none;
+}
+
+.abd-vslider__thumb {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--color-accent, #00d4ff);
+  box-shadow: 0 0 10px var(--color-accent, #00d4ff), 0 2px 5px rgba(0, 0, 0, 0.6);
+  transform: translate(-50%, 50%);
+  pointer-events: none;
+  transition: transform 0.08s ease, box-shadow 0.1s ease;
+}
+
+.abd-vslider:hover .abd-vslider__thumb,
+.abd-vslider--active .abd-vslider__thumb {
+  transform: translate(-50%, 50%) scale(1.15);
+  box-shadow: 0 0 14px var(--color-accent, #00d4ff), 0 0 2px #fff, 0 3px 6px rgba(0, 0, 0, 0.7);
+}
+
+.abd-vslider__value {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--color-accent, #00d4ff);
+  margin-top: 4px;
+  text-align: center;
+  min-width: 28px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   VOCODER 16-BAND GRAPHIC CONSOLE
    ═══════════════════════════════════════════════════════════════ */
 .vocoder-bands-grid {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
-  gap: 8px 6px;
-  margin-top: 10px;
+  gap: 12px 6px;
+  margin-top: 12px;
 }
 
 @media (max-width: 600px) {
   .vocoder-bands-grid {
     grid-template-columns: repeat(4, 1fr);
+    gap: 8px 4px;
   }
 }
 
@@ -284,24 +371,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.35);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 4px;
-  padding: 6px 2px;
+  border-radius: 6px;
+  padding: 8px 4px;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
-.vocoder-band-num {
-  font-size: 0.65rem;
-  font-weight: 700;
-  color: #94a3b8;
-  margin-bottom: 2px;
-}
-
-.vocoder-band-val {
-  font-family: 'Roboto Mono', monospace;
-  font-size: 0.62rem;
-  color: #e2e8f0;
-  margin-top: 2px;
+.vocoder-band-cell:hover {
+  background: rgba(0, 0, 0, 0.5);
+  border-color: rgba(255, 255, 255, 0.16);
 }
 
 /* Filmstrip Faders (Hardware Sprite) */
@@ -502,6 +581,124 @@
 .segmented-btn.active .segmented-btn-led {
   background: var(--color-accent, #00d4ff);
   box-shadow: 0 0 6px var(--color-accent, #00d4ff);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ABD SEGMENTED IN DRAWERS (SHAREDASSETS WRAPPER)
+   ═══════════════════════════════════════════════════════════════ */
+.abd-segmented,
+.abd-segmented--labelled,
+.drawer-section-card .abd-segmented,
+.drawer-section-card .abd-segmented--labelled {
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  box-sizing: border-box !important;
+}
+
+.abd-segmented__label,
+.drawer-section-card .abd-segmented__label {
+  text-align: center !important;
+  margin-bottom: 4px !important;
+  width: 100% !important;
+  font-size: 10px !important;
+  letter-spacing: 0.08em !important;
+}
+
+.abd-segmented__group,
+.drawer-section-card .abd-segmented__group {
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: stretch !important;
+  box-sizing: border-box !important;
+}
+
+.abd-segmented__segment,
+.drawer-section-card .abd-segmented__segment {
+  flex: 1 0 0px !important;
+  min-width: max-content !important;
+  padding: 6px 12px !important;
+  font-size: 10px !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  box-sizing: border-box !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MULTI-ROW & GRID SEGMENTED BUTTON LAYOUTS
+   ═══════════════════════════════════════════════════════════════ */
+.abd-segmented--wrap .abd-segmented__group,
+.drawer-section-card .abd-segmented--wrap .abd-segmented__group {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 4px !important;
+}
+
+.abd-segmented--wrap .abd-segmented__segment,
+.drawer-section-card .abd-segmented--wrap .abd-segmented__segment {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  padding: 6px 4px !important;
+  font-size: 10px !important;
+  border-radius: 4px !important;
+  margin-left: 0 !important;
+}
+
+/* 5-column grid (ModSeq Time Resolution: 10 items in 2 rows of 5) */
+.abd-segmented--grid-5 .abd-segmented__group,
+.drawer-section-card .abd-segmented--grid-5 .abd-segmented__group {
+  display: grid !important;
+  grid-template-columns: repeat(5, 1fr) !important;
+  gap: 4px !important;
+}
+
+.abd-segmented--grid-5 .abd-segmented__segment,
+.drawer-section-card .abd-segmented--grid-5 .abd-segmented__segment {
+  min-width: 0 !important;
+  padding: 6px 4px !important;
+  font-size: 10px !important;
+  border-radius: 4px !important;
+  margin-left: 0 !important;
+}
+
+/* 6-column wrap (LFO Sync Note Division: 11 items -> 6 in row 1, 5 in row 2) */
+.abd-segmented--grid-6 .abd-segmented__group,
+.drawer-section-card .abd-segmented--grid-6 .abd-segmented__group {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 4px !important;
+}
+
+.abd-segmented--grid-6 .abd-segmented__segment,
+.drawer-section-card .abd-segmented--grid-6 .abd-segmented__segment {
+  flex: 1 0 calc(16.66% - 4px) !important;
+  min-width: 0 !important;
+  padding: 6px 4px !important;
+  font-size: 10px !important;
+  border-radius: 4px !important;
+  margin-left: 0 !important;
+}
+
+/* 8-column grid (ModSeq Last Step: 16 items in 2 rows of 8) */
+.abd-segmented--grid-8 .abd-segmented__group,
+.drawer-section-card .abd-segmented--grid-8 .abd-segmented__group {
+  display: grid !important;
+  grid-template-columns: repeat(8, 1fr) !important;
+  gap: 4px !important;
+}
+
+.abd-segmented--grid-8 .abd-segmented__segment,
+.drawer-section-card .abd-segmented--grid-8 .abd-segmented__segment {
+  min-width: 0 !important;
+  padding: 6px 2px !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  border-radius: 4px !important;
+  margin-left: 0 !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════

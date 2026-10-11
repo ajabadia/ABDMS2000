@@ -56,7 +56,7 @@ if %ERRORLEVEL% neq 0 (
 
 echo [2/6] Compilando modulo WebAssembly WASM...
 if defined SKIP_WASM (
-    echo [SKIP] WASM omitido (SKIP_WASM=1). Continuing con los pasos nativos.
+    echo "[SKIP] WASM omitido (SKIP_WASM=1). Continuing con los pasos nativos."
 ) else (
     pushd wasm
     call build_wasm.bat

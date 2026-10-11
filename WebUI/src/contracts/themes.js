@@ -27,3 +27,10 @@ export function synthModeIndexOf(themeId) {
   const theme = MS2000_THEMES.find((t) => t.id === themeId);
   return theme ? theme.payload : MS2000_THEMES[0].payload;
 }
+
+/** El id de tema correspondiente a un índice de synthMode (default: ms2000). */
+export function themeIdOfSynthMode(modeIdx) {
+  const rounded = Math.round(Number(modeIdx) || 0);
+  const theme = MS2000_THEMES.find((t) => t.payload === rounded);
+  return theme ? theme.id : MS2000_THEMES[0].id;
+}

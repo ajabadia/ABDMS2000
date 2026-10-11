@@ -246,6 +246,21 @@ public:
 
 ---
 
+## 🎛️ 11. Modernización de Efectos y Convención MS2K
+
+| Efecto Original | Nuevo Motor / Archivo | Estado de Migración | Características Clave |
+|-----------------|------------------------|---------------------|-----------------------|
+| `Equalizer` | `abd::dsp::CascadeShelfEq<MS2000EqProfile>` | ✅ Shim unificado | Paridad bit a bit con hardware (verificado en `DSPCoreTests_EqualizerParity.cpp`). |
+| `ModFX` (Phaser) | `abd::dsp::Phaser4<4>` | ✅ Compartido | Barrido logarítmico determinista 200 Hz .. 5.5 kHz. |
+| `ModFX` (Ensemble) | `abd::dsp::DspSolinaEnsemble` | ✅ Compartido | Modo `DualLFO` (0.5Hz + 6.0Hz a 120°), matriz contrafase estéreo asimétrica, 4-point Hermite, zero-heap. |
+| `ModFX` (Chorus/Flanger) | `MS2KChorusFlanger.h` | ✅ Motor exclusivo | Buffer estático 4096 muestras en `std::array`, interpolación cúbica Hermite, transición continua chorus-flanger. |
+| `DelayFX` | `MS2KDelay.h/.cpp` | ✅ Motor exclusivo | Microcódigo DSP56362: Cross invertido, 0.75x ratio L/R, tape glide 50ms, damping 6kHz, lectura Hermite. `DelayFX.h` es shim `using DelayFX = MS2KDelay;`. |
+| `Vocoder16Band` | `MS2KVocoder16Band.h/.cpp` | ✅ Motor exclusivo | 16 bandas BPF, detector de sibilantes 8kHz con inyector de ruido blanco por puerta, paneo individual. `Vocoder16Band.h` es shim `using Vocoder16Band = MS2KVocoder16Band;`. |
+
+*Nota de arquitectura:* Los efectos exclusivos del MS2000 adoptan el prefijo **`MS2K`** para diferenciarse de los compartidos y de los futuros **`DeepM`** del DeepMind.
+
+---
+
 ## 📋 Checklist de Validación Pre-Commit
 
 - [ ] `clang-format --dry-run --Werror Source/**/*.h Source/**/*.cpp`
@@ -263,6 +278,13 @@ public:
 |---------|-----------|-------------|
 | `TestCompat.h` | `Source/Tests/TestCompat.h` | Shims de compatibilidad |
 | `TestCompat.cpp` | `Source/Tests/TestCompat.cpp` | Implementación shims |
+| `SynthEngine.h` | `Source/Core/SynthEngine.h` | API principal motor |
+| `MS2KChorusFlanger.h` | `Source/DSP/Effects/MS2KChorusFlanger.h` | Motor híbrido chorus/flanger |
+| `MS2KDelay.h` | `Source/DSP/Effects/MS2KDelay.h` | Motor delay DSP56362 |
+| `MS2KVocoder16Band.h` | `Source/DSP/Vocoder/MS2KVocoder16Band.h` | Motor vocoder 16 bandas |
+| `ModFX.h` | `Source/DSP/Effects/ModFX.h` | Coordinador zero-heap ModFX |
+| `DelayFX.h` | `Source/DSP/Effects/DelayFX.h` | Shim compatibilidad DelayFX |
+| `Vocoder16Band.h` | `Source/DSP/Vocoder/Vocoder16Band.h` | Shim compatibilidad Vocoder |
 | `SynthEngine.h` | `Source/Core/SynthEngine.h` | API principal motor |
 | `VirtualPatchMatrix.h` | `Source/DSP/Modulation/VirtualPatchMatrix.h` | API matriz patches |
 | `ADSREnvelope.h` | `Source/DSP/Envelopes/ADSREnvelope.h` | Envolventes (shim a abd::synth) |

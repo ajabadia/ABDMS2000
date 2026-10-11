@@ -250,7 +250,14 @@
       "default": 127,
       "type": "integer",
       "skew": 0.45,
-      "unit": "Hz"
+      "unit": "Hz",
+      "wire": "CC",
+      "wireCodec": "Value",
+      "curve": "Pow",
+      "curveP1": 0.8,
+      "domainMin": 20.0,
+      "domainMax": 20000.0,
+      "smoothing": "Linear"
     },
     {
       "id": "filterResonance",
@@ -260,7 +267,14 @@
       "min": 0,
       "max": 127,
       "default": 0,
-      "type": "integer"
+      "type": "integer",
+      "wire": "CC",
+      "wireCodec": "Value",
+      "curve": "Pow",
+      "curveP1": 0.25,
+      "domainMin": 0.0,
+      "domainMax": 1.0,
+      "smoothing": "Linear"
     },
     {
       "id": "filterEg1Int",
@@ -280,7 +294,14 @@
       "min": -63,
       "max": 63,
       "default": 0,
-      "type": "integer"
+      "type": "integer",
+      "wire": "CC",
+      "wireCodec": "Bipolar",
+      "curve": "Pow",
+      "curveP1": 0.5,
+      "domainMin": -63.0,
+      "domainMax": 63.0,
+      "smoothing": "Linear"
     },
     {
       "id": "ampLevel",
@@ -332,7 +353,15 @@
       "default": 0,
       "type": "integer",
       "skew": 0.35,
-      "unit": "ms"
+      "unit": "ms",
+      "wire": "None",
+      "wireCodec": "Value",
+      "curve": "Exp",
+      "curveP0": 0.001,
+      "curveP1": 3.0,
+      "domainMin": 0.001,
+      "domainMax": 10.0,
+      "smoothing": "Log"
     },
     {
       "id": "eg1Decay",
@@ -366,7 +395,15 @@
       "default": 40,
       "type": "integer",
       "skew": 0.35,
-      "unit": "ms"
+      "unit": "ms",
+      "wire": "None",
+      "wireCodec": "Value",
+      "curve": "Exp",
+      "curveP0": 0.01,
+      "curveP1": 3.5,
+      "domainMin": 0.01,
+      "domainMax": 15.0,
+      "smoothing": "Log"
     },
     {
       "id": "eg2Attack",
@@ -440,7 +477,15 @@
       "default": 30,
       "type": "integer",
       "skew": 0.4,
-      "unit": "Hz"
+      "unit": "Hz",
+      "wire": "CC",
+      "wireCodec": "Value",
+      "curve": "Exp",
+      "curveP0": 0.035,
+      "curveP1": 7.5,
+      "domainMin": 0.01,
+      "domainMax": 20.0,
+      "smoothing": "Log"
     },
     {
       "id": "lfo1KeySync",
@@ -520,7 +565,15 @@
       "default": 50,
       "type": "integer",
       "skew": 0.4,
-      "unit": "Hz"
+      "unit": "Hz",
+      "wire": "CC",
+      "wireCodec": "Value",
+      "curve": "Exp",
+      "curveP0": 0.035,
+      "curveP1": 7.5,
+      "domainMin": 0.01,
+      "domainMax": 20.0,
+      "smoothing": "Log"
     },
     {
       "id": "lfo2KeySync",
@@ -716,7 +769,15 @@
       "min": 0,
       "max": 127,
       "default": 40,
-      "type": "integer"
+      "type": "integer",
+      "unit": "s",
+      "wire": "CC",
+      "wireCodec": "Value",
+      "curve": "Pow",
+      "curveP1": 0.5,
+      "domainMin": 0.001,
+      "domainMax": 1.4,
+      "smoothing": "Linear"
     },
     {
       "id": "delayDepth",
@@ -823,6 +884,105 @@
         "3/1",
         "4/1"
       ]
+    },
+    {
+      "id": "arpLastStep",
+      "name": "Arp Last Step",
+      "group": "Arp",
+      "cc": null,
+      "min": 1,
+      "max": 8,
+      "default": 8,
+      "type": "integer",
+      "sysex": false
+    },
+    {
+      "id": "arpStep1",
+      "name": "Arp Step 1",
+      "group": "Arp",
+      "cc": null,
+      "min": 0,
+      "max": 1,
+      "default": 1,
+      "type": "boolean",
+      "sysex": false
+    },
+    {
+      "id": "arpStep2",
+      "name": "Arp Step 2",
+      "group": "Arp",
+      "cc": null,
+      "min": 0,
+      "max": 1,
+      "default": 1,
+      "type": "boolean",
+      "sysex": false
+    },
+    {
+      "id": "arpStep3",
+      "name": "Arp Step 3",
+      "group": "Arp",
+      "cc": null,
+      "min": 0,
+      "max": 1,
+      "default": 1,
+      "type": "boolean",
+      "sysex": false
+    },
+    {
+      "id": "arpStep4",
+      "name": "Arp Step 4",
+      "group": "Arp",
+      "cc": null,
+      "min": 0,
+      "max": 1,
+      "default": 1,
+      "type": "boolean",
+      "sysex": false
+    },
+    {
+      "id": "arpStep5",
+      "name": "Arp Step 5",
+      "group": "Arp",
+      "cc": null,
+      "min": 0,
+      "max": 1,
+      "default": 1,
+      "type": "boolean",
+      "sysex": false
+    },
+    {
+      "id": "arpStep6",
+      "name": "Arp Step 6",
+      "group": "Arp",
+      "cc": null,
+      "min": 0,
+      "max": 1,
+      "default": 1,
+      "type": "boolean",
+      "sysex": false
+    },
+    {
+      "id": "arpStep7",
+      "name": "Arp Step 7",
+      "group": "Arp",
+      "cc": null,
+      "min": 0,
+      "max": 1,
+      "default": 1,
+      "type": "boolean",
+      "sysex": false
+    },
+    {
+      "id": "arpStep8",
+      "name": "Arp Step 8",
+      "group": "Arp",
+      "cc": null,
+      "min": 0,
+      "max": 1,
+      "default": 1,
+      "type": "boolean",
+      "sysex": false
     },
     {
       "id": "modSeqResolution",
@@ -3591,6 +3751,12 @@
       "max": 63,
       "default": 0,
       "type": "integer",
+      "wire": "CC",
+      "wireCodec": "Value",
+      "curve": "Pow",
+      "curveP1": 0.5,
+      "domainMin": -63.0,
+      "domainMax": 63.0,
       "sysex": true
     },
     {

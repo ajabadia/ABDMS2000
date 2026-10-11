@@ -26,7 +26,7 @@ SysExManager::SysExManager()
     }
 }
 
-bool SysExManager::isKorgHeader(const uint8_t *data, size_t size, int &outChannel, uint8_t &outFunction) const noexcept
+bool SysExManager::isKorgHeader(const uint8_t *data, size_t size, int &outChannel, uint8_t &outFunction, uint8_t &outModelId) const noexcept
 {
     if (data == nullptr || size < 6)
         return false;
@@ -37,11 +37,12 @@ bool SysExManager::isKorgHeader(const uint8_t *data, size_t size, int &outChanne
     if ((data[2] & 0xF0) != 0x30)
         return false;  // Global channel format 30..3F
 
-    // Model ID: 0x58 (MS2000 / MS2000R) or 0x71 (microKORG)
+    // Model ID: 0x58 (MS2000 / MS2000R / microKORG legacy) or 0x71 (microKORG)
     if (data[3] != 0x58 && data[3] != 0x71)
         return false;
 
     outChannel = (data[2] & 0x0F) + 1;
+    outModelId = data[3];
     outFunction = data[4];
     return true;
 }
@@ -157,7 +158,8 @@ SysExParseResult SysExManager::parseSysEx(const uint8_t *data, size_t size, juce
 
     int channel = 1;
     uint8_t func = 0;
-    if (!isKorgHeader(data, size, channel, func))
+    uint8_t modelId = 0x58;
+    if (!isKorgHeader(data, size, channel, func, modelId))
     {
         result.errorMessage = "Invalid Korg SysEx Header";
         return result;
@@ -192,15 +194,27 @@ SysExParseResult SysExManager::parseSysEx(const uint8_t *data, size_t size, juce
         result.messageType =
             (func == 0x0E) ? SysExMessageType::AllDataDumpRequest : SysExMessageType::ProgramDumpRequest;
         result.success = true;
-        if (func == 0x10 && hasHardwareProgram())
-            result.programName = hardwareProgram_.getName();
+        if (func == 0x10)
+        {
+            if (synthMode_ == 1 && hasMicrokorgProgram())
+                result.programName = microkorgProgram_.getName();
+            else if (hasHardwareProgram())
+                result.programName = hardwareProgram_.getName();
+        }
 
         // Respuesta al equipo: el **programa real** de 254 B del canal pedido, nunca el
         // bloque nativo (que no cabría con cabecera Korg). Un `0x0E` (memoria completa)
         // se contesta con el banco real cargado (`F0 42 3n 58 4C ... F7`), si lo hay.
         if (func == 0x10)
         {
-            result.reply = createHardwareProgramDump(channel, apvts, bank_[activeProgramIndex_].getName());
+            if (modelId == MicroKorgHardwareProgram::MODEL_ID_MICROKORG || synthMode_ == 1)
+            {
+                result.reply = createMicrokorgProgramDump(channel, apvts, bank_[activeProgramIndex_].getName());
+            }
+            else
+            {
+                result.reply = createHardwareProgramDump(channel, apvts, bank_[activeProgramIndex_].getName());
+            }
         }
         else
         {
@@ -225,6 +239,34 @@ SysExParseResult SysExManager::parseSysEx(const uint8_t *data, size_t size, juce
             result.errorMessage = "Failed to unpack 7-to-8 bit program dump payload";
             result.reply = korgAck(false);
             return result;
+        }
+
+        // Si el volcado proviene de un microKORG (0x71) o el sintetizador opera en perfil microKORG:
+        if (modelId == MicroKorgHardwareProgram::MODEL_ID_MICROKORG || synthMode_ == 1)
+        {
+            if (unpacked.size() % MicroKorgHardwareProgram::PROGRAM_SIZE == 0)
+            {
+                MicroKorgHardwareProgram mk;
+                if (!mk.unpackFromSysexPayload(payload, payloadLen))
+                {
+                    result.errorMessage = "Failed to read the real microKORG program";
+                    result.reply = korgAck(false);
+                    return result;
+                }
+
+                mk.applyToAPVTS(apvts);
+
+                microkorgProgram_ = mk;
+                microkorgProgramValid_ = true;
+
+                bank_[activeProgramIndex_].extractFromAPVTS(apvts, mk.getName());
+
+                result.success = true;
+                result.programCount = 1;
+                result.programName = mk.getName();
+                result.reply = korgAck(true);
+                return result;
+            }
         }
 
         // 254 B = programa **real** del MS2000: se aplica al motor con el mapa real
@@ -438,6 +480,19 @@ std::vector<uint8_t> SysExManager::createHardwareProgramDump(int channel,
     hardwareProgramValid_ = true;
 
     return hardwareProgram_.buildProgramDump(channel, 0x40);
+}
+
+std::vector<uint8_t> SysExManager::createMicrokorgProgramDump(int channel,
+                                                             const juce::AudioProcessorValueTreeState &apvts,
+                                                             const std::string &name)
+{
+    if (!microkorgProgramValid_)
+        microkorgProgram_ = MicroKorgHardwareProgram {};
+
+    microkorgProgram_.extractFromAPVTS(apvts, name);
+    microkorgProgramValid_ = true;
+
+    return microkorgProgram_.buildProgramDump(channel, MicroKorgHardwareProgram::MODEL_ID_MICROKORG, 0x40);
 }
 
 /** Volcado completo de la memoria **propia** del plugin (presets nativos, `UNPACKED_PROGRAM_SIZE` cada uno). */

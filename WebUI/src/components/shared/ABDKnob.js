@@ -36,18 +36,46 @@ export class ABDKnob {
 
         // Convert 0..127 -> 0..1 for SharedAssets Knob
         const normValue = this.toNorm(initialValue);
+        this._lastClamped = initialValue;
 
         this.knob = new Knob(container, {
             size: options.size || 48,
             value: normValue,
             label: this.label,
             skin: options.skin || 'ms2000',
-            step: this.step / (this.max - this.min), // normalized step
+            step: this.step / (this.max - this.min || 1), // normalized step
             format: (v) => this.displayFormatter(this.fromNorm(v)),
             onChange: (normVal) => this.handleChange(normVal),
             onDragStart: options.onDragStart,
-            onDragEnd: options.onDragEnd,
+            onDragEnd: () => {
+                const finalNorm = this.toNorm(this._lastClamped);
+                this.knob.setValue(finalNorm);
+                options.onDragEnd?.();
+            },
         });
+
+        // Para controles booleanos / conmutadores de 2 estados (min: 0, max: 1), permitir click para alternar
+        if (this.max - this.min === 1) {
+            let downX = 0;
+            let downY = 0;
+            this.knob.dial.addEventListener('pointerdown', (e) => {
+                downX = e.clientX;
+                downY = e.clientY;
+            });
+            this.knob.dial.addEventListener('pointerup', (e) => {
+                const dx = Math.abs(e.clientX - downX);
+                const dy = Math.abs(e.clientY - downY);
+                if (dx < 4 && dy < 4) {
+                    const current = this.getValue();
+                    const next = current > 0.5 ? 0 : 1;
+                    this.setValue(next, true);
+                    if (this.paramId) {
+                        paramStore.set(this.paramId, next);
+                        bridge.setParam(this.paramId, next);
+                    }
+                }
+            });
+        }
 
         // Register with paramStore for external sync (patch load, randomize, etc.)
         if (this.paramId) {
@@ -67,17 +95,21 @@ export class ABDKnob {
         const realVal = this.fromNorm(normVal);
         const stepped = Math.round(realVal / this.step) * this.step;
         const clamped = Math.max(this.min, Math.min(this.max, stepped));
-        const finalNorm = this.toNorm(clamped);
 
-        // Update internal knob visual without re-triggering onChange
-        this.knob.setValue(finalNorm);
+        // Evitar reseteo destructivo de deltas durante el arrastre: solo actualizar el mando
+        // y notificar si el valor cuantizado realmente cambió de paso.
+        if (clamped !== this._lastClamped) {
+            this._lastClamped = clamped;
+            const finalNorm = this.toNorm(clamped);
+            this.knob.setValue(finalNorm);
 
-        if (this.paramId) {
-            paramStore.set(this.paramId, clamped);
-            bridge.setParam(this.paramId, clamped);
-        }
-        if (this.onChange) {
-            this.onChange(clamped, this.paramId);
+            if (this.paramId) {
+                paramStore.set(this.paramId, clamped);
+                bridge.setParam(this.paramId, clamped);
+            }
+            if (this.onChange) {
+                this.onChange(clamped, this.paramId);
+            }
         }
     }
 

@@ -119,6 +119,7 @@ static const std::vector<MIDICCInfo> kCanonicalMap = {
     {ParamIDs::arpRange, -1, 2, 31, 1.0f, 4.0f, 1.0f},
     {ParamIDs::arpGate, -1, 2, 32, 0.0f, 127.0f, 100.0f},
     {ParamIDs::arpLatch, -1, 2, 33, 0.0f, 1.0f, 0.0f},
+    {ParamIDs::arpLastStep, -1, 0, 9, 1.0f, 8.0f, 8.0f},
     {ParamIDs::modFxOn, -1, 2, 40, 0.0f, 1.0f, 1.0f},
     {ParamIDs::delayOn, -1, 2, 41, 0.0f, 1.0f, 1.0f},
 

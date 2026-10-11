@@ -6,6 +6,7 @@
 #include "Voice.h"
 #include <cmath>
 #include "HardwareConstants.h"
+#include "Conversion.gen.h"
 
 namespace ABDMS2000
 {
@@ -331,13 +332,14 @@ void Voice::renderNextSample(float &leftOut, float &rightOut, int diagPoint, flo
     float filtered = mixedAudio;
     if (!p.diagBypassFilter)
     {
-        float baseHz = DSPUtils::convertSysExToCutoffHz(p.filterCutoffNorm);
         float egOctaves = eg1Raw * (p.eg1FilterIntensity * Constants::kFilterModMaxOctaves);
         float kbdOctaves = ((basePitch - Constants::kMidiMiddleC) / Constants::kSemitonesPerOctave) * p.filterKbdTrack;
         float patchOctaves = (mod.cutoffMod + p.seq.cutoff) * Constants::kFilterModMaxOctaves;
         // FILTER VELO del byte 23 (±63 → ±5 octavas a fondo): la velocidad abre el
         // filtro con intensidad positiva y lo cierra con negativa. A 0, sin efecto.
         float veloOctaves = p.filterVeloSens * velocity_ * Constants::kFilterModMaxOctaves;
+        // Cutoff base en Hz usando la curva exponencial de 20 Hz a 20000 Hz
+        float baseHz = DSPUtils::convertSysExToCutoffHz(p.filterCutoffNorm);
         float cutoffHz = baseHz * std::pow(2.0f, egOctaves + kbdOctaves + patchOctaves + veloOctaves);
 
         filter_.setCutoff(cutoffHz);

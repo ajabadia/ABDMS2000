@@ -65,6 +65,11 @@ export function validateAndProcess(rawParams) {
       errors.push(`[${p.id}] unknown type "${p.type}" (valid: ${VALID_TYPES.join(', ')})`);
     }
 
+    // Validate curve is in valid range (0-3)
+    if (p.curve !== undefined && p.curve !== null && (p.curve < 0 || p.curve > 3)) {
+      errors.push(`[${p.id}] curve value ${p.curve} out of range (valid: 0=Linear, 1=Exp, 2=Pow, 3=Lut)`);
+    }
+
     // Choice needs ≥ 2 options
     if (p.type === 'choice' && (!p.choices || p.choices.length < 2)) {
       errors.push(`[${p.id}] choice type requires at least 2 choices`);
@@ -85,6 +90,22 @@ export function validateAndProcess(rawParams) {
       seenCcs.set(cc, p.id);
     }
 
+    // Validate wire value
+    if (p.wire !== undefined && p.wire !== null) {
+      const validWires = ['None', 'CC', 'SysEx', 'Nrpn'];
+      if (!validWires.includes(p.wire)) {
+        errors.push(`[${p.id}] wire value "${p.wire}" invalid (valid: ${validWires.join(', ')})`);
+      }
+    }
+
+    // Validate wireCodec value
+    if (p.wireCodec !== undefined && p.wireCodec !== null) {
+      const validCodecs = ['Value', 'Bipolar', 'Enum'];
+      if (!validCodecs.includes(p.wireCodec)) {
+        errors.push(`[${p.id}] wireCodec value "${p.wireCodec}" invalid (valid: ${validCodecs.join(', ')})`);
+      }
+    }
+
     // Auto-computed sysex offset
     let sysexOffset = -1;
     if (p.sysex !== false) {
@@ -93,6 +114,13 @@ export function validateAndProcess(rawParams) {
         errors.push(`[${p.id}] computed duplicate sysexOffset ${sysexOffset}`);
       }
       seenSysex.set(sysexOffset, p.id);
+    }
+
+    // Validate domainMin <= domainMax
+    if (p.domainMin !== undefined && p.domainMax !== undefined) {
+      if (p.domainMin > p.domainMax) {
+        errors.push(`[${p.id}] domainMin (${p.domainMin}) > domainMax (${p.domainMax}), must be domainMin <= domainMax`);
+      }
     }
 
     return { ...p, sysexOffset };

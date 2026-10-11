@@ -87,22 +87,16 @@ export async function mountBankManager(containerElement, options = {}) {
     await options.appInit();
   } else {
     try {
-      // Import dinámico en monorepo / paquete @abdsynths/bank-manager-ui
+      // Import dinámico de la lógica canónica de Bank Manager en el monorepo
       appModule = await import('../../../WebUI/src/app.js');
-    } catch (err1) {
-      try {
-        // Fallback para ejecución desde WebUI/src/components/
-        appModule = await import('../app.js');
-      } catch (err2) {
-        console.warn('[mountBankManager] No se pudo cargar automáticamente app.js:', err1, err2);
+      if (typeof appModule?.init === 'function') {
+        await appModule.init();
       }
-    }
-
-    if (typeof appModule?.init === 'function') {
-      await appModule.init();
-    }
-    if (typeof appModule?.setupDragDrop === 'function') {
-      appModule.setupDragDrop();
+      if (typeof appModule?.setupDragDrop === 'function') {
+        appModule.setupDragDrop();
+      }
+    } catch (e) {
+      console.warn('[mountBankManager] No se pudo cargar automáticamente app.js:', e);
     }
   }
 

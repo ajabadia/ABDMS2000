@@ -1,6 +1,7 @@
 #include "SynthEngine.h"
 #include <algorithm>
 #include <cmath>
+#include "Conversion.gen.h"
 #include "AppLogger.h"
 
 namespace ABDMS2000
@@ -241,7 +242,7 @@ void SynthEngine::readTimbreParams(bool second, VoiceParameters &vp) noexcept
     vp.lfo1Wave = static_cast<LFOWaveform>(std::min(l1w, 3));
     vp.lfo1KeySync = static_cast<KeySyncMode>(static_cast<int>(P(ParamIDs::lfo1KeySync, 2.0f)));
     float l1FreqNorm = P(ParamIDs::lfo1Freq, 40.0f) / 127.0f;
-    vp.lfo1FreqHz = 0.01f * std::pow(2000.0f, std::pow(l1FreqNorm, 0.8f));
+    vp.lfo1FreqHz = conversion::normalizedToDomain("lfo1Freq", l1FreqNorm);
     vp.lfo1TempoSync = (P(ParamIDs::lfo1TempoSync, 0.0f) > 0.5f);
     vp.lfo1SyncNote = static_cast<int>(P(ParamIDs::lfo1SyncNote, 4.0f));
 
@@ -250,7 +251,7 @@ void SynthEngine::readTimbreParams(bool second, VoiceParameters &vp) noexcept
     vp.lfo2Wave = static_cast<LFOWaveformLFO2>(std::min(l2w, 3));
     vp.lfo2KeySync = static_cast<KeySyncMode>(static_cast<int>(P(ParamIDs::lfo2KeySync, 2.0f)));
     float l2FreqNorm = P(ParamIDs::lfo2Freq, 40.0f) / 127.0f;
-    vp.lfo2FreqHz = 0.01f * std::pow(2000.0f, std::pow(l2FreqNorm, 0.8f));
+    vp.lfo2FreqHz = conversion::normalizedToDomain("lfo2Freq", l2FreqNorm);
     vp.lfo2TempoSync = (P(ParamIDs::lfo2TempoSync, 0.0f) > 0.5f);
     vp.lfo2SyncNote = static_cast<int>(P(ParamIDs::lfo2SyncNote, 4.0f));
 
@@ -522,13 +523,27 @@ void SynthEngine::updateParametersFromAPVTS() noexcept
     arpeggiator_.setLatch(getParam(ParamIDs::arpLatch, 0.0f) > 0.5f);
     arpeggiator_.setSyncResolution(static_cast<int>(getParam(ParamIDs::arpResolution, 3.0f)));
 
+    // microKORG / Advanced 8-step rhythm mask
+    const bool allowStepMask = (synthMode != 0); // Active in microKORG (1) & Advanced (2)
+    arpeggiator_.setStepMaskEnabled(allowStepMask);
+    arpeggiator_.setLastStep(static_cast<int>(getParam(ParamIDs::arpLastStep, 8.0f)));
+    arpeggiator_.setStepMask(0, getParam(ParamIDs::arpStep1, 1.0f) > 0.5f);
+    arpeggiator_.setStepMask(1, getParam(ParamIDs::arpStep2, 1.0f) > 0.5f);
+    arpeggiator_.setStepMask(2, getParam(ParamIDs::arpStep3, 1.0f) > 0.5f);
+    arpeggiator_.setStepMask(3, getParam(ParamIDs::arpStep4, 1.0f) > 0.5f);
+    arpeggiator_.setStepMask(4, getParam(ParamIDs::arpStep5, 1.0f) > 0.5f);
+    arpeggiator_.setStepMask(5, getParam(ParamIDs::arpStep6, 1.0f) > 0.5f);
+    arpeggiator_.setStepMask(6, getParam(ParamIDs::arpStep7, 1.0f) > 0.5f);
+    arpeggiator_.setStepMask(7, getParam(ParamIDs::arpStep8, 1.0f) > 0.5f);
+
     // Mod Sequencer: tres filas por timbre (el reloj —tempo y resolución— es común;
     // en el equipo real la resolución también vive dentro de cada bloque de timbre).
     configureTimbreSeq(false, ModSequencer::TIMBRE1_TRACK);
     configureTimbreSeq(true, ModSequencer::TIMBRE2_TRACK);
     modSeq_.setTempoBPM(tempoBpm);
-    modSeq_.setEnabled((getParam(ParamIDs::modSeqOn, 0.0f) > 0.5f)
-                       || (paramValue(true, ParamIDs::modSeqOn, 0.0f) > 0.5f));
+    const bool allowModSeq = (synthMode != 1);  // microKORG no dispone de Modulation Sequencer
+    modSeq_.setEnabled(allowModSeq && ((getParam(ParamIDs::modSeqOn, 0.0f) > 0.5f)
+                       || (paramValue(true, ParamIDs::modSeqOn, 0.0f) > 0.5f)));
 
     // ── Global FX parameters ──
     int eqLRaw = static_cast<int>(getParam(ParamIDs::eqLowFreq, 1.0f));
@@ -555,7 +570,7 @@ void SynthEngine::updateParametersFromAPVTS() noexcept
     delayFX_.setEnabled(getParam(ParamIDs::delayOn, 1.0f) > 0.5f);
     delayFX_.setType(static_cast<DelayType>(std::min(dType, 2)));
     float dTimeNorm = getParam(ParamIDs::delayTime, 40.0f) / 127.0f;
-    float dTimeSec = 0.020f + (0.980f * dTimeNorm);
+    float dTimeSec = conversion::normalizedToDomain("delayTime", dTimeNorm);
     delayFX_.setTimeSeconds(dTimeSec);
     delayFX_.setDepth(getParam(ParamIDs::delayDepth, 50.0f) / 127.0f);
     delayFX_.setFeedback(getParam(ParamIDs::delayFeedback, 40.0f) / 127.0f);

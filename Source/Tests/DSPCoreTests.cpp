@@ -21,6 +21,7 @@ using abd::hw::SysExCodec;
 #include "../MIDI/MIDITelemetryManager.h"
 #include "../MIDI/MS2000HardwareProgram.h"
 #include "../MIDI/MS2000SysExExporter.h"
+#include "../MIDI/MicroKorgHardwareProgram.h"
 #include "../MIDI/SysExManager.h"
 #include "../Plugin/BridgeActions.h"
 #include "../Plugin/HostModelAnnouncement.h"
@@ -2353,6 +2354,63 @@ static void testEngineExtension()
     }
 }
 
+static void testMicrokorgHardwareParity()
+{
+    printf("\n[Test 28] microKORG Hardware Parity (SysEx & Rhythm Step Mask)...\n");
+
+    // 1. Validar MicroKorgHardwareProgram: Last Step y Step Mask
+    MicroKorgHardwareProgram mkProg;
+    mkProg.setName("MK_TEST");
+    check(mkProg.getName() == "MK_TEST", "microKORG program stores and returns its name");
+
+    mkProg.setLastStep(6);
+    check(mkProg.getLastStep() == 6, "microKORG Last Step (1..8) stores correctly");
+
+    mkProg.setStepMaskByte(0b10101010); // Pasos 2, 4, 6, 8 ON
+    check(!mkProg.getStepMask(1) && mkProg.getStepMask(2) && !mkProg.getStepMask(3) && mkProg.getStepMask(4),
+          "microKORG 8-step rhythm mask flags unpack correctly");
+    check(mkProg.getStepMaskByte() == 0b10101010, "microKORG bitmask byte roundtrip matches");
+
+    // 2. Empaquetado en volcado SysEx Korg microKORG (Model ID 0x71)
+    const auto dump71 = mkProg.buildProgramDump(1, MicroKorgHardwareProgram::MODEL_ID_MICROKORG, 0x40);
+    check(dump71.size() == 297, "microKORG program dump produces a valid 297-byte frame");
+    check(dump71[0] == 0xF0 && dump71[1] == 0x42 && dump71[2] == 0x30 && dump71[3] == 0x71 && dump71[4] == 0x40,
+          "microKORG dump header has Model ID 0x71 and Function 0x40");
+    check(dump71.back() == 0xF7, "microKORG dump ends with 0xF7");
+
+    // 3. SysExManager parseSysEx con trama microKORG (0x71)
+    auto &apvts = dummyFixture().apvts;
+    MS2000PatchBuilder::buildInitPatch(apvts);
+
+    SysExManager sysEx;
+    const auto parseRes = sysEx.parseSysEx(dump71.data(), dump71.size(), apvts);
+    check(parseRes.success && parseRes.programName == "MK_TEST",
+          "SysExManager successfully decodes and loads microKORG dump (0x71)");
+    check(sysEx.hasMicrokorgProgram(), "SysExManager records valid microKORG program");
+
+    // Verificar que los parámetros del APVTS se actualizaron
+    if (auto *pLastStep = apvts.getParameter("arpLastStep"))
+        check(std::round(pLastStep->convertFrom0to1(pLastStep->getValue())) == 6.0f,
+              "arpLastStep APVTS parameter is updated to 6 from microKORG dump");
+    if (auto *pStep2 = apvts.getParameter("arpStep2"))
+        check(pStep2->convertFrom0to1(pStep2->getValue()) > 0.5f,
+              "arpStep2 APVTS parameter is ON");
+    if (auto *pStep1 = apvts.getParameter("arpStep1"))
+        check(pStep1->convertFrom0to1(pStep1->getValue()) < 0.5f,
+              "arpStep1 APVTS parameter is OFF (rest)");
+    if (auto *pModSeq = apvts.getParameter("modSeqOn"))
+        check(pModSeq->convertFrom0to1(pModSeq->getValue()) == 0.0f,
+              "modSeqOn APVTS parameter is forced to OFF on microKORG load");
+
+    // 4. SysExManager respuesta a Dump Request (0x10) en modo microKORG
+    sysEx.setSynthMode(1); // Perfil microKORG
+    const uint8_t reqDump[] = {0xF0, 0x42, 0x30, 0x71, 0x10, 0xF7};
+    const auto reqRes = sysEx.parseSysEx(reqDump, sizeof(reqDump), apvts);
+    check(reqRes.success && reqRes.reply.size() == 297,
+          "Dump request with 0x71 replies with a microKORG dump frame (297 bytes)");
+    check(reqRes.reply[3] == 0x71, "Dump reply header preserves microKORG Model ID 0x71");
+}
+
 /**
  * Horquilla de la suite. Cada caso vive en su propia función a propósito: cuando todos
  * compartían un único `runAllTests()`, el compilador reservaba de golpe los locales de
@@ -2393,6 +2451,7 @@ static void runAllTests()
     testAllDataDumpRequest();
     testKorgChannelEndToEnd();
     testEngineExtension();
+    testMicrokorgHardwareParity();
 
     printf("\n=== Test Summary ===\n");
     printf("  Passed: %d\n", testsPassed);

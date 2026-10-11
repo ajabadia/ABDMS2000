@@ -20,6 +20,10 @@ struct MidiActivityEvent
     int value {0};
     bool isIncoming {true};
     const char *paramId {nullptr};
+    // Schema-driven physical domain info (optional; may be empty/default if not available)
+    float domainMin {0.0f};
+    float domainMax {0.0f};
+    const char *unit {nullptr};  // e.g. "Hz", "s", "ms", "dB", nullptr=generic
 };
 
 /**

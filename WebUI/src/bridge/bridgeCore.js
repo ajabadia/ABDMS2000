@@ -46,7 +46,16 @@ export class BridgeCore {
 
   async initWebAudio() {
     if (!this.isWebView) {
-      return await this.wasmBridge.initAudio();
+      const ready = await this.wasmBridge.initAudio();
+      if (ready && !this._hasSyncedInitialState) {
+        this._hasSyncedInitialState = true;
+        if (paramStore?.values) {
+          for (const [paramId, val] of paramStore.values.entries()) {
+            this.wasmBridge.setParam(paramId, val);
+          }
+        }
+      }
+      return ready;
     }
     return true;
   }

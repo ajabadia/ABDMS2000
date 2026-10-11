@@ -1,8 +1,7 @@
 #pragma once
+#include "DspEffects/DspSolinaEnsemble.h"
 #include "DspEffects/Phaser4.h"
-
-#include <array>
-#include <vector>
+#include "MS2KChorusFlanger.h"
 
 namespace ABDMS2000
 {
@@ -16,11 +15,11 @@ enum class ModFXType
 
 /**
  * @brief Modulation FX Block for MS2000.
- * Incorporates exact reverse-engineered specs:
- * - Chorus/Flanger: 8.5ms base offset, +/-4ms excursion, inverted feedback when > 100
- * - Ensemble: Solina 3-delay line matrix per channel with 120-degree 3-phase dual LFOs (0.5Hz / 6.0Hz) & asymmetric
- * counter-phase output
- * - Phaser: 4-stage allpass with 800Hz..4.5kHz notch sweep
+ *
+ * Bloque coordinador de modulación con cero memoria dinámica (100% Real-Time Safe):
+ * - Chorus/Flanger: MS2KChorusFlanger (exclusivo MS2000 con transición continua y buffer estático).
+ * - Ensemble: abd::dsp::DspSolinaEnsemble (modo DualLFO con LFO dual 0.5Hz/6.0Hz y matriz contrafase).
+ * - Phaser: abd::dsp::Phaser4<4> (4 etapas allpass con barrido logarítmico determinista).
  */
 class ModFX
 {
@@ -58,43 +57,10 @@ class ModFX
     float depth_ {0.5f};
     float rawFeedback_ {0.0f};  // 0..127
 
-    // LFO phases
-    double lfoPhase_ {0.0};
-    double lfoIncrement_ {0.0};
-
-    // Ensemble dual LFO phases
-    double ensemblePhaseSlow_ {0.0};
-    double ensemblePhaseFast_ {0.0};
-
-    // Delay lines: 3 per channel for Ensemble, 1 per channel for Chorus/Flanger
-    std::array<std::vector<float>, 3> ensembleLinesL_;
-    std::array<std::vector<float>, 3> ensembleLinesR_;
-    size_t ensembleWriteIndex_ {0};
-    size_t ensembleMaxSamples_ {4410};
-
-    std::vector<float> chorusBufferL_;
-    std::vector<float> chorusBufferR_;
-    size_t chorusWriteIndex_ {0};
-    size_t chorusMaxSamples_ {4410};
-
-    // El phaser de cuatro etapas ya NO esta aqui: vive en
-    // `ABDSharedCode/DspEffects/Phaser4.h`, namespace `abd::dsp`. Antes eran
-    // ocho estados mas cuatro `std::tan` y dos `std::pow` POR MUESTRA, y el
-    // coeficiente se recalculaba ocho veces cuando hay dos valores distintos.
-    // Ahora el motor entero son 27,4 ns por muestra, un 2,8 % de un nucleo, y
-    // el coeficiente se recalcula cada 16.
-    //
-    // Y NO SE GUARDA NADA DEL PHASER AQUI, ni la fase del LFO ni el incremento:
-    // los dos estan dentro del motor, y duplicarlos seria tener el barrido en
-    // dos sitios. `lfoPhase_` y `lfoIncrement_` siguen existiendo para el coro y
-    // el ensemble, que no estan migrados.
+    MS2KChorusFlanger chorusFlanger_;
+    abd::dsp::DspSolinaEnsemble ensemble_;
     abd::dsp::Phaser4<4> phaser_;
-
-    float readInterpolated(const std::vector<float> &buf, float readPos, size_t bufLen) const noexcept;
-
-    void processChorusFlanger(float &left, float &right) noexcept;
-    void processEnsemble(float &left, float &right) noexcept;
-    void processPhaser(float &left, float &right) noexcept;
 };
 
 }  // namespace ABDMS2000
+

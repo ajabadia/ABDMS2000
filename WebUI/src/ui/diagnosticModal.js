@@ -64,7 +64,7 @@ class DiagnosticModalController {
     toggle?.addEventListener('change', (e) => {
       this.isToneActive = e.target.checked;
       if (statusLabel) {
-        statusLabel.textContent = this.isToneActive ? 'TONO ACTIVADO (EN TRANSMISIÓN)' : 'TONO DESACTIVADO';
+        statusLabel.textContent = this.isToneActive ? 'TONE ACTIVE (TRANSMITTING)' : 'TONE DISABLED';
         statusLabel.classList.toggle('active', this.isToneActive);
       }
       this.updateTone();

@@ -24,21 +24,47 @@ export class ABDSelect {
     constructor(container, options = {}) {
         this.paramId = options.paramId || '';
         this.label = options.label || '';
-        this.options = options.options || []; // array of strings or {label, disabled?, note?}
+        this.rawOptions = options.options || []; // array of strings or {value?, label, disabled?, note?}
         this.onChange = options.onChange || null;
 
+        // Support explicit value mapping ({ value, label })
+        this.valueToIndex = new Map();
+        this.indexToValue = new Map();
+        this.hasExplicitValues = false;
+
+        const entries = this.rawOptions.map((opt, idx) => {
+            if (typeof opt === 'object' && opt !== null) {
+                if (opt.value !== undefined) {
+                    this.hasExplicitValues = true;
+                    this.valueToIndex.set(opt.value, idx);
+                    this.indexToValue.set(idx, opt.value);
+                } else {
+                    this.valueToIndex.set(idx, idx);
+                    this.indexToValue.set(idx, idx);
+                }
+                return {
+                    label: opt.label !== undefined ? opt.label : String(opt.value),
+                    disabled: opt.disabled,
+                    note: opt.note
+                };
+            }
+            this.valueToIndex.set(idx, idx);
+            this.indexToValue.set(idx, idx);
+            return opt;
+        });
+
         // Read initial value from paramStore
-        let initialValue = options.value !== undefined ? options.value : 0;
+        let initialValue = options.value !== undefined ? options.value : (this.hasExplicitValues ? (this.rawOptions[0]?.value ?? 0) : 0);
         if (this.paramId) {
             const stored = paramStore.get(this.paramId);
             if (stored !== undefined) initialValue = stored;
         }
 
-        // Convert APVTS value -> Select index (clamped)
-        const index = this.clampIndex(initialValue);
+        // Convert APVTS/domain value -> Select index
+        const index = this.findIndexByValue(initialValue);
 
         this.select = new Select(container, {
-            options: this.options,
+            options: entries,
             value: index,
             label: this.label,
             id: options.id,
@@ -52,15 +78,27 @@ export class ABDSelect {
         }
     }
 
+    findIndexByValue(value) {
+        if (this.hasExplicitValues) {
+            if (this.valueToIndex.has(value)) return this.valueToIndex.get(value);
+            const n = Math.round(Number(value));
+            if (this.valueToIndex.has(n)) return this.valueToIndex.get(n);
+            for (let i = 0; i < this.rawOptions.length; i++) {
+                if (this.rawOptions[i] && this.rawOptions[i].value === n) return i;
+            }
+        }
+        return this.clampIndex(value);
+    }
+
     clampIndex(index) {
-        const count = this.options.length;
+        const count = this.rawOptions.length;
         if (count === 0) return 0;
         const n = Math.round(Number(index));
         return Math.min(count - 1, Math.max(0, Number.isFinite(n) ? n : 0));
     }
 
     handleChange(idx) {
-        const realVal = idx; // APVTS stores the index directly
+        const realVal = this.indexToValue.get(idx) ?? idx;
         if (this.paramId) {
             paramStore.set(this.paramId, realVal);
             bridge.setParam(this.paramId, realVal);
@@ -72,15 +110,17 @@ export class ABDSelect {
 
     /** Programmatic update — does NOT fire onChange. */
     setValue(value, notify = false) {
-        const idx = this.clampIndex(value);
+        const idx = this.findIndexByValue(value);
         this.select.setValue(idx);
         if (notify && this.onChange) {
-            this.onChange(idx, this.paramId);
+            const realVal = this.indexToValue.get(idx) ?? idx;
+            this.onChange(realVal, this.paramId);
         }
     }
 
     getValue() {
-        return this.select.getValue();
+        const idx = this.select.getValue();
+        return this.indexToValue.get(idx) ?? idx;
     }
 
     /** Update disabled options (e.g. when another parameter changes available choices). */

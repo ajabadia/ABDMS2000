@@ -60,6 +60,33 @@ class Arpeggiator
         keySync_ = keySync;
     }
 
+    // microKORG / Advanced 8-Step Rhythm Mask
+    void setStepMask(int stepIdx, bool active) noexcept
+    {
+        if (stepIdx >= 0 && stepIdx < 8)
+            stepMask_[stepIdx] = active;
+    }
+    bool getStepMask(int stepIdx) const noexcept
+    {
+        return (stepIdx >= 0 && stepIdx < 8) ? stepMask_[stepIdx] : true;
+    }
+    void setLastStep(int lastStep) noexcept
+    {
+        lastStep_ = (lastStep >= 1 && lastStep <= 8) ? lastStep : 8;
+    }
+    int getLastStep() const noexcept
+    {
+        return lastStep_;
+    }
+    void setStepMaskEnabled(bool enabled) noexcept
+    {
+        stepMaskEnabled_ = enabled;
+    }
+    bool isStepMaskEnabled() const noexcept
+    {
+        return stepMaskEnabled_;
+    }
+
     void noteOn(int midiNote, float velocity) noexcept;
     void noteOff(int midiNote) noexcept;
     void allNotesOff() noexcept;
@@ -77,6 +104,12 @@ class Arpeggiator
     bool latch_ {false};
     bool keySync_ {true};
     int physicallyHeldCount_ {0};
+
+    // microKORG 8-step rhythm mask state
+    bool stepMask_[8] {true, true, true, true, true, true, true, true};
+    int lastStep_ {8};
+    int currentRhythmStep_ {0};
+    bool stepMaskEnabled_ {true};
 
     float syncStepsPerBeat_ {16.0f};  // Default: 1/16 (16 steps per beat)
     double samplesPerStep_ {5512.5};

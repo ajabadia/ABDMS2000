@@ -33,7 +33,9 @@ inline float normalizedToDomain (const ParameterMeta& entry, float t) noexcept
             float p1 = entry.curveP1;
             // Si p0 es 0, usamos escala por defecto
             if (p0 <= 0.0f) p0 = 1.0f;
-            return p0 * std::exp(p1 * t);
+            // Clamp t to [0,1] para evitar desbordamiento en exp
+            float tClamped = std::clamp(t, 0.0f, 1.0f);
+            return p0 * std::exp(p1 * tClamped);
         }
 
         case 2: // Pow: t ^ curveP1
@@ -41,7 +43,7 @@ inline float normalizedToDomain (const ParameterMeta& entry, float t) noexcept
             float p1 = entry.curveP1;
             if (p1 <= 0.0f) p1 = 1.0f;
             // Clamp t to [0,1] para evitar NaN con potencias negativas
-            float tClamped = std::max(0.0f, std::min(1.0f, t));
+            float tClamped = std::clamp(t, 0.0f, 1.0f);
             return std::pow(tClamped, p1);
         }
 
@@ -60,6 +62,10 @@ inline float domainToNormalized (const ParameterMeta& entry, float domain) noexc
     switch (entry.curve)
     {
         case 0: // Linear
+            // Clamp domain to [entry.domainMin, entry.domainMax] if available
+            if (entry.domainMin < entry.domainMax) {
+                domain = std::clamp(domain, entry.domainMin, entry.domainMax);
+            }
             return domain;
 
         case 1: // Exp inverse: (1/curveP1) * ln(domain / curveP0)
@@ -69,13 +75,18 @@ inline float domainToNormalized (const ParameterMeta& entry, float domain) noexc
             if (p0 <= 0.0f) p0 = 1.0f;
             if (p1 <= 0.0f) p1 = 1.0f;
             if (domain <= 0.0f) return 0.0f;
-            return (1.0f / p1) * std::log(domain / p0);
+            // Clamp domain/p0 to avoid log of negative or zero
+            float ratio = domain / p0;
+            if (ratio <= 0.0f) return 0.0f;
+            return (1.0f / p1) * std::log(ratio);
         }
 
         case 2: // Pow inverse: domain ^ (1/curveP1)
         {
             float p1 = entry.curveP1;
             if (p1 <= 0.0f) p1 = 1.0f;
+            // Clamp domain to [0, INF) for pow inverse
+            if (domain < 0.0f) domain = 0.0f;
             return std::pow(domain, 1.0f / p1);
         }
 

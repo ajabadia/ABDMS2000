@@ -5,7 +5,7 @@
  */
 import { describe, expect, it } from 'vitest';
 
-import { MS2000_THEMES, synthModeIndexOf } from '../../src/contracts/themes.js';
+import { MS2000_THEMES, synthModeIndexOf, themeIdOfSynthMode } from '../../src/contracts/themes.js';
 
 describe('MS2000_THEMES (datos declarativos)', () => {
   it('declares the three personalities with id, label, skin and synthMode payload', () => {
@@ -23,5 +23,12 @@ describe('MS2000_THEMES (datos declarativos)', () => {
     expect(synthModeIndexOf('microkorg')).toBe(1);
     expect(synthModeIndexOf('advanced')).toBe(2);
     expect(synthModeIndexOf('desconocido')).toBe(0); // default seguro
+  });
+
+  it('maps each synthMode index to the corresponding theme id', () => {
+    expect(themeIdOfSynthMode(0)).toBe('ms2000');
+    expect(themeIdOfSynthMode(1)).toBe('microkorg');
+    expect(themeIdOfSynthMode(2)).toBe('advanced');
+    expect(themeIdOfSynthMode(99)).toBe('ms2000'); // default seguro
   });
 });

@@ -31,6 +31,19 @@ class WasmEngineInstance
         voiceParams_.eg2Sustain = 1.0f;
         voiceParams_.ampLevel = 0.8f;
         masterVolume_ = 0.8f;
+
+        // Effects defaults matching parameters-spec schema (delayOn=1, modFxOn=1)
+        modFX_.setEnabled(true);
+        modFX_.setType(ModFXType::ChorusFlanger);
+        modFX_.setSpeed(40.0f / 127.0f);
+        modFX_.setDepth(64.0f / 127.0f);
+        modFX_.setFeedback(0.0f);
+
+        delayFX_.setEnabled(true);
+        delayFX_.setType(DelayType::Stereo);
+        delayFX_.setTimeSeconds(0.005f + (1.395f * (40.0f / 127.0f) * (40.0f / 127.0f)));
+        delayFX_.setDepth(40.0f / 127.0f);
+        delayFX_.setFeedback(30.0f / 127.0f);
     }
 
     void prepare(double sampleRate)
@@ -208,6 +221,23 @@ class WasmEngineInstance
             voiceParams_.eg2Release = value / 127.0f;
         else if (id == "portamentoTime")
             voiceParams_.portamentoTime = value;
+        else if (id == "voiceMode")
+            voiceManager_.setAssignMode(static_cast<VoiceAssignMode>(std::min(2, static_cast<int>(value))));
+        else if (id == "synthMode")
+        {
+            synthMode_ = static_cast<int>(value);
+            size_t poly = (synthMode_ == 2) ? VoiceManager::MAX_EXPANDED_VOICES : VoiceManager::NUM_HW_VOICES;
+            voiceManager_.setMaxPolyphony(poly);
+            if (synthMode_ == 1)
+            {
+                modSeq_.setEnabled(false);
+            }
+            arpeggiator_.setStepMaskEnabled(synthMode_ != 0);
+        }
+        else if (id == "unisonDetune")
+            voiceManager_.setUnisonDetune(value);
+        else if (id == "unisonSpread")
+            voiceManager_.setUnisonSpread(value);
         else if (id == "modFxOn")
             modFX_.setEnabled(value > 0.5f);
         else if (id == "modFxType")
@@ -216,6 +246,8 @@ class WasmEngineInstance
             modFX_.setSpeed(value / 127.0f);
         else if (id == "modFxDepth")
             modFX_.setDepth(value / 127.0f);
+        else if (id == "modFxFeedback")
+            modFX_.setFeedback(value);
         else if (id == "delayOn")
             delayFX_.setEnabled(value > 0.5f);
         else if (id == "delayType")
@@ -257,10 +289,23 @@ class WasmEngineInstance
             int idx = static_cast<int>(value);
             arpeggiator_.setSyncResolution(idx);
         }
+        else if (id == "arpLastStep")
+            arpeggiator_.setLastStep(static_cast<int>(value));
+        else if (id == "arpStep1") arpeggiator_.setStepMask(0, value > 0.5f);
+        else if (id == "arpStep2") arpeggiator_.setStepMask(1, value > 0.5f);
+        else if (id == "arpStep3") arpeggiator_.setStepMask(2, value > 0.5f);
+        else if (id == "arpStep4") arpeggiator_.setStepMask(3, value > 0.5f);
+        else if (id == "arpStep5") arpeggiator_.setStepMask(4, value > 0.5f);
+        else if (id == "arpStep6") arpeggiator_.setStepMask(5, value > 0.5f);
+        else if (id == "arpStep7") arpeggiator_.setStepMask(6, value > 0.5f);
+        else if (id == "arpStep8") arpeggiator_.setStepMask(7, value > 0.5f);
 
         // Mod Sequencer parameters
         else if (id == "modSeqOn")
-            modSeq_.setEnabled(value > 0.5f);
+        {
+            const bool allow = (synthMode_ != 1);
+            modSeq_.setEnabled(allow && (value > 0.5f));
+        }
         else if (id == "modSeqType")
         {
             // ModSeq mode is per-track; apply to all 6 tracks
@@ -313,6 +358,7 @@ class WasmEngineInstance
 
   private:
     double sampleRate_ {44100.0};
+    int synthMode_ {0};
     VoiceManager voiceManager_;
     VoiceParameters voiceParams_;
     float masterVolume_ {0.8f};

@@ -63,6 +63,7 @@ void Arpeggiator::reset() noexcept
     currentPlayingNote_ = -1;
     patternIndex_ = 0;
     patternDirection_ = true;
+    currentRhythmStep_ = 0;
 }
 
 void Arpeggiator::setOctaveRange(int octaves1to4) noexcept
@@ -236,18 +237,41 @@ bool Arpeggiator::processStep(int numSamples, std::vector<ArpNoteEvent> &outEven
 
         case ArpType::Trigger:
             // Chord trigger mode
-            for (int n : generatedPattern_)
             {
-                outEvents.push_back({n, 0.85f, true});
+                int curTriggerStep = currentRhythmStep_ % lastStep_;
+                currentRhythmStep_ = (currentRhythmStep_ + 1) % lastStep_;
+                if (stepMaskEnabled_ && !stepMask_[curTriggerStep])
+                {
+                    currentNoteActive_ = false;
+                    currentPlayingNote_ = -1;
+                    return !outEvents.empty();
+                }
+                for (int n : generatedPattern_)
+                {
+                    outEvents.push_back({n, 0.85f, true});
+                }
+                currentNoteActive_ = true;
+                currentPlayingNote_ = generatedPattern_[0];
+                return true;
             }
-            currentNoteActive_ = true;
-            currentPlayingNote_ = generatedPattern_[0];
-            return true;
         }
 
-        currentPlayingNote_ = noteToPlay;
-        currentNoteActive_ = true;
-        outEvents.push_back({noteToPlay, 0.85f, true});
+        // Apply 8-step rhythm mask (microKORG / Advanced)
+        int curStep = currentRhythmStep_ % lastStep_;
+        currentRhythmStep_ = (currentRhythmStep_ + 1) % lastStep_;
+
+        if (stepMaskEnabled_ && !stepMask_[curStep])
+        {
+            // Masked step: rest / silence (note advances but does not trigger)
+            currentNoteActive_ = false;
+            currentPlayingNote_ = -1;
+        }
+        else
+        {
+            currentPlayingNote_ = noteToPlay;
+            currentNoteActive_ = true;
+            outEvents.push_back({noteToPlay, 0.85f, true});
+        }
     }
 
     return !outEvents.empty();

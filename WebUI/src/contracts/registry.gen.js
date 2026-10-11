@@ -268,6 +268,13 @@ export const PARAMETERS_SPEC = {
       "type": "integer",
       "skew": 0.45,
       "unit": "Hz",
+      "wire": "CC",
+      "wireCodec": "Value",
+      "curve": "Pow",
+      "curveP1": 0.8,
+      "domainMin": 20,
+      "domainMax": 20000,
+      "smoothing": "Linear",
       "sysexOffset": 15
     },
     {
@@ -279,6 +286,13 @@ export const PARAMETERS_SPEC = {
       "max": 127,
       "default": 0,
       "type": "integer",
+      "wire": "CC",
+      "wireCodec": "Value",
+      "curve": "Pow",
+      "curveP1": 0.25,
+      "domainMin": 0,
+      "domainMax": 1,
+      "smoothing": "Linear",
       "sysexOffset": 16
     },
     {
@@ -301,6 +315,13 @@ export const PARAMETERS_SPEC = {
       "max": 63,
       "default": 0,
       "type": "integer",
+      "wire": "CC",
+      "wireCodec": "Bipolar",
+      "curve": "Pow",
+      "curveP1": 0.5,
+      "domainMin": -63,
+      "domainMax": 63,
+      "smoothing": "Linear",
       "sysexOffset": 18
     },
     {
@@ -358,6 +379,14 @@ export const PARAMETERS_SPEC = {
       "type": "integer",
       "skew": 0.35,
       "unit": "ms",
+      "wire": "None",
+      "wireCodec": "Value",
+      "curve": "Exp",
+      "curveP0": 0.001,
+      "curveP1": 3,
+      "domainMin": 0.001,
+      "domainMax": 10,
+      "smoothing": "Log",
       "sysexOffset": 23
     },
     {
@@ -395,6 +424,14 @@ export const PARAMETERS_SPEC = {
       "type": "integer",
       "skew": 0.35,
       "unit": "ms",
+      "wire": "None",
+      "wireCodec": "Value",
+      "curve": "Exp",
+      "curveP0": 0.01,
+      "curveP1": 3.5,
+      "domainMin": 0.01,
+      "domainMax": 15,
+      "smoothing": "Log",
       "sysexOffset": 26
     },
     {
@@ -475,6 +512,14 @@ export const PARAMETERS_SPEC = {
       "type": "integer",
       "skew": 0.4,
       "unit": "Hz",
+      "wire": "CC",
+      "wireCodec": "Value",
+      "curve": "Exp",
+      "curveP0": 0.035,
+      "curveP1": 7.5,
+      "domainMin": 0.01,
+      "domainMax": 20,
+      "smoothing": "Log",
       "sysexOffset": 32
     },
     {
@@ -560,6 +605,14 @@ export const PARAMETERS_SPEC = {
       "type": "integer",
       "skew": 0.4,
       "unit": "Hz",
+      "wire": "CC",
+      "wireCodec": "Value",
+      "curve": "Exp",
+      "curveP0": 0.035,
+      "curveP1": 7.5,
+      "domainMin": 0.01,
+      "domainMax": 20,
+      "smoothing": "Log",
       "sysexOffset": 37
     },
     {
@@ -771,6 +824,14 @@ export const PARAMETERS_SPEC = {
       "max": 127,
       "default": 40,
       "type": "integer",
+      "unit": "s",
+      "wire": "CC",
+      "wireCodec": "Value",
+      "curve": "Pow",
+      "curveP1": 0.5,
+      "domainMin": 0.001,
+      "domainMax": 1.4,
+      "smoothing": "Linear",
       "sysexOffset": 52
     },
     {
@@ -886,6 +947,105 @@ export const PARAMETERS_SPEC = {
         "4/1"
       ],
       "sysexOffset": 60
+    },
+    {
+      "id": "arpLastStep",
+      "name": "Arp Last Step",
+      "group": "Arp",
+      "cc": null,
+      "min": 1,
+      "max": 8,
+      "default": 8,
+      "type": "integer",
+      "sysexOffset": null
+    },
+    {
+      "id": "arpStep1",
+      "name": "Arp Step 1",
+      "group": "Arp",
+      "cc": null,
+      "min": 0,
+      "max": 1,
+      "default": 1,
+      "type": "boolean",
+      "sysexOffset": null
+    },
+    {
+      "id": "arpStep2",
+      "name": "Arp Step 2",
+      "group": "Arp",
+      "cc": null,
+      "min": 0,
+      "max": 1,
+      "default": 1,
+      "type": "boolean",
+      "sysexOffset": null
+    },
+    {
+      "id": "arpStep3",
+      "name": "Arp Step 3",
+      "group": "Arp",
+      "cc": null,
+      "min": 0,
+      "max": 1,
+      "default": 1,
+      "type": "boolean",
+      "sysexOffset": null
+    },
+    {
+      "id": "arpStep4",
+      "name": "Arp Step 4",
+      "group": "Arp",
+      "cc": null,
+      "min": 0,
+      "max": 1,
+      "default": 1,
+      "type": "boolean",
+      "sysexOffset": null
+    },
+    {
+      "id": "arpStep5",
+      "name": "Arp Step 5",
+      "group": "Arp",
+      "cc": null,
+      "min": 0,
+      "max": 1,
+      "default": 1,
+      "type": "boolean",
+      "sysexOffset": null
+    },
+    {
+      "id": "arpStep6",
+      "name": "Arp Step 6",
+      "group": "Arp",
+      "cc": null,
+      "min": 0,
+      "max": 1,
+      "default": 1,
+      "type": "boolean",
+      "sysexOffset": null
+    },
+    {
+      "id": "arpStep7",
+      "name": "Arp Step 7",
+      "group": "Arp",
+      "cc": null,
+      "min": 0,
+      "max": 1,
+      "default": 1,
+      "type": "boolean",
+      "sysexOffset": null
+    },
+    {
+      "id": "arpStep8",
+      "name": "Arp Step 8",
+      "group": "Arp",
+      "cc": null,
+      "min": 0,
+      "max": 1,
+      "default": 1,
+      "type": "boolean",
+      "sysexOffset": null
     },
     {
       "id": "modSeqResolution",
@@ -3723,6 +3883,12 @@ export const PARAMETERS_SPEC = {
       "max": 63,
       "default": 0,
       "type": "integer",
+      "wire": "CC",
+      "wireCodec": "Value",
+      "curve": "Pow",
+      "curveP1": 0.5,
+      "domainMin": -63,
+      "domainMax": 63,
       "sysexOffset": 237
     },
     {

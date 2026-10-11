@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="src/styles/main.css?v=20260907">
   <link rel="stylesheet" href="src/styles/dashboard.css?v=20260907">
   <link rel="stylesheet" href="src/styles/slideDrawer.css?v=20260907">
-  <link rel="stylesheet" href="src/components/bank/BankManagerModal.css?v=20260907">
+
   <!-- keyboard.css: imported via JS in app.js → Vite bundles into index.css -->
   <link rel="stylesheet" href="abdscope/src/scope.css?v=20260907">
   <link rel="stylesheet" href="src/styles/menu.css?v=20260907">
@@ -127,17 +127,17 @@
 
       <div class="nav-right">
         <!-- Bank Manager Button -->
-        <button id="btn-open-bank-manager" class="nav-test-btn" style="border-color: var(--color-accent); color: var(--color-accent);" title="Abrir Gestor de Bancos y Librerías (Korg MS2000)">
+        <button id="btn-open-bank-manager" class="nav-test-btn" style="border-color: var(--color-accent); color: var(--color-accent);" title="Open Bank &amp; Librarian Manager (Korg MS2000)">
           <span class="test-badge" style="background: rgba(var(--color-accent-rgb), 0.15); color: var(--color-accent);">BANK MGR</span>
         </button>
 
         <!-- Diagnostic Test Mode Button -->
-        <button id="btn-diagnostic-test" class="nav-test-btn" title="Diagnóstico de Audio y Modo Test (440Hz / Inyección DSP)">
+        <button id="btn-diagnostic-test" class="nav-test-btn" title="Audio Diagnostics &amp; Test Mode (440Hz / DSP Injection)">
           <span class="test-badge">TEST MODE</span>
         </button>
 
         <!-- WASM / Web Audio Start Button -->
-        <button id="btn-audio-init" class="audio-init-btn" title="Iniciar / Reanudar motor de Audio Web">
+        <button id="btn-audio-init" class="audio-init-btn" title="Start / Resume Web Audio Engine">
           <span class="audio-led"></span>
           <span class="audio-text">START AUDIO</span>
         </button>
@@ -191,7 +191,7 @@
             </button>
           </div>
           <div class="lcd-nav-row">
-            <button class="lcd-nav-btn lcd-nav-btn-accent" id="btn-init-patch" title="Inicializar Patch (Valores por Defecto)">INIT</button>
+            <button class="lcd-nav-btn lcd-nav-btn-accent" id="btn-init-patch" title="Initialize Patch (Default Values)">INIT</button>
             <button class="lcd-nav-btn lcd-nav-btn-danger" id="btn-panic" title="All Notes Off (Panic)">
               <svg class="ui-btn-icon" viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -1px; margin-right: 2px;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>PANIC
             </button>
@@ -211,13 +211,13 @@
               <span class="card-icon">
                 <svg class="ui-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
               </span>
-              <span class="card-title">OSCILADORES &amp; MIX</span>
+              <span class="card-title">OSCILLATORS &amp; MIX</span>
             </div>
             <span class="card-badge" id="badge-osc1-wave">VA SAW</span>
           </div>
           <div class="card-body">
             <div class="info-row">
-              <span class="info-label">OSC 1 Forma:</span>
+              <span class="info-label">OSC 1 Wave:</span>
               <span class="info-value" id="val-osc1-wave">Sawtooth</span>
             </div>
             <div class="info-row">
@@ -253,13 +253,13 @@
               <span class="card-icon">
                 <svg class="ui-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
               </span>
-              <span class="card-title">VOCODER 16 BANDAS</span>
+              <span class="card-title" id="title-vocoder-card">16-BAND VOCODER</span>
             </div>
             <span class="card-badge" id="badge-vocoder-mode">SYNTH</span>
           </div>
           <div class="card-body">
             <div class="info-row">
-              <span class="info-label">Estado Vocoder:</span>
+              <span class="info-label">Vocoder Status:</span>
               <span class="info-value" id="val-vocoder-status">OFF (Synth Mode)</span>
             </div>
             <div class="info-row">
@@ -273,7 +273,7 @@
           </div>
           <div class="card-actions-group">
             <button class="card-action-btn" id="btn-edit-vocoder-cfg">CONFIG</button>
-            <button class="card-action-btn" id="btn-edit-vocoder-bands">16 BANDAS</button>
+            <button class="card-action-btn" id="btn-edit-vocoder-bands">16 BANDS</button>
           </div>
         </div>
 
@@ -284,13 +284,13 @@
               <span class="card-icon">
                 <svg class="ui-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
               </span>
-              <span class="card-title">FILTRO MULTIMODO</span>
+              <span class="card-title">MULTIMODE FILTER</span>
             </div>
             <span class="card-badge" id="badge-filter-type">LPF 24dB</span>
           </div>
           <div class="card-body">
             <div class="info-row">
-              <span class="info-label">Tipo:</span>
+              <span class="info-label">Type:</span>
               <span class="info-value" id="val-filter-type">LPF 24dB (-24dB/oct)</span>
             </div>
             <div class="info-row">
@@ -303,8 +303,8 @@
             </div>
           </div>
           <div class="card-actions-group">
-            <button class="card-action-btn" id="btn-edit-filter-main">FILTRO</button>
-            <button class="card-action-btn" id="btn-edit-filter-mod">MODULACIÓN</button>
+            <button class="card-action-btn" id="btn-edit-filter-main">FILTER</button>
+            <button class="card-action-btn" id="btn-edit-filter-mod">MODULATION</button>
           </div>
         </div>
 
@@ -321,11 +321,11 @@
           </div>
           <div class="card-body">
             <div class="info-row">
-              <span class="info-label">Nivel / Pan:</span>
+              <span class="info-label">Level / Pan:</span>
               <span class="info-value" id="val-amp-level-pan">100 | Center</span>
             </div>
             <div class="info-row">
-              <span class="info-label">EG1 (Filtro):</span>
+              <span class="info-label">EG1 (Filter):</span>
               <span class="info-value" id="val-eg1-adsr">0 / 64 / 0 / 40</span>
             </div>
             <div class="info-row">
@@ -362,7 +362,7 @@
             </div>
             <div class="info-row">
               <span class="info-label">Virtual Patches:</span>
-              <span class="info-value" id="val-patch-summary">4 Slots Activos</span>
+              <span class="info-value" id="val-patch-summary">4 Active Slots</span>
             </div>
           </div>
           <div class="card-actions-group">
@@ -385,7 +385,7 @@
           </div>
           <div class="card-body">
             <div class="info-row">
-              <span class="info-label">Arpeggiador:</span>
+              <span class="info-label">Arpeggiator:</span>
               <span class="info-value" id="val-arp-status">OFF</span>
             </div>
             <div class="info-row">
@@ -393,7 +393,7 @@
               <span class="info-value" id="val-modseq-status">OFF</span>
             </div>
             <div class="info-row">
-              <span class="info-label">Resolución:</span>
+              <span class="info-label">Resolution:</span>
               <span class="info-value" id="val-seq-res">1/16 (Tempo: 120)</span>
             </div>
           </div>
@@ -410,7 +410,7 @@
               <span class="card-icon">
                 <svg class="ui-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
               </span>
-              <span class="card-title">EFECTOS &amp; EQ</span>
+              <span class="card-title">EFFECTS &amp; EQ</span>
             </div>
             <span class="card-badge">MOD + DLY + EQ</span>
           </div>
@@ -424,7 +424,7 @@
               <span class="info-value" id="val-fx-delay">Stereo (Time: 40)</span>
             </div>
             <div class="info-row">
-              <span class="info-label">EQ Master:</span>
+              <span class="info-label">Master EQ:</span>
               <span class="info-value" id="val-fx-eq">Low 0dB / High 0dB</span>
             </div>
           </div>
@@ -442,26 +442,26 @@
               <span class="card-icon">
                 <svg class="ui-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
               </span>
-              <span class="card-title">VOZ, PITCH &amp; MASTER</span>
+              <span class="card-title">VOICE, PITCH &amp; MASTER</span>
             </div>
             <span class="card-badge" id="badge-voice-mode">POLY</span>
           </div>
           <div class="card-body">
             <div class="info-row">
-              <span class="info-label">Modo Asignación:</span>
-              <span class="info-value" id="val-voice-mode">Poly (4 Voces)</span>
+              <span class="info-label">Assign Mode:</span>
+              <span class="info-value" id="val-voice-mode">Poly (4 Voices)</span>
             </div>
             <div class="info-row">
               <span class="info-label">Portamento:</span>
               <span class="info-value" id="val-porta-status">OFF (Time: 0)</span>
             </div>
             <div class="info-row">
-              <span class="info-label">Volumen Master:</span>
+              <span class="info-label">Master Volume:</span>
               <span class="info-value" id="val-master-vol">80% (-2.0 dB)</span>
             </div>
           </div>
           <div class="card-actions-group">
-            <button class="card-action-btn" id="btn-edit-voice">VOZ</button>
+            <button class="card-action-btn" id="btn-edit-voice">VOICE</button>
             <button class="card-action-btn" id="btn-edit-pitch">PORTAMENTO</button>
             <button class="card-action-btn" id="btn-edit-global">MASTER</button>
           </div>
@@ -512,70 +512,70 @@
             <span class="diag-badge-icon">
               <svg class="ui-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
             </span>
-            <h3>MODO TEST &amp; DIAGNÓSTICO DSP</h3>
+            <h3>TEST MODE &amp; DSP DIAGNOSTICS</h3>
           </div>
-          <button id="diag-close-top-btn" class="diag-icon-btn" title="Cerrar modal">✕</button>
+          <button id="diag-close-top-btn" class="diag-icon-btn" title="Close modal">✕</button>
         </div>
-        <div class="modal-sub">Inyector de Señal y Disparo Directo para Localización de Silencios en la Cadena de Audio</div>
+        <div class="modal-sub">Signal Injector and Direct Trigger for Audio Chain Silence Troubleshooting</div>
 
         <div class="diag-body">
-          <!-- 1. Tono Continuo / Inyector -->
+          <!-- 1. Test Tone / Injector -->
           <div class="diag-card">
-            <div class="diag-card-title">1. INYECCIÓN DE TONO DE PRUEBA</div>
+            <div class="diag-card-title">1. TEST TONE INJECTION</div>
             
             <div class="diag-row-toggle">
               <label class="diag-switch">
                 <input type="checkbox" id="diag-tone-enable">
                 <span class="diag-slider"></span>
               </label>
-              <span class="diag-label-bold" id="diag-tone-status">TONO DESACTIVADO</span>
+              <span class="diag-label-bold" id="diag-tone-status">TONE DISABLED</span>
             </div>
 
             <div class="diag-controls-grid">
               <div class="diag-control-item">
-                <label>Frecuencia: <span id="diag-freq-val">440</span> Hz</label>
+                <label>Frequency: <span id="diag-freq-val">440</span> Hz</label>
                 <input type="range" id="diag-freq-slider" min="50" max="4000" step="10" value="440">
               </div>
               <div class="diag-control-item">
-                <label>Volumen: <span id="diag-vol-val">25</span> %</label>
+                <label>Volume: <span id="diag-vol-val">25</span> %</label>
                 <input type="range" id="diag-vol-slider" min="1" max="100" step="1" value="25">
               </div>
             </div>
 
-            <div class="diag-section-sub">Punto de Inyección en la Cadena de Audio:</div>
+            <div class="diag-section-sub">Audio Chain Injection Point:</div>
             <div class="diag-injection-points" id="diag-injection-points">
               <label class="diag-radio-label">
                 <input type="radio" name="diag-point" value="1">
                 <span class="diag-radio-custom"></span>
-                <span class="diag-point-desc"><strong>[1] Post-Master Volume</strong> (Salida directa al DAC / Master Bus)</span>
+                <span class="diag-point-desc"><strong>[1] Post-Master Volume</strong> (Direct output to DAC / Master Bus)</span>
               </label>
               <label class="diag-radio-label">
                 <input type="radio" name="diag-point" value="2" checked>
                 <span class="diag-radio-custom"></span>
-                <span class="diag-point-desc"><strong>[2] Pre-Master Volume</strong> (Antes del atenuador Master Gain)</span>
+                <span class="diag-point-desc"><strong>[2] Pre-Master Volume</strong> (Before Master Gain attenuator)</span>
               </label>
               <label class="diag-radio-label">
                 <input type="radio" name="diag-point" value="3">
                 <span class="diag-radio-custom"></span>
-                <span class="diag-point-desc"><strong>[3] Pre-Efectos</strong> (Salida de Voces / Antes de ModFX, Delay y EQ)</span>
+                <span class="diag-point-desc"><strong>[3] Pre-Effects</strong> (Voice output / Before ModFX, Delay and EQ)</span>
               </label>
               <label class="diag-radio-label">
                 <input type="radio" name="diag-point" value="4">
                 <span class="diag-radio-custom"></span>
-                <span class="diag-point-desc"><strong>[4] Pre-Filtro VCF</strong> (Dentro de la voz, pasa por Filtro, VCA y Envolventes)</span>
+                <span class="diag-point-desc"><strong>[4] Pre-Filter VCF</strong> (Inside voice, passes through Filter, VCA and Envelopes)</span>
               </label>
               <label class="diag-radio-label">
                 <input type="radio" name="diag-point" value="5">
                 <span class="diag-radio-custom"></span>
-                <span class="diag-point-desc"><strong>[5] Salida OSC 1</strong> (Sustituye la onda de OSC1, pasa por Mixer, Filtro y VCA)</span>
+                <span class="diag-point-desc"><strong>[5] OSC 1 Output</strong> (Replaces OSC1 wave, passes through Mixer, Filter and VCA)</span>
               </label>
             </div>
           </div>
 
-          <!-- 2. Disparo Directo al Motor DSP -->
+          <!-- 2. Direct Trigger to DSP Engine -->
           <div class="diag-card">
-            <div class="diag-card-title">2. DISPARO DIRECTO DE NOTAS (BYPASS TECLADO / MIDI)</div>
-            <div class="diag-desc-small">Pulsa estos botones para enviar eventos directos al motor C++ sin pasar por el teclado virtual:</div>
+            <div class="diag-card-title">2. DIRECT NOTE TRIGGER (BYPASS KEYBOARD / MIDI)</div>
+            <div class="diag-desc-small">Click these buttons to send direct events to the C++ engine bypassing the virtual keyboard:</div>
             
             <div class="diag-note-triggers">
               <button class="diag-note-btn" data-note="48">C3 (48)</button>
@@ -589,82 +589,82 @@
             <div class="diag-trigger-opts">
               <label class="diag-toggle-label">
                 <input type="checkbox" id="diag-note-latch">
-                <span>Modo Mantener Nota (Latch / Hold)</span>
+                <span>Latch Note Mode (Latch / Hold)</span>
               </label>
               <button id="diag-btn-panic" class="diag-panic-btn">ALL NOTES OFF (PANIC)</button>
             </div>
           </div>
 
-          <!-- 3. Bypass Modular de Componentes (Aislamiento DSP) -->
+          <!-- 3. Modular Component Bypass -->
           <div class="diag-card">
-            <div class="diag-card-title">3. BYPASS MODULAR DE COMPONENTES (SALTAR ETAPAS DSP)</div>
-            <div class="diag-desc-small">Activa estos interruptores para puentear cada componente de la cadena y detectar cuál está silenciando el audio:</div>
+            <div class="diag-card-title">3. MODULAR COMPONENT BYPASS (DSP STAGE ISOLATION)</div>
+            <div class="diag-desc-small">Toggle these switches to bypass each component in the signal chain and isolate audio mutes:</div>
 
             <div class="diag-bypass-grid">
               <label class="diag-bypass-item">
                 <input type="checkbox" id="diag-bypass-filter" class="diag-bypass-checkbox">
                 <span class="diag-bypass-box"></span>
-                <span class="diag-bypass-label"><strong>Bypass Filtro VCF</strong> (Pasa la señal directa sin corte ni resonancia)</span>
+                <span class="diag-bypass-label"><strong>Bypass VCF Filter</strong> (Passes signal directly without cutoff or resonance)</span>
               </label>
 
               <label class="diag-bypass-item">
                 <input type="checkbox" id="diag-bypass-vca" class="diag-bypass-checkbox">
                 <span class="diag-bypass-box"></span>
-                <span class="diag-bypass-label"><strong>Bypass Envolvente / VCA</strong> (Abre el VCA al 100% de forma continua)</span>
+                <span class="diag-bypass-label"><strong>Bypass Envelope / VCA</strong> (Opens VCA at 100% continuously)</span>
               </label>
 
               <label class="diag-bypass-item">
                 <input type="checkbox" id="diag-bypass-mixer" class="diag-bypass-checkbox">
                 <span class="diag-bypass-box"></span>
-                <span class="diag-bypass-label"><strong>Bypass Mezclador OSC1</strong> (Fuerza nivel de OSC 1 al 100%)</span>
+                <span class="diag-bypass-label"><strong>Bypass OSC1 Mixer</strong> (Forces OSC 1 level to 100%)</span>
               </label>
 
               <label class="diag-bypass-item">
                 <input type="checkbox" id="diag-bypass-distortion" class="diag-bypass-checkbox">
                 <span class="diag-bypass-box"></span>
-                <span class="diag-bypass-label"><strong>Bypass Distorsión</strong> (Desactiva saturador analógico)</span>
+                <span class="diag-bypass-label"><strong>Bypass Distortion</strong> (Bypasses analog saturation)</span>
               </label>
 
               <label class="diag-bypass-item">
                 <input type="checkbox" id="diag-bypass-modfx" class="diag-bypass-checkbox">
                 <span class="diag-bypass-box"></span>
-                <span class="diag-bypass-label"><strong>Bypass Mod FX</strong> (Puentea Chorus / Flanger / Phaser)</span>
+                <span class="diag-bypass-label"><strong>Bypass Mod FX</strong> (Bypasses Chorus / Flanger / Phaser)</span>
               </label>
 
               <label class="diag-bypass-item">
                 <input type="checkbox" id="diag-bypass-delayfx" class="diag-bypass-checkbox">
                 <span class="diag-bypass-box"></span>
-                <span class="diag-bypass-label"><strong>Bypass Delay FX</strong> (Puentea procesador de retardo)</span>
+                <span class="diag-bypass-label"><strong>Bypass Delay FX</strong> (Bypasses delay processor)</span>
               </label>
 
               <label class="diag-bypass-item">
                 <input type="checkbox" id="diag-bypass-eq" class="diag-bypass-checkbox">
                 <span class="diag-bypass-box"></span>
-                <span class="diag-bypass-label"><strong>Bypass Master EQ</strong> (Puentea ecualizador final de 2 bandas)</span>
+                <span class="diag-bypass-label"><strong>Bypass Master EQ</strong> (Bypasses final 2-band EQ)</span>
               </label>
             </div>
 
             <div class="diag-bypass-actions">
-              <button id="diag-btn-reset-bypasses" class="diag-reset-bypass-btn">DESACTIVAR TODOS LOS BYPASS</button>
+              <button id="diag-btn-reset-bypasses" class="diag-reset-bypass-btn">DISABLE ALL BYPASSES</button>
             </div>
           </div>
 
-          <!-- 4. Guía de Diagnóstico -->
+          <!-- 4. Troubleshooting Guide -->
           <div class="diag-guide-box">
             <div class="diag-guide-title">
-              <svg class="ui-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 4px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Guía de Interpretación de Resultados:
+              <svg class="ui-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 4px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Results Interpretation Guide:
             </div>
             <ul>
-              <li><strong>Si activando "Bypass Filtro VCF" ya suena:</strong> El filtro ZDF tenía el Cutoff a 0 o una ecuación de damping atenuando en exceso.</li>
-              <li><strong>Si activando "Bypass Envolvente / VCA" suena continuamente:</strong> La envolvente EG2 (ADSR) o el nivel de VCA no estaban disparándose al pulsar las notas.</li>
-              <li><strong>Si activando "Bypass Mezclador OSC1" suena:</strong> El parámetro de volumen de OSC1 en el Mixer estaba a 0.</li>
-              <li><strong>Si activando "Bypass Mod FX / Delay / EQ" suena:</strong> Uno de los procesadores de efectos estaba silenciando el bloque de salida.</li>
+              <li><strong>If enabling "Bypass VCF Filter" restores sound:</strong> The ZDF filter Cutoff was at 0 or damping was over-attenuating.</li>
+              <li><strong>If enabling "Bypass Envelope / VCA" sounds continuously:</strong> EG2 envelope (ADSR) or VCA level was not triggering on notes.</li>
+              <li><strong>If enabling "Bypass OSC1 Mixer" restores sound:</strong> OSC1 Mixer volume level was at 0.</li>
+              <li><strong>If enabling "Bypass Mod FX / Delay / EQ" restores sound:</strong> One of the effects processors was muting the output stage.</li>
             </ul>
           </div>
         </div>
 
         <div class="diag-footer">
-          <button id="diag-close-btn" class="modal-close-btn">CERRAR MODO TEST</button>
+          <button id="diag-close-btn" class="modal-close-btn">CLOSE TEST MODE</button>
         </div>
       </div>
     </div>
@@ -680,7 +680,7 @@
           <p><strong>Build Version:</strong> <span id="about-build-version">2026.08.24</span></p>
           <p><strong>Developed by:</strong> ajabadia &amp; Antigravity Pair Programming</p>
         </div>
-        <button id="about-close-btn" class="modal-close-btn">CERRAR</button>
+        <button id="about-close-btn" class="modal-close-btn">CLOSE</button>
       </div>
     </div>
   </div>
