@@ -910,7 +910,12 @@
       "min": 0,
       "max": 127,
       "default": 50,
-      "type": "integer"
+      "type": "integer",
+      "wire": "CC",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0
     },
     {
       "id": "delayFeedback",
@@ -920,7 +925,12 @@
       "min": 0,
       "max": 127,
       "default": 40,
-      "type": "integer"
+      "type": "integer",
+      "wire": "None",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0
     },
     {
       "id": "arpOn",
@@ -968,7 +978,12 @@
       "min": 0,
       "max": 127,
       "default": 100,
-      "type": "integer"
+      "type": "integer",
+      "wire": "None",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0
     },
     {
       "id": "arpLatch",
@@ -1203,7 +1218,12 @@
       "min": -63,
       "max": 63,
       "default": 0,
-      "type": "integer"
+      "type": "integer",
+      "wire": "None",
+      "wireCodec": "Bipolar",
+      "curve": "Linear",
+      "domainMin": -1.0,
+      "domainMax": 1.0
     },
     {
       "id": "patch2Source",
@@ -1253,7 +1273,12 @@
       "min": -63,
       "max": 63,
       "default": 0,
-      "type": "integer"
+      "type": "integer",
+      "wire": "None",
+      "wireCodec": "Bipolar",
+      "curve": "Linear",
+      "domainMin": -1.0,
+      "domainMax": 1.0
     },
     {
       "id": "patch3Source",
@@ -1303,7 +1328,12 @@
       "min": -63,
       "max": 63,
       "default": 0,
-      "type": "integer"
+      "type": "integer",
+      "wire": "None",
+      "wireCodec": "Bipolar",
+      "curve": "Linear",
+      "domainMin": -1.0,
+      "domainMax": 1.0
     },
     {
       "id": "patch4Source",
@@ -1353,7 +1383,12 @@
       "min": -63,
       "max": 63,
       "default": 0,
-      "type": "integer"
+      "type": "integer",
+      "wire": "None",
+      "wireCodec": "Bipolar",
+      "curve": "Linear",
+      "domainMin": -1.0,
+      "domainMax": 1.0
     },
     {
       "id": "modSeqOn",
@@ -3220,7 +3255,12 @@
       "min": -63,
       "max": 63,
       "default": 0,
-      "type": "integer"
+      "type": "integer",
+      "wire": "None",
+      "wireCodec": "Bipolar",
+      "curve": "Linear",
+      "domainMin": -1.0,
+      "domainMax": 1.0
     },
     {
       "id": "t2Patch2Source",
@@ -3270,7 +3310,12 @@
       "min": -63,
       "max": 63,
       "default": 0,
-      "type": "integer"
+      "type": "integer",
+      "wire": "None",
+      "wireCodec": "Bipolar",
+      "curve": "Linear",
+      "domainMin": -1.0,
+      "domainMax": 1.0
     },
     {
       "id": "t2Patch3Source",
@@ -3320,7 +3365,12 @@
       "min": -63,
       "max": 63,
       "default": 0,
-      "type": "integer"
+      "type": "integer",
+      "wire": "None",
+      "wireCodec": "Bipolar",
+      "curve": "Linear",
+      "domainMin": -1.0,
+      "domainMax": 1.0
     },
     {
       "id": "t2Patch4Source",
@@ -3370,7 +3420,12 @@
       "min": -63,
       "max": 63,
       "default": 0,
-      "type": "integer"
+      "type": "integer",
+      "wire": "None",
+      "wireCodec": "Bipolar",
+      "curve": "Linear",
+      "domainMin": -1.0,
+      "domainMax": 1.0
     },
     {
       "id": "t2ModSeqOn",

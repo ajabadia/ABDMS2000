@@ -99,6 +99,12 @@ los cierres del contrato; doble cierre = no-op). Suite: vitest **134/134**.
 - [x] DSP.22 - Migración en `SynthEngine.cpp` y `Voice.cpp` (`glide_.setGlideTime`) a llamadas canónicas `conversion::normalizedToDomain()`
 - [x] DSP.23 - Tests de paridad en `DSPCoreTests.cpp` (Case 29) para Portamento (Linear $0..1$), OSC1 Ctrl1 (Linear $0..1$), Filter EG1 Int (Bipolar $-1..+1$), Filter Key Track (Bipolar $-1..+1$) y Amp Velo (Bipolar $-1..+1$)
 
+**Iteración 7** (Completada):
+- [x] DSP.24 - Metadatos canónicos de dominio para Intensidades de Virtual Patch (`patch1Intensity` a `patch4Intensity`, y Timbre 2 `t2Patch*Intensity` con Bipolar Linear $[-1.0 \dots +1.0]$)
+- [x] DSP.25 - Metadatos canónicos de dominio para Delay FX (`delayDepth`, `delayFeedback` con Linear $[0.0 \dots 1.0]$) y Arpeggiator Gate (`arpGate` con Linear $[0.0 \dots 1.0]$)
+- [x] DSP.26 - Migración en `SynthEngine.cpp` de `patchSlots[s].intensity`, `delayDepth`, `delayFeedback` y `arpGate` a `conversion::normalizedToDomain()`
+- [x] DSP.27 - Tests de paridad en `DSPCoreTests.cpp` (Case 29, sección 2h) para `patch1Intensity` (Bipolar $-1..+1$), `delayDepth` ($0..1$), `delayFeedback` ($0..1$) y `arpGate` ($0..1$)
+
 ---
 
 ## 📌 Tareas Futuras y Validación Cruzada (Backlog)

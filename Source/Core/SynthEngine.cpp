@@ -288,7 +288,8 @@ void SynthEngine::readTimbreParams(bool second, VoiceParameters &vp) noexcept
         vp.patchSlots[s].source = static_cast<PatchSource>(static_cast<int>(P(slotSource[s], sourceDefault[s])));
         vp.patchSlots[s].destination =
             static_cast<PatchDestination>(static_cast<int>(P(slotDestination[s], destinationDefault[s])));
-        vp.patchSlots[s].intensity = P(slotIntensity[s], 0.0f) / 63.0f;
+        float pIntNorm = (P(slotIntensity[s], 0.0f) + 63.0f) / 126.0f;
+        vp.patchSlots[s].intensity = conversion::normalizedToDomain(slotIntensity[s], pIntNorm);
     }
 }
 
@@ -525,7 +526,8 @@ void SynthEngine::updateParametersFromAPVTS() noexcept
     arpeggiator_.setEnabled(getParam(ParamIDs::arpOn, 0.0f) > 0.5f);
     arpeggiator_.setType(static_cast<ArpType>(static_cast<int>(getParam(ParamIDs::arpType, 0.0f))));
     arpeggiator_.setOctaveRange(static_cast<int>(getParam(ParamIDs::arpRange, 1.0f)));
-    arpeggiator_.setGateTime(getParam(ParamIDs::arpGate, 100.0f) / 127.0f);
+    float arpGateNorm = getParam(ParamIDs::arpGate, 100.0f) / 127.0f;
+    arpeggiator_.setGateTime(conversion::normalizedToDomain("arpGate", arpGateNorm));
     arpeggiator_.setLatch(getParam(ParamIDs::arpLatch, 0.0f) > 0.5f);
     arpeggiator_.setSyncResolution(static_cast<int>(getParam(ParamIDs::arpResolution, 3.0f)));
 
@@ -582,8 +584,10 @@ void SynthEngine::updateParametersFromAPVTS() noexcept
     float dTimeNorm = getParam(ParamIDs::delayTime, 40.0f) / 127.0f;
     float dTimeSec = conversion::normalizedToDomain("delayTime", dTimeNorm);
     delayFX_.setTimeSeconds(dTimeSec);
-    delayFX_.setDepth(getParam(ParamIDs::delayDepth, 50.0f) / 127.0f);
-    delayFX_.setFeedback(getParam(ParamIDs::delayFeedback, 40.0f) / 127.0f);
+    float dDepthNorm = getParam(ParamIDs::delayDepth, 50.0f) / 127.0f;
+    delayFX_.setDepth(conversion::normalizedToDomain("delayDepth", dDepthNorm));
+    float dFeedbackNorm = getParam(ParamIDs::delayFeedback, 40.0f) / 127.0f;
+    delayFX_.setFeedback(conversion::normalizedToDomain("delayFeedback", dFeedbackNorm));
 
     const bool vocMode = getParam(ParamIDs::synthVocoderMode, 0.0f) > 0.5f;
     vocoder_.setEnabled(vocMode);

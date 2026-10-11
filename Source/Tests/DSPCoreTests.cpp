@@ -2590,6 +2590,41 @@ static void testDspConversionsAndClamping()
         check(v1 == 1.0f, "ampVelo t=1 is +1.0");
     }
 
+    // 2h. Virtual Patch Intensity, Delay Depth/Feedback & Arp Gate
+    if (const auto* p1Int = ParameterRegistry::getParameter("patch1Intensity"))
+    {
+        float pi0 = conversion::normalizedToDomain(*p1Int, 0.0f);
+        float piMid = conversion::normalizedToDomain(*p1Int, 0.5f);
+        float pi1 = conversion::normalizedToDomain(*p1Int, 1.0f);
+        check(pi0 == -1.0f, "patch1Intensity t=0 is -1.0");
+        check(std::abs(piMid - 0.0f) < 1e-4f, "patch1Intensity t=0.5 is 0.0");
+        check(pi1 == 1.0f, "patch1Intensity t=1 is +1.0");
+    }
+
+    if (const auto* dDep = ParameterRegistry::getParameter("delayDepth"))
+    {
+        float d0 = conversion::normalizedToDomain(*dDep, 0.0f);
+        float d1 = conversion::normalizedToDomain(*dDep, 1.0f);
+        check(d0 == 0.0f, "delayDepth t=0 is 0.0");
+        check(d1 == 1.0f, "delayDepth t=1 is 1.0");
+    }
+
+    if (const auto* dFb = ParameterRegistry::getParameter("delayFeedback"))
+    {
+        float fb0 = conversion::normalizedToDomain(*dFb, 0.0f);
+        float fb1 = conversion::normalizedToDomain(*dFb, 1.0f);
+        check(fb0 == 0.0f, "delayFeedback t=0 is 0.0");
+        check(fb1 == 1.0f, "delayFeedback t=1 is 1.0");
+    }
+
+    if (const auto* aGate = ParameterRegistry::getParameter("arpGate"))
+    {
+        float g0 = conversion::normalizedToDomain(*aGate, 0.0f);
+        float g1 = conversion::normalizedToDomain(*aGate, 1.0f);
+        check(g0 == 0.0f, "arpGate t=0 is 0.0");
+        check(g1 == 1.0f, "arpGate t=1 is 1.0");
+    }
+
     // 3. Robustez masiva sobre todos los parámetros registrados (DSP.10)
     const auto& allParams = ParameterRegistry::getAllParameters();
     bool allValid = true;
