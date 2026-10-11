@@ -151,9 +151,14 @@ Después de cada iteración, actualizar este roadmap:
   - Incorporado el mapeo canónico para `NRPN 0, 9` (CC 99 = 0, CC 98 = 9, CC 6 = 1..8) asignado a `ParamIDs::arpLastStep`.
   - Sincronización automática a través de la infraestructura compartida con el arpegiador del motor y la WebUI.
 
-#### 🔹 Fase 3: Bifurcación en `ABDBankManager` (`modelContracts.gen.js`)
-- **Archivos**: `ABDBankManager/WebUI/src/contracts/gen/modelContracts.gen.js`, `ABDBankManager/WebUI/src/core/modelDetection.js`.
-- **Acciones**:
-  - Especializar `korg-microkorg` separándolo de la herencia directa de `korgMs2000Contract`.
-  - Ajustar `identifyModel()` para que al importar volcados reconozca fielmente si el `.syx` procede de un microKORG o un MS2000.
-  - Implementar la conversión cruzada inteligente: al cargar un patch de MS2000 en microKORG, ignorar el Mod Sequencer y activar el arpegiador estándar; al cargar un patch de microKORG en MS2000, preservar los parámetros comunes y dejar el Mod Sequencer en estado neutro.
+#### 🔹 Fase 3: Bifurcación en `ABDBankManager` (`modelContracts.gen.js`) - [COMPLETADA ✅]
+- **Archivos**: `ABDBankManager/WebUI/src/contracts/gen/modelContracts.gen.js`, `ABDBankManager/WebUI/src/contracts/gen/contractRegistry.gen.js`, `ABDSharedCode/BankManager/Contracts/Models/korg-ms2000.ts`, `ABDMS2000/Source/Core/HardwareConstants.h`.
+- **Implementación**:
+  - Especializado el contrato canónico `korg-microkorg` con Model ID `0x71` nativo y compatibilidad tolerante para volcados de fábrica `0x58`.
+  - Regenerados los artefactos web `modelContracts.gen.js` (98.0 KB) y `contractRegistry.gen.js` (23.9 KB).
+  - Detección unívoca en `sysexParser.js`: volcados con byte `0x71` detectan unívocamente `korg-microkorg`, mientras `0x58` detecta `korg-ms2000`.
+  - Conversión e importación tolerante: microKORG admite tanto volcados nativos `0x71` como volcados de MS2000 (`0x58`), neutralizando el Mod Sequencer en el motor.
+  - Sincronizado `WebUI/abdbank/` con el host `ABDMS2000` mediante `sync_bankmanager.js`.
+  - Corregido `kMicroKorgModelId = 0x71` en `HardwareConstants.h`.
+  - Batería de pruebas: **1.170/1.170 tests unitarios en verde** en `ABDBankManager`.
+  - Congelado con commits de consolidación: `ABDBankManager` (`31cd46f`), `ABDSharedCode` (`d990e38`) y `ABDMS2000` (`6f32ae808`).
