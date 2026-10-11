@@ -227,16 +227,16 @@ void SynthEngine::readTimbreParams(bool second, VoiceParameters &vp) noexcept
     vp.filterVeloSens = P(ParamIDs::filterVelo, 0.0f) / 63.0f;
 
     // EG1
-    vp.eg1Attack = P(ParamIDs::eg1Attack, 0.0f) / 127.0f;
-    vp.eg1Decay = P(ParamIDs::eg1Decay, 40.0f) / 127.0f;
-    vp.eg1Sustain = P(ParamIDs::eg1Sustain, 0.0f) / 127.0f;
-    vp.eg1Release = P(ParamIDs::eg1Release, 40.0f) / 127.0f;
+    vp.eg1Attack = conversion::normalizedToDomain("eg1Attack", P(ParamIDs::eg1Attack, 0.0f) / 127.0f);
+    vp.eg1Decay = conversion::normalizedToDomain("eg1Decay", P(ParamIDs::eg1Decay, 40.0f) / 127.0f);
+    vp.eg1Sustain = conversion::normalizedToDomain("eg1Sustain", P(ParamIDs::eg1Sustain, 0.0f) / 127.0f);
+    vp.eg1Release = conversion::normalizedToDomain("eg1Release", P(ParamIDs::eg1Release, 40.0f) / 127.0f);
 
     // EG2
-    vp.eg2Attack = P(ParamIDs::eg2Attack, 0.0f) / 127.0f;
-    vp.eg2Decay = P(ParamIDs::eg2Decay, 40.0f) / 127.0f;
-    vp.eg2Sustain = P(ParamIDs::eg2Sustain, 127.0f) / 127.0f;
-    vp.eg2Release = P(ParamIDs::eg2Release, 40.0f) / 127.0f;
+    vp.eg2Attack = conversion::normalizedToDomain("eg2Attack", P(ParamIDs::eg2Attack, 0.0f) / 127.0f);
+    vp.eg2Decay = conversion::normalizedToDomain("eg2Decay", P(ParamIDs::eg2Decay, 40.0f) / 127.0f);
+    vp.eg2Sustain = conversion::normalizedToDomain("eg2Sustain", P(ParamIDs::eg2Sustain, 127.0f) / 127.0f);
+    vp.eg2Release = conversion::normalizedToDomain("eg2Release", P(ParamIDs::eg2Release, 40.0f) / 127.0f);
 
     // LFO1: Saw=0, Square=1, Triangle=2, SampleHold=3
     int l1w = static_cast<int>(P(ParamIDs::lfo1Wave, 2.0f));

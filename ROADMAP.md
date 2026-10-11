@@ -88,6 +88,11 @@ los cierres del contrato; doble cierre = no-op). Suite: vitest **134/134**.
 - [x] DSP.15 - Migración en `SynthEngine.cpp` de niveles de mezclador (`osc1Level`, `osc2Level`, `noiseLevel`) y `ampLevel` a `conversion::normalizedToDomain()`
 - [x] DSP.16 - Tests de paridad para Mixer (Linear $[0.0 \dots 1.0]$), Amp Level ($[0.0 \dots 1.0]$) y Amp Pan (Bipolar Linear $[-1.0 \dots +1.0]$) en `DSPCoreTests.cpp` (Case 29)
 
+**Iteración 5** (Completada):
+- [x] DSP.17 - Metadatos canónicos de dominio para bloques de Envolvente EG1 y EG2 (`eg1Attack`, `eg1Decay`, `eg1Sustain`, `eg1Release`, `eg2Attack`, `eg2Decay`, `eg2Sustain`, `eg2Release`, y espejos de Timbre 2 `t2*` con `wire: None`)
+- [x] DSP.18 - Migración en `SynthEngine.cpp` de todos los parámetros de envolvente (`vp.eg1*` y `vp.eg2*`) a `conversion::normalizedToDomain()`
+- [x] DSP.19 - Tests de paridad para EG1 y EG2 (Linear $[0.0 \dots 1.0]$) en `DSPCoreTests.cpp` (Case 29)
+
 ---
 
 ## 📌 Tareas Futuras y Validación Cruzada (Backlog)

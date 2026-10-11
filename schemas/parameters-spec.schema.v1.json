@@ -384,14 +384,11 @@
       "type": "integer",
       "skew": 0.35,
       "unit": "ms",
-      "wire": "None",
+      "wire": "CC",
       "wireCodec": "Value",
-      "curve": "Exp",
-      "curveP0": 0.001,
-      "curveP1": 3.0,
-      "domainMin": 0.001,
-      "domainMax": 10.0,
-      "smoothing": "Log"
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0
     },
     {
       "id": "eg1Decay",
@@ -403,7 +400,12 @@
       "default": 64,
       "type": "integer",
       "skew": 0.35,
-      "unit": "ms"
+      "unit": "ms",
+      "wire": "CC",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0
     },
     {
       "id": "eg1Sustain",
@@ -413,7 +415,12 @@
       "min": 0,
       "max": 127,
       "default": 0,
-      "type": "integer"
+      "type": "integer",
+      "wire": "CC",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0
     },
     {
       "id": "eg1Release",
@@ -426,14 +433,11 @@
       "type": "integer",
       "skew": 0.35,
       "unit": "ms",
-      "wire": "None",
+      "wire": "CC",
       "wireCodec": "Value",
-      "curve": "Exp",
-      "curveP0": 0.01,
-      "curveP1": 3.5,
-      "domainMin": 0.01,
-      "domainMax": 15.0,
-      "smoothing": "Log"
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0
     },
     {
       "id": "eg2Attack",
@@ -445,7 +449,12 @@
       "default": 0,
       "type": "integer",
       "skew": 0.35,
-      "unit": "ms"
+      "unit": "ms",
+      "wire": "CC",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0
     },
     {
       "id": "eg2Decay",
@@ -457,7 +466,12 @@
       "default": 64,
       "type": "integer",
       "skew": 0.35,
-      "unit": "ms"
+      "unit": "ms",
+      "wire": "CC",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0
     },
     {
       "id": "eg2Sustain",
@@ -467,7 +481,12 @@
       "min": 0,
       "max": 127,
       "default": 127,
-      "type": "integer"
+      "type": "integer",
+      "wire": "CC",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0
     },
     {
       "id": "eg2Release",
@@ -479,7 +498,12 @@
       "default": 20,
       "type": "integer",
       "skew": 0.35,
-      "unit": "ms"
+      "unit": "ms",
+      "wire": "CC",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0
     },
     {
       "id": "lfo1Wave",
@@ -2793,7 +2817,12 @@
       "default": 0,
       "type": "integer",
       "skew": 0.35,
-      "unit": "ms"
+      "unit": "ms",
+      "wire": "None",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0
     },
     {
       "id": "t2Eg1Decay",
@@ -2805,7 +2834,12 @@
       "default": 64,
       "type": "integer",
       "skew": 0.35,
-      "unit": "ms"
+      "unit": "ms",
+      "wire": "None",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0
     },
     {
       "id": "t2Eg1Sustain",
@@ -2815,7 +2849,12 @@
       "min": 0,
       "max": 127,
       "default": 0,
-      "type": "integer"
+      "type": "integer",
+      "wire": "None",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0
     },
     {
       "id": "t2Eg1Release",
@@ -2827,7 +2866,12 @@
       "default": 40,
       "type": "integer",
       "skew": 0.35,
-      "unit": "ms"
+      "unit": "ms",
+      "wire": "None",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0
     },
     {
       "id": "t2Eg2Attack",
@@ -2839,7 +2883,12 @@
       "default": 0,
       "type": "integer",
       "skew": 0.35,
-      "unit": "ms"
+      "unit": "ms",
+      "wire": "None",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0
     },
     {
       "id": "t2Eg2Decay",
@@ -2851,7 +2900,12 @@
       "default": 64,
       "type": "integer",
       "skew": 0.35,
-      "unit": "ms"
+      "unit": "ms",
+      "wire": "None",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0
     },
     {
       "id": "t2Eg2Sustain",
@@ -2861,7 +2915,12 @@
       "min": 0,
       "max": 127,
       "default": 127,
-      "type": "integer"
+      "type": "integer",
+      "wire": "None",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0
     },
     {
       "id": "t2Eg2Release",
@@ -2873,7 +2932,12 @@
       "default": 20,
       "type": "integer",
       "skew": 0.35,
-      "unit": "ms"
+      "unit": "ms",
+      "wire": "None",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0
     },
     {
       "id": "t2Lfo1Wave",

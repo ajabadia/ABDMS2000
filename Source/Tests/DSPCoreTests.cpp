@@ -2519,6 +2519,27 @@ static void testDspConversionsAndClamping()
         check(p1 == 1.0f, "ampPan t=1 is 1.0 (R)");
     }
 
+    // 2e. Envelopes EG1 & EG2 (Linear [0.0 .. 1.0])
+    if (const auto* eg1A = ParameterRegistry::getParameter("eg1Attack"))
+    {
+        float a0 = conversion::normalizedToDomain(*eg1A, 0.0f);
+        float aMid = conversion::normalizedToDomain(*eg1A, 0.5f);
+        float a1 = conversion::normalizedToDomain(*eg1A, 1.0f);
+        check(a0 == 0.0f, "eg1Attack t=0 is 0.0");
+        check(std::abs(aMid - 0.5f) < 1e-4f, "eg1Attack t=0.5 is 0.5");
+        check(a1 == 1.0f, "eg1Attack t=1 is 1.0");
+    }
+
+    if (const auto* eg2S = ParameterRegistry::getParameter("eg2Sustain"))
+    {
+        float s0 = conversion::normalizedToDomain(*eg2S, 0.0f);
+        float sMid = conversion::normalizedToDomain(*eg2S, 0.5f);
+        float s1 = conversion::normalizedToDomain(*eg2S, 1.0f);
+        check(s0 == 0.0f, "eg2Sustain t=0 is 0.0");
+        check(std::abs(sMid - 0.5f) < 1e-4f, "eg2Sustain t=0.5 is 0.5");
+        check(s1 == 1.0f, "eg2Sustain t=1 is 1.0");
+    }
+
     // 3. Robustez masiva sobre todos los parámetros registrados (DSP.10)
     const auto& allParams = ParameterRegistry::getAllParameters();
     bool allValid = true;
