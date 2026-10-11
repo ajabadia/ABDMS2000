@@ -2468,6 +2468,28 @@ static void testDspConversionsAndClamping()
         check(fOver == lfoFreq->domainMax, "lfo1Freq excess t clamped to domainMax");
     }
 
+    // 2b. ModFX Speed (Exp [0.02Hz .. 15.0Hz])
+    if (const auto* mSpeed = ParameterRegistry::getParameter("modFxSpeed"))
+    {
+        float s0 = conversion::normalizedToDomain(*mSpeed, 0.0f);
+        float sMid = conversion::normalizedToDomain(*mSpeed, 0.5f);
+        float s1 = conversion::normalizedToDomain(*mSpeed, 1.0f);
+        check(s0 == 0.02f, "modFxSpeed t=0 is 0.02Hz");
+        check(sMid > 0.5f && sMid < 0.6f, "modFxSpeed t=0.5 ~ 0.55Hz (geometric mean)");
+        check(s1 == 15.0f, "modFxSpeed t=1 is 15.0Hz");
+    }
+
+    // 2c. EQ Gains (Bipolar Linear [-12.0dB .. +12.0dB])
+    if (const auto* eqG = ParameterRegistry::getParameter("eqLowGain"))
+    {
+        float g0 = conversion::normalizedToDomain(*eqG, 0.0f);
+        float gMid = conversion::normalizedToDomain(*eqG, 0.5f);
+        float g1 = conversion::normalizedToDomain(*eqG, 1.0f);
+        check(g0 == -12.0f, "eqLowGain t=0 is -12dB");
+        check(std::abs(gMid - 0.0f) < 1e-4f, "eqLowGain t=0.5 is 0dB");
+        check(g1 == 12.0f, "eqLowGain t=1 is +12dB");
+    }
+
     // 3. Robustez masiva sobre todos los parámetros registrados (DSP.10)
     const auto& allParams = ParameterRegistry::getAllParameters();
     bool allValid = true;

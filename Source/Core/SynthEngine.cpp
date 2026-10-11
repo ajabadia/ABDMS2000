@@ -549,11 +549,13 @@ void SynthEngine::updateParametersFromAPVTS() noexcept
     // ── Global FX parameters ──
     int eqLRaw = static_cast<int>(getParam(ParamIDs::eqLowFreq, 1.0f));
     int eqLIdx = (eqLRaw > 3) ? (eqLRaw / 32) : eqLRaw;
-    float eqLGain = ((getParam(ParamIDs::eqLowGain, 64.0f) - 64.0f) / 64.0f) * 12.0f;
+    float eqLGainNorm = getParam(ParamIDs::eqLowGain, 64.0f) / 127.0f;
+    float eqLGain = conversion::normalizedToDomain("eqLowGain", eqLGainNorm);
 
     int eqHRaw = static_cast<int>(getParam(ParamIDs::eqHighFreq, 2.0f));
     int eqHIdx = (eqHRaw > 3) ? (eqHRaw / 32) : eqHRaw;
-    float eqHGain = ((getParam(ParamIDs::eqHighGain, 64.0f) - 64.0f) / 64.0f) * 12.0f;
+    float eqHGainNorm = getParam(ParamIDs::eqHighGain, 64.0f) / 127.0f;
+    float eqHGain = conversion::normalizedToDomain("eqHighGain", eqHGainNorm);
 
     masterEQ_.setLowFreqIndex(eqLIdx);
     masterEQ_.setLowGainDB(eqLGain);
@@ -563,8 +565,10 @@ void SynthEngine::updateParametersFromAPVTS() noexcept
     int mType = static_cast<int>(getParam(ParamIDs::modFxType, 0.0f));
     modFX_.setEnabled(getParam(ParamIDs::modFxOn, 1.0f) > 0.5f);
     modFX_.setType(static_cast<ModFXType>(std::min(mType, 2)));
-    modFX_.setSpeed(getParam(ParamIDs::modFxSpeed, 40.0f) / 127.0f);
-    modFX_.setDepth(getParam(ParamIDs::modFxDepth, 64.0f) / 127.0f);
+    float mSpeedNorm = getParam(ParamIDs::modFxSpeed, 40.0f) / 127.0f;
+    modFX_.setSpeed(mSpeedNorm);
+    float mDepthNorm = getParam(ParamIDs::modFxDepth, 64.0f) / 127.0f;
+    modFX_.setDepth(conversion::normalizedToDomain("modFxDepth", mDepthNorm));
     modFX_.setFeedback(getParam(ParamIDs::modFxFeedback, 0.0f));
 
     int dType = static_cast<int>(getParam(ParamIDs::delayType, 0.0f));

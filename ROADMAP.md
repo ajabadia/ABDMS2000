@@ -78,6 +78,11 @@ los cierres del contrato; doble cierre = no-op). Suite: vitest **134/134**.
 - [x] DSP.9 - Expandir tests: Lut curve, inverse round-trips
 - [x] DSP.10 - Testear los 292 parámetros en valores extremos (2.044 evaluaciones)
 
+**Iteración 3** (Completada):
+- [x] DSP.11 - Extender metadatos de dominio canónicos a EQ y ModFX (`eqLowFreq`, `eqLowGain`, `eqHighFreq`, `eqHighGain`, `modFxSpeed`, `modFxDepth`, `modFxFeedback`)
+- [x] DSP.12 - Migrar parámetros de EQ (`eqLowGain`, `eqHighGain`) y ModFX (`modFxDepth`) en `SynthEngine.cpp` a `conversion::normalizedToDomain()`
+- [x] DSP.13 - Tests de paridad para `modFxSpeed` (Exp $[0.02\text{ Hz} \dots 15.0\text{ Hz}]$) y `eqLowGain` ($\pm 12\text{ dB}$) en `DSPCoreTests.cpp` (395 tests C++)
+
 ---
 
 ## 📌 Tareas Futuras y Validación Cruzada (Backlog)

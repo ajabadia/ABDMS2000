@@ -641,7 +641,13 @@
         "250Hz",
         "400Hz",
         "600Hz"
-      ]
+      ],
+      "wire": "None",
+      "wireCodec": "Enum",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 3.0,
+      "smoothing": "Linear"
     },
     {
       "id": "eqLowGain",
@@ -652,7 +658,13 @@
       "max": 127,
       "default": 64,
       "type": "integer",
-      "unit": "dB"
+      "unit": "dB",
+      "wire": "None",
+      "wireCodec": "Bipolar",
+      "curve": "Linear",
+      "domainMin": -12.0,
+      "domainMax": 12.0,
+      "smoothing": "Linear"
     },
     {
       "id": "eqHighFreq",
@@ -668,7 +680,13 @@
         "6.0kHz",
         "8.0kHz",
         "12.0kHz"
-      ]
+      ],
+      "wire": "None",
+      "wireCodec": "Enum",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 3.0,
+      "smoothing": "Linear"
     },
     {
       "id": "eqHighGain",
@@ -679,7 +697,13 @@
       "max": 127,
       "default": 64,
       "type": "integer",
-      "unit": "dB"
+      "unit": "dB",
+      "wire": "None",
+      "wireCodec": "Bipolar",
+      "curve": "Linear",
+      "domainMin": -12.0,
+      "domainMax": 12.0,
+      "smoothing": "Linear"
     },
     {
       "id": "modFxOn",
@@ -714,7 +738,16 @@
       "min": 0,
       "max": 127,
       "default": 40,
-      "type": "integer"
+      "type": "integer",
+      "unit": "Hz",
+      "wire": "CC",
+      "wireCodec": "Value",
+      "curve": "Exp",
+      "curveP0": 0.02,
+      "curveP1": 6.620073,
+      "domainMin": 0.02,
+      "domainMax": 15.0,
+      "smoothing": "Log"
     },
     {
       "id": "modFxDepth",
@@ -724,7 +757,14 @@
       "min": 0,
       "max": 127,
       "default": 64,
-      "type": "integer"
+      "type": "integer",
+      "unit": "%",
+      "wire": "CC",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0,
+      "smoothing": "Linear"
     },
     {
       "id": "modFxFeedback",
@@ -734,7 +774,13 @@
       "min": 0,
       "max": 127,
       "default": 0,
-      "type": "integer"
+      "type": "integer",
+      "wire": "None",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 127.0,
+      "smoothing": "Linear"
     },
     {
       "id": "delayOn",

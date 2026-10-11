@@ -685,6 +685,12 @@ export const PARAMETERS_SPEC = {
         "400Hz",
         "600Hz"
       ],
+      "wire": "None",
+      "wireCodec": "Enum",
+      "curve": "Linear",
+      "domainMin": 0,
+      "domainMax": 3,
+      "smoothing": "Linear",
       "sysexOffset": 41
     },
     {
@@ -697,6 +703,12 @@ export const PARAMETERS_SPEC = {
       "default": 64,
       "type": "integer",
       "unit": "dB",
+      "wire": "None",
+      "wireCodec": "Bipolar",
+      "curve": "Linear",
+      "domainMin": -12,
+      "domainMax": 12,
+      "smoothing": "Linear",
       "sysexOffset": 42
     },
     {
@@ -714,6 +726,12 @@ export const PARAMETERS_SPEC = {
         "8.0kHz",
         "12.0kHz"
       ],
+      "wire": "None",
+      "wireCodec": "Enum",
+      "curve": "Linear",
+      "domainMin": 0,
+      "domainMax": 3,
+      "smoothing": "Linear",
       "sysexOffset": 43
     },
     {
@@ -726,6 +744,12 @@ export const PARAMETERS_SPEC = {
       "default": 64,
       "type": "integer",
       "unit": "dB",
+      "wire": "None",
+      "wireCodec": "Bipolar",
+      "curve": "Linear",
+      "domainMin": -12,
+      "domainMax": 12,
+      "smoothing": "Linear",
       "sysexOffset": 44
     },
     {
@@ -764,6 +788,15 @@ export const PARAMETERS_SPEC = {
       "max": 127,
       "default": 40,
       "type": "integer",
+      "unit": "Hz",
+      "wire": "CC",
+      "wireCodec": "Value",
+      "curve": "Exp",
+      "curveP0": 0.02,
+      "curveP1": 6.620073,
+      "domainMin": 0.02,
+      "domainMax": 15,
+      "smoothing": "Log",
       "sysexOffset": 47
     },
     {
@@ -775,6 +808,13 @@ export const PARAMETERS_SPEC = {
       "max": 127,
       "default": 64,
       "type": "integer",
+      "unit": "%",
+      "wire": "CC",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0,
+      "domainMax": 1,
+      "smoothing": "Linear",
       "sysexOffset": 48
     },
     {
@@ -786,6 +826,12 @@ export const PARAMETERS_SPEC = {
       "max": 127,
       "default": 0,
       "type": "integer",
+      "wire": "None",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0,
+      "domainMax": 127,
+      "smoothing": "Linear",
       "sysexOffset": 49
     },
     {
