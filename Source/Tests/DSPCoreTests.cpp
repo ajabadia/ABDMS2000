@@ -11,6 +11,7 @@
 #include "../../MIDI/MIDIMap.h"
 #include "../State/MS2000PatchBuilder.h"
 #include "../State/ParameterRegistry.gen.h"
+#include "../State/Conversion.gen.h"
 
 #include "../../ABDSharedCode/HardwareDrivers/NRPNParser.h"
 #include "../../ABDSharedCode/HardwareDrivers/SysExCodec.h"
@@ -2411,6 +2412,69 @@ static void testMicrokorgHardwareParity()
     check(reqRes.reply[3] == 0x71, "Dump reply header preserves microKORG Model ID 0x71");
 }
 
+// ============================================================
+// Case 29: Schema-Driven DSP Conversions & Extreme Clamping (DSP.7 - DSP.10)
+// ============================================================
+static void testDspConversionsAndClamping()
+{
+    printf("=== Schema-Driven DSP Conversion Tests (DSP.7-10) ===\n");
+
+    // 1. Clamping de dominio en normalizedToDomain
+    if (const auto* cutoff = ParameterRegistry::getParameter("filterCutoff"))
+    {
+        float hz0 = conversion::normalizedToDomain(*cutoff, 0.0f);
+        float hz1 = conversion::normalizedToDomain(*cutoff, 1.0f);
+        float hzUnder = conversion::normalizedToDomain(*cutoff, -10.0f);
+        float hzOver = conversion::normalizedToDomain(*cutoff, 10.0f);
+
+        check(hz0 >= cutoff->domainMin && hz0 <= cutoff->domainMax, "cutoff t=0 within domain [20, 20000]");
+        check(hz1 >= cutoff->domainMin && hz1 <= cutoff->domainMax, "cutoff t=1 within domain [20, 20000]");
+        check(hzUnder == cutoff->domainMin, "cutoff negative t clamped to domainMin (20Hz)");
+        check(hzOver == cutoff->domainMax, "cutoff excess t clamped to domainMax (20000Hz)");
+
+        // Inverso domainToNormalized
+        check(conversion::domainToNormalized(*cutoff, 20.0f) == 0.0f, "cutoff domainToNormalized(20Hz) == 0.0");
+        check(conversion::domainToNormalized(*cutoff, 20000.0f) == 1.0f, "cutoff domainToNormalized(20kHz) == 1.0");
+        check(conversion::domainToNormalized(*cutoff, -100.0f) == 0.0f, "cutoff domainToNormalized negative clamped to 0.0");
+        check(conversion::domainToNormalized(*cutoff, 50000.0f) == 1.0f, "cutoff domainToNormalized excess clamped to 1.0");
+    }
+
+    // 2. Curva Exp (LFO1 Freq: 0.01Hz .. 20Hz)
+    if (const auto* lfoFreq = ParameterRegistry::getParameter("lfo1Freq"))
+    {
+        float f0 = conversion::normalizedToDomain(*lfoFreq, 0.0f);
+        float f1 = conversion::normalizedToDomain(*lfoFreq, 1.0f);
+        float fUnder = conversion::normalizedToDomain(*lfoFreq, -5.0f);
+        float fOver = conversion::normalizedToDomain(*lfoFreq, 5.0f);
+
+        check(f0 >= lfoFreq->domainMin && f0 <= lfoFreq->domainMax, "lfo1Freq t=0 within [0.01, 20.0]");
+        check(f1 >= lfoFreq->domainMin && f1 <= lfoFreq->domainMax, "lfo1Freq t=1 clamped to domainMax 20.0Hz");
+        check(fUnder == f0, "lfo1Freq negative t clamped safely");
+        check(fOver == lfoFreq->domainMax, "lfo1Freq excess t clamped to domainMax");
+    }
+
+    // 3. Robustez masiva sobre todos los parámetros registrados (DSP.10)
+    const auto& allParams = ParameterRegistry::getAllParameters();
+    bool allValid = true;
+    for (const auto& p : allParams)
+    {
+        const float testValues[] = { 0.0f, 0.5f, 1.0f, -1.0f, 2.0f };
+        for (float t : testValues)
+        {
+            float dom = conversion::normalizedToDomain(p, t);
+            if (std::isnan(dom) || std::isinf(dom))
+                allValid = false;
+            if (p.domainMin < p.domainMax && (dom < p.domainMin - 0.001f || dom > p.domainMax + 0.001f))
+                allValid = false;
+
+            float norm = conversion::domainToNormalized(p, dom);
+            if (std::isnan(norm) || std::isinf(norm) || norm < 0.0f || norm > 1.0f)
+                allValid = false;
+        }
+    }
+    check(allValid, "All registered parameters produce bounded non-NaN values under extreme inputs (DSP.10)");
+}
+
 /**
  * Horquilla de la suite. Cada caso vive en su propia función a propósito: cuando todos
  * compartían un único `runAllTests()`, el compilador reservaba de golpe los locales de
@@ -2452,6 +2516,7 @@ static void runAllTests()
     testKorgChannelEndToEnd();
     testEngineExtension();
     testMicrokorgHardwareParity();
+    testDspConversionsAndClamping();
 
     printf("\n=== Test Summary ===\n");
     printf("  Passed: %d\n", testsPassed);

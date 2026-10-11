@@ -18,14 +18,31 @@ using ABDMS2000::ParameterRegistry;
 // Si el parametro no tiene curva definida, retorna el valor tal cual.
 inline float normalizedToDomain (const ParameterMeta& entry, float t) noexcept
 {
-    // Si wire es None (-1), no hay conversion de wire -> dominio; devolvemos t.
-    if (entry.wire == -1) return t;
+    // Clamp t to [0,1] para evitar desbordamiento o NaN
+    float tClamped = std::clamp(t, 0.0f, 1.0f);
+
+    // Si wire es None (-1), no hay conversion de wire -> dominio; devolvemos tClamped.
+    if (entry.wire == -1) {
+        if (entry.domainMin < entry.domainMax) {
+            return std::clamp(t, entry.domainMin, entry.domainMax);
+        }
+        return t;
+    }
+
+    float result = tClamped;
 
     // Aplicar curva segun entry.curve
     switch (entry.curve)
     {
         case 0: // Linear
-            return t;
+        {
+            if (entry.domainMin < entry.domainMax) {
+                result = entry.domainMin + tClamped * (entry.domainMax - entry.domainMin);
+            } else {
+                result = tClamped;
+            }
+            break;
+        }
 
         case 1: // Exp: curveP0 * e^(curveP1 * t)
         {
@@ -33,40 +50,60 @@ inline float normalizedToDomain (const ParameterMeta& entry, float t) noexcept
             float p1 = entry.curveP1;
             // Si p0 es 0, usamos escala por defecto
             if (p0 <= 0.0f) p0 = 1.0f;
-            // Clamp t to [0,1] para evitar desbordamiento en exp
-            float tClamped = std::clamp(t, 0.0f, 1.0f);
-            return p0 * std::exp(p1 * tClamped);
+            result = p0 * std::exp(p1 * tClamped);
+            break;
         }
 
-        case 2: // Pow: t ^ curveP1
+        case 2: // Pow: t ^ curveP1 (con escalado a [domainMin, domainMax] si aplica)
         {
             float p1 = entry.curveP1;
             if (p1 <= 0.0f) p1 = 1.0f;
-            // Clamp t to [0,1] para evitar NaN con potencias negativas
-            float tClamped = std::clamp(t, 0.0f, 1.0f);
-            return std::pow(tClamped, p1);
+            float powered = std::pow(tClamped, p1);
+            if (entry.domainMin < entry.domainMax) {
+                result = entry.domainMin + powered * (entry.domainMax - entry.domainMin);
+            } else {
+                result = powered;
+            }
+            break;
         }
 
         case 3: // Lut: lookup table (no implementado en esta version basica)
         default:
-            return t;
+            result = tClamped;
+            break;
     }
+
+    // DSP.7: Clamping estricto domainMin/domainMax para blindar el dominio fisico
+    if (entry.domainMin < entry.domainMax) {
+        result = std::clamp(result, entry.domainMin, entry.domainMax);
+    }
+
+    return result;
 }
 
 // Convierte del dominio fisico al rango normalizado 0..1
 // Inverso de normalizedToDomain
 inline float domainToNormalized (const ParameterMeta& entry, float domain) noexcept
 {
-    if (entry.wire == -1) return domain;
+    if (entry.wire == -1) {
+        if (entry.domainMin < entry.domainMax) {
+            float clamped = std::clamp(domain, entry.domainMin, entry.domainMax);
+            return std::clamp((clamped - entry.domainMin) / (entry.domainMax - entry.domainMin), 0.0f, 1.0f);
+        }
+        return std::clamp(domain, 0.0f, 1.0f);
+    }
 
+    float norm = domain;
     switch (entry.curve)
     {
         case 0: // Linear
-            // Clamp domain to [entry.domainMin, entry.domainMax] if available
+        {
             if (entry.domainMin < entry.domainMax) {
-                domain = std::clamp(domain, entry.domainMin, entry.domainMax);
+                float clamped = std::clamp(domain, entry.domainMin, entry.domainMax);
+                norm = (clamped - entry.domainMin) / (entry.domainMax - entry.domainMin);
             }
-            return domain;
+            break;
+        }
 
         case 1: // Exp inverse: (1/curveP1) * ln(domain / curveP0)
         {
@@ -74,26 +111,42 @@ inline float domainToNormalized (const ParameterMeta& entry, float domain) noexc
             float p1 = entry.curveP1;
             if (p0 <= 0.0f) p0 = 1.0f;
             if (p1 <= 0.0f) p1 = 1.0f;
-            if (domain <= 0.0f) return 0.0f;
+            if (domain <= 0.0f) {
+                norm = 0.0f;
+                break;
+            }
             // Clamp domain/p0 to avoid log of negative or zero
             float ratio = domain / p0;
-            if (ratio <= 0.0f) return 0.0f;
-            return (1.0f / p1) * std::log(ratio);
+            if (ratio <= 0.0f) {
+                norm = 0.0f;
+                break;
+            }
+            norm = (1.0f / p1) * std::log(ratio);
+            break;
         }
 
-        case 2: // Pow inverse: domain ^ (1/curveP1)
+        case 2: // Pow inverse: ((d - domainMin) / span) ^ (1/curveP1)
         {
             float p1 = entry.curveP1;
             if (p1 <= 0.0f) p1 = 1.0f;
-            // Clamp domain to [0, INF) for pow inverse
-            if (domain < 0.0f) domain = 0.0f;
-            return std::pow(domain, 1.0f / p1);
+            float val = domain;
+            if (entry.domainMin < entry.domainMax) {
+                float clamped = std::clamp(domain, entry.domainMin, entry.domainMax);
+                val = (clamped - entry.domainMin) / (entry.domainMax - entry.domainMin);
+            }
+            if (val < 0.0f) val = 0.0f;
+            norm = std::pow(val, 1.0f / p1);
+            break;
         }
 
         case 3: // Lut: no implementado
         default:
-            return domain;
+            norm = domain;
+            break;
     }
+
+    // DSP.7: Clamping estricto al rango normalizado [0.0f, 1.0f]
+    return std::clamp(norm, 0.0f, 1.0f);
 }
 
 // Convierte un valor raw de wire (CC 0-127, NRPN etc.) al dominio fisico

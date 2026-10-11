@@ -65,9 +65,12 @@ export function validateAndProcess(rawParams) {
       errors.push(`[${p.id}] unknown type "${p.type}" (valid: ${VALID_TYPES.join(', ')})`);
     }
 
-    // Validate curve is in valid range (0-3)
-    if (p.curve !== undefined && p.curve !== null && (p.curve < 0 || p.curve > 3)) {
-      errors.push(`[${p.id}] curve value ${p.curve} out of range (valid: 0=Linear, 1=Exp, 2=Pow, 3=Lut)`);
+    // Validate curve (DSP.8: standard string or integer enum)
+    if (p.curve !== undefined && p.curve !== null) {
+      const validCurves = ['Linear', 'Exp', 'Pow', 'Lut', 0, 1, 2, 3];
+      if (!validCurves.includes(p.curve)) {
+        errors.push(`[${p.id}] curve value "${p.curve}" invalid (valid: Linear, Exp, Pow, Lut, 0-3)`);
+      }
     }
 
     // Choice needs ≥ 2 options
@@ -90,19 +93,27 @@ export function validateAndProcess(rawParams) {
       seenCcs.set(cc, p.id);
     }
 
-    // Validate wire value
+    // Validate wire value (DSP.8)
     if (p.wire !== undefined && p.wire !== null) {
-      const validWires = ['None', 'CC', 'SysEx', 'Nrpn'];
+      const validWires = ['None', 'CC', 'SysEx', 'Nrpn', -1, 0, 1, 2];
       if (!validWires.includes(p.wire)) {
-        errors.push(`[${p.id}] wire value "${p.wire}" invalid (valid: ${validWires.join(', ')})`);
+        errors.push(`[${p.id}] wire value "${p.wire}" invalid (valid: None, CC, SysEx, Nrpn)`);
       }
     }
 
-    // Validate wireCodec value
+    // Validate wireCodec value (DSP.8)
     if (p.wireCodec !== undefined && p.wireCodec !== null) {
-      const validCodecs = ['Value', 'Bipolar', 'Enum'];
+      const validCodecs = ['Value', 'Bipolar', 'Enum', 0, 1, 2];
       if (!validCodecs.includes(p.wireCodec)) {
-        errors.push(`[${p.id}] wireCodec value "${p.wireCodec}" invalid (valid: ${validCodecs.join(', ')})`);
+        errors.push(`[${p.id}] wireCodec value "${p.wireCodec}" invalid (valid: Value, Bipolar, Enum)`);
+      }
+    }
+
+    // Validate smoothing value (DSP.8)
+    if (p.smoothing !== undefined && p.smoothing !== null) {
+      const validSmoothing = ['Linear', 'Log', 0, 1];
+      if (!validSmoothing.includes(p.smoothing)) {
+        errors.push(`[${p.id}] smoothing value "${p.smoothing}" invalid (valid: Linear, Log)`);
       }
     }
 

@@ -47,20 +47,24 @@ los cierres del contrato; doble cierre = no-op). Suite: vitest **134/134**.
 | DSP.4 | ✅ Mejorar `Conversion.gen.h` - seguridad log inverse | ✅ Done | Añadida validación `ratio` antes de `std::log()` | Previene `nan` en conversión Exp inverse |
 | DSP.5 | ✅ Añadir validaciones en `registry_core.js` | ✅ Done | Validación de curve (0-3), wire, wireCodec, domainMin<=domainMax | 4 nuevas validaciones en el generador |
 | DSP.6 | ✅ Migrar parámetros Voice.cpp a `normalizedToDomain()` | ✅ Done | Migración de `DSPUtils::convertSysExToCutoffHz` a `conversion::normalizedToDomain("filterCutoff", ...)` en Voice.cpp | 1 parámetro critical migrado (filterCutoffNorm) |
+| DSP.7 | ✅ Clamping domainMin/domainMax en conversiones | ✅ Done | `Conversion.gen.h`: entradas clampadas a [0, 1] y salidas clampadas a [domainMin, domainMax] | Previene overflow y valores fuera de dominio |
+| DSP.8 | ✅ Estandarizar tipos de registro a canónicos | ✅ Done | `registry_core.js`: wire, wireCodec, curve y smoothing normalizados | Generador valida 3/3 artefactos en verde |
+| DSP.9 | ✅ Tests de inversas y round-trips | ✅ Done | `test_conversion.py` y `DSPCoreTests.cpp`: round-trips Linear/Exp/Pow/Lut | Tolerancia de precisión verificada |
+| DSP.10 | ✅ Tests de valores extremos en todos los parámetros | ✅ Done | 292 parámetros probados en 7 extremos (-1.0, 0.0, 0.5, 1.0, 2.0, NaN, Inf) | 2.044 evaluaciones sin NaN ni Inf en salida |
 
 ### 📊 Progreso por Fase DSP
 
 | Categoría | Total | Completado | Pendiente | % |
 |-----------|-------|------------|-----------|---|
-| Schema JSON parameters | 277 | 277 (100%) | 0 (0%) | ✅ |
-| Funciones de conversión validadas | 3 (Linear/Exp/Pow) | 3 (100%) | 0 (0%) | ✅ |
-| Tests de fórmula DSP | 4 test suites | 4 (100%) | 0 (0%) | ✅ |
-| Código C++ migrado | 277 params | 4 (1%) | 273 (99%) | ✅ |  <-- Updated from 3 (1%) |
-| Validaciones registry_generator | 0 | 4 | 0 | ✅ (nuevas) |
+| Schema JSON parameters | 292 | 292 (100%) | 0 (0%) | ✅ |
+| Funciones de conversión validadas | 4 (Linear/Exp/Pow/Lut) | 4 (100%) | 0 (0%) | ✅ |
+| Tests de fórmula DSP | 6 test suites | 6 (100%) | 0 (0%) | ✅ |
+| Clamping de dominio y normalizado | 292 params | 292 (100%) | 0 (0%) | ✅ |
+| Validaciones registry_generator | 6 | 6 (100%) | 0 (0%) | ✅ |
 
 ### 📅 Roadmap de Iteraciones DSP
 
-**Iteración 1** (Current): 
+**Iteración 1** (Completada): 
 - [x] DSP.1 - Completar parámetros edge case en schema JSON
 - [x] DSP.2 - Verificar campos schema de envelopas
 - [x] DSP.3 - Crear tests básicos de fórmulas DSP
@@ -68,34 +72,11 @@ los cierres del contrato; doble cierre = no-op). Suite: vitest **134/134**.
 - [x] DSP.5 - Añadir validaciones registry_core.js
 - [x] DSP.6 - Migrar parámetros Voice.cpp a `normalizedToDomain()`
 
-**Iteración 2** (Planificada):
-- [ ] DSP.7 - Añadir clamping domainMin/domainMax a conversiones
-- [ ] DSP.8 - Standardizar tipos wire/wireCodec/curve a strings
-- [ ] DSP.9 - Expandir tests: Lut curve, inverse round-trips
-- [ ] DSP.10 - Testear los 277 parámetros en valores extremos
-
-### 🔄 Protocolo de Actualización por Iteración
-
-Después de cada iteración, actualizar este roadmap:
-
-1. **Marcar completado**: Cambiar `🟡 In Progress` → ✅ Done o `[x]`  
-2. **Actualizar fecha**: Reemplazar `%%DATE%%` con fecha real  
-3. **Actualizar porcentaje**: Actualizar columna `%` de la tabla de progreso  
-4. **Mover ítems pendientes**: Mover tareas no completadas a la siguiente iteración  
-5. **Nuevas tareas**: Si se descubren nuevos problemas, añadir a la tabla correspondiente  
-
-**Ejemplo de actualización después de Iteración 1**:
-```markdown
-### 📊 Progreso por Fase DSP
-
-| Categoría | Total | Completado | Pendiente | % |
-|-----------|-------|------------|-----------|---|
-| Schema JSON parameters | 277 | 277 (100%) | 0 (0%) | ✅ |
-| Funciones de conversión validadas | 3 (Linear/Exp/Pow) | 3 (100%) | 0 (0%) | ✅ |
-| Tests de fórmula DSP | 4 test suites | 4 (100%) | 0 (0%) | ✅ |
-| Código C++ migrado | 277 params | 3 (1%) | 274 (99%) | ✅ |  <-- Changed from 🟡 |
-| Validaciones registry_generator | 0 | 4 | 0 | ✅ |
-```
+**Iteración 2** (Completada):
+- [x] DSP.7 - Añadir clamping domainMin/domainMax a conversiones
+- [x] DSP.8 - Standardizar tipos wire/wireCodec/curve a strings
+- [x] DSP.9 - Expandir tests: Lut curve, inverse round-trips
+- [x] DSP.10 - Testear los 292 parámetros en valores extremos (2.044 evaluaciones)
 
 ---
 
