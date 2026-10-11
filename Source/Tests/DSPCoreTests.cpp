@@ -2437,6 +2437,21 @@ static void testDspConversionsAndClamping()
         check(conversion::domainToNormalized(*cutoff, 20000.0f) == 1.0f, "cutoff domainToNormalized(20kHz) == 1.0");
         check(conversion::domainToNormalized(*cutoff, -100.0f) == 0.0f, "cutoff domainToNormalized negative clamped to 0.0");
         check(conversion::domainToNormalized(*cutoff, 50000.0f) == 1.0f, "cutoff domainToNormalized excess clamped to 1.0");
+
+        // Paridad musical exacta: punto medio del knob (t=0.5) ~ 632Hz (media geometrica)
+        float hzMid = conversion::normalizedToDomain(*cutoff, 0.5f);
+        check(hzMid > 600.0f && hzMid < 650.0f, "cutoff normalizedToDomain mid ~ 632Hz (Exp curve parity)");
+    }
+
+    // 1b. Resonancia de filtro (Linear [0.0 .. 1.0])
+    if (const auto* res = ParameterRegistry::getParameter("filterResonance"))
+    {
+        float r0 = conversion::normalizedToDomain(*res, 0.0f);
+        float rMid = conversion::normalizedToDomain(*res, 0.5f);
+        float r1 = conversion::normalizedToDomain(*res, 1.0f);
+        check(r0 == 0.0f, "resonance t=0 is 0.0");
+        check(std::abs(rMid - 0.5f) < 1e-4f, "resonance t=0.5 is 0.5 (Linear)");
+        check(r1 == 1.0f, "resonance t=1 is 1.0");
     }
 
     // 2. Curva Exp (LFO1 Freq: 0.01Hz .. 20Hz)

@@ -253,8 +253,9 @@
       "unit": "Hz",
       "wire": "CC",
       "wireCodec": "Value",
-      "curve": "Pow",
-      "curveP1": 0.8,
+      "curve": "Exp",
+      "curveP0": 20.0,
+      "curveP1": 6.907755,
       "domainMin": 20.0,
       "domainMax": 20000.0,
       "smoothing": "Linear"
@@ -270,8 +271,7 @@
       "type": "integer",
       "wire": "CC",
       "wireCodec": "Value",
-      "curve": "Pow",
-      "curveP1": 0.25,
+      "curve": "Linear",
       "domainMin": 0.0,
       "domainMax": 1.0,
       "smoothing": "Linear"
@@ -2569,7 +2569,15 @@
       "default": 127,
       "type": "integer",
       "skew": 0.45,
-      "unit": "Hz"
+      "unit": "Hz",
+      "wire": "None",
+      "wireCodec": "Value",
+      "curve": "Exp",
+      "curveP0": 20.0,
+      "curveP1": 6.907755,
+      "domainMin": 20.0,
+      "domainMax": 20000.0,
+      "smoothing": "Linear"
     },
     {
       "id": "t2FilterResonance",
@@ -2579,7 +2587,13 @@
       "min": 0,
       "max": 127,
       "default": 0,
-      "type": "integer"
+      "type": "integer",
+      "wire": "None",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0,
+      "smoothing": "Linear"
     },
     {
       "id": "t2FilterEg1Int",

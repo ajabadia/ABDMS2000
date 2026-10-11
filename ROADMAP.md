@@ -46,7 +46,7 @@ los cierres del contrato; doble cierre = no-op). Suite: vitest **134/134**.
 | DSP.3 | ✅ Crear y ejecutar tests básicos de fórmulas DSP | ✅ Done | `tests/test_conversion.py` con 4 test suites | 45 evaluaciones de fórmulas Lineal/Exp/Pow todas pasadas |
 | DSP.4 | ✅ Mejorar `Conversion.gen.h` - seguridad log inverse | ✅ Done | Añadida validación `ratio` antes de `std::log()` | Previene `nan` en conversión Exp inverse |
 | DSP.5 | ✅ Añadir validaciones en `registry_core.js` | ✅ Done | Validación de curve (0-3), wire, wireCodec, domainMin<=domainMax | 4 nuevas validaciones en el generador |
-| DSP.6 | ✅ Migrar parámetros Voice.cpp a `normalizedToDomain()` | ✅ Done | Migración de `DSPUtils::convertSysExToCutoffHz` a `conversion::normalizedToDomain("filterCutoff", ...)` en Voice.cpp | 1 parámetro critical migrado (filterCutoffNorm) |
+| DSP.6 | ✅ Migrar parámetros Voice.cpp a `normalizedToDomain()` | ✅ Done | Migración de `filterCutoff` (curva Exp analógica $632Hz$ en centro) y `filterResonance` (curva Linear) a `conversion::normalizedToDomain()` con guardas de extremos exactos | Parámetros críticos del filtro migrados y testeados (393/393 C++) |
 | DSP.7 | ✅ Clamping domainMin/domainMax en conversiones | ✅ Done | `Conversion.gen.h`: entradas clampadas a [0, 1] y salidas clampadas a [domainMin, domainMax] | Previene overflow y valores fuera de dominio |
 | DSP.8 | ✅ Estandarizar tipos de registro a canónicos | ✅ Done | `registry_core.js`: wire, wireCodec, curve y smoothing normalizados | Generador valida 3/3 artefactos en verde |
 | DSP.9 | ✅ Tests de inversas y round-trips | ✅ Done | `test_conversion.py` y `DSPCoreTests.cpp`: round-trips Linear/Exp/Pow/Lut | Tolerancia de precisión verificada |

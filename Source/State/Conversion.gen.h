@@ -29,6 +29,12 @@ inline float normalizedToDomain (const ParameterMeta& entry, float t) noexcept
         return t;
     }
 
+    // Extremos matematicos exactos (evita errores de redondeo float en e^(p1) o pow)
+    if (entry.domainMin < entry.domainMax) {
+        if (tClamped <= 0.0f) return entry.domainMin;
+        if (tClamped >= 1.0f) return entry.domainMax;
+    }
+
     float result = tClamped;
 
     // Aplicar curva segun entry.curve
@@ -91,6 +97,12 @@ inline float domainToNormalized (const ParameterMeta& entry, float domain) noexc
             return std::clamp((clamped - entry.domainMin) / (entry.domainMax - entry.domainMin), 0.0f, 1.0f);
         }
         return std::clamp(domain, 0.0f, 1.0f);
+    }
+
+    // Extremos matematicos exactos (evita imprecision float en inversas)
+    if (entry.domainMin < entry.domainMax) {
+        if (domain <= entry.domainMin) return 0.0f;
+        if (domain >= entry.domainMax) return 1.0f;
     }
 
     float norm = domain;

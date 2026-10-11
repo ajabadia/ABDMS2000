@@ -220,7 +220,8 @@ void SynthEngine::readTimbreParams(bool second, VoiceParameters &vp) noexcept
     int fType = static_cast<int>(P(ParamIDs::filterType, 0.0f));
     vp.filterType = static_cast<FilterType>(fType);
     vp.filterCutoffNorm = P(ParamIDs::filterCutoff, 127.0f) / 127.0f;
-    vp.filterResonance = P(ParamIDs::filterResonance, 0.0f) / 127.0f;
+    float resNorm = P(ParamIDs::filterResonance, 0.0f) / 127.0f;
+    vp.filterResonance = conversion::normalizedToDomain("filterResonance", resNorm);
     vp.eg1FilterIntensity = P(ParamIDs::filterEg1Int, 0.0f) / 63.0f;
     vp.filterKbdTrack = P(ParamIDs::filterKeyTrack, 0.0f) / 63.0f;
     vp.filterVeloSens = P(ParamIDs::filterVelo, 0.0f) / 63.0f;
