@@ -93,6 +93,12 @@ los cierres del contrato; doble cierre = no-op). Suite: vitest **134/134**.
 - [x] DSP.18 - Migración en `SynthEngine.cpp` de todos los parámetros de envolvente (`vp.eg1*` y `vp.eg2*`) a `conversion::normalizedToDomain()`
 - [x] DSP.19 - Tests de paridad para EG1 y EG2 (Linear $[0.0 \dots 1.0]$) en `DSPCoreTests.cpp` (Case 29)
 
+**Iteración 6** (Completada):
+- [x] DSP.20 - Metadatos canónicos de dominio para Controles OSC1 y Portamento (`portamentoTime`, `osc1Ctrl1`, `osc1Ctrl2`, y Timbre 2 `t2*` con Linear $[0.0 \dots 1.0]$)
+- [x] DSP.21 - Metadatos canónicos de dominio para Modulaciones y Sensibilidades Bipolares (`filterEg1Int`, `filterKeyTrack`, `filterVelo`, `ampKeyTrack`, `ampVelo`, y Timbre 2 `t2*` con Bipolar Linear $[-1.0 \dots +1.0]$)
+- [x] DSP.22 - Migración en `SynthEngine.cpp` y `Voice.cpp` (`glide_.setGlideTime`) a llamadas canónicas `conversion::normalizedToDomain()`
+- [x] DSP.23 - Tests de paridad en `DSPCoreTests.cpp` (Case 29) para Portamento (Linear $0..1$), OSC1 Ctrl1 (Linear $0..1$), Filter EG1 Int (Bipolar $-1..+1$), Filter Key Track (Bipolar $-1..+1$) y Amp Velo (Bipolar $-1..+1$)
+
 ---
 
 ## 📌 Tareas Futuras y Validación Cruzada (Backlog)

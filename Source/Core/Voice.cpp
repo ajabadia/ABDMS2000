@@ -140,7 +140,7 @@ void Voice::applyBlockParams(const VoiceParameters &params) noexcept
 
     // ── Static DSP settings: applied once per audio block ──
 
-    glide_.setGlideTime(params.portamentoTime / 127.0f);
+    glide_.setGlideTime(conversion::normalizedToDomain("portamentoTime", params.portamentoTime / 127.0f));
 
     // LFO1: Saw / Square / Triangle / S&H
     lfo1_.setBpm(params.bpm);

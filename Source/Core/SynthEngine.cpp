@@ -200,8 +200,8 @@ void SynthEngine::readTimbreParams(bool second, VoiceParameters &vp) noexcept
     int o1w = static_cast<int>(P(ParamIDs::osc1Wave, 0.0f));
     vp.osc1Type = static_cast<OSC1Type>(std::min(o1w, 7));
     vp.osc1DwgsIndex = static_cast<int>(P(ParamIDs::osc1DwgsWave, 0.0f));
-    vp.osc1Ctrl1 = P(ParamIDs::osc1Ctrl1, 0.0f) / 127.0f;
-    vp.osc1Ctrl2 = P(ParamIDs::osc1Ctrl2, 0.0f) / 127.0f;
+    vp.osc1Ctrl1 = conversion::normalizedToDomain("osc1Ctrl1", P(ParamIDs::osc1Ctrl1, 0.0f) / 127.0f);
+    vp.osc1Ctrl2 = conversion::normalizedToDomain("osc1Ctrl2", P(ParamIDs::osc1Ctrl2, 0.0f) / 127.0f);
     vp.osc1Level = conversion::normalizedToDomain("mixOsc1Level", P(ParamIDs::mixOsc1Level, 127.0f) / 127.0f);
 
     // OSC 2
@@ -222,9 +222,12 @@ void SynthEngine::readTimbreParams(bool second, VoiceParameters &vp) noexcept
     vp.filterCutoffNorm = P(ParamIDs::filterCutoff, 127.0f) / 127.0f;
     float resNorm = P(ParamIDs::filterResonance, 0.0f) / 127.0f;
     vp.filterResonance = conversion::normalizedToDomain("filterResonance", resNorm);
-    vp.eg1FilterIntensity = P(ParamIDs::filterEg1Int, 0.0f) / 63.0f;
-    vp.filterKbdTrack = P(ParamIDs::filterKeyTrack, 0.0f) / 63.0f;
-    vp.filterVeloSens = P(ParamIDs::filterVelo, 0.0f) / 63.0f;
+    float eg1IntNorm = (P(ParamIDs::filterEg1Int, 0.0f) + 63.0f) / 126.0f;
+    vp.eg1FilterIntensity = conversion::normalizedToDomain("filterEg1Int", eg1IntNorm);
+    float kbdTrackNorm = (P(ParamIDs::filterKeyTrack, 0.0f) + 63.0f) / 126.0f;
+    vp.filterKbdTrack = conversion::normalizedToDomain("filterKeyTrack", kbdTrackNorm);
+    float filterVeloNorm = (P(ParamIDs::filterVelo, 0.0f) + 63.0f) / 126.0f;
+    vp.filterVeloSens = conversion::normalizedToDomain("filterVelo", filterVeloNorm);
 
     // EG1
     vp.eg1Attack = conversion::normalizedToDomain("eg1Attack", P(ParamIDs::eg1Attack, 0.0f) / 127.0f);
@@ -260,8 +263,10 @@ void SynthEngine::readTimbreParams(bool second, VoiceParameters &vp) noexcept
     vp.ampLevel = conversion::normalizedToDomain("ampLevel", P(ParamIDs::ampLevel, 100.0f) / 127.0f);
     vp.panpot = P(ParamIDs::ampPan, 0.0f) / 64.0f;
     vp.distortionOn = (P(ParamIDs::ampDistortion, 0.0f) > 0.5f);
-    vp.ampKeyTrack = P(ParamIDs::ampKeyTrack, 0.0f) / 63.0f;
-    vp.ampVeloSens = P(ParamIDs::ampVelo, 0.0f) / 63.0f;
+    float ampKbdNorm = (P(ParamIDs::ampKeyTrack, 0.0f) + 63.0f) / 126.0f;
+    vp.ampKeyTrack = conversion::normalizedToDomain("ampKeyTrack", ampKbdNorm);
+    float ampVeloNorm = (P(ParamIDs::ampVelo, 0.0f) + 63.0f) / 126.0f;
+    vp.ampVeloSens = conversion::normalizedToDomain("ampVelo", ampVeloNorm);
 
     // Wheels (comunes a los dos timbres)
     vp.pitchBendValue = pitchBendValue_.load(std::memory_order_relaxed);

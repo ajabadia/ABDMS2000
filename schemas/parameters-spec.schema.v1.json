@@ -78,7 +78,12 @@
       "max": 127,
       "default": 0,
       "type": "integer",
-      "skew": 0.35
+      "skew": 0.35,
+      "wire": "CC",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0
     },
     {
       "id": "portamentoOn",
@@ -129,7 +134,12 @@
       "min": 0,
       "max": 127,
       "default": 0,
-      "type": "integer"
+      "type": "integer",
+      "wire": "CC",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0
     },
     {
       "id": "osc1Ctrl2",
@@ -139,7 +149,12 @@
       "min": 0,
       "max": 127,
       "default": 0,
-      "type": "integer"
+      "type": "integer",
+      "wire": "CC",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0
     },
     {
       "id": "osc2Wave",
@@ -302,7 +317,12 @@
       "min": -63,
       "max": 63,
       "default": 0,
-      "type": "integer"
+      "type": "integer",
+      "wire": "CC",
+      "wireCodec": "Bipolar",
+      "curve": "Linear",
+      "domainMin": -1.0,
+      "domainMax": 1.0
     },
     {
       "id": "filterKeyTrack",
@@ -315,11 +335,9 @@
       "type": "integer",
       "wire": "CC",
       "wireCodec": "Bipolar",
-      "curve": "Pow",
-      "curveP1": 0.5,
-      "domainMin": -63.0,
-      "domainMax": 63.0,
-      "smoothing": "Linear"
+      "curve": "Linear",
+      "domainMin": -1.0,
+      "domainMax": 1.0
     },
     {
       "id": "ampLevel",
@@ -371,7 +389,12 @@
       "min": -63,
       "max": 63,
       "default": 0,
-      "type": "integer"
+      "type": "integer",
+      "wire": "CC",
+      "wireCodec": "Bipolar",
+      "curve": "Linear",
+      "domainMin": -1.0,
+      "domainMax": 1.0
     },
     {
       "id": "eg1Attack",
@@ -1713,7 +1736,12 @@
       "max": 63,
       "default": 0,
       "type": "integer",
-      "sysex": true
+      "sysex": true,
+      "wire": "None",
+      "wireCodec": "Bipolar",
+      "curve": "Linear",
+      "domainMin": -1.0,
+      "domainMax": 1.0
     },
     {
       "id": "ampVelo",
@@ -1724,7 +1752,12 @@
       "max": 63,
       "default": 0,
       "type": "integer",
-      "sysex": true
+      "sysex": true,
+      "wire": "None",
+      "wireCodec": "Bipolar",
+      "curve": "Linear",
+      "domainMin": -1.0,
+      "domainMax": 1.0
     },
     {
       "id": "seqLastStep",
@@ -2508,7 +2541,12 @@
       "max": 127,
       "default": 0,
       "type": "integer",
-      "skew": 0.35
+      "skew": 0.35,
+      "wire": "None",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0
     },
     {
       "id": "t2Osc1Wave",
@@ -2548,7 +2586,12 @@
       "min": 0,
       "max": 127,
       "default": 0,
-      "type": "integer"
+      "type": "integer",
+      "wire": "None",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0
     },
     {
       "id": "t2Osc1Ctrl2",
@@ -2558,7 +2601,12 @@
       "min": 0,
       "max": 127,
       "default": 0,
-      "type": "integer"
+      "type": "integer",
+      "wire": "None",
+      "wireCodec": "Value",
+      "curve": "Linear",
+      "domainMin": 0.0,
+      "domainMax": 1.0
     },
     {
       "id": "t2Osc2Wave",
@@ -2721,7 +2769,12 @@
       "min": -63,
       "max": 63,
       "default": 0,
-      "type": "integer"
+      "type": "integer",
+      "wire": "None",
+      "wireCodec": "Bipolar",
+      "curve": "Linear",
+      "domainMin": -1.0,
+      "domainMax": 1.0
     },
     {
       "id": "t2FilterKeyTrack",
@@ -2731,7 +2784,12 @@
       "min": -63,
       "max": 63,
       "default": 0,
-      "type": "integer"
+      "type": "integer",
+      "wire": "None",
+      "wireCodec": "Bipolar",
+      "curve": "Linear",
+      "domainMin": -1.0,
+      "domainMax": 1.0
     },
     {
       "id": "t2FilterVelo",
@@ -2742,7 +2800,12 @@
       "max": 63,
       "default": 0,
       "type": "integer",
-      "sysex": true
+      "sysex": true,
+      "wire": "None",
+      "wireCodec": "Bipolar",
+      "curve": "Linear",
+      "domainMin": -1.0,
+      "domainMax": 1.0
     },
     {
       "id": "t2AmpLevel",
@@ -2794,7 +2857,12 @@
       "min": -63,
       "max": 63,
       "default": 0,
-      "type": "integer"
+      "type": "integer",
+      "wire": "None",
+      "wireCodec": "Bipolar",
+      "curve": "Linear",
+      "domainMin": -1.0,
+      "domainMax": 1.0
     },
     {
       "id": "t2AmpVelo",
@@ -2805,7 +2873,12 @@
       "max": 63,
       "default": 0,
       "type": "integer",
-      "sysex": true
+      "sysex": true,
+      "wire": "None",
+      "wireCodec": "Bipolar",
+      "curve": "Linear",
+      "domainMin": -1.0,
+      "domainMax": 1.0
     },
     {
       "id": "t2Eg1Attack",

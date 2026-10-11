@@ -2540,6 +2540,56 @@ static void testDspConversionsAndClamping()
         check(s1 == 1.0f, "eg2Sustain t=1 is 1.0");
     }
 
+    // 2f. OSC1 Ctrl & Portamento (Linear [0.0 .. 1.0])
+    if (const auto* pTime = ParameterRegistry::getParameter("portamentoTime"))
+    {
+        float p0 = conversion::normalizedToDomain(*pTime, 0.0f);
+        float pMid = conversion::normalizedToDomain(*pTime, 0.5f);
+        float p1 = conversion::normalizedToDomain(*pTime, 1.0f);
+        check(p0 == 0.0f, "portamentoTime t=0 is 0.0");
+        check(std::abs(pMid - 0.5f) < 1e-4f, "portamentoTime t=0.5 is 0.5");
+        check(p1 == 1.0f, "portamentoTime t=1 is 1.0");
+    }
+
+    if (const auto* c1 = ParameterRegistry::getParameter("osc1Ctrl1"))
+    {
+        float c0 = conversion::normalizedToDomain(*c1, 0.0f);
+        float c1Val = conversion::normalizedToDomain(*c1, 1.0f);
+        check(c0 == 0.0f, "osc1Ctrl1 t=0 is 0.0");
+        check(c1Val == 1.0f, "osc1Ctrl1 t=1 is 1.0");
+    }
+
+    // 2g. Bipolar Modulations & Sensitivities (Bipolar Linear [-1.0 .. +1.0])
+    if (const auto* fInt = ParameterRegistry::getParameter("filterEg1Int"))
+    {
+        float i0 = conversion::normalizedToDomain(*fInt, 0.0f);
+        float iMid = conversion::normalizedToDomain(*fInt, 0.5f);
+        float i1 = conversion::normalizedToDomain(*fInt, 1.0f);
+        check(i0 == -1.0f, "filterEg1Int t=0 is -1.0");
+        check(std::abs(iMid - 0.0f) < 1e-4f, "filterEg1Int t=0.5 is 0.0");
+        check(i1 == 1.0f, "filterEg1Int t=1 is +1.0");
+    }
+
+    if (const auto* fKbd = ParameterRegistry::getParameter("filterKeyTrack"))
+    {
+        float k0 = conversion::normalizedToDomain(*fKbd, 0.0f);
+        float kMid = conversion::normalizedToDomain(*fKbd, 0.5f);
+        float k1 = conversion::normalizedToDomain(*fKbd, 1.0f);
+        check(k0 == -1.0f, "filterKeyTrack t=0 is -1.0");
+        check(std::abs(kMid - 0.0f) < 1e-4f, "filterKeyTrack t=0.5 is 0.0");
+        check(k1 == 1.0f, "filterKeyTrack t=1 is +1.0");
+    }
+
+    if (const auto* aVel = ParameterRegistry::getParameter("ampVelo"))
+    {
+        float v0 = conversion::normalizedToDomain(*aVel, 0.0f);
+        float vMid = conversion::normalizedToDomain(*aVel, 0.5f);
+        float v1 = conversion::normalizedToDomain(*aVel, 1.0f);
+        check(v0 == -1.0f, "ampVelo t=0 is -1.0");
+        check(std::abs(vMid - 0.0f) < 1e-4f, "ampVelo t=0.5 is 0.0");
+        check(v1 == 1.0f, "ampVelo t=1 is +1.0");
+    }
+
     // 3. Robustez masiva sobre todos los parámetros registrados (DSP.10)
     const auto& allParams = ParameterRegistry::getAllParameters();
     bool allValid = true;
