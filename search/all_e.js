@@ -34,7 +34,7 @@ var searchData=
   ['filtro_20multimodo_31',['filtro multimodo',['../md_DOCS_2korg__ms2000__menu__map.html#autotoc_md10',1,'6. VCF (Filtro Multimodo)'],['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md69',1,'7. Filtro Multimodo']]],
   ['filtro_20y_20datos_20sysex_32',['7.1 Modos de Filtro y Datos SysEx',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md70',1,'']]],
   ['filtros_20y_20modos_20especiales_33',['13. VOCODER (Filtros y Modos Especiales)',['../md_DOCS_2korg__ms2000__menu__map.html#autotoc_md20',1,'']]],
-  ['findabdsharedassetsroot_34',['findABDSharedAssetsRoot',['../namespaceABDMS2000.html#a2a37da30b0ee0470c39504883e66daa9',1,'ABDMS2000']]],
+  ['findabdsharedroot_34',['findABDSharedRoot',['../namespaceABDMS2000.html#aecbdadd78ca45f6997aa7d76f088304b',1,'ABDMS2000']]],
   ['findbycc_35',['findByCC',['../classABDMS2000_1_1MIDIMap.html#a02579f7a7885ed24c17d57250b248e3f',1,'ABDMS2000::MIDIMap']]],
   ['findbynrpn_36',['findByNRPN',['../classABDMS2000_1_1MIDIMap.html#a7b32e203f287c8a39a3dcfd5e9198998',1,'ABDMS2000::MIDIMap']]],
   ['findbyparamid_37',['findByParamId',['../classABDMS2000_1_1MIDIMap.html#a793c4a3da9825f0733e399fbf8e4566c',1,'ABDMS2000::MIDIMap']]],
