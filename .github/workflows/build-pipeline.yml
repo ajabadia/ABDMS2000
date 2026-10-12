@@ -1,51 +1,109 @@
 name: MS2000 Hybrid Build Pipeline
 
+# =============================================================================
+# POR QUE ESTE FICHERO ESTA REESCRITO
+# =============================================================================
+# El pipeline anterior estaba rojo por dos motivos medibles y anunciaba dos
+# puertas que nunca se cerraban:
+#
+#   1. El checkout usaba `submodules: recursive` pero este repo NO tiene
+#      .gitmodules: en el runner no llegaba JUCE, y el configure moria en el
+#      ultimo eslabon de la cadena de discovery, `find_package(JUCE 9 CONFIG
+#      REQUIRED)`. Ademas el WebUI/dist (exigido con FATAL_ERROR antes de
+#      juce_add_plugin) solo existia en la maquina de desarrollo.
+#
+#   2. El paso de tests era `ctest ... || true`: los tests podian fallar en
+#      rojo y el job seguia verde. Detras de ese `|| true` habia UN ROJO REAL
+#      escondido: 3 aserciones de eqLowGain/eqHighGain (el master EQ recibia
+#      0..1 en vez de -12..+12 dB por un branch erroneo de wire==-1 en
+#      Conversion.gen.h). Arreglado el bug, la suite mide 399/399 y el
+#      ctest vuelve a ser bloqueante.
+#
+# Lo que SI se mantiene igual: el firmado/notarizado de macOS, el cpack de
+# Windows y la subida de artefactos, copiados tal cual.
+#
+# FIJACION DE DEPENDENCIAS (todo a SHA, nada a rama)
+# ------------------------------------------------
+# JUCE se clona en GITS/JUCE, que es el primer eslabon de la cadena de
+# discovery del CMakeLists (GITS/JUCE -> JUCE_PATH -> C:/JUCE ->
+# find_package). La version es 9.0.3, la MISMA con la que esta medido el
+# build local verde.
+#
+# Los tres hermanos se clonan como subcarpetas del workspace, de modo que el
+# layout en el runner sea el del monorepo (ABDMS2000 y hermanos al mismo
+# nivel). Es lo que el CMakeLists espera: `../ABDBankManager/cpp` y
+# `../ABDSharedCode`. Los SHAs son los de los remotos en el momento de
+# escribir esto; subir el de un hermano aqui exige regenerar los .gen en el
+# MISMO commit (mismo contrato que sibling-sync-check.yml).
+#   - ABDBankManager 31cd46f (main): el ES el HEAD de la maquina de
+#     desarrollo, ya en remoto. Los 4 commits que lo forman tocan solo
+#     JS/packages/docs, cero ficheros cpp/.
+#   - ABDSharedCode   180cf786 (master): trae el modulo Scope
+#     (ABDShared::ScopeCore / ScopeCoreHeaders) que este CMake linka. El pin
+#     canonico mas viejo (3d4006a0, el de CZ101) NO lo trae.
+#   - ABDSharedAssets fd3f295 (rama fix/contract-dest-73): @abdsynths/shared.
+#     El vite build necesita bank.css/bank-manager.css, que estan en esa
+#     rama y NO en main; por eso el pin es a un SHA de rama y no a main.
+#
+# EL WEBUI Y POR QUE NO `npm ci`
+# ------------------------------
+# El package.json declara tres dependencias `workspace:*` (@abdsynths/...)
+# sin ningun workspace raiz que las resuelva, y npm las rechaza en seco
+# (MEDIDO: `npm ci` e `npm install` fallan con EUNSUPPORTEDPROTOCOL en un
+# directorio limpio). Para compilar solo hace falta vite, que se instala en
+# un prefijo scratch y se enlaza; los @abdsynths/* se resuelven enlazando
+# los hermanos clonados. La mecanica esta verificada en un arbol limpio:
+# `node Scripts/build_webui.js` genera WebUI/dist con los tres pins de
+# arriba (vite 8.3.2, @abdsynths enlazados).
+
 on:
   push:
     branches: [ main, develop ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ms2000-pipeline-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  JUCE_TAG: '9.0.3'
+  SHA_BANK: '31cd46fc9c5b59eee430f6532db773723a6db0c0'    # ABDBankManager main
+  SHA_SHARED: '180cf7866fca43fdc5035ebab9d4cc7f9713ff80'  # ABDSharedCode master (con Scope)
+  SHA_ASSETS: 'fd3f295e4f9a4b31a93d425bdfbea00c743894c3'  # ABDSharedAssets fix/contract-dest-73
 
 jobs:
-  build-and-deploy:
-    name: Build on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [macos-latest, windows-latest]
-
+  # ---------------------------------------------------------------------------
+  # HIGIENE — la matriz de build es macos+windows, asi que los pasos de
+  # clang-format/cppcheck/ hooks que el pipeline viejo marcaba con
+  # `if: runner.os == 'Linux'` NUNCA se ejecutaron: eran decoracion. Viven
+  # aqui, en su propio job de Ubuntu.
+  #
+  # clang-format y cppcheck son INFORMATIVOS, no bloqueantes, y la cuenta va
+  # escrita porque es la razon de que no bloqueen. MEDIDO en local con
+  # clang-format 18.1.8 (la misma mayoria que usa el pre-commit): 8010
+  # violaciones en 102 ficheros de Source/. Un dry-run --Werror bloqueante
+  # dejaria el CI rojo permanente por deuda historica, que no es un rojo
+  # nuevo. cppcheck: se anota el recuento en cada corrida. Cuando la deuda
+  # se pague, se quitan los `exit 0` y pasan a bloquear.
+  # ---------------------------------------------------------------------------
+  hygiene:
+    name: Higiene (clang-format + cppcheck + hooks)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-    # 1. Descargar el código fuente del repositorio incluyendo submódulos (JUCE)
-    - name: Checkout Code
-      uses: actions/checkout@v7
-      with:
-        submodules: recursive
+    - uses: actions/checkout@v7
 
-    # 2. Configuración específica para Windows
-    - name: Set up MSVC & WiX (Windows)
-      if: matrix.os == 'windows-latest'
-      uses: microsoft/setup-msbuild@v3
-
-    # 3. Configuración específica para macOS
-    - name: Install macOS Dependencies
-      if: matrix.os == 'macos-latest'
-      run: |
-        softwareupdate --install-rosetta --agree-to-license || true
-
-    # 4. Configurar generación del proyecto con CMake
-    - name: Configure CMake
-      run: |
-        cmake -B build -DCMAKE_BUILD_TYPE=Release .
-
-    # 5. Linting y análisis estático (solo Linux - clang-format/cppcheck no en Windows runners base)
     - name: Install clang-format & cppcheck
-      if: runner.os == 'Linux'
       run: |
-        sudo apt-get update && sudo apt-get install -y clang-format-18 cppcheck
+        sudo apt-get update -qq
+        sudo apt-get install -y -qq clang-format-18 cppcheck
 
     - name: Verify clang-format version & config compatibility
-      if: runner.os == 'Linux'
       run: |
         CF_VERSION=$(clang-format-18 --version)
         echo "$CF_VERSION"
@@ -53,16 +111,14 @@ jobs:
           echo "::error::Expected clang-format 18.x for consistent formatting, got: $CF_VERSION"
           exit 1
         fi
-        # Validate the .clang-format config parses under this version. Catches
-        # invalid options (e.g. Standard: Cpp20) or unknown keys (e.g.
-        # ReferenceBindsToType from v19) before the dry-run step fails on every
-        # Source file with a confusing error.
+        # Que el .clang-format parsea bajo esta version (opciones invalidas
+        # como Standard: Cpp20 o claves de la v19 mueren aqui con un mensaje
+        # claro, no en cada fichero).
         echo 'int main() {}' | clang-format-18 -
 
     - name: Verify pre-commit hooks are installed and functional
-      if: runner.os == 'Linux'
       run: |
-        # 1. Verify hook files exist in repo (installed)
+        # 1. Los ficheros del hook existen en el repo
         if [ ! -f .githooks/pre-commit ]; then
           echo "::error::.githooks/pre-commit is missing from the repository"
           exit 1
@@ -72,66 +128,207 @@ jobs:
           exit 1
         fi
 
-        # 2. Verify bash syntax (no syntax errors)
+        # 2. Sintaxis bash
         bash -n .githooks/pre-commit
         bash -n .githooks/install.sh
 
-        # 3. Verify the hook contains key safety checks
+        # 3. Contiene las comprobaciones de seguridad clave
         grep -q 'verify version is' .githooks/pre-commit || { echo "::error::Hook missing version check"; exit 1; }
         grep -q 'Validating .clang-format config' .githooks/pre-commit || { echo "::error::Hook missing config validation"; exit 1; }
         grep -q 'STAGED_FILES' .githooks/pre-commit || { echo "::error::Hook missing staged file formatting"; exit 1; }
 
-        # 4. Functional test: run the hook on an unformatted file in a temp repo
+        # 4. Test funcional en un repo temporal: el hook debe formatear y
+        #    re-estadear un fichero Source/ sin formato.
         TMPDIR=$(mktemp -d)
         cd "$TMPDIR"
         git init -q
         git config user.email "test@test.com"
         git config user.name "Test"
 
-        # Copy hook and .clang-format from the repo
         cp "$GITHUB_WORKSPACE/.clang-format" .
         cp "$GITHUB_WORKSPACE/.githooks/pre-commit" .git/hooks/pre-commit
         chmod +x .git/hooks/pre-commit
 
-        # Create unformatted Source file and stage it
         mkdir -p Source
         echo 'void foo(int a,int b){return a+b;}' > Source/test.cpp
         git add Source/test.cpp
 
-        # Run the hook — it should format and re-stage
         if ! .git/hooks/pre-commit; then
           echo "::error::Pre-commit hook unexpectedly failed on valid input"
           rm -rf "$TMPDIR"
           exit 1
         fi
 
-        # Verify formatting was applied (spaces added after commas)
         if ! grep -q 'int a, int b' Source/test.cpp; then
           echo "::error::Pre-commit hook did not reformat the staged file"
           rm -rf "$TMPDIR"
           exit 1
         fi
 
-        echo "✅ Pre-commit hooks verified: installed and functional"
+        echo "Pre-commit hooks verified: installed and functional"
         rm -rf "$TMPDIR"
 
-    - name: Check formatting (clang-format)
-      if: runner.os == 'Linux'
+    - name: Check formatting (clang-format) - informativo, no bloqueante
       run: |
+        set +e
         shopt -s globstar
-        clang-format-18 --dry-run --Werror Source/**/*.h Source/**/*.cpp
+        salida=$(clang-format-18 --dry-run --Werror Source/**/*.h Source/**/*.cpp 2>&1)
+        violaciones=$(printf '%s\n' "$salida" | grep -cE 'code should be clang-formatted')
+        echo "::warning title=clang-format::${violaciones} violaciones en Source/ (deuda historica medida: 8010 al escribir este gate; informativo hasta que se pague)."
+        printf '%s\n' "$salida" | grep -E 'error' | sed -n '1,20p'
+        exit 0
 
-    - name: Static analysis (cppcheck)
-      if: runner.os == 'Linux'
+    - name: Static analysis (cppcheck) - informativo, no bloqueante
       run: |
-        cppcheck --enable=warning,performance,portability --std=c++20 --suppress=missingIncludeSystem Source/
+        set +e
+        salida=$(cppcheck --enable=warning,performance,portability --std=c++20 --suppress=missingIncludeSystem --template='{severity}|{file}|{line}|{message}' Source/ 2>&1)
+        hallazgos=$(printf '%s\n' "$salida" | grep -cE '^(warning|performance|portability|error)\|')
+        printf '%s\n' "$salida" | grep -E '^(warning|performance|portability|error)\|' | sed -n '1,30p'
+        echo "::warning title=cppcheck::${hallazgos} hallazgos en Source/ (MEDIDO en local con cppcheck 2.21: 0; informativo hasta que la primera corrida de CI lo confirme y pase a bloquear)."
+        exit 0
 
-    # 6. Compilación en paralelo optimizada en modo Release
-    - name: Build Plugin (Release)
+  # ---------------------------------------------------------------------------
+  # BUILD + TESTS — la puerta de verdad. Macos y Windows, como siempre.
+  # ---------------------------------------------------------------------------
+  build-and-deploy:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 90
+    defaults:
+      run:
+        shell: bash
+        working-directory: ABDMS2000
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest]
+
+    steps:
+    # El layout del monorepo en el workspace: ABDMS2000 y los tres hermanos
+    # al mismo nivel, cada uno fijado a SHA. Sin esto el CMakeLists cae al
+    # fallback FetchContent (rama `master` sin fijar) o muere en
+    # find_package(JUCE 9).
+    - name: Checkout ABDMS2000
+      uses: actions/checkout@v7
+      with:
+        path: ABDMS2000
+
+    - name: Checkout ABDBankManager (hermano, SHA fijo)
+      uses: actions/checkout@v7
+      with:
+        repository: ajabadia/ABDBankManager
+        ref: ${{ env.SHA_BANK }}
+        path: ABDBankManager
+        fetch-depth: 1
+
+    - name: Checkout ABDSharedCode (hermano, SHA fijo — trae Scope)
+      uses: actions/checkout@v7
+      with:
+        repository: ajabadia/ABDSharedCode
+        ref: ${{ env.SHA_SHARED }}
+        path: ABDSharedCode
+        fetch-depth: 1
+
+    - name: Checkout ABDSharedAssets (hermano, SHA fijo — @abdsynths/shared)
+      uses: actions/checkout@v7
+      with:
+        repository: ajabadia/ABDSharedAssets
+        ref: ${{ env.SHA_ASSETS }}
+        path: ABDSharedAssets
+        fetch-depth: 1
+
+    - name: Fetch JUCE ${{ env.JUCE_TAG }} into GITS/JUCE
       run: |
-        cmake --build build --config Release --parallel
+        git clone --depth 1 --branch "$JUCE_TAG" https://github.com/juce-framework/JUCE.git ABDMS2000/GITS/JUCE
+        echo "JUCE en ABDMS2000/GITS/JUCE"
 
-    # 6. Firmado y Notarización (Solo macOS)
+    - name: Set up MSBuild (Windows)
+      if: runner.os == 'Windows'
+      uses: microsoft/setup-msbuild@v3
+
+    # juce_add_plugin(NEEDS_WEBVIEW2) exige find_package(WebView2) al
+    # configurar en Windows; el SDK no viene en el runner. Mismo tratamiento
+    # que la suite de la familia: paquete NuGet extraido en RUNNER_TEMP y
+    # JUCE_WEBVIEW2_PACKAGE_LOCATION apuntando a la carpeta que lo contiene.
+    - name: Install WebView2 SDK (Windows)
+      if: runner.os == 'Windows'
+      shell: pwsh
+      run: |
+        $version = "1.0.4258.31"
+        $root = Join-Path $env:RUNNER_TEMP "webview2"
+        $pkg = Join-Path $root "Microsoft.Web.WebView2"
+        New-Item -ItemType Directory -Force -Path $pkg | Out-Null
+        $zip = Join-Path $env:RUNNER_TEMP "webview2.zip"
+        Invoke-WebRequest -Uri "https://api.nuget.org/v3-flatcontainer/microsoft.web.webview2/$version/microsoft.web.webview2.$version.nupkg" -OutFile $zip
+        Expand-Archive -Path $zip -DestinationPath $pkg -Force
+        if (-not (Test-Path (Join-Path $pkg "build/native/include/WebView2.h"))) {
+          Write-Error "Falta WebView2.h: la descarga del SDK ha fallado"
+          exit 1
+        }
+        "WEBVIEW2_ROOT=$root" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
+    - name: Setup Node (WebUI)
+      uses: actions/setup-node@v7
+      with:
+        node-version: 22
+
+    # vite en prefijo scratch (el package.json declara tres dependencias
+    # `workspace:*` sin workspace raiz, y npm las rechaza en seco con
+    # EUNSUPPORTEDPROTOCOL, MEDIDO) + shim de node_modules/.bin/vite porque
+    # Scripts/build_webui.js hace `npx vite build` y sin el shim npx no lo
+    # encuentra (fallado en un arbol de prueba identico).
+    #
+    # Los @abdsynths/* se resuelven enlazando los hermanos clonados. El
+    # ENLACE EXTRA dentro de ABDSharedCode/MidiKeyboard/node_modules NO es
+    # redundante: keyboard.css del hermano importa
+    # '@abdsynths/shared/styles/components/wheels.css' como bare import y
+    # postcss lo resuelve caminando node_modules desde el REALPATH del propio
+    # MidiKeyboard. En la maquina de desarrollo ese enlace existe y el build
+    # pasa; sin el, el vite build muere con
+    #   Unable to resolve `@import "@abdsynths/shared/.../wheels.css"` from
+    #   .../MidiKeyboard/src
+    - name: WebUI deps (vite scratch + @abdsynths desde hermanos)
+      run: |
+        npm install --prefix .ci --no-audit --no-fund vite@8.3.2
+        mkdir -p node_modules/@abdsynths node_modules/.bin
+        cp .ci/node_modules/.bin/vite* node_modules/.bin/
+        mkdir -p ../ABDSharedCode/MidiKeyboard/node_modules/@abdsynths
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          # Junctions: en Windows `ln -s` de Git Bash copia directorios o
+          # falla; mklink /J no requiere privilegios.
+          WS=$(cygpath -w "$GITHUB_WORKSPACE")
+          cmd //c "mklink /J node_modules\\vite $(cygpath -w "$PWD")\\.ci\\node_modules\\vite" > /dev/null
+          cmd //c "mklink /J node_modules\\@abdsynths\\shared $WS\\ABDSharedAssets" > /dev/null
+          cmd //c "mklink /J node_modules\\@abdsynths\\bank-manager-ui $WS\\ABDBankManager\\packages\\ui" > /dev/null
+          cmd //c "mklink /J node_modules\\@abdsynths\\midi-keyb $WS\\ABDSharedCode\\MidiKeyboard" > /dev/null
+          cmd //c "mklink /J ..\\ABDSharedCode\\MidiKeyboard\\node_modules\\@abdsynths\\shared $WS\\ABDSharedAssets" > /dev/null
+        else
+          ln -s ../.ci/node_modules/vite node_modules/vite
+          ln -s "$GITHUB_WORKSPACE/ABDSharedAssets" node_modules/@abdsynths/shared
+          ln -s "$GITHUB_WORKSPACE/ABDBankManager/packages/ui" node_modules/@abdsynths/bank-manager-ui
+          ln -s "$GITHUB_WORKSPACE/ABDSharedCode/MidiKeyboard" node_modules/@abdsynths/midi-keyb
+          ln -s "$GITHUB_WORKSPACE/ABDSharedAssets" ../ABDSharedCode/MidiKeyboard/node_modules/@abdsynths/shared
+        fi
+
+    # CMake exige WebUI/dist/index.html ANTES de juce_add_plugin (FATAL_ERROR)
+    - name: Build WebUI bundle (vite)
+      run: node Scripts/build_webui.js
+
+    - name: Configure CMake
+      run: |
+        cmake -B build -DCMAKE_BUILD_TYPE=Release -DJUCE_WEBVIEW2_PACKAGE_LOCATION="${WEBVIEW2_ROOT:-}" .
+
+    - name: Build Plugin + Tests (Release)
+      run: cmake --build build --config Release --parallel
+
+    # BLOQUEANTE, sin `|| true`. El binario es unico (build/Release en
+    # multi-config) y la suite mide 399/399 en local con el fix de
+    # Conversion.gen.h; -C Release elige la config en el generador VS.
+    - name: Run DSP Unit Tests (ctest, bloqueante)
+      run: ctest --test-dir build --output-on-failure -C Release
+
+    # --- Firmado y Notarizacion (solo macOS) — sin cambios respecto al
+    # pipeline original (secrets-gated y tolerante con `|| true`).
     - name: Sign, Package and Notarize (macOS)
       if: matrix.os == 'macos-latest'
       env:
@@ -141,41 +338,35 @@ jobs:
         CERT_ID: ${{ secrets.APPLE_DEVELOPER_ID }}
       run: |
         cd build/ABDMS2000_artefacts/Release || cd build/KorgMS2000Hybrid_artefacts/Release || true
-        
+
         if [ -d "VST3" ] && [ -n "$CERT_ID" ]; then
           codesign --force --timestamp --options runtime --sign "$CERT_ID" VST3/*.vst3 || true
           codesign --force --timestamp --options runtime --sign "$CERT_ID" AU/*.component || true
-          
+
           pkgbuild --component VST3/*.vst3 --install-location /Library/Audio/Plug-Ins/VST3 ABDMS2000_VST3.pkg || true
           pkgbuild --component AU/*.component --install-location /Library/Audio/Plug-Ins/Components ABDMS2000_AU.pkg || true
-          
+
           productbuild --synthesize --package ABDMS2000_VST3.pkg --package ABDMS2000_AU.pkg distribution.xml || true
           productbuild --distribution distribution.xml --sign "$CERT_ID" ABDMS2000_Setup_Mac.pkg || true
-          
+
           if [ -n "$APPLE_ID" ] && [ -n "$APPLE_PASSWORD" ]; then
             xcrun notarytool submit ABDMS2000_Setup_Mac.pkg --apple-id "$APPLE_ID" --password "$APPLE_PASSWORD" --team-id "$TEAM_ID" --wait || true
             xcrun stapler staple ABDMS2000_Setup_Mac.pkg || true
           fi
-          
+
           mv ABDMS2000_Setup_Mac.pkg ../../../ || true
         fi
 
-    # 7. Ejecutar Suite de Tests Unitarios DSP
-    - name: Run DSP Unit Tests
-      run: |
-        cd build
-        ctest --output-on-failure -C Release || ./ABDMS2000_Tests || ./Release/ABDMS2000_Tests.exe || true
-
-    # 8. Creación del instalador (Solo Windows)
+    # Instalador Windows — sin cambios (cpack tolerante, artefactos `warn`).
     - name: Create Installer (Windows)
       if: matrix.os == 'windows-latest'
+      shell: pwsh
       run: |
         cd build
         cpack -C Release || true
         mv *.msi ../ 2>$null || true
         mv *.exe ../ 2>$null || true
 
-    # 9. Publicar los instaladores y binarios como artefactos descargables
     - name: Upload Build Artifacts
       uses: actions/upload-artifact@v7
       with:
@@ -188,6 +379,75 @@ jobs:
           build/ABDMS2000_artefacts/Release/**/*.component
           build/ABDMS2000_artefacts/Release/**/*.exe
         if-no-files-found: warn
+
+  # ---------------------------------------------------------------------------
+  # WEBUI (vitest) — BLOQUEANTE. 203 tests en 19 ficheros, MEDIDOS en local
+  # con la mecanica EXACTA de este job (arbol limpio, sin node_modules
+  # preexistente, scratch-prefix + hermanos enlazados): 203/203, exit 0.
+  #
+  # No se puede `npm ci` ni `npm install`: el package.json declara tres
+  # dependencias `workspace:*` sin workspace raiz que las resuelva, y npm las
+  # rechaza en seco con EUNSUPPORTEDPROTOCOL (MEDIDO en un directorio
+  # limpio). Lo que los tests necesitan de verdad:
+  #   - vitest 4.1.11 (el config importa 'vitest/config', asi que tiene que
+  #     ser resoluble desde la raiz — de ahi el symlink en node_modules);
+  #   - jszip, dexie y file-saver: los importa el codigo de WebUI/abdbank que
+  #     los tests cargan;
+  #   - los tres hermanos enlazados: bankManagerModalSync compara byte a byte
+  #     el vendorizado contra ../ABDBankManager/packages/ui, y
+  #     hostModelAnnouncement/webviewBridgeDirection importan
+  #     ../../../../ABDSharedCode/... por ruta relativa.
+  # ---------------------------------------------------------------------------
+  webui-tests:
+    name: WebUI unit tests (vitest)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: bash
+        working-directory: ABDMS2000
+    steps:
+    - uses: actions/checkout@v7
+      with:
+        path: ABDMS2000
+
+    - uses: actions/checkout@v7
+      with:
+        repository: ajabadia/ABDBankManager
+        ref: ${{ env.SHA_BANK }}
+        path: ABDBankManager
+        fetch-depth: 1
+
+    - uses: actions/checkout@v7
+      with:
+        repository: ajabadia/ABDSharedCode
+        ref: ${{ env.SHA_SHARED }}
+        path: ABDSharedCode
+        fetch-depth: 1
+
+    - uses: actions/checkout@v7
+      with:
+        repository: ajabadia/ABDSharedAssets
+        ref: ${{ env.SHA_ASSETS }}
+        path: ABDSharedAssets
+        fetch-depth: 1
+
+    - uses: actions/setup-node@v7
+      with:
+        node-version: 22
+
+    - name: Bootstrap vitest (scratch prefix + symlinks @abdsynths)
+      run: |
+        npm install --prefix .ci --no-audit --no-fund \
+          vitest@4.1.11 jszip@3.10.1 dexie@4.4.5 file-saver@2.0.5
+        mkdir -p node_modules/@abdsynths
+        ln -s ../.ci/node_modules/vitest node_modules/vitest
+        ln -s "$GITHUB_WORKSPACE/ABDSharedAssets" node_modules/@abdsynths/shared
+        ln -s "$GITHUB_WORKSPACE/ABDBankManager/packages/ui" node_modules/@abdsynths/bank-manager-ui
+        ln -s "$GITHUB_WORKSPACE/ABDSharedCode/MidiKeyboard" node_modules/@abdsynths/midi-keyb
+
+    - name: Run vitest
+      run: .ci/node_modules/.bin/vitest run
 
   generate-docs:
     name: Generate and Deploy Doxygen Documentation
@@ -213,4 +473,3 @@ jobs:
           folder: docs/html
           branch: gh-pages
           clean: true
-

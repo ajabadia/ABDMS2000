@@ -1,0 +1,196 @@
+name: Pluginval CI
+
+# pluginval (Fase 7 del plan familiar) — validación del VST3 de ABDMS2000 con
+# la herramienta de facto de la industria (Tracktion/pluginval). Reproduce la
+# invocación canónica de la familia (scripts/verify_release.ps1):
+#   pluginval --strictness-level 5 --seed 42 --validate "<vst3>"
+#
+# - pluginval se PINNEA a v1.0.4 (determinismo, como JUCE 9.0.3 y vite 8.3.2):
+#   https://github.com/Tracktion/pluginval/releases/download/v1.0.4/pluginval_Windows.zip
+# - El montaje de dependencias es EL MISMO que en build-pipeline.yml (hermanos
+#   a SHA en subcarpetas, JUCE en GITS/JUCE, WebUI bundle antes de CMake):
+#   juce_add_plugin exige WebUI/dist/index.html antes de configurar y linka
+#   ABDShared::SynthCore/HardwareDrivers/ScopeCore del hermano.
+# - El VST3 se construye con el target `ABDMS2000_VST3` y se localiza con el
+#   glob `build/*_artefacts/Release/VST3/*.vst3` (bundle JUCE con
+#   moduleinfo.json + DLL x64).
+# - pluginval es headless-friendly en windows-2022; el runtime WebView2 ya
+#   viene preinstalado en el runner.
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "Source/**"
+      - "CMakeLists.txt"
+      - "DspSources.cmake"
+      - "WebUI/**"
+      - "Scripts/**"
+      - ".github/workflows/pluginval.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "Source/**"
+      - "CMakeLists.txt"
+      - "DspSources.cmake"
+      - "WebUI/**"
+      - "Scripts/**"
+      - ".github/workflows/pluginval.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ms2000-pluginval-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  JUCE_TAG: '9.0.3'
+  SHA_BANK: '31cd46fc9c5b59eee430f6532db773723a6db0c0'    # ABDBankManager main
+  SHA_SHARED: '180cf7866fca43fdc5035ebab9d4cc7f9713ff80'  # ABDSharedCode master (con Scope)
+  SHA_ASSETS: 'fd3f295e4f9a4b31a93d425bdfbea00c743894c3'  # ABDSharedAssets fix/contract-dest-73
+
+jobs:
+  pluginval:
+    name: Pluginval — VST3 strictness 5 (seed 42)
+    runs-on: windows-2022
+    timeout-minutes: 60
+    env:
+      CI: true
+    defaults:
+      run:
+        shell: bash
+        working-directory: ABDMS2000
+
+    steps:
+    # Layout del monorepo en el workspace (mismo reparto que build-pipeline).
+    - name: Checkout ABDMS2000
+      uses: actions/checkout@v7
+      with:
+        path: ABDMS2000
+
+    - name: Checkout ABDBankManager (hermano, SHA fijo)
+      uses: actions/checkout@v7
+      with:
+        repository: ajabadia/ABDBankManager
+        ref: ${{ env.SHA_BANK }}
+        path: ABDBankManager
+        fetch-depth: 1
+
+    - name: Checkout ABDSharedCode (hermano, SHA fijo — trae Scope)
+      uses: actions/checkout@v7
+      with:
+        repository: ajabadia/ABDSharedCode
+        ref: ${{ env.SHA_SHARED }}
+        path: ABDSharedCode
+        fetch-depth: 1
+
+    - name: Checkout ABDSharedAssets (hermano, SHA fijo — @abdsynths/shared)
+      uses: actions/checkout@v7
+      with:
+        repository: ajabadia/ABDSharedAssets
+        ref: ${{ env.SHA_ASSETS }}
+        path: ABDSharedAssets
+        fetch-depth: 1
+
+    - name: Fetch JUCE ${{ env.JUCE_TAG }} into GITS/JUCE
+      run: |
+        git clone --depth 1 --branch "$JUCE_TAG" https://github.com/juce-framework/JUCE.git ABDMS2000/GITS/JUCE
+
+    # juce_add_plugin(NEEDS_WEBVIEW2) exige find_package(WebView2) al
+    # configurar; el SDK no viene con el runner. Paquete NuGet extraido en
+    # RUNNER_TEMP y JUCE_WEBVIEW2_PACKAGE_LOCATION apuntando a la raiz.
+    - name: Install WebView2 SDK
+      shell: pwsh
+      run: |
+        $version = "1.0.4258.31"
+        $root = Join-Path $env:RUNNER_TEMP "webview2"
+        $pkg = Join-Path $root "Microsoft.Web.WebView2"
+        New-Item -ItemType Directory -Force -Path $pkg | Out-Null
+        $zip = Join-Path $env:RUNNER_TEMP "webview2.zip"
+        Invoke-WebRequest -Uri "https://api.nuget.org/v3-flatcontainer/microsoft.web.webview2/$version/microsoft.web.webview2.$version.nupkg" -OutFile $zip
+        Expand-Archive -Path $zip -DestinationPath $pkg -Force
+        if (-not (Test-Path (Join-Path $pkg "build/native/include/WebView2.h"))) {
+          Write-Error "Falta WebView2.h: la descarga del SDK ha fallado"
+          exit 1
+        }
+        "WEBVIEW2_ROOT=$root" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v3
+
+    - name: Setup Node (WebUI)
+      uses: actions/setup-node@v7
+      with:
+        node-version: 22
+
+    # Mismo bootstrap que build-pipeline.yml (vite en prefijo scratch porque
+    # el package.json es inestable con npm por los workspace:*, shim de .bin
+    # para `npx vite build`, y los enlaces @abdsynths desde los hermanos —
+    # incluido el de DENTRO de MidiKeyboard, que keyboard.css necesita).
+    - name: WebUI deps (vite scratch + @abdsynths desde hermanos)
+      run: |
+        npm install --prefix .ci --no-audit --no-fund vite@8.3.2
+        mkdir -p node_modules/@abdsynths node_modules/.bin
+        cp .ci/node_modules/.bin/vite* node_modules/.bin/
+        mkdir -p ../ABDSharedCode/MidiKeyboard/node_modules/@abdsynths
+        WS=$(cygpath -w "$GITHUB_WORKSPACE")
+        cmd //c "mklink /J node_modules\\vite $(cygpath -w "$PWD")\\.ci\\node_modules\\vite" > /dev/null
+        cmd //c "mklink /J node_modules\\@abdsynths\\shared $WS\\ABDSharedAssets" > /dev/null
+        cmd //c "mklink /J node_modules\\@abdsynths\\bank-manager-ui $WS\\ABDBankManager\\packages\\ui" > /dev/null
+        cmd //c "mklink /J node_modules\\@abdsynths\\midi-keyb $WS\\ABDSharedCode\\MidiKeyboard" > /dev/null
+        cmd //c "mklink /J ..\\ABDSharedCode\\MidiKeyboard\\node_modules\\@abdsynths\\shared $WS\\ABDSharedAssets" > /dev/null
+
+    - name: Build WebUI bundle (vite)
+      run: node Scripts/build_webui.js
+
+    - name: Configure CMake
+      run: |
+        cmake -B build -G "Visual Studio 17 2022" -A x64 -DJUCE_WEBVIEW2_PACKAGE_LOCATION="${WEBVIEW2_ROOT:-}"
+
+    - name: Build VST3 target (ABDMS2000_VST3)
+      run: |
+        cmake --build build --config Release --target ABDMS2000_VST3
+
+    - name: Download pluginval v1.0.4 (pinned)
+      shell: pwsh
+      run: |
+        $pvZip = "$env:RUNNER_TEMP\pluginval_Windows.zip"
+        Invoke-WebRequest -Uri "https://github.com/Tracktion/pluginval/releases/download/v1.0.4/pluginval_Windows.zip" -OutFile $pvZip
+        Expand-Archive -Path $pvZip -DestinationPath "$env:RUNNER_TEMP\pluginval" -Force
+        Get-ChildItem "$env:RUNNER_TEMP\pluginval" -Recurse -Filter "pluginval.exe" | Select-Object -First 1 -ExpandProperty FullName
+
+    - name: Run pluginval validation (strictness 5, seed 42)
+      # Todo el paso en pwsh (mismo shell que la descarga): evita la
+      # fragilidad de mezclar rutas Windows de RUNNER_TEMP con bash.
+      shell: pwsh
+      run: |
+        $vst3 = Get-ChildItem "build\*_artefacts\Release\VST3\*.vst3" -ErrorAction SilentlyContinue | Select-Object -First 1
+        if (-not $vst3) {
+          Write-Host "::error::pluginval — no se encontro VST3 en build/*_artefacts/Release/VST3/"
+          exit 1
+        }
+        $pv = Get-ChildItem "$env:RUNNER_TEMP\pluginval" -Recurse -Filter "pluginval.exe" -ErrorAction SilentlyContinue | Select-Object -First 1
+        if (-not $pv) {
+          Write-Host "::error::pluginval — no se encontro pluginval.exe en RUNNER_TEMP\pluginval"
+          exit 1
+        }
+        Write-Host "Validando: $($vst3.FullName)"
+        & $pv.FullName --strictness-level 5 --seed 42 --validate $vst3.FullName *> pluginval.log
+        if ($LASTEXITCODE -ne 0) {
+          Write-Host "::error::pluginval — validacion fallida (strictness 5, seed 42). Ver pluginval.log"
+          Get-Content pluginval.log
+          exit $LASTEXITCODE
+        }
+        Write-Host "pluginval: ALL TESTS PASSED (strictness 5, seed 42)"
+        Get-Content pluginval.log | Select-String -Pattern "ALL TESTS PASSED|PASSED" | Select-Object -First 3
+
+    - name: Publish pluginval log (on failure diagnostics)
+      if: failure()
+      uses: actions/upload-artifact@v7
+      with:
+        name: pluginval-log-${{ github.run_id }}
+        path: ABDMS2000/pluginval.log
+        if-no-files-found: ignore
+        retention-days: 30
