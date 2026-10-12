@@ -106,16 +106,22 @@ Métodos públicos</h2></td></tr>
 <tr class="memitem:a3c8f20d491eeef856543be07fedff91c" id="r_a3c8f20d491eeef856543be07fedff91c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classABDMS2000_1_1Voice.html">Voice</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#a3c8f20d491eeef856543be07fedff91c">operator=</a> (<a class="el" href="classABDMS2000_1_1Voice.html">Voice</a> &amp;&amp;) noexcept=default</td></tr>
 <tr class="separator:a3c8f20d491eeef856543be07fedff91c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a155507563918468fe90d0b77f8ce5cc4" id="r_a155507563918468fe90d0b77f8ce5cc4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#a155507563918468fe90d0b77f8ce5cc4">prepare</a> (double sampleRate) noexcept</td></tr>
+<tr class="memdesc:a155507563918468fe90d0b77f8ce5cc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prepara el <a class="el" href="classABDMS2000_1_1Voice.html" title="Voz sintetizadora individual en la arquitectura de 4 voces.">Voice</a> para un nuevo sample rate.  <br /></td></tr>
 <tr class="separator:a155507563918468fe90d0b77f8ce5cc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4120f56f34ab098b89f4c7d1c1465793" id="r_a4120f56f34ab098b89f4c7d1c1465793"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#a4120f56f34ab098b89f4c7d1c1465793">reset</a> () noexcept</td></tr>
+<tr class="memdesc:a4120f56f34ab098b89f4c7d1c1465793"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restablece el <a class="el" href="classABDMS2000_1_1Voice.html" title="Voz sintetizadora individual en la arquitectura de 4 voces.">Voice</a> a su estado inicial.  <br /></td></tr>
 <tr class="separator:a4120f56f34ab098b89f4c7d1c1465793"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0170ea03110937bb5907744b2b248cf2" id="r_a0170ea03110937bb5907744b2b248cf2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#a0170ea03110937bb5907744b2b248cf2">noteOn</a> (int midiNote, float velocity, bool glideEnabled, bool isFirstTimbreNote=false, bool isLegato=false) noexcept</td></tr>
+<tr class="memdesc:a0170ea03110937bb5907744b2b248cf2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inicia una nueva nota (noteOn MIDI).  <br /></td></tr>
 <tr class="separator:a0170ea03110937bb5907744b2b248cf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f5964d45a0f9ace10444fd786cd9bc9" id="r_a7f5964d45a0f9ace10444fd786cd9bc9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#a7f5964d45a0f9ace10444fd786cd9bc9">noteOff</a> () noexcept</td></tr>
+<tr class="memdesc:a7f5964d45a0f9ace10444fd786cd9bc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Detiene una nota (noteOff MIDI).  <br /></td></tr>
 <tr class="separator:a7f5964d45a0f9ace10444fd786cd9bc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac764f304f8a974830c2ac6bd55405837" id="r_ac764f304f8a974830c2ac6bd55405837"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#ac764f304f8a974830c2ac6bd55405837">stopImmediately</a> () noexcept</td></tr>
+<tr class="memdesc:ac764f304f8a974830c2ac6bd55405837"><td class="mdescLeft">&#160;</td><td class="mdescRight">Detiene inmediatamente la voz (usar en stealage).  <br /></td></tr>
 <tr class="separator:ac764f304f8a974830c2ac6bd55405837"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf1426b5203f01f8c63322613e3f6836" id="r_abf1426b5203f01f8c63322613e3f6836"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#abf1426b5203f01f8c63322613e3f6836">isActive</a> () const noexcept</td></tr>
+<tr class="memdesc:abf1426b5203f01f8c63322613e3f6836"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indica si la voz está aún activa (en release o attack).  <br /></td></tr>
 <tr class="separator:abf1426b5203f01f8c63322613e3f6836"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1cfc375d2ab8b5d210f58c2b6fa68c35" id="r_a1cfc375d2ab8b5d210f58c2b6fa68c35"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#a1cfc375d2ab8b5d210f58c2b6fa68c35">isInRelease</a> () const noexcept</td></tr>
 <tr class="separator:a1cfc375d2ab8b5d210f58c2b6fa68c35"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -124,6 +130,7 @@ Métodos públicos</h2></td></tr>
 <tr class="memitem:a8a7aeded842bd39f399a9a45cd5f4b0c" id="r_a8a7aeded842bd39f399a9a45cd5f4b0c"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#a8a7aeded842bd39f399a9a45cd5f4b0c">getNoteOnAge</a> () const noexcept</td></tr>
 <tr class="separator:a8a7aeded842bd39f399a9a45cd5f4b0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8795c9ba969cce46e38b6f0eb69ec83d" id="r_a8795c9ba969cce46e38b6f0eb69ec83d"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#a8795c9ba969cce46e38b6f0eb69ec83d">getCurrentAmpLevel</a> () const noexcept</td></tr>
+<tr class="memdesc:a8795c9ba969cce46e38b6f0eb69ec83d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtiene el nivel actual de la envolvente principal (VCA).  <br /></td></tr>
 <tr class="separator:a8795c9ba969cce46e38b6f0eb69ec83d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac0817e9e3b0feadf063789a591616d3b" id="r_ac0817e9e3b0feadf063789a591616d3b"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structABDMS2000_1_1Voice_1_1DiagnosticStats.html">DiagnosticStats</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#ac0817e9e3b0feadf063789a591616d3b">getDiagnosticStats</a> () const noexcept</td></tr>
 <tr class="separator:ac0817e9e3b0feadf063789a591616d3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -132,8 +139,10 @@ Métodos públicos</h2></td></tr>
 <tr class="memitem:abf3add101ff3144597bc579abe608193" id="r_abf3add101ff3144597bc579abe608193"><td class="memItemLeft" align="right" valign="top">const LFO &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#abf3add101ff3144597bc579abe608193">getLfo2</a> () const noexcept</td></tr>
 <tr class="separator:abf3add101ff3144597bc579abe608193"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb6c351c69e74d6883130f13e98d3ffb" id="r_acb6c351c69e74d6883130f13e98d3ffb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#acb6c351c69e74d6883130f13e98d3ffb">applyBlockParams</a> (const <a class="el" href="structABDMS2000_1_1VoiceParameters.html">VoiceParameters</a> &amp;params) noexcept</td></tr>
+<tr class="memdesc:acb6c351c69e74d6883130f13e98d3ffb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Aplica todos los parámetros estáticos del bloque actual.  <br /></td></tr>
 <tr class="separator:acb6c351c69e74d6883130f13e98d3ffb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7bb4d1c2b6c8168c6d78317107c324e3" id="r_a7bb4d1c2b6c8168c6d78317107c324e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#a7bb4d1c2b6c8168c6d78317107c324e3">renderNextSample</a> (float &amp;leftOut, float &amp;rightOut, int diagPoint=0, float diagTone=0.0f) noexcept</td></tr>
+<tr class="memdesc:a7bb4d1c2b6c8168c6d78317107c324e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renderiza una muestra mono- o stereo- por muestra.  <br /></td></tr>
 <tr class="separator:a7bb4d1c2b6c8168c6d78317107c324e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d24cede58001e8bf95a95a8fff6283c" id="r_a5d24cede58001e8bf95a95a8fff6283c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#a5d24cede58001e8bf95a95a8fff6283c">renderDiagnosticSample</a> (float &amp;leftOut, float &amp;rightOut, int diagPoint, float diagTone) noexcept</td></tr>
 <tr class="separator:a5d24cede58001e8bf95a95a8fff6283c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -152,6 +161,8 @@ Atributos privados</h2></td></tr>
 <tr class="separator:a3529d0bbbe63dac2af07d9bd105e0239"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23b6f13b526f3b1cf69f8ec056a3ae2a" id="r_a23b6f13b526f3b1cf69f8ec056a3ae2a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structABDMS2000_1_1VoiceParameters.html">VoiceParameters</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#a23b6f13b526f3b1cf69f8ec056a3ae2a">cachedParams_</a></td></tr>
 <tr class="separator:a23b6f13b526f3b1cf69f8ec056a3ae2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6fd71917de6a4dcf7af546c0ef95066" id="r_ad6fd71917de6a4dcf7af546c0ef95066"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structABDMS2000_1_1Voice_1_1DiagnosticStats.html">DiagnosticStats</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#ad6fd71917de6a4dcf7af546c0ef95066">lastDiagStats_</a></td></tr>
+<tr class="separator:ad6fd71917de6a4dcf7af546c0ef95066"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0c8f4e5fafd37a426bebf1055b87486" id="r_af0c8f4e5fafd37a426bebf1055b87486"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classABDMS2000_1_1VAOscillator.html">VAOscillator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#af0c8f4e5fafd37a426bebf1055b87486">osc1VA_</a></td></tr>
 <tr class="separator:af0c8f4e5fafd37a426bebf1055b87486"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15a8b1182d410d62c292c4a812c0b153" id="r_a15a8b1182d410d62c292c4a812c0b153"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classABDMS2000_1_1DWGSOscillator.html">DWGSOscillator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Voice.html#a15a8b1182d410d62c292c4a812c0b153">osc1DWGS_</a></td></tr>
@@ -258,6 +269,14 @@ Atributos privados</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Aplica todos los parámetros estáticos del bloque actual. </p>
+<p>Este método se llama una vez por bloque de audio y establece todos los valores no por muestra (tiempos de envolvente, tipos de onda, índices de wave, etc.). </p><dl class="params"><dt>Parámetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">params</td><td>Parámetros completos del <a class="el" href="structABDMS2000_1_1VoiceParameters.html" title="Parámetros completos de un timbre del MS2000/microKORG.">VoiceParameters</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a8795c9ba969cce46e38b6f0eb69ec83d" name="a8795c9ba969cce46e38b6f0eb69ec83d"></a>
@@ -282,6 +301,9 @@ Atributos privados</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Obtiene el nivel actual de la envolvente principal (VCA). </p>
+<dl class="section return"><dt>Devuelve</dt><dd>Nivel de la envolvente 2 (0.0-1.0). </dd></dl>
 
 </div>
 </div>
@@ -433,6 +455,9 @@ Atributos privados</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Indica si la voz está aún activa (en release o attack). </p>
+<dl class="section return"><dt>Devuelve</dt><dd>true si la envolvente principal aún está activa. </dd></dl>
+
 </div>
 </div>
 <a id="a1cfc375d2ab8b5d210f58c2b6fa68c35" name="a1cfc375d2ab8b5d210f58c2b6fa68c35"></a>
@@ -482,6 +507,9 @@ Atributos privados</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Detiene una nota (noteOff MIDI). </p>
+<p>Solo detiene las envolventes (la liberación continúa hacia silence). </p>
 
 </div>
 </div>
@@ -537,6 +565,18 @@ Atributos privados</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Inicia una nueva nota (noteOn MIDI). </p>
+<p>Configura la nota, velocidad, tiempo de glide y arranca las envolventes (a menos que sea legato). </p><dl class="params"><dt>Parámetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">midiNote</td><td>Nota MIDI (0-127). </td></tr>
+    <tr><td class="paramname">velocity</td><td>Velocidad (0.0-1.0). </td></tr>
+    <tr><td class="paramname">glideEnabled</td><td>true si el tiempo de glide está activado. </td></tr>
+    <tr><td class="paramname">isFirstTimbreNote</td><td>true si esta es la primera nota del timbre actual. </td></tr>
+    <tr><td class="paramname">isLegato</td><td>true si la nota es parte de un legato (no se reinician envolventes). </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a3c8f20d491eeef856543be07fedff91c" name="a3c8f20d491eeef856543be07fedff91c"></a>
@@ -588,6 +628,14 @@ Atributos privados</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Prepara el <a class="el" href="classABDMS2000_1_1Voice.html" title="Voz sintetizadora individual en la arquitectura de 4 voces.">Voice</a> para un nuevo sample rate. </p>
+<p>Inicializa todos los osciladores, envolventes, LFOs y el generador de ruido. </p><dl class="params"><dt>Parámetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sampleRate</td><td>Nuevo sample rate (se asegura que sea &gt; 1000 Hz). </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -685,6 +733,17 @@ Atributos privados</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Renderiza una muestra mono- o stereo- por muestra. </p>
+<p>Este es el método central del motor: calcula pitch, envolventes, LFOs, realiza el ruteo de modulación, renderiza osciladores y aplica el procesamiento DSP completo. </p><dl class="params"><dt>Parámetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">leftOut</td><td>Referencia al acumulador de salida izquierda (additivo). </td></tr>
+    <tr><td class="paramname">rightOut</td><td>Referencia al acumulador de salida derecha (additivo). </td></tr>
+    <tr><td class="paramname">diagPoint</td><td>Punto de inyección de tono diagnóstico (0-5) o 0 si no. </td></tr>
+    <tr><td class="paramname">diagTone</td><td>Valor del tono de diagnóstico a inyectar. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a4120f56f34ab098b89f4c7d1c1465793" name="a4120f56f34ab098b89f4c7d1c1465793"></a>
@@ -710,6 +769,9 @@ Atributos privados</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Restablece el <a class="el" href="classABDMS2000_1_1Voice.html" title="Voz sintetizadora individual en la arquitectura de 4 voces.">Voice</a> a su estado inicial. </p>
+<p>Apaga todos los osciladores, filtros, envolventes, LFOs y reinicia el generador de ruido. </p>
+
 </div>
 </div>
 <a id="ac764f304f8a974830c2ac6bd55405837" name="ac764f304f8a974830c2ac6bd55405837"></a>
@@ -734,6 +796,8 @@ Atributos privados</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Detiene inmediatamente la voz (usar en stealage). </p>
 
 </div>
 </div>
@@ -859,6 +923,28 @@ Atributos privados</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">PortamentoGlide ABDMS2000::Voice::glide_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad6fd71917de6a4dcf7af546c0ef95066" name="ad6fd71917de6a4dcf7af546c0ef95066"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6fd71917de6a4dcf7af546c0ef95066">&#9670;&#160;</a></span>lastDiagStats_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structABDMS2000_1_1Voice_1_1DiagnosticStats.html">DiagnosticStats</a> ABDMS2000::Voice::lastDiagStats_</td>
         </tr>
       </table>
   </td>
@@ -1134,8 +1220,9 @@ Atributos privados</h2></td></tr>
 
 </div>
 </div>
-<hr/>La documentación de esta clase está generada del siguiente archivo:<ul>
+<hr/>La documentación de esta clase está generada de los siguientes archivos:<ul>
 <li>Source/Core/<a class="el" href="Voice_8h_source.html">Voice.h</a></li>
+<li>Source/Core/<a class="el" href="Voice_8cpp.html">Voice.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

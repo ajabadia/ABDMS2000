@@ -1,22 +1,22 @@
 var searchData=
 [
-  ['dampingstatel_5f_0',['dampingStateL_',['../classABDMS2000_1_1DelayFX.html#a76e09a7f486d1056d8863ff52c11a0c3',1,'ABDMS2000::DelayFX']]],
-  ['dampingstater_5f_1',['dampingStateR_',['../classABDMS2000_1_1DelayFX.html#a634478c5acd93cb889c1d9c9b5198a3e',1,'ABDMS2000::DelayFX']]],
+  ['dampingstatel_5f_0',['dampingStateL_',['../classABDMS2000_1_1MS2KDelay.html#ab6d1a03faafcafe8d681449ef3d03d2b',1,'ABDMS2000::MS2KDelay']]],
+  ['dampingstater_5f_1',['dampingStateR_',['../classABDMS2000_1_1MS2KDelay.html#aa0c9ece58e94bc298c0fb8f9504ebd53',1,'ABDMS2000::MS2KDelay']]],
   ['debugfilter_5f_2',['debugFilter_',['../classABDMS2000_1_1SynthEngine.html#a968da5e21571301ef5e5ffda90e0d874',1,'ABDMS2000::SynthEngine']]],
   ['defaultvalue_3',['defaultvalue',['../structABDMS2000_1_1MIDICCInfo.html#a44d25bafc71ae8b1ba47348444638518',1,'ABDMS2000::MIDICCInfo::defaultValue'],['../structABDMS2000_1_1ParameterMeta.html#a3bdf60eb8d974796b45dfe447a06b6f7',1,'ABDMS2000::ParameterMeta::defaultValue']]],
   ['delay_5fdepth_4',['DELAY_DEPTH',['../structABDMS2000_1_1MS2000HardwareProgram.html#aea2835813b4da446c8ece46662a90a87',1,'ABDMS2000::MS2000HardwareProgram']]],
   ['delay_5fflags_5',['DELAY_FLAGS',['../structABDMS2000_1_1MS2000HardwareProgram.html#a70ea918fe64f6c044b2a622d304a1a11',1,'ABDMS2000::MS2000HardwareProgram']]],
   ['delay_5ftime_6',['DELAY_TIME',['../structABDMS2000_1_1MS2000HardwareProgram.html#adde196ad7b3a8a70c3355005a29cd2c7',1,'ABDMS2000::MS2000HardwareProgram']]],
   ['delay_5ftype_7',['DELAY_TYPE',['../structABDMS2000_1_1MS2000HardwareProgram.html#a76634f6fe4832a15b514a4ca9a63a289',1,'ABDMS2000::MS2000HardwareProgram']]],
-  ['delaybufferl_5f_8',['delayBufferL_',['../classABDMS2000_1_1DelayFX.html#afed59f59b826d505777296746d908f02',1,'ABDMS2000::DelayFX']]],
-  ['delaybufferr_5f_9',['delayBufferR_',['../classABDMS2000_1_1DelayFX.html#aa334d8e60af636f9dc4da22b7a450b43',1,'ABDMS2000::DelayFX']]],
+  ['delaybufferl_5f_8',['delayBufferL_',['../classABDMS2000_1_1MS2KDelay.html#aab7d1947effb25375eeadee0611f3e17',1,'ABDMS2000::MS2KDelay']]],
+  ['delaybufferr_5f_9',['delayBufferR_',['../classABDMS2000_1_1MS2KDelay.html#a2187a7a616d7bb8bdf9bad4d2c2bbfe7',1,'ABDMS2000::MS2KDelay']]],
   ['delaydepth_10',['delayDepth',['../namespaceABDMS2000_1_1ParamIDs.html#a9f82e257b57af2bfe1235b21e22523bf',1,'ABDMS2000::ParamIDs']]],
   ['delayfeedback_11',['delayFeedback',['../namespaceABDMS2000_1_1ParamIDs.html#ac02cea69ded336507dedfca0c789188f',1,'ABDMS2000::ParamIDs']]],
   ['delayfx_5f_12',['delayfx_',['../classABDMS2000_1_1SynthEngine.html#aa120398b7c53b05046db966cf765959c',1,'ABDMS2000::SynthEngine::delayFX_'],['../classABDMS2000_1_1WasmEngineInstance.html#ac451a322d8d6b04d018492739365d187',1,'ABDMS2000::WasmEngineInstance::delayFX_']]],
   ['delayon_13',['delayOn',['../namespaceABDMS2000_1_1ParamIDs.html#a0cca84b3d7db62df958c8018d0fe4a9e',1,'ABDMS2000::ParamIDs']]],
   ['delaytime_14',['delayTime',['../namespaceABDMS2000_1_1ParamIDs.html#ae2ae9e65b5e9e7336dac46340e9b4cd3',1,'ABDMS2000::ParamIDs']]],
   ['delaytype_15',['delayType',['../namespaceABDMS2000_1_1ParamIDs.html#a463c5f52aebf6dd665155963d1e898c9',1,'ABDMS2000::ParamIDs']]],
-  ['depth_5f_16',['depth_',['../classABDMS2000_1_1ModFX.html#aedf30e8d9ee42860daf9053e731bd33a',1,'ABDMS2000::ModFX']]],
+  ['depth_5f_16',['depth_',['../classABDMS2000_1_1ModFX.html#aedf30e8d9ee42860daf9053e731bd33a',1,'ABDMS2000::ModFX::depth_'],['../classABDMS2000_1_1MS2KChorusFlanger.html#a5e4e222286f36e426d04f8678db24d64',1,'ABDMS2000::MS2KChorusFlanger::depth_']]],
   ['destid_17',['destId',['../structABDMS2000_1_1MS2000HardwareProgram_1_1SeqRow.html#a82b9c39481468006808b95398638cef8',1,'ABDMS2000::MS2000HardwareProgram::SeqRow']]],
   ['destination_18',['destination',['../structABDMS2000_1_1PatchSlot.html#aaa055f10552ab95926a58982eb3a047f',1,'ABDMS2000::PatchSlot::destination'],['../structABDMS2000_1_1ModSeqTrack.html#a7b34c044ff55756b32b3f630a4d3b340',1,'ABDMS2000::ModSeqTrack::destination']]],
   ['destoffset_19',['destOffset',['../structABDMS2000_1_1MS2000HardwareProgram_1_1SeqRow.html#aaf2b726c932237a82ca8206df6ff3dc9',1,'ABDMS2000::MS2000HardwareProgram::SeqRow']]],
@@ -35,6 +35,8 @@ var searchData=
   ['diagnostictonepoint_32',['diagnosticTonePoint',['../structABDMS2000_1_1VoiceParameters.html#ad8a05039be05554f1518d0f8101fbde3',1,'ABDMS2000::VoiceParameters']]],
   ['diagnostictonevalue_33',['diagnosticToneValue',['../structABDMS2000_1_1VoiceParameters.html#ae6c2b223312f62e709f890037da7310f',1,'ABDMS2000::VoiceParameters']]],
   ['diagtonepoint_5f_34',['diagTonePoint_',['../classABDMS2000_1_1SynthEngine.html#ae619d5f52ba19791bb543c0a93b396ac',1,'ABDMS2000::SynthEngine']]],
-  ['directlevel_5f_35',['directLevel_',['../classABDMS2000_1_1Vocoder16Band.html#a38499a84767ce0dbcc5551f4424dcb6c',1,'ABDMS2000::Vocoder16Band']]],
-  ['distortionon_36',['distortionOn',['../structABDMS2000_1_1VoiceParameters.html#a50b08857e692d78cb2b9983249c2cd71',1,'ABDMS2000::VoiceParameters']]]
+  ['directlevel_5f_35',['directLevel_',['../classABDMS2000_1_1MS2KVocoder16Band.html#a30723cc22ac23e894510fa2849d912ac',1,'ABDMS2000::MS2KVocoder16Band']]],
+  ['distortionon_36',['distortionOn',['../structABDMS2000_1_1VoiceParameters.html#a50b08857e692d78cb2b9983249c2cd71',1,'ABDMS2000::VoiceParameters']]],
+  ['domainmax_37',['domainmax',['../structABDMS2000_1_1MidiActivityEvent.html#a43ebddef1da671c8fe513ea884dfd43f',1,'ABDMS2000::MidiActivityEvent::domainMax'],['../structABDMS2000_1_1ParameterMeta.html#ac695b921b2e1b8fdb4e20741ec2c32ce',1,'ABDMS2000::ParameterMeta::domainMax']]],
+  ['domainmin_38',['domainmin',['../structABDMS2000_1_1MidiActivityEvent.html#a8b5e0fb4f23f8afa011c42461a4e0ff6',1,'ABDMS2000::MidiActivityEvent::domainMin'],['../structABDMS2000_1_1ParameterMeta.html#a9161733f29fc714d3e658b2467fbab23',1,'ABDMS2000::ParameterMeta::domainMin']]]
 ];

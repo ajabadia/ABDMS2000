@@ -76,6 +76,8 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Métodos públicos</a> &#124;
 <a href="#pub-attribs">Atributos públicos</a> &#124;
+<a href="#pri-methods">Métodos privados</a> &#124;
+<a href="#pri-attribs">Atributos privados</a> &#124;
 <a href="classABDMS2000_1_1SynthEngine-members.html">Lista de todos los miembros</a>  </div>
   <div class="headertitle"><div class="title">Referencia de la clase ABDMS2000::SynthEngine</div></div>
 </div><!--header-->
@@ -101,6 +103,14 @@ Métodos públicos</h2></td></tr>
 <tr class="separator:af894964b28080d0748da8e60fbb8b10e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a8e31c9bb45f9fde440663fe591ae02" id="r_a3a8e31c9bb45f9fde440663fe591ae02"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#a3a8e31c9bb45f9fde440663fe591ae02">reset</a> ()</td></tr>
 <tr class="separator:a3a8e31c9bb45f9fde440663fe591ae02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a839ac4642426316f6ad2c252525f3a" id="r_a1a839ac4642426316f6ad2c252525f3a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classABDMS2000_1_1ModSequencer.html">ModSequencer</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#a1a839ac4642426316f6ad2c252525f3a">testGetModSequencer</a> () const noexcept</td></tr>
+<tr class="separator:a1a839ac4642426316f6ad2c252525f3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83c38afc59bbb6e11bee9ee63144d8e6" id="r_a83c38afc59bbb6e11bee9ee63144d8e6"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structABDMS2000_1_1VoiceParameters.html">VoiceParameters</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#a83c38afc59bbb6e11bee9ee63144d8e6">testGetVoiceParamsA</a> () const noexcept</td></tr>
+<tr class="separator:a83c38afc59bbb6e11bee9ee63144d8e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad74ffd0579e59961f27d986735db7853" id="r_ad74ffd0579e59961f27d986735db7853"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structABDMS2000_1_1VoiceParameters.html">VoiceParameters</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#ad74ffd0579e59961f27d986735db7853">testGetVoiceParamsB</a> () const noexcept</td></tr>
+<tr class="separator:ad74ffd0579e59961f27d986735db7853"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a273bda0c8b3524558c3c0a26d1e7bd9a" id="r_a273bda0c8b3524558c3c0a26d1e7bd9a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#a273bda0c8b3524558c3c0a26d1e7bd9a">testApplySeqModulation</a> (bool second, <a class="el" href="structABDMS2000_1_1VoiceParameters.html">VoiceParameters</a> &amp;out) const noexcept</td></tr>
+<tr class="separator:a273bda0c8b3524558c3c0a26d1e7bd9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b4af7192caaa2b0b317cd0ee3733aa5" id="r_a0b4af7192caaa2b0b317cd0ee3733aa5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#a0b4af7192caaa2b0b317cd0ee3733aa5">processBlock</a> (juce::AudioBuffer&lt; float &gt; &amp;buffer, juce::MidiBuffer &amp;midiMessages, juce::AudioPlayHead *playHead=nullptr)</td></tr>
 <tr class="separator:a0b4af7192caaa2b0b317cd0ee3733aa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a002e061533f59d92c433ae5457904b05" id="r_a002e061533f59d92c433ae5457904b05"><td class="memItemLeft" align="right" valign="top">const AudioThreadSnapshot &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#a002e061533f59d92c433ae5457904b05">getSnapshot</a> () const noexcept</td></tr>
@@ -119,36 +129,32 @@ Métodos públicos</h2></td></tr>
 <tr class="separator:a3631fa7e8f4c3e2d0a3a2fb748c3a9ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a924fa2b7e22059c0c383fb6a46dcc3ca" id="r_a924fa2b7e22059c0c383fb6a46dcc3ca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#a924fa2b7e22059c0c383fb6a46dcc3ca">setDiagnosticTone</a> (int point, float freqHz=440.0f, float level=0.25f) noexcept</td></tr>
 <tr class="separator:a924fa2b7e22059c0c383fb6a46dcc3ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a980a19aebf11fc1b2e2edf99b1f42ecd" id="r_a980a19aebf11fc1b2e2edf99b1f42ecd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#a980a19aebf11fc1b2e2edf99b1f42ecd">getDiagnosticTonePoint</a> () const noexcept</td></tr>
-<tr class="separator:a980a19aebf11fc1b2e2edf99b1f42ecd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63ad54a6ef97289e93afd56355839b6d" id="r_a63ad54a6ef97289e93afd56355839b6d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#a63ad54a6ef97289e93afd56355839b6d">setDiagnosticBypass</a> (const juce::String &amp;stage, bool enabled) noexcept</td></tr>
 <tr class="separator:a63ad54a6ef97289e93afd56355839b6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7370a3f9505b43a8122be129eaf5e0df" id="r_a7370a3f9505b43a8122be129eaf5e0df"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#a7370a3f9505b43a8122be129eaf5e0df">resetAllDiagnosticBypasses</a> () noexcept</td></tr>
 <tr class="separator:a7370a3f9505b43a8122be129eaf5e0df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a980a19aebf11fc1b2e2edf99b1f42ecd" id="r_a980a19aebf11fc1b2e2edf99b1f42ecd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#a980a19aebf11fc1b2e2edf99b1f42ecd">getDiagnosticTonePoint</a> () const noexcept</td></tr>
+<tr class="separator:a980a19aebf11fc1b2e2edf99b1f42ecd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac72a938fb2ed4e33d7427242552c30c7" id="r_ac72a938fb2ed4e33d7427242552c30c7"><td class="memItemLeft" align="right" valign="top">const abd::scope::ScopeDataCollector &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#ac72a938fb2ed4e33d7427242552c30c7">getScopeCollector</a> () const noexcept</td></tr>
+<tr class="separator:ac72a938fb2ed4e33d7427242552c30c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa83049dd0f746104fb9b7a58573bfe84" id="r_aa83049dd0f746104fb9b7a58573bfe84"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#aa83049dd0f746104fb9b7a58573bfe84">getSampleRate</a> () const noexcept</td></tr>
+<tr class="separator:aa83049dd0f746104fb9b7a58573bfe84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a447c7a3c1d237c4fdbab5a18e774b856" id="r_a447c7a3c1d237c4fdbab5a18e774b856"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classABDMS2000_1_1ModSequencer.html">ModSequencer</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#a447c7a3c1d237c4fdbab5a18e774b856">getModSequencer</a> () noexcept</td></tr>
 <tr class="separator:a447c7a3c1d237c4fdbab5a18e774b856"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2708a6d4dca45bd0925b26d92caa06d0" id="r_a2708a6d4dca45bd0925b26d92caa06d0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classABDMS2000_1_1Arpeggiator.html">Arpeggiator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#a2708a6d4dca45bd0925b26d92caa06d0">getArpeggiator</a> () noexcept</td></tr>
 <tr class="separator:a2708a6d4dca45bd0925b26d92caa06d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8b6068d55cd0208f0444753900e1dc7" id="r_ab8b6068d55cd0208f0444753900e1dc7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classABDMS2000_1_1ModFX.html">ModFX</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#ab8b6068d55cd0208f0444753900e1dc7">getModFX</a> () noexcept</td></tr>
 <tr class="separator:ab8b6068d55cd0208f0444753900e1dc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6a57121e6fecded6e6930a3698934cf" id="r_ad6a57121e6fecded6e6930a3698934cf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classABDMS2000_1_1DelayFX.html">DelayFX</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#ad6a57121e6fecded6e6930a3698934cf">getDelayFX</a> () noexcept</td></tr>
+<tr class="memitem:ad6a57121e6fecded6e6930a3698934cf" id="r_ad6a57121e6fecded6e6930a3698934cf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceABDMS2000.html#a296bb20e886bfe5ab2e3994c72f7f075">DelayFX</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#ad6a57121e6fecded6e6930a3698934cf">getDelayFX</a> () noexcept</td></tr>
 <tr class="separator:ad6a57121e6fecded6e6930a3698934cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aefd87fcc901bd333b2eb0180276f65a0" id="r_aefd87fcc901bd333b2eb0180276f65a0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classABDMS2000_1_1Equalizer.html">Equalizer</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#aefd87fcc901bd333b2eb0180276f65a0">getMasterEQ</a> () noexcept</td></tr>
 <tr class="separator:aefd87fcc901bd333b2eb0180276f65a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39604316ac8237336baa21d98c891e7c" id="r_a39604316ac8237336baa21d98c891e7c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classABDMS2000_1_1Vocoder16Band.html">Vocoder16Band</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#a39604316ac8237336baa21d98c891e7c">getVocoder</a> () noexcept</td></tr>
+<tr class="memitem:a39604316ac8237336baa21d98c891e7c" id="r_a39604316ac8237336baa21d98c891e7c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceABDMS2000.html#a7ad2af2559ebaad4c625b93b14995a43">Vocoder16Band</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#a39604316ac8237336baa21d98c891e7c">getVocoder</a> () noexcept</td></tr>
 <tr class="separator:a39604316ac8237336baa21d98c891e7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc23a936a2a42cfbb6ed3c72fa8ca20e" id="r_abc23a936a2a42cfbb6ed3c72fa8ca20e"><td class="memItemLeft" align="right" valign="top">abd::scope::ScopeDataCollector &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#abc23a936a2a42cfbb6ed3c72fa8ca20e">getScopeCollector</a> () noexcept</td></tr>
-<tr class="separator:abc23a936a2a42cfbb6ed3c72fa8ca20e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa83049dd0f746104fb9b7a58573bfe84" id="r_aa83049dd0f746104fb9b7a58573bfe84"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#aa83049dd0f746104fb9b7a58573bfe84">getSampleRate</a> () const noexcept</td></tr>
-<tr class="separator:aa83049dd0f746104fb9b7a58573bfe84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a045561901d899f6e1c159f5abea23f07" id="r_a045561901d899f6e1c159f5abea23f07"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#a045561901d899f6e1c159f5abea23f07">updateParametersFromAPVTS</a> () noexcept</td></tr>
 <tr class="separator:a045561901d899f6e1c159f5abea23f07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad06783772e451e0f7b7eb0292008a903" id="r_ad06783772e451e0f7b7eb0292008a903"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#ad06783772e451e0f7b7eb0292008a903">triggerArpNote</a> (int note, float velocity, bool isNoteOn) noexcept</td></tr>
 <tr class="separator:ad06783772e451e0f7b7eb0292008a903"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4cd5133bfd7545612866d58310817467" id="r_a4cd5133bfd7545612866d58310817467"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#a4cd5133bfd7545612866d58310817467">registerScopeTaps</a> ()</td></tr>
-<tr class="separator:a4cd5133bfd7545612866d58310817467"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af72aef55f612e1778d86c60586a34bc2" id="r_af72aef55f612e1778d86c60586a34bc2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#af72aef55f612e1778d86c60586a34bc2">flushScopeTaps</a> (int numSamples) noexcept</td></tr>
-<tr class="separator:af72aef55f612e1778d86c60586a34bc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14b93e8f99ed3abefe1e0a32b40bd940" id="r_a14b93e8f99ed3abefe1e0a32b40bd940"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#a14b93e8f99ed3abefe1e0a32b40bd940">paramValueById</a> (const juce::String &amp;id, float defaultVal) const noexcept</td></tr>
 <tr class="separator:a14b93e8f99ed3abefe1e0a32b40bd940"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1ccb3bacab1db150ce5d42620bb169c" id="r_ab1ccb3bacab1db150ce5d42620bb169c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#ab1ccb3bacab1db150ce5d42620bb169c">paramValue</a> (bool second, const char *id, float defaultVal=0.0f) const noexcept</td></tr>
@@ -164,6 +170,16 @@ Métodos públicos</h2></td></tr>
 Atributos públicos</h2></td></tr>
 <tr class="memitem:ad1b616f0551f8fbc3f93200b3e6faefe" id="r_ad1b616f0551f8fbc3f93200b3e6faefe"><td class="memItemLeft" align="right" valign="top">juce::AudioProcessorValueTreeState &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#ad1b616f0551f8fbc3f93200b3e6faefe">apvts_</a></td></tr>
 <tr class="separator:ad1b616f0551f8fbc3f93200b3e6faefe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Métodos privados</h2></td></tr>
+<tr class="memitem:a4cd5133bfd7545612866d58310817467" id="r_a4cd5133bfd7545612866d58310817467"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#a4cd5133bfd7545612866d58310817467">registerScopeTaps</a> ()</td></tr>
+<tr class="separator:a4cd5133bfd7545612866d58310817467"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af72aef55f612e1778d86c60586a34bc2" id="r_af72aef55f612e1778d86c60586a34bc2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#af72aef55f612e1778d86c60586a34bc2">flushScopeTaps</a> (int numSamples) noexcept</td></tr>
+<tr class="separator:af72aef55f612e1778d86c60586a34bc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Atributos privados</h2></td></tr>
 <tr class="memitem:adb2e91bcfc37cff0c678a991c12a1b7f" id="r_adb2e91bcfc37cff0c678a991c12a1b7f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#adb2e91bcfc37cff0c678a991c12a1b7f">sampleRate_</a> {44100.0}</td></tr>
 <tr class="separator:adb2e91bcfc37cff0c678a991c12a1b7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae36f04cc5f7558d0dbfd69081972ebf" id="r_aae36f04cc5f7558d0dbfd69081972ebf"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#aae36f04cc5f7558d0dbfd69081972ebf">samplesPerBlock_</a> {512}</td></tr>
@@ -186,11 +202,11 @@ Atributos públicos</h2></td></tr>
 <tr class="separator:abeb8a0f3d23008b3fac5d27a531031cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24388645572a5c0d15691f65da5c49a1" id="r_a24388645572a5c0d15691f65da5c49a1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classABDMS2000_1_1ModFX.html">ModFX</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#a24388645572a5c0d15691f65da5c49a1">modFX_</a></td></tr>
 <tr class="separator:a24388645572a5c0d15691f65da5c49a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa120398b7c53b05046db966cf765959c" id="r_aa120398b7c53b05046db966cf765959c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classABDMS2000_1_1DelayFX.html">DelayFX</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#aa120398b7c53b05046db966cf765959c">delayFX_</a></td></tr>
+<tr class="memitem:aa120398b7c53b05046db966cf765959c" id="r_aa120398b7c53b05046db966cf765959c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceABDMS2000.html#a296bb20e886bfe5ab2e3994c72f7f075">DelayFX</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#aa120398b7c53b05046db966cf765959c">delayFX_</a></td></tr>
 <tr class="separator:aa120398b7c53b05046db966cf765959c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a252d01631c9d43222185260b48df372b" id="r_a252d01631c9d43222185260b48df372b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classABDMS2000_1_1Equalizer.html">Equalizer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#a252d01631c9d43222185260b48df372b">masterEQ_</a></td></tr>
 <tr class="separator:a252d01631c9d43222185260b48df372b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a101ceb831e3edc27d12dfbb19afc3413" id="r_a101ceb831e3edc27d12dfbb19afc3413"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classABDMS2000_1_1Vocoder16Band.html">Vocoder16Band</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#a101ceb831e3edc27d12dfbb19afc3413">vocoder_</a></td></tr>
+<tr class="memitem:a101ceb831e3edc27d12dfbb19afc3413" id="r_a101ceb831e3edc27d12dfbb19afc3413"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceABDMS2000.html#a7ad2af2559ebaad4c625b93b14995a43">Vocoder16Band</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#a101ceb831e3edc27d12dfbb19afc3413">vocoder_</a></td></tr>
 <tr class="separator:a101ceb831e3edc27d12dfbb19afc3413"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a968da5e21571301ef5e5ffda90e0d874" id="r_a968da5e21571301ef5e5ffda90e0d874"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classABDMS2000_1_1MultiModeFilter.html">MultiModeFilter</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#a968da5e21571301ef5e5ffda90e0d874">debugFilter_</a></td></tr>
 <tr class="separator:a968da5e21571301ef5e5ffda90e0d874"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -210,6 +226,8 @@ Atributos públicos</h2></td></tr>
 <tr class="separator:abaf4b814f22b83ebbd6a4008e369ccfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d64ee1cb850629a253a77af2f0cdbed" id="r_a3d64ee1cb850629a253a77af2f0cdbed"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#a3d64ee1cb850629a253a77af2f0cdbed">testToneLevel_</a> {0.25f}</td></tr>
 <tr class="separator:a3d64ee1cb850629a253a77af2f0cdbed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad757aa9c7b5cfc3b83dd5d485a616a2f" id="r_ad757aa9c7b5cfc3b83dd5d485a616a2f"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#ad757aa9c7b5cfc3b83dd5d485a616a2f">testToneEnabled_</a> {false}</td></tr>
+<tr class="separator:ad757aa9c7b5cfc3b83dd5d485a616a2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69b5a719da456e8fc0ed1da303568d0e" id="r_a69b5a719da456e8fc0ed1da303568d0e"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#a69b5a719da456e8fc0ed1da303568d0e">diagBypassFilter_</a> {false}</td></tr>
 <tr class="separator:a69b5a719da456e8fc0ed1da303568d0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8bf7e4fc267072ab29cc6d7dcf99ef6e" id="r_a8bf7e4fc267072ab29cc6d7dcf99ef6e"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1SynthEngine.html#a8bf7e4fc267072ab29cc6d7dcf99ef6e">diagBypassVCA_</a> {false}</td></tr>
@@ -431,7 +449,7 @@ Atributos públicos</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -473,7 +491,7 @@ Atributos públicos</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classABDMS2000_1_1DelayFX.html">DelayFX</a> &amp; ABDMS2000::SynthEngine::getDelayFX </td>
+          <td class="memname"><a class="el" href="namespaceABDMS2000.html#a296bb20e886bfe5ab2e3994c72f7f075">DelayFX</a> &amp; ABDMS2000::SynthEngine::getDelayFX </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -506,7 +524,7 @@ Atributos públicos</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -606,15 +624,15 @@ Atributos públicos</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="abc23a936a2a42cfbb6ed3c72fa8ca20e" name="abc23a936a2a42cfbb6ed3c72fa8ca20e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abc23a936a2a42cfbb6ed3c72fa8ca20e">&#9670;&#160;</a></span>getScopeCollector()</h2>
+<a id="ac72a938fb2ed4e33d7427242552c30c7" name="ac72a938fb2ed4e33d7427242552c30c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac72a938fb2ed4e33d7427242552c30c7">&#9670;&#160;</a></span>getScopeCollector()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -623,15 +641,15 @@ Atributos públicos</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">abd::scope::ScopeDataCollector &amp; ABDMS2000::SynthEngine::getScopeCollector </td>
+          <td class="memname">const abd::scope::ScopeDataCollector &amp; ABDMS2000::SynthEngine::getScopeCollector </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -673,7 +691,7 @@ Atributos públicos</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classABDMS2000_1_1Vocoder16Band.html">Vocoder16Band</a> &amp; ABDMS2000::SynthEngine::getVocoder </td>
+          <td class="memname"><a class="el" href="namespaceABDMS2000.html#a7ad2af2559ebaad4c625b93b14995a43">Vocoder16Band</a> &amp; ABDMS2000::SynthEngine::getVocoder </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -945,6 +963,9 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void ABDMS2000::SynthEngine::registerScopeTaps </td>
@@ -953,6 +974,11 @@ Atributos públicos</h2></td></tr>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -992,7 +1018,7 @@ Atributos públicos</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1028,7 +1054,7 @@ Atributos públicos</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1155,6 +1181,117 @@ Atributos públicos</h2></td></tr>
 
 </div>
 </div>
+<a id="a273bda0c8b3524558c3c0a26d1e7bd9a" name="a273bda0c8b3524558c3c0a26d1e7bd9a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a273bda0c8b3524558c3c0a26d1e7bd9a">&#9670;&#160;</a></span>testApplySeqModulation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::SynthEngine::testApplySeqModulation </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>second</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structABDMS2000_1_1VoiceParameters.html">VoiceParameters</a> &amp;&#160;</td>
+          <td class="paramname"><em>out</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1a839ac4642426316f6ad2c252525f3a" name="a1a839ac4642426316f6ad2c252525f3a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a839ac4642426316f6ad2c252525f3a">&#9670;&#160;</a></span>testGetModSequencer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classABDMS2000_1_1ModSequencer.html">ModSequencer</a> &amp; ABDMS2000::SynthEngine::testGetModSequencer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a83c38afc59bbb6e11bee9ee63144d8e6" name="a83c38afc59bbb6e11bee9ee63144d8e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83c38afc59bbb6e11bee9ee63144d8e6">&#9670;&#160;</a></span>testGetVoiceParamsA()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="structABDMS2000_1_1VoiceParameters.html">VoiceParameters</a> &amp; ABDMS2000::SynthEngine::testGetVoiceParamsA </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad74ffd0579e59961f27d986735db7853" name="ad74ffd0579e59961f27d986735db7853"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad74ffd0579e59961f27d986735db7853">&#9670;&#160;</a></span>testGetVoiceParamsB()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="structABDMS2000_1_1VoiceParameters.html">VoiceParameters</a> &amp; ABDMS2000::SynthEngine::testGetVoiceParamsB </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ad06783772e451e0f7b7eb0292008a903" name="ad06783772e451e0f7b7eb0292008a903"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad06783772e451e0f7b7eb0292008a903">&#9670;&#160;</a></span>triggerArpNote()</h2>
 
@@ -1242,11 +1379,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classABDMS2000_1_1Arpeggiator.html">Arpeggiator</a> ABDMS2000::SynthEngine::arpeggiator_</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1256,11 +1401,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::vector&lt;<a class="el" href="structABDMS2000_1_1ArpNoteEvent.html">ArpNoteEvent</a>&gt; ABDMS2000::SynthEngine::arpEventsBuffer_</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1270,11 +1423,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">AudioThreadSnapshot ABDMS2000::SynthEngine::currentSnapshot_ {}</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1284,11 +1445,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classABDMS2000_1_1MultiModeFilter.html">MultiModeFilter</a> ABDMS2000::SynthEngine::debugFilter_</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1298,11 +1467,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classABDMS2000_1_1DelayFX.html">DelayFX</a> ABDMS2000::SynthEngine::delayFX_</td>
+          <td class="memname"><a class="el" href="namespaceABDMS2000.html#a296bb20e886bfe5ab2e3994c72f7f075">DelayFX</a> ABDMS2000::SynthEngine::delayFX_</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1312,11 +1489,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::atomic&lt;bool&gt; ABDMS2000::SynthEngine::diagBypassDelayFX_ {false}</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1326,11 +1511,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::atomic&lt;bool&gt; ABDMS2000::SynthEngine::diagBypassDistortion_ {false}</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1340,11 +1533,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::atomic&lt;bool&gt; ABDMS2000::SynthEngine::diagBypassFilter_ {false}</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1354,11 +1555,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::atomic&lt;bool&gt; ABDMS2000::SynthEngine::diagBypassMasterEQ_ {false}</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1368,11 +1577,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::atomic&lt;bool&gt; ABDMS2000::SynthEngine::diagBypassModFX_ {false}</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1382,11 +1599,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::atomic&lt;bool&gt; ABDMS2000::SynthEngine::diagBypassOscMixer_ {false}</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1396,11 +1621,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::atomic&lt;bool&gt; ABDMS2000::SynthEngine::diagBypassVCA_ {false}</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1410,11 +1643,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::atomic&lt;<a class="el" href="namespaceABDMS2000.html#a5554928cf64101079576fce8f1d5b8ce">DiagnosticTonePoint</a>&gt; ABDMS2000::SynthEngine::diagTonePoint_ {<a class="el" href="namespaceABDMS2000.html#a5554928cf64101079576fce8f1d5b8ceab9f5c797ebbf55adccdd8539a65a0241">DiagnosticTonePoint::Disabled</a>}</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1424,11 +1665,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classABDMS2000_1_1Equalizer.html">Equalizer</a> ABDMS2000::SynthEngine::masterEQ_</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1438,11 +1687,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::atomic&lt;float&gt; ABDMS2000::SynthEngine::masterVolume_ {0.8f}</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1452,11 +1709,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classABDMS2000_1_1ModFX.html">ModFX</a> ABDMS2000::SynthEngine::modFX_</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1466,11 +1731,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classABDMS2000_1_1ModSequencer.html">ModSequencer</a> ABDMS2000::SynthEngine::modSeq_</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1480,11 +1753,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::atomic&lt;float&gt; ABDMS2000::SynthEngine::modWheelValue_ {0.0f}</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1494,11 +1775,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::atomic&lt;float&gt; ABDMS2000::SynthEngine::pitchBendValue_ {0.0f}</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1508,11 +1797,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">double ABDMS2000::SynthEngine::sampleRate_ {44100.0}</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1522,11 +1819,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">int ABDMS2000::SynthEngine::samplesPerBlock_ {512}</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1536,11 +1841,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::vector&lt;float&gt; ABDMS2000::SynthEngine::scopeBufLfo1_</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1550,11 +1863,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::vector&lt;float&gt; ABDMS2000::SynthEngine::scopeBufMasterL_</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1564,11 +1885,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::vector&lt;float&gt; ABDMS2000::SynthEngine::scopeBufMasterR_</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1578,11 +1907,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::vector&lt;float&gt; ABDMS2000::SynthEngine::scopeBufOscMix_</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1592,11 +1929,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::vector&lt;float&gt; ABDMS2000::SynthEngine::scopeBufPostFilter_</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1606,11 +1951,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::vector&lt;float&gt; ABDMS2000::SynthEngine::scopeBufPostVca_</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1620,11 +1973,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::vector&lt;float&gt; ABDMS2000::SynthEngine::scopeBufPreFxL_</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1634,11 +1995,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::vector&lt;float&gt; ABDMS2000::SynthEngine::scopeBufPreFxR_</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1648,11 +2017,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">abd::scope::ScopeDataCollector ABDMS2000::SynthEngine::scopeCollector_</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1662,11 +2039,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">bool ABDMS2000::SynthEngine::scopeTapsRegistered_ {false}</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1676,11 +2061,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">juce::LinearSmoothedValue&lt;float&gt; ABDMS2000::SynthEngine::smoothedMasterGain_ {0.8f}</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1690,11 +2083,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">int ABDMS2000::SynthEngine::splitKey_ {60}</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1704,11 +2105,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">abd::scope::ScopeTap* ABDMS2000::SynthEngine::tapLfo1_ {nullptr}</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1718,11 +2127,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">abd::scope::ScopeTap* ABDMS2000::SynthEngine::tapMaster_ {nullptr}</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1732,11 +2149,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">abd::scope::ScopeTap* ABDMS2000::SynthEngine::tapOscMix_ {nullptr}</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1746,11 +2171,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">abd::scope::ScopeTap* ABDMS2000::SynthEngine::tapPostFilter_ {nullptr}</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1760,11 +2193,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">abd::scope::ScopeTap* ABDMS2000::SynthEngine::tapPostVca_ {nullptr}</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1774,11 +2215,41 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">abd::scope::ScopeTap* ABDMS2000::SynthEngine::tapPreFx_ {nullptr}</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad757aa9c7b5cfc3b83dd5d485a616a2f" name="ad757aa9c7b5cfc3b83dd5d485a616a2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad757aa9c7b5cfc3b83dd5d485a616a2f">&#9670;&#160;</a></span>testToneEnabled_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::atomic&lt;bool&gt; ABDMS2000::SynthEngine::testToneEnabled_ {false}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1788,11 +2259,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::atomic&lt;float&gt; ABDMS2000::SynthEngine::testToneFrequency_ {440.0f}</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1802,11 +2281,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::atomic&lt;float&gt; ABDMS2000::SynthEngine::testToneLevel_ {0.25f}</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1816,11 +2303,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">double ABDMS2000::SynthEngine::testTonePhase_ {0.0}</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1830,11 +2325,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">int ABDMS2000::SynthEngine::timbreMode_ {0}</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1844,11 +2347,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classABDMS2000_1_1Vocoder16Band.html">Vocoder16Band</a> ABDMS2000::SynthEngine::vocoder_</td>
+          <td class="memname"><a class="el" href="namespaceABDMS2000.html#a7ad2af2559ebaad4c625b93b14995a43">Vocoder16Band</a> ABDMS2000::SynthEngine::vocoder_</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1858,11 +2369,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classABDMS2000_1_1VoiceManager.html">VoiceManager</a> ABDMS2000::SynthEngine::voiceManagerA_</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1872,11 +2391,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classABDMS2000_1_1VoiceManager.html">VoiceManager</a> ABDMS2000::SynthEngine::voiceManagerB_</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1886,11 +2413,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="structABDMS2000_1_1VoiceParameters.html">VoiceParameters</a> ABDMS2000::SynthEngine::voiceParamsA_ {}</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -1900,11 +2435,19 @@ Atributos públicos</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="structABDMS2000_1_1VoiceParameters.html">VoiceParameters</a> ABDMS2000::SynthEngine::voiceParamsB_ {}</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>

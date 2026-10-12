@@ -1,0 +1,212 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Archivo de código fuente Source/DSP/Effects/MS2KDelay.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a class="el" href="dir_28f92771c0af6f341cedd07750149305.html">DSP</a></li><li class="navelem"><a class="el" href="dir_93b0420c202dab069e0f3b7b5bb42654.html">Effects</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle"><div class="title">MS2KDelay.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="MS2KDelay_8h.html">Ir a la documentación de este archivo.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;../Common/DSPUtils.h&quot;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceABDMS2000.html">ABDMS2000</a></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>{</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="foldopen" id="foldopen00009" data-start="{" data-end="};">
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="namespaceABDMS2000.html#a89c40c628fb3a8499e3afcb11056dbfd">    9</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="namespaceABDMS2000.html#a89c40c628fb3a8499e3afcb11056dbfd">DelayType</a></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>{</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#a89c40c628fb3a8499e3afcb11056dbfdabbc45d9b35436f5f0ed9e33499efcea9">Stereo</a> = 0,</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#a89c40c628fb3a8499e3afcb11056dbfdae76b449b9fc8536af7557ffa6321d269">Cross</a>,</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <a class="code hl_enumvalue" href="namespaceABDMS2000.html#a89c40c628fb3a8499e3afcb11056dbfda955322c98b1fc571e8b6b688ae7d9ee4">LeftRight</a></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>};</div>
+</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"></span> </div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"> * @brief MS2KDelay - Motor de retardo Motorola DSP56362 del Korg MS2000.</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment"> * Características específicas del microcódigo:</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment"> * - Tiempo máximo: 1400 ms (1.4 s).</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment"> * - Tres topologías de ruteo:</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment"> *     * Stereo: Líneas independientes en paralelo.</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment"> *     * Cross: Ping-pong con realimentación invertida en el canal izquierdo (-R_fb en L, +L_fb en R).</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment"> *     * LeftRight: Relación métrica asimétrica fija 0.75x en el canal derecho (timeR = timeL * 0.75).</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment"> * - Filtro de amortiguación (Damping): Paso-bajos de 1-polo fijado a ~6.0 kHz en el lazo de retorno.</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment"> * - Pitch Glide (Tape Drag): Suavizador lineal de 50 ms para simular el arrastre de cinta del DSP56362.</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment"> * - Interpolación cúbica Hermite de 4 puntos para lectura libre de atenuación en altas frecuencias.</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment"> * - 100% Real-Time Safe (memoria reservada únicamente en prepare()).</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment"> */</span></div>
+<div class="foldopen" id="foldopen00030" data-start="{" data-end="};">
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KDelay.html">   30</a></span><span class="keyword">class </span><a class="code hl_class" href="classABDMS2000_1_1MS2KDelay.html">MS2KDelay</a></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>{</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KDelay.html#a4714b993c475a0d1b1793132922d59c8">   33</a></span>    <a class="code hl_function" href="classABDMS2000_1_1MS2KDelay.html#a4714b993c475a0d1b1793132922d59c8">MS2KDelay</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1MS2KDelay.html#a5c8926d0bb4a19aaede1d4a0360a1c58">prepare</a>(<span class="keywordtype">double</span> sampleRate) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1MS2KDelay.html#ab795800c6eb7855aa92349dad48cf45d">reset</a>() noexcept;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="foldopen" id="foldopen00038" data-start="{" data-end="}">
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KDelay.html#a3075fbf1c69bddfd65e69c43273445cf">   38</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1MS2KDelay.html#a3075fbf1c69bddfd65e69c43273445cf">setEnabled</a>(<span class="keywordtype">bool</span> enabled) noexcept</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    {</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        <a class="code hl_variable" href="classABDMS2000_1_1MS2KDelay.html#a7fde1550f3173233517630f2f2eb7558">enabled_</a> = enabled;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    }</div>
+</div>
+<div class="foldopen" id="foldopen00042" data-start="{" data-end="}">
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KDelay.html#a6fec767a78797a1456c5818b49806915">   42</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classABDMS2000_1_1MS2KDelay.html#a6fec767a78797a1456c5818b49806915">isEnabled</a>() const noexcept</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    {</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classABDMS2000_1_1MS2KDelay.html#a7fde1550f3173233517630f2f2eb7558">enabled_</a>;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    }</div>
+</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="foldopen" id="foldopen00047" data-start="{" data-end="}">
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KDelay.html#a2904a7654831eb0926c60578835ff1ff">   47</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1MS2KDelay.html#a2904a7654831eb0926c60578835ff1ff">setType</a>(<a class="code hl_enumeration" href="namespaceABDMS2000.html#a89c40c628fb3a8499e3afcb11056dbfd">DelayType</a> type) <span class="keyword">noexcept</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    {</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        <a class="code hl_variable" href="classABDMS2000_1_1MS2KDelay.html#a4cf81b696cfcbaf8f0017285a4313c76">type_</a> = type;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    }</div>
+</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1MS2KDelay.html#abdfeac059aa58c4ac90fd4216e8e4450">setTimeSeconds</a>(<span class="keywordtype">float</span> timeSec) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1MS2KDelay.html#af23d5d6e03eb6f1e6da5ece12812bd4b">setDepth</a>(<span class="keywordtype">float</span> wetMix0to1) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1MS2KDelay.html#aa6e13a74f5a8f8eb01bbd703a77586b8">setFeedback</a>(<span class="keywordtype">float</span> feedbackGain0to1) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1MS2KDelay.html#acaf6d9ea7fac741011ac7043346c8e76">process</a>(<span class="keywordtype">float</span> &amp;leftSample, <span class="keywordtype">float</span> &amp;rightSample) <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KDelay.html#acaebefdca78b79dbdfbb03498f1c46a0">   58</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="classABDMS2000_1_1MS2KDelay.html#acaebefdca78b79dbdfbb03498f1c46a0">sampleRate_</a> {44100.0};</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KDelay.html#a7fde1550f3173233517630f2f2eb7558">   59</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="classABDMS2000_1_1MS2KDelay.html#a7fde1550f3173233517630f2f2eb7558">enabled_</a> {<span class="keyword">false</span>};</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KDelay.html#a4cf81b696cfcbaf8f0017285a4313c76">   60</a></span>    <a class="code hl_enumeration" href="namespaceABDMS2000.html#a89c40c628fb3a8499e3afcb11056dbfd">DelayType</a> <a class="code hl_variable" href="classABDMS2000_1_1MS2KDelay.html#a4cf81b696cfcbaf8f0017285a4313c76">type_</a> {<a class="code hl_enumvalue" href="namespaceABDMS2000.html#a89c40c628fb3a8499e3afcb11056dbfdabbc45d9b35436f5f0ed9e33499efcea9">DelayType::Stereo</a>};</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KDelay.html#a865d634aadd874692b8a292c6bbf7496">   62</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1MS2KDelay.html#a865d634aadd874692b8a292c6bbf7496">timeSeconds_</a> {0.35f};</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KDelay.html#aad6ab5aac5cfc77c34cd0ba06071627c">   63</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1MS2KDelay.html#aad6ab5aac5cfc77c34cd0ba06071627c">wetMix_</a> {0.4f};</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KDelay.html#a4b118318b59d8568ccaecab1a8297bf8">   64</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1MS2KDelay.html#a4b118318b59d8568ccaecab1a8297bf8">feedbackGain_</a> {0.4f};</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KDelay.html#aab7d1947effb25375eeadee0611f3e17">   66</a></span>    std::vector&lt;float&gt; <a class="code hl_variable" href="classABDMS2000_1_1MS2KDelay.html#aab7d1947effb25375eeadee0611f3e17">delayBufferL_</a>;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KDelay.html#a2187a7a616d7bb8bdf9bad4d2c2bbfe7">   67</a></span>    std::vector&lt;float&gt; <a class="code hl_variable" href="classABDMS2000_1_1MS2KDelay.html#a2187a7a616d7bb8bdf9bad4d2c2bbfe7">delayBufferR_</a>;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KDelay.html#a6619cd80d3ce8b50e31327a72f446d2b">   68</a></span>    <span class="keywordtype">size_t</span> <a class="code hl_variable" href="classABDMS2000_1_1MS2KDelay.html#a6619cd80d3ce8b50e31327a72f446d2b">writeIndex_</a> {0};</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KDelay.html#aa6cf2b18f6df94681ea600eae63c2646">   69</a></span>    <span class="keywordtype">size_t</span> <a class="code hl_variable" href="classABDMS2000_1_1MS2KDelay.html#aa6cf2b18f6df94681ea600eae63c2646">maxDelaySamples_</a> {61740};</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KDelay.html#a63e5ff4f5131e67461305698f10ec6df">   71</a></span>    DSPUtils::LinearSmoother&lt;float&gt; <a class="code hl_variable" href="classABDMS2000_1_1MS2KDelay.html#a63e5ff4f5131e67461305698f10ec6df">smoothedDelaySamplesL_</a>;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KDelay.html#a6f61011152116bc5b3c276fade364469">   72</a></span>    DSPUtils::LinearSmoother&lt;float&gt; <a class="code hl_variable" href="classABDMS2000_1_1MS2KDelay.html#a6f61011152116bc5b3c276fade364469">smoothedDelaySamplesR_</a>;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="comment">// Filtro 1-polo damping a 6.0 kHz</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KDelay.html#ab6d1a03faafcafe8d681449ef3d03d2b">   75</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1MS2KDelay.html#ab6d1a03faafcafe8d681449ef3d03d2b">dampingStateL_</a> {0.0f};</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KDelay.html#aa0c9ece58e94bc298c0fb8f9504ebd53">   76</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1MS2KDelay.html#aa0c9ece58e94bc298c0fb8f9504ebd53">dampingStateR_</a> {0.0f};</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keywordtype">float</span> <a class="code hl_function" href="classABDMS2000_1_1MS2KDelay.html#a0797b96e63f886a32a6ad2ed00100115">readHermite</a>(<span class="keyword">const</span> std::vector&lt;float&gt; &amp;buf, <span class="keywordtype">float</span> readPos) <span class="keyword">const</span> <span class="keyword">noexcept</span>;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>};</div>
+</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>}  <span class="comment">// namespace ABDMS2000</span></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KDelay_html"><div class="ttname"><a href="classABDMS2000_1_1MS2KDelay.html">ABDMS2000::MS2KDelay</a></div><div class="ttdoc">MS2KDelay - Motor de retardo Motorola DSP56362 del Korg MS2000.</div><div class="ttdef"><b>Definition</b> MS2KDelay.h:31</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KDelay_html_a0797b96e63f886a32a6ad2ed00100115"><div class="ttname"><a href="classABDMS2000_1_1MS2KDelay.html#a0797b96e63f886a32a6ad2ed00100115">ABDMS2000::MS2KDelay::readHermite</a></div><div class="ttdeci">float readHermite(const std::vector&lt; float &gt; &amp;buf, float readPos) const noexcept</div><div class="ttdef"><b>Definition</b> MS2KDelay.cpp:64</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KDelay_html_a2187a7a616d7bb8bdf9bad4d2c2bbfe7"><div class="ttname"><a href="classABDMS2000_1_1MS2KDelay.html#a2187a7a616d7bb8bdf9bad4d2c2bbfe7">ABDMS2000::MS2KDelay::delayBufferR_</a></div><div class="ttdeci">std::vector&lt; float &gt; delayBufferR_</div><div class="ttdef"><b>Definition</b> MS2KDelay.h:67</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KDelay_html_a2904a7654831eb0926c60578835ff1ff"><div class="ttname"><a href="classABDMS2000_1_1MS2KDelay.html#a2904a7654831eb0926c60578835ff1ff">ABDMS2000::MS2KDelay::setType</a></div><div class="ttdeci">void setType(DelayType type) noexcept</div><div class="ttdef"><b>Definition</b> MS2KDelay.h:47</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KDelay_html_a3075fbf1c69bddfd65e69c43273445cf"><div class="ttname"><a href="classABDMS2000_1_1MS2KDelay.html#a3075fbf1c69bddfd65e69c43273445cf">ABDMS2000::MS2KDelay::setEnabled</a></div><div class="ttdeci">void setEnabled(bool enabled) noexcept</div><div class="ttdef"><b>Definition</b> MS2KDelay.h:38</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KDelay_html_a4714b993c475a0d1b1793132922d59c8"><div class="ttname"><a href="classABDMS2000_1_1MS2KDelay.html#a4714b993c475a0d1b1793132922d59c8">ABDMS2000::MS2KDelay::MS2KDelay</a></div><div class="ttdeci">MS2KDelay()=default</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KDelay_html_a4b118318b59d8568ccaecab1a8297bf8"><div class="ttname"><a href="classABDMS2000_1_1MS2KDelay.html#a4b118318b59d8568ccaecab1a8297bf8">ABDMS2000::MS2KDelay::feedbackGain_</a></div><div class="ttdeci">float feedbackGain_</div><div class="ttdef"><b>Definition</b> MS2KDelay.h:64</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KDelay_html_a4cf81b696cfcbaf8f0017285a4313c76"><div class="ttname"><a href="classABDMS2000_1_1MS2KDelay.html#a4cf81b696cfcbaf8f0017285a4313c76">ABDMS2000::MS2KDelay::type_</a></div><div class="ttdeci">DelayType type_</div><div class="ttdef"><b>Definition</b> MS2KDelay.h:60</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KDelay_html_a5c8926d0bb4a19aaede1d4a0360a1c58"><div class="ttname"><a href="classABDMS2000_1_1MS2KDelay.html#a5c8926d0bb4a19aaede1d4a0360a1c58">ABDMS2000::MS2KDelay::prepare</a></div><div class="ttdeci">void prepare(double sampleRate) noexcept</div><div class="ttdef"><b>Definition</b> MS2KDelay.cpp:10</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KDelay_html_a63e5ff4f5131e67461305698f10ec6df"><div class="ttname"><a href="classABDMS2000_1_1MS2KDelay.html#a63e5ff4f5131e67461305698f10ec6df">ABDMS2000::MS2KDelay::smoothedDelaySamplesL_</a></div><div class="ttdeci">DSPUtils::LinearSmoother&lt; float &gt; smoothedDelaySamplesL_</div><div class="ttdef"><b>Definition</b> MS2KDelay.h:71</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KDelay_html_a6619cd80d3ce8b50e31327a72f446d2b"><div class="ttname"><a href="classABDMS2000_1_1MS2KDelay.html#a6619cd80d3ce8b50e31327a72f446d2b">ABDMS2000::MS2KDelay::writeIndex_</a></div><div class="ttdeci">size_t writeIndex_</div><div class="ttdef"><b>Definition</b> MS2KDelay.h:68</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KDelay_html_a6f61011152116bc5b3c276fade364469"><div class="ttname"><a href="classABDMS2000_1_1MS2KDelay.html#a6f61011152116bc5b3c276fade364469">ABDMS2000::MS2KDelay::smoothedDelaySamplesR_</a></div><div class="ttdeci">DSPUtils::LinearSmoother&lt; float &gt; smoothedDelaySamplesR_</div><div class="ttdef"><b>Definition</b> MS2KDelay.h:72</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KDelay_html_a6fec767a78797a1456c5818b49806915"><div class="ttname"><a href="classABDMS2000_1_1MS2KDelay.html#a6fec767a78797a1456c5818b49806915">ABDMS2000::MS2KDelay::isEnabled</a></div><div class="ttdeci">bool isEnabled() const noexcept</div><div class="ttdef"><b>Definition</b> MS2KDelay.h:42</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KDelay_html_a7fde1550f3173233517630f2f2eb7558"><div class="ttname"><a href="classABDMS2000_1_1MS2KDelay.html#a7fde1550f3173233517630f2f2eb7558">ABDMS2000::MS2KDelay::enabled_</a></div><div class="ttdeci">bool enabled_</div><div class="ttdef"><b>Definition</b> MS2KDelay.h:59</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KDelay_html_a865d634aadd874692b8a292c6bbf7496"><div class="ttname"><a href="classABDMS2000_1_1MS2KDelay.html#a865d634aadd874692b8a292c6bbf7496">ABDMS2000::MS2KDelay::timeSeconds_</a></div><div class="ttdeci">float timeSeconds_</div><div class="ttdef"><b>Definition</b> MS2KDelay.h:62</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KDelay_html_aa0c9ece58e94bc298c0fb8f9504ebd53"><div class="ttname"><a href="classABDMS2000_1_1MS2KDelay.html#aa0c9ece58e94bc298c0fb8f9504ebd53">ABDMS2000::MS2KDelay::dampingStateR_</a></div><div class="ttdeci">float dampingStateR_</div><div class="ttdef"><b>Definition</b> MS2KDelay.h:76</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KDelay_html_aa6cf2b18f6df94681ea600eae63c2646"><div class="ttname"><a href="classABDMS2000_1_1MS2KDelay.html#aa6cf2b18f6df94681ea600eae63c2646">ABDMS2000::MS2KDelay::maxDelaySamples_</a></div><div class="ttdeci">size_t maxDelaySamples_</div><div class="ttdef"><b>Definition</b> MS2KDelay.h:69</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KDelay_html_aa6e13a74f5a8f8eb01bbd703a77586b8"><div class="ttname"><a href="classABDMS2000_1_1MS2KDelay.html#aa6e13a74f5a8f8eb01bbd703a77586b8">ABDMS2000::MS2KDelay::setFeedback</a></div><div class="ttdeci">void setFeedback(float feedbackGain0to1) noexcept</div><div class="ttdef"><b>Definition</b> MS2KDelay.cpp:59</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KDelay_html_aab7d1947effb25375eeadee0611f3e17"><div class="ttname"><a href="classABDMS2000_1_1MS2KDelay.html#aab7d1947effb25375eeadee0611f3e17">ABDMS2000::MS2KDelay::delayBufferL_</a></div><div class="ttdeci">std::vector&lt; float &gt; delayBufferL_</div><div class="ttdef"><b>Definition</b> MS2KDelay.h:66</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KDelay_html_aad6ab5aac5cfc77c34cd0ba06071627c"><div class="ttname"><a href="classABDMS2000_1_1MS2KDelay.html#aad6ab5aac5cfc77c34cd0ba06071627c">ABDMS2000::MS2KDelay::wetMix_</a></div><div class="ttdeci">float wetMix_</div><div class="ttdef"><b>Definition</b> MS2KDelay.h:63</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KDelay_html_ab6d1a03faafcafe8d681449ef3d03d2b"><div class="ttname"><a href="classABDMS2000_1_1MS2KDelay.html#ab6d1a03faafcafe8d681449ef3d03d2b">ABDMS2000::MS2KDelay::dampingStateL_</a></div><div class="ttdeci">float dampingStateL_</div><div class="ttdef"><b>Definition</b> MS2KDelay.h:75</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KDelay_html_ab795800c6eb7855aa92349dad48cf45d"><div class="ttname"><a href="classABDMS2000_1_1MS2KDelay.html#ab795800c6eb7855aa92349dad48cf45d">ABDMS2000::MS2KDelay::reset</a></div><div class="ttdeci">void reset() noexcept</div><div class="ttdef"><b>Definition</b> MS2KDelay.cpp:26</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KDelay_html_abdfeac059aa58c4ac90fd4216e8e4450"><div class="ttname"><a href="classABDMS2000_1_1MS2KDelay.html#abdfeac059aa58c4ac90fd4216e8e4450">ABDMS2000::MS2KDelay::setTimeSeconds</a></div><div class="ttdeci">void setTimeSeconds(float timeSec) noexcept</div><div class="ttdef"><b>Definition</b> MS2KDelay.cpp:35</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KDelay_html_acaebefdca78b79dbdfbb03498f1c46a0"><div class="ttname"><a href="classABDMS2000_1_1MS2KDelay.html#acaebefdca78b79dbdfbb03498f1c46a0">ABDMS2000::MS2KDelay::sampleRate_</a></div><div class="ttdeci">double sampleRate_</div><div class="ttdef"><b>Definition</b> MS2KDelay.h:58</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KDelay_html_acaf6d9ea7fac741011ac7043346c8e76"><div class="ttname"><a href="classABDMS2000_1_1MS2KDelay.html#acaf6d9ea7fac741011ac7043346c8e76">ABDMS2000::MS2KDelay::process</a></div><div class="ttdeci">void process(float &amp;leftSample, float &amp;rightSample) noexcept</div><div class="ttdef"><b>Definition</b> MS2KDelay.cpp:90</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KDelay_html_af23d5d6e03eb6f1e6da5ece12812bd4b"><div class="ttname"><a href="classABDMS2000_1_1MS2KDelay.html#af23d5d6e03eb6f1e6da5ece12812bd4b">ABDMS2000::MS2KDelay::setDepth</a></div><div class="ttdeci">void setDepth(float wetMix0to1) noexcept</div><div class="ttdef"><b>Definition</b> MS2KDelay.cpp:54</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html"><div class="ttname"><a href="namespaceABDMS2000.html">ABDMS2000</a></div><div class="ttdef"><b>Definition</b> AppLogger.h:18</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a89c40c628fb3a8499e3afcb11056dbfd"><div class="ttname"><a href="namespaceABDMS2000.html#a89c40c628fb3a8499e3afcb11056dbfd">ABDMS2000::DelayType</a></div><div class="ttdeci">DelayType</div><div class="ttdef"><b>Definition</b> MS2KDelay.h:10</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a89c40c628fb3a8499e3afcb11056dbfda955322c98b1fc571e8b6b688ae7d9ee4"><div class="ttname"><a href="namespaceABDMS2000.html#a89c40c628fb3a8499e3afcb11056dbfda955322c98b1fc571e8b6b688ae7d9ee4">ABDMS2000::DelayType::LeftRight</a></div><div class="ttdeci">@ LeftRight</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a89c40c628fb3a8499e3afcb11056dbfdabbc45d9b35436f5f0ed9e33499efcea9"><div class="ttname"><a href="namespaceABDMS2000.html#a89c40c628fb3a8499e3afcb11056dbfdabbc45d9b35436f5f0ed9e33499efcea9">ABDMS2000::DelayType::Stereo</a></div><div class="ttdeci">@ Stereo</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html_a89c40c628fb3a8499e3afcb11056dbfdae76b449b9fc8536af7557ffa6321d269"><div class="ttname"><a href="namespaceABDMS2000.html#a89c40c628fb3a8499e3afcb11056dbfdae76b449b9fc8536af7557ffa6321d269">ABDMS2000::DelayType::Cross</a></div><div class="ttdeci">@ Cross</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

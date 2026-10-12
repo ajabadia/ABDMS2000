@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['sendfunction_0',['SendFunction',['../classABDMS2000_1_1HardwareMidiTransport.html#a40bfc42f4d2d33952d09b888bad02ff6',1,'ABDMS2000::HardwareMidiTransport']]]
+  ['receivesink_0',['ReceiveSink',['../classABDMS2000_1_1HardwareMidiTransport.html#aac83ed083194c416746b5b5eb7451bdf',1,'ABDMS2000::HardwareMidiTransport']]]
 ];

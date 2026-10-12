@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['feedbackgain_5f_0',['feedbackGain_',['../classABDMS2000_1_1DelayFX.html#ac701bb22ef568b60fb8610e564ecd0ed',1,'ABDMS2000::DelayFX']]],
+  ['feedbackgain_5f_0',['feedbackGain_',['../classABDMS2000_1_1MS2KDelay.html#a4b118318b59d8568ccaecab1a8297bf8',1,'ABDMS2000::MS2KDelay']]],
   ['fileidx_1',['fileIdx',['../structABDMS2000_1_1AKWFEntry.html#acb334ca9dad267d0a6a07416cc49e617',1,'ABDMS2000::AKWFEntry']]],
   ['filter_5f_2',['filter_',['../classABDMS2000_1_1Voice.html#abcd1ad518c2fd0c606e3265a151ff5fe',1,'ABDMS2000::Voice']]],
   ['filtercutoff_3',['filterCutoff',['../namespaceABDMS2000_1_1ParamIDs.html#a2c6f34f5cb52cc9e436d3ea7762d8789',1,'ABDMS2000::ParamIDs']]],
@@ -13,9 +13,9 @@ var searchData=
   ['filtertype_10',['filtertype',['../structABDMS2000_1_1VoiceParameters.html#ab144ef703647dfcc14704b21374629f4',1,'ABDMS2000::VoiceParameters::filterType'],['../namespaceABDMS2000_1_1ParamIDs.html#a38d432e23697c23323c183d209c11059',1,'ABDMS2000::ParamIDs::filterType']]],
   ['filtervelo_11',['filterVelo',['../namespaceABDMS2000_1_1ParamIDs.html#aabe88888d8b1f61d9d0a154440a3b3e5',1,'ABDMS2000::ParamIDs']]],
   ['filtervelosens_12',['filterVeloSens',['../structABDMS2000_1_1VoiceParameters.html#a5ab7e6a1c0d6a958c68a4611db00a34a',1,'ABDMS2000::VoiceParameters']]],
-  ['followers_5f_13',['followers_',['../classABDMS2000_1_1Vocoder16Band.html#a6cec4f4f4079637ba4cc16307259dc20',1,'ABDMS2000::Vocoder16Band']]],
+  ['followers_5f_13',['followers_',['../classABDMS2000_1_1MS2KVocoder16Band.html#a09175288bfc545314c37f11acb36144b',1,'ABDMS2000::MS2KVocoder16Band']]],
   ['formants_5f_14',['formants_',['../classABDMS2000_1_1VoxWaveOscillator.html#a5ab0f1b4a3388a4e781ede01bad97eb5',1,'ABDMS2000::VoxWaveOscillator']]],
-  ['formantshift_5f_15',['formantShift_',['../classABDMS2000_1_1Vocoder16Band.html#ad089bed9d8b773b3c87fd104e974f014',1,'ABDMS2000::Vocoder16Band']]],
+  ['formantshift_5f_15',['formantShift_',['../classABDMS2000_1_1MS2KVocoder16Band.html#a08208aaa9447fb5a6b95a1d0d4e0caa4',1,'ABDMS2000::MS2KVocoder16Band']]],
   ['frecuenciaalta_5f_16',['frecuenciaAlta_',['../classABDMS2000_1_1Tests_1_1congelado_1_1Equalizer.html#ab54a10023d6327bf8cb8bdc6e743fad7',1,'ABDMS2000::Tests::congelado::Equalizer']]],
   ['frecuenciabaja_5f_17',['frecuenciaBaja_',['../classABDMS2000_1_1Tests_1_1congelado_1_1Equalizer.html#a8698e13ac408e63548933b68b51d30e2',1,'ABDMS2000::Tests::congelado::Equalizer']]],
   ['frequency_5f_18',['frequency_',['../classABDMS2000_1_1DWGSOscillator.html#a054a687f9a20f5b479491a7bac42fa29',1,'ABDMS2000::DWGSOscillator::frequency_'],['../classABDMS2000_1_1VAOscillator.html#a2c72d252c3973855146e6de44c40f771',1,'ABDMS2000::VAOscillator::frequency_'],['../classABDMS2000_1_1VoxWaveOscillator.html#a4662b9f05d1047d5bcf86c2ac0eeb47f',1,'ABDMS2000::VoxWaveOscillator::frequency_']]]

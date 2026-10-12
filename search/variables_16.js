@@ -6,7 +6,9 @@ var searchData=
   ['wavenames_5f_3',['waveNames_',['../classABDMS2000_1_1DWGSTables.html#af98a3db7b4b4bf9a186614416290a7c1',1,'ABDMS2000::DWGSTables']]],
   ['wavetablememory_5f_4',['wavetableMemory_',['../classABDMS2000_1_1DWGSTables.html#a6f079b1839c9a839d7d2c9a292a14630',1,'ABDMS2000::DWGSTables']]],
   ['webview_5f_5',['webView_',['../classABDMS2000_1_1ABDMS2000AudioProcessorEditor.html#ab675ab8d1c20db8e01be316a278ece3f',1,'ABDMS2000::ABDMS2000AudioProcessorEditor']]],
-  ['wetmix_5f_6',['wetMix_',['../classABDMS2000_1_1DelayFX.html#a86fdf4836ba04a15467ccb55f2d175d2',1,'ABDMS2000::DelayFX']]],
-  ['whitenoisegen_5f_7',['whiteNoiseGen_',['../classABDMS2000_1_1Vocoder16Band.html#a61b82cb75f3c8a8ea4e89d2fbe6447ca',1,'ABDMS2000::Vocoder16Band']]],
-  ['writeindex_5f_8',['writeIndex_',['../classABDMS2000_1_1DelayFX.html#ae2d89b80d734a807203f16049505da02',1,'ABDMS2000::DelayFX']]]
+  ['wetmix_5f_6',['wetMix_',['../classABDMS2000_1_1MS2KDelay.html#aad6ab5aac5cfc77c34cd0ba06071627c',1,'ABDMS2000::MS2KDelay']]],
+  ['whitenoisegen_5f_7',['whiteNoiseGen_',['../classABDMS2000_1_1MS2KVocoder16Band.html#a60207573612ba9ed5b62ca529c49c53f',1,'ABDMS2000::MS2KVocoder16Band']]],
+  ['wire_8',['wire',['../structABDMS2000_1_1ParameterMeta.html#a75414a4b49a82938c737ce0bbdecd071',1,'ABDMS2000::ParameterMeta']]],
+  ['wirecodec_9',['wireCodec',['../structABDMS2000_1_1ParameterMeta.html#afcee560bdc27d92acd8d7be61c319260',1,'ABDMS2000::ParameterMeta']]],
+  ['writeindex_5f_10',['writeindex_',['../classABDMS2000_1_1MS2KChorusFlanger.html#a1b4eb415698a44444549f25d69eeec8c',1,'ABDMS2000::MS2KChorusFlanger::writeIndex_'],['../classABDMS2000_1_1MS2KDelay.html#a6619cd80d3ce8b50e31327a72f446d2b',1,'ABDMS2000::MS2KDelay::writeIndex_']]]
 ];

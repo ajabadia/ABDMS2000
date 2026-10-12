@@ -15,12 +15,15 @@ var searchData=
   ['wavetablememory_5f_12',['wavetableMemory_',['../classABDMS2000_1_1DWGSTables.html#a6f079b1839c9a839d7d2c9a292a14630',1,'ABDMS2000::DWGSTables']]],
   ['wavetables_2064_20ondas_20digitales_13',['6. DWGS Wavetables (64 ondas digitales)',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md63',1,'']]],
   ['webview_5f_14',['webView_',['../classABDMS2000_1_1ABDMS2000AudioProcessorEditor.html#ab675ab8d1c20db8e01be316a278ece3f',1,'ABDMS2000::ABDMS2000AudioProcessorEditor']]],
-  ['wetmix_5f_15',['wetMix_',['../classABDMS2000_1_1DelayFX.html#a86fdf4836ba04a15467ccb55f2d175d2',1,'ABDMS2000::DelayFX']]],
-  ['whitenoisegen_5f_16',['whiteNoiseGen_',['../classABDMS2000_1_1Vocoder16Band.html#a61b82cb75f3c8a8ea4e89d2fbe6447ca',1,'ABDMS2000::Vocoder16Band']]],
+  ['wetmix_5f_15',['wetMix_',['../classABDMS2000_1_1MS2KDelay.html#aad6ab5aac5cfc77c34cd0ba06071627c',1,'ABDMS2000::MS2KDelay']]],
+  ['whitenoisegen_5f_16',['whiteNoiseGen_',['../classABDMS2000_1_1MS2KVocoder16Band.html#a60207573612ba9ed5b62ca529c49c53f',1,'ABDMS2000::MS2KVocoder16Band']]],
   ['win32_5flean_5fand_5fmean_17',['WIN32_LEAN_AND_MEAN',['../AppLogger_8h.html#ac7bef5d85e3dcd73eef56ad39ffc84a9',1,'AppLogger.h']]],
-  ['writecompleted_18',['WriteCompleted',['../namespaceABDMS2000.html#a75ff67d10d18351793b50b8827bd2f5aa045b3b91a01fd383c64f201ead78feb0',1,'ABDMS2000']]],
-  ['writeerror_19',['WriteError',['../namespaceABDMS2000.html#a75ff67d10d18351793b50b8827bd2f5aa4a02ea49d454392fd1e3426e53f14b58',1,'ABDMS2000']]],
-  ['writefield_20',['writeField',['../structABDMS2000_1_1MS2000HardwareProgram.html#a505a7bd1b4660917af43a4caafe7b02f',1,'ABDMS2000::MS2000HardwareProgram']]],
-  ['writeindex_5f_21',['writeIndex_',['../classABDMS2000_1_1DelayFX.html#ae2d89b80d734a807203f16049505da02',1,'ABDMS2000::DelayFX']]],
-  ['writeprogramblob_22',['writeProgramBlob',['../classABDMS2000_1_1BridgeActions.html#a33685402d8abe7ce0dd7702546550d40',1,'ABDMS2000::BridgeActions']]]
+  ['wire_18',['wire',['../structABDMS2000_1_1ParameterMeta.html#a75414a4b49a82938c737ce0bbdecd071',1,'ABDMS2000::ParameterMeta']]],
+  ['wirecodec_19',['wireCodec',['../structABDMS2000_1_1ParameterMeta.html#afcee560bdc27d92acd8d7be61c319260',1,'ABDMS2000::ParameterMeta']]],
+  ['wiretodomain_20',['wiretodomain',['../namespaceconversion.html#a0118a3df6764cfe14eb51612bd93c88b',1,'conversion::wireToDomain(const ParameterMeta &amp;entry, uint16_t raw) noexcept'],['../namespaceconversion.html#a8776c1134555993e186240173c66fdbf',1,'conversion::wireToDomain(const char *id, uint16_t raw) noexcept']]],
+  ['writecompleted_21',['WriteCompleted',['../namespaceABDMS2000.html#a75ff67d10d18351793b50b8827bd2f5aa045b3b91a01fd383c64f201ead78feb0',1,'ABDMS2000']]],
+  ['writeerror_22',['WriteError',['../namespaceABDMS2000.html#a75ff67d10d18351793b50b8827bd2f5aa4a02ea49d454392fd1e3426e53f14b58',1,'ABDMS2000']]],
+  ['writefield_23',['writeField',['../structABDMS2000_1_1MS2000HardwareProgram.html#a505a7bd1b4660917af43a4caafe7b02f',1,'ABDMS2000::MS2000HardwareProgram']]],
+  ['writeindex_5f_24',['writeindex_',['../classABDMS2000_1_1MS2KChorusFlanger.html#a1b4eb415698a44444549f25d69eeec8c',1,'ABDMS2000::MS2KChorusFlanger::writeIndex_'],['../classABDMS2000_1_1MS2KDelay.html#a6619cd80d3ce8b50e31327a72f446d2b',1,'ABDMS2000::MS2KDelay::writeIndex_']]],
+  ['writeprogramblob_25',['writeProgramBlob',['../classABDMS2000_1_1BridgeActions.html#a33685402d8abe7ce0dd7702546550d40',1,'ABDMS2000::BridgeActions']]]
 ];

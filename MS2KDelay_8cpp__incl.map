@@ -1,0 +1,20 @@
+<map id="Source/DSP/Effects/MS2KDelay.cpp" name="Source/DSP/Effects/MS2KDelay.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="183,5,327,45"/>
+<area shape="rect" id="Node000002" href="$MS2KDelay_8h.html" title=" " alt="" coords="31,93,138,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="216,48,123,90,121,85,213,43"/>
+<area shape="rect" id="Node000004" href="$DSPUtils_8h.html" title=" " alt="" coords="93,167,258,192"/>
+<area shape="poly" id="edge7_Node000001_Node000004" title=" " alt="" coords="238,47,220,69,203,95,191,125,183,154,178,152,186,123,198,92,216,66,234,44"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="213,93,298,119"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="258,46,258,79,253,79,253,46"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="323,93,385,119"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="281,43,330,82,327,87,278,48"/>
+<area shape="rect" id="Node000008" href="$HardwareConstants_8h.html" title=" " alt="" coords="410,93,573,119"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="313,43,445,87,443,92,311,48"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,167,68,192"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="79,121,54,157,50,154,75,118"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="101,117,151,156,148,160,98,121"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="95,240,256,265"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="178,192,178,226,173,226,173,192"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="458,167,525,192"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="494,119,494,153,489,153,489,119"/>
+</map>

@@ -1,0 +1,293 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Archivo de código fuente Source/DSP/Effects/MS2KChorusFlanger.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a class="el" href="dir_28f92771c0af6f341cedd07750149305.html">DSP</a></li><li class="navelem"><a class="el" href="dir_93b0420c202dab069e0f3b7b5bb42654.html">Effects</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle"><div class="title">MS2KChorusFlanger.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="MS2KChorusFlanger_8h.html">Ir a la documentación de este archivo.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;algorithm&gt;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;array&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;cmath&gt;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;DspCore/DspCore.h&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;../Common/DSPUtils.h&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="HardwareConstants_8h.html">HardwareConstants.h</a>&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceABDMS2000.html">ABDMS2000</a></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>{</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment"></span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> * @brief MS2KChorusFlanger - Efecto híbrido continuo Chorus/Flanger del Korg MS2000 (DSP56362).</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"> * Características:</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"> * - Transición continua gobernada por Feedback: 0 es un Chorus cálido (7.5ms base, +/-3.5ms excursión),</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment"> *   y a 127 se convierte en un Flanger resonante tipo &quot;jet&quot; (1.8ms base, +/-1.5ms excursión, feedback 0.94).</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment"> * - LFO en contrafase para apertura estéreo amplia (L = +lfo, R = -lfo).</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment"> * - Buffer estático circular en array de 4096 muestras (100% Real-Time Safe, cero heap).</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment"> * - Interpolación cúbica Hermite de 4 puntos (sin amortiguación de frecuencias altas ni escalonamiento).</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment"> * - Determinismo de fase con abd::dsp::sin.</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment"> */</span></div>
+<div class="foldopen" id="foldopen00024" data-start="{" data-end="};">
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KChorusFlanger.html">   24</a></span><span class="keyword">class </span><a class="code hl_class" href="classABDMS2000_1_1MS2KChorusFlanger.html">MS2KChorusFlanger</a></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>{</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KChorusFlanger.html#a8395c62549dce3dbab828b229b5a3a9a">   27</a></span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a8395c62549dce3dbab828b229b5a3a9a">kBufferSize</a> = 4096;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KChorusFlanger.html#a21fea90b5db9e661a3a7dd0881ed0d2a">   28</a></span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a21fea90b5db9e661a3a7dd0881ed0d2a">kBufferMask</a> = <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a8395c62549dce3dbab828b229b5a3a9a">kBufferSize</a> - 1;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="foldopen" id="foldopen00030" data-start="{" data-end="}">
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KChorusFlanger.html#ac49e51e817413f3bb23f74f2c27a237f">   30</a></span>    <a class="code hl_function" href="classABDMS2000_1_1MS2KChorusFlanger.html#ac49e51e817413f3bb23f74f2c27a237f">MS2KChorusFlanger</a>() noexcept</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    {</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        <a class="code hl_function" href="classABDMS2000_1_1MS2KChorusFlanger.html#a3a2bb5deef200872f06490e7750d053e">reset</a>();</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    }</div>
+</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="foldopen" id="foldopen00035" data-start="{" data-end="}">
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KChorusFlanger.html#ab7260dd5baac57bdf3197cdb7df454f0">   35</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1MS2KChorusFlanger.html#ab7260dd5baac57bdf3197cdb7df454f0">prepare</a>(<span class="keywordtype">double</span> sampleRate) <span class="keyword">noexcept</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    {</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a4ee652a394985af907521c0cb9fa9478">sampleRate_</a> = <a class="code hl_function" href="namespaceABDMS2000_1_1DSPUtils.html#a811ef7806eb2bb6d1dd6c1625b8f1d18">DSPUtils::validateSampleRate</a>(sampleRate);</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        <a class="code hl_function" href="classABDMS2000_1_1MS2KChorusFlanger.html#ab59770bb7438f53488989ccfad9c9218">updateLFOIncrement</a>();</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        <a class="code hl_function" href="classABDMS2000_1_1MS2KChorusFlanger.html#a3a2bb5deef200872f06490e7750d053e">reset</a>();</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    }</div>
+</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="foldopen" id="foldopen00042" data-start="{" data-end="}">
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KChorusFlanger.html#a3a2bb5deef200872f06490e7750d053e">   42</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1MS2KChorusFlanger.html#a3a2bb5deef200872f06490e7750d053e">reset</a>() noexcept</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    {</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a6fa33a04c5dc8ef27eb983511bbdaf70">bufferL_</a>.fill(0.0f);</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a2f89a0cc942ad73578d656edd2b858e2">bufferR_</a>.fill(0.0f);</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a1b4eb415698a44444549f25d69eeec8c">writeIndex_</a> = 0;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#ae04258a0d954d9e7e41268e56e13f4a3">lfoPhase_</a> = 0.0f;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    }</div>
+</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="foldopen" id="foldopen00050" data-start="{" data-end="}">
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KChorusFlanger.html#ad61dd5b7f41bc118433bd84fddc82107">   50</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1MS2KChorusFlanger.html#ad61dd5b7f41bc118433bd84fddc82107">setSpeed</a>(<span class="keywordtype">float</span> speed0to1) <span class="keyword">noexcept</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    {</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#ade5364d3fa988fe864ad0765d8ff766f">speed_</a> = DSPUtils::clamp(speed0to1, 0.0f, 1.0f);</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        <a class="code hl_function" href="classABDMS2000_1_1MS2KChorusFlanger.html#ab59770bb7438f53488989ccfad9c9218">updateLFOIncrement</a>();</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    }</div>
+</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="foldopen" id="foldopen00056" data-start="{" data-end="}">
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KChorusFlanger.html#a359d662985d4c9bec89df8ae73dbcc8c">   56</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1MS2KChorusFlanger.html#a359d662985d4c9bec89df8ae73dbcc8c">setDepth</a>(<span class="keywordtype">float</span> depth0to1) <span class="keyword">noexcept</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    {</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a5e4e222286f36e426d04f8678db24d64">depth_</a> = DSPUtils::clamp(depth0to1, 0.0f, 1.0f);</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    }</div>
+</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="foldopen" id="foldopen00061" data-start="{" data-end="}">
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KChorusFlanger.html#ab707b530aad255f46f15b2cadfff59aa">   61</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1MS2KChorusFlanger.html#ab707b530aad255f46f15b2cadfff59aa">setFeedback</a>(<span class="keywordtype">float</span> feedback0to127) <span class="keyword">noexcept</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    {</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a58da1263eaae4f09b34fd3c3865cdc51">rawFeedback_</a> = DSPUtils::clamp(feedback0to127, 0.0f, <a class="code hl_variable" href="namespaceABDMS2000_1_1Constants.html#a60768002de95d9455afd415fadf8f61b">Constants::kMidiMaxVal</a>);</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    }</div>
+</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="foldopen" id="foldopen00066" data-start="{" data-end="}">
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KChorusFlanger.html#a74098004bee904cc8917738c5e78bdaf">   66</a></span>    <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1MS2KChorusFlanger.html#a74098004bee904cc8917738c5e78bdaf">processSample</a>(<span class="keywordtype">float</span> &amp;left, <span class="keywordtype">float</span> &amp;right) <span class="keyword">noexcept</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    {</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        <span class="comment">// 1. Avance del LFO determinista</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        <span class="keyword">const</span> <span class="keywordtype">float</span> lfo = abd::dsp::sin(<a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#ae04258a0d954d9e7e41268e56e13f4a3">lfoPhase_</a>);</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#ae04258a0d954d9e7e41268e56e13f4a3">lfoPhase_</a> += <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a6e66e4e1d801127150ed7478175e92e7">lfoInc_</a>;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#ae04258a0d954d9e7e41268e56e13f4a3">lfoPhase_</a> &gt;= <a class="code hl_variable" href="namespaceABDMS2000_1_1Constants.html#aace147a48c82c76f89ee7105999f76d1">Constants::kTwoPi</a>)</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>            <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#ae04258a0d954d9e7e41268e56e13f4a3">lfoPhase_</a> -= <a class="code hl_variable" href="namespaceABDMS2000_1_1Constants.html#aace147a48c82c76f89ee7105999f76d1">Constants::kTwoPi</a>;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        <span class="comment">// 2. Retardo base y excursión gobernados por el lazo de feedback híbrido</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        <span class="keyword">const</span> <span class="keywordtype">float</span> fbNorm = <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a58da1263eaae4f09b34fd3c3865cdc51">rawFeedback_</a> / <a class="code hl_variable" href="namespaceABDMS2000_1_1Constants.html#a60768002de95d9455afd415fadf8f61b">Constants::kMidiMaxVal</a>;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        <span class="keyword">const</span> <span class="keywordtype">float</span> baseDelaySec = <a class="code hl_variable" href="namespaceABDMS2000_1_1DSPUtils.html#a5a7c49ff3d9faeca16c12197dca22696">DSPUtils::kChorusBaseDelaySec</a> - (<a class="code hl_variable" href="namespaceABDMS2000_1_1DSPUtils.html#a5889ba7ff31a1d2a51522d85fc4fdb22">DSPUtils::kFlangerDelayRangeSec</a> * fbNorm);</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        <span class="keyword">const</span> <span class="keywordtype">float</span> excursionSec = (<a class="code hl_variable" href="namespaceABDMS2000_1_1DSPUtils.html#a8877b59651c3d1d1b13d1d594ef5d182">DSPUtils::kChorusExcursionSec</a> - (<a class="code hl_variable" href="namespaceABDMS2000_1_1DSPUtils.html#ad9e9f2e4ea3438faf3270f5ac5b2e273">DSPUtils::kFlangerExcursionRangeSec</a> * fbNorm)) * <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a5e4e222286f36e426d04f8678db24d64">depth_</a>;</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        <span class="keyword">const</span> <span class="keywordtype">float</span> baseDelaySamples = baseDelaySec * <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a4ee652a394985af907521c0cb9fa9478">sampleRate_</a>);</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        <span class="keyword">const</span> <span class="keywordtype">float</span> modExcursionSamples = excursionSec * <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a4ee652a394985af907521c0cb9fa9478">sampleRate_</a>);</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        <span class="keyword">const</span> <span class="keywordtype">float</span> delayL = baseDelaySamples + (lfo * modExcursionSamples);</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        <span class="keyword">const</span> <span class="keywordtype">float</span> delayR = baseDelaySamples - (lfo * modExcursionSamples); <span class="comment">// Desfase 180° estéreo</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        <span class="comment">// 3. Lectura con interpolación cúbica Hermite</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        <span class="keyword">const</span> <span class="keywordtype">float</span> wetL = <a class="code hl_function" href="classABDMS2000_1_1MS2KChorusFlanger.html#a53a7170954a78882f4a84a90f9435d13">readHermite</a>(<a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a6fa33a04c5dc8ef27eb983511bbdaf70">bufferL_</a>, delayL);</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        <span class="keyword">const</span> <span class="keywordtype">float</span> wetR = <a class="code hl_function" href="classABDMS2000_1_1MS2KChorusFlanger.html#a53a7170954a78882f4a84a90f9435d13">readHermite</a>(<a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a2f89a0cc942ad73578d656edd2b858e2">bufferR_</a>, delayR);</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>        <span class="comment">// 4. Realimentación en la línea de retardo (hasta 0.94 en Flanger extremo)</span></div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        <span class="keyword">const</span> <span class="keywordtype">float</span> fbGain = fbNorm * <a class="code hl_variable" href="namespaceABDMS2000_1_1Constants.html#ab81ba79bd8dc220ce1560a1237148855">Constants::kFlangerMaxFeedback</a>;</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a6fa33a04c5dc8ef27eb983511bbdaf70">bufferL_</a>[<a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a1b4eb415698a44444549f25d69eeec8c">writeIndex_</a>] = left + (wetL * fbGain);</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a2f89a0cc942ad73578d656edd2b858e2">bufferR_</a>[<a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a1b4eb415698a44444549f25d69eeec8c">writeIndex_</a>] = right + (wetR * fbGain);</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a1b4eb415698a44444549f25d69eeec8c">writeIndex_</a> = (<a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a1b4eb415698a44444549f25d69eeec8c">writeIndex_</a> + 1) &amp; <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a21fea90b5db9e661a3a7dd0881ed0d2a">kBufferMask</a>;</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        <span class="comment">// 5. Mezcla Wet/Dry dinámica</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        <span class="keyword">const</span> <span class="keywordtype">float</span> wetGain = <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a5e4e222286f36e426d04f8678db24d64">depth_</a> * 0.75f;</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        <span class="keyword">const</span> <span class="keywordtype">float</span> dryGain = std::max(0.35f, 1.0f - (<a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a5e4e222286f36e426d04f8678db24d64">depth_</a> * 0.40f));</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>        left = (left * dryGain) + (wetL * wetGain);</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        right = (right * dryGain) + (wetR * wetGain);</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    }</div>
+</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="keyword">private</span>:</div>
+<div class="foldopen" id="foldopen00104" data-start="{" data-end="}">
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KChorusFlanger.html#ab59770bb7438f53488989ccfad9c9218">  104</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classABDMS2000_1_1MS2KChorusFlanger.html#ab59770bb7438f53488989ccfad9c9218">updateLFOIncrement</a>() noexcept</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    {</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        <span class="comment">// Rango de velocidad MS2000: 0.02 Hz a 15.0 Hz en escala logarítmica</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>        <span class="keyword">const</span> <span class="keywordtype">float</span> rateHz = 0.02f * abd::dsp::pow(<a class="code hl_variable" href="namespaceABDMS2000_1_1DSPUtils.html#a552d74debe391b3ee31b66a24de3cfbd">DSPUtils::kSpeedLogScaleMax</a>, <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#ade5364d3fa988fe864ad0765d8ff766f">speed_</a>);</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a6e66e4e1d801127150ed7478175e92e7">lfoInc_</a> = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(6.2831853f * rateHz / <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a4ee652a394985af907521c0cb9fa9478">sampleRate_</a>);</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    }</div>
+</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
+<div class="foldopen" id="foldopen00111" data-start="{" data-end="}">
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KChorusFlanger.html#ad8e361f5a494bfd1d088da4cd17a57a4">  111</a></span>    <span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">float</span> <a class="code hl_function" href="classABDMS2000_1_1MS2KChorusFlanger.html#ad8e361f5a494bfd1d088da4cd17a57a4">hermite</a>(<span class="keywordtype">float</span> frac, <span class="keywordtype">float</span> y0, <span class="keywordtype">float</span> y1, <span class="keywordtype">float</span> y2, <span class="keywordtype">float</span> y3) <span class="keyword">noexcept</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    {</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        <span class="keyword">const</span> <span class="keywordtype">float</span> c0 = y1;</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        <span class="keyword">const</span> <span class="keywordtype">float</span> c1 = 0.5f * (y2 - y0);</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>        <span class="keyword">const</span> <span class="keywordtype">float</span> c2 = y0 - 2.5f * y1 + 2.0f * y2 - 0.5f * y3;</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        <span class="keyword">const</span> <span class="keywordtype">float</span> c3 = 0.5f * (y3 - y0) + 1.5f * (y1 - y2);</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>        <span class="keywordflow">return</span> ((c3 * frac + c2) * frac + c1) * frac + c0;</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    }</div>
+</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
+<div class="foldopen" id="foldopen00120" data-start="{" data-end="}">
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KChorusFlanger.html#a53a7170954a78882f4a84a90f9435d13">  120</a></span>    <span class="keyword">inline</span> <span class="keywordtype">float</span> <a class="code hl_function" href="classABDMS2000_1_1MS2KChorusFlanger.html#a53a7170954a78882f4a84a90f9435d13">readHermite</a>(<span class="keyword">const</span> std::array&lt;float, kBufferSize&gt; &amp;buf, <span class="keywordtype">float</span> delaySamples) <span class="keyword">const</span> <span class="keyword">noexcept</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    {</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        <span class="keywordtype">float</span> readPos = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a1b4eb415698a44444549f25d69eeec8c">writeIndex_</a>) - delaySamples;</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        <span class="keywordflow">if</span> (readPos &lt; 0.0f)</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>            readPos += <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(<a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a8395c62549dce3dbab828b229b5a3a9a">kBufferSize</a>);</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        <span class="keyword">const</span> <span class="keywordtype">int</span> i0 = <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(readPos) &amp; <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a21fea90b5db9e661a3a7dd0881ed0d2a">kBufferMask</a>;</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        <span class="keyword">const</span> <span class="keywordtype">float</span> frac = readPos - <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(readPos));</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        <span class="keyword">const</span> <span class="keywordtype">int</span> i1 = (i0 + 1) &amp; <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a21fea90b5db9e661a3a7dd0881ed0d2a">kBufferMask</a>;</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        <span class="keyword">const</span> <span class="keywordtype">int</span> i2 = (i0 + 2) &amp; <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a21fea90b5db9e661a3a7dd0881ed0d2a">kBufferMask</a>;</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        <span class="keyword">const</span> <span class="keywordtype">int</span> i3 = (i0 + 3) &amp; <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a21fea90b5db9e661a3a7dd0881ed0d2a">kBufferMask</a>;</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="classABDMS2000_1_1MS2KChorusFlanger.html#ad8e361f5a494bfd1d088da4cd17a57a4">hermite</a>(frac, buf[i0], buf[i1], buf[i2], buf[i3]);</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    }</div>
+</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KChorusFlanger.html#a4ee652a394985af907521c0cb9fa9478">  135</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a4ee652a394985af907521c0cb9fa9478">sampleRate_</a> {44100.0};</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KChorusFlanger.html#ade5364d3fa988fe864ad0765d8ff766f">  136</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#ade5364d3fa988fe864ad0765d8ff766f">speed_</a> {0.3f};</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KChorusFlanger.html#a5e4e222286f36e426d04f8678db24d64">  137</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a5e4e222286f36e426d04f8678db24d64">depth_</a> {0.5f};</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KChorusFlanger.html#a58da1263eaae4f09b34fd3c3865cdc51">  138</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a58da1263eaae4f09b34fd3c3865cdc51">rawFeedback_</a> {0.0f};</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span> </div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KChorusFlanger.html#ae04258a0d954d9e7e41268e56e13f4a3">  140</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#ae04258a0d954d9e7e41268e56e13f4a3">lfoPhase_</a> {0.0f};</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KChorusFlanger.html#a6e66e4e1d801127150ed7478175e92e7">  141</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a6e66e4e1d801127150ed7478175e92e7">lfoInc_</a> {0.0f};</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KChorusFlanger.html#a6fa33a04c5dc8ef27eb983511bbdaf70">  143</a></span>    std::array&lt;float, kBufferSize&gt; <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a6fa33a04c5dc8ef27eb983511bbdaf70">bufferL_</a> {};</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KChorusFlanger.html#a2f89a0cc942ad73578d656edd2b858e2">  144</a></span>    std::array&lt;float, kBufferSize&gt; <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a2f89a0cc942ad73578d656edd2b858e2">bufferR_</a> {};</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2KChorusFlanger.html#a1b4eb415698a44444549f25d69eeec8c">  145</a></span>    <span class="keywordtype">size_t</span> <a class="code hl_variable" href="classABDMS2000_1_1MS2KChorusFlanger.html#a1b4eb415698a44444549f25d69eeec8c">writeIndex_</a> {0};</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>};</div>
+</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span> </div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>} <span class="comment">// namespace ABDMS2000</span></div>
+<div class="ttc" id="aHardwareConstants_8h_html"><div class="ttname"><a href="HardwareConstants_8h.html">HardwareConstants.h</a></div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KChorusFlanger_html"><div class="ttname"><a href="classABDMS2000_1_1MS2KChorusFlanger.html">ABDMS2000::MS2KChorusFlanger</a></div><div class="ttdoc">MS2KChorusFlanger - Efecto híbrido continuo Chorus/Flanger del Korg MS2000 (DSP56362).</div><div class="ttdef"><b>Definition</b> MS2KChorusFlanger.h:25</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KChorusFlanger_html_a1b4eb415698a44444549f25d69eeec8c"><div class="ttname"><a href="classABDMS2000_1_1MS2KChorusFlanger.html#a1b4eb415698a44444549f25d69eeec8c">ABDMS2000::MS2KChorusFlanger::writeIndex_</a></div><div class="ttdeci">size_t writeIndex_</div><div class="ttdef"><b>Definition</b> MS2KChorusFlanger.h:145</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KChorusFlanger_html_a21fea90b5db9e661a3a7dd0881ed0d2a"><div class="ttname"><a href="classABDMS2000_1_1MS2KChorusFlanger.html#a21fea90b5db9e661a3a7dd0881ed0d2a">ABDMS2000::MS2KChorusFlanger::kBufferMask</a></div><div class="ttdeci">static constexpr size_t kBufferMask</div><div class="ttdef"><b>Definition</b> MS2KChorusFlanger.h:28</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KChorusFlanger_html_a2f89a0cc942ad73578d656edd2b858e2"><div class="ttname"><a href="classABDMS2000_1_1MS2KChorusFlanger.html#a2f89a0cc942ad73578d656edd2b858e2">ABDMS2000::MS2KChorusFlanger::bufferR_</a></div><div class="ttdeci">std::array&lt; float, kBufferSize &gt; bufferR_</div><div class="ttdef"><b>Definition</b> MS2KChorusFlanger.h:144</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KChorusFlanger_html_a359d662985d4c9bec89df8ae73dbcc8c"><div class="ttname"><a href="classABDMS2000_1_1MS2KChorusFlanger.html#a359d662985d4c9bec89df8ae73dbcc8c">ABDMS2000::MS2KChorusFlanger::setDepth</a></div><div class="ttdeci">void setDepth(float depth0to1) noexcept</div><div class="ttdef"><b>Definition</b> MS2KChorusFlanger.h:56</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KChorusFlanger_html_a3a2bb5deef200872f06490e7750d053e"><div class="ttname"><a href="classABDMS2000_1_1MS2KChorusFlanger.html#a3a2bb5deef200872f06490e7750d053e">ABDMS2000::MS2KChorusFlanger::reset</a></div><div class="ttdeci">void reset() noexcept</div><div class="ttdef"><b>Definition</b> MS2KChorusFlanger.h:42</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KChorusFlanger_html_a4ee652a394985af907521c0cb9fa9478"><div class="ttname"><a href="classABDMS2000_1_1MS2KChorusFlanger.html#a4ee652a394985af907521c0cb9fa9478">ABDMS2000::MS2KChorusFlanger::sampleRate_</a></div><div class="ttdeci">double sampleRate_</div><div class="ttdef"><b>Definition</b> MS2KChorusFlanger.h:135</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KChorusFlanger_html_a53a7170954a78882f4a84a90f9435d13"><div class="ttname"><a href="classABDMS2000_1_1MS2KChorusFlanger.html#a53a7170954a78882f4a84a90f9435d13">ABDMS2000::MS2KChorusFlanger::readHermite</a></div><div class="ttdeci">float readHermite(const std::array&lt; float, kBufferSize &gt; &amp;buf, float delaySamples) const noexcept</div><div class="ttdef"><b>Definition</b> MS2KChorusFlanger.h:120</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KChorusFlanger_html_a58da1263eaae4f09b34fd3c3865cdc51"><div class="ttname"><a href="classABDMS2000_1_1MS2KChorusFlanger.html#a58da1263eaae4f09b34fd3c3865cdc51">ABDMS2000::MS2KChorusFlanger::rawFeedback_</a></div><div class="ttdeci">float rawFeedback_</div><div class="ttdef"><b>Definition</b> MS2KChorusFlanger.h:138</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KChorusFlanger_html_a5e4e222286f36e426d04f8678db24d64"><div class="ttname"><a href="classABDMS2000_1_1MS2KChorusFlanger.html#a5e4e222286f36e426d04f8678db24d64">ABDMS2000::MS2KChorusFlanger::depth_</a></div><div class="ttdeci">float depth_</div><div class="ttdef"><b>Definition</b> MS2KChorusFlanger.h:137</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KChorusFlanger_html_a6e66e4e1d801127150ed7478175e92e7"><div class="ttname"><a href="classABDMS2000_1_1MS2KChorusFlanger.html#a6e66e4e1d801127150ed7478175e92e7">ABDMS2000::MS2KChorusFlanger::lfoInc_</a></div><div class="ttdeci">float lfoInc_</div><div class="ttdef"><b>Definition</b> MS2KChorusFlanger.h:141</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KChorusFlanger_html_a6fa33a04c5dc8ef27eb983511bbdaf70"><div class="ttname"><a href="classABDMS2000_1_1MS2KChorusFlanger.html#a6fa33a04c5dc8ef27eb983511bbdaf70">ABDMS2000::MS2KChorusFlanger::bufferL_</a></div><div class="ttdeci">std::array&lt; float, kBufferSize &gt; bufferL_</div><div class="ttdef"><b>Definition</b> MS2KChorusFlanger.h:143</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KChorusFlanger_html_a74098004bee904cc8917738c5e78bdaf"><div class="ttname"><a href="classABDMS2000_1_1MS2KChorusFlanger.html#a74098004bee904cc8917738c5e78bdaf">ABDMS2000::MS2KChorusFlanger::processSample</a></div><div class="ttdeci">void processSample(float &amp;left, float &amp;right) noexcept</div><div class="ttdef"><b>Definition</b> MS2KChorusFlanger.h:66</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KChorusFlanger_html_a8395c62549dce3dbab828b229b5a3a9a"><div class="ttname"><a href="classABDMS2000_1_1MS2KChorusFlanger.html#a8395c62549dce3dbab828b229b5a3a9a">ABDMS2000::MS2KChorusFlanger::kBufferSize</a></div><div class="ttdeci">static constexpr size_t kBufferSize</div><div class="ttdef"><b>Definition</b> MS2KChorusFlanger.h:27</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KChorusFlanger_html_ab59770bb7438f53488989ccfad9c9218"><div class="ttname"><a href="classABDMS2000_1_1MS2KChorusFlanger.html#ab59770bb7438f53488989ccfad9c9218">ABDMS2000::MS2KChorusFlanger::updateLFOIncrement</a></div><div class="ttdeci">void updateLFOIncrement() noexcept</div><div class="ttdef"><b>Definition</b> MS2KChorusFlanger.h:104</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KChorusFlanger_html_ab707b530aad255f46f15b2cadfff59aa"><div class="ttname"><a href="classABDMS2000_1_1MS2KChorusFlanger.html#ab707b530aad255f46f15b2cadfff59aa">ABDMS2000::MS2KChorusFlanger::setFeedback</a></div><div class="ttdeci">void setFeedback(float feedback0to127) noexcept</div><div class="ttdef"><b>Definition</b> MS2KChorusFlanger.h:61</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KChorusFlanger_html_ab7260dd5baac57bdf3197cdb7df454f0"><div class="ttname"><a href="classABDMS2000_1_1MS2KChorusFlanger.html#ab7260dd5baac57bdf3197cdb7df454f0">ABDMS2000::MS2KChorusFlanger::prepare</a></div><div class="ttdeci">void prepare(double sampleRate) noexcept</div><div class="ttdef"><b>Definition</b> MS2KChorusFlanger.h:35</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KChorusFlanger_html_ac49e51e817413f3bb23f74f2c27a237f"><div class="ttname"><a href="classABDMS2000_1_1MS2KChorusFlanger.html#ac49e51e817413f3bb23f74f2c27a237f">ABDMS2000::MS2KChorusFlanger::MS2KChorusFlanger</a></div><div class="ttdeci">MS2KChorusFlanger() noexcept</div><div class="ttdef"><b>Definition</b> MS2KChorusFlanger.h:30</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KChorusFlanger_html_ad61dd5b7f41bc118433bd84fddc82107"><div class="ttname"><a href="classABDMS2000_1_1MS2KChorusFlanger.html#ad61dd5b7f41bc118433bd84fddc82107">ABDMS2000::MS2KChorusFlanger::setSpeed</a></div><div class="ttdeci">void setSpeed(float speed0to1) noexcept</div><div class="ttdef"><b>Definition</b> MS2KChorusFlanger.h:50</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KChorusFlanger_html_ad8e361f5a494bfd1d088da4cd17a57a4"><div class="ttname"><a href="classABDMS2000_1_1MS2KChorusFlanger.html#ad8e361f5a494bfd1d088da4cd17a57a4">ABDMS2000::MS2KChorusFlanger::hermite</a></div><div class="ttdeci">static float hermite(float frac, float y0, float y1, float y2, float y3) noexcept</div><div class="ttdef"><b>Definition</b> MS2KChorusFlanger.h:111</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KChorusFlanger_html_ade5364d3fa988fe864ad0765d8ff766f"><div class="ttname"><a href="classABDMS2000_1_1MS2KChorusFlanger.html#ade5364d3fa988fe864ad0765d8ff766f">ABDMS2000::MS2KChorusFlanger::speed_</a></div><div class="ttdeci">float speed_</div><div class="ttdef"><b>Definition</b> MS2KChorusFlanger.h:136</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2KChorusFlanger_html_ae04258a0d954d9e7e41268e56e13f4a3"><div class="ttname"><a href="classABDMS2000_1_1MS2KChorusFlanger.html#ae04258a0d954d9e7e41268e56e13f4a3">ABDMS2000::MS2KChorusFlanger::lfoPhase_</a></div><div class="ttdeci">float lfoPhase_</div><div class="ttdef"><b>Definition</b> MS2KChorusFlanger.h:140</div></div>
+<div class="ttc" id="anamespaceABDMS2000_1_1Constants_html_a60768002de95d9455afd415fadf8f61b"><div class="ttname"><a href="namespaceABDMS2000_1_1Constants.html#a60768002de95d9455afd415fadf8f61b">ABDMS2000::Constants::kMidiMaxVal</a></div><div class="ttdeci">constexpr float kMidiMaxVal</div><div class="ttdef"><b>Definition</b> HardwareConstants.h:77</div></div>
+<div class="ttc" id="anamespaceABDMS2000_1_1Constants_html_aace147a48c82c76f89ee7105999f76d1"><div class="ttname"><a href="namespaceABDMS2000_1_1Constants.html#aace147a48c82c76f89ee7105999f76d1">ABDMS2000::Constants::kTwoPi</a></div><div class="ttdeci">constexpr float kTwoPi</div><div class="ttdef"><b>Definition</b> HardwareConstants.h:79</div></div>
+<div class="ttc" id="anamespaceABDMS2000_1_1Constants_html_ab81ba79bd8dc220ce1560a1237148855"><div class="ttname"><a href="namespaceABDMS2000_1_1Constants.html#ab81ba79bd8dc220ce1560a1237148855">ABDMS2000::Constants::kFlangerMaxFeedback</a></div><div class="ttdeci">constexpr float kFlangerMaxFeedback</div><div class="ttdef"><b>Definition</b> HardwareConstants.h:78</div></div>
+<div class="ttc" id="anamespaceABDMS2000_1_1DSPUtils_html_a552d74debe391b3ee31b66a24de3cfbd"><div class="ttname"><a href="namespaceABDMS2000_1_1DSPUtils.html#a552d74debe391b3ee31b66a24de3cfbd">ABDMS2000::DSPUtils::kSpeedLogScaleMax</a></div><div class="ttdeci">static constexpr float kSpeedLogScaleMax</div><div class="ttdef"><b>Definition</b> DSPUtils.h:36</div></div>
+<div class="ttc" id="anamespaceABDMS2000_1_1DSPUtils_html_a5889ba7ff31a1d2a51522d85fc4fdb22"><div class="ttname"><a href="namespaceABDMS2000_1_1DSPUtils.html#a5889ba7ff31a1d2a51522d85fc4fdb22">ABDMS2000::DSPUtils::kFlangerDelayRangeSec</a></div><div class="ttdeci">static constexpr float kFlangerDelayRangeSec</div><div class="ttdef"><b>Definition</b> DSPUtils.h:38</div></div>
+<div class="ttc" id="anamespaceABDMS2000_1_1DSPUtils_html_a5a7c49ff3d9faeca16c12197dca22696"><div class="ttname"><a href="namespaceABDMS2000_1_1DSPUtils.html#a5a7c49ff3d9faeca16c12197dca22696">ABDMS2000::DSPUtils::kChorusBaseDelaySec</a></div><div class="ttdeci">static constexpr float kChorusBaseDelaySec</div><div class="ttdef"><b>Definition</b> DSPUtils.h:37</div></div>
+<div class="ttc" id="anamespaceABDMS2000_1_1DSPUtils_html_a811ef7806eb2bb6d1dd6c1625b8f1d18"><div class="ttname"><a href="namespaceABDMS2000_1_1DSPUtils.html#a811ef7806eb2bb6d1dd6c1625b8f1d18">ABDMS2000::DSPUtils::validateSampleRate</a></div><div class="ttdeci">double validateSampleRate(double sr) noexcept</div><div class="ttdef"><b>Definition</b> DSPUtils.h:26</div></div>
+<div class="ttc" id="anamespaceABDMS2000_1_1DSPUtils_html_a8877b59651c3d1d1b13d1d594ef5d182"><div class="ttname"><a href="namespaceABDMS2000_1_1DSPUtils.html#a8877b59651c3d1d1b13d1d594ef5d182">ABDMS2000::DSPUtils::kChorusExcursionSec</a></div><div class="ttdeci">static constexpr float kChorusExcursionSec</div><div class="ttdef"><b>Definition</b> DSPUtils.h:39</div></div>
+<div class="ttc" id="anamespaceABDMS2000_1_1DSPUtils_html_ad9e9f2e4ea3438faf3270f5ac5b2e273"><div class="ttname"><a href="namespaceABDMS2000_1_1DSPUtils.html#ad9e9f2e4ea3438faf3270f5ac5b2e273">ABDMS2000::DSPUtils::kFlangerExcursionRangeSec</a></div><div class="ttdeci">static constexpr float kFlangerExcursionRangeSec</div><div class="ttdef"><b>Definition</b> DSPUtils.h:40</div></div>
+<div class="ttc" id="anamespaceABDMS2000_html"><div class="ttname"><a href="namespaceABDMS2000.html">ABDMS2000</a></div><div class="ttdef"><b>Definition</b> AppLogger.h:18</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

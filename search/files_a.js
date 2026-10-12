@@ -1,5 +1,26 @@
 var searchData=
 [
-  ['noisegenerator_2ecpp_0',['NoiseGenerator.cpp',['../NoiseGenerator_8cpp.html',1,'']]],
-  ['noisegenerator_2eh_1',['NoiseGenerator.h',['../NoiseGenerator_8h.html',1,'']]]
+  ['microkorghardwareprogram_2eh_0',['MicroKorgHardwareProgram.h',['../MicroKorgHardwareProgram_8h.html',1,'']]],
+  ['midimap_2ecpp_1',['MIDIMap.cpp',['../MIDIMap_8cpp.html',1,'']]],
+  ['midimap_2eh_2',['MIDIMap.h',['../MIDIMap_8h.html',1,'']]],
+  ['miditelemetrymanager_2ecpp_3',['MIDITelemetryManager.cpp',['../MIDITelemetryManager_8cpp.html',1,'']]],
+  ['miditelemetrymanager_2eh_4',['MIDITelemetryManager.h',['../MIDITelemetryManager_8h.html',1,'']]],
+  ['modfx_2ecpp_5',['ModFX.cpp',['../ModFX_8cpp.html',1,'']]],
+  ['modfx_2eh_6',['ModFX.h',['../ModFX_8h.html',1,'']]],
+  ['modsequencer_2ecpp_7',['ModSequencer.cpp',['../ModSequencer_8cpp.html',1,'']]],
+  ['modsequencer_2eh_8',['ModSequencer.h',['../ModSequencer_8h.html',1,'']]],
+  ['ms2000_5fresearch_5fnotes_2emd_9',['MS2000_Research_Notes.md',['../MS2000__Research__Notes_8md.html',1,'']]],
+  ['ms2000_5fsysex_5fspec_2emd_10',['MS2000_SysEx_Spec.md',['../MS2000__SysEx__Spec_8md.html',1,'']]],
+  ['ms2000factorybank_2eh_11',['MS2000FactoryBank.h',['../MS2000FactoryBank_8h.html',1,'']]],
+  ['ms2000hardwareprogram_2eh_12',['MS2000HardwareProgram.h',['../MS2000HardwareProgram_8h.html',1,'']]],
+  ['ms2000patchbuilder_2eh_13',['MS2000PatchBuilder.h',['../MS2000PatchBuilder_8h.html',1,'']]],
+  ['ms2000programdata_2eh_14',['MS2000ProgramData.h',['../MS2000ProgramData_8h.html',1,'']]],
+  ['ms2000sysexexporter_2eh_15',['MS2000SysExExporter.h',['../MS2000SysExExporter_8h.html',1,'']]],
+  ['ms2kchorusflanger_2eh_16',['MS2KChorusFlanger.h',['../MS2KChorusFlanger_8h.html',1,'']]],
+  ['ms2kdelay_2ecpp_17',['MS2KDelay.cpp',['../MS2KDelay_8cpp.html',1,'']]],
+  ['ms2kdelay_2eh_18',['MS2KDelay.h',['../MS2KDelay_8h.html',1,'']]],
+  ['ms2kvocoder16band_2ecpp_19',['MS2KVocoder16Band.cpp',['../MS2KVocoder16Band_8cpp.html',1,'']]],
+  ['ms2kvocoder16band_2eh_20',['MS2KVocoder16Band.h',['../MS2KVocoder16Band_8h.html',1,'']]],
+  ['multimodefilter_2ecpp_21',['MultiModeFilter.cpp',['../MultiModeFilter_8cpp.html',1,'']]],
+  ['multimodefilter_2eh_22',['MultiModeFilter.h',['../MultiModeFilter_8h.html',1,'']]]
 ];

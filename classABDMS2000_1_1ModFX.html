@@ -75,17 +75,21 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Métodos públicos</a> &#124;
-<a href="#pri-methods">Métodos privados</a> &#124;
 <a href="#pri-attribs">Atributos privados</a> &#124;
 <a href="classABDMS2000_1_1ModFX-members.html">Lista de todos los miembros</a>  </div>
   <div class="headertitle"><div class="title">Referencia de la clase ABDMS2000::ModFX</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Modulation FX Block for MS2000. Incorporates exact reverse-engineered specs:  
+<p>Modulation FX Block for MS2000.  
  <a href="classABDMS2000_1_1ModFX.html#details">Más...</a></p>
 
 <p><code>#include &lt;<a class="el" href="ModFX_8h_source.html">ModFX.h</a>&gt;</code></p>
+<div class="dynheader">
+Diagrama de colaboración de ABDMS2000::ModFX:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classABDMS2000_1_1ModFX__coll__graph.svg" width="251" height="124"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a href="graph_legend.html">leyenda</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Métodos públicos</h2></td></tr>
@@ -110,17 +114,6 @@ Métodos públicos</h2></td></tr>
 <tr class="memitem:aaa26127ef38378ff22785a6d8202524c" id="r_aaa26127ef38378ff22785a6d8202524c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1ModFX.html#aaa26127ef38378ff22785a6d8202524c">process</a> (float &amp;leftSample, float &amp;rightSample) noexcept</td></tr>
 <tr class="separator:aaa26127ef38378ff22785a6d8202524c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
-Métodos privados</h2></td></tr>
-<tr class="memitem:a88b609d29d0bf463687366be7118ad1b" id="r_a88b609d29d0bf463687366be7118ad1b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1ModFX.html#a88b609d29d0bf463687366be7118ad1b">readInterpolated</a> (const std::vector&lt; float &gt; &amp;buf, float readPos, size_t bufLen) const noexcept</td></tr>
-<tr class="separator:a88b609d29d0bf463687366be7118ad1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a295f8c5bf2287c3ba8d5a3dfa2c7c0fa" id="r_a295f8c5bf2287c3ba8d5a3dfa2c7c0fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1ModFX.html#a295f8c5bf2287c3ba8d5a3dfa2c7c0fa">processChorusFlanger</a> (float &amp;left, float &amp;right) noexcept</td></tr>
-<tr class="separator:a295f8c5bf2287c3ba8d5a3dfa2c7c0fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a225c36785991984a203a69139ac74e" id="r_a5a225c36785991984a203a69139ac74e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1ModFX.html#a5a225c36785991984a203a69139ac74e">processEnsemble</a> (float &amp;left, float &amp;right) noexcept</td></tr>
-<tr class="separator:a5a225c36785991984a203a69139ac74e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae559d2fb820a3eee80fc9b6d8d1b996a" id="r_ae559d2fb820a3eee80fc9b6d8d1b996a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1ModFX.html#ae559d2fb820a3eee80fc9b6d8d1b996a">processPhaser</a> (float &amp;left, float &amp;right) noexcept</td></tr>
-<tr class="separator:ae559d2fb820a3eee80fc9b6d8d1b996a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Atributos privados</h2></td></tr>
 <tr class="memitem:a1816d60ffb3e98dd1f8c6aab89f9f7bb" id="r_a1816d60ffb3e98dd1f8c6aab89f9f7bb"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1ModFX.html#a1816d60ffb3e98dd1f8c6aab89f9f7bb">sampleRate_</a> {44100.0}</td></tr>
@@ -135,39 +128,19 @@ Atributos privados</h2></td></tr>
 <tr class="separator:aedf30e8d9ee42860daf9053e731bd33a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4706c03f0a8a53cb35388bfd4c08c53a" id="r_a4706c03f0a8a53cb35388bfd4c08c53a"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1ModFX.html#a4706c03f0a8a53cb35388bfd4c08c53a">rawFeedback_</a> {0.0f}</td></tr>
 <tr class="separator:a4706c03f0a8a53cb35388bfd4c08c53a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa5e16881465948c8897af80d05750ea5" id="r_aa5e16881465948c8897af80d05750ea5"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1ModFX.html#aa5e16881465948c8897af80d05750ea5">lfoPhase_</a> {0.0}</td></tr>
-<tr class="separator:aa5e16881465948c8897af80d05750ea5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a115612a265b2bd97e4225c8cfca3bcc7" id="r_a115612a265b2bd97e4225c8cfca3bcc7"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1ModFX.html#a115612a265b2bd97e4225c8cfca3bcc7">lfoIncrement_</a> {0.0}</td></tr>
-<tr class="separator:a115612a265b2bd97e4225c8cfca3bcc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7044f0ccd464e59bc77ecc0e9f0f60b7" id="r_a7044f0ccd464e59bc77ecc0e9f0f60b7"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1ModFX.html#a7044f0ccd464e59bc77ecc0e9f0f60b7">ensemblePhaseSlow_</a> {0.0}</td></tr>
-<tr class="separator:a7044f0ccd464e59bc77ecc0e9f0f60b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada51e429b593183fd88f2a09fcfe33f5" id="r_ada51e429b593183fd88f2a09fcfe33f5"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1ModFX.html#ada51e429b593183fd88f2a09fcfe33f5">ensemblePhaseFast_</a> {0.0}</td></tr>
-<tr class="separator:ada51e429b593183fd88f2a09fcfe33f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9523d4d16fda55cf8b9e4bf91818280d" id="r_a9523d4d16fda55cf8b9e4bf91818280d"><td class="memItemLeft" align="right" valign="top">std::array&lt; std::vector&lt; float &gt;, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1ModFX.html#a9523d4d16fda55cf8b9e4bf91818280d">ensembleLinesL_</a></td></tr>
-<tr class="separator:a9523d4d16fda55cf8b9e4bf91818280d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2204b04501ab145bc231f95f8bf909a6" id="r_a2204b04501ab145bc231f95f8bf909a6"><td class="memItemLeft" align="right" valign="top">std::array&lt; std::vector&lt; float &gt;, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1ModFX.html#a2204b04501ab145bc231f95f8bf909a6">ensembleLinesR_</a></td></tr>
-<tr class="separator:a2204b04501ab145bc231f95f8bf909a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f877f949137c55385ee891ebfd7f9a9" id="r_a8f877f949137c55385ee891ebfd7f9a9"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1ModFX.html#a8f877f949137c55385ee891ebfd7f9a9">ensembleWriteIndex_</a> {0}</td></tr>
-<tr class="separator:a8f877f949137c55385ee891ebfd7f9a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e641faf7cdc79c9c12486be5282ce62" id="r_a6e641faf7cdc79c9c12486be5282ce62"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1ModFX.html#a6e641faf7cdc79c9c12486be5282ce62">ensembleMaxSamples_</a> {4410}</td></tr>
-<tr class="separator:a6e641faf7cdc79c9c12486be5282ce62"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acdb415a5d15a3b58bdda190b5cf8dd39" id="r_acdb415a5d15a3b58bdda190b5cf8dd39"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1ModFX.html#acdb415a5d15a3b58bdda190b5cf8dd39">chorusBufferL_</a></td></tr>
-<tr class="separator:acdb415a5d15a3b58bdda190b5cf8dd39"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f04fc01eca9e93e5ef964eb472a3fcd" id="r_a3f04fc01eca9e93e5ef964eb472a3fcd"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1ModFX.html#a3f04fc01eca9e93e5ef964eb472a3fcd">chorusBufferR_</a></td></tr>
-<tr class="separator:a3f04fc01eca9e93e5ef964eb472a3fcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a860b9037896e559ebaea5f93651c187e" id="r_a860b9037896e559ebaea5f93651c187e"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1ModFX.html#a860b9037896e559ebaea5f93651c187e">chorusWriteIndex_</a> {0}</td></tr>
-<tr class="separator:a860b9037896e559ebaea5f93651c187e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af5181940a007c95d1bc204097f40aa7f" id="r_af5181940a007c95d1bc204097f40aa7f"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1ModFX.html#af5181940a007c95d1bc204097f40aa7f">chorusMaxSamples_</a> {4410}</td></tr>
-<tr class="separator:af5181940a007c95d1bc204097f40aa7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ce4a70f764f6878aaa98b3077aa4ec2" id="r_a8ce4a70f764f6878aaa98b3077aa4ec2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classABDMS2000_1_1MS2KChorusFlanger.html">MS2KChorusFlanger</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1ModFX.html#a8ce4a70f764f6878aaa98b3077aa4ec2">chorusFlanger_</a></td></tr>
+<tr class="separator:a8ce4a70f764f6878aaa98b3077aa4ec2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6baccedc762409aef7bb1909b374212e" id="r_a6baccedc762409aef7bb1909b374212e"><td class="memItemLeft" align="right" valign="top">abd::dsp::DspSolinaEnsemble&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1ModFX.html#a6baccedc762409aef7bb1909b374212e">ensemble_</a></td></tr>
+<tr class="separator:a6baccedc762409aef7bb1909b374212e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0517b4f1309d27941e50de92d33c4b6d" id="r_a0517b4f1309d27941e50de92d33c4b6d"><td class="memItemLeft" align="right" valign="top">abd::dsp::Phaser4&lt; 4 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1ModFX.html#a0517b4f1309d27941e50de92d33c4b6d">phaser_</a></td></tr>
 <tr class="separator:a0517b4f1309d27941e50de92d33c4b6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Descripción detallada</h2>
-<div class="textblock"><p>Modulation FX Block for MS2000. Incorporates exact reverse-engineered specs: </p>
-<ul>
-<li>Chorus/Flanger: 8.5ms base offset, +/-4ms excursion, inverted feedback when &gt; 100</li>
-<li>Ensemble: Solina 3-delay line matrix per channel with 120-degree 3-phase dual LFOs (0.5Hz / 6.0Hz) &amp; asymmetric counter-phase output</li>
-<li>Phaser: 4-stage allpass with 800Hz..4.5kHz notch sweep </li>
+<div class="textblock"><p>Modulation FX Block for MS2000. </p>
+<p>Bloque coordinador de modulación con cero memoria dinámica (100% Real-Time Safe):</p><ul>
+<li>Chorus/Flanger: <a class="el" href="classABDMS2000_1_1MS2KChorusFlanger.html" title="MS2KChorusFlanger - Efecto híbrido continuo Chorus/Flanger del Korg MS2000 (DSP56362).">MS2KChorusFlanger</a> (exclusivo MS2000 con transición continua y buffer estático).</li>
+<li>Ensemble: abd::dsp::DspSolinaEnsemble (modo DualLFO con LFO dual 0.5Hz/6.0Hz y matriz contrafase).</li>
+<li>Phaser: abd::dsp::Phaser4&lt;4&gt; (4 etapas allpass con barrido logarítmico determinista). </li>
 </ul>
 </div><h2 class="groupheader">Documentación de constructores y destructores</h2>
 <a id="a2c1e411e4533e2d0684f8a1f89daee0c" name="a2c1e411e4533e2d0684f8a1f89daee0c"></a>
@@ -277,156 +250,6 @@ Atributos privados</h2></td></tr>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a295f8c5bf2287c3ba8d5a3dfa2c7c0fa" name="a295f8c5bf2287c3ba8d5a3dfa2c7c0fa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a295f8c5bf2287c3ba8d5a3dfa2c7c0fa">&#9670;&#160;</a></span>processChorusFlanger()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ABDMS2000::ModFX::processChorusFlanger </td>
-          <td>(</td>
-          <td class="paramtype">float &amp;&#160;</td>
-          <td class="paramname"><em>left</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float &amp;&#160;</td>
-          <td class="paramname"><em>right</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a5a225c36785991984a203a69139ac74e" name="a5a225c36785991984a203a69139ac74e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5a225c36785991984a203a69139ac74e">&#9670;&#160;</a></span>processEnsemble()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ABDMS2000::ModFX::processEnsemble </td>
-          <td>(</td>
-          <td class="paramtype">float &amp;&#160;</td>
-          <td class="paramname"><em>left</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float &amp;&#160;</td>
-          <td class="paramname"><em>right</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ae559d2fb820a3eee80fc9b6d8d1b996a" name="ae559d2fb820a3eee80fc9b6d8d1b996a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae559d2fb820a3eee80fc9b6d8d1b996a">&#9670;&#160;</a></span>processPhaser()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ABDMS2000::ModFX::processPhaser </td>
-          <td>(</td>
-          <td class="paramtype">float &amp;&#160;</td>
-          <td class="paramname"><em>left</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float &amp;&#160;</td>
-          <td class="paramname"><em>right</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a88b609d29d0bf463687366be7118ad1b" name="a88b609d29d0bf463687366be7118ad1b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a88b609d29d0bf463687366be7118ad1b">&#9670;&#160;</a></span>readInterpolated()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">float ABDMS2000::ModFX::readInterpolated </td>
-          <td>(</td>
-          <td class="paramtype">const std::vector&lt; float &gt; &amp;&#160;</td>
-          <td class="paramname"><em>buf</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>readPos</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>bufLen</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -589,8 +412,8 @@ Atributos privados</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Documentación de datos miembro</h2>
-<a id="acdb415a5d15a3b58bdda190b5cf8dd39" name="acdb415a5d15a3b58bdda190b5cf8dd39"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acdb415a5d15a3b58bdda190b5cf8dd39">&#9670;&#160;</a></span>chorusBufferL_</h2>
+<a id="a8ce4a70f764f6878aaa98b3077aa4ec2" name="a8ce4a70f764f6878aaa98b3077aa4ec2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ce4a70f764f6878aaa98b3077aa4ec2">&#9670;&#160;</a></span>chorusFlanger_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -599,73 +422,7 @@ Atributos privados</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;float&gt; ABDMS2000::ModFX::chorusBufferL_</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a3f04fc01eca9e93e5ef964eb472a3fcd" name="a3f04fc01eca9e93e5ef964eb472a3fcd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3f04fc01eca9e93e5ef964eb472a3fcd">&#9670;&#160;</a></span>chorusBufferR_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;float&gt; ABDMS2000::ModFX::chorusBufferR_</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="af5181940a007c95d1bc204097f40aa7f" name="af5181940a007c95d1bc204097f40aa7f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af5181940a007c95d1bc204097f40aa7f">&#9670;&#160;</a></span>chorusMaxSamples_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t ABDMS2000::ModFX::chorusMaxSamples_ {4410}</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a860b9037896e559ebaea5f93651c187e" name="a860b9037896e559ebaea5f93651c187e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a860b9037896e559ebaea5f93651c187e">&#9670;&#160;</a></span>chorusWriteIndex_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t ABDMS2000::ModFX::chorusWriteIndex_ {0}</td>
+          <td class="memname"><a class="el" href="classABDMS2000_1_1MS2KChorusFlanger.html">MS2KChorusFlanger</a> ABDMS2000::ModFX::chorusFlanger_</td>
         </tr>
       </table>
   </td>
@@ -721,8 +478,8 @@ Atributos privados</h2></td></tr>
 
 </div>
 </div>
-<a id="a9523d4d16fda55cf8b9e4bf91818280d" name="a9523d4d16fda55cf8b9e4bf91818280d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9523d4d16fda55cf8b9e4bf91818280d">&#9670;&#160;</a></span>ensembleLinesL_</h2>
+<a id="a6baccedc762409aef7bb1909b374212e" name="a6baccedc762409aef7bb1909b374212e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6baccedc762409aef7bb1909b374212e">&#9670;&#160;</a></span>ensemble_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -731,161 +488,7 @@ Atributos privados</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::array&lt;std::vector&lt;float&gt;, 3&gt; ABDMS2000::ModFX::ensembleLinesL_</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a2204b04501ab145bc231f95f8bf909a6" name="a2204b04501ab145bc231f95f8bf909a6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2204b04501ab145bc231f95f8bf909a6">&#9670;&#160;</a></span>ensembleLinesR_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::array&lt;std::vector&lt;float&gt;, 3&gt; ABDMS2000::ModFX::ensembleLinesR_</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a6e641faf7cdc79c9c12486be5282ce62" name="a6e641faf7cdc79c9c12486be5282ce62"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6e641faf7cdc79c9c12486be5282ce62">&#9670;&#160;</a></span>ensembleMaxSamples_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t ABDMS2000::ModFX::ensembleMaxSamples_ {4410}</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ada51e429b593183fd88f2a09fcfe33f5" name="ada51e429b593183fd88f2a09fcfe33f5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ada51e429b593183fd88f2a09fcfe33f5">&#9670;&#160;</a></span>ensemblePhaseFast_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">double ABDMS2000::ModFX::ensemblePhaseFast_ {0.0}</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a7044f0ccd464e59bc77ecc0e9f0f60b7" name="a7044f0ccd464e59bc77ecc0e9f0f60b7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7044f0ccd464e59bc77ecc0e9f0f60b7">&#9670;&#160;</a></span>ensemblePhaseSlow_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">double ABDMS2000::ModFX::ensemblePhaseSlow_ {0.0}</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a8f877f949137c55385ee891ebfd7f9a9" name="a8f877f949137c55385ee891ebfd7f9a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8f877f949137c55385ee891ebfd7f9a9">&#9670;&#160;</a></span>ensembleWriteIndex_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t ABDMS2000::ModFX::ensembleWriteIndex_ {0}</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a115612a265b2bd97e4225c8cfca3bcc7" name="a115612a265b2bd97e4225c8cfca3bcc7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a115612a265b2bd97e4225c8cfca3bcc7">&#9670;&#160;</a></span>lfoIncrement_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">double ABDMS2000::ModFX::lfoIncrement_ {0.0}</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="aa5e16881465948c8897af80d05750ea5" name="aa5e16881465948c8897af80d05750ea5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa5e16881465948c8897af80d05750ea5">&#9670;&#160;</a></span>lfoPhase_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">double ABDMS2000::ModFX::lfoPhase_ {0.0}</td>
+          <td class="memname">abd::dsp::DspSolinaEnsemble ABDMS2000::ModFX::ensemble_</td>
         </tr>
       </table>
   </td>

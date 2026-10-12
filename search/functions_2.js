@@ -9,9 +9,11 @@ var searchData=
   ['computeeffectivefeedback_6',['computeEffectiveFeedback',['../classABDMS2000_1_1FilterResonanceComp.html#af62fc6fce7dd621e2e03047a0e08b1e6',1,'ABDMS2000::FilterResonanceComp']]],
   ['computegaincompensation_7',['computeGainCompensation',['../classABDMS2000_1_1FilterResonanceComp.html#a5cfca17ee03eda66e9d6eb8dd9d71621',1,'ABDMS2000::FilterResonanceComp']]],
   ['configuretimbreseq_8',['configureTimbreSeq',['../classABDMS2000_1_1SynthEngine.html#a00e397dbef31959a9646eef7abc73bee',1,'ABDMS2000::SynthEngine']]],
-  ['createalldatadump_9',['createAllDataDump',['../classABDMS2000_1_1SysExManager.html#ada6c551c153fa6c51629c0ec0c9cae3d',1,'ABDMS2000::SysExManager']]],
-  ['createeditor_10',['createeditor',['../classABDMS2000_1_1Tests_1_1BridgeTestProcessor.html#ab0cb753f870499a8c028cefdacb5a3a3',1,'ABDMS2000::Tests::BridgeTestProcessor::createEditor()'],['../classABDMS2000_1_1Tests_1_1DummyProcessor.html#af7428f08f743dce9210f02bd3abd77c2',1,'ABDMS2000::Tests::DummyProcessor::createEditor()'],['../classABDMS2000_1_1ABDMS2000AudioProcessor.html#a1a9483323c21aab5aacca945d05cbef9',1,'ABDMS2000::ABDMS2000AudioProcessor::createEditor()']]],
-  ['createhardwareprogramdump_11',['createHardwareProgramDump',['../classABDMS2000_1_1SysExManager.html#a54aee8c000c7e308bc0075418ca52c4e',1,'ABDMS2000::SysExManager']]],
-  ['createpluginfilter_12',['createPluginFilter',['../PluginProcessor_8cpp.html#a62f69a86baff96d3ee5c287e100adc66',1,'PluginProcessor.cpp']]],
-  ['createprogramdump_13',['createProgramDump',['../classABDMS2000_1_1SysExManager.html#ac22f1cb31f361600b35c8b7e7a50347e',1,'ABDMS2000::SysExManager']]]
+  ['convertsysextocutoffhz_9',['convertSysExToCutoffHz',['../namespaceconversion.html#ad18766de37d7dd942fc0f99ee6f10d07',1,'conversion']]],
+  ['createalldatadump_10',['createAllDataDump',['../classABDMS2000_1_1SysExManager.html#ada6c551c153fa6c51629c0ec0c9cae3d',1,'ABDMS2000::SysExManager']]],
+  ['createeditor_11',['createeditor',['../classABDMS2000_1_1Tests_1_1DummyProcessor.html#af7428f08f743dce9210f02bd3abd77c2',1,'ABDMS2000::Tests::DummyProcessor::createEditor()'],['../classABDMS2000_1_1Tests_1_1BridgeTestProcessor.html#ab0cb753f870499a8c028cefdacb5a3a3',1,'ABDMS2000::Tests::BridgeTestProcessor::createEditor()'],['../classABDMS2000_1_1ABDMS2000AudioProcessor.html#a1a9483323c21aab5aacca945d05cbef9',1,'ABDMS2000::ABDMS2000AudioProcessor::createEditor()']]],
+  ['createhardwareprogramdump_12',['createHardwareProgramDump',['../classABDMS2000_1_1SysExManager.html#a54aee8c000c7e308bc0075418ca52c4e',1,'ABDMS2000::SysExManager']]],
+  ['createmicrokorgprogramdump_13',['createMicrokorgProgramDump',['../classABDMS2000_1_1SysExManager.html#a426887465b13938097b81574c9220dab',1,'ABDMS2000::SysExManager']]],
+  ['createpluginfilter_14',['createPluginFilter',['../PluginProcessor_8cpp.html#a62f69a86baff96d3ee5c287e100adc66',1,'PluginProcessor.cpp']]],
+  ['createprogramdump_15',['createProgramDump',['../classABDMS2000_1_1SysExManager.html#ac22f1cb31f361600b35c8b7e7a50347e',1,'ABDMS2000::SysExManager']]]
 ];

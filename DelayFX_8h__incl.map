@@ -1,9 +1,11 @@
 <map id="Source/DSP/Effects/DelayFX.h" name="Source/DSP/Effects/DelayFX.h">
 <area shape="rect" id="Node000001" title=" " alt="" coords="34,5,178,45"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,93,68,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="91,47,58,84,54,81,87,44"/>
-<area shape="rect" id="Node000003" href="$DSPUtils_8h.html" title=" " alt="" coords="93,93,258,119"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="125,44,158,81,154,84,121,47"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="95,167,256,192"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="178,119,178,153,173,153,173,119"/>
+<area shape="rect" id="Node000002" href="$MS2KDelay_8h.html" title=" " alt="" coords="53,93,159,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,46,109,79,103,79,103,46"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,167,68,192"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="96,121,59,159,55,155,93,117"/>
+<area shape="rect" id="Node000004" href="$DSPUtils_8h.html" title=" " alt="" coords="93,167,258,192"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="119,117,157,155,153,159,116,121"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="95,240,256,265"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="178,192,178,226,173,226,173,192"/>
 </map>

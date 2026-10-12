@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['dwgsbinary_0',['DWGSBinary',['../namespaceDWGSBinary.html',1,'']]]
+  ['conversion_0',['conversion',['../namespaceconversion.html',1,'']]]
 ];

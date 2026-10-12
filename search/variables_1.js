@@ -11,8 +11,8 @@ var searchData=
   ['b5_5f_8',['b5_',['../classABDMS2000_1_1NoiseGenerator.html#ac67237305c9753b18d290b38c0619765',1,'ABDMS2000::NoiseGenerator']]],
   ['b6_5f_9',['b6_',['../classABDMS2000_1_1NoiseGenerator.html#a203930769860ef9e35b69dd98c0cb153',1,'ABDMS2000::NoiseGenerator']]],
   ['bajo_5f_10',['bajo_',['../classABDMS2000_1_1Tests_1_1congelado_1_1Equalizer.html#af5b8242da7a80d1e9fd635113daa9c52',1,'ABDMS2000::Tests::congelado::Equalizer']]],
-  ['bandlevels_5f_11',['bandLevels_',['../classABDMS2000_1_1Vocoder16Band.html#a48f508c9afe58102490909a9bbb6a6da',1,'ABDMS2000::Vocoder16Band']]],
-  ['bandpans_5f_12',['bandPans_',['../classABDMS2000_1_1Vocoder16Band.html#a494e390afe57ee4499cb99a50e0240dd',1,'ABDMS2000::Vocoder16Band']]],
+  ['bandlevels_5f_11',['bandLevels_',['../classABDMS2000_1_1MS2KVocoder16Band.html#ac89e39b5de63e576d4b7c143645847a5',1,'ABDMS2000::MS2KVocoder16Band']]],
+  ['bandpans_5f_12',['bandPans_',['../classABDMS2000_1_1MS2KVocoder16Band.html#a36c4007f31730c32f68cf7fbd57989f5',1,'ABDMS2000::MS2KVocoder16Band']]],
   ['bank_5f_13',['bank_',['../classABDMS2000_1_1SysExManager.html#ac1d91be04b7ca998d79a688b79713d91',1,'ABDMS2000::SysExManager']]],
   ['bank_5fsize_14',['BANK_SIZE',['../classABDMS2000_1_1SysExManager.html#a8e56e69c6c6f99df38982f84fbec8279',1,'ABDMS2000::SysExManager']]],
   ['baseblockparams_5f_15',['baseBlockParams_',['../classABDMS2000_1_1VoiceManager.html#adf243418097b7cf352dc64986f329fd0',1,'ABDMS2000::VoiceManager']]],
@@ -23,5 +23,7 @@ var searchData=
   ['bpm_20',['bpm',['../structABDMS2000_1_1VoiceParameters.html#ace2edb234f1f9bc79bfc5b656b31620e',1,'ABDMS2000::VoiceParameters']]],
   ['bpm_5f_21',['bpm_',['../classABDMS2000_1_1Arpeggiator.html#a129905cac57e1d8548d9994189f00c83',1,'ABDMS2000::Arpeggiator::bpm_'],['../classABDMS2000_1_1ModSequencer.html#a6bf6e9bb527d6f703f2ae12bc30e715b',1,'ABDMS2000::ModSequencer::bpm_']]],
   ['bridge_22',['bridge',['../structABDMS2000_1_1Tests_1_1BridgeTestHarness.html#ab27b67d49c477a7477b3b6f2b9130246',1,'ABDMS2000::Tests::BridgeTestHarness']]],
-  ['bridge_5f_23',['bridge_',['../classABDMS2000_1_1ABDMS2000AudioProcessorEditor.html#a99370908b3a718d1b19d383175f141f5',1,'ABDMS2000::ABDMS2000AudioProcessorEditor']]]
+  ['bridge_5f_23',['bridge_',['../classABDMS2000_1_1ABDMS2000AudioProcessorEditor.html#a99370908b3a718d1b19d383175f141f5',1,'ABDMS2000::ABDMS2000AudioProcessorEditor']]],
+  ['bufferl_5f_24',['bufferL_',['../classABDMS2000_1_1MS2KChorusFlanger.html#a6fa33a04c5dc8ef27eb983511bbdaf70',1,'ABDMS2000::MS2KChorusFlanger']]],
+  ['bufferr_5f_25',['bufferR_',['../classABDMS2000_1_1MS2KChorusFlanger.html#a2f89a0cc942ad73578d656edd2b858e2',1,'ABDMS2000::MS2KChorusFlanger']]]
 ];
