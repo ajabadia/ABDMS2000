@@ -1,0 +1,3 @@
+# Baseline cppcheck de ABDMS2000 — generado midiendo HEAD (5297d3ef7) con el comando
+# exacto de la CI y cppcheck 2.21: 0 firmas, la deuda esta pagada. El gate
+# solo bloquea hallazgos que NO esten aqui (hoy: cualquiera).

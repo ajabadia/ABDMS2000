@@ -3,8 +3,8 @@
 #include <algorithm>
 #include <array>
 #include <cmath>
-#include "DspCore/DspCore.h"
 #include "../Common/DSPUtils.h"
+#include "DspCore/DspCore.h"
 #include "HardwareConstants.h"
 
 namespace ABDMS2000
@@ -23,7 +23,7 @@ namespace ABDMS2000
  */
 class MS2KChorusFlanger
 {
-public:
+  public:
     static constexpr size_t kBufferSize = 4096;
     static constexpr size_t kBufferMask = kBufferSize - 1;
 
@@ -74,13 +74,14 @@ public:
         // 2. Retardo base y excursión gobernados por el lazo de feedback híbrido
         const float fbNorm = rawFeedback_ / Constants::kMidiMaxVal;
         const float baseDelaySec = DSPUtils::kChorusBaseDelaySec - (DSPUtils::kFlangerDelayRangeSec * fbNorm);
-        const float excursionSec = (DSPUtils::kChorusExcursionSec - (DSPUtils::kFlangerExcursionRangeSec * fbNorm)) * depth_;
+        const float excursionSec =
+            (DSPUtils::kChorusExcursionSec - (DSPUtils::kFlangerExcursionRangeSec * fbNorm)) * depth_;
 
         const float baseDelaySamples = baseDelaySec * static_cast<float>(sampleRate_);
         const float modExcursionSamples = excursionSec * static_cast<float>(sampleRate_);
 
         const float delayL = baseDelaySamples + (lfo * modExcursionSamples);
-        const float delayR = baseDelaySamples - (lfo * modExcursionSamples); // Desfase 180° estéreo
+        const float delayR = baseDelaySamples - (lfo * modExcursionSamples);  // Desfase 180° estéreo
 
         // 3. Lectura con interpolación cúbica Hermite
         const float wetL = readHermite(bufferL_, delayL);
@@ -92,7 +93,6 @@ public:
         bufferR_[writeIndex_] = right + (wetR * fbGain);
         writeIndex_ = (writeIndex_ + 1) & kBufferMask;
 
-
         // 5. Mezcla Wet/Dry dinámica
         const float wetGain = depth_ * 0.75f;
         const float dryGain = std::max(0.35f, 1.0f - (depth_ * 0.40f));
@@ -100,7 +100,7 @@ public:
         right = (right * dryGain) + (wetR * wetGain);
     }
 
-private:
+  private:
     void updateLFOIncrement() noexcept
     {
         // Rango de velocidad MS2000: 0.02 Hz a 15.0 Hz en escala logarítmica
@@ -145,4 +145,4 @@ private:
     size_t writeIndex_ {0};
 };
 
-} // namespace ABDMS2000
+}  // namespace ABDMS2000

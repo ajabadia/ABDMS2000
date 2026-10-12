@@ -212,11 +212,23 @@ class SysExManager
                                                    const std::string &name = {});
 
     // ─── Formato físico microKORG (254 B especializados) ─────────────────────
-    void setSynthMode(int mode) noexcept { synthMode_ = mode; }
-    int getSynthMode() const noexcept { return synthMode_; }
+    void setSynthMode(int mode) noexcept
+    {
+        synthMode_ = mode;
+    }
+    int getSynthMode() const noexcept
+    {
+        return synthMode_;
+    }
 
-    bool hasMicrokorgProgram() const noexcept { return microkorgProgramValid_; }
-    const MicroKorgHardwareProgram &getMicrokorgProgram() const noexcept { return microkorgProgram_; }
+    bool hasMicrokorgProgram() const noexcept
+    {
+        return microkorgProgramValid_;
+    }
+    const MicroKorgHardwareProgram &getMicrokorgProgram() const noexcept
+    {
+        return microkorgProgram_;
+    }
     void setMicrokorgProgram(const MicroKorgHardwareProgram &program) noexcept
     {
         microkorgProgram_ = program;
@@ -239,7 +251,8 @@ class SysExManager
     MicroKorgHardwareProgram microkorgProgram_ {};
     bool microkorgProgramValid_ {false};
 
-    bool isKorgHeader(const uint8_t *data, size_t size, int &outChannel, uint8_t &outFunction, uint8_t &outModelId) const noexcept;
+    bool isKorgHeader(
+        const uint8_t *data, size_t size, int &outChannel, uint8_t &outFunction, uint8_t &outModelId) const noexcept;
 };
 
 }  // namespace ABDMS2000

@@ -35,33 +35,42 @@ static juce::String getMimeTypeForFilename(const juce::String &filename)
     return "application/octet-stream";
 }
 
-static juce::File findABDSharedAssetsRoot()
+static juce::File findABDSharedRoot()
 {
     juce::File exeFile = juce::File::getSpecialLocation(juce::File::currentExecutableFile);
     juce::File dir = exeFile.getParentDirectory();
 
     for (int i = 0; i < 8 && dir.exists(); ++i)
     {
-        juce::File candidate = dir.getChildFile("ABDSharedAssets");
-        if (candidate.isDirectory())
-            return candidate;
+        juce::File candidateShared = dir.getChildFile("ABDShared");
+        if (candidateShared.isDirectory())
+            return candidateShared;
+        juce::File candidateLegacy = dir.getChildFile("ABDSharedAssets");
+        if (candidateLegacy.isDirectory())
+            return candidateLegacy;
         dir = dir.getParentDirectory();
     }
 
     juce::File cwd = juce::File::getCurrentWorkingDirectory();
     for (int i = 0; i < 6 && cwd.exists(); ++i)
     {
-        juce::File candidate = cwd.getChildFile("ABDSharedAssets");
-        if (candidate.isDirectory())
-            return candidate;
+        juce::File candidateShared = cwd.getChildFile("ABDShared");
+        if (candidateShared.isDirectory())
+            return candidateShared;
+        juce::File candidateLegacy = cwd.getChildFile("ABDSharedAssets");
+        if (candidateLegacy.isDirectory())
+            return candidateLegacy;
         cwd = cwd.getParentDirectory();
     }
 
     juce::File projectRoot =
         exeFile.getParentDirectory().getParentDirectory().getParentDirectory().getParentDirectory();
-    juce::File candidate = projectRoot.getChildFile("ABDSharedAssets");
-    if (candidate.isDirectory())
-        return candidate;
+    juce::File candidateShared = projectRoot.getChildFile("ABDShared");
+    if (candidateShared.isDirectory())
+        return candidateShared;
+    juce::File candidateLegacy = projectRoot.getChildFile("ABDSharedAssets");
+    if (candidateLegacy.isDirectory())
+        return candidateLegacy;
 
     return {};
 }
@@ -72,7 +81,7 @@ std::optional<juce::WebBrowserComponent::Resource> pluginResourceProvider(const 
 
     juce::String path = url;
 
-    // Handle bankwebui:// protocol - serve from ABDSharedAssets/abdbank junction
+    // Handle bankwebui:// protocol - serve from ABDShared / ABDSharedAssets junction
     if (url.startsWith("bankwebui://"))
     {
         juce::String bankPath = url.substring(12);  // remove "bankwebui://"
@@ -86,10 +95,14 @@ std::optional<juce::WebBrowserComponent::Resource> pluginResourceProvider(const 
         if (decodedPath.containsChar('?'))
             decodedPath = decodedPath.upToFirstOccurrenceOf("?", false, false);
 
-        // Serve from ABDSharedAssets/abdbank junction (which points to ABDBankManager/WebUI)
+        // Serve from ABDShared (Assets/abdbank) or ABDSharedAssets/abdbank junction (which points to ABDBankManager/WebUI)
         juce::File bankRoot;
-        if (auto assetsRoot = findABDSharedAssetsRoot(); assetsRoot.isDirectory())
-            bankRoot = assetsRoot.getChildFile("abdbank");
+        if (auto sharedRoot = findABDSharedRoot(); sharedRoot.isDirectory())
+        {
+            bankRoot = sharedRoot.getChildFile("Assets").getChildFile("abdbank");
+            if (!bankRoot.isDirectory())
+                bankRoot = sharedRoot.getChildFile("abdbank");
+        }
 
         if (!bankRoot.isDirectory())
         {

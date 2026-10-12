@@ -17,199 +17,210 @@
 #include "Voice.h"
 #include "VoiceManager.h"
 
-    namespace ABDMS2000
+namespace ABDMS2000
 {
 
-    /**
-     * @brief Puntos de inyección de tono diagnóstico en el pipeline DSP.
-     *
-     * Cada punto permite inyectar una onda sinusoidal de prueba para depurar
-     * etapas específicas del motor de audio, simulando el hardware de test del MS2000.
-     */
-    enum class DiagnosticTonePoint
+/**
+ * @brief Puntos de inyección de tono diagnóstico en el pipeline DSP.
+ *
+ * Cada punto permite inyectar una onda sinusoidal de prueba para depurar
+ * etapas específicas del motor de audio, simulando el hardware de test del MS2000.
+ */
+enum class DiagnosticTonePoint
+{
+    Disabled = 0,
+    PostMasterVolume = 1,  // Al final del processBlock (después del master volume)
+    PreMasterVolume = 2,   // Antes de la atenuación del master volume
+    PreEffects = 3,        // Después de Voices/Vocoder, antes de ModFX/DelayFX/EQ
+    PreFilter = 4,         // Dentro de Voice: reemplaza mixedAudio antes del filtro
+    OscillatorDirect = 5   // Dentro de Voice: reemplaza la salida de OSC1
+};
+
+/**
+ * @brief Motor de sintetizador principal (abstracción de hardware MS2000/microKORG).
+ *
+ * La arquitectura de dos timbres (Single/Split/Layer) replica exactamente el
+ * comportamiento del equipo físico: cada timbre tiene sus propios parámetros y su
+ * propio juego de voces, con modo y reparto de voces globales del programa.
+ *
+ * @note Este motor es completamente thread-safe para el thread de audio y
+ *       proporciona snapshoting a 60 FPS para ABDScope.
+ */
+class SynthEngine
+{
+  public:
+    explicit SynthEngine(juce::AudioProcessorValueTreeState &apvts);
+    ~SynthEngine() = default;
+
+    // Inicialización del motor con buffer size de la DAW
+    void prepare(double sampleRate, int samplesPerBlock);
+    void reset();
+
+  public:
+    // Helpers publicos usados por la suite de C++.
+    [[nodiscard]] ModSequencer &testGetModSequencer() const noexcept
     {
-        Disabled = 0,
-        PostMasterVolume = 1,  // Al final del processBlock (después del master volume)
-        PreMasterVolume = 2,   // Antes de la atenuación del master volume
-        PreEffects = 3,        // Después de Voices/Vocoder, antes de ModFX/DelayFX/EQ
-        PreFilter = 4,         // Dentro de Voice: reemplaza mixedAudio antes del filtro
-        OscillatorDirect = 5   // Dentro de Voice: reemplaza la salida de OSC1
-    };
-
-    /**
-     * @brief Motor de sintetizador principal (abstracción de hardware MS2000/microKORG).
-     *
-     * La arquitectura de dos timbres (Single/Split/Layer) replica exactamente el
-     * comportamiento del equipo físico: cada timbre tiene sus propios parámetros y su
-     * propio juego de voces, con modo y reparto de voces globales del programa.
-     *
-     * @note Este motor es completamente thread-safe para el thread de audio y
-     *       proporciona snapshoting a 60 FPS para ABDScope.
-     */
-    class SynthEngine
+        return const_cast<SynthEngine &>(*this).modSeq_;
+    }
+    [[nodiscard]] const VoiceParameters &testGetVoiceParamsA() const noexcept
     {
-      public:
-        explicit SynthEngine(juce::AudioProcessorValueTreeState &apvts);
-        ~SynthEngine() = default;
+        return voiceParamsA_;
+    }
+    [[nodiscard]] const VoiceParameters &testGetVoiceParamsB() const noexcept
+    {
+        return voiceParamsB_;
+    }
+    void testApplySeqModulation(bool second, VoiceParameters &out) const noexcept
+    {
+        const_cast<SynthEngine &>(*this).applySeqModulation(second, out);
+    }
 
-        // Inicialización del motor con buffer size de la DAW
-        void prepare(double sampleRate, int samplesPerBlock);
-        void reset();
+    // Procesa un bloque de audio completo (thread de audio)
+    void processBlock(juce::AudioBuffer<float> &buffer,
+                      juce::MidiBuffer &midiMessages,
+                      juce::AudioPlayHead *playHead = nullptr);
 
-      public:
-        // Helpers publicos usados por la suite de C++.
-        [[nodiscard]] ModSequencer &testGetModSequencer() const noexcept { return const_cast<SynthEngine &>(*this).modSeq_; }
-        [[nodiscard]] const VoiceParameters &testGetVoiceParamsA() const noexcept { return voiceParamsA_; }
-        [[nodiscard]] const VoiceParameters &testGetVoiceParamsB() const noexcept { return voiceParamsB_; }
-        void testApplySeqModulation(bool second, VoiceParameters &out) const noexcept { const_cast<SynthEngine &>(*this).applySeqModulation(second, out); }
+    // Snapshot de telemetría para ABDScope (lock-free, POE)
+    const AudioThreadSnapshot &getSnapshot() const noexcept
+    {
+        return currentSnapshot_;
+    }
 
-        // Procesa un bloque de audio completo (thread de audio)
-        void processBlock(juce::AudioBuffer<float> &buffer,
-                          juce::MidiBuffer &midiMessages,
-                          juce::AudioPlayHead *playHead = nullptr);
+    // Eventos MIDI de alto nivel
+    void noteOn(int midiChannel, int midiNoteNumber, float velocity);
+    void noteOff(int midiChannel, int midiNoteNumber, float velocity, bool allowTailOff = true);
+    void allNotesOff();
 
-        // Snapshot de telemetría para ABDScope (lock-free, POE)
-        const AudioThreadSnapshot &getSnapshot() const noexcept
-        {
-            return currentSnapshot_;
-        }
+    // Ruedas de control (no bloqueantes)
+    void setPitchBend(float bendMinus1to1) noexcept
+    {
+        pitchBendValue_.store(bendMinus1to1, std::memory_order_relaxed);
+    }
+    void setModWheel(float mod0to1) noexcept
+    {
+        modWheelValue_.store(mod0to1, std::memory_order_relaxed);
+    }
 
-        // Eventos MIDI de alto nivel
-        void noteOn(int midiChannel, int midiNoteNumber, float velocity);
-        void noteOff(int midiChannel, int midiNoteNumber, float velocity, bool allowTailOff = true);
-        void allNotesOff();
+    // Diagnóstico (solo en desarrollo)
+    void setTestToneEnabled(bool enabled) noexcept;
+    void setDiagnosticTone(int point, float freqHz = 440.0f, float level = 0.25f) noexcept;
+    void setDiagnosticBypass(const juce::String &stage, bool enabled) noexcept;
+    void resetAllDiagnosticBypasses() noexcept;
+    [[nodiscard]] int getDiagnosticTonePoint() const noexcept;
+    [[nodiscard]] const abd::scope::ScopeDataCollector &getScopeCollector() const noexcept;
+    [[nodiscard]] double getSampleRate() const noexcept;
 
-        // Ruedas de control (no bloqueantes)
-        void setPitchBend(float bendMinus1to1) noexcept
-        {
-            pitchBendValue_.store(bendMinus1to1, std::memory_order_relaxed);
-        }
-        void setModWheel(float mod0to1) noexcept
-        {
-            modWheelValue_.store(mod0to1, std::memory_order_relaxed);
-        }
+    [[nodiscard]] ModSequencer &getModSequencer() noexcept
+    {
+        return modSeq_;
+    }
 
-        // Diagnóstico (solo en desarrollo)
-        void setTestToneEnabled(bool enabled) noexcept;
-        void setDiagnosticTone(int point, float freqHz = 440.0f, float level = 0.25f) noexcept;
-        void setDiagnosticBypass(const juce::String &stage, bool enabled) noexcept;
-        void resetAllDiagnosticBypasses() noexcept;
-        [[nodiscard]] int getDiagnosticTonePoint() const noexcept;
-        [[nodiscard]] const abd::scope::ScopeDataCollector &getScopeCollector() const noexcept;
-        [[nodiscard]] double getSampleRate() const noexcept;
+    [[nodiscard]] Arpeggiator &getArpeggiator() noexcept
+    {
+        return arpeggiator_;
+    }
+    [[nodiscard]] ModFX &getModFX() noexcept
+    {
+        return modFX_;
+    }
+    [[nodiscard]] DelayFX &getDelayFX() noexcept
+    {
+        return delayFX_;
+    }
+    [[nodiscard]] Equalizer &getMasterEQ() noexcept
+    {
+        return masterEQ_;
+    }
+    [[nodiscard]] Vocoder16Band &getVocoder() noexcept
+    {
+        return vocoder_;
+    }
 
-        [[nodiscard]] ModSequencer &getModSequencer() noexcept
-        {
-            return modSeq_;
-        }
+    // Sincronización completa de parámetros desde APVTS
+    void updateParametersFromAPVTS() noexcept;
+    void triggerArpNote(int note, float velocity, bool isNoteOn) noexcept;
 
-        [[nodiscard]] Arpeggiator &getArpeggiator() noexcept
-        {
-            return arpeggiator_;
-        }
-        [[nodiscard]] ModFX &getModFX() noexcept
-        {
-            return modFX_;
-        }
-        [[nodiscard]] DelayFX &getDelayFX() noexcept
-        {
-            return delayFX_;
-        }
-        [[nodiscard]] Equalizer &getMasterEQ() noexcept
-        {
-            return masterEQ_;
-        }
-        [[nodiscard]] Vocoder16Band &getVocoder() noexcept
-        {
-            return vocoder_;
-        }
+    // Referencias públicas (evitar copia en el thread de audio)
+    juce::AudioProcessorValueTreeState &apvts_;
 
-        // Sincronización completa de parámetros desde APVTS
-        void updateParametersFromAPVTS() noexcept;
-        void triggerArpNote(int note, float velocity, bool isNoteOn) noexcept;
+    // Helpers pinchados por DSPCoreTests (timbre params + mod-seq apply).
+    float paramValueById(const juce::String &id, float defaultVal) const noexcept;
+    float paramValue(bool second, const char *id, float defaultVal = 0.0f) const noexcept;
 
-        // Referencias públicas (evitar copia en el thread de audio)
-        juce::AudioProcessorValueTreeState &apvts_;
+    /** Vuelca en `out` todos los parámetros del timbre (1 si `second` es false, 2 si no). */
+    void readTimbreParams(bool second, VoiceParameters &out) noexcept;
 
-        // Helpers pinchados por DSPCoreTests (timbre params + mod-seq apply).
-        float paramValueById(const juce::String &id, float defaultVal) const noexcept;
-        float paramValue(bool second, const char *id, float defaultVal = 0.0f) const noexcept;
+    /** Lee las 3 filas del mod sequence del timbre en sus pistas del secuenciador. */
+    void configureTimbreSeq(bool second, size_t firstTrack) noexcept;
 
-        /** Vuelca en `out` todos los parámetros del timbre (1 si `second` es false, 2 si no). */
-        void readTimbreParams(bool second, VoiceParameters &out) noexcept;
+    /** Aplica la salida de las 3 filas del timbre a sus parámetros de voz. */
+    void applySeqModulation(bool second, VoiceParameters &out) noexcept;
 
-        /** Lee las 3 filas del mod sequence del timbre en sus pistas del secuenciador. */
-        void configureTimbreSeq(bool second, size_t firstTrack) noexcept;
+  public:
+  private:
+    double sampleRate_ {44100.0};
+    int samplesPerBlock_ {512};
 
-        /** Aplica la salida de las 3 filas del timbre a sus parámetros de voz. */
-        void applySeqModulation(bool second, VoiceParameters &out) noexcept;
+    // Arquitectura de dos timbres (Single / Split / Layer), como el equipo real:
+    // cada timbre tiene sus **propios** parámetros (`t2…` para el Timbre 2) y su
+    // propio juego de voces. El modo y el reparto de voces son globales del programa.
+    VoiceParameters voiceParamsA_ {};
+    VoiceParameters voiceParamsB_ {};
+    VoiceManager voiceManagerA_;
+    VoiceManager voiceManagerB_;
+    int timbreMode_ {0};  // 0: Single, 1: Split, 2: Layer
+    int splitKey_ {60};   // C4 por defecto (byte 0x12 real)
 
-      public:
-      private:
-        double sampleRate_ {44100.0};
-        int samplesPerBlock_ {512};
+    ModSequencer modSeq_;
+    Arpeggiator arpeggiator_;
+    ModFX modFX_;
+    DelayFX delayFX_;
+    Equalizer masterEQ_;
+    Vocoder16Band vocoder_;
+    MultiModeFilter debugFilter_;
 
-        // Arquitectura de dos timbres (Single / Split / Layer), como el equipo real:
-        // cada timbre tiene sus **propios** parámetros (`t2…` para el Timbre 2) y su
-        // propio juego de voces. El modo y el reparto de voces son globales del programa.
-        VoiceParameters voiceParamsA_ {};
-        VoiceParameters voiceParamsB_ {};
-        VoiceManager voiceManagerA_;
-        VoiceManager voiceManagerB_;
-        int timbreMode_ {0};  // 0: Single, 1: Split, 2: Layer
-        int splitKey_ {60};   // C4 por defecto (byte 0x12 real)
+    std::vector<ArpNoteEvent> arpEventsBuffer_;
 
-        ModSequencer modSeq_;
-        Arpeggiator arpeggiator_;
-        ModFX modFX_;
-        DelayFX delayFX_;
-        Equalizer masterEQ_;
-        Vocoder16Band vocoder_;
-        MultiModeFilter debugFilter_;
+    AudioThreadSnapshot currentSnapshot_ {};
+    std::atomic<float> masterVolume_ {0.8f};
+    std::atomic<float> pitchBendValue_ {0.0f};
+    std::atomic<float> modWheelValue_ {0.0f};
+    std::atomic<DiagnosticTonePoint> diagTonePoint_ {DiagnosticTonePoint::Disabled};
+    std::atomic<float> testToneFrequency_ {440.0f};
+    std::atomic<float> testToneLevel_ {0.25f};
+    std::atomic<bool> testToneEnabled_ {false};
+    std::atomic<bool> diagBypassFilter_ {false};
+    std::atomic<bool> diagBypassVCA_ {false};
+    std::atomic<bool> diagBypassOscMixer_ {false};
+    std::atomic<bool> diagBypassDistortion_ {false};
+    std::atomic<bool> diagBypassModFX_ {false};
+    std::atomic<bool> diagBypassDelayFX_ {false};
+    std::atomic<bool> diagBypassMasterEQ_ {false};
+    double testTonePhase_ {0.0};
+    juce::LinearSmoothedValue<float> smoothedMasterGain_ {0.8f};
 
-        std::vector<ArpNoteEvent> arpEventsBuffer_;
+    // ── ABDScope taps (native C++ capture, block-flushed) ──
+    abd::scope::ScopeDataCollector scopeCollector_;
+    abd::scope::ScopeTap *tapMaster_ {nullptr};
+    abd::scope::ScopeTap *tapPreFx_ {nullptr};
+    abd::scope::ScopeTap *tapOscMix_ {nullptr};
+    abd::scope::ScopeTap *tapPostFilter_ {nullptr};
+    abd::scope::ScopeTap *tapPostVca_ {nullptr};
+    abd::scope::ScopeTap *tapLfo1_ {nullptr};
+    bool scopeTapsRegistered_ {false};
 
-        AudioThreadSnapshot currentSnapshot_ {};
-        std::atomic<float> masterVolume_ {0.8f};
-        std::atomic<float> pitchBendValue_ {0.0f};
-        std::atomic<float> modWheelValue_ {0.0f};
-        std::atomic<DiagnosticTonePoint> diagTonePoint_ {DiagnosticTonePoint::Disabled};
-        std::atomic<float> testToneFrequency_ {440.0f};
-        std::atomic<float> testToneLevel_ {0.25f};
-        std::atomic<bool> testToneEnabled_ {false};
-        std::atomic<bool> diagBypassFilter_ {false};
-        std::atomic<bool> diagBypassVCA_ {false};
-        std::atomic<bool> diagBypassOscMixer_ {false};
-        std::atomic<bool> diagBypassDistortion_ {false};
-        std::atomic<bool> diagBypassModFX_ {false};
-        std::atomic<bool> diagBypassDelayFX_ {false};
-        std::atomic<bool> diagBypassMasterEQ_ {false};
-        double testTonePhase_ {0.0};
-        juce::LinearSmoothedValue<float> smoothedMasterGain_ {0.8f};
+    // Per-block capture scratch buffers (sized to samplesPerBlock_ in prepare()).
+    std::vector<float> scopeBufMasterL_, scopeBufMasterR_;
+    std::vector<float> scopeBufPreFxL_, scopeBufPreFxR_;
+    std::vector<float> scopeBufOscMix_;
+    std::vector<float> scopeBufPostFilter_;
+    std::vector<float> scopeBufPostVca_;
+    std::vector<float> scopeBufLfo1_;
 
-        // ── ABDScope taps (native C++ capture, block-flushed) ──
-        abd::scope::ScopeDataCollector scopeCollector_;
-        abd::scope::ScopeTap *tapMaster_ {nullptr};
-        abd::scope::ScopeTap *tapPreFx_ {nullptr};
-        abd::scope::ScopeTap *tapOscMix_ {nullptr};
-        abd::scope::ScopeTap *tapPostFilter_ {nullptr};
-        abd::scope::ScopeTap *tapPostVca_ {nullptr};
-        abd::scope::ScopeTap *tapLfo1_ {nullptr};
-        bool scopeTapsRegistered_ {false};
+    void registerScopeTaps();
+    void flushScopeTaps(int numSamples) noexcept;
 
-        // Per-block capture scratch buffers (sized to samplesPerBlock_ in prepare()).
-        std::vector<float> scopeBufMasterL_, scopeBufMasterR_;
-        std::vector<float> scopeBufPreFxL_, scopeBufPreFxR_;
-        std::vector<float> scopeBufOscMix_;
-        std::vector<float> scopeBufPostFilter_;
-        std::vector<float> scopeBufPostVca_;
-        std::vector<float> scopeBufLfo1_;
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SynthEngine)
+};
 
-        void registerScopeTaps();
-        void flushScopeTaps(int numSamples) noexcept;
-
-        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SynthEngine)
-    };
-
-    }  // namespace ABDMS2000
-
+}  // namespace ABDMS2000

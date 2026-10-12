@@ -83,13 +83,14 @@ jobs:
   # `if: runner.os == 'Linux'` NUNCA se ejecutaron: eran decoracion. Viven
   # aqui, en su propio job de Ubuntu.
   #
-  # clang-format y cppcheck son INFORMATIVOS, no bloqueantes, y la cuenta va
-  # escrita porque es la razon de que no bloqueen. MEDIDO en local con
-  # clang-format 18.1.8 (la misma mayoria que usa el pre-commit): 8010
-  # violaciones en 102 ficheros de Source/. Un dry-run --Werror bloqueante
-  # dejaria el CI rojo permanente por deuda historica, que no es un rojo
-  # nuevo. cppcheck: se anota el recuento en cada corrida. Cuando la deuda
-  # se pague, se quitan los `exit 0` y pasan a bloquear.
+  # clang-format y cppcheck BLOQUEAN los dos desde el 2026-10-12, con sus
+  # mediciones antes y despues escritas. cppcheck: MEDIDO con cppcheck 2.21 y
+  # el comando exacto de abajo: 27 hallazgos antes (21 warning, 1 performance
+  # y 5 error — los errores, accesos fuera de limites en Source/Tests/
+  # DSPCoreTests.cpp), 0 despues de pagar la deuda — los .gen se arreglaron en
+  # su generador, no a mano. OJO con el `2>&1`: cppcheck escribe los hallazgos
+  # en stderr, y medir sin el siempre cuenta 0 — de ahi el "0" erroneo que
+  # traian escritos otros gates de la familia.
   # ---------------------------------------------------------------------------
   hygiene:
     name: Higiene (clang-format + cppcheck + hooks)
@@ -168,23 +169,94 @@ jobs:
         echo "Pre-commit hooks verified: installed and functional"
         rm -rf "$TMPDIR"
 
-    - name: Check formatting (clang-format) - informativo, no bloqueante
+    # BLOQUEANTE (desde el 2026-10-12, junto al job `clang-format` de abajo:
+    # ambos midieron 0 tras el reformato de Source/). Mismo alcance y mismo
+    # veredicto que el hook VERIFY_ONLY: todos los .h/.cpp de Source/ salvo
+    # los .gen, que gobierna su script — ver el motivo en el propio hook.
+    - name: Check formatting (clang-format)
       run: |
+        shopt -s globstar nullglob
+        todos=(Source/**/*.h Source/**/*.cpp)
+        files=()
+        for f in "${todos[@]}"; do
+          [[ "$f" == *.gen.* ]] && continue
+          files+=("$f")
+        done
         set +e
-        shopt -s globstar
-        salida=$(clang-format-18 --dry-run --Werror Source/**/*.h Source/**/*.cpp 2>&1)
-        violaciones=$(printf '%s\n' "$salida" | grep -cE 'code should be clang-formatted')
-        echo "::warning title=clang-format::${violaciones} violaciones en Source/ (deuda historica medida: 8010 al escribir este gate; informativo hasta que se pague)."
+        salida=$(clang-format-18 --dry-run --Werror "${files[@]}" 2>&1)
+        codigo=$?
+        set -e
+        if [ "$codigo" -eq 0 ]; then
+          echo "::notice title=clang-format::sin violaciones en ${#files[@]} ficheros de Source/ (sin .gen)."
+          exit 0
+        fi
+        violaciones=$(printf '%s\n' "$salida" | grep -cE 'code should be clang-formatted' || true)
+        # Salir con != 0 SIN ninguna violacion nombrada no es estilo: es que la
+        # comprobacion no llego a medirse (binario roto, glob vacio). Eso SI
+        # bloquea, y con su propio mensaje para no confundirlo con deuda.
+        if [ "$violaciones" -eq 0 ]; then
+          echo "::error title=clang-format::clang-format-18 salio con codigo $codigo sin reportar ni una violacion: la comprobacion no llego a medirse."
+          printf '%s\n' "$salida" | sed -n '1,40p'
+          exit 1
+        fi
+        echo "::error title=clang-format::${violaciones} violaciones de estilo: regresion, no deuda historica — el gate paso a bloqueante el 2026-10-12 con 0 medidos. Arreglo: clang-format-18 -i sobre los ficheros nombrados."
         printf '%s\n' "$salida" | grep -E 'error' | sed -n '1,20p'
-        exit 0
+        exit 1
 
-    - name: Static analysis (cppcheck) - informativo, no bloqueante
+    # BLOQUEANTE desde el 2026-10-12: 27 hallazgos antes, 0 despues de pagar
+    # la deuda, ambos con ESTE comando. El `2>&1` no es opcional: cppcheck
+    # escribe los hallazgos en stderr, y medir sin el siempre cuenta 0.
+    # BLOQUEANTE CON BASELINE desde el 2026-10-12: .github/cppcheck-baseline.txt
+    # guarda la firma de la deuda pagada ese dia (27 hallazgos -> 0; midiendo
+    # HEAD con ESTE comando y cppcheck 2.21 quedó con 0 firmas). Solo bloquean
+    # hallazgos FUERA de la baseline, la ausencia de la propia baseline, y que
+    # la comprobacion no llegue a medirse. El `2>&1` no es opcional: cppcheck
+    # escribe los hallazgos en stderr, y medir sin el siempre cuenta 0.
+    - name: Static analysis (cppcheck) - bloqueante (baseline)
       run: |
+        cppcheck --version
+        baseline=.github/cppcheck-baseline.txt
+        if [ ! -f "$baseline" ]; then
+          echo "::error title=cppcheck::no existe $baseline: sin baseline no se puede separar deuda de regresion."
+          exit 1
+        fi
         set +e
         salida=$(cppcheck --enable=warning,performance,portability --std=c++20 --suppress=missingIncludeSystem --template='{severity}|{file}|{line}|{message}' Source/ 2>&1)
-        hallazgos=$(printf '%s\n' "$salida" | grep -cE '^(warning|performance|portability|error)\|')
-        printf '%s\n' "$salida" | grep -E '^(warning|performance|portability|error)\|' | sed -n '1,30p'
-        echo "::warning title=cppcheck::${hallazgos} hallazgos en Source/ (MEDIDO en local con cppcheck 2.21: 0; informativo hasta que la primera corrida de CI lo confirme y pase a bloquear)."
+        codigo=$?
+        set -e
+        if [ -z "$salida" ]; then
+          echo "::error title=cppcheck::cppcheck no ha producido ni una linea (codigo $codigo): la comprobacion no llego a medirse."
+          exit 1
+        fi
+        tmp=$(mktemp)
+        printf '%s\n' "$salida" > "$tmp"
+        actuales=$(python3 - "$tmp" <<'PY'
+        import re, sys
+        out = set()
+        pat = re.compile(r"^(warning|performance|portability|error)\|([^|]+)\|[^|]+\|(.*)$")
+        for ln in open(sys.argv[1], encoding="utf-8", errors="replace"):
+            m = pat.match(ln.rstrip("\n"))
+            if m:
+                out.add(m.group(1) + "|" + m.group(2).replace("\\", "/") + "|" + m.group(3))
+        print("\n".join(sorted(out)))
+        PY
+        )
+        rm -f "$tmp"
+        nuevos=$(printf '%s\n' "$actuales" | grep -vxF -f "$baseline" || true)
+        if [ -n "$nuevos" ]; then
+          printf '%s\n' "$nuevos" | sed -n '1,30p'
+          n=$(printf '%s\n' "$nuevos" | grep -c . || true)
+          echo "::error title=cppcheck::${n} hallazgos NUEVOS fuera de la baseline: regresion. Arreglo: atacarlos; solo si es deuda aceptada deliberadamente, anadir su firma a $baseline en el MISMO PR."
+          exit 1
+        fi
+        af=$(mktemp)
+        printf '%s\n' "$actuales" > "$af"
+        obsoletas=$(grep -v '^#' "$baseline" | grep -vxF -f "$af" | grep -c . || true)
+        rm -f "$af"
+        if [ "$obsoletas" -gt 0 ]; then
+          echo "::notice title=cppcheck::${obsoletas} firmas de la baseline ya no aparecen: deuda pagada — prune $baseline."
+        fi
+        echo "::notice title=cppcheck::sin hallazgos nuevos ($(grep -cv '^#' "$baseline") firmas baseladas, ${obsoletas} obsoletas)."
         exit 0
 
   # ---------------------------------------------------------------------------
@@ -473,3 +545,89 @@ jobs:
           folder: docs/html
           branch: gh-pages
           clean: true
+
+  # ---------------------------------------------------------------------------
+  # FORMATO (clang-format) — BLOQUEANTE desde el 2026-10-12.
+  #
+  # No compila nada: lee .clang-format y comprueba que todos los .h/.cpp
+  # trackeados obedecen el estilo. Lo hace ejecutando EL HOOK del repo en
+  # modo VERIFY_ONLY (VERIFY_ONLY=1 bash .githooks/pre-commit), que usa
+  # --dry-run --Werror sobre `git ls-files` y no toca disco. Asi esta puerta
+  # valida DOS cosas: que el estilo cuadra, y que EL HOOK funciona — el mismo
+  # reparto que usa ABDSharedCode en shared-code-ci.yml.
+  #
+  # EL POR QUE DE LA FECHA, MEDIDO Y NO SUPUESTO: con clang-format 18.1.8 (la
+  # MISMA version que instala `pip install clang-format==18.*` aqui) el hook
+  # VERIFY_ONLY medi a 2026-10-12: 2202 avisos en 17 ficheros escritos a mano,
+  # pagados ese mismo dia con clang-format -i sobre los 96 .h/.cpp trackeados
+  # no-.gen (la medicion tras el reformato: 0 avisos, exit 0). Los .gen
+  # quedan FUERA del alcance del hook, y es por disenno: los escribe un
+  # script y registry-generation.yml exige que regenerarlos no cambie ni un
+  # byte, asi que su estilo lo gobierna su script y no clang-format.
+  #
+  # AHORA BLOQUEAN LAS TRES COSAS, porque ninguna es deuda historica: que la
+  # comprobacion no llegue a medir (clang-format ausente, o un VERIFY_ONLY que
+  # falla sin reportar ni un aviso — eso es config rota, no estilo), el test
+  # NEGATIVO de abajo, que exige que el hook NOMBRE el fichero mal formateado
+  # en su salida, y cualquier aviso nuevo, que ya es una regresion.
+  clang-format:
+    name: Clang-format (estilo C++, bloqueante)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+
+      # El `command -v` es una puerta, no un eco: sin clang-format en el PATH
+      # el hook NO falla (imprime un aviso y sale con 0), y el paso de abajo
+      # reportaria "sin deuda" sin haber mirado nada. Un verde que no ha medido
+      # es el peor de todos.
+      - name: Install clang-format 18+
+        run: |
+          pip install clang-format==18.*
+          command -v clang-format
+          clang-format --version
+
+      - name: Check formatting (clang-format via hook)
+        shell: bash
+        run: |
+          set +e
+          VERIFY_ONLY=1 bash .githooks/pre-commit > "$RUNNER_TEMP/fmt.log" 2>&1
+          codigo=$?
+          set -e
+          if [ "$codigo" -eq 0 ]; then
+            echo "::notice title=clang-format::sin deuda de formato en los .h/.cpp trackeados."
+            exit 0
+          fi
+          avisos=$(grep -c 'code should be clang-formatted' "$RUNNER_TEMP/fmt.log" || true)
+          # Un VERIFY_ONLY que sale con != 0 SIN ningun aviso de formato no es
+          # deuda: es que la comprobacion no llego a hacerse (config rota,
+          # hook roto,clang-format de otra version). Eso SI bloquea.
+          if [ "$avisos" -eq 0 ]; then
+            echo "::error title=clang-format::el hook VERIFY_ONLY fallo (codigo $codigo) sin reportar ni un aviso de formato. No es deuda historica: es un fallo de la comprobacion. Log completo abajo."
+            cat "$RUNNER_TEMP/fmt.log"
+            exit 1
+          fi
+          echo "::error title=clang-format::${avisos} avisos de formato: regresion de estilo, no deuda historica — el gate paso a bloqueante el 2026-10-12 con 0 avisos medidos. Arreglo: clang-format -i sobre los ficheros nombrados, o commitear con el hook instalado, que formatea el staged."
+          tail -30 "$RUNNER_TEMP/fmt.log"
+          exit 1
+
+      # NEGATIVO, Y QUE MIRE EL NOMBRE Y NO EL CODIGO DE SALIDA. Con la deuda
+      # actual el hook VERIFY_ONLY sale con 1 aunque el fichero malo no
+      # exista, asi que esperar "!= 0" probaria nada. Lo que prueba es que el
+      # NOMBRE del fichero aparece en la salida del hook.
+      - name: Hook catches unformatted code (negative test)
+        shell: bash
+        run: |
+          printf 'int main(){return 0;}\n' > .hook_test_bad.cpp
+          git add .hook_test_bad.cpp
+          set +e
+          VERIFY_ONLY=1 bash .githooks/pre-commit > "$RUNNER_TEMP/neg.log" 2>&1
+          set -e
+          git reset -q .hook_test_bad.cpp
+          rm -f .hook_test_bad.cpp
+          if ! grep -q 'hook_test_bad.cpp' "$RUNNER_TEMP/neg.log"; then
+            echo "::error::el hook no ha nombrado el archivo mal formateado .hook_test_bad.cpp en su salida. VERIFY_ONLY puede estar roto."
+            head -30 "$RUNNER_TEMP/neg.log"
+            exit 1
+          fi
+          echo "El hook detecto y nombro el archivo mal formateado."

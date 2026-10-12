@@ -9,9 +9,9 @@
 #include "../../DSP/Oscillators/VoxWaveOscillator.h"
 #include "../../DSP/Vocoder/Vocoder16Band.h"
 #include "../../MIDI/MIDIMap.h"
+#include "../State/Conversion.gen.h"
 #include "../State/MS2000PatchBuilder.h"
 #include "../State/ParameterRegistry.gen.h"
-#include "../State/Conversion.gen.h"
 
 #include "../../ABDSharedCode/HardwareDrivers/NRPNParser.h"
 #include "../../ABDSharedCode/HardwareDrivers/SysExCodec.h"
@@ -1328,14 +1328,17 @@ static void testSoftwarePresetTransport()
                 check(messages.size() == 1 && typeOf(messages[0]) == SoftwarePresetProtocol::kPresetData,
                       "preset.read is answered with preset.data");
 
-                const auto data = dataOf(messages.front());
+                // Guardia: si la respuesta no llego, el check de arriba ya ha
+                // fallado; aqui se evita el front() sobre la cola vacia en vez
+                // de crashear (los checks de abajo fallaran con valores por defecto).
+                const auto data = messages.empty() ? juce::var {} : dataOf(messages.front());
                 check(data.getProperty("requestId", "").toString() == "r1",
                       "preset.data echoes the requestId the Bank Manager sent");
                 check(static_cast<int>(data.getProperty("slot", -1)) == 5, "preset.data carries the requested slot");
                 check(data.getProperty("name", "").toString() == expectedName, "preset.data carries the program name");
 
                 juce::MemoryBlock decoded;
-                check(decodePayloadOf(messages.front(), decoded)
+                check(!messages.empty() && decodePayloadOf(messages.front(), decoded)
                           && decoded.getSize() == static_cast<int>(MS2000ProgramData::UNPACKED_PROGRAM_SIZE),
                       "the payload decodes to one program block");
                 check(decoded.getSize() == static_cast<int>(MS2000ProgramData::UNPACKED_PROGRAM_SIZE)
@@ -1427,7 +1430,10 @@ static void testSoftwarePresetTransport()
                 check(messages.size() == 1 && typeOf(messages[0]) == SoftwarePresetProtocol::kBankData,
                       "bank.read is answered with bank.data");
 
-                const auto data = dataOf(messages.front());
+                // Guardia: si la respuesta no llego, el check de arriba ya ha
+                // fallado; aqui se evita el front() sobre la cola vacia en vez
+                // de crashear (los checks de abajo fallaran con valores por defecto).
+                const auto data = messages.empty() ? juce::var {} : dataOf(messages.front());
                 check(data.getProperty("requestId", "").toString() == "b1", "bank.data echoes the requestId");
 
                 const auto slots = data.getProperty("slots", juce::var());
@@ -1498,7 +1504,7 @@ static void testSoftwarePresetTransport()
                       "preset.capture is answered with preset.captured");
 
                 juce::MemoryBlock captured;
-                check(decodePayloadOf(messages.front(), captured)
+                check(!messages.empty() && decodePayloadOf(messages.front(), captured)
                           && captured.getSize() == static_cast<int>(MS2000ProgramData::UNPACKED_PROGRAM_SIZE),
                       "preset.captured carries the active patch as one program block");
                 check(std::memcmp(synthMemory.getProgram(11).rawData.data(),
@@ -1514,7 +1520,7 @@ static void testSoftwarePresetTransport()
                       "preset.capture with a slot is answered too");
 
                 juce::MemoryBlock second;
-                const bool decodedSecond = decodePayloadOf(messages.front(), second);
+                const bool decodedSecond = !messages.empty() && decodePayloadOf(messages.front(), second);
                 check(decodedSecond
                           && std::memcmp(synthMemory.getProgram(11).rawData.data(),
                                          second.getData(),
@@ -2347,11 +2353,10 @@ static void testEngineExtension()
         VoiceParameters tmpB = seqEngine.testGetVoiceParamsB();
         seqEngine.testApplySeqModulation(false, tmpA);
         seqEngine.testApplySeqModulation(true, tmpB);
-        check(tmpA.seq.cutoff == -1.0f,
-              "the Timbre 1 row drives its own cutoff (full −1 at the bottom step)");
+        check(tmpA.seq.cutoff == -1.0f, "the Timbre 1 row drives its own cutoff (full −1 at the bottom step)");
         check(tmpB.seq.amp == 1.0f && tmpA.seq.amp == 0.0f,
               "the Timbre 2 rows drive the Timbre 2 parameters, not the Timbre 1 ones");
-        (void)rowC2;
+        (void) rowC2;
     }
 }
 
@@ -2367,7 +2372,7 @@ static void testMicrokorgHardwareParity()
     mkProg.setLastStep(6);
     check(mkProg.getLastStep() == 6, "microKORG Last Step (1..8) stores correctly");
 
-    mkProg.setStepMaskByte(0b10101010); // Pasos 2, 4, 6, 8 ON
+    mkProg.setStepMaskByte(0b10101010);  // Pasos 2, 4, 6, 8 ON
     check(!mkProg.getStepMask(1) && mkProg.getStepMask(2) && !mkProg.getStepMask(3) && mkProg.getStepMask(4),
           "microKORG 8-step rhythm mask flags unpack correctly");
     check(mkProg.getStepMaskByte() == 0b10101010, "microKORG bitmask byte roundtrip matches");
@@ -2394,17 +2399,15 @@ static void testMicrokorgHardwareParity()
         check(std::round(pLastStep->convertFrom0to1(pLastStep->getValue())) == 6.0f,
               "arpLastStep APVTS parameter is updated to 6 from microKORG dump");
     if (auto *pStep2 = apvts.getParameter("arpStep2"))
-        check(pStep2->convertFrom0to1(pStep2->getValue()) > 0.5f,
-              "arpStep2 APVTS parameter is ON");
+        check(pStep2->convertFrom0to1(pStep2->getValue()) > 0.5f, "arpStep2 APVTS parameter is ON");
     if (auto *pStep1 = apvts.getParameter("arpStep1"))
-        check(pStep1->convertFrom0to1(pStep1->getValue()) < 0.5f,
-              "arpStep1 APVTS parameter is OFF (rest)");
+        check(pStep1->convertFrom0to1(pStep1->getValue()) < 0.5f, "arpStep1 APVTS parameter is OFF (rest)");
     if (auto *pModSeq = apvts.getParameter("modSeqOn"))
         check(pModSeq->convertFrom0to1(pModSeq->getValue()) == 0.0f,
               "modSeqOn APVTS parameter is forced to OFF on microKORG load");
 
     // 4. SysExManager respuesta a Dump Request (0x10) en modo microKORG
-    sysEx.setSynthMode(1); // Perfil microKORG
+    sysEx.setSynthMode(1);  // Perfil microKORG
     const uint8_t reqDump[] = {0xF0, 0x42, 0x30, 0x71, 0x10, 0xF7};
     const auto reqRes = sysEx.parseSysEx(reqDump, sizeof(reqDump), apvts);
     check(reqRes.success && reqRes.reply.size() == 297,
@@ -2420,7 +2423,7 @@ static void testDspConversionsAndClamping()
     printf("=== Schema-Driven DSP Conversion Tests (DSP.7-10) ===\n");
 
     // 1. Clamping de dominio en normalizedToDomain
-    if (const auto* cutoff = ParameterRegistry::getParameter("filterCutoff"))
+    if (const auto *cutoff = ParameterRegistry::getParameter("filterCutoff"))
     {
         float hz0 = conversion::normalizedToDomain(*cutoff, 0.0f);
         float hz1 = conversion::normalizedToDomain(*cutoff, 1.0f);
@@ -2435,8 +2438,10 @@ static void testDspConversionsAndClamping()
         // Inverso domainToNormalized
         check(conversion::domainToNormalized(*cutoff, 20.0f) == 0.0f, "cutoff domainToNormalized(20Hz) == 0.0");
         check(conversion::domainToNormalized(*cutoff, 20000.0f) == 1.0f, "cutoff domainToNormalized(20kHz) == 1.0");
-        check(conversion::domainToNormalized(*cutoff, -100.0f) == 0.0f, "cutoff domainToNormalized negative clamped to 0.0");
-        check(conversion::domainToNormalized(*cutoff, 50000.0f) == 1.0f, "cutoff domainToNormalized excess clamped to 1.0");
+        check(conversion::domainToNormalized(*cutoff, -100.0f) == 0.0f,
+              "cutoff domainToNormalized negative clamped to 0.0");
+        check(conversion::domainToNormalized(*cutoff, 50000.0f) == 1.0f,
+              "cutoff domainToNormalized excess clamped to 1.0");
 
         // Paridad musical exacta: punto medio del knob (t=0.5) ~ 632Hz (media geometrica)
         float hzMid = conversion::normalizedToDomain(*cutoff, 0.5f);
@@ -2444,7 +2449,7 @@ static void testDspConversionsAndClamping()
     }
 
     // 1b. Resonancia de filtro (Linear [0.0 .. 1.0])
-    if (const auto* res = ParameterRegistry::getParameter("filterResonance"))
+    if (const auto *res = ParameterRegistry::getParameter("filterResonance"))
     {
         float r0 = conversion::normalizedToDomain(*res, 0.0f);
         float rMid = conversion::normalizedToDomain(*res, 0.5f);
@@ -2455,7 +2460,7 @@ static void testDspConversionsAndClamping()
     }
 
     // 2. Curva Exp (LFO1 Freq: 0.01Hz .. 20Hz)
-    if (const auto* lfoFreq = ParameterRegistry::getParameter("lfo1Freq"))
+    if (const auto *lfoFreq = ParameterRegistry::getParameter("lfo1Freq"))
     {
         float f0 = conversion::normalizedToDomain(*lfoFreq, 0.0f);
         float f1 = conversion::normalizedToDomain(*lfoFreq, 1.0f);
@@ -2469,7 +2474,7 @@ static void testDspConversionsAndClamping()
     }
 
     // 2b. ModFX Speed (Exp [0.02Hz .. 15.0Hz])
-    if (const auto* mSpeed = ParameterRegistry::getParameter("modFxSpeed"))
+    if (const auto *mSpeed = ParameterRegistry::getParameter("modFxSpeed"))
     {
         float s0 = conversion::normalizedToDomain(*mSpeed, 0.0f);
         float sMid = conversion::normalizedToDomain(*mSpeed, 0.5f);
@@ -2480,7 +2485,7 @@ static void testDspConversionsAndClamping()
     }
 
     // 2c. EQ Gains (Bipolar Linear [-12.0dB .. +12.0dB])
-    if (const auto* eqG = ParameterRegistry::getParameter("eqLowGain"))
+    if (const auto *eqG = ParameterRegistry::getParameter("eqLowGain"))
     {
         float g0 = conversion::normalizedToDomain(*eqG, 0.0f);
         float gMid = conversion::normalizedToDomain(*eqG, 0.5f);
@@ -2491,7 +2496,7 @@ static void testDspConversionsAndClamping()
     }
 
     // 2d. Mixer Levels & Amp (Linear [0.0 .. 1.0], ampPan Bipolar [-1.0 .. +1.0])
-    if (const auto* mix1 = ParameterRegistry::getParameter("mixOsc1Level"))
+    if (const auto *mix1 = ParameterRegistry::getParameter("mixOsc1Level"))
     {
         float m0 = conversion::normalizedToDomain(*mix1, 0.0f);
         float mMid = conversion::normalizedToDomain(*mix1, 0.5f);
@@ -2501,7 +2506,7 @@ static void testDspConversionsAndClamping()
         check(m1 == 1.0f, "mixOsc1Level t=1 is 1.0");
     }
 
-    if (const auto* aLevel = ParameterRegistry::getParameter("ampLevel"))
+    if (const auto *aLevel = ParameterRegistry::getParameter("ampLevel"))
     {
         float a0 = conversion::normalizedToDomain(*aLevel, 0.0f);
         float a1 = conversion::normalizedToDomain(*aLevel, 1.0f);
@@ -2509,7 +2514,7 @@ static void testDspConversionsAndClamping()
         check(a1 == 1.0f, "ampLevel t=1 is 1.0");
     }
 
-    if (const auto* aPan = ParameterRegistry::getParameter("ampPan"))
+    if (const auto *aPan = ParameterRegistry::getParameter("ampPan"))
     {
         float p0 = conversion::normalizedToDomain(*aPan, 0.0f);
         float pMid = conversion::normalizedToDomain(*aPan, 0.5f);
@@ -2520,7 +2525,7 @@ static void testDspConversionsAndClamping()
     }
 
     // 2e. Envelopes EG1 & EG2 (Linear [0.0 .. 1.0])
-    if (const auto* eg1A = ParameterRegistry::getParameter("eg1Attack"))
+    if (const auto *eg1A = ParameterRegistry::getParameter("eg1Attack"))
     {
         float a0 = conversion::normalizedToDomain(*eg1A, 0.0f);
         float aMid = conversion::normalizedToDomain(*eg1A, 0.5f);
@@ -2530,7 +2535,7 @@ static void testDspConversionsAndClamping()
         check(a1 == 1.0f, "eg1Attack t=1 is 1.0");
     }
 
-    if (const auto* eg2S = ParameterRegistry::getParameter("eg2Sustain"))
+    if (const auto *eg2S = ParameterRegistry::getParameter("eg2Sustain"))
     {
         float s0 = conversion::normalizedToDomain(*eg2S, 0.0f);
         float sMid = conversion::normalizedToDomain(*eg2S, 0.5f);
@@ -2541,7 +2546,7 @@ static void testDspConversionsAndClamping()
     }
 
     // 2f. OSC1 Ctrl & Portamento (Linear [0.0 .. 1.0])
-    if (const auto* pTime = ParameterRegistry::getParameter("portamentoTime"))
+    if (const auto *pTime = ParameterRegistry::getParameter("portamentoTime"))
     {
         float p0 = conversion::normalizedToDomain(*pTime, 0.0f);
         float pMid = conversion::normalizedToDomain(*pTime, 0.5f);
@@ -2551,7 +2556,7 @@ static void testDspConversionsAndClamping()
         check(p1 == 1.0f, "portamentoTime t=1 is 1.0");
     }
 
-    if (const auto* c1 = ParameterRegistry::getParameter("osc1Ctrl1"))
+    if (const auto *c1 = ParameterRegistry::getParameter("osc1Ctrl1"))
     {
         float c0 = conversion::normalizedToDomain(*c1, 0.0f);
         float c1Val = conversion::normalizedToDomain(*c1, 1.0f);
@@ -2560,7 +2565,7 @@ static void testDspConversionsAndClamping()
     }
 
     // 2g. Bipolar Modulations & Sensitivities (Bipolar Linear [-1.0 .. +1.0])
-    if (const auto* fInt = ParameterRegistry::getParameter("filterEg1Int"))
+    if (const auto *fInt = ParameterRegistry::getParameter("filterEg1Int"))
     {
         float i0 = conversion::normalizedToDomain(*fInt, 0.0f);
         float iMid = conversion::normalizedToDomain(*fInt, 0.5f);
@@ -2570,7 +2575,7 @@ static void testDspConversionsAndClamping()
         check(i1 == 1.0f, "filterEg1Int t=1 is +1.0");
     }
 
-    if (const auto* fKbd = ParameterRegistry::getParameter("filterKeyTrack"))
+    if (const auto *fKbd = ParameterRegistry::getParameter("filterKeyTrack"))
     {
         float k0 = conversion::normalizedToDomain(*fKbd, 0.0f);
         float kMid = conversion::normalizedToDomain(*fKbd, 0.5f);
@@ -2580,7 +2585,7 @@ static void testDspConversionsAndClamping()
         check(k1 == 1.0f, "filterKeyTrack t=1 is +1.0");
     }
 
-    if (const auto* aVel = ParameterRegistry::getParameter("ampVelo"))
+    if (const auto *aVel = ParameterRegistry::getParameter("ampVelo"))
     {
         float v0 = conversion::normalizedToDomain(*aVel, 0.0f);
         float vMid = conversion::normalizedToDomain(*aVel, 0.5f);
@@ -2591,7 +2596,7 @@ static void testDspConversionsAndClamping()
     }
 
     // 2h. Virtual Patch Intensity, Delay Depth/Feedback & Arp Gate
-    if (const auto* p1Int = ParameterRegistry::getParameter("patch1Intensity"))
+    if (const auto *p1Int = ParameterRegistry::getParameter("patch1Intensity"))
     {
         float pi0 = conversion::normalizedToDomain(*p1Int, 0.0f);
         float piMid = conversion::normalizedToDomain(*p1Int, 0.5f);
@@ -2601,7 +2606,7 @@ static void testDspConversionsAndClamping()
         check(pi1 == 1.0f, "patch1Intensity t=1 is +1.0");
     }
 
-    if (const auto* dDep = ParameterRegistry::getParameter("delayDepth"))
+    if (const auto *dDep = ParameterRegistry::getParameter("delayDepth"))
     {
         float d0 = conversion::normalizedToDomain(*dDep, 0.0f);
         float d1 = conversion::normalizedToDomain(*dDep, 1.0f);
@@ -2609,7 +2614,7 @@ static void testDspConversionsAndClamping()
         check(d1 == 1.0f, "delayDepth t=1 is 1.0");
     }
 
-    if (const auto* dFb = ParameterRegistry::getParameter("delayFeedback"))
+    if (const auto *dFb = ParameterRegistry::getParameter("delayFeedback"))
     {
         float fb0 = conversion::normalizedToDomain(*dFb, 0.0f);
         float fb1 = conversion::normalizedToDomain(*dFb, 1.0f);
@@ -2617,7 +2622,7 @@ static void testDspConversionsAndClamping()
         check(fb1 == 1.0f, "delayFeedback t=1 is 1.0");
     }
 
-    if (const auto* aGate = ParameterRegistry::getParameter("arpGate"))
+    if (const auto *aGate = ParameterRegistry::getParameter("arpGate"))
     {
         float g0 = conversion::normalizedToDomain(*aGate, 0.0f);
         float g1 = conversion::normalizedToDomain(*aGate, 1.0f);
@@ -2626,11 +2631,11 @@ static void testDspConversionsAndClamping()
     }
 
     // 3. Robustez masiva sobre todos los parámetros registrados (DSP.10)
-    const auto& allParams = ParameterRegistry::getAllParameters();
+    const auto &allParams = ParameterRegistry::getAllParameters();
     bool allValid = true;
-    for (const auto& p : allParams)
+    for (const auto &p : allParams)
     {
-        const float testValues[] = { 0.0f, 0.5f, 1.0f, -1.0f, 2.0f };
+        const float testValues[] = {0.0f, 0.5f, 1.0f, -1.0f, 2.0f};
         for (float t : testValues)
         {
             float dom = conversion::normalizedToDomain(p, t);

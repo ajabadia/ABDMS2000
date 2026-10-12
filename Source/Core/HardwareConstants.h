@@ -46,38 +46,38 @@ inline constexpr float kMinModWheel = 0.0f;       // Mod wheel minimum
 inline constexpr float kMaxModWheel = 1.0f;       // Mod wheel maximum
 
 // Voice pitch & keyboard tracking constants
-inline constexpr float kMidiMiddleC = 60.0f;                   // MIDI note number for Middle C (C4)
-inline constexpr float kSemitonesPerOctave = 12.0f;            // Semitones per octave
-inline constexpr float kCentsPerSemitone = 100.0f;             // Cents per semitone
-inline constexpr float kPitchBendDefaultSemitones = 2.0f;      // Standard pitch bend range (±2 semitones)
-inline constexpr float kVirtualPatchMaxPitchSemitones = 24.0f; // Virtual patch pitch span (±24 semitones = ±2 octaves)
+inline constexpr float kMidiMiddleC = 60.0f;                    // MIDI note number for Middle C (C4)
+inline constexpr float kSemitonesPerOctave = 12.0f;             // Semitones per octave
+inline constexpr float kCentsPerSemitone = 100.0f;              // Cents per semitone
+inline constexpr float kPitchBendDefaultSemitones = 2.0f;       // Standard pitch bend range (±2 semitones)
+inline constexpr float kVirtualPatchMaxPitchSemitones = 24.0f;  // Virtual patch pitch span (±24 semitones = ±2 octaves)
 
 // Filter & VCA modulation limits (MS2000 hardware specification & SysEx byte 23)
-inline constexpr float kFilterModMaxOctaves = 5.0f;  // Filter EG/Velo/Patch intensity max span (±5 octaves)
-inline constexpr float kLfoModMaxOctaves = 4.0f;     // LFO frequency cross-modulation max span (±4 octaves)
-inline constexpr float kKbdTrackSpanSemitones = 64.0f; // Keyboard tracking span normalization factor (±64 semitones)
-inline constexpr float kPanHalfWidth = 0.5f;         // Panning law half-width (0.5 for linear pan gain)
+inline constexpr float kFilterModMaxOctaves = 5.0f;     // Filter EG/Velo/Patch intensity max span (±5 octaves)
+inline constexpr float kLfoModMaxOctaves = 4.0f;        // LFO frequency cross-modulation max span (±4 octaves)
+inline constexpr float kKbdTrackSpanSemitones = 64.0f;  // Keyboard tracking span normalization factor (±64 semitones)
+inline constexpr float kPanHalfWidth = 0.5f;            // Panning law half-width (0.5 for linear pan gain)
 
 // Effects - Delay (Motorola DSP56362 microcode)
-inline constexpr float kDelayBufferHeadroomRatio = 1.5f;   // Buffer headroom ratio
-inline constexpr float kDelayGlideTimeSec = 0.05f;         // Tape drag / pitch glide filter time (50 ms)
-inline constexpr float kDelayLeftRightRatio = 0.75f;       // Asymmetric ratio for LeftRight delay mode
-inline constexpr float kDelayMaxFeedback = 0.95f;          // Maximum feedback gain before runaway
-inline constexpr float kDelayDampingCoeff = 0.35f;         // 1-pole damping filter coefficient (~6.0 kHz)
-inline constexpr float kDelayWetMixScale = 0.88f;          // Wet mix level scaling factor
+inline constexpr float kDelayBufferHeadroomRatio = 1.5f;  // Buffer headroom ratio
+inline constexpr float kDelayGlideTimeSec = 0.05f;        // Tape drag / pitch glide filter time (50 ms)
+inline constexpr float kDelayLeftRightRatio = 0.75f;      // Asymmetric ratio for LeftRight delay mode
+inline constexpr float kDelayMaxFeedback = 0.95f;         // Maximum feedback gain before runaway
+inline constexpr float kDelayDampingCoeff = 0.35f;        // 1-pole damping filter coefficient (~6.0 kHz)
+inline constexpr float kDelayWetMixScale = 0.88f;         // Wet mix level scaling factor
 
 // Effects - Vocoder 16-Band
-inline constexpr float kVocoderSibilanceCutoffHz = 8000.0f;       // Sibilance detector Butterworth HPF cutoff (8.0 kHz)
-inline constexpr float kVocoderBandQ = 6.5f;                      // Constant Q factor for 16 analysis/synthesis BPFs
-inline constexpr float kVocoderSibilanceReleaseSec = 0.010f;      // Fast release for sibilance follower (10 ms)
-inline constexpr float kVocoderGateSenseMinReleaseSec = 0.005f;   // Gate sense follower min release (5 ms)
-inline constexpr float kVocoderGateSenseReleaseRangeSec = 0.195f; // Gate sense follower release range (0.005s .. 0.200s)
+inline constexpr float kVocoderSibilanceCutoffHz = 8000.0f;      // Sibilance detector Butterworth HPF cutoff (8.0 kHz)
+inline constexpr float kVocoderBandQ = 6.5f;                     // Constant Q factor for 16 analysis/synthesis BPFs
+inline constexpr float kVocoderSibilanceReleaseSec = 0.010f;     // Fast release for sibilance follower (10 ms)
+inline constexpr float kVocoderGateSenseMinReleaseSec = 0.005f;  // Gate sense follower min release (5 ms)
+inline constexpr float kVocoderGateSenseReleaseRangeSec =
+    0.195f;  // Gate sense follower release range (0.005s .. 0.200s)
 
 // Effects - ModFX / Chorus / Flanger
-inline constexpr float kMidiMaxVal = 127.0f;               // Standard MIDI 7-bit max value
-inline constexpr float kFlangerMaxFeedback = 0.94f;        // Maximum resonance feedback for jet flanger
-inline constexpr float kTwoPi = 6.28318530717958647692f;   // Phase cycle 2*PI
+inline constexpr float kMidiMaxVal = 127.0f;              // Standard MIDI 7-bit max value
+inline constexpr float kFlangerMaxFeedback = 0.94f;       // Maximum resonance feedback for jet flanger
+inline constexpr float kTwoPi = 6.28318530717958647692f;  // Phase cycle 2*PI
 }  // namespace Constants
 
 }  // namespace ABDMS2000
-

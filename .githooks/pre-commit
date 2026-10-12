@@ -60,9 +60,51 @@ fi
 
 # --- format staged Source files --------------------------------------------
 
-# Get staged .h and .cpp files under Source/
+# --- verify-only mode (CI) -------------------------------------------------
+#
+# VERIFY_ONLY=1: no formatea nada; comprueba TODOS los .h/.cpp trackeados con
+# --dry-run --Werror y sale con 1 si hay deudas de formato. Es la modalidad que
+# usa el job `clang-format` de build-pipeline.yml, y existe por el mismo motivo
+# que en los demas repos de la familia: en CI no se puede formatear (no hay
+# nada que commitear), solo verificar, y verificar tiene que pasar por EL
+# MISMO hook que formatea en local para que los dos digan lo mismo.
+#
+# `git ls-files` y no `find`: es lo que hace el resto de la suite, y funciona
+# igual en local y en el runner.
+#
+# LOS .gen QUEDAN FUERA, Y POR MOTIVO DE DISEÑO: son ficheros que escribe un
+# script (Scripts/registry_generator.js y companeros), no una persona, y
+# registry-generation.yml exige que regenerarlos no cambie ni un byte. Si
+# este hook los formateara, la proxima regeneracion los reescribiria sin
+# formatear y esa puerta se pondria roja. Su estilo lo gobierna su script.
+if [ "${VERIFY_ONLY:-0}" = "1" ]; then
+  ALL_FILES=$(git ls-files '*.h' '*.cpp' | grep -v '\.gen\.' || true)
+  if [ -z "$ALL_FILES" ]; then
+    echo "No tracked C++ files to check."
+    exit 0
+  fi
+  FAIL=0
+  while IFS= read -r f; do
+    [ -f "$f" ] || continue
+    if ! "$CF" --dry-run --Werror "$f" 2>&1; then
+      FAIL=1
+    fi
+  done <<< "$ALL_FILES"
+  if [ "$FAIL" -ne 0 ]; then
+    echo "❌ Some files are not formatted according to .clang-format."
+    echo "   Run: clang-format -i <file>, or bash .githooks/install.sh"
+    exit 1
+  fi
+  echo "✓  All tracked C++ files are properly formatted."
+  exit 0
+fi
+
+# --- format staged Source files --------------------------------------------
+
+# Get staged .h and .cpp files under Source/ (sin .gen: los gobierna su
+# script, ver el motivo en el modo VERIFY_ONLY de arriba)
 STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACMR \
-  -- 'Source/**/*.h' 'Source/**/*.cpp' 2>/dev/null || true)
+  -- 'Source/**/*.h' 'Source/**/*.cpp' 2>/dev/null | grep -v '\.gen\.' || true)
 
 if [ -z "$STAGED_FILES" ]; then
   echo "📄 No staged Source/**/*.{h,cpp} files to format."

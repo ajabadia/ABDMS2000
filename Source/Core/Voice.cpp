@@ -5,8 +5,8 @@
 
 #include "Voice.h"
 #include <cmath>
-#include "HardwareConstants.h"
 #include "Conversion.gen.h"
+#include "HardwareConstants.h"
 
 namespace ABDMS2000
 {
@@ -233,7 +233,8 @@ void Voice::renderNextSample(float &leftOut, float &rightOut, int diagPoint, flo
     prelimSources.modWheel = p.modWheelValue;
 
     PatchModulationOutputs prelimMod = patchMatrix_.evaluate(prelimSources);
-    float lfo2Freq = p.lfo2FreqHz * std::pow(2.0f, (prelimMod.lfo2FreqMod + p.seq.lfo2Freq) * Constants::kLfoModMaxOctaves);
+    float lfo2Freq =
+        p.lfo2FreqHz * std::pow(2.0f, (prelimMod.lfo2FreqMod + p.seq.lfo2Freq) * Constants::kLfoModMaxOctaves);
     lfo2_.setFrequencyHz(lfo2Freq);
     float lfo2Val = lfo2_.getNextSample();
 
@@ -244,14 +245,20 @@ void Voice::renderNextSample(float &leftOut, float &rightOut, int diagPoint, flo
 
     // 5. Portamento + LFO + Virtual Patch Pitch Modulation + Mod Seq + Voice Detune
     float voiceDetuneSemitones = p.voiceDetuneCents / Constants::kCentsPerSemitone;
-    const float seqPitchSemis = p.seq.pitch * Constants::kVirtualPatchMaxPitchSemitones;     // "PITCH" del seq: ±24 st
-    const float seqOsc2Semis = p.seq.osc2Pitch * Constants::kVirtualPatchMaxPitchSemitones;  // "OSC2 SEMI" del seq: ±24 st
-    float osc1PitchMod = (p.pitchBendValue * Constants::kPitchBendDefaultSemitones) + (mod.pitchMod * Constants::kVirtualPatchMaxPitchSemitones) + voiceDetuneSemitones + seqPitchSemis;
+    const float seqPitchSemis = p.seq.pitch * Constants::kVirtualPatchMaxPitchSemitones;  // "PITCH" del seq: ±24 st
+    const float seqOsc2Semis =
+        p.seq.osc2Pitch * Constants::kVirtualPatchMaxPitchSemitones;  // "OSC2 SEMI" del seq: ±24 st
+    float osc1PitchMod = (p.pitchBendValue * Constants::kPitchBendDefaultSemitones)
+                         + (mod.pitchMod * Constants::kVirtualPatchMaxPitchSemitones) + voiceDetuneSemitones
+                         + seqPitchSemis;
     float osc1FinalPitch = basePitch + osc1PitchMod;
     float osc1Freq = DSPUtils::midiNoteToFrequency(osc1FinalPitch);
 
-    float osc2PitchMod = (p.pitchBendValue * Constants::kPitchBendDefaultSemitones) + (mod.pitchMod * Constants::kVirtualPatchMaxPitchSemitones) + voiceDetuneSemitones + seqPitchSemis
-                         + seqOsc2Semis + p.osc2Semitone + ((p.osc2Tune + (p.seq.osc2Tune * Constants::kCentsPerSemitone)) / Constants::kCentsPerSemitone);
+    float osc2PitchMod =
+        (p.pitchBendValue * Constants::kPitchBendDefaultSemitones)
+        + (mod.pitchMod * Constants::kVirtualPatchMaxPitchSemitones) + voiceDetuneSemitones + seqPitchSemis
+        + seqOsc2Semis + p.osc2Semitone
+        + ((p.osc2Tune + (p.seq.osc2Tune * Constants::kCentsPerSemitone)) / Constants::kCentsPerSemitone);
     float osc2FinalPitch = basePitch + osc2PitchMod;
     float osc2Freq = DSPUtils::midiNoteToFrequency(osc2FinalPitch);
 

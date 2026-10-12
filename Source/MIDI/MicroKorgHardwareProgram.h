@@ -63,9 +63,8 @@ struct MicroKorgHardwareProgram
         raw[ARP_STEP_MASK] = 0xFF;  // Todos los 8 pasos en ON (Play)
     }
 
-    explicit MicroKorgHardwareProgram(const MS2000HardwareProgram &base)
+    explicit MicroKorgHardwareProgram(const MS2000HardwareProgram &base) : raw(base.raw)
     {
-        raw = base.raw;
         raw[ARP_LAST_STEP] = 8;
         raw[ARP_STEP_MASK] = 0xFF;
     }
@@ -152,9 +151,8 @@ struct MicroKorgHardwareProgram
     }
 
     /** Construye la trama SysEx completa para microKORG (F0 42 3n modelID 40 [payload] F7). */
-    std::vector<uint8_t> buildProgramDump(int channel = 1,
-                                          uint8_t modelId = MODEL_ID_MICROKORG,
-                                          uint8_t function = CMD_PROGRAM_DUMP) const
+    std::vector<uint8_t>
+    buildProgramDump(int channel = 1, uint8_t modelId = MODEL_ID_MICROKORG, uint8_t function = CMD_PROGRAM_DUMP) const
     {
         std::vector<uint8_t> packed;
         if (!packToSysexPayload(packed))
@@ -163,10 +161,10 @@ struct MicroKorgHardwareProgram
         std::vector<uint8_t> sysex;
         sysex.reserve(6 + packed.size());
         sysex.push_back(0xF0);
-        sysex.push_back(0x42);                                      // Korg ID
+        sysex.push_back(0x42);  // Korg ID
         sysex.push_back(MS2000HardwareProgram::korgChannelByte(channel));
-        sysex.push_back(modelId);                                   // 0x71 o 0x58
-        sysex.push_back(function);                                  // 0x40
+        sysex.push_back(modelId);   // 0x71 o 0x58
+        sysex.push_back(function);  // 0x40
         sysex.insert(sysex.end(), packed.begin(), packed.end());
         sysex.push_back(0xF7);
         return sysex;
@@ -184,7 +182,8 @@ struct MicroKorgHardwareProgram
         base.applyToAPVTS(apvts);
 
         // 2. Aplicar los parámetros exclusivos de máscara y longitud rítmica del arpegiador
-        auto setParam = [&apvts](const char *paramId, float val) {
+        auto setParam = [&apvts](const char *paramId, float val)
+        {
             if (auto *p = apvts.getParameter(paramId))
                 p->setValueNotifyingHost(p->convertTo0to1(val));
         };
@@ -214,7 +213,8 @@ struct MicroKorgHardwareProgram
         raw = base.raw;
 
         // 2. Extraer los parámetros exclusivos del arpegiador microKORG
-        auto getParam = [&apvts](const char *paramId, float defaultVal) -> float {
+        auto getParam = [&apvts](const char *paramId, float defaultVal) -> float
+        {
             if (auto *p = apvts.getParameter(paramId))
                 return p->convertFrom0to1(p->getValue());
             return defaultVal;

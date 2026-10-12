@@ -26,7 +26,8 @@ SysExManager::SysExManager()
     }
 }
 
-bool SysExManager::isKorgHeader(const uint8_t *data, size_t size, int &outChannel, uint8_t &outFunction, uint8_t &outModelId) const noexcept
+bool SysExManager::isKorgHeader(
+    const uint8_t *data, size_t size, int &outChannel, uint8_t &outFunction, uint8_t &outModelId) const noexcept
 {
     if (data == nullptr || size < 6)
         return false;
@@ -483,8 +484,8 @@ std::vector<uint8_t> SysExManager::createHardwareProgramDump(int channel,
 }
 
 std::vector<uint8_t> SysExManager::createMicrokorgProgramDump(int channel,
-                                                             const juce::AudioProcessorValueTreeState &apvts,
-                                                             const std::string &name)
+                                                              const juce::AudioProcessorValueTreeState &apvts,
+                                                              const std::string &name)
 {
     if (!microkorgProgramValid_)
         microkorgProgram_ = MicroKorgHardwareProgram {};

@@ -36,7 +36,8 @@ void MS2KDelay::setTimeSeconds(float timeSec) noexcept
 {
     // timeSec viene transformado según el schema JSON (domainMin=0.001s, domainMax=1.4s);
     // aseguramos únicamente el límite físico del buffer asignado.
-    const float maxBufferSec = (sampleRate_ > 0.0) ? (static_cast<float>(maxDelaySamples_) / static_cast<float>(sampleRate_)) : 1.5f;
+    const float maxBufferSec =
+        (sampleRate_ > 0.0) ? (static_cast<float>(maxDelaySamples_) / static_cast<float>(sampleRate_)) : 1.5f;
     timeSeconds_ = DSPUtils::clamp(timeSec, 0.0001f, maxBufferSec);
     float targetSamplesL = timeSeconds_ * static_cast<float>(sampleRate_);
     float targetSamplesR = targetSamplesL;

@@ -9,9 +9,9 @@ namespace ABDMS2000
 
 struct WaveEntry
 {
-    std::string name;       // Display name
-    WaveCategory category;  // Category for filtering
-    size_t slot;            // Slot index (0..511)
+    std::string name;          // Display name
+    WaveCategory category {};  // Category for filtering (por defecto SynthWave)
+    size_t slot {};            // Slot index (0..511), por defecto 0
 };
 
 /**

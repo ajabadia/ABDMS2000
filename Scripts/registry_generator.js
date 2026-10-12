@@ -29,7 +29,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const rootDir = path.resolve(__dirname, '..');
-const specPath = path.join('..', 'ABDSharedAssets', 'contracts', 'korg_ms2000_parameter_spec.json');
+const sharedContractsDir = fs.existsSync(path.resolve(rootDir, '..', 'ABDShared', 'Contracts'))
+  ? path.resolve(rootDir, '..', 'ABDShared', 'Contracts')
+  : path.resolve(rootDir, '..', 'ABDSharedAssets', 'contracts');
+const specPath = path.join(sharedContractsDir, 'korg_ms2000_parameter_spec.json');
 
 // ── Manifiesto de artefactos ──────────────────────────────────────────
 //
@@ -222,26 +225,26 @@ enum class ParamType {
 };
 
 struct ParameterMeta {
-    const char* id;
-    const char* name;
-    const char* group;
-    int cc; // -1 if none
-    float min;
-    float max;
-    float defaultValue;
-    float skew;
-    ParamType type;
-    const char* unit;
-    int sysexOffset; // -1 if none (auto-computed by generator)
+    const char* id = nullptr;
+    const char* name = nullptr;
+    const char* group = nullptr;
+    int cc = -1; // -1 if none
+    float min = 0.0f;
+    float max = 0.0f;
+    float defaultValue = 0.0f;
+    float skew = 1.0f;
+    ParamType type = ParamType::Continuous;
+    const char* unit = nullptr;
+    int sysexOffset = -1; // -1 if none (auto-computed by generator)
     // Nuevos campos para el sistema schema-driven (ABDEep-style):
-    int wire;          // -1=None, 0=CC, 1=SysEx, 2=Nrpn
-    int wireCodec;     // 0=Value, 1=Bipolar, 2=Enum
-    int curve;         // 0=Linear, 1=Exp, 2=Pow, 3=Lut
-    float curveP0;     // parametro P0 de la curva (ej. escala para Exp)
-    float curveP1;     // parametro P1 de la curva (ej. exponente para Pow)
-    float domainMin;   // minimo fisico (ej. 20.0 Hz)
-    float domainMax;   // maximo fisico (ej. 20000.0 Hz)
-    int smoothing;     // 0=Linear, 1=Log
+    int wire = -1;          // -1=None, 0=CC, 1=SysEx, 2=Nrpn
+    int wireCodec = 0;      // 0=Value, 1=Bipolar, 2=Enum
+    int curve = 0;          // 0=Linear, 1=Exp, 2=Pow, 3=Lut
+    float curveP0 = 0.0f;   // parametro P0 de la curva (ej. escala para Exp)
+    float curveP1 = 0.0f;   // parametro P1 de la curva (ej. exponente para Pow)
+    float domainMin = 0.0f; // minimo fisico (ej. 20.0 Hz)
+    float domainMax = 0.0f; // maximo fisico (ej. 20000.0 Hz)
+    int smoothing = 0;      // 0=Linear, 1=Log
     std::vector<const char*> choices;
 };
 

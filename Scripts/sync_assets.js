@@ -24,12 +24,17 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const rootDir = path.resolve(__dirname, '..');
-const sharedRoot = path.resolve(rootDir, '..', 'ABDSharedAssets');
+const sharedCandidates = [
+  path.resolve(rootDir, '..', 'ABDShared', 'Assets'),
+  path.resolve(rootDir, '..', 'ABDSharedAssets'),
+];
+const sharedRoot = sharedCandidates.find(fs.existsSync) || sharedCandidates[0];
 
 const toPosix = (p) => p.split(path.sep).join('/');
 const EXCLUDE_DIRS = new Set(['_review']);
 
 function shouldCopy(src) {
+  if (path.basename(src) === '.gitkeep') return false;
   const rel = toPosix(src);
   for (const dir of EXCLUDE_DIRS) {
     if (path.basename(src) === dir) return false;

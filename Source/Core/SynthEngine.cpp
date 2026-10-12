@@ -1,8 +1,8 @@
 #include "SynthEngine.h"
 #include <algorithm>
 #include <cmath>
-#include "Conversion.gen.h"
 #include "AppLogger.h"
+#include "Conversion.gen.h"
 
 namespace ABDMS2000
 {
@@ -114,9 +114,6 @@ void SynthEngine::resetAllDiagnosticBypasses() noexcept
     diagBypassDelayFX_.store(false, std::memory_order_relaxed);
     diagBypassMasterEQ_.store(false, std::memory_order_relaxed);
 }
-
-
-
 
 void SynthEngine::registerScopeTaps()
 {
@@ -532,7 +529,7 @@ void SynthEngine::updateParametersFromAPVTS() noexcept
     arpeggiator_.setSyncResolution(static_cast<int>(getParam(ParamIDs::arpResolution, 3.0f)));
 
     // microKORG / Advanced 8-step rhythm mask
-    const bool allowStepMask = (synthMode != 0); // Active in microKORG (1) & Advanced (2)
+    const bool allowStepMask = (synthMode != 0);  // Active in microKORG (1) & Advanced (2)
     arpeggiator_.setStepMaskEnabled(allowStepMask);
     arpeggiator_.setLastStep(static_cast<int>(getParam(ParamIDs::arpLastStep, 8.0f)));
     arpeggiator_.setStepMask(0, getParam(ParamIDs::arpStep1, 1.0f) > 0.5f);
@@ -550,8 +547,9 @@ void SynthEngine::updateParametersFromAPVTS() noexcept
     configureTimbreSeq(true, ModSequencer::TIMBRE2_TRACK);
     modSeq_.setTempoBPM(tempoBpm);
     const bool allowModSeq = (synthMode != 1);  // microKORG no dispone de Modulation Sequencer
-    modSeq_.setEnabled(allowModSeq && ((getParam(ParamIDs::modSeqOn, 0.0f) > 0.5f)
-                       || (paramValue(true, ParamIDs::modSeqOn, 0.0f) > 0.5f)));
+    modSeq_.setEnabled(
+        allowModSeq
+        && ((getParam(ParamIDs::modSeqOn, 0.0f) > 0.5f) || (paramValue(true, ParamIDs::modSeqOn, 0.0f) > 0.5f)));
 
     // ── Global FX parameters ──
     int eqLRaw = static_cast<int>(getParam(ParamIDs::eqLowFreq, 1.0f));
@@ -1002,4 +1000,5 @@ void SynthEngine::allNotesOff()
     voiceManagerA_.allNotesOff();
     voiceManagerB_.allNotesOff();
     arpeggiator_.allNotesOff();
-}}  // namespace ABDMS2000
+}
+}  // namespace ABDMS2000

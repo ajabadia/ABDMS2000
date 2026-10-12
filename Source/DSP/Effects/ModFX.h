@@ -63,4 +63,3 @@ class ModFX
 };
 
 }  // namespace ABDMS2000
-

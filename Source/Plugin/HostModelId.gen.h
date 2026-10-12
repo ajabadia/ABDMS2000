@@ -28,7 +28,7 @@ inline constexpr const char* kHostModelManufacturer = "ABDSynths";
 inline constexpr int kHostBridgeProtocol = 4;
 
 /** Revision del codigo en el momento de generar este header. */
-inline constexpr const char* kHostBuildRevision = "25c3be56b";
+inline constexpr const char* kHostBuildRevision = "5297d3ef7";
 
 /**
  * Sello de build del binario: la unidad que incluya este header se compila con

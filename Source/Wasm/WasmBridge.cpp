@@ -291,14 +291,22 @@ class WasmEngineInstance
         }
         else if (id == "arpLastStep")
             arpeggiator_.setLastStep(static_cast<int>(value));
-        else if (id == "arpStep1") arpeggiator_.setStepMask(0, value > 0.5f);
-        else if (id == "arpStep2") arpeggiator_.setStepMask(1, value > 0.5f);
-        else if (id == "arpStep3") arpeggiator_.setStepMask(2, value > 0.5f);
-        else if (id == "arpStep4") arpeggiator_.setStepMask(3, value > 0.5f);
-        else if (id == "arpStep5") arpeggiator_.setStepMask(4, value > 0.5f);
-        else if (id == "arpStep6") arpeggiator_.setStepMask(5, value > 0.5f);
-        else if (id == "arpStep7") arpeggiator_.setStepMask(6, value > 0.5f);
-        else if (id == "arpStep8") arpeggiator_.setStepMask(7, value > 0.5f);
+        else if (id == "arpStep1")
+            arpeggiator_.setStepMask(0, value > 0.5f);
+        else if (id == "arpStep2")
+            arpeggiator_.setStepMask(1, value > 0.5f);
+        else if (id == "arpStep3")
+            arpeggiator_.setStepMask(2, value > 0.5f);
+        else if (id == "arpStep4")
+            arpeggiator_.setStepMask(3, value > 0.5f);
+        else if (id == "arpStep5")
+            arpeggiator_.setStepMask(4, value > 0.5f);
+        else if (id == "arpStep6")
+            arpeggiator_.setStepMask(5, value > 0.5f);
+        else if (id == "arpStep7")
+            arpeggiator_.setStepMask(6, value > 0.5f);
+        else if (id == "arpStep8")
+            arpeggiator_.setStepMask(7, value > 0.5f);
 
         // Mod Sequencer parameters
         else if (id == "modSeqOn")
