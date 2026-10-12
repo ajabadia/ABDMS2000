@@ -29,7 +29,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const rootDir = path.resolve(__dirname, '..');
-const specPath = path.join(rootDir, 'schemas', 'parameters-spec.schema.v1.json');
+const specPath = path.join('..', 'ABDSharedAssets', 'contracts', 'korg_ms2000_parameter_spec.json');
 
 // ── Manifiesto de artefactos ──────────────────────────────────────────
 //
