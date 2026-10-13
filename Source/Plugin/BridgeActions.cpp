@@ -120,6 +120,17 @@ void BridgeActions::handleJsEvent(const juce::var &message)
         int val = static_cast<int>(message.getProperty("value", 0));
         host_.getMIDITelemetry().sendDirectCC(cc, val);
     }
+    else if (action == "openBrowserUrl")
+    {
+        auto urlString = message.getProperty("url", "").toString();
+        if (urlString.isEmpty())
+            urlString = message.toString();
+        if (urlString.isNotEmpty())
+        {
+            juce::URL url(urlString);
+            url.launchInDefaultBrowser();
+        }
+    }
     // ─── Puente MIDI de hardware (Bank Manager embebido) ────────────────────
     //
     // Sin esto dentro del plugin no había forma de traer un banco real: el Bank

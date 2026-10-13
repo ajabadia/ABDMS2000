@@ -8,14 +8,14 @@ import { renderGroupPanel, renderAllPanels } from './ui/panelFactory.js';
 import { paramStore } from './contracts/paramStore.js';
 import { LcdProgrammer } from './ui/lcdProgrammer.js';
 import { createKeyboard } from '@abdsynths/midi-keyb';
-import { ThemeSwitcher, mountFitStage } from '@abdsynths/shared/components';
+import { ThemeSwitcher, mountFitStage, createOverlayFocus, createAboutDialog } from '@abdsynths/shared/components';
 import '@abdsynths/shared/styles/components/widgets.css';
 import '@abdsynths/shared/styles/components/skins-junio.css';
+import '@abdsynths/shared/styles/components/about-dialog.css';
 import '@abdsynths/midi-keyb/keyboard.css';
 import '@abdsynths/shared/styles/components/bank.css';
 import './styles/slideDrawer.css';
 import { slideDrawer } from './components/slideDrawer.js';
-import { createOverlayFocus } from '@abdsynths/shared/components';
 import { openWavetableBrowser, syncCatalogFromEngine, getWaveName } from './ui/wavetableBrowser.js';
 import { diagnosticModal } from './ui/diagnosticModal.js';
 import { BankManagerModal } from '@abdsynths/bank-manager-ui';
@@ -44,8 +44,9 @@ let lcdProgrammer = null;
 let keyboardInstance = null;
 let bankManagerModal = null;
 let oscilloscopeModal = null;
-// Contrato de foco del About (overlayFocus.js); lo construye setupAboutModal.
+// Contrato de foco del About (overlayFocus.js) y diálogo reactivo con AutoUpdater
 let aboutFocusContract = null;
+let aboutDialogInstance = null;
 let timbreClipboard = null;
 let globalMidiChannel = 1;
 
@@ -2038,6 +2039,25 @@ function handleMenuAction(action) {
     case 'open-about':
       openAboutModal();
       break;
+    case 'check-updates':
+      openAboutModal();
+      aboutDialogInstance?.checkForUpdates();
+      break;
+    case 'voice-mode-single':
+      paramStore.set('voiceMode', 0);
+      bridge.setParam('voiceMode', 0);
+      devLog('[Voice Mode]: Single / Mono');
+      break;
+    case 'voice-mode-poly':
+      paramStore.set('voiceMode', 1);
+      bridge.setParam('voiceMode', 1);
+      devLog('[Voice Mode]: Poly');
+      break;
+    case 'voice-mode-unison':
+      paramStore.set('voiceMode', 2);
+      bridge.setParam('voiceMode', 2);
+      devLog('[Voice Mode]: Unison');
+      break;
     case 'skin-ms2000':
     case 'skin-microkorg':
     case 'skin-cyberpunk': {
@@ -2172,62 +2192,30 @@ function triggerSysexFileInput() {
 }
 
 function setupAboutModal() {
-  const modal = document.getElementById('about-modal');
-  const closeBtn = document.getElementById('about-close-btn');
-  const buildVersionSpan = document.getElementById('about-build-version');
-
-  if (buildVersionSpan) {
-    buildVersionSpan.textContent = `${BUILD_INFO.version} (Build ${BUILD_INFO.buildNumber} - ${BUILD_INFO.buildDate})`;
-  }
-
-  if (modal) {
-    // 2026-09-27: el About entra en el CONTRATO DE FOCO de la familia
-    // (overlayFocus.js, el mismo del cajon compartido): cerrado va `inert` +
-    // `aria-hidden` (nace cerrado: nace inerte), al abrir el foco entra al
-    // primer control y al cerrar vuelve al disparador. El cierre visible solo
-    // ensena/oculta (un display:none con !important gana al inert; el atributo
-    // queda para el DOM), la RESPONSABILIDAD del foco es del contrato.
-    aboutFocusContract = createOverlayFocus({
-      root: modal,
-      isClosed: () => modal.classList.contains('hidden'),
-      onEscape: () => closeAboutModal(),
-    });
-    aboutFocusContract.setInert();
-    aboutFocusContract.attach();
-  }
-
-  closeBtn?.addEventListener('click', () => {
-    closeAboutModal();
-  });
-
-  modal?.addEventListener('click', (e) => {
-    if (e.target === modal) {
-      closeAboutModal();
-    }
+  aboutDialogInstance = createAboutDialog({
+    id: 'about-modal',
+    appName: 'ABDMS2000',
+    subtitle: 'Virtual Analog / DWGS Synthesizer Emulator',
+    description: 'Tri-Mode PolyBLEP VA + DWGS 64 Waves + 16-Band Vocoder.',
+    version: BUILD_INFO.version,
+    buildNumber: BUILD_INFO.buildNumber,
+    repo: 'ajabadia/ABDMS2000',
+    manualUrl: 'https://github.com/ajabadia/ABDMS2000#readme',
+    getJuceBackend: () => ({
+      openBrowserUrl: (url) => bridge.send('openBrowserUrl', { url }),
+      checkForUpdates: () => {},
+    })
   });
 
   setupSysExEvents();
 }
 
 function openAboutModal() {
-  const modal = document.getElementById('about-modal');
-  if (!modal) return;
-
-  aboutFocusContract?.rememberTrigger();
-  modal.classList.remove('hidden');
-  modal.style.setProperty('display', 'flex', 'important');
-  aboutFocusContract?.releaseInert();
-  aboutFocusContract?.focusFirst();
+  aboutDialogInstance?.open();
 }
 
 function closeAboutModal() {
-  const modal = document.getElementById('about-modal');
-  if (!modal || modal.classList.contains('hidden')) return;   // cierre ya hecho: no-op
-
-  aboutFocusContract?.restoreFocus();
-  aboutFocusContract?.setInert();
-  modal.style.setProperty('display', 'none', 'important');
-  modal.classList.add('hidden');
+  aboutDialogInstance?.close();
 }
 
 function setupSysExEvents() {

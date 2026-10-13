@@ -85,6 +85,23 @@
             </div>
           </div>
 
+          <!-- Mode Menu -->
+          <div class="menu-item-container">
+            <button class="menu-btn" data-menu="mode-menu">Mode</button>
+            <div class="dropdown-menu" id="mode-menu">
+              <button class="dropdown-item" data-action="voice-mode-single"><span>Voice: Single / Mono</span></button>
+              <button class="dropdown-item" data-action="voice-mode-poly"><span>Voice: Poly (4 Voices)</span></button>
+              <button class="dropdown-item" data-action="voice-mode-unison"><span>Voice: Unison Stack</span></button>
+              <div class="dropdown-separator"></div>
+              <button class="dropdown-item" data-action="skin-ms2000"><span>Skin: Korg MS2000 (Navy Blue)</span></button>
+              <button class="dropdown-item" data-action="skin-microkorg"><span>Skin: microKORG (Vintage Gold)</span></button>
+              <button class="dropdown-item" data-action="skin-cyberpunk"><span>Skin: ABD Ultra (Cyberpunk)</span></button>
+              <div class="dropdown-separator"></div>
+              <button class="dropdown-item" data-action="midi-channel"><span>Global MIDI Channel: 1</span></button>
+              <button class="dropdown-item" data-action="midi-setup"><span>MIDI Device Configuration...</span></button>
+            </div>
+          </div>
+
           <!-- View Menu -->
           <div class="menu-item-container">
             <button class="menu-btn" data-menu="view-menu">View</button>
@@ -98,27 +115,25 @@
             </div>
           </div>
 
-          <!-- Settings Menu -->
-          <div class="menu-item-container">
-            <button class="menu-btn" data-menu="settings-menu">Settings</button>
-            <div class="dropdown-menu" id="settings-menu">
-              <button class="dropdown-item" data-action="midi-setup"><span>MIDI Device Configuration...</span></button>
-              <button class="dropdown-item" data-action="midi-channel"><span>Global MIDI Channel: 1</span></button>
-              <div class="dropdown-separator"></div>
-              <button class="dropdown-item" data-action="skin-ms2000"><span>Skin: Korg MS2000 (Navy Blue)</span></button>
-              <button class="dropdown-item" data-action="skin-microkorg"><span>Skin: microKORG (Vintage Gold)</span></button>
-              <button class="dropdown-item" data-action="skin-cyberpunk"><span>Skin: ABD Ultra (Cyberpunk)</span></button>
-            </div>
-          </div>
-
           <!-- Help Menu -->
           <div class="menu-item-container">
             <button class="menu-btn" data-menu="help-menu">Help</button>
             <div class="dropdown-menu" id="help-menu">
-              <button class="dropdown-item" data-action="open-manual"><span>Documentation &amp; User Manual</span></button>
-              <button class="dropdown-item" data-action="midi-cc-chart"><span>MIDI CC &amp; NRPN Reference</span></button>
+              <button class="dropdown-item" data-action="open-manual">
+                <span>Documentation &amp; User Manual</span>
+                <span class="dropdown-kbd">F1</span>
+              </button>
+              <button class="dropdown-item" data-action="midi-cc-chart">
+                <span>MIDI CC &amp; NRPN Reference</span>
+              </button>
               <div class="dropdown-separator"></div>
-              <button class="dropdown-item" data-action="open-about"><span>About ABDMS2000...</span></button>
+              <button class="dropdown-item" data-action="check-updates">
+                <span>Check for Updates...</span>
+              </button>
+              <div class="dropdown-separator"></div>
+              <button class="dropdown-item" data-action="open-about">
+                <span>About ABDMS2000...</span>
+              </button>
             </div>
           </div>
 
@@ -669,20 +684,8 @@
       </div>
     </div>
 
-    <!-- About Modal Dialog -->
-    <div id="about-modal" class="modal-overlay hidden" style="display: none;">
-      <div class="modal-box">
-        <h3>ABDMS2000</h3>
-        <div class="modal-sub">Virtual Analog / DWGS Synthesizer Emulator</div>
-        <div class="modal-content">
-          <p><strong>Architecture:</strong> Tri-Mode (Korg MS2000, microKORG, ABD Ultra)</p>
-          <p><strong>Engine:</strong> PolyBLEP VA + DWGS 64 Waves + 16-Band Vocoder</p>
-          <p><strong>Build Version:</strong> <span id="about-build-version">2026.08.24</span></p>
-          <p><strong>Developed by:</strong> ajabadia &amp; Antigravity Pair Programming</p>
-        </div>
-        <button id="about-close-btn" class="modal-close-btn">CLOSE</button>
-      </div>
-    </div>
+    <!-- About Modal Dialog (Reactive AboutDialog with AutoUpdater) -->
+    <div id="about-modal" class="modal-overlay abd-about-overlay" hidden></div>
   </div>
 
 

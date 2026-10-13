@@ -220,6 +220,10 @@ jobs:
           echo "::error title=cppcheck::no existe $baseline: sin baseline no se puede separar deuda de regresion."
           exit 1
         fi
+        # Tolerancia CRLF: si la baseline se commiteo con finales Windows,
+        # grep -f no casaria nada y TODO pareceria hallazgo nuevo.
+        bl=$(mktemp)
+        tr -d '\r' < "$baseline" > "$bl"
         set +e
         salida=$(cppcheck --enable=warning,performance,portability --std=c++20 --suppress=missingIncludeSystem --template='{severity}|{file}|{line}|{message}' Source/ 2>&1)
         codigo=$?
@@ -242,7 +246,7 @@ jobs:
         PY
         )
         rm -f "$tmp"
-        nuevos=$(printf '%s\n' "$actuales" | grep -vxF -f "$baseline" || true)
+        nuevos=$(printf '%s\n' "$actuales" | grep -vxF -f "$bl" || true)
         if [ -n "$nuevos" ]; then
           printf '%s\n' "$nuevos" | sed -n '1,30p'
           n=$(printf '%s\n' "$nuevos" | grep -c . || true)
@@ -251,12 +255,13 @@ jobs:
         fi
         af=$(mktemp)
         printf '%s\n' "$actuales" > "$af"
-        obsoletas=$(grep -v '^#' "$baseline" | grep -vxF -f "$af" | grep -c . || true)
+        obsoletas=$(grep -v '^#' "$bl" | grep -vxF -f "$af" | grep -c . || true)
         rm -f "$af"
         if [ "$obsoletas" -gt 0 ]; then
           echo "::notice title=cppcheck::${obsoletas} firmas de la baseline ya no aparecen: deuda pagada — prune $baseline."
         fi
-        echo "::notice title=cppcheck::sin hallazgos nuevos ($(grep -cv '^#' "$baseline") firmas baseladas, ${obsoletas} obsoletas)."
+        echo "::notice title=cppcheck::sin hallazgos nuevos ($(grep -cv '^#' "$bl") firmas baseladas, ${obsoletas} obsoletas)."
+        rm -f "$bl"
         exit 0
 
   # ---------------------------------------------------------------------------
