@@ -1,3 +1,6 @@
-# Baseline cppcheck de ABDMS2000 — generado midiendo HEAD (5297d3ef7) con el comando
-# exacto de la CI y cppcheck 2.21: 0 firmas, la deuda esta pagada. El gate
-# solo bloquea hallazgos que NO esten aqui (hoy: cualquiera).
+# Baseline cppcheck de ABDMS2000 — generado midiendo HEAD (f0af039d0) con el
+# comando exacto de la CI (cppcheck 2.21) ya CON las exclusiones
+# --suppress='*:BuildVersion.h' (estampado) y --suppress='*:*.gen.*'
+# (KorgChannel, HostModelId, Conversion, ParameterRegistry). 0 firmas: la
+# deuda sigue pagada y el gate bloquea cualquier hallazgo ajeno a esos
+# ficheros.
