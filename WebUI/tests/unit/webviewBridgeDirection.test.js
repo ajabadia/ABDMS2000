@@ -16,9 +16,19 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { describe, it, expect } from 'vitest';
-import {
+
+const here = path.dirname(fileURLToPath(import.meta.url));
+const workspaceRoot = path.resolve(here, '../../../..');
+const sourceRoot = path.resolve(here, '../../../Source');
+
+const helperCandidates = [
+  path.join(workspaceRoot, 'ABDShared/Code/WebView2Bridge/testing/webviewBridgeDirection.js'),
+  path.join(workspaceRoot, 'ABDSharedCode/WebView2Bridge/testing/webviewBridgeDirection.js'),
+];
+const helperPath = helperCandidates.find(fs.existsSync) ?? helperCandidates[0];
+const {
   FORBIDDEN_CALL,
   REQUIRED_CALL,
   checkBridgeDirection,
@@ -28,11 +38,7 @@ import {
   listCppSources,
   scanForForbiddenCalls,
   stripCppComments
-} from '../../../../ABDSharedCode/WebView2Bridge/testing/webviewBridgeDirection.js';
-
-const here = path.dirname(fileURLToPath(import.meta.url));
-const workspaceRoot = path.resolve(here, '../../../..');
-const sourceRoot = path.resolve(here, '../../../Source');
+} = await import(pathToFileURL(helperPath).href);
 
 describe('helper compartido — comentarios C/C++', () => {
   it('ignora el patrón cuando está comentado (`//` y `/* */`)', () => {
@@ -115,18 +121,12 @@ describe('helper compartido — veredicto de checkBridgeDirection', () => {
 
 describe('helper compartido — contrato y ubicación', () => {
   it('vive en el repo compartido de la suite', () => {
-    const helperPath = path.join(
-      workspaceRoot,
-      'ABDSharedCode/WebView2Bridge/testing/webviewBridgeDirection.js'
-    );
-    expect(fs.existsSync(helperPath)).toBe(true);
+    expect(helperCandidates.some(p => fs.existsSync(p))).toBe(true);
   });
 
   it('no tiene dependencias externas (lo consumen vitest y `node` pelado)', () => {
-    const source = fs.readFileSync(
-      path.join(workspaceRoot, 'ABDSharedCode/WebView2Bridge/testing/webviewBridgeDirection.js'),
-      'utf8'
-    );
+    const validHelperPath = helperCandidates.find(fs.existsSync);
+    const source = fs.readFileSync(validHelperPath, 'utf8');
     const imports = [...source.matchAll(/^import .*from '([^']+)';$/gm)].map(match => match[1]);
 
     expect(imports).toEqual(['node:fs', 'node:path']);

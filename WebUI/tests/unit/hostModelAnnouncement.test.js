@@ -12,15 +12,22 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 // Guard de dirección del canal nativo → JS: lógica compartida por toda la suite.
-import {
+const here = path.dirname(fileURLToPath(import.meta.url));
+const workspaceRoot = path.resolve(here, '../../../..');
+const helperCandidates = [
+  path.join(workspaceRoot, 'ABDShared/Code/WebView2Bridge/testing/webviewBridgeDirection.js'),
+  path.join(workspaceRoot, 'ABDSharedCode/WebView2Bridge/testing/webviewBridgeDirection.js'),
+];
+const helperPath = helperCandidates.find(fs.existsSync) ?? helperCandidates[0];
+const {
   checkBridgeDirection,
   compactCpp,
   listCppSources,
   stripCppComments
-} from '../../../../ABDSharedCode/WebView2Bridge/testing/webviewBridgeDirection.js';
+} = await import(pathToFileURL(helperPath).href);
 import { BridgeCore } from '../../src/bridge/bridgeCore.js';
 import {
   HOST_MODEL_ID,

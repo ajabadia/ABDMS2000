@@ -4,33 +4,44 @@ project(ABDMS2000_WASM LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# --- ABDSharedCode Integration ---
-# Resolve the shared DSP primitives (PolyBLEP, ADSREnvelope, LFO, PortamentoGlide)
-# from ABDSharedCode instead of compiling them via fragile relative paths.
-# Same dual-path strategy as the root CMakeLists.txt:
-#  * local ../ABDSharedCode if it exists (development)
-#  * FetchContent from GitHub as fallback (CI/CD without local copy)
-set(ABDSHARED_CODE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../ABDSharedCode")
-if(EXISTS "${ABDSHARED_CODE_DIR}/CMakeLists.txt")
-    message(STATUS "ABDSharedCode (WASM): Using local at ${ABDSHARED_CODE_DIR}")
+# ============================================================
+# ABDShared (WASM) — DspCore, SynthCore
+# ============================================================
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../../ABDShared/Code/CMakeLists.txt")
+    set(ABDSHARED_CODE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../ABDShared/Code")
+    message(STATUS "ABDShared (WASM): Using canonical Code at ${ABDSHARED_CODE_DIR}")
+elseif(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../../ABDSharedCode/CMakeLists.txt")
+    set(ABDSHARED_CODE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../ABDSharedCode")
+    message(STATUS "ABDShared (WASM): Using legacy sibling at ${ABDSHARED_CODE_DIR}")
+endif()
+
+if(DEFINED ABDSHARED_CODE_DIR)
     # Disable modules that depend on JUCE (unavailable under Emscripten)
     set(ABDSHAREDCODE_BUILD_SYNTHCORE_TESTS OFF CACHE BOOL "" FORCE)
     set(ABDSHAREDCODE_BUILD_AUTOUPDATER OFF CACHE BOOL "" FORCE)
     set(ABDSHAREDCODE_BUILD_HARDWAREDRIVERS OFF CACHE BOOL "" FORCE)
     set(ABDSHAREDCODE_BUILD_HARDWAREMIDIDETECT OFF CACHE BOOL "" FORCE)
-    add_subdirectory("${ABDSHARED_CODE_DIR}" "${CMAKE_BINARY_DIR}/ABDSharedCode")
+    set(ABDSHARED_BUILD_SYNTHCORE_TESTS OFF CACHE BOOL "" FORCE)
+    set(ABDSHARED_BUILD_AUTOUPDATER OFF CACHE BOOL "" FORCE)
+    set(ABDSHARED_BUILD_HARDWAREDRIVERS OFF CACHE BOOL "" FORCE)
+    set(ABDSHARED_BUILD_HARDWAREMIDIDETECT OFF CACHE BOOL "" FORCE)
+    add_subdirectory("${ABDSHARED_CODE_DIR}" "${CMAKE_BINARY_DIR}/ABDShared_build")
 else()
     include(FetchContent)
     FetchContent_Declare(
-      ABDSharedCode
-      GIT_REPOSITORY https://github.com/ajabadia/ABDSharedCode.git
-      GIT_TAG        master
+      ABDShared
+      GIT_REPOSITORY https://github.com/ajabadia/ABDShared.git
+      GIT_TAG        main
     )
     set(ABDSHAREDCODE_BUILD_SYNTHCORE_TESTS OFF CACHE BOOL "" FORCE)
     set(ABDSHAREDCODE_BUILD_AUTOUPDATER OFF CACHE BOOL "" FORCE)
     set(ABDSHAREDCODE_BUILD_HARDWAREDRIVERS OFF CACHE BOOL "" FORCE)
     set(ABDSHAREDCODE_BUILD_HARDWAREMIDIDETECT OFF CACHE BOOL "" FORCE)
-    FetchContent_MakeAvailable(ABDSharedCode)
+    set(ABDSHARED_BUILD_SYNTHCORE_TESTS OFF CACHE BOOL "" FORCE)
+    set(ABDSHARED_BUILD_AUTOUPDATER OFF CACHE BOOL "" FORCE)
+    set(ABDSHARED_BUILD_HARDWAREDRIVERS OFF CACHE BOOL "" FORCE)
+    set(ABDSHARED_BUILD_HARDWAREMIDIDETECT OFF CACHE BOOL "" FORCE)
+    FetchContent_MakeAvailable(ABDShared)
 endif()
 
 # Source Files

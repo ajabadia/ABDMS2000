@@ -41,26 +41,35 @@ else()
     set(ABDBANKMANAGER_WEBUI_DIR "${abdbankmanager_SOURCE_DIR}/WebUI")
 endif()
 
-# --- ABDSharedCode Integration ---
-if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../ABDBankManager/cpp/CMakeLists.txt")
-    # ABDBankManager ya incluye ABDSharedCode; evitar duplicacion de targets
-    set(ABDSHAREDCODE_SKIP_ADD_SUBDIRECTORY ON CACHE INTERNAL "" FORCE)
-    set(ABDSHARED_CODE_DIR "" CACHE INTERNAL "" FORCE)
-    message(STATUS "ABDSharedCode: Skipping (included by ABDBankManager)")
+# ============================================================
+# ABDShared — DspCore, SynthCore, Scope, AutoUpdater, WebView2Bridge
+# Prioriza el repositorio canónico ABDShared/Code, con fallback a ABDSharedCode.
+# ============================================================
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../ABDShared/Code/CMakeLists.txt")
+    set(ABDSHARED_CODE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../ABDShared/Code")
+    message(STATUS "ABDShared: Using canonical Code at ${ABDSHARED_CODE_DIR}")
+elseif(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../ABDSharedCode/CMakeLists.txt")
+    set(ABDSHARED_CODE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../ABDSharedCode")
+    message(STATUS "ABDShared: Using legacy sibling at ${ABDSHARED_CODE_DIR}")
 endif()
-set(ABDSHARED_CODE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../ABDSharedCode")
+
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../ABDBankManager/cpp/CMakeLists.txt")
+    # ABDBankManager ya incluye ABDShared; evitar duplicacion de targets
+    set(ABDSHAREDCODE_SKIP_ADD_SUBDIRECTORY ON CACHE INTERNAL "" FORCE)
+    message(STATUS "ABDShared: Skipping add_subdirectory (included by ABDBankManager)")
+endif()
+
 if(NOT ABDSHAREDCODE_SKIP_ADD_SUBDIRECTORY)
-    if(EXISTS "${ABDSHARED_CODE_DIR}/CMakeLists.txt")
-        message(STATUS "ABDSharedCode: Using local at ${ABDSHARED_CODE_DIR}")
-        add_subdirectory("${ABDSHARED_CODE_DIR}" "${CMAKE_BINARY_DIR}/ABDSharedCode")
+    if(DEFINED ABDSHARED_CODE_DIR)
+        add_subdirectory("${ABDSHARED_CODE_DIR}" "${CMAKE_BINARY_DIR}/ABDShared_build")
     else()
         include(FetchContent)
         FetchContent_Declare(
-          ABDSharedCode
-          GIT_REPOSITORY https://github.com/ajabadia/ABDSharedCode.git
-          GIT_TAG        master
+          ABDShared
+          GIT_REPOSITORY https://github.com/ajabadia/ABDShared.git
+          GIT_TAG        main
         )
-        FetchContent_MakeAvailable(ABDSharedCode)
+        FetchContent_MakeAvailable(ABDShared)
     endif()
 endif()
 
