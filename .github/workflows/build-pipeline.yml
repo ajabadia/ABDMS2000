@@ -212,6 +212,12 @@ jobs:
     # hallazgos FUERA de la baseline, la ausencia de la propia baseline, y que
     # la comprobacion no llegue a medirse. El `2>&1` no es opcional: cppcheck
     # escribe los hallazgos en stderr, y medir sin el siempre cuenta 0.
+    #
+    # EXCLUIDOS del conteo por --suppress='*:nombre' (coincidencia por sufijo,
+    # verificada con cppcheck 2.21): Source/Core/BuildVersion.h (estampado)
+    # y todo *.gen.* (KorgChannel, HostModelId, Conversion, ParameterRegistry).
+    # Hoy aportan 0 firmas; se excluyen para que la generacion futura no
+    # cuente como deuda medida.
     - name: Static analysis (cppcheck) - bloqueante (baseline)
       run: |
         cppcheck --version
@@ -225,7 +231,7 @@ jobs:
         bl=$(mktemp)
         tr -d '\r' < "$baseline" > "$bl"
         set +e
-        salida=$(cppcheck --enable=warning,performance,portability --std=c++20 --suppress=missingIncludeSystem --template='{severity}|{file}|{line}|{message}' Source/ 2>&1)
+        salida=$(cppcheck --enable=warning,performance,portability --std=c++20 --suppress=missingIncludeSystem --suppress='*:BuildVersion.h' --suppress='*:*.gen.*' --template='{severity}|{file}|{line}|{message}' Source/ 2>&1)
         codigo=$?
         set -e
         if [ -z "$salida" ]; then

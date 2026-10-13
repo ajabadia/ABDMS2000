@@ -8,10 +8,11 @@ import { renderGroupPanel, renderAllPanels } from './ui/panelFactory.js';
 import { paramStore } from './contracts/paramStore.js';
 import { LcdProgrammer } from './ui/lcdProgrammer.js';
 import { createKeyboard } from '@abdsynths/midi-keyb';
-import { ThemeSwitcher, mountFitStage, createOverlayFocus, createAboutDialog } from '@abdsynths/shared/components';
+import { ThemeSwitcher, mountFitStage, createOverlayFocus, createAboutDialog, createLiveSysExInspector } from '@abdsynths/shared/components';
 import '@abdsynths/shared/styles/components/widgets.css';
 import '@abdsynths/shared/styles/components/skins-junio.css';
 import '@abdsynths/shared/styles/components/about-dialog.css';
+import '@abdsynths/shared/styles/components/live-sysex-inspector.css';
 import '@abdsynths/midi-keyb/keyboard.css';
 import '@abdsynths/shared/styles/components/bank.css';
 import './styles/slideDrawer.css';
@@ -30,6 +31,7 @@ import {
 } from './components/shared/index.js';
 import { WAVE_ICONS, FILTER_ICONS } from '@abdsynths/shared/components';
 import { OscilloscopeModal } from './components/OscilloscopeModal.js';
+import { FACTORY_PROGRAMS, generateMS2000SysExBuffer } from './contracts/factoryPresets.js';
 
 let themeSwitcher = null; // selector universal (instalado en DOMContentLoaded)
 
@@ -47,8 +49,68 @@ let oscilloscopeModal = null;
 // Contrato de foco del About (overlayFocus.js) y diálogo reactivo con AutoUpdater
 let aboutFocusContract = null;
 let aboutDialogInstance = null;
+let liveSysExInspectorInstance = null;
+let isSysExInspectorVisible = false;
 let timbreClipboard = null;
 let globalMidiChannel = 1;
+
+function getLiveSysExInspector() {
+  if (!liveSysExInspectorInstance) {
+    const prog = (lcdProgrammer && lcdProgrammer.getCurrentProgram) ? lcdProgrammer.getCurrentProgram() : FACTORY_PROGRAMS[0];
+    const paramsMap = paramStore.values ? Object.fromEntries(paramStore.values) : (prog ? prog.params : {});
+    const initialBuf = generateMS2000SysExBuffer(paramsMap, prog ? prog.name : 'Init Prog');
+
+    liveSysExInspectorInstance = createLiveSysExInspector({
+      title: 'MS2000 Live SysEx Inspector',
+      floating: true,
+      bytesPerRow: 16,
+      initialBuffer: initialBuf,
+      onClose: () => {
+        isSysExInspectorVisible = false;
+      },
+      onOpen: () => {
+        isSysExInspectorVisible = true;
+      },
+      onExport: (blob, filename) => {
+        const p = (lcdProgrammer && lcdProgrammer.getCurrentProgram) ? lcdProgrammer.getCurrentProgram() : { name: 'MS2000_Patch' };
+        const fname = filename || `${p.name.trim().replace(/\s+/g, '_')}.syx`;
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fname;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+    });
+    liveSysExInspectorInstance.hide();
+  }
+  return liveSysExInspectorInstance;
+}
+
+function toggleLiveSysExInspector() {
+  const inspector = getLiveSysExInspector();
+  inspector.toggle();
+  isSysExInspectorVisible = inspector.isOpen();
+  if (isSysExInspectorVisible) {
+    updateLiveSysExInspector();
+  }
+}
+
+function updateLiveSysExInspector() {
+  if (!liveSysExInspectorInstance || !liveSysExInspectorInstance.isOpen()) return;
+  const prog = (lcdProgrammer && lcdProgrammer.getCurrentProgram) ? lcdProgrammer.getCurrentProgram() : FACTORY_PROGRAMS[0];
+  const paramsMap = paramStore.values ? Object.fromEntries(paramStore.values) : (prog ? prog.params : {});
+  const buf = generateMS2000SysExBuffer(paramsMap, prog ? prog.name : 'Init Prog');
+  liveSysExInspectorInstance.updateBuffer(buf);
+}
+
+window.__onMS2000ParamMutated = () => {
+  if (isSysExInspectorVisible) {
+    updateLiveSysExInspector();
+  }
+};
 
 document.addEventListener('DOMContentLoaded', () => {
   devLog(`[ABDMS2000 App Init] Version: ${BUILD_INFO.version} (Build ${BUILD_INFO.buildNumber})`);
@@ -2099,6 +2161,9 @@ function handleMenuAction(action) {
         keyboardInstance.toggleCollapse();
       }
       break;
+    case 'toggle-sysex-inspector':
+      toggleLiveSysExInspector();
+      break;
     case 'undo':
       paramStore.undo?.();
       break;
@@ -2333,6 +2398,14 @@ function setupButtons() {
 
   const copySysexBtn = document.getElementById('btn-copy-sysex');
   const sysexHexContent = document.getElementById('sysex-hex-content');
+  if (sysexHexContent) {
+    sysexHexContent.style.cursor = 'pointer';
+    sysexHexContent.title = 'Click to open Live SysEx Inspector (Ctrl+I)';
+    sysexHexContent.addEventListener('click', () => {
+      toggleLiveSysExInspector();
+    });
+  }
+
   copySysexBtn?.addEventListener('click', () => {
     if (sysexHexContent) {
       const text = sysexHexContent.textContent.trim();
@@ -2369,6 +2442,9 @@ function setupKeyboardShortcuts() {
       } else if (e.key === 'e' || e.key === 'E') {
         e.preventDefault();
         handleMenuAction('export-sysex');
+      } else if (e.key === 'i' || e.key === 'I') {
+        e.preventDefault();
+        toggleLiveSysExInspector();
       }
     }
     if (e.key === 'Escape') {

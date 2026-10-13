@@ -231,6 +231,9 @@ export class LcdProgrammer {
       const hex = generateMS2000SysExHex(paramStore.values ? Object.fromEntries(paramStore.values) : p.params, p.name);
       this.sysexHexElem.textContent = hex;
     }
+    if (typeof window !== 'undefined' && typeof window.__onMS2000ParamMutated === 'function') {
+      window.__onMS2000ParamMutated();
+    }
   }
 
   flashMessage(line1, line2, duration = 1200) {

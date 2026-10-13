@@ -150,9 +150,9 @@ export const FACTORY_PROGRAMS = [
 ];
 
 /**
- * Generate a 288-byte Korg MS2000 formatted SysEx Hex string preview for any parameter map.
+ * Generate a 288-byte Korg MS2000 formatted SysEx Uint8Array buffer for any parameter map.
  */
-export function generateMS2000SysExHex(paramsMap, progName = 'Init Prog') {
+export function generateMS2000SysExBuffer(paramsMap, progName = 'Init Prog') {
   const bytes = new Uint8Array(288);
   // Header: F0 42 30 58 40 (Korg ID: 42, Global Ch: 30, Model MS2000: 58, 1 Program Dump: 40)
   bytes[0] = 0xF0;
@@ -195,8 +195,14 @@ export function generateMS2000SysExHex(paramsMap, progName = 'Init Prog') {
 
   // End of SysEx
   bytes[287] = 0xF7;
+  return bytes;
+}
 
-  // Format to hex string
+/**
+ * Generate a 288-byte Korg MS2000 formatted SysEx Hex string preview for any parameter map.
+ */
+export function generateMS2000SysExHex(paramsMap, progName = 'Init Prog') {
+  const bytes = generateMS2000SysExBuffer(paramsMap, progName);
   let hex = '';
   for (let i = 0; i < bytes.length; i++) {
     hex += bytes[i].toString(16).toUpperCase().padStart(2, '0') + ' ';

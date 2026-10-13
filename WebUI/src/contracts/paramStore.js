@@ -113,6 +113,9 @@ class ParamStore {
         try { cb(val); } catch (e) { console.error('[ParamStore Listener Error]:', e); }
       }
     }
+    if (typeof window !== 'undefined' && typeof window.__onMS2000ParamMutated === 'function') {
+      window.__onMS2000ParamMutated(paramId, val);
+    }
   }
 
   /**
