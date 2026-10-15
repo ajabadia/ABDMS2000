@@ -1,0 +1,16 @@
+# Exclusiones de cppcheck de ABDMS2000 — UNICA FUENTE de verdad.
+# El gate de CI (.github/workflows/build-pipeline.yml) construye sus --suppress/-i a partir de
+# este fichero antes de medir, y ABDSharedCode/tools/regen_baselines.py hace lo
+# mismo al regenerar o verificar la baseline. Ni el comentario del workflow ni la
+# cabecera de la baseline las enumeran: no pueden divergir porque no las copian.
+#
+# Formato (lo leen el bash del gate y el python de la herramienta):
+#   - una entrada por linea; '#' y todo lo que hay a su derecha se ignoran
+#   - entrada SIN '-' inicial  ->  --suppress=<entrada> (patron errorId[:archivo],
+#     coincidencia por sufijo, verificada con cppcheck 2.21)
+#   - entrada CON '-' inicial  ->  flag literal de cppcheck, tal cual (p. ej. -i dir)
+# --suppress=missingIncludeSystem no esta aqui: es config del comando, no una
+# exclusion de este repo.
+
+*:BuildVersion.h   # estampado en cada build; no es codigo revisable
+*:*.gen.*   # ficheros generados (ParameterRegistry, Conversion, KorgChannel...)
