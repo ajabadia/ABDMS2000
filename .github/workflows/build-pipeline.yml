@@ -95,14 +95,14 @@ jobs:
   hygiene:
     name: Higiene (clang-format + cppcheck + hooks)
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     steps:
     - uses: actions/checkout@v7
 
-    - name: Install clang-format & cppcheck
+    - name: Install clang-format 18
       run: |
         sudo apt-get update -qq
-        sudo apt-get install -y -qq clang-format-18 cppcheck
+        sudo apt-get install -y -qq clang-format-18
 
     - name: Verify clang-format version & config compatibility
       run: |
@@ -218,6 +218,42 @@ jobs:
     # y todo *.gen.* (KorgChannel, HostModelId, Conversion, ParameterRegistry).
     # Hoy aportan 0 firmas; se excluyen para que la generacion futura no
     # cuente como deuda medida.
+    - name: Cache de cppcheck 2.21.0
+      uses: actions/cache@v6
+      with:
+        path: ~/cppcheck-2.21.0
+        key: cppcheck-2.21.0-${{ runner.os }}
+
+    # cppcheck SIN fijar usa la version que traiga la imagen, y la baseline es
+    # por firma (severidad|archivo|mensaje): un cppcheck de otra version cambia
+    # mensajes y anade/quita hallazgos, y el gate mentiria en las dos direcciones.
+    # La unica version aceptada es 2.21.0, con la que se midio la baseline en
+    # local. apt no la trae, asi que se compila desde el tag oficial (PCRE es
+    # opcional: `make` solo necesita g++/make) y el binario se cachea por
+    # version: un cache-miss cuesta ~5 min de compilacion.
+    - name: Install cppcheck 2.21.0 (fijado a la version de las baselines)
+      shell: bash
+      run: |
+        v=2.21.0
+        pre="$HOME/cppcheck-$v"
+        if ! "$pre/bin/cppcheck" --version 2>/dev/null | grep -F "Cppcheck $v" >/dev/null; then
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq g++ make
+          src=$(mktemp -d)
+          git clone --depth 1 --branch "$v" https://github.com/cppcheck-opensource/cppcheck.git "$src/cppcheck"
+          # FILESDIR hace dos cosas a la vez: sin el, el objetivo install del
+          # Makefile aborta con "FILESDIR must be set!", y con el compilado el
+          # binario sabe donde estan cfg/addons/platforms bajo el prefijo.
+          make -C "$src/cppcheck" -j"$(nproc)" FILESDIR="$pre/share/cppcheck"
+          make -C "$src/cppcheck" PREFIX="$pre" FILESDIR="$pre/share/cppcheck" install
+        fi
+        "$pre/bin/cppcheck" --version
+        if ! "$pre/bin/cppcheck" --version | grep -F "Cppcheck $v" >/dev/null; then
+          echo "::error title=cppcheck::se esperaba cppcheck 2.21.0, la version con la que se midieron las baselines."
+          exit 1
+        fi
+        echo "$pre/bin" >> "$GITHUB_PATH"
+
     - name: Static analysis (cppcheck) - bloqueante (baseline)
       run: |
         cppcheck --version
