@@ -15,15 +15,19 @@
  * puede ver esa lista antes de que sea tarde, y el check dice explicitamente lo que
  * se BORRARIA, que es la parte que no se ve en un `git status` despues.
  */
+import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { sincronizarDir, leerFlags } from './syncSeguro.mjs';
+import { sincronizarDir, leerFlags, contarArchivos } from './syncSeguro.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const rootDir = path.resolve(__dirname, '..');
-const sourceDir = path.resolve(rootDir, '..', 'ABDBankManager', 'WebUI');
+const sourceCandidates = [
+  path.resolve(rootDir, '..', 'ABDBankManager', 'WebUI'),
+  path.resolve(rootDir, '..', 'ABDShared', 'Code', 'BankManager', 'WebUI'),
+];
 const destRoot = path.join(rootDir, 'WebUI', 'abdbank');
 
 const toPosix = (p) => p.split(path.sep).join('/');
@@ -35,6 +39,10 @@ function shouldCopy(src) {
   if (toPosix(src).includes('/tests/')) return false;
   return true;
 }
+
+const sourceDir =
+  sourceCandidates.find((dir) => fs.existsSync(dir) && contarArchivos(dir, shouldCopy) > 0) ||
+  sourceCandidates[0];
 
 function usage() {
   console.log([
@@ -54,6 +62,12 @@ if (flags.desconocido) {
   usage();
   console.error(`Argumento desconocido: ${flags.desconocido}`);
   process.exit(2);
+}
+
+if ((!fs.existsSync(sourceDir) || contarArchivos(sourceDir, shouldCopy) === 0) &&
+    fs.existsSync(path.join(destRoot, 'index.html'))) {
+  console.log(`OK - Origen ABDBankManager/WebUI vacio; se conserva WebUI/abdbank existente (${contarArchivos(destRoot)} archivos).`);
+  process.exit(0);
 }
 
 const ok = sincronizarDir({

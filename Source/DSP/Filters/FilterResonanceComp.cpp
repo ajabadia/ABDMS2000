@@ -7,8 +7,8 @@ namespace ABDMS2000
 float FilterResonanceComp::computeGainCompensation(float resonance0to1) noexcept
 {
     float res = std::max(0.0f, std::min(1.0f, resonance0to1));
-    // As resonance increases, slightly thin low-end to replicate hardware analog behavior
-    return 1.0f - (res * 0.45f);
+    // Gentle headroom trim as resonance increases without starving SVF passband low-end
+    return 1.0f - (res * 0.18f);
 }
 
 float FilterResonanceComp::computeEffectiveFeedback(float resonance0to1) noexcept

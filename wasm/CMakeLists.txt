@@ -25,6 +25,7 @@ if(DEFINED ABDSHARED_CODE_DIR)
     set(ABDSHARED_BUILD_AUTOUPDATER OFF CACHE BOOL "" FORCE)
     set(ABDSHARED_BUILD_HARDWAREDRIVERS OFF CACHE BOOL "" FORCE)
     set(ABDSHARED_BUILD_HARDWAREMIDIDETECT OFF CACHE BOOL "" FORCE)
+    set(ABDSHARED_BUILD_AUDIOCOMPARATOR OFF CACHE BOOL "" FORCE)
     add_subdirectory("${ABDSHARED_CODE_DIR}" "${CMAKE_BINARY_DIR}/ABDShared_build")
 else()
     include(FetchContent)
@@ -97,5 +98,5 @@ target_compile_definitions(ms2000_dsp PRIVATE
 set_target_properties(ms2000_dsp PROPERTIES
     OUTPUT_NAME "ms2000_dsp"
     SUFFIX ""
-    LINK_FLAGS "-s MALLOC=emmalloc -s ALLOW_MEMORY_GROWTH=1 -s INITIAL_MEMORY=16777216 -s EXPORTED_RUNTIME_METHODS=['ccall','cwrap','getValue','setValue','HEAPF32'] -s EXPORTED_FUNCTIONS=['_initEngine','_processAudio','_noteOn','_noteOff','_allNotesOff','_setParamNormalized','_setParamById','_getAudioSnapshot','_loadProgram','_initPatch','_randomizePatch','_malloc','_free'] -O2"
+    LINK_FLAGS "-s MALLOC=emmalloc -s ALLOW_MEMORY_GROWTH=1 -s INITIAL_MEMORY=16777216 -s EXPORTED_RUNTIME_METHODS=['ccall','cwrap','getValue','setValue','HEAPF32'] -s EXPORTED_FUNCTIONS=['_initEngine','_processAudio','_noteOn','_noteOff','_allNotesOff','_setTempoBPM','_setParamNormalized','_setParamById','_getAudioSnapshot','_loadProgram','_initPatch','_randomizePatch','_malloc','_free'] -O2"
 )

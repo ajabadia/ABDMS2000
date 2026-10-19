@@ -13,6 +13,7 @@
 #include "../DSP/Sequencer/Arpeggiator.h"
 #include "../DSP/Sequencer/ModSequencer.h"
 #include "../DSP/Vocoder/Vocoder16Band.h"
+#include "../Core/MS2000FirmwareTables.h"
 #include "../State/MS2000FactoryBank.h"
 
 namespace ABDMS2000
@@ -67,7 +68,14 @@ class WasmEngineInstance
         if (!outL || !outR || numSamples <= 0)
             return;
 
-        voiceManager_.applyBlockParams(voiceParams_);
+        // Advance Mod Sequencer & apply track outputs to a block copy of voiceParams_
+        modSeq_.advanceClock(numSamples);
+        VoiceParameters blockParams = voiceParams_;
+        if (modSeq_.isEnabled())
+        {
+            applyModSeq(blockParams);
+        }
+        voiceManager_.applyBlockParams(blockParams);
 
         // Process Arpeggiator Clock
         if (arpeggiator_.isEnabled())
@@ -84,9 +92,6 @@ class WasmEngineInstance
                 }
             }
         }
-
-        // Advance Mod Sequencer
-        modSeq_.advanceClock(numSamples);
 
         float peakL = 0.0f;
         float peakR = 0.0f;
@@ -171,8 +176,13 @@ class WasmEngineInstance
             voiceParams_.osc1Type = static_cast<OSC1Type>(std::min(7, static_cast<int>(value)));
         else if (id == "osc1Ctrl1")
             voiceParams_.osc1Ctrl1 = value / 127.0f;
+        else if (id == "osc1Ctrl2")
+            voiceParams_.osc1Ctrl2 = value / 127.0f;
         else if (id == "osc1DwgsWave")
-            voiceParams_.osc1DwgsIndex = static_cast<int>(value);
+        {
+            const int maxDwgs = (synthMode_ == 2) ? 511 : 63;
+            voiceParams_.osc1DwgsIndex = std::clamp(static_cast<int>(value), 0, maxDwgs);
+        }
         else if (id == "osc2Wave")
             voiceParams_.osc2Wave = static_cast<VAWaveform>(std::min(2, static_cast<int>(value)));
         else if (id == "osc2Semitone")
@@ -197,12 +207,18 @@ class WasmEngineInstance
             voiceParams_.eg1FilterIntensity = value / 63.0f;
         else if (id == "filterKeyTrack")
             voiceParams_.filterKbdTrack = value / 63.0f;
+        else if (id == "filterVelo")
+            voiceParams_.filterVeloSens = value / 63.0f;
         else if (id == "ampLevel")
             voiceParams_.ampLevel = value / 127.0f;
         else if (id == "ampPan")
             voiceParams_.panpot = value / 64.0f;
         else if (id == "ampDistortion")
             voiceParams_.distortionOn = (value > 0.5f);
+        else if (id == "ampVelo")
+            voiceParams_.ampVeloSens = value / 63.0f;
+        else if (id == "ampKeyTrack")
+            voiceParams_.ampKeyTrack = value / 63.0f;
         else if (id == "eg1Attack")
             voiceParams_.eg1Attack = value / 127.0f;
         else if (id == "eg1Decay")
@@ -219,8 +235,54 @@ class WasmEngineInstance
             voiceParams_.eg2Sustain = value / 127.0f;
         else if (id == "eg2Release")
             voiceParams_.eg2Release = value / 127.0f;
+        else if (id == "lfo1Wave")
+        {
+            const int w = std::clamp(static_cast<int>(value), 0, 3);
+            voiceParams_.lfo1Wave = static_cast<LFOWaveform>(w);
+        }
+        else if (id == "lfo1Freq")
+            voiceParams_.lfo1FreqHz = FirmwareTables::getHardwareLfo1FreqHz(value);
+        else if (id == "lfo2Wave")
+        {
+            const int w = std::clamp(static_cast<int>(value), 0, 3);
+            voiceParams_.lfo2Wave = static_cast<LFOWaveformLFO2>(w);
+        }
+        else if (id == "lfo2Freq")
+            voiceParams_.lfo2FreqHz = FirmwareTables::getHardwareLfo2FreqHz(value);
+        else if (id == "patch1Source")
+            voiceParams_.patchSlots[0].source = static_cast<PatchSource>(std::clamp(static_cast<int>(value), 0, 7));
+        else if (id == "patch1Dest" || id == "patch1Destination")
+            voiceParams_.patchSlots[0].destination =
+                static_cast<PatchDestination>(std::clamp(static_cast<int>(value), 0, 7));
+        else if (id == "patch1Int" || id == "patch1Intensity")
+            voiceParams_.patchSlots[0].intensity = std::clamp(value / 63.0f, -1.0f, 1.0f);
+        else if (id == "patch2Source")
+            voiceParams_.patchSlots[1].source = static_cast<PatchSource>(std::clamp(static_cast<int>(value), 0, 7));
+        else if (id == "patch2Dest" || id == "patch2Destination")
+            voiceParams_.patchSlots[1].destination =
+                static_cast<PatchDestination>(std::clamp(static_cast<int>(value), 0, 7));
+        else if (id == "patch2Int" || id == "patch2Intensity")
+            voiceParams_.patchSlots[1].intensity = std::clamp(value / 63.0f, -1.0f, 1.0f);
+        else if (id == "patch3Source")
+            voiceParams_.patchSlots[2].source = static_cast<PatchSource>(std::clamp(static_cast<int>(value), 0, 7));
+        else if (id == "patch3Dest" || id == "patch3Destination")
+            voiceParams_.patchSlots[2].destination =
+                static_cast<PatchDestination>(std::clamp(static_cast<int>(value), 0, 7));
+        else if (id == "patch3Int" || id == "patch3Intensity")
+            voiceParams_.patchSlots[2].intensity = std::clamp(value / 63.0f, -1.0f, 1.0f);
+        else if (id == "patch4Source")
+            voiceParams_.patchSlots[3].source = static_cast<PatchSource>(std::clamp(static_cast<int>(value), 0, 7));
+        else if (id == "patch4Dest" || id == "patch4Destination")
+            voiceParams_.patchSlots[3].destination =
+                static_cast<PatchDestination>(std::clamp(static_cast<int>(value), 0, 7));
+        else if (id == "patch4Int" || id == "patch4Intensity")
+            voiceParams_.patchSlots[3].intensity = std::clamp(value / 63.0f, -1.0f, 1.0f);
         else if (id == "portamentoTime")
             voiceParams_.portamentoTime = value;
+        else if (id == "pitchBend")
+            voiceParams_.pitchBendValue = std::clamp(value, -1.0f, 1.0f);
+        else if (id == "modWheel")
+            voiceParams_.modWheelValue = std::clamp(value / 127.0f, 0.0f, 1.0f);
         else if (id == "voiceMode")
             voiceManager_.setAssignMode(static_cast<VoiceAssignMode>(std::min(2, static_cast<int>(value))));
         else if (id == "synthMode")
@@ -228,6 +290,10 @@ class WasmEngineInstance
             synthMode_ = static_cast<int>(value);
             size_t poly = (synthMode_ == 2) ? VoiceManager::MAX_EXPANDED_VOICES : VoiceManager::NUM_HW_VOICES;
             voiceManager_.setMaxPolyphony(poly);
+            if (synthMode_ != 2 && voiceParams_.osc1DwgsIndex > 63)
+            {
+                voiceParams_.osc1DwgsIndex = 63;
+            }
             if (synthMode_ == 1)
             {
                 modSeq_.setEnabled(false);
@@ -314,20 +380,183 @@ class WasmEngineInstance
             const bool allow = (synthMode_ != 1);
             modSeq_.setEnabled(allow && (value > 0.5f));
         }
-        else if (id == "modSeqType")
+        else if (id == "modSeqType" || id == "seqMotionType")
         {
-            // ModSeq mode is per-track; apply to all 6 tracks
             ModSeqMode mode = static_cast<ModSeqMode>(std::min(3, static_cast<int>(value)));
             for (int t = 0; t < 6; ++t)
             {
                 modSeq_.getTrack(t).mode = mode;
             }
         }
+        else if (id == "seqLastStep")
+        {
+            const int len = std::clamp(static_cast<int>(value), 1, 16);
+            seqLastStep_ = len;
+            for (int t = 0; t < 6; ++t)
+            {
+                modSeq_.getTrack(t).length = len;
+            }
+        }
+        else if (id == "seq1Knob" || id == "seq2Knob" || id == "seq3Knob")
+        {
+            const int row = (id[3] - '1');
+            const int destIdx = std::clamp(static_cast<int>(value), 0, 30);
+            modSeq_.getTrack(row).destination = static_cast<ModSeqDest>(destIdx);
+        }
+        else if (id == "seq1Motion" || id == "seq2Motion" || id == "seq3Motion")
+        {
+            const int row = (id[3] - '1');
+            modSeq_.getTrack(row).motion = static_cast<ModSeqMotion>(std::clamp(static_cast<int>(value), 0, 1));
+        }
+        else if (id.size() >= 9 && id.rfind("seq", 0) == 0 && id.compare(4, 4, "Step") == 0)
+        {
+            const int row = id[3] - '1';
+            const int step = std::atoi(id.c_str() + 8) - 1;
+            if (row >= 0 && row < 3 && step >= 0 && step < 16)
+            {
+                modSeq_.getTrack(row).steps[step] = std::clamp((value + 63.0f) / 126.0f, 0.0f, 1.0f);
+            }
+        }
+        else if (id == "scaleType")
+        {
+            voiceParams_.scaleType = std::clamp(static_cast<int>(value), 0, 9);
+        }
+        else if (id == "scaleKey")
+        {
+            voiceParams_.scaleKey = std::clamp(static_cast<int>(value), 0, 11);
+        }
+        else if (id == "seqRunMode")
+        {
+            const bool oneShot = (value < 0.5f);  // 0 = 1Shot, 1 = Loop
+            for (int t = 0; t < 6; ++t)
+            {
+                modSeq_.getTrack(t).oneShot = oneShot;
+            }
+        }
         else if (id == "modSeqResolution")
         {
-            int idx = static_cast<int>(value);
-            // Resolution mapping: 0=1/48 .. 15=4/1 (same as arp)
-            // ModSeq uses a similar resolution system
+            modSeq_.setSyncResolution(static_cast<int>(value));
+        }
+    }
+
+    void applyModSeq(VoiceParameters &vp)
+    {
+        vp.seq = {};
+        bool lengthModulated = false;
+        float lengthAmount = 0.0f;
+
+        for (size_t row = 0; row < ModSequencer::TRACKS_PER_TIMBRE; ++row)
+        {
+            const ModSeqDest dest = modSeq_.getTrack(row).destination;
+            if (dest == ModSeqDest::None)
+                continue;
+
+            const float value = std::clamp((modSeq_.getTrackOutput(row) - 0.5f) * 2.0f, -1.0f, 1.0f);
+
+            switch (dest)
+            {
+            case ModSeqDest::Pitch:
+                vp.seq.pitch = value;
+                break;
+            case ModSeqDest::OSC2Semi:
+                vp.seq.osc2Pitch = value;
+                break;
+            case ModSeqDest::OSC2Tune:
+                vp.seq.osc2Tune = value * 0.5f;
+                break;
+            case ModSeqDest::OSC1Ctrl1:
+                vp.seq.osc1Ctrl1 = value;
+                break;
+            case ModSeqDest::OSC1Ctrl2:
+                vp.seq.osc1Ctrl2 = value;
+                break;
+            case ModSeqDest::OSC1Level:
+                vp.seq.osc1Level = value;
+                break;
+            case ModSeqDest::OSC2Level:
+                vp.seq.osc2Level = value;
+                break;
+            case ModSeqDest::NoiseLevel:
+                vp.seq.noiseLevel = value;
+                break;
+            case ModSeqDest::Cutoff:
+                vp.seq.cutoff = value;
+                break;
+            case ModSeqDest::AmpLevel:
+                vp.seq.amp = value;
+                break;
+            case ModSeqDest::Panpot:
+                vp.seq.pan = value;
+                break;
+            case ModSeqDest::LFO2Freq:
+                vp.seq.lfo2Freq = value;
+                break;
+            case ModSeqDest::Resonance:
+                vp.filterResonance = std::clamp(vp.filterResonance + value, 0.0f, 1.0f);
+                break;
+            case ModSeqDest::EG1Int:
+                vp.eg1FilterIntensity = std::clamp(vp.eg1FilterIntensity + value, -1.0f, 1.0f);
+                break;
+            case ModSeqDest::KbdTrk:
+                vp.filterKbdTrack = std::clamp(vp.filterKbdTrack + value, -1.0f, 1.0f);
+                break;
+            case ModSeqDest::Portamento:
+                vp.portamentoTime = std::clamp(vp.portamentoTime + (value * 64.0f), 0.0f, 127.0f);
+                break;
+            case ModSeqDest::LFO1Freq:
+                vp.lfo1FreqHz = std::clamp(vp.lfo1FreqHz * std::pow(2.0f, value * 4.0f), 0.01f, 20000.0f);
+                break;
+            case ModSeqDest::EG1Attack:
+                vp.eg1Attack = std::clamp(vp.eg1Attack * (1.0f + value), 0.0f, 1.0f);
+                break;
+            case ModSeqDest::EG1Decay:
+                vp.eg1Decay = std::clamp(vp.eg1Decay * (1.0f + value), 0.0f, 1.0f);
+                break;
+            case ModSeqDest::EG1Sustain:
+                vp.eg1Sustain = std::clamp(vp.eg1Sustain * (1.0f + value), 0.0f, 1.0f);
+                break;
+            case ModSeqDest::EG1Release:
+                vp.eg1Release = std::clamp(vp.eg1Release * (1.0f + value), 0.0f, 1.0f);
+                break;
+            case ModSeqDest::EG2Attack:
+                vp.eg2Attack = std::clamp(vp.eg2Attack * (1.0f + value), 0.0f, 1.0f);
+                break;
+            case ModSeqDest::EG2Decay:
+                vp.eg2Decay = std::clamp(vp.eg2Decay * (1.0f + value), 0.0f, 1.0f);
+                break;
+            case ModSeqDest::EG2Sustain:
+                vp.eg2Sustain = std::clamp(vp.eg2Sustain * (1.0f + value), 0.0f, 1.0f);
+                break;
+            case ModSeqDest::EG2Release:
+                vp.eg2Release = std::clamp(vp.eg2Release * (1.0f + value), 0.0f, 1.0f);
+                break;
+            case ModSeqDest::Patch1Int:
+                vp.patchSlots[0].intensity = std::clamp(vp.patchSlots[0].intensity + value, -1.0f, 1.0f);
+                break;
+            case ModSeqDest::Patch2Int:
+                vp.patchSlots[1].intensity = std::clamp(vp.patchSlots[1].intensity + value, -1.0f, 1.0f);
+                break;
+            case ModSeqDest::Patch3Int:
+                vp.patchSlots[2].intensity = std::clamp(vp.patchSlots[2].intensity + value, -1.0f, 1.0f);
+                break;
+            case ModSeqDest::Patch4Int:
+                vp.patchSlots[3].intensity = std::clamp(vp.patchSlots[3].intensity + value, -1.0f, 1.0f);
+                break;
+            case ModSeqDest::StepLength:
+                lengthModulated = true;
+                lengthAmount = value;
+                break;
+            default:
+                break;
+            }
+        }
+
+        if (lengthModulated)
+        {
+            const int shifted = static_cast<int>(std::round(seqLastStep_ + (lengthAmount * 6.0f)));
+            const int length = std::clamp(shifted, 1, 16);
+            for (size_t row = 0; row < ModSequencer::TRACKS_PER_TIMBRE; ++row)
+                modSeq_.getTrack(row).length = length;
         }
     }
 
@@ -345,28 +574,18 @@ class WasmEngineInstance
 
     void loadFactoryPreset(int index)
     {
-        MS2000FactoryBank factory;
+        static const MS2000FactoryBank factory;
         if (index >= 0 && index < factory.getNumPresets())
         {
             const auto &prog = factory.getPresetProgramData(index);
-            voiceParams_.osc1Type = static_cast<OSC1Type>(std::min(7, static_cast<int>(prog.rawData[0x0E])));
-            voiceParams_.osc1Level = prog.rawData[0x18] / 127.0f;
-            voiceParams_.osc2Level = prog.rawData[0x19] / 127.0f;
-            voiceParams_.noiseLevel = prog.rawData[0x1A] / 127.0f;
-            voiceParams_.filterType = static_cast<FilterType>(std::min(3, static_cast<int>(prog.rawData[0x1B])));
-            voiceParams_.filterCutoffNorm = prog.rawData[0x1C] / 127.0f;
-            voiceParams_.filterResonance = prog.rawData[0x1D] / 127.0f;
-            voiceParams_.ampLevel = prog.rawData[0x20] / 127.0f;
-            voiceParams_.eg2Attack = prog.rawData[0x28] / 127.0f;
-            voiceParams_.eg2Decay = prog.rawData[0x29] / 127.0f;
-            voiceParams_.eg2Sustain = prog.rawData[0x2A] / 127.0f;
-            voiceParams_.eg2Release = prog.rawData[0x2B] / 127.0f;
+            prog.forEachParameterValue([this](const char *id, float val) { setParam(id, val); });
         }
     }
 
   private:
     double sampleRate_ {44100.0};
     int synthMode_ {0};
+    int seqLastStep_ {16};
     VoiceManager voiceManager_;
     VoiceParameters voiceParams_;
     float masterVolume_ {0.8f};

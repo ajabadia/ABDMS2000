@@ -52,6 +52,7 @@ class ABDMS2000AudioProcessorEditor
     std::unique_ptr<juce::WebBrowserComponent> webView_;
     std::unique_ptr<BridgeActions> bridge_;
     std::unique_ptr<ScopeFloatingWindow> scopeWindow_;
+    abd::scope::ScopeFrameSerializer scopeSerializer_ {512};
     std::unique_ptr<juce::MidiOutput> hardwareMidiOutput_;
     std::unique_ptr<juce::MidiInput> hardwareMidiInput_;
     juce::String openedHardwareOutputId_;

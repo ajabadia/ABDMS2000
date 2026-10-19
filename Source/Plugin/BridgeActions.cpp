@@ -1,5 +1,7 @@
 #include "BridgeActions.h"
+#include <AutoUpdater/AutoUpdater.h>
 #include "../Core/AppLogger.h"
+#include "../Core/BuildVersion.h"
 #include "../Core/SynthEngine.h"
 #include "../DSP/Oscillators/DWGSTables.h"
 #include "../MIDI/MIDITelemetryManager.h"
@@ -11,7 +13,37 @@
 namespace ABDMS2000
 {
 
-BridgeActions::BridgeActions(BridgeHost &host) : host_(host) {}
+BridgeActions::BridgeActions(BridgeHost &host) : host_(host)
+{
+    ABDShared::AutoUpdaterConfig updaterCfg;
+    updaterCfg.currentVersion = ABDMS2000::kVersionString;
+    updaterCfg.repoOwner = "ajabadia";
+    updaterCfg.repoName = "ABDMS2000";
+    updaterCfg.appName = ABDMS2000::kProductName;
+    updaterCfg.checkOnStartup = false;
+
+    autoUpdater_ = std::make_unique<ABDShared::AutoUpdater>(updaterCfg);
+    std::weak_ptr<bool> weakAlive = aliveToken_;
+    autoUpdater_->setUpdateCallback(
+        [this, weakAlive](const ABDShared::AutoUpdater::UpdateInfo &info, bool /*isManualCheck*/)
+        {
+            if (weakAlive.expired() || !autoUpdater_)
+                return;
+
+            juce::DynamicObject::Ptr res = new juce::DynamicObject();
+            res->setProperty("currentVersion", autoUpdater_->getCurrentVersion());
+            res->setProperty("latestVersion",
+                             info.version.isNotEmpty() ? info.version : autoUpdater_->getCurrentVersion());
+            res->setProperty("isUpdateAvailable", autoUpdater_->isUpdateAvailable());
+            res->setProperty("downloadUrl",
+                             info.downloadUrl.isNotEmpty() ? info.downloadUrl
+                                                           : juce::String("https://github.com/ajabadia/ABDMS2000/releases"));
+            res->setProperty("releaseNotes", info.releaseNotes);
+            sendEventToJs("updateCheckResult", juce::var(res.get()));
+        });
+}
+
+BridgeActions::~BridgeActions() = default;
 
 void BridgeActions::handleJsEvent(const juce::var &message)
 {
@@ -36,25 +68,50 @@ void BridgeActions::handleJsEvent(const juce::var &message)
         auto paramId = message.getProperty("paramId", "").toString();
         float rawValue = static_cast<float>(message.getProperty("value", 0.0));
 
-        if (auto *param = host_.getAPVTS().getParameter(paramId))
+        if (paramId == "arpTempo")
+        {
+            host_.getEngine().setTempoBPM(rawValue);
+        }
+        else if (auto *param = host_.getAPVTS().getParameter(paramId))
         {
             float normValue = param->convertTo0to1(rawValue);
             param->setValueNotifyingHost(normValue);
         }
+    }
+    else if (action == "beginGesture")
+    {
+        auto paramId = message.getProperty("paramId", "").toString();
+        if (auto *param = host_.getAPVTS().getParameter(paramId))
+        {
+            param->beginChangeGesture();
+        }
+    }
+    else if (action == "endGesture")
+    {
+        auto paramId = message.getProperty("paramId", "").toString();
+        if (auto *param = host_.getAPVTS().getParameter(paramId))
+        {
+            param->endChangeGesture();
+        }
+    }
+    else if (action == "setTempoBPM")
+    {
+        float bpm = static_cast<float>(message.getProperty("bpm", 120.0));
+        host_.getEngine().setTempoBPM(bpm);
     }
     else if (action == "noteOn")
     {
         int note = static_cast<int>(message.getProperty("note", 60));
         float vel = static_cast<float>(message.getProperty("velocity", 0.8));
         ABD_LOG(juce::String("[BRIDGE] noteOn: ") + juce::String(note) + " vel: " + juce::String(vel));
-        host_.getEngine().noteOn(1, note, vel);
+        host_.getEngine().enqueueNoteOn(1, note, vel);
     }
     else if (action == "noteOff")
     {
         int note = static_cast<int>(message.getProperty("note", 60));
         float vel = static_cast<float>(message.getProperty("velocity", 0.0));
         ABD_LOG(juce::String("[BRIDGE] noteOff: ") + juce::String(note));
-        host_.getEngine().noteOff(1, note, vel);
+        host_.getEngine().enqueueNoteOff(1, note, vel);
     }
     else if (action == "pitchBend")
     {
@@ -89,11 +146,11 @@ void BridgeActions::handleJsEvent(const juce::var &message)
                 + (isNoteOn ? " ON" : " OFF"));
         if (isNoteOn)
         {
-            host_.getEngine().noteOn(1, note, vel);
+            host_.getEngine().enqueueNoteOn(1, note, vel);
         }
         else
         {
-            host_.getEngine().noteOff(1, note, 0.0f, false);
+            host_.getEngine().enqueueNoteOff(1, note, 0.0f, false);
         }
     }
     else if (action == "setDiagnosticBypass")
@@ -112,7 +169,7 @@ void BridgeActions::handleJsEvent(const juce::var &message)
     else if (action == "allNotesOff")
     {
         ABD_LOG("[BRIDGE] allNotesOff");
-        host_.getEngine().allNotesOff();
+        host_.getEngine().enqueueAllNotesOff();
     }
     else if (action == "sendMidiCC")
     {
@@ -131,6 +188,28 @@ void BridgeActions::handleJsEvent(const juce::var &message)
             url.launchInDefaultBrowser();
         }
     }
+    else if (action == "checkForUpdates")
+    {
+        if (autoUpdater_)
+            autoUpdater_->checkForUpdates(false);
+    }
+    else if (action == "getUpdateStatus")
+    {
+        if (autoUpdater_)
+        {
+            const auto info = autoUpdater_->getLastUpdateInfo();
+            juce::DynamicObject::Ptr res = new juce::DynamicObject();
+            res->setProperty("currentVersion", autoUpdater_->getCurrentVersion());
+            res->setProperty("latestVersion",
+                             info.version.isNotEmpty() ? info.version : autoUpdater_->getCurrentVersion());
+            res->setProperty("isUpdateAvailable", autoUpdater_->isUpdateAvailable());
+            res->setProperty("downloadUrl",
+                             info.downloadUrl.isNotEmpty() ? info.downloadUrl
+                                                           : juce::String("https://github.com/ajabadia/ABDMS2000/releases"));
+            res->setProperty("releaseNotes", info.releaseNotes);
+            sendEventToJs("updateCheckResult", juce::var(res.get()));
+        }
+    }
     // ─── Puente MIDI de hardware (Bank Manager embebido) ────────────────────
     //
     // Sin esto dentro del plugin no había forma de traer un banco real: el Bank
@@ -147,6 +226,13 @@ void BridgeActions::handleJsEvent(const juce::var &message)
         const auto inputId = message.getProperty("inputId", "").toString();
         host_.getHardwareMidiTransport().selectPorts(outputId, inputId);
         ABD_LOG(juce::String("[HWMIDI] selected output=") + outputId + " input=" + inputId);
+        sendEventToJs("hardware.ports", host_.getHardwareMidiTransport().listPorts());
+    }
+    else if (action == "openAudioDeviceSettings")
+    {
+        ABD_LOG("[BRIDGE] openAudioDeviceSettings");
+        if (onOpenAudioSettings_)
+            onOpenAudioSettings_();
     }
     else if (action == "hardware.listen")
     {
@@ -270,6 +356,36 @@ void BridgeActions::handleJsEvent(const juce::var &message)
         host_.setCurrentProgram(progIdx);
         sendFullParamSync();
     }
+    else if (action == "getPresetCatalog")
+    {
+        sendPresetCatalog();
+    }
+    else if (action == "writeProgramToSlot")
+    {
+        const int slot = juce::jlimit(0,
+                                      static_cast<int>(SysExManager::BANK_SIZE) - 1,
+                                      static_cast<int>(message.getProperty("index", host_.getCurrentProgram())));
+        juce::String requestedName = message.getProperty("name", "").toString().trim();
+        if (requestedName.isEmpty())
+        {
+            requestedName =
+                juce::String(host_.getSysExManager().getProgram(static_cast<size_t>(slot)).getName()).trim();
+        }
+        if (requestedName.isEmpty())
+            requestedName = "Init Program";
+
+        MS2000ProgramData prog;
+        prog.extractFromAPVTS(host_.getAPVTS(), requestedName.toStdString());
+        host_.getSysExManager().setProgram(static_cast<size_t>(slot), prog);
+        host_.getSysExManager().setActiveProgramIndex(slot);
+        host_.changeProgramName(slot, requestedName);
+
+        juce::DynamicObject::Ptr resObj = new juce::DynamicObject();
+        resObj->setProperty("index", slot);
+        resObj->setProperty("name", requestedName);
+        sendEventToJs("programWritten", juce::var(resObj.get()));
+        sendPresetCatalog();
+    }
     else if (action == "initPatch")
     {
         MS2000PatchBuilder::buildInitPatch(host_.getAPVTS());
@@ -281,6 +397,40 @@ void BridgeActions::handleJsEvent(const juce::var &message)
         MS2000PatchBuilder::buildMusicalRandomPatch(host_.getAPVTS());
         sendFullParamSync();
         sendEventToJs("patchRandomized", juce::var());
+    }
+    else if (action == "copyTimbre1To2")
+    {
+        MS2000PatchBuilder::copyTimbre1ToTimbre2(host_.getAPVTS());
+        sendFullParamSync();
+        sendEventToJs("timbreCopied", juce::var("1->2"));
+    }
+    else if (action == "copyTimbre2To1")
+    {
+        MS2000PatchBuilder::copyTimbre2ToTimbre1(host_.getAPVTS());
+        sendFullParamSync();
+        sendEventToJs("timbreCopied", juce::var("2->1"));
+    }
+    else if (action == "swapTimbres")
+    {
+        MS2000PatchBuilder::swapTimbres(host_.getAPVTS());
+        sendFullParamSync();
+        sendEventToJs("timbresSwapped", juce::var());
+    }
+    else if (action == "sendHardwareModeChange")
+    {
+        const int ch = host_.getMIDITelemetry().getMidiChannel();
+        const uint8_t mode = static_cast<uint8_t>(static_cast<int>(message.getProperty("mode", 0)) & 0x7F);
+        const auto frame = MS2000HardwareProgram::buildModeChange(ch, mode);
+        const juce::MemoryBlock block(frame.data(), frame.size());
+        host_.getHardwareMidiTransport().send(block);
+    }
+    else if (action == "sendHardwareProgramWrite")
+    {
+        const int ch = host_.getMIDITelemetry().getMidiChannel();
+        const int slot = static_cast<int>(message.getProperty("slot", host_.getCurrentProgram()));
+        const auto frame = MS2000HardwareProgram::buildProgramWriteRequest(ch, slot);
+        const juce::MemoryBlock block(frame.data(), frame.size());
+        host_.getHardwareMidiTransport().send(block);
     }
     else if (action == "getRawProgramData")
     {
@@ -365,6 +515,69 @@ void BridgeActions::handleJsEvent(const juce::var &message)
         if (onToggleScope_)
             onToggleScope_();
     }
+    // ─── Hardware Firmware Updater & 1 MB Flash Backup (IPL v1.07) ───────────
+    else if (action == "ipl.getInfo")
+    {
+        juce::DynamicObject::Ptr info = new juce::DynamicObject();
+        info->setProperty("embeddedValid", iplUpdater_.isEmbeddedFirmwareValid());
+        info->setProperty("v107Sha1", juce::String(iplUpdater_.getEmbeddedSha1()));
+        info->setProperty("dumpSysSha1", juce::String(iplUpdater_.getDumpSysSha1()));
+        info->setProperty("sizeBytes", static_cast<int>(ms2kipl::kSysSize));
+        info->setProperty("busy", iplUpdater_.isBusy());
+        sendEventToJs("ipl.info", juce::var(info.get()));
+    }
+    else if (action == "ipl.checkVersion")
+    {
+        const bool silent = static_cast<bool>(message.getProperty("silent", false));
+        iplUpdater_.startCheckVersion(
+            host_.getHardwareMidiTransport(),
+            silent,
+            [this](const std::string &evt, const std::string &json) { emitIplEventAsync(evt, json); });
+    }
+    else if (action == "ipl.installSystem")
+    {
+        const bool installDumpPatch = static_cast<bool>(message.getProperty("installDumpPatch", false));
+        const int rateInt = static_cast<int>(message.getProperty("transferRate", 0));
+        const auto rate = static_cast<ms2kipl::TransferRate>(juce::jlimit(0, 3, rateInt));
+        iplUpdater_.startInstallSystem(
+            host_.getHardwareMidiTransport(),
+            installDumpPatch,
+            rate,
+            [this](const std::string &evt, const std::string &json) { emitIplEventAsync(evt, json); });
+    }
+    else if (action == "ipl.readFlashDump")
+    {
+        const int sizeInt = static_cast<int>(message.getProperty("sizeBytes", static_cast<int>(ms2kipl::kFlashSize)));
+        iplUpdater_.startFlashDump(
+            host_.getHardwareMidiTransport(),
+            static_cast<uint32_t>(sizeInt),
+            [this](const std::string &evt, const std::string &json) { emitIplEventAsync(evt, json); });
+    }
+    else if (action == "ipl.cancel")
+    {
+        iplUpdater_.requestCancel();
+    }
+}
+
+void BridgeActions::emitIplEventAsync(const std::string &eventType, const std::string &jsonPayload)
+{
+    if (juce::MessageManager::getInstanceWithoutCreating() != nullptr)
+    {
+        std::weak_ptr<bool> weakAlive = aliveToken_;
+        juce::MessageManager::callAsync(
+            [this, weakAlive, eventType, jsonPayload]()
+            {
+                if (weakAlive.expired())
+                    return;
+                const juce::var parsed = juce::JSON::parse(juce::String(jsonPayload));
+                sendEventToJs(juce::String(eventType), parsed);
+            });
+    }
+    else
+    {
+        const juce::var parsed = juce::JSON::parse(juce::String(jsonPayload));
+        sendEventToJs(juce::String(eventType), parsed);
+    }
 }
 
 void BridgeActions::sendHostModel()
@@ -404,15 +617,28 @@ bool BridgeActions::writeProgramBlob(int slot,
                                      juce::String &error,
                                      bool syncParams)
 {
-    if (blob.getSize() < MS2000ProgramData::UNPACKED_PROGRAM_SIZE)
+    MS2000ProgramData program;
+    if (blob.getSize() >= MS2000ProgramData::UNPACKED_PROGRAM_SIZE)
+    {
+        std::memcpy(program.rawData.data(), blob.getData(), MS2000ProgramData::UNPACKED_PROGRAM_SIZE);
+    }
+    else if (blob.getSize() == MS2000HardwareProgram::PROGRAM_SIZE)
+    {
+        MS2000HardwareProgram hwProg;
+        std::memcpy(hwProg.raw.data(), blob.getData(), MS2000HardwareProgram::PROGRAM_SIZE);
+        program = hwProg.toNativeProgram();
+    }
+    else if (blob.getSize() == MS2000ProgramData::UNPACKED_PROGRAM_SIZE_V1)
+    {
+        std::memcpy(program.rawData.data(), blob.getData(), MS2000ProgramData::UNPACKED_PROGRAM_SIZE_V1);
+    }
+    else
     {
         error = "payload must be at least " + juce::String(static_cast<int>(MS2000ProgramData::UNPACKED_PROGRAM_SIZE))
-                + " bytes";
+                + " bytes (or 254 bytes for Korg MS2000 hardware format)";
         return false;
     }
 
-    MS2000ProgramData program;
-    std::memcpy(program.rawData.data(), blob.getData(), MS2000ProgramData::UNPACKED_PROGRAM_SIZE);
     if (name.isNotEmpty())
         program.setName(name.toStdString());
 
@@ -561,6 +787,9 @@ void BridgeActions::handlePresetWrite(const juce::var &message)
         return;
     }
 
+    if (!audition)
+        sendPresetCatalog();
+
     juce::DynamicObject::Ptr data = new juce::DynamicObject();
     const auto requestId = message.getProperty("requestId", juce::var());
     if (!requestId.isVoid())
@@ -592,6 +821,8 @@ void BridgeActions::handleBankWrite(const juce::var &message)
     }
 
     int written = 0;
+    bool activeSlotUpdated = false;
+    const int activeSlot = host_.getCurrentProgram();
     juce::StringArray failures;
     for (const auto &item : *slots.getArray())
     {
@@ -619,6 +850,8 @@ void BridgeActions::handleBankWrite(const juce::var &message)
             continue;
         }
 
+        if (slot == activeSlot)
+            activeSlotUpdated = true;
         ++written;
     }
 
@@ -626,6 +859,16 @@ void BridgeActions::handleBankWrite(const juce::var &message)
     {
         sendPresetError(message, SoftwarePresetProtocol::kInvalidPayload, failures.joinIntoString("; "));
         return;
+    }
+
+    if (written > 0)
+    {
+        if (activeSlotUpdated)
+        {
+            host_.setCurrentProgram(activeSlot);
+            sendFullParamSync();
+        }
+        sendPresetCatalog();
     }
 
     juce::DynamicObject::Ptr data = new juce::DynamicObject();
@@ -701,6 +944,37 @@ void BridgeActions::sendFullParamSync()
         }
     }
     sendEventToJs("syncAllParams", juce::var(paramsObj.get()));
+}
+
+void BridgeActions::sendPresetCatalog()
+{
+    juce::Array<juce::var> programsArr;
+    const auto &sysEx = host_.getSysExManager();
+    const int count = static_cast<int>(sysEx.getBankSize());
+    for (int i = 0; i < count; ++i)
+    {
+        const auto &prog = sysEx.getProgram(static_cast<size_t>(i));
+        const char bankChar = static_cast<char>('A' + (i / 16));
+        const int progNum = (i % 16) + 1;
+        const juce::String idStr =
+            juce::String::charToString(bankChar) + "." + juce::String(progNum).paddedLeft('0', 2);
+        juce::String nameStr = juce::String(prog.getName()).trim();
+        if (nameStr.isEmpty())
+            nameStr = "Init Program";
+
+        juce::DynamicObject::Ptr item = new juce::DynamicObject();
+        item->setProperty("index", i);
+        item->setProperty("id", idStr);
+        item->setProperty("bank", juce::String::charToString(bankChar));
+        item->setProperty("number", progNum);
+        item->setProperty("name", nameStr);
+        programsArr.add(juce::var(item.get()));
+    }
+
+    juce::DynamicObject::Ptr payload = new juce::DynamicObject();
+    payload->setProperty("activeIndex", sysEx.getActiveProgramIndex());
+    payload->setProperty("programs", programsArr);
+    sendEventToJs("presetCatalog", juce::var(payload.get()));
 }
 
 void BridgeActions::sendEventToJs(const juce::String &eventType, const juce::var &payload)

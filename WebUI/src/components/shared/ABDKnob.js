@@ -17,6 +17,7 @@ import { bridge } from '../../bridge/bridgeCore.js';
 
 export class ABDKnob {
     constructor(container, options = {}) {
+        this.container = container;
         this.paramId = options.paramId || '';
         this.label = options.label || 'KNOB';
         this.min = options.min !== undefined ? options.min : 0;
@@ -46,10 +47,14 @@ export class ABDKnob {
             step: this.step / (this.max - this.min || 1), // normalized step
             format: (v) => this.displayFormatter(this.fromNorm(v)),
             onChange: (normVal) => this.handleChange(normVal),
-            onDragStart: options.onDragStart,
+            onDragStart: () => {
+                if (this.paramId) bridge.beginGesture(this.paramId);
+                options.onDragStart?.();
+            },
             onDragEnd: () => {
                 const finalNorm = this.toNorm(this._lastClamped);
                 this.knob.setValue(finalNorm);
+                if (this.paramId) bridge.endGesture(this.paramId);
                 options.onDragEnd?.();
             },
         });
@@ -70,8 +75,10 @@ export class ABDKnob {
                     const next = current > 0.5 ? 0 : 1;
                     this.setValue(next, true);
                     if (this.paramId) {
+                        bridge.beginGesture(this.paramId);
                         paramStore.set(this.paramId, next);
                         bridge.setParam(this.paramId, next);
+                        bridge.endGesture(this.paramId);
                     }
                 }
             });

@@ -15,15 +15,20 @@
  * Con `--check` esa lista se ve antes, y el check nombra aparte lo que se borraria,
  * que es justo lo que despues no se puede recuperar.
  */
+import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { sincronizarDir, leerFlags } from './syncSeguro.mjs';
+import { sincronizarDir, leerFlags, contarArchivos } from './syncSeguro.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const rootDir = path.resolve(__dirname, '..');
-const sourceDir = path.resolve(rootDir, '..', 'ABDScope', 'WebUI');
+const sourceCandidates = [
+  path.resolve(rootDir, '..', 'ABDShared', 'Code', 'Scope', 'WebUI'),
+  path.resolve(rootDir, '..', 'ABDSharedCode', 'Scope', 'WebUI'),
+  path.resolve(rootDir, '..', 'ABDScope', 'WebUI'),
+];
 const destRoot = path.join(rootDir, 'WebUI', 'abdscope');
 
 const toPosix = (p) => p.split(path.sep).join('/');
@@ -39,6 +44,10 @@ function shouldCopy(src) {
   }
   return true;
 }
+
+const sourceDir =
+  sourceCandidates.find((dir) => fs.existsSync(dir) && contarArchivos(dir, shouldCopy) > 0) ||
+  sourceCandidates[0];
 
 function usage() {
   console.log([
@@ -58,6 +67,12 @@ if (flags.desconocido) {
   usage();
   console.error(`Argumento desconocido: ${flags.desconocido}`);
   process.exit(2);
+}
+
+if ((!fs.existsSync(sourceDir) || contarArchivos(sourceDir, shouldCopy) === 0) &&
+    fs.existsSync(destRoot) && contarArchivos(destRoot) > 0) {
+  console.log(`OK - Origen ABDScope/WebUI no encontrado; se conserva WebUI/abdscope existente (${contarArchivos(destRoot)} archivos).`);
+  process.exit(0);
 }
 
 const ok = sincronizarDir({

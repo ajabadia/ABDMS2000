@@ -9,6 +9,7 @@ namespace ABDMS2000
 void VoiceManager::prepare(double sampleRate) noexcept
 {
     sampleRate_ = (sampleRate > 1000.0) ? sampleRate : 44100.0;
+    heldNotesStack_.reserve(64);
     for (size_t i = 0; i < voices_.size(); ++i)
     {
         voices_[i].prepare(sampleRate_);
@@ -325,7 +326,11 @@ void VoiceManager::applyBlockParams(const VoiceParameters &params) noexcept
     }
 }
 
-void VoiceManager::process(float &leftOut, float &rightOut, int diagPoint, float diagTone) noexcept
+void VoiceManager::process(float &leftOut,
+                           float &rightOut,
+                           int diagPoint,
+                           float diagTone,
+                           float audioInSample) noexcept
 {
     leftOut = 0.0f;
     rightOut = 0.0f;
@@ -337,7 +342,7 @@ void VoiceManager::process(float &leftOut, float &rightOut, int diagPoint, float
         {
             float vl = 0.0f;
             float vr = 0.0f;
-            voices_[i].renderNextSample(vl, vr, diagPoint, diagTone);
+            voices_[i].renderNextSample(vl, vr, diagPoint, diagTone, audioInSample);
             leftOut += vl;
             rightOut += vr;
             activeCount++;
@@ -360,7 +365,7 @@ void VoiceManager::process(float &leftOut, float &rightOut, int diagPoint, float
         {
             float vl = 0.0f;
             float vr = 0.0f;
-            voices_[0].renderNextSample(vl, vr, 0, 0.0f);
+            voices_[0].renderNextSample(vl, vr, 0, 0.0f, audioInSample);
             leftOut += vl;
             rightOut += vr;
         }

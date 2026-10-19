@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.22)
 
+if(APPLE AND NOT CMAKE_OSX_ARCHITECTURES)
+    set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64" CACHE STRING "Build Universal Binary for macOS (Intel + Apple Silicon)")
+endif()
+
 project(ABDMS2000 VERSION 1.0.0 LANGUAGES C CXX)
 
 enable_testing()
@@ -91,13 +95,16 @@ include("${CMAKE_CURRENT_SOURCE_DIR}/DspSources.cmake")
 
 juce_add_plugin(ABDMS2000
     COMPANY_NAME "ajabadia"
+    COMPANY_WEBSITE "https://github.com/ajabadia/ABDMS2000"
+    COMPANY_EMAIL "support@abdsynths.com"
     IS_SYNTH TRUE
     NEEDS_MIDI_INPUT TRUE
     NEEDS_MIDI_OUTPUT TRUE
     IS_MIDI_EFFECT FALSE
-    EDITOR_WANTS_KEYBOARD_FOCUS TRUE
+    EDITOR_WANTS_KEYBOARD_FOCUS FALSE
     PLUGIN_MANUFACTURER_CODE Abad
     PLUGIN_CODE Ms2k
+    VST3_CATEGORIES "Instrument" "Synth"
     FORMATS Standalone VST3
     PRODUCT_NAME "ABDMS2000"
     NEEDS_WEBVIEW2 TRUE
@@ -121,6 +128,7 @@ file(GLOB_RECURSE WEBUI_ASSETS
 # Paridad con el embed historico: las imagenes del bank manager se sirven via
 # bankwebui:// (junction ABDSharedAssets), no van en el binario.
 list(FILTER WEBUI_ASSETS EXCLUDE REGEX "WebUI/dist/assets/images")
+list(FILTER WEBUI_ASSETS EXCLUDE REGEX "WebUI/dist/abdbank")
 juce_add_binary_data(WebUIAssets 
     HEADER_NAME "WebUIAssets.h" 
     NAMESPACE "WebUIAssets" 
@@ -131,7 +139,7 @@ target_link_libraries(ABDMS2000 PUBLIC WebUIAssets)
 # --- ABDBankManager WebUI is served from disk ---
 # The modal loads /abdbank/* via the disk fallback in pluginResourceProvider.
 
-# Embedded DWGS Wavetable Binaries (Korg DW-8000 + AKWF curated bundles)
+# Embedded DWGS Wavetable Binaries (Korg DW-8000 + AKWF curated bundles) + Official MS2000 v1.07 Firmware
 juce_add_binary_data(DWGSBinary
     HEADER_NAME "DWGSBinary.h"
     NAMESPACE "DWGSBinary"
@@ -149,6 +157,7 @@ juce_add_binary_data(DWGSBinary
         "DOCS/ProphetVS/ProphetVS_Wave57-80.m1"
         "DOCS/ProphetVS/ProphetVS_Wave81-104.m1"
         "DOCS/ProphetVS/ProphetVS_Wave105-128.m1"
+        "DOCS/firmware/x811v107.sys"
 )
 target_link_libraries(ABDMS2000 PUBLIC DWGSBinary)
 
@@ -221,6 +230,8 @@ target_sources(ABDMS2000 PRIVATE
     Source/MIDI/SysExManager.h
     Source/MIDI/SysExManager.cpp
     Source/MIDI/MS2000SysExExporter.h
+    Source/MIDI/MS2000IplUpdater.h
+    Source/MIDI/MS2000IplUpdater.cpp
     # Tramas Korg del contrato del Bank Manager (Scripts/generate_korg_channel.js).
     # El .h vive en el repo para que un clone + CMake configure funcione.
     Source/MIDI/KorgChannel.gen.h
@@ -281,6 +292,7 @@ target_link_libraries(ABDMS2000 PUBLIC
     ABDShared::SynthCore
     ABDShared::HardwareDrivers
     ABDShared::ScopeCore
+    ABDShared::AutoUpdater
 )
 
 # --- C++ Unit Tests (Standalone executable, no JUCE GUI) ---
@@ -298,28 +310,9 @@ add_executable(ABDMS2000_Tests
     # Source/Tests/DSPCoreTests_Voice.cpp          # TODO: Fix VirtualPatchMatrix/ADSREnvelope/LFO API
     # Source/Tests/DSPCoreTests_Portamento.cpp     # TODO: Fix PortamentoGlide API
     Source/Plugin/BridgeActions.cpp
-    Source/Core/VoiceManager.cpp
-    Source/Core/Voice.cpp
-    Source/Core/SynthEngine.cpp
-    Source/DSP/Oscillators/VAOscillator.cpp
-    Source/DSP/Oscillators/DWGSOscillator.cpp
-    Source/DSP/Oscillators/DWGSTables.cpp
-    Source/DSP/Oscillators/NoiseGenerator.cpp
-    Source/DSP/Oscillators/VoxWaveOscillator.cpp
-    Source/DSP/Oscillators/OSC2Modulator.cpp
-    Source/DSP/Filters/MultiModeFilter.cpp
-    Source/DSP/Filters/FilterResonanceComp.cpp
-    Source/DSP/Modulation/VirtualPatchMatrix.cpp
-    Source/DSP/Sequencer/ModSequencer.cpp
-    Source/DSP/Sequencer/Arpeggiator.cpp
-    Source/DSP/Effects/ModFX.cpp
-    Source/DSP/Effects/MS2KDelay.cpp
-    Source/DSP/Effects/Equalizer.cpp
-    Source/DSP/Vocoder/MS2KVocoder16Band.cpp
-    Source/State/ParameterRegistry.gen.cpp
-    Source/MIDI/MIDIMap.cpp
-    Source/MIDI/MIDITelemetryManager.cpp
+    ${MS2000_DSP_SOURCES}
     Source/MIDI/SysExManager.cpp
+    Source/MIDI/MS2000IplUpdater.cpp
 )
 
 # Add JUCE module include directories for <JuceHeader.h> support
@@ -338,6 +331,7 @@ target_link_libraries(ABDMS2000_Tests PRIVATE
     WebUIAssets
     ABDShared::SynthCore
     ABDShared::HardwareDrivers
+    ABDShared::AutoUpdater
     # Core de Scope header-only (SynthEngine.h incluye <ScopeDataCollector.h>):
     # propaga .../Scope/Source y .../Source/Core sin arrastrar el glue JUCE.
     ABDShared::ScopeCoreHeaders
@@ -378,22 +372,67 @@ endif()
 
 add_test(NAME ABDMS2000_Tests COMMAND ABDMS2000_Tests)
 
-# Pila del binario de tests. `runAllTests()` es una sola funcion con todos los
-# casos y el marcador reserva de golpe los locales de todos ellos, incluidos los
-# dobles de host (SynthEngine + MIDITelemetryManager + SysExManager) que viven en
-# la pila. Al anadir el Test 25 el marco paso del 1 MB por defecto de Windows y el
-# proceso moria con STATUS_STACK_OVERFLOW (0xC00000FD) ya dentro del Test 17, que
-# es solo el siguiente en usar un doble de host. 16 MB dejan margen de sobra.
-#
-# (Ese flag ya no esta: la suite vive ahora en una funcion por caso —ver
-# `runAllTests()` en Source/Tests/DSPCoreTests.cpp—, asi que cada marco se libera
-# al volver y el binario cabe en el 1 MB por defecto de Windows. Si algun dia se
-# vuelve a juntar todo en una funcion, hara falta el flag otra vez.)
-#
-# El margen medido (Release, MSVC): con el binario partido en una funcion por caso la suite
-# entera pasa con una pila de 512 KB y el 1 MB por defecto de Windows sobra; con 256 KB
-# muere ya en el Test 21, que es el que mas pila necesita. Ese es el orden de magnitud del
-# peor caso actual (el `SynthEngine` de cada test, no la suma de todos).
+# Pila del binario de tests: en Release (/O2) MSVC puede hacer inline de funciones
+# `static` dentro de `runAllTests()` y acumular los marcos de pila (SynthEngine +
+# MIDITelemetryManager + SysExManager + MS2000FactoryBank), superando el 1 MB por
+# defecto de Windows y abortando en `__chkstk` con STATUS_STACK_OVERFLOW (0xC00000FD)
+# antes del primer `printf`. 16 MB dejan margen de sobra (igual que en ABDShared).
+if(WIN32)
+    if(MSVC)
+        target_link_options(ABDMS2000_Tests PRIVATE /STACK:16777216)
+    else()
+        target_link_options(ABDMS2000_Tests PRIVATE "-Wl,--stack,16777216")
+    endif()
+endif()
+
+# --- C++ ProcessBlock Benchmarks & Zero-Allocation Audit ---
+add_executable(ABDMS2000_Benchmarks
+    Source/Tools/Benchmarks/ProcessBlockBenchmark.cpp
+    ${MS2000_DSP_SOURCES}
+)
+
+target_include_directories(ABDMS2000_Benchmarks PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/GITS/JUCE/modules
+    Source
+    Source/Core
+    Source/DSP
+    Source/DSP/Common
+    Source/DSP/Oscillators
+    Source/DSP/Envelopes
+    Source/DSP/Modulation
+    Source/DSP/Filters
+    Source/MIDI
+    Source/State
+)
+
+target_link_libraries(ABDMS2000_Benchmarks PRIVATE
+    juce::juce_audio_basics
+    juce::juce_audio_processors
+    juce::juce_data_structures
+    juce::juce_core
+    juce::juce_events
+    juce::juce_graphics
+    DWGSBinary
+    ABDShared::SynthCore
+    ABDShared::HardwareDrivers
+    ABDShared::ScopeCoreHeaders
+)
+
+target_compile_features(ABDMS2000_Benchmarks PRIVATE cxx_std_20)
+
+if (MSVC)
+    target_compile_options(ABDMS2000_Benchmarks PRIVATE /Zm2000)
+endif()
+
+if(WIN32)
+    if(MSVC)
+        target_link_options(ABDMS2000_Benchmarks PRIVATE /STACK:16777216)
+    else()
+        target_link_options(ABDMS2000_Benchmarks PRIVATE "-Wl,--stack,16777216")
+    endif()
+endif()
+
+add_test(NAME ABDMS2000_Benchmarks COMMAND ABDMS2000_Benchmarks --ci)
 
 # --- Compile Definitions for WebView2 and Standalone
 target_compile_definitions(ABDMS2000 PUBLIC

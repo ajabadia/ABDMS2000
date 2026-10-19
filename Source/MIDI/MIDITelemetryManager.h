@@ -61,7 +61,9 @@ class MIDITelemetryManager : public juce::AudioProcessorValueTreeState::Listener
     // Activity callback for WebUI / Monitor
     void setActivityCallback(std::function<void(const MidiActivityEvent &)> cb)
     {
+        while (callbackLock_.test_and_set(std::memory_order_acquire)) {}
         activityCallback_ = std::move(cb);
+        callbackLock_.clear(std::memory_order_release);
     }
 
     // Audio thread methods
@@ -95,7 +97,7 @@ class MIDITelemetryManager : public juce::AudioProcessorValueTreeState::Listener
     std::atomic<size_t> pendingWritePos_ {0};
     static constexpr uint64_t kEchoTTLMs = 300;  // 300ms TTL
 
-    // Thread-safe lock-free outgoing queue
+    // Thread-safe outgoing queue (MPSC: multiple producers serialized by queueWriteLock_, single RT consumer)
     static constexpr size_t kMaxOutgoingEvents = 256;
     struct QueuedMidiEvent
     {
@@ -105,9 +107,12 @@ class MIDITelemetryManager : public juce::AudioProcessorValueTreeState::Listener
     std::array<QueuedMidiEvent, kMaxOutgoingEvents> outgoingQueue_;
     std::atomic<size_t> queueWritePos_ {0};
     std::atomic<size_t> queueReadPos_ {0};
+    std::atomic_flag queueWriteLock_ = ATOMIC_FLAG_INIT;
 
     std::function<void(const MidiActivityEvent &)> activityCallback_;
+    std::atomic_flag callbackLock_ = ATOMIC_FLAG_INIT;
 
+    void notifyActivity(const MidiActivityEvent &ev) noexcept;
     void pushOutgoingMessage(const juce::MidiMessage &msg, int sampleOffset = 0) noexcept;
 
     bool isEcho(const juce::MidiMessage &msg) noexcept;

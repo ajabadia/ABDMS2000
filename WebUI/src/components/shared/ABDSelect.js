@@ -22,6 +22,7 @@ import { bridge } from '../../bridge/bridgeCore.js';
 
 export class ABDSelect {
     constructor(container, options = {}) {
+        this.container = container;
         this.paramId = options.paramId || '';
         this.label = options.label || '';
         this.rawOptions = options.options || []; // array of strings or {value?, label, disabled?, note?}
@@ -100,8 +101,10 @@ export class ABDSelect {
     handleChange(idx) {
         const realVal = this.indexToValue.get(idx) ?? idx;
         if (this.paramId) {
+            bridge.beginGesture(this.paramId);
             paramStore.set(this.paramId, realVal);
             bridge.setParam(this.paramId, realVal);
+            bridge.endGesture(this.paramId);
         }
         if (this.onChange) {
             this.onChange(realVal, this.paramId);

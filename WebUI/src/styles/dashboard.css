@@ -229,3 +229,22 @@
   box-shadow: 0 0 12px rgba(var(--color-accent-rgb), 0.4);
 }
 
+/* Active Drawer Editing Highlight (UX2.3) */
+.dashboard-card {
+  cursor: pointer;
+}
+
+.dashboard-card.is-editing {
+  background: rgba(16, 28, 44, 0.82);
+  border-color: var(--color-accent, #00d4ff);
+  box-shadow: 0 0 0 1px var(--color-accent, #00d4ff), 0 0 18px rgba(var(--color-accent-rgb), 0.35), 0 10px 26px rgba(0, 0, 0, 0.75);
+}
+
+.card-action-btn.is-editing-btn {
+  background: var(--color-accent, #00d4ff);
+  color: #040810;
+  border-color: var(--color-accent, #00d4ff);
+  box-shadow: 0 0 10px rgba(var(--color-accent-rgb), 0.5);
+}
+
+

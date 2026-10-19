@@ -159,9 +159,9 @@ describe('WASM raw AudioWorklet bootstrap', () => {
     expect(bridgeSource).toContain("data.type === 'WASM_RENDERING'");
   });
 
-  it('no expone el diagnóstico WASM en el bundle de producción', () => {
+  it('expone la utilidad TEST MODE (440 Hz + osciloscopio por etapas) y mantiene debug=false en el AudioWorklet de producción', () => {
     expect(diagnosticSource).toContain('const IS_DEV = import.meta.env?.DEV === true');
-    expect(diagnosticSource).toContain('export const SHOW_DEV_TEST_MODE = IS_DEV');
+    expect(diagnosticSource).toContain('export const SHOW_DEV_TEST_MODE = true');
 
     const bundlePath = path.join(webUiRoot, 'dist/assets/index.js');
     const htmlPath = path.join(webUiRoot, 'dist/index.html');
@@ -170,10 +170,11 @@ describe('WASM raw AudioWorklet bootstrap', () => {
     const productionBundle = fs.readFileSync(bundlePath, 'utf8');
     const productionHtml = fs.readFileSync(htmlPath, 'utf8');
 
-    // Production must neither expose the control in HTML nor include dev
-    // diagnostic text in the executable's JavaScript bundle.
-    expect(productionHtml).not.toContain('btn-diagnostic-test');
-    expect(productionHtml).not.toContain('diagnostic-modal');
+    // TEST MODE utility (440 Hz signal chain injector + live multi-tap oscilloscope)
+    // must be present in the UI HTML so the user can test signal chain stages.
+    expect(productionHtml).toContain('btn-diagnostic-test');
+    expect(productionHtml).toContain('diagnostic-modal');
+    expect(productionHtml).toContain('diag-scope-canvas');
     // La flag debug del worklet se compila a FALSE en produccion. Se ancla via su
     // USO (`debug:<flag>`), no via su nombre, para sobrevivir al renombrado del
     // minificador; y el binding se acepta en CUALQUIER forma de declaracion porque
@@ -204,7 +205,6 @@ describe('WASM raw AudioWorklet bootstrap', () => {
     }
     // Y el literal tampoco: si el flag se inlinea, "true" no puede llegar al worklet.
     expect(productionBundle).not.toContain('debug:!0');
-    expect(productionBundle).not.toContain('Diagnostic Mode');
   });
 
   it('conserva el contrato de mensajes INIT_WASM y WASM_ERROR', () => {

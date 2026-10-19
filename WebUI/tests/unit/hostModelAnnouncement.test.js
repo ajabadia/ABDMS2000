@@ -192,7 +192,6 @@ describe('BridgeCore (dev server / WASM) despacha hostModel', () => {
 // ─── C++ side: el id sale del contrato, no de un literal propio ───────────────
 // El C++ anuncia `kHostModelId` (Source/Plugin/HostModelId.gen.h). Estos tests
 // unen los dos extremos: contrato canonico -> header generado -> C++ sin repeticiones.
-const here = path.dirname(fileURLToPath(import.meta.url));
 // here = <proyecto>/WebUI/tests/unit → la raíz del proyecto son tres niveles arriba.
 const headerPath = path.resolve(here, '../../../Source/Plugin/HostModelId.gen.h');
 const announcementPath = path.resolve(here, '../../../Source/Plugin/HostModelAnnouncement.h');

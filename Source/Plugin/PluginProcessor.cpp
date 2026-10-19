@@ -69,7 +69,7 @@ bool ABDMS2000AudioProcessor::isMidiEffect() const
 
 double ABDMS2000AudioProcessor::getTailLengthSeconds() const
 {
-    return 0.0;
+    return 2.5;
 }
 
 int ABDMS2000AudioProcessor::getNumPrograms()
@@ -94,6 +94,9 @@ void ABDMS2000AudioProcessor::setCurrentProgram(int index)
         {
             p->setValueNotifyingHost((index == 4) ? 1.0f : 0.0f);
         }
+
+        updateHostDisplay();
+        notifyStateRestored();
     }
 }
 
@@ -113,6 +116,7 @@ void ABDMS2000AudioProcessor::changeProgramName(int index, const juce::String &n
         auto prog = sysexManager_->getProgram(static_cast<size_t>(index));
         prog.setName(newName.toStdString());
         sysexManager_->setProgram(static_cast<size_t>(index), prog);
+        updateHostDisplay();
     }
 }
 
@@ -120,6 +124,8 @@ void ABDMS2000AudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlo
 {
     ABD_LOG(juce::String("[PROCESSOR] prepareToPlay called. SampleRate: ") + juce::String(sampleRate)
             + ", BlockSize: " + juce::String(samplesPerBlock));
+    setLatencySamples(0);
+    sysExReplies_.reserve(16);
     engine_.prepare(sampleRate, samplesPerBlock);
 }
 
@@ -142,13 +148,19 @@ void ABDMS2000AudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, juc
 {
     juce::ScopedNoDenormals noDenormals;
 
+    // Clear any extra output channels beyond stereo
+    const auto totalNumInputChannels = getTotalNumInputChannels();
+    const auto totalNumOutputChannels = getTotalNumOutputChannels();
+    for (int i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
+        buffer.clear(i, 0, buffer.getNumSamples());
+
     // Check for incoming SysEx messages to parse
     if (sysexManager_)
     {
         // Lo que hay que contestar (el volcado que pide una petición, o el acuse
         // `0x23`/`0x24` de una escritura) se recoge antes de tocar el buffer: añadir
         // eventos mientras se itera invalidaría el iterador.
-        std::vector<std::pair<std::vector<uint8_t>, int>> sysExReplies;
+        sysExReplies_.clear();
 
         for (const auto meta : midiMessages)
         {
@@ -159,13 +171,13 @@ void ABDMS2000AudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, juc
                                                      static_cast<size_t>(msg.getSysExDataSize()),
                                                      apvts_);
                 if (!res.reply.empty())
-                    sysExReplies.emplace_back(std::move(res.reply), meta.samplePosition);
+                    sysExReplies_.emplace_back(std::move(res.reply), meta.samplePosition);
             }
         }
 
         // Salida MIDI: el plugin ya escribe aquí (arpegiador y telemetría), así que el
         // acuse viaja por el mismo camino y llega a quien mandó el dump.
-        for (const auto &[bytes, samplePosition] : sysExReplies)
+        for (const auto &[bytes, samplePosition] : sysExReplies_)
             midiMessages.addEvent(juce::MidiMessage::createSysExMessage(bytes.data(), static_cast<int>(bytes.size())),
                                   samplePosition);
     }
@@ -181,6 +193,20 @@ void ABDMS2000AudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, juc
     {
         midiTelemetry_->renderOutgoingMidi(midiMessages);
     }
+}
+
+void ABDMS2000AudioProcessor::processBlockBypassed(juce::AudioBuffer<float> &buffer, juce::MidiBuffer &midiMessages)
+{
+    juce::ScopedNoDenormals noDenormals;
+    engine_.allNotesOff();
+    engine_.setPitchBend(0.0f);
+    engine_.setModWheel(0.0f);
+    midiMessages.clear();
+
+    const auto totalNumInputChannels = getTotalNumInputChannels();
+    const auto totalNumOutputChannels = getTotalNumOutputChannels();
+    for (int i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
+        buffer.clear(i, 0, buffer.getNumSamples());
 }
 
 bool ABDMS2000AudioProcessor::hasEditor() const
@@ -199,6 +225,7 @@ void ABDMS2000AudioProcessor::getStateInformation(juce::MemoryBlock &destData)
 {
     // 1. Crear una copia instantánea del árbol de parámetros APVTS
     auto state = apvts_.copyState();
+    state.setProperty("version", 1, nullptr);
 
     // 2. Adjuntar metadatos de persistencia (programa actual, nombre y estado LCD)
     if (sysexManager_)
@@ -234,8 +261,28 @@ void ABDMS2000AudioProcessor::setStateInformation(const void *data, int sizeInBy
         auto newTree = juce::ValueTree::fromXml(*xmlState);
         if (newTree.isValid())
         {
-            // 2. Reemplazar atómicamente el estado del APVTS
+            // 2. Reemplazar atómicamente el estado del APVTS (preserva el dirty patch exacto)
             apvts_.replaceState(newTree);
+
+            // Sanitización defensiva anti-NaN/Inf en todos los parámetros
+            for (auto *param : getParameters())
+            {
+                if (auto *ranged = dynamic_cast<juce::RangedAudioParameter *>(param))
+                {
+                    const float val = ranged->getValue();
+                    if (!std::isfinite(val) || val < 0.0f || val > 1.0f)
+                    {
+                        ranged->setValueNotifyingHost(ranged->getDefaultValue());
+                    }
+                }
+            }
+
+            // Auto-heal masterVolume if a previously persisted state saved 0.0f
+            if (auto *mv = apvts_.getParameter(ParamIDs::masterVolume))
+            {
+                if (mv->getValue() <= 0.01f)
+                    mv->setValueNotifyingHost(mv->convertTo0to1(0.8f));
+            }
 
             // 3. Restaurar banco completo de memoria si existe en el proyecto del DAW
             if (sysexManager_ && newTree.hasProperty("bankDataBlob"))
@@ -252,7 +299,7 @@ void ABDMS2000AudioProcessor::setStateInformation(const void *data, int sizeInBy
                 }
             }
 
-            // 4. Restaurar metadatos del programa y LCD si existen
+            // 4. Restaurar metadatos del programa y LCD si existen (sin pisar el dirty patch del APVTS)
             if (sysexManager_ && newTree.hasProperty("currentProgramIndex"))
             {
                 int progIdx = static_cast<int>(newTree.getProperty("currentProgramIndex", 0));
@@ -264,6 +311,32 @@ void ABDMS2000AudioProcessor::setStateInformation(const void *data, int sizeInBy
                     changeProgramName(progIdx, name);
                 }
             }
+
+            // 5. Notificar al host DAW y a la WebUI abierta
+            updateHostDisplay();
+            notifyStateRestored();
+        }
+    }
+}
+
+void ABDMS2000AudioProcessor::notifyStateRestored()
+{
+    if (!onStateRestored_)
+        return;
+
+    if (auto *mm = juce::MessageManager::getInstanceWithoutCreating())
+    {
+        if (mm->isThisTheMessageThread())
+        {
+            onStateRestored_();
+        }
+        else
+        {
+            auto cb = onStateRestored_;
+            juce::MessageManager::callAsync([cb]() {
+                if (cb)
+                    cb();
+            });
         }
     }
 }

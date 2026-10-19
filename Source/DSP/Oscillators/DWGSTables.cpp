@@ -1,5 +1,6 @@
 #include "DWGSTables.h"
 #include "../Common/DSPUtils.h"
+#include "MS2000HardwareDWGSData.h"
 #include "WavetableLoader.h"
 #if __has_include("DWGSBinary.h")
 #include "DWGSBinary.h"
@@ -575,25 +576,34 @@ void DWGSTables::initTables() noexcept
     waveNames_.assign(MAX_EXPANDED_TABLES, "");
     waveCategories_.assign(MAX_EXPANDED_TABLES, WaveCategory::User);
 
-    // ── Slots 0-63: Korg DWGS ──
+    // ── Slots 0-63: Authentic Korg MS2000 Hardware DWGS PCM Wavetables (from flash.bin @ 0x040000) ──
     for (size_t t = 0; t < NUM_STANDARD_TABLES; ++t)
     {
         waveNames_[t] =
             (t < 64 && kDWGSStandardNames[t] != nullptr) ? kDWGSStandardNames[t] : ("DWGS_" + std::to_string(t + 1));
         waveCategories_[t] = getDWGSStandardCategory(t);
-    }
-    int ds = 0;
-    const char *dd = DWGSBinary::getNamedResource("DW_8000_All_m1", ds);
-    if (dd && ds > 1000)
-    {
-        std::vector<std::vector<float>> w;
-        if (WavetableLoader::loadM1Bank(reinterpret_cast<const uint8_t *>(dd), (size_t) ds, 32, w))
-            for (size_t i = 0; i < std::min(w.size(), NUM_STANDARD_TABLES); ++i)
-                WavetableLoader::resample(w[i], &wavetableMemory_[i * SAMPLES_PER_TABLE]);
-    }
-    else
-        for (size_t t = 0; t < NUM_STANDARD_TABLES; ++t)
+
+        if (t < HardwareDWGS::kNumWaves)
+        {
+            const uint32_t offset = HardwareDWGS::kWaveOffsets[t];
+            const uint16_t length = HardwareDWGS::kWaveLengths[t];
+            if (length > 0 && (offset + length) <= HardwareDWGS::kTotalSamples)
+            {
+                std::vector<float> srcWave(length);
+                for (uint16_t s = 0; s < length; ++s)
+                    srcWave[s] = static_cast<float>(HardwareDWGS::kWaveSamples[offset + s]) * (1.0f / 32768.0f);
+                WavetableLoader::resample(srcWave, &wavetableMemory_[t * SAMPLES_PER_TABLE]);
+            }
+            else
+            {
+                generateStandardProcedural(t);
+            }
+        }
+        else
+        {
             generateStandardProcedural(t);
+        }
+    }
 
     // ── Slots 64-159: Prophet VS (96 real waves) ──
     for (size_t t = 64; t < 64 + 96; ++t)

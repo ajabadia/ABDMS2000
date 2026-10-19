@@ -9,6 +9,7 @@ import { bridge } from '../../bridge/bridgeCore.js';
 
 export class ABDToggle {
     constructor(container, options = {}) {
+        this.container = container;
         this.paramId = options.paramId || '';
         this.onChange = options.onChange || null;
 
@@ -34,8 +35,10 @@ export class ABDToggle {
         this.checkbox.addEventListener('change', (e) => {
             const val = e.target.checked ? 1 : 0;
             if (this.paramId) {
+                bridge.beginGesture(this.paramId);
                 paramStore.set(this.paramId, val);
                 bridge.setParam(this.paramId, val);
+                bridge.endGesture(this.paramId);
             }
             if (this.onChange) {
                 this.onChange(val, this.paramId);

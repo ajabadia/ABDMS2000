@@ -52,6 +52,8 @@ void Arpeggiator::setLatch(bool latch) noexcept
 void Arpeggiator::prepare(double sampleRate) noexcept
 {
     sampleRate_ = (sampleRate > 1000.0) ? sampleRate : 44100.0;
+    heldNotes_.reserve(64);
+    generatedPattern_.reserve(256);
     setTempoBPM(bpm_);
     reset();
 }

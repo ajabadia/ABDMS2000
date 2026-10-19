@@ -26,6 +26,7 @@ DOCS/
 *.exp
 *.lib
 WebUI/wasm/ms2000_dsp.wasm
+WebUI/src/wasm/ms2000_dsp*
 
 # Archives & Large Asset Dumps
 *.zip

@@ -2,15 +2,21 @@
 
 #include <juce_core/juce_core.h>
 
+#include <chrono>
+#include <condition_variable>
+#include <cstdint>
+#include <deque>
 #include <functional>
+#include <mutex>
 #include <utility>
+#include <vector>
 
 namespace ABDMS2000
 {
 
 /**
  * Transporte MIDI de hardware del anfitrión: el otro extremo del puente MIDI del
- * Bank Manager embebido.
+ * Bank Manager embebido y de la utilidad de actualización de firmware IPL v1.07.
  *
  * Dentro del WebView2 no hay Web MIDI, así que el Bank Manager construye el SysEx
  * del contrato y lo manda por el bridge (`hardware.send`); este transporte lo
@@ -55,6 +61,7 @@ class HardwareMidiTransport
         receiveSink = std::move(sink);
         listening = false;
         lastDetail.clear();
+        flushSysExQueue();
     }
 
     /** Instala la enumeración que solo conoce el Editor JUCE. */
@@ -78,6 +85,7 @@ class HardwareMidiTransport
         selectedInputId = inputId;
         listening = false;
         lastDetail.clear();
+        flushSysExQueue();
     }
 
     const juce::String &getSelectedOutputId() const noexcept
@@ -113,6 +121,7 @@ class HardwareMidiTransport
         portListFunction = {};
         receiveSink = {};
         lastDetail.clear();
+        flushSysExQueue();
     }
 
     bool isBound() const noexcept
@@ -174,6 +183,43 @@ class HardwareMidiTransport
         receiveSink(juce::var(envelope.get()));
     }
 
+    // ─── Cola síncrona de tramas SysEx completas (F0..F7) para IPL Updater ──────
+    void flushSysExQueue()
+    {
+        std::lock_guard<std::mutex> lock(sysexMutex_);
+        sysexQueue_.clear();
+    }
+
+    void deliverIncomingSysEx(const uint8_t *payloadWithoutF0F7, std::size_t payloadSize)
+    {
+        if (payloadWithoutF0F7 == nullptr)
+            return;
+
+        std::vector<uint8_t> full;
+        full.reserve(payloadSize + 2);
+        full.push_back(0xF0);
+        full.insert(full.end(), payloadWithoutF0F7, payloadWithoutF0F7 + payloadSize);
+        full.push_back(0xF7);
+
+        {
+            std::lock_guard<std::mutex> lock(sysexMutex_);
+            if (sysexQueue_.size() < 64)
+                sysexQueue_.push_back(std::move(full));
+        }
+        sysexCv_.notify_one();
+    }
+
+    bool waitForSysEx(std::vector<uint8_t> &outSysEx, int timeoutMs)
+    {
+        std::unique_lock<std::mutex> lock(sysexMutex_);
+        if (!sysexCv_.wait_for(lock, std::chrono::milliseconds(timeoutMs), [this]() { return !sysexQueue_.empty(); }))
+            return false;
+
+        outSysEx = std::move(sysexQueue_.front());
+        sysexQueue_.pop_front();
+        return true;
+    }
+
   private:
     bool fail(const juce::String &reason)
     {
@@ -189,6 +235,10 @@ class HardwareMidiTransport
     juce::String lastDetail;
     juce::String selectedOutputId;
     juce::String selectedInputId;
+
+    std::mutex sysexMutex_;
+    std::condition_variable sysexCv_;
+    std::deque<std::vector<uint8_t>> sysexQueue_;
 };
 
 }  // namespace ABDMS2000

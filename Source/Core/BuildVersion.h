@@ -3,8 +3,8 @@
 
 namespace ABDMS2000 {
     inline constexpr const char* kVersionString = "1.0.0";
-    inline constexpr const char* kBuildNumber = "2026.10.12.2222";
-    inline constexpr const char* kBuildTimestamp = "2026-10-12T20:22:44.842Z";
+    inline constexpr const char* kBuildNumber = "2026.10.19.2114";
+    inline constexpr const char* kBuildTimestamp = "2026-10-19T19:14:16.752Z";
     inline constexpr const char* kProductName = "ABDMS2000";
     inline constexpr const char* kManufacturer = "ajabadia";
 }

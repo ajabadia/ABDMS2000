@@ -1,4 +1,11 @@
 import { defineConfig } from 'vite';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const webUiRoot = path.join(__dirname, 'WebUI');
 
 export default defineConfig({
   root: 'WebUI',
@@ -11,6 +18,18 @@ export default defineConfig({
     }
   },
   plugins: [
+    {
+      name: 'ms2000-bankmanager-resolve',
+      resolveId(source, importer) {
+        if (source === '../../../WebUI/src/app.js' && importer && importer.replace(/\\/g, '/').includes('mountBankManager.js')) {
+          const candidate = path.resolve(path.dirname(importer), source);
+          if (fs.existsSync(candidate)) return candidate;
+          const localFallback = path.join(webUiRoot, 'abdbank', 'src', 'app.js');
+          if (fs.existsSync(localFallback)) return localFallback;
+        }
+        return null;
+      }
+    },
     {
       name: 'ms2000-shared-cascade',
       transformIndexHtml(html) {

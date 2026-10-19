@@ -42,7 +42,7 @@ class VAOscillator
         phase_ = newPhase;
     }
 
-    float getNextSample() noexcept;
+    float getNextSample(float phaseModulation = 0.0f) noexcept;
 
   private:
     double sampleRate_ {44100.0};
@@ -50,7 +50,7 @@ class VAOscillator
     float phase_ {0.0f};
     float phaseIncrement_ {0.01f};
     VAWaveform waveform_ {VAWaveform::Sawtooth};
-    float control1_ {0.5f};  // Default 50% PWM or neutral shaping
+    float control1_ {0.0f};  // Default 0.0 (50% square PW / unshaped saw & triangle)
 
     // Integrator state for triangle
     float triIntegrator_ {0.0f};
@@ -58,7 +58,7 @@ class VAOscillator
     float generateSaw() noexcept;
     float generatePulse() noexcept;
     float generateTriangle() noexcept;
-    float generateSine() noexcept;
+    float generateSine(float phaseModulation = 0.0f) noexcept;
 };
 
 }  // namespace ABDMS2000

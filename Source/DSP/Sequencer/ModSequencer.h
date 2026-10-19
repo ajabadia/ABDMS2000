@@ -90,6 +90,7 @@ struct ModSeqTrack
     ModSeqDest destination {ModSeqDest::None};
     ModSeqMotion motion {ModSeqMotion::Step};
     ModSeqMode mode {ModSeqMode::Forward};
+    bool oneShot {false};                // false = Loop, true = 1Shot (stops at end until KeySync)
     int length {16};                     // 1 to 16
     std::array<float, 16> steps {0.0f};  // Normalized 0..1
 };

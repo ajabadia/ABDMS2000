@@ -1,7 +1,7 @@
 #pragma once
 
-#include <vector>
 #include "../Common/DSPUtils.h"
+#include "DspEffects/DspMS2000Delay.h"
 
 namespace ABDMS2000
 {
@@ -14,18 +14,12 @@ enum class DelayType
 };
 
 /**
- * @brief MS2KDelay - Motor de retardo Motorola DSP56362 del Korg MS2000.
+ * @brief MS2KDelay - Motor de retardo Motorola DSP56362 del Korg MS2000 (P:$0FE9–$105C).
  *
- * Características específicas del microcódigo:
- * - Tiempo máximo: 1400 ms (1.4 s).
- * - Tres topologías de ruteo:
- *     * Stereo: Líneas independientes en paralelo.
- *     * Cross: Ping-pong con realimentación invertida en el canal izquierdo (-R_fb en L, +L_fb en R).
- *     * LeftRight: Relación métrica asimétrica fija 0.75x en el canal derecho (timeR = timeL * 0.75).
- * - Filtro de amortiguación (Damping): Paso-bajos de 1-polo fijado a ~6.0 kHz en el lazo de retorno.
- * - Pitch Glide (Tape Drag): Suavizador lineal de 50 ms para simular el arrastre de cinta del DSP56362.
- * - Interpolación cúbica Hermite de 4 puntos para lectura libre de atenuación en altas frecuencias.
- * - 100% Real-Time Safe (memoria reservada únicamente en prepare()).
+ * Envoltorio sobre `abd::dsp::DspMS2000Delay` (agnóstico al sample rate):
+ * - Suavizado exponencial de 1 polo del tiempo de retardo (P:$0FED–$0FF4).
+ * - Filtro paso-bajos de 1 polo en el lazo de realimentación (P:$100C–$1012).
+ * - Tres topologías: Stereo, Cross (L<->R) y LeftRight (Ping-Pong L->R).
  */
 class MS2KDelay
 {
@@ -38,6 +32,7 @@ class MS2KDelay
     void setEnabled(bool enabled) noexcept
     {
         enabled_ = enabled;
+        engine_.setEnabled(enabled);
     }
     bool isEnabled() const noexcept
     {
@@ -47,6 +42,7 @@ class MS2KDelay
     void setType(DelayType type) noexcept
     {
         type_ = type;
+        engine_.setMode(static_cast<abd::dsp::DspMS2000Delay::Mode>(static_cast<int>(type)));
     }
     void setTimeSeconds(float timeSec) noexcept;
     void setDepth(float wetMix0to1) noexcept;
@@ -63,19 +59,8 @@ class MS2KDelay
     float wetMix_ {0.4f};
     float feedbackGain_ {0.4f};
 
-    std::vector<float> delayBufferL_;
-    std::vector<float> delayBufferR_;
-    size_t writeIndex_ {0};
-    size_t maxDelaySamples_ {61740};
-
-    DSPUtils::LinearSmoother<float> smoothedDelaySamplesL_;
-    DSPUtils::LinearSmoother<float> smoothedDelaySamplesR_;
-
-    // Filtro 1-polo damping a 6.0 kHz
-    float dampingStateL_ {0.0f};
-    float dampingStateR_ {0.0f};
-
-    float readHermite(const std::vector<float> &buf, float readPos) const noexcept;
+    abd::dsp::DspMS2000Delay engine_;
 };
 
 }  // namespace ABDMS2000
+

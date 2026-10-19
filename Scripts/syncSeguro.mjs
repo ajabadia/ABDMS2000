@@ -99,6 +99,17 @@ export function compararArboles(esperado, actual, filtro = null) {
 
 const existe = (dir) => fs.existsSync(dir) && fs.statSync(dir).isDirectory();
 
+export function contarArchivos(dir, filtro = null) {
+  if (!existe(dir)) return 0;
+  let n = 0;
+  for (const entrada of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entrada.name);
+    if (filtro && !filtro(full)) continue;
+    n += entrada.isDirectory() ? contarArchivos(full, filtro) : 1;
+  }
+  return n;
+}
+
 /** Cuantas lineas de un listado caben sin que el reporte sea un muro. */
 const TOPE = 12;
 function listar(linea, cosas) {

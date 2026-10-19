@@ -1,10 +1,17 @@
 #pragma once
 
+#include "../MIDI/MS2000IplUpdater.h"
 #include "BridgeHost.h"
 #include "HostModelAnnouncement.h"
 #include "SoftwarePresetProtocol.h"
 
 #include <functional>
+#include <memory>
+
+namespace ABDShared
+{
+class AutoUpdater;
+}
 
 namespace ABDMS2000
 {
@@ -24,7 +31,7 @@ class BridgeActions
 {
   public:
     explicit BridgeActions(BridgeHost &host);
-    ~BridgeActions() = default;
+    ~BridgeActions();
 
     /** Conecta el sumidero de mensajes JS. Sin sumidero no se emite nada. */
     void setJsMessageSink(JsMessageSink sink)
@@ -35,6 +42,7 @@ class BridgeActions
     void handleJsEvent(const juce::var &message);
     void sendEventToJs(const juce::String &eventType, const juce::var &payload);
     void sendFullParamSync();
+    void sendPresetCatalog();
 
     /**
      * Anuncia el modelId de este plugin al ABD Bank Manager embebido
@@ -48,9 +56,17 @@ class BridgeActions
         onToggleScope_ = std::move(cb);
     }
 
+    void setOnOpenAudioSettings(std::function<void()> cb)
+    {
+        onOpenAudioSettings_ = std::move(cb);
+    }
+
+    MS2000IplUpdater &getIplUpdater() noexcept { return iplUpdater_; }
+
   private:
     /** Envía `{ type, data }` al sumidero inyectado. */
     void emitJsMessage(const juce::var &message);
+    void emitIplEventAsync(const std::string &eventType, const std::string &jsonPayload);
 
     // ─── Transporte de software (SoftwarePresetProtocol.h) ────────────────────
     // El ABD Bank Manager embebido lee y escribe los presets de este synth con los
@@ -93,6 +109,10 @@ class BridgeActions
     BridgeHost &host_;
     JsMessageSink jsEventSink;
     std::function<void()> onToggleScope_;
+    std::function<void()> onOpenAudioSettings_;
+    MS2000IplUpdater iplUpdater_;
+    std::unique_ptr<ABDShared::AutoUpdater> autoUpdater_;
+    std::shared_ptr<bool> aliveToken_ {std::make_shared<bool>(true)};
 };
 
 }  // namespace ABDMS2000

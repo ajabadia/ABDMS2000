@@ -8,13 +8,13 @@ float OSC2Modulator::process(float osc1Sample, float osc2Sample, OSC2ModulationM
     switch (mode)
     {
     case OSC2ModulationMode::RingMod:
+    case OSC2ModulationMode::CrossMod:  // Hardware mode 3 = Ring+Sync
         return osc1Sample * osc2Sample;
 
     case OSC2ModulationMode::Sync:
-    case OSC2ModulationMode::CrossMod:
     case OSC2ModulationMode::Off:
     default:
-        return osc1Sample;
+        return osc2Sample;
     }
 }
 

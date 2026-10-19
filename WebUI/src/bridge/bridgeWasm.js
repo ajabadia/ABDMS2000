@@ -214,14 +214,24 @@ export class BridgeWasm {
 
   pitchBend(value) {
     // value is -1..+1
+    const clamped = Math.max(-1, Math.min(1, Number(value) || 0));
+    this._post({ type: 'SET_PARAM', paramId: 'pitchBend', value: clamped });
   }
 
   modWheel(value) {
-    // value is 0..1
+    // value is 0..1 (or 0..127 if passed raw; normalize to 0..127 for WasmBridge)
+    const num = Number(value) || 0;
+    const raw127 = num <= 1.0 ? num * 127.0 : Math.min(127.0, num);
+    this._post({ type: 'SET_PARAM', paramId: 'modWheel', value: raw127 });
   }
 
   setParam(paramId, value) {
     this._post({ type: 'SET_PARAM', paramId, value });
+  }
+
+  setTempoBPM(bpm) {
+    const clampedBpm = Math.max(20, Math.min(300, Number(bpm) || 120));
+    this._post({ type: 'SET_PARAM', paramId: 'arpTempo', value: clampedBpm });
   }
 
   setAllParams(paramsObj) {

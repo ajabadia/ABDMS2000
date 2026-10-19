@@ -1,6 +1,6 @@
 #pragma once
-#include "DspEffects/DspSolinaEnsemble.h"
-#include "DspEffects/Phaser4.h"
+#include "DspEffects/DspMS2000Ensemble.h"
+#include "DspEffects/DspMS2000Phaser.h"
 #include "MS2KChorusFlanger.h"
 
 namespace ABDMS2000
@@ -14,12 +14,12 @@ enum class ModFXType
 };
 
 /**
- * @brief Modulation FX Block for MS2000.
+ * @brief Modulation FX Block for MS2000 (DSP56362 P:$0F48–$10A7).
  *
- * Bloque coordinador de modulación con cero memoria dinámica (100% Real-Time Safe):
- * - Chorus/Flanger: MS2KChorusFlanger (exclusivo MS2000 con transición continua y buffer estático).
- * - Ensemble: abd::dsp::DspSolinaEnsemble (modo DualLFO con LFO dual 0.5Hz/6.0Hz y matriz contrafase).
- * - Phaser: abd::dsp::Phaser4<4> (4 etapas allpass con barrido logarítmico determinista).
+ * Bloque coordinador de modulación fiel al microcódigo del DSP56362 y agnóstico al sample rate:
+ * - Chorus/Flanger: MS2KChorusFlanger / abd::dsp::DspMS2000ChorusFlanger (P:$0F48–$0F95).
+ * - Ensemble: abd::dsp::DspMS2000Ensemble (P:$0F96–$0FE8, 3 fases a 120° + shimmer 20% + matriz 0.8/0.4/0.2).
+ * - Phaser: abd::dsp::DspMS2000Phaser<4> (P:$105D–$10A7, 4 etapas todo-paso con LFO cuadrático y polaridad L/R opuesta).
  */
 class ModFX
 {
@@ -58,8 +58,9 @@ class ModFX
     float rawFeedback_ {0.0f};  // 0..127
 
     MS2KChorusFlanger chorusFlanger_;
-    abd::dsp::DspSolinaEnsemble ensemble_;
-    abd::dsp::Phaser4<4> phaser_;
+    abd::dsp::DspMS2000Ensemble ensemble_;
+    abd::dsp::DspMS2000Phaser<4> phaser_;
 };
 
 }  // namespace ABDMS2000
+

@@ -20,7 +20,7 @@
  * actualizar ABDSharedAssets/styles/components/bank.css.
  */
 import { describe, it, expect } from 'vitest';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
@@ -30,7 +30,7 @@ const packageSrc = join(projectRoot, '..', 'ABDBankManager', 'packages', 'ui', '
 
 const FILES = ['BankManagerModal.js', 'mountBankManager.js'];
 
-describe('BankManagerModal vendored from @abdsynths/bank-manager-ui', () => {
+describe.skipIf(!existsSync(packageSrc))('BankManagerModal vendored from @abdsynths/bank-manager-ui', () => {
   for (const file of FILES) {
     it(`${file} matches packages/ui source byte-for-byte (run Scripts/sync_bankmanager_ui.js if it fails)`, () => {
       const canonical = readFileSync(join(packageSrc, file));

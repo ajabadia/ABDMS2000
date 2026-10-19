@@ -7,6 +7,7 @@
 
 #include "ParameterRegistry.gen.h"
 #include <cmath>
+#include <string_view>
 
 namespace conversion
 {
@@ -92,14 +93,6 @@ inline float normalizedToDomain (const ParameterMeta& entry, float t) noexcept
 // Inverso de normalizedToDomain
 inline float domainToNormalized (const ParameterMeta& entry, float domain) noexcept
 {
-    if (entry.wire == -1) {
-        if (entry.domainMin < entry.domainMax) {
-            float clamped = std::clamp(domain, entry.domainMin, entry.domainMax);
-            return std::clamp((clamped - entry.domainMin) / (entry.domainMax - entry.domainMin), 0.0f, 1.0f);
-        }
-        return std::clamp(domain, 0.0f, 1.0f);
-    }
-
     // Extremos matematicos exactos (evita imprecision float en inversas)
     if (entry.domainMin < entry.domainMax) {
         if (domain <= entry.domainMin) return 0.0f;
@@ -162,25 +155,43 @@ inline float domainToNormalized (const ParameterMeta& entry, float domain) noexc
     return std::clamp(norm, 0.0f, 1.0f);
 }
 
-// Convierte un valor raw de wire (CC 0-127, NRPN etc.) al dominio fisico
+// Convierte un valor raw de wire (CC 0-127, NRPN, SysEx byte) al dominio fisico
 inline float wireToDomain (const ParameterMeta& entry, uint16_t raw) noexcept
 {
     // Normalizar raw a [0,1] segun wireCodec
     float t = 0.0f;
     switch (entry.wireCodec)
     {
+        case 1: // Bipolar Korg MS2000: wire 0..127 con centro en 64 (signedVal = raw - 64 en [min, max])
+        {
+            float signedVal = static_cast<float>(static_cast<int>(raw) - 64);
+            if (entry.min < 0.0f && entry.max > entry.min) {
+                t = std::clamp((signedVal - entry.min) / (entry.max - entry.min), 0.0f, 1.0f);
+            } else if (entry.domainMin < 0.0f && entry.domainMax > entry.domainMin) {
+                t = std::clamp((signedVal - entry.domainMin) / (entry.domainMax - entry.domainMin), 0.0f, 1.0f);
+            } else {
+                t = std::clamp(0.5f + (signedVal / 126.0f), 0.0f, 1.0f);
+            }
+            break;
+        }
+        case 2: // Enum: indice discreto [min..max]
+        {
+            if (entry.max > entry.min) {
+                t = std::clamp((static_cast<float>(raw) - entry.min) / (entry.max - entry.min), 0.0f, 1.0f);
+            } else {
+                t = 0.0f;
+            }
+            break;
+        }
         case 0: // Value: raw 0-127 -> t = raw/127.0
-        case 1: // Bipolar: raw -128 to 127 -> t = (raw+128)/255.0 (adaptado)
-        case 2: // Enum: no aplicable, retornar 0
         default:
-            // Asumimos wire 0-127 para CC/Value
-            t = raw / 127.0f;
+            t = std::clamp(static_cast<float>(raw) / 127.0f, 0.0f, 1.0f);
             break;
     }
     return normalizedToDomain(entry, t);
 }
 
-// Convierte un valor del dominio fisico a raw de wire
+// Convierte un valor del dominio fisico a raw de wire (0..127)
 inline uint16_t domainToWire (const ParameterMeta& entry, float domain) noexcept
 {
     // Convertir dominio a normalizado primero
@@ -190,34 +201,66 @@ inline uint16_t domainToWire (const ParameterMeta& entry, float domain) noexcept
     uint16_t raw = 0;
     switch (entry.wireCodec)
     {
-        case 0: // Value: raw = t * 127.0, clamp 0-127
+        case 0: // Value: raw = round(t * 127.0), clamp 0-127
         {
-            float r = t * 127.0f;
-            if (r < 0) r = 0;
-            if (r > 127) r = 127;
-            raw = static_cast<uint16_t>(r);
+            int r = static_cast<int>(std::lround(t * 127.0f));
+            raw = static_cast<uint16_t>(std::clamp(r, 0, 127));
             break;
         }
-        case 1: // Bipolar: raw = (t * 255.0) - 128, clamp -128 to 127
+        case 1: // Bipolar Korg MS2000: signedVal en [min, max] + 64, clamp 0-127
         {
-            float r = (t * 255.0f) - 128.0f;
-            if (r < -128) r = -128;
-            if (r > 127) r = 127;
-            raw = static_cast<uint16_t>(r);
+            if (entry.min < 0.0f && entry.max > entry.min) {
+                float signedVal = entry.min + t * (entry.max - entry.min);
+                int r = static_cast<int>(std::lround(signedVal)) + 64;
+                raw = static_cast<uint16_t>(std::clamp(r, 0, 127));
+            } else if (entry.domainMin < 0.0f && entry.domainMax > entry.domainMin) {
+                float signedVal = entry.domainMin + t * (entry.domainMax - entry.domainMin);
+                int r = static_cast<int>(std::lround(signedVal)) + 64;
+                raw = static_cast<uint16_t>(std::clamp(r, 0, 127));
+            } else {
+                int r = static_cast<int>(std::lround((t - 0.5f) * 126.0f)) + 64;
+                raw = static_cast<uint16_t>(std::clamp(r, 0, 127));
+            }
             break;
         }
-        case 2: // Enum: no aplicable
+        case 2: // Enum: indice discreto
+        {
+            if (entry.max > entry.min) {
+                int r = static_cast<int>(std::lround(entry.min + t * (entry.max - entry.min)));
+                raw = static_cast<uint16_t>(std::clamp(r, 0, 127));
+            }
+            break;
+        }
         default:
-            raw = static_cast<uint16_t>(t * 127.0f);
+        {
+            int r = static_cast<int>(std::lround(t * 127.0f));
+            raw = static_cast<uint16_t>(std::clamp(r, 0, 127));
             break;
+        }
     }
     return raw;
 }
 
-// Obtener el meta de un parametro por su ID (busqueda en registry)
+// Obtener el meta de un parametro por su ID sin alojar std::string en el hilo de audio
 inline const ParameterMeta* getMetaById (const char* id) noexcept
 {
-    return ParameterRegistry::getParameter(id);
+    if (id == nullptr)
+        return nullptr;
+
+    static const auto kViewMap = []() {
+        std::unordered_map<std::string_view, const ParameterMeta*> map;
+        const auto& all = ParameterRegistry::getAllParameters();
+        map.reserve(all.size());
+        for (const auto& p : all)
+        {
+            if (p.id != nullptr)
+                map.emplace(std::string_view(p.id), &p);
+        }
+        return map;
+    }();
+
+    const auto it = kViewMap.find(std::string_view(id));
+    return (it != kViewMap.end()) ? it->second : nullptr;
 }
 
 // Convertir normalizado -> dominio fisico usando el registry

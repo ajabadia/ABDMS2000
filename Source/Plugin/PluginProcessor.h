@@ -21,6 +21,7 @@ class ABDMS2000AudioProcessor
 
     bool isBusesLayoutSupported(const BusesLayout &layouts) const override;
     void processBlock(juce::AudioBuffer<float> &, juce::MidiBuffer &) override;
+    void processBlockBypassed(juce::AudioBuffer<float> &, juce::MidiBuffer &) override;
 
     juce::AudioProcessorEditor *createEditor() override;
     bool hasEditor() const override;
@@ -62,7 +63,14 @@ class ABDMS2000AudioProcessor
     // getCurrentProgram/setCurrentProgram/changeProgramName ya se declaran más
     // abajo como overrides de juce::AudioProcessor: cumplen también BridgeHost.
 
+    void setOnStateRestored(std::function<void()> cb)
+    {
+        onStateRestored_ = std::move(cb);
+    }
+
   private:
+    void notifyStateRestored();
+
     juce::AudioProcessorValueTreeState apvts_;
     SynthEngine engine_;
     std::unique_ptr<class MIDITelemetryManager> midiTelemetry_;
@@ -71,6 +79,8 @@ class ABDMS2000AudioProcessor
     // Hardware MIDI para el puente del Bank Manager embebido (los dispositivos
     // reales los enlaza el Editor; ver Source/Plugin/HardwareMidiTransport.h).
     HardwareMidiTransport hardwareMidiTransport_;
+    std::vector<std::pair<std::vector<uint8_t>, int>> sysExReplies_;
+    std::function<void()> onStateRestored_;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ABDMS2000AudioProcessor)
 };

@@ -10,9 +10,27 @@ import { bridge } from '../bridge/bridgeCore.js';
 // el foco entra al primer control y al cerrar vuelve al disparador.
 import { createOverlayFocus } from '@abdsynths/shared/components';
 
-// Vite replaces import.meta.env.DEV with false in production bundles.
+// Test Mode & DSP Signal Chain Injector is always enabled so users can test
+// 440 Hz tone injection and inspect live signal movement across DSP stages.
 const IS_DEV = import.meta.env?.DEV === true;
-export const SHOW_DEV_TEST_MODE = IS_DEV;
+export const SHOW_DEV_TEST_MODE = true;
+
+const POINT_TO_DEFAULT_TAP = {
+  1: 'master_out',
+  2: 'master_out',
+  3: 'pre_fx',
+  4: 'post_filter',
+  5: 'osc_mix',
+};
+
+const TAP_LABELS = {
+  master_out: 'MASTER OUTPUT (POST-MASTER)',
+  pre_fx: 'PRE-FX BUS (POST-VOICES)',
+  post_vca: 'VOICE 1 POST-VCA',
+  post_filter: 'VOICE 1 POST-FILTER (VCF)',
+  osc_mix: 'VOICE 1 OSC MIXER OUT',
+  lfo1: 'VOICE 1 LFO 1',
+};
 
 class DiagnosticModalController {
   constructor() {
@@ -25,6 +43,11 @@ class DiagnosticModalController {
     this.volume = 25; // %
     this.latchMode = false;
     this.activeLatchedNotes = new Set();
+    this.selectedTap = 'master_out';
+    this.latestTaps = {};
+    this._rafId = null;
+    this._analyser = null;
+    this._analyserBuf = null;
   }
 
   init() {
@@ -58,10 +81,45 @@ class DiagnosticModalController {
       if (e.target === this.modal) this.close();
     });
 
+    // Scope Tap Selector & clickable stage boxes
+    const tapSelect = document.getElementById('diag-scope-tap-select');
+    tapSelect?.addEventListener('change', (e) => {
+      this.selectedTap = e.target.value || 'master_out';
+      const lbl = document.getElementById('diag-scope-tap-label');
+      if (lbl) lbl.textContent = `TAP: ${TAP_LABELS[this.selectedTap] || this.selectedTap}`;
+    });
+
+    document.querySelectorAll('#diag-stage-meters .diag-stage-box').forEach((box) => {
+      box.style.cursor = 'pointer';
+      box.title = 'Click to view this DSP stage on the oscilloscope';
+      box.addEventListener('click', () => {
+        const tap = box.getAttribute('data-tap');
+        if (tap) {
+          this.selectedTap = tap;
+          if (tapSelect) tapSelect.value = tap;
+          const lbl = document.getElementById('diag-scope-tap-label');
+          if (lbl) lbl.textContent = `TAP: ${TAP_LABELS[tap] || tap}`;
+        }
+      });
+    });
+
+    // Subscribe to C++ multi-tap scope frames
+    if (bridge && typeof bridge.on === 'function') {
+      bridge.on('scopeFrame', (packet) => {
+        if (packet && packet.taps) {
+          this.latestTaps = packet.taps;
+          if (!this.modal?.classList.contains('hidden')) {
+            this._updateStageMeters();
+          }
+        }
+      });
+    }
+
     // Tone Enable Toggle
     const toggle = document.getElementById('diag-tone-enable');
     const statusLabel = document.getElementById('diag-tone-status');
     toggle?.addEventListener('change', (e) => {
+      bridge.initWebAudio();
       this.isToneActive = e.target.checked;
       if (statusLabel) {
         statusLabel.textContent = this.isToneActive ? 'TONE ACTIVE (TRANSMITTING)' : 'TONE DISABLED';
@@ -94,6 +152,13 @@ class DiagnosticModalController {
       radio.addEventListener('change', (e) => {
         if (e.target.checked) {
           this.currentPoint = Number(e.target.value);
+          const autoTap = POINT_TO_DEFAULT_TAP[this.currentPoint];
+          if (autoTap) {
+            this.selectedTap = autoTap;
+            if (tapSelect) tapSelect.value = autoTap;
+            const lbl = document.getElementById('diag-scope-tap-label');
+            if (lbl) lbl.textContent = `TAP: ${TAP_LABELS[autoTap] || autoTap}`;
+          }
           if (this.isToneActive) this.updateTone();
         }
       });
@@ -182,6 +247,138 @@ class DiagnosticModalController {
     });
   }
 
+  _updateStageMeters() {
+    const stages = ['osc_mix', 'post_filter', 'post_vca', 'pre_fx', 'master_out'];
+    stages.forEach((tapKey) => {
+      const tapData = this.latestTaps?.[tapKey];
+      const peak = tapData ? Math.max(tapData.peakL || 0, tapData.peakR || 0) : 0;
+      const pct = Math.min(100, Math.round(peak * 100));
+      const bar = document.getElementById(`diag-bar-${tapKey}`);
+      const lbl = document.getElementById(`diag-lvl-${tapKey}`);
+      if (bar) bar.style.width = `${pct}%`;
+      if (lbl) lbl.textContent = `${pct}%`;
+    });
+  }
+
+  _ensureWebAudioAnalyser() {
+    if (this._analyser) return this._analyser;
+    const wasm = bridge?.wasmBridge;
+    const ctx = wasm?.audioContext;
+    const master = wasm?.masterGain;
+    if (ctx && master) {
+      this._analyser = ctx.createAnalyser();
+      this._analyser.fftSize = 1024;
+      this._analyserBuf = new Float32Array(512);
+      master.connect(this._analyser);
+    }
+    return this._analyser;
+  }
+
+  _startScopeLoop() {
+    if (this._rafId) return;
+    const render = () => {
+      if (!this.modal || this.modal.classList.contains('hidden')) {
+        this._rafId = null;
+        return;
+      }
+      this._drawScopeCanvas();
+      this._rafId = requestAnimationFrame(render);
+    };
+    this._rafId = requestAnimationFrame(render);
+  }
+
+  _stopScopeLoop() {
+    if (this._rafId) {
+      cancelAnimationFrame(this._rafId);
+      this._rafId = null;
+    }
+  }
+
+  _drawScopeCanvas() {
+    const canvas = document.getElementById('diag-scope-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const w = canvas.width;
+    const h = canvas.height;
+    ctx.fillStyle = '#050811';
+    ctx.fillRect(0, 0, w, h);
+
+    // Center line & grid
+    ctx.strokeStyle = 'rgba(148, 163, 184, 0.14)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(0, h / 2);
+    ctx.lineTo(w, h / 2);
+    ctx.moveTo(0, h * 0.25);
+    ctx.lineTo(w, h * 0.25);
+    ctx.moveTo(0, h * 0.75);
+    ctx.lineTo(w, h * 0.75);
+    ctx.stroke();
+
+    let samples = null;
+    let peak = 0;
+    let rms = 0;
+    let freqHz = 0;
+
+    const tapPacket = this.latestTaps?.[this.selectedTap] || this.latestTaps?.master_out;
+    if (tapPacket && Array.isArray(tapPacket.timeDataL) && tapPacket.timeDataL.length > 0) {
+      samples = tapPacket.timeDataL;
+      peak = Math.max(tapPacket.peakL || 0, tapPacket.peakR || 0);
+      rms = Math.max(tapPacket.rmsL || 0, tapPacket.rmsR || 0);
+      freqHz = tapPacket.estimatedFrequencyHz || 0;
+    } else if (!bridge?.isWebView) {
+      const analyser = this._ensureWebAudioAnalyser();
+      if (analyser && this._analyserBuf) {
+        analyser.getFloatTimeDomainData(this._analyserBuf);
+        samples = this._analyserBuf;
+        let sumSq = 0;
+        for (let i = 0; i < samples.length; i++) {
+          const a = Math.abs(samples[i]);
+          if (a > peak) peak = a;
+          sumSq += samples[i] * samples[i];
+        }
+        rms = Math.sqrt(sumSq / samples.length);
+        const pct = Math.min(100, Math.round(peak * 100));
+        const bar = document.getElementById('diag-bar-master_out');
+        const lbl = document.getElementById('diag-lvl-master_out');
+        if (bar) bar.style.width = `${pct}%`;
+        if (lbl) lbl.textContent = `${pct}%`;
+      }
+    }
+
+    const metricsEl = document.getElementById('diag-scope-metrics');
+    if (metricsEl) {
+      const freqStr = freqHz > 1 ? `${freqHz.toFixed(1)} Hz` : (this.isToneActive ? `${this.frequency} Hz` : '--- Hz');
+      metricsEl.textContent = `PEAK: ${peak.toFixed(3)} | RMS: ${rms.toFixed(3)} | FREQ: ${freqStr}`;
+    }
+
+    if (samples && samples.length > 1) {
+      // Find rising zero-crossing trigger for stable display
+      let trig = 0;
+      const maxSearch = Math.floor(samples.length / 2);
+      for (let i = 1; i < maxSearch; i++) {
+        if (samples[i - 1] <= 0 && samples[i] > 0) {
+          trig = i;
+          break;
+        }
+      }
+      const drawLen = Math.min(256, samples.length - trig);
+      ctx.strokeStyle = peak > 0.002 ? '#38bdf8' : '#475569';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      for (let i = 0; i < drawLen; i++) {
+        const x = (i / (drawLen - 1)) * w;
+        const s = Math.max(-1, Math.min(1, samples[trig + i]));
+        const y = (h / 2) - s * (h * 0.42);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    }
+  }
+
   updateTone() {
     const point = this.isToneActive ? this.currentPoint : 0;
     const level = (this.volume / 100.0) * 0.45;
@@ -205,10 +402,12 @@ class DiagnosticModalController {
     this.modal.classList.remove('hidden');
     this.focusContract?.releaseInert();
     this.focusContract?.focusFirst();
+    this._startScopeLoop();
   }
 
   close() {
     if (!this.modal) return;
+    this._stopScopeLoop();
     // El foco sale ANTES del inert (hacer inerte un contenedor con el foco
     // dentro lo tiraria a <body>) y vuelve al disparador.
     this.focusContract?.restoreFocus();

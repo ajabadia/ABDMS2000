@@ -7,20 +7,33 @@ echo =======================================================
 where emcmake >nul 2>&1
 if not errorlevel 1 goto :EMSDK_OK
 
-REM Intentar activar emsdk via emsdk_env.bat
-if exist C:\emsdk\emsdk_env.bat call C:\emsdk\emsdk_env.bat
+REM Intentar activar emsdk via emsdk_env.bat (D:\desarrollos\emsdk, %EMSDK% o C:\emsdk)
+if exist "D:\desarrollos\emsdk\emsdk_env.bat" call "D:\desarrollos\emsdk\emsdk_env.bat"
+if defined EMSDK if exist "%EMSDK%\emsdk_env.bat" call "%EMSDK%\emsdk_env.bat"
+if exist "C:\emsdk\emsdk_env.bat" call "C:\emsdk\emsdk_env.bat"
 
 where emcmake >nul 2>&1
 if not errorlevel 1 goto :EMSDK_OK
 
-REM Fallback: si emsdk_env.bat emite comandos export (bash) en vez de set (cmd),
-REM agregar las rutas manualmente al PATH.
-if exist C:\emsdk\upstream\emscripten\emcmake.exe (
+REM Fallback: agregar las rutas manualmente al PATH si emcmake sigue sin estar en PATH.
+if exist "D:\desarrollos\emsdk\upstream\emscripten\emcmake.bat" (
+    set "PATH=D:\desarrollos\emsdk;D:\desarrollos\emsdk\upstream\emscripten;%PATH%"
+    goto :EMSDK_OK
+)
+if exist "D:\desarrollos\emsdk\upstream\emscripten\emcmake.exe" (
+    set "PATH=D:\desarrollos\emsdk;D:\desarrollos\emsdk\upstream\emscripten;%PATH%"
+    goto :EMSDK_OK
+)
+if exist "C:\emsdk\upstream\emscripten\emcmake.bat" (
+    set "PATH=C:\emsdk;C:\emsdk\upstream\emscripten;%PATH%"
+    goto :EMSDK_OK
+)
+if exist "C:\emsdk\upstream\emscripten\emcmake.exe" (
     set "PATH=C:\emsdk;C:\emsdk\upstream\emscripten;%PATH%"
     goto :EMSDK_OK
 )
 
-echo [ERROR] Emscripten SDK (emcmake) no encontrado en PATH ni en C:\emsdk.
+echo [ERROR] Emscripten SDK (emcmake) no encontrado en PATH, D:\desarrollos\emsdk ni C:\emsdk.
 echo Asegurate de haber activado el entorno de Emscripten (emsdk_env.bat).
 exit /b 1
 
@@ -38,7 +51,7 @@ call emcmake cmake -G Ninja -S . -B build_wasm -DCMAKE_BUILD_TYPE=Release
 if errorlevel 1 goto :ERROR
 
 echo [2/3] Compilando modulo ms2000_dsp.js...
-cmake --build build_wasm
+cmake --build build_wasm --target ms2000_dsp
 if errorlevel 1 goto :ERROR
 
 echo [3/3] Copiando artefactos a WebUI/src/wasm/...

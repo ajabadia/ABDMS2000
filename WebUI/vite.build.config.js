@@ -29,10 +29,6 @@ const ms2000HtmlPreprocess = () => ({
         // Cache-busting del standalone (?v=20260907): en dist el bundler ya
         // gestiona el versionado; una query residual romperia la resolucion.
         .replace(/\?v=\d{8}/g, '')
-        // El modo de diagnóstico es exclusivamente una herramienta de desarrollo;
-        // no se incluye ni siquiera en el HTML que se embebe en el EXE.
-        .replace(/\s*<!-- Diagnostic Test Mode Button -->[\s\S]*?<\/button>\s*/i, '\n')
-        .replace(/\s*<!-- Diagnostic Test Modal Dialog -->[\s\S]*?<!-- About Modal Dialog -->/i, '\n<!-- About Modal Dialog -->')
         // Misma insercion que el plugin de dev (vite.config.js): tokens
         // compartidos primero, themes.css del host como capa de overrides.
         .replace(
@@ -85,10 +81,28 @@ const ms2000StaticCopy = () => ({
   },
 });
 
+/**
+ * Si ABDBankManager/WebUI no esta presente en el arbol externo pero WebUI/abdbank
+ * ya esta sincronizado en este repo, redirige el import dinamico de
+ * mountBankManager.js ('../../../WebUI/src/app.js') hacia WebUI/abdbank/src/app.js.
+ */
+const ms2000BankManagerResolve = () => ({
+  name: 'ms2000-bankmanager-resolve',
+  resolveId(source, importer) {
+    if (source === '../../../WebUI/src/app.js' && importer && importer.replace(/\\/g, '/').includes('mountBankManager.js')) {
+      const candidate = path.resolve(path.dirname(importer), source);
+      if (fs.existsSync(candidate)) return candidate;
+      const localFallback = path.join(webUiRoot, 'abdbank', 'src', 'app.js');
+      if (fs.existsSync(localFallback)) return localFallback;
+    }
+    return null;
+  },
+});
+
 export default defineConfig({
   root: webUiRoot,
   base: './',
-  plugins: [ms2000HtmlPreprocess(), ms2000StaticCopy()],
+  plugins: [ms2000BankManagerResolve(), ms2000HtmlPreprocess(), ms2000StaticCopy()],
   build: {
     outDir: 'dist',
     emptyOutDir: true,

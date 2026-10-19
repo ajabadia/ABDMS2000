@@ -26,6 +26,7 @@ import { bridge } from '../../bridge/bridgeCore.js';
 
 export class ABDFilmstripFader {
     constructor(container, options = {}) {
+        this.container = container;
         this.paramId = options.paramId || '';
         this.label = options.label || '';
         this.min = options.min !== undefined ? options.min : 0;
@@ -60,8 +61,14 @@ export class ABDFilmstripFader {
             format: (v) => this.displayFormatter(this.fromNorm(v)),
             step: this.step / (this.max - this.min),
             onChange: (normVal) => this.handleChange(normVal),
-            onDragStart: options.onDragStart,
-            onDragEnd: options.onDragEnd,
+            onDragStart: () => {
+                if (this.paramId) bridge.beginGesture(this.paramId);
+                options.onDragStart?.();
+            },
+            onDragEnd: () => {
+                if (this.paramId) bridge.endGesture(this.paramId);
+                options.onDragEnd?.();
+            },
         });
 
         if (this.paramId) {

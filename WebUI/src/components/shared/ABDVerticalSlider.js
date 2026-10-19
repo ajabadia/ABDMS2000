@@ -113,6 +113,7 @@ export class ABDVerticalSlider {
       if (e.button !== 0) return;
       this.isDragging = true;
       this.wrapper.classList.add('abd-vslider--active');
+      if (this.paramId) bridge.beginGesture(this.paramId);
       try {
         this.trackContainer.setPointerCapture(e.pointerId);
       } catch {}
@@ -128,6 +129,7 @@ export class ABDVerticalSlider {
       if (!this.isDragging) return;
       this.isDragging = false;
       this.wrapper.classList.remove('abd-vslider--active');
+      if (this.paramId) bridge.endGesture(this.paramId);
       try {
         if (this.trackContainer.hasPointerCapture(e.pointerId)) {
           this.trackContainer.releasePointerCapture(e.pointerId);
@@ -143,7 +145,9 @@ export class ABDVerticalSlider {
     // Double-click resets to default
     this.trackContainer.addEventListener('dblclick', (e) => {
       e.preventDefault();
+      if (this.paramId) bridge.beginGesture(this.paramId);
       this.handleUserEdit(this.defaultValue);
+      if (this.paramId) bridge.endGesture(this.paramId);
     });
 
     // Mouse wheel adjustments
@@ -152,7 +156,9 @@ export class ABDVerticalSlider {
       const dir = e.deltaY < 0 ? 1 : -1;
       const stepVal = this.step || 1;
       const newVal = Math.max(this.min, Math.min(this.max, this.value + dir * stepVal));
+      if (this.paramId) bridge.beginGesture(this.paramId);
       this.handleUserEdit(newVal);
+      if (this.paramId) bridge.endGesture(this.paramId);
     }, { passive: false });
 
     // Keyboard support

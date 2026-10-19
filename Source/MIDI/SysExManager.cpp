@@ -35,8 +35,9 @@ bool SysExManager::isKorgHeader(
         return false;
     if (data[1] != 0x42)
         return false;  // Korg
-    if ((data[2] & 0xF0) != 0x30)
-        return false;  // Global channel format 30..3F
+    // Global channel format 30..3F (channels 1..16), or updater/utility format 20..2F (e.g. 0x23 from vup_ms2000)
+    if ((data[2] & 0xF0) != 0x30 && (data[2] & 0xF0) != 0x20)
+        return false;
 
     // Model ID: 0x58 (MS2000 / MS2000R / microKORG legacy) or 0x71 (microKORG)
     if (data[3] != 0x58 && data[3] != 0x71)
@@ -186,14 +187,16 @@ SysExParseResult SysExManager::parseSysEx(const uint8_t *data, size_t size, juce
         return result;
     }
 
-    // Peticiones del equipo (`F0 42 3n 58 10/0E F7`, 6 B, sin payload). Van antes de
+    // Peticiones del equipo (`F0 42 3n 58 10/0E/1C F7`, 6 B, sin payload). Van antes de
     // cualquier manejo de payload: una trama de 6 B no tiene ni comando+payload que
     // aislar. La respuesta Korg sale por `createHardwareProgramDump` (programa real
     // de 254 B); la memoria propia del plugin no viaja con cabecera Korg nunca.
-    if (func == 0x10 || func == 0x0E)
+    // Nota: `0x1C` es el All Program Dump Request real del firmware MS2000 (`0x1105A`);
+    // `0x0E` es Global Data Dump Request (también aceptado por compatibilidad).
+    if (func == 0x10 || func == 0x0E || func == 0x1C)
     {
         result.messageType =
-            (func == 0x0E) ? SysExMessageType::AllDataDumpRequest : SysExMessageType::ProgramDumpRequest;
+            (func == 0x0E || func == 0x1C) ? SysExMessageType::AllDataDumpRequest : SysExMessageType::ProgramDumpRequest;
         result.success = true;
         if (func == 0x10)
         {
@@ -204,7 +207,7 @@ SysExParseResult SysExManager::parseSysEx(const uint8_t *data, size_t size, juce
         }
 
         // Respuesta al equipo: el **programa real** de 254 B del canal pedido, nunca el
-        // bloque nativo (que no cabría con cabecera Korg). Un `0x0E` (memoria completa)
+        // bloque nativo (que no cabría con cabecera Korg). Un `0x0E` o `0x1C` (banco completo)
         // se contesta con el banco real cargado (`F0 42 3n 58 4C ... F7`), si lo hay.
         if (func == 0x10)
         {
@@ -382,10 +385,40 @@ SysExParseResult SysExManager::parseSysEx(const uint8_t *data, size_t size, juce
         result.reply = korgAck(true);
         return result;
     }
-    else if (func == 0x41)  // Parameter Change
+    else if (func == 0x41)  // Parameter Change (F0 42 3n 58 41 pLSB pMSB vLSB vMSB F7)
+    {
+        result.messageType = SysExMessageType::ParameterChange;
+        int paramId14 = 0;
+        int value14 = 0;
+        if (MS2000HardwareProgram::decodeParameterChangePayload(payload, payloadLen, paramId14, value14))
+        {
+            const std::string updatedId = MS2000HardwareProgram::applyParameterChange41(paramId14, value14, apvts);
+            if (!updatedId.empty())
+                result.programName = updatedId;
+        }
+        result.success = true;
+        return result;
+    }
+    else if (func == 0x11 && payloadLen >= 2)  // Program Write Request (F0 42 3n 58 11 00 prog F7)
+    {
+        const int targetSlot = std::clamp(static_cast<int>(payload[1] & 0x7F), 0, static_cast<int>(BANK_SIZE) - 1);
+        activeProgramIndex_ = targetSlot;
+        const std::string currentName = bank_[static_cast<size_t>(targetSlot)].getName();
+        bank_[static_cast<size_t>(targetSlot)].extractFromAPVTS(apvts, currentName);
+        if (targetSlot < static_cast<int>(hardwareBank_.size()))
+            hardwareBank_[static_cast<size_t>(targetSlot)].captureFromAPVTS(apvts, currentName);
+        result.messageType = SysExMessageType::WriteCompleted;
+        result.success = true;
+        result.programCount = 1;
+        result.programName = currentName;
+        result.reply = korgAck(true);
+        return result;
+    }
+    else if (func == 0x4E && payloadLen >= 2)  // Mode Change (F0 42 3n 58 4E mode 00 F7)
     {
         result.messageType = SysExMessageType::ParameterChange;
         result.success = true;
+        result.reply = korgAck(true);
         return result;
     }
 

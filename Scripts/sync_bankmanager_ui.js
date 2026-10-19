@@ -42,6 +42,7 @@
  * y si alguien lo ha tocado a mano el ajuste desaparece igual. El test de
  * sincronización ya avisa; el `--check` avisa ANTES y sin tener que lanzar la suite.
  */
+import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { sincronizarFicheros, leerFlags } from './syncSeguro.mjs';
@@ -50,10 +51,17 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const rootDir = path.resolve(__dirname, '..');
-const sourceDir = path.resolve(rootDir, '..', 'ABDBankManager', 'packages', 'ui', 'src');
+const sourceCandidates = [
+  path.resolve(rootDir, '..', 'ABDBankManager', 'packages', 'ui', 'src'),
+  path.resolve(rootDir, '..', 'ABDShared', 'Code', 'BankManager', 'packages', 'ui', 'src'),
+];
 const destDir = path.join(rootDir, 'WebUI', 'src', 'components', 'bank');
 
 const FILES = ['BankManagerModal.js', 'mountBankManager.js'];
+
+const sourceDir =
+  sourceCandidates.find((dir) => FILES.every((f) => fs.existsSync(path.join(dir, f)))) ||
+  sourceCandidates[0];
 
 function usage() {
   console.log([
@@ -73,6 +81,12 @@ if (flags.desconocido) {
   usage();
   console.error(`Argumento desconocido: ${flags.desconocido}`);
   process.exit(2);
+}
+
+if (!FILES.every((f) => fs.existsSync(path.join(sourceDir, f))) &&
+    FILES.every((f) => fs.existsSync(path.join(destDir, f)))) {
+  console.log('OK - Origen @abdsynths/bank-manager-ui no encontrado; se conservan BankManagerModal.js y mountBankManager.js existentes.');
+  process.exit(0);
 }
 
 const ok = sincronizarFicheros({

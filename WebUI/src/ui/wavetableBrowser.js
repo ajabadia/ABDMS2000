@@ -77,7 +77,7 @@ const BOOTSTRAP_CATALOG = [
   { slot: 56, name: 'Voice 1', cat: 8 }, { slot: 57, name: 'Voice 2', cat: 8 },
   { slot: 58, name: 'Voice 3', cat: 8 }, { slot: 59, name: 'Voice 4', cat: 8 },
   { slot: 60, name: 'Strings 1', cat: 7 }, { slot: 61, name: 'Strings 2', cat: 7 },
-  { slot: 62, name: 'Brass', cat: 7 },
+  { slot: 62, name: 'Brass', cat: 7 }, { slot: 63, name: 'SynBrass', cat: 7 },
   // Slots 64-159: Prophet VS (96 waves, cat=1 SynthWave as per C++)
   ...Array.from({ length: 96 }, (_, i) => ({
     slot: 64 + i,
@@ -343,7 +343,7 @@ function createOverlay() {
       </div>
 
       <div class="wt-footer">
-        <span class="wt-footer-info">Slot <strong id="wt-selected-slot">#0</strong> — <span id="wt-selected-name">SynWave 1</span></span>
+        <span class="wt-footer-info">Slot <strong id="wt-selected-slot">#1</strong> — <span id="wt-selected-name">SynWave 1</span></span>
         <button class="wt-select-btn" id="wt-select-btn">SELECT WAVE</button>
       </div>
     </div>
@@ -405,6 +405,46 @@ function createOverlay() {
   });
 }
 
+function handleWavDrop(files) {
+  if (!files || files.length === 0) return;
+  let nextUserSlot = 384;
+  for (let i = 0; i < files.length && nextUserSlot < 512; i++) {
+    const file = files[i];
+    if (!file || !/\.wav$/i.test(file.name)) continue;
+    while (nextUserSlot < 512 && fullCatalog.some(e => e.slot === nextUserSlot && !/^User_\d+$/.test(e.name))) {
+      nextUserSlot++;
+    }
+    if (nextUserSlot >= 512) break;
+    const targetSlot = nextUserSlot++;
+    const waveName = file.name.replace(/\.wav$/i, '').slice(0, 20);
+    const existing = fullCatalog.find(e => e.slot === targetSlot);
+    if (existing) {
+      existing.name = waveName;
+      existing.cat = 9;
+    } else {
+      fullCatalog.push({ slot: targetSlot, name: waveName, cat: 9 });
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (window.__bridge__ && typeof window.__bridge__.send === 'function' && reader.result instanceof ArrayBuffer) {
+        const bytes = new Uint8Array(reader.result);
+        let binary = '';
+        for (let b = 0; b < bytes.byteLength; b++) binary += String.fromCharCode(bytes[b]);
+        window.__bridge__.send('loadUserWavetable', {
+          slot: targetSlot,
+          name: waveName,
+          dataBase64: btoa(binary),
+        });
+      }
+    };
+    reader.readAsArrayBuffer(file);
+    selectSlot(targetSlot);
+  }
+  const chipsRow = overlayEl?.querySelector('#wt-chips');
+  if (chipsRow) renderCategoryChips(chipsRow);
+  renderGrid();
+}
+
 // ─── Public API ──────────────────────────────────────────────────────────────
 
 export function openWavetableBrowser(bridge, currentSlot, callback, synthMode = 0) {
@@ -441,12 +481,8 @@ export function openWavetableBrowser(bridge, currentSlot, callback, synthMode = 
   const chipsRow = overlayEl.querySelector('#wt-chips');
   if (chipsRow) renderCategoryChips(chipsRow);
 
-  // Update footer
-  const sel = fullCatalog.find(e => e.slot === selectedSlot);
-  if (sel) {
-    overlayEl.querySelector('#wt-selected-slot').textContent = `#${sel.slot}`;
-    overlayEl.querySelector('#wt-selected-name').textContent = sel.name;
-  }
+  // Update footer consistently (1-based display)
+  updateFooterSelection();
 
   renderGrid();
 }

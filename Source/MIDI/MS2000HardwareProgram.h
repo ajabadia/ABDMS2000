@@ -397,13 +397,62 @@ struct MS2000HardwareProgram
     // `0x23` Write Completed tras guardar un programa recibido y `0x24` Write Error si
     // no pudo. Ojo: `ARP_RES`/`ARP_SWING` de arriba son **offsets** del programa, no
     // comandos; de ahí el prefijo `CMD_`.
+    static constexpr uint8_t CMD_PROGRAM_WRITE_REQUEST = 0x11;
     static constexpr uint8_t CMD_WRITE_COMPLETED = 0x23;
     static constexpr uint8_t CMD_WRITE_ERROR = 0x24;
+    static constexpr uint8_t CMD_PARAMETER_CHANGE = 0x41;
+    static constexpr uint8_t CMD_MODE_CHANGE = 0x4E;
 
     /** `F0 42 3n 58 [23|24] F7` — acuse de 6 B, sin payload, en el canal del emisor. */
     static std::vector<uint8_t> buildWriteAcknowledgement(int channel, bool ok)
     {
         return {0xF0, 0x42, korgChannelByte(channel), 0x58, ok ? CMD_WRITE_COMPLETED : CMD_WRITE_ERROR, 0xF7};
+    }
+
+    /** `F0 42 3n 58 11 00 <prog> F7` — petición de escritura en slot 0..127 (A01..H16). */
+    static std::vector<uint8_t> buildProgramWriteRequest(int channel, int programIndex)
+    {
+        const uint8_t prog = static_cast<uint8_t>(std::clamp(programIndex, 0, 127) & 0x7F);
+        return {0xF0, 0x42, korgChannelByte(channel), 0x58, CMD_PROGRAM_WRITE_REQUEST, 0x00, prog, 0xF7};
+    }
+
+    /** `F0 42 3n 58 4E <mode> 00 F7` — cambio de modo (0x00 = Play, 0x02 = Global/LCD Edit). */
+    static std::vector<uint8_t> buildModeChange(int channel, uint8_t mode)
+    {
+        return {0xF0, 0x42, korgChannelByte(channel), 0x58, CMD_MODE_CHANGE, static_cast<uint8_t>(mode & 0x7F), 0x00, 0xF7};
+    }
+
+    /**
+     * `F0 42 3n 58 41 <paramLSB> <paramMSB> <valLSB> <valMSB> F7` (10 B) — cambio de parámetro
+     * en tiempo real (especificación MIDI Korg MS2000 y panel ReMS2000).
+     */
+    static std::vector<uint8_t> buildParameterChange(int channel, int paramId14, int value14)
+    {
+        const uint16_t p = static_cast<uint16_t>(paramId14 & 0x3FFF);
+        const uint16_t v = static_cast<uint16_t>(value14 & 0x3FFF);
+        return {0xF0,
+                0x42,
+                korgChannelByte(channel),
+                0x58,
+                CMD_PARAMETER_CHANGE,
+                static_cast<uint8_t>(p & 0x7F),
+                static_cast<uint8_t>((p >> 7) & 0x7F),
+                static_cast<uint8_t>(v & 0x7F),
+                static_cast<uint8_t>((v >> 7) & 0x7F),
+                0xF7};
+    }
+
+    /** Descodifica los 4 B de payload (`pLSB pMSB vLSB vMSB`) de un comando `0x41`. */
+    static bool decodeParameterChangePayload(const uint8_t *payload, size_t payloadLen, int &outParamId, int &outValue)
+    {
+        if (payload == nullptr || payloadLen < 4)
+            return false;
+        outParamId = static_cast<int>(payload[0] & 0x7F) | (static_cast<int>(payload[1] & 0x7F) << 7);
+        int val = static_cast<int>(payload[2] & 0x7F) | (static_cast<int>(payload[3] & 0x7F) << 7);
+        if ((val & 0x2000) != 0)
+            val -= 0x4000;  // complemento a 2 de 14 bits para valores negativos (-63..0)
+        outValue = val;
+        return true;
     }
 
     // ─── Mapeo al motor ──────────────────────────────────────────────────────
@@ -503,6 +552,7 @@ struct MS2000HardwareProgram
             {SCALE_BYTE, 0, 3, ParamIDs::scaleType, Xform::Bit},
             {SPLIT_POINT, 0, 0, ParamIDs::splitPoint, Xform::Raw},
             {DELAY_TIME, 0, 0, ParamIDs::delayTime, Xform::Raw},
+            {DELAY_DEPTH, 0, 0, ParamIDs::delayDepth, Xform::Raw},
             {DELAY_DEPTH, 0, 0, ParamIDs::delayFeedback, Xform::Raw},
             {DELAY_TYPE, 0, 0, ParamIDs::delayType, Xform::Raw},
             {MODFX_SPEED, 0, 0, ParamIDs::modFxSpeed, Xform::Raw},
@@ -578,6 +628,7 @@ struct MS2000HardwareProgram
             {TIMBRE1_START + ti::PATCH4_INT, 0, 0, ParamIDs::patch4Intensity, Xform::Signed},
             // timbre 1 — mod sequencer (cabecera; las 3 filas van en `seqRow()`)
             {TIMBRE1_START + ti::SEQ_FLAGS, 7, 7, ParamIDs::modSeqOn, Xform::Bit},
+            {TIMBRE1_START + ti::SEQ_FLAGS, 6, 6, ParamIDs::seqRunMode, Xform::Bit},
             {TIMBRE1_START + ti::SEQ_FLAGS, 0, 4, ParamIDs::modSeqResolution, Xform::Bit},
             {TIMBRE1_START + ti::SEQ_FLAGS2, 4, 7, ParamIDs::seqLastStep, Xform::SeqLastStep},
             {TIMBRE1_START + ti::SEQ_FLAGS2, 2, 3, ParamIDs::modSeqType, Xform::Bit},
@@ -617,6 +668,7 @@ struct MS2000HardwareProgram
             {TIMBRE1_START + ti::LFO2_FREQ, 0, 0, ParamIDs::lfo2Freq, Xform::Raw},
             // Delays / FX globales, con la misma lectura que en modo synth
             {DELAY_TIME, 0, 0, ParamIDs::delayTime, Xform::Raw},
+            {DELAY_DEPTH, 0, 0, ParamIDs::delayDepth, Xform::Raw},
             {DELAY_DEPTH, 0, 0, ParamIDs::delayFeedback, Xform::Raw},
             {DELAY_TYPE, 0, 0, ParamIDs::delayType, Xform::Raw},
             {MODFX_SPEED, 0, 0, ParamIDs::modFxSpeed, Xform::Raw},
@@ -682,11 +734,10 @@ struct MS2000HardwareProgram
         switch (xform)
         {
         case Xform::Signed:
+        case Xform::EqGain:
             return static_cast<float>(static_cast<int>(fieldValue) - 64);
         case Xform::EqFreq:
             return std::min(3.0f, std::floor(static_cast<float>(fieldValue) * 4.0f / 30.0f));
-        case Xform::EqGain:
-            return static_cast<float>(fieldValue);
         case Xform::ArpRes:
         {
             // 0..5 real = 1/24, 1/16, 1/12, 1/8, 1/6, 1/4 → índices del motor
@@ -729,7 +780,7 @@ struct MS2000HardwareProgram
             return static_cast<uint8_t>(kTable[std::clamp(iv, 0, 3)]);
         }
         case Xform::EqGain:
-            return static_cast<uint8_t>(std::clamp(iv, 0, 127));
+            return static_cast<uint8_t>(std::clamp(iv + 64, 0, 127));
         case Xform::ArpRes:
         {
             static const int kTable[16] = {-1, -1, 0, 1, 2, 3, 4, 5, -1, -1, -1, -1, -1, -1, -1, -1};
@@ -753,6 +804,92 @@ struct MS2000HardwareProgram
         default:
             return static_cast<uint8_t>(std::clamp(iv, 0, 255));
         }
+    }
+
+    static std::string timbreParamIdStd(const char *baseId, bool second)
+    {
+        if (baseId == nullptr || baseId[0] == '\0')
+            return {};
+        std::string id(baseId);
+        if (second)
+        {
+            if (id[0] >= 'a' && id[0] <= 'z')
+                id[0] = static_cast<char>(id[0] - 'a' + 'A');
+            id = "t2" + id;
+        }
+        return id;
+    }
+
+    /**
+     * Convierte este programa real de 254 B a un bloque nativo `MS2000ProgramData` (384 B)
+     * aplicando el mismo mapeo que `applyToAPVTS`.
+     */
+    MS2000ProgramData toNativeProgram() const
+    {
+        MS2000ProgramData native;
+        native.reset();
+        native.setName(getName());
+
+        auto setValueById = [&native](const std::string &id, float value)
+        {
+            if (!id.empty())
+                native.setParam(id.c_str(), value);
+        };
+        auto setValue = [&](const char *id, float value, bool second)
+        {
+            if (id != nullptr)
+                setValueById(timbreParamIdStd(id, second), value);
+        };
+
+        const bool vocoder = isVocoderProgram();
+        setValueById(ParamIDs::synthVocoderMode, vocoder ? 1.0f : 0.0f);
+
+        const uint8_t voiceModeBits = extractBits(raw[GLOBAL_FLAGS], 4, 5);
+        setValueById(ParamIDs::timbreMode, vocoder ? 0.0f : static_cast<float>(std::min<uint8_t>(voiceModeBits, 2)));
+        setValueById(ParamIDs::timbreVoices, static_cast<float>(extractBits(raw[GLOBAL_FLAGS], 6, 7)));
+
+        if (vocoder)
+        {
+            for (const auto &f : vocoderFields())
+                setValue(f.paramId, toEngineValue(readField(f), f.xform), false);
+            forEachVocoderBand([&](const char *id, size_t offset)
+                               { setValue(id, static_cast<float>(raw[offset]), false); });
+        }
+        else
+        {
+            for (const auto &f : synthFields())
+            {
+                if (!isTimbreField(f))
+                {
+                    setValue(f.paramId, toEngineValue(readField(f), f.xform), false);
+                    continue;
+                }
+                for (size_t t = 0; t < 2; ++t)
+                    setValue(f.paramId, toEngineValue(readField(f, t * TIMBRE_SIZE), f.xform), t == 1);
+            }
+            for (size_t t = 0; t < 2; ++t)
+            {
+                const bool second = (t == 1);
+                const size_t base = t * TIMBRE_SIZE;
+                for (size_t row = 0; row < 3; ++row)
+                {
+                    const SeqRow &r = seqRow(row);
+                    setValueById(timbreParamIdStd(r.destId, second),
+                                 static_cast<float>(raw[TIMBRE1_START + r.destOffset + base]));
+                    setValueById(timbreParamIdStd(r.motionId, second),
+                                 toEngineValue(extractBits(raw[TIMBRE1_START + r.motionOffset + base], 0, 0),
+                                               Xform::SeqMotionInv));
+                    for (size_t s = 0; s < ModSequencer::NUM_STEPS; ++s)
+                        setValueById(timbreParamIdStd(seqStepParamId(row, s).c_str(), second),
+                                     toEngineValue(raw[TIMBRE1_START + r.stepsOffset + base + s], Xform::Signed));
+                }
+            }
+        }
+
+        const uint8_t porta = extractBits(raw[TIMBRE1_START + ti::PORTAMENTO], 0, 6);
+        setValueById(ParamIDs::portamentoOn, porta > 0 ? 1.0f : 0.0f);
+
+        return native;
     }
 
 #if ABD_HAS_JUCE
@@ -868,7 +1005,7 @@ struct MS2000HardwareProgram
         {
             for (const auto &f : vocoderFields())
             {
-                if (f.paramId == nullptr)
+                if (f.paramId == nullptr || std::strcmp(f.paramId, ParamIDs::delayFeedback) == 0)
                     continue;
                 store(f, getValue(f.paramId, 0.0f, false), 0);
             }
@@ -882,8 +1019,8 @@ struct MS2000HardwareProgram
         {
             for (const auto &f : synthFields())
             {
-                if (f.paramId == nullptr)
-                    continue;  // el voice mode global se trata aparte
+                if (f.paramId == nullptr || std::strcmp(f.paramId, ParamIDs::delayFeedback) == 0)
+                    continue;  // el voice mode global se trata aparte; DELAY_DEPTH lo manda delayDepth
                 if (!isTimbreField(f))
                 {
                     store(f, getValue(f.paramId, 0.0f, false), 0);
@@ -941,12 +1078,13 @@ struct MS2000HardwareProgram
             return static_cast<float>(native.rawData[MS2000ProgramData::VOICE_BYTE + 2]);
 
         const auto *meta = ParameterRegistry::getParameter(raw);
-        if (meta == nullptr || meta->sysexOffset < 0)
+        if (meta == nullptr)
             return fallback;
 
-        const size_t off = MS2000ProgramData::TIMBRE_START + static_cast<size_t>(meta->sysexOffset);
-        if (off >= MS2000ProgramData::UNPACKED_PROGRAM_SIZE)
+        const int offInt = MS2000ProgramData::getStorageOffsetById(raw);
+        if (offInt < 0 || static_cast<size_t>(offInt) >= MS2000ProgramData::UNPACKED_PROGRAM_SIZE)
             return fallback;
+        const size_t off = static_cast<size_t>(offInt);
 
         const uint8_t byte = native.rawData[off];
         if (meta->type == ParamType::Boolean)
@@ -1015,6 +1153,248 @@ struct MS2000HardwareProgram
                     127));
         }
     }
+
+    // ─── SysEx 0x41 Parameter Change (tiempo real) ───────────────────────────
+    struct Param41Entry
+    {
+        const char *baseParamId;
+        int paramIdT1;
+        int t2Shift;  // 0 = común/global, 272 = +0x110, 400 = +0x190, 544 = +0x220
+        Xform xform;  // Raw para valores firmados directos en 0x41; Octave1to4 para arpRange; EqFreq30to4; etc.
+    };
+
+    static const std::vector<Param41Entry> &param41Table()
+    {
+        static const std::vector<Param41Entry> kTable = {
+            // Globales / Comunes (0x10..0x28)
+            {ParamIDs::timbreMode, 0x10, 0, Xform::Raw},
+            {ParamIDs::splitPoint, 0x11, 0, Xform::Raw},
+            {ParamIDs::timbreVoices, 0x12, 0, Xform::Raw},
+            {ParamIDs::scaleType, 0x13, 0, Xform::Raw},
+            {ParamIDs::scaleKey, 0x14, 0, Xform::Raw},
+            {ParamIDs::delayType, 0x15, 0, Xform::Raw},
+            {ParamIDs::modFxType, 0x18, 0, Xform::Raw},
+            {ParamIDs::arpOn, 0x1B, 0, Xform::Raw},
+            {ParamIDs::arpType, 0x1C, 0, Xform::Raw},
+            {ParamIDs::arpRange, 0x1D, 0, Xform::ArpRange},
+            {ParamIDs::arpLatch, 0x1E, 0, Xform::Raw},
+            {ParamIDs::arpGate, 0x20, 0, Xform::Raw},
+            {ParamIDs::arpResolution, 0x23, 0, Xform::Raw},
+            {ParamIDs::eqHighFreq, 0x25, 0, Xform::EqFreq},
+            {ParamIDs::eqHighGain, 0x26, 0, Xform::EqGain},
+            {ParamIDs::eqLowFreq, 0x27, 0, Xform::EqFreq},
+            {ParamIDs::eqLowGain, 0x28, 0, Xform::EqGain},
+
+            // Timbre 1 / Timbre 2 (0x40..0x7D)
+            {ParamIDs::voiceMode, 0x40, 272, Xform::Raw},
+            {ParamIDs::unisonDetune, 0x42, 544, Xform::Raw},
+            {ParamIDs::portamentoTime, 0x47, 272, Xform::Raw},
+            {ParamIDs::osc1Wave, 0x49, 272, Xform::Raw},
+            {ParamIDs::osc1Ctrl1, 0x4A, 272, Xform::Raw},
+            {ParamIDs::osc1Ctrl2, 0x4B, 272, Xform::Raw},
+            {ParamIDs::osc1DwgsWave, 0x4C, 272, Xform::SeqLastStep},
+            {ParamIDs::osc2Wave, 0x4D, 272, Xform::Raw},
+            {ParamIDs::osc2ModType, 0x4E, 272, Xform::Raw},
+            {ParamIDs::osc2Semitone, 0x4F, 272, Xform::Raw},
+            {ParamIDs::osc2Tune, 0x50, 272, Xform::Raw},
+            {ParamIDs::mixOsc1Level, 0x51, 272, Xform::Raw},
+            {ParamIDs::mixOsc2Level, 0x52, 272, Xform::Raw},
+            {ParamIDs::mixNoiseLevel, 0x53, 272, Xform::Raw},
+            {ParamIDs::filterType, 0x54, 272, Xform::Raw},
+            {ParamIDs::filterCutoff, 0x55, 272, Xform::Raw},
+            {ParamIDs::filterResonance, 0x56, 272, Xform::Raw},
+            {ParamIDs::filterEg1Int, 0x57, 272, Xform::Raw},
+            {ParamIDs::filterKeyTrack, 0x58, 272, Xform::Raw},
+            {ParamIDs::ampLevel, 0x59, 272, Xform::Raw},
+            {ParamIDs::ampPan, 0x5A, 272, Xform::Raw},
+            {ParamIDs::ampDistortion, 0x5C, 272, Xform::Raw},
+            {ParamIDs::ampKeyTrack, 0x5D, 272, Xform::Raw},
+            {ParamIDs::eg1Attack, 0x5E, 272, Xform::Raw},
+            {ParamIDs::eg1Decay, 0x5F, 272, Xform::Raw},
+            {ParamIDs::eg1Sustain, 0x60, 272, Xform::Raw},
+            {ParamIDs::eg1Release, 0x61, 272, Xform::Raw},
+            {ParamIDs::filterVelo, 0x62, 272, Xform::Raw},
+            {ParamIDs::eg2Attack, 0x63, 272, Xform::Raw},
+            {ParamIDs::eg2Decay, 0x64, 272, Xform::Raw},
+            {ParamIDs::eg2Sustain, 0x65, 272, Xform::Raw},
+            {ParamIDs::eg2Release, 0x66, 272, Xform::Raw},
+            {ParamIDs::ampVelo, 0x67, 272, Xform::Raw},
+            {ParamIDs::lfo1Wave, 0x68, 272, Xform::Raw},
+            {ParamIDs::lfo1Freq, 0x69, 272, Xform::Raw},
+            {ParamIDs::lfo1SyncNote, 0x6A, 272, Xform::Raw},
+            {ParamIDs::lfo1TempoSync, 0x6B, 272, Xform::Raw},
+            {ParamIDs::lfo1KeySync, 0x6C, 272, Xform::Raw},
+            {ParamIDs::lfo2Wave, 0x6D, 272, Xform::Raw},
+            {ParamIDs::lfo2Freq, 0x6E, 272, Xform::Raw},
+            {ParamIDs::lfo2SyncNote, 0x6F, 272, Xform::Raw},
+            {ParamIDs::lfo2TempoSync, 0x70, 400, Xform::Raw},
+            {ParamIDs::lfo2KeySync, 0x71, 400, Xform::Raw},
+            {ParamIDs::patch1Source, 0x72, 400, Xform::Raw},
+            {ParamIDs::patch1Destination, 0x73, 400, Xform::Raw},
+            {ParamIDs::patch1Intensity, 0x74, 400, Xform::Raw},
+            {ParamIDs::patch2Source, 0x75, 400, Xform::Raw},
+            {ParamIDs::patch2Destination, 0x76, 400, Xform::Raw},
+            {ParamIDs::patch2Intensity, 0x77, 400, Xform::Raw},
+            {ParamIDs::patch3Source, 0x78, 400, Xform::Raw},
+            {ParamIDs::patch3Destination, 0x79, 400, Xform::Raw},
+            {ParamIDs::patch3Intensity, 0x7A, 400, Xform::Raw},
+            {ParamIDs::patch4Source, 0x7B, 400, Xform::Raw},
+            {ParamIDs::patch4Destination, 0x7C, 400, Xform::Raw},
+            {ParamIDs::patch4Intensity, 0x7D, 400, Xform::Raw},
+
+            // Mod Sequencer (0x100..0x13B)
+            {ParamIDs::modSeqOn, 0x100, 272, Xform::Raw},
+            {ParamIDs::seqLastStep, 0x101, 272, Xform::Raw},
+            {ParamIDs::modSeqType, 0x102, 272, Xform::Raw},
+            {ParamIDs::seqRunMode, 0x103, 272, Xform::Raw},
+            {ParamIDs::seqKeySync, 0x104, 272, Xform::Raw},
+            {ParamIDs::modSeqResolution, 0x105, 272, Xform::Raw},
+            {ParamIDs::seq1Dest, 0x106, 272, Xform::Raw},
+            {ParamIDs::seq1Motion, 0x107, 272, Xform::SeqMotionInv},
+            {ParamIDs::seq2Dest, 0x118, 272, Xform::Raw},
+            {ParamIDs::seq2Motion, 0x119, 272, Xform::SeqMotionInv},
+            {ParamIDs::seq3Dest, 0x12A, 272, Xform::Raw},
+            {ParamIDs::seq3Motion, 0x12B, 272, Xform::SeqMotionInv},
+        };
+        return kTable;
+    }
+
+    /**
+     * Aplica un mensaje `0x41` (`paramId14`, `value14`) al `APVTS` del motor y devuelve el
+     * `paramId` actualizado (o cadena vacía si el ID no pertenece a ningún parámetro modelado).
+     */
+    static std::string applyParameterChange41(int paramId14, int value14, juce::AudioProcessorValueTreeState &apvts)
+    {
+        auto setEngineParam = [&apvts](const juce::String &id, float val) -> bool
+        {
+            if (auto *p = apvts.getParameter(id))
+            {
+                p->setValueNotifyingHost(p->convertTo0to1(val));
+                return true;
+            }
+            return false;
+        };
+
+        // Caso especial: Voice Mode global (0x10) con valor 3 activa Vocoder Mode
+        if (paramId14 == 0x10)
+        {
+            if (value14 == 3)
+            {
+                setEngineParam(ParamIDs::synthVocoderMode, 1.0f);
+                return ParamIDs::synthVocoderMode;
+            }
+            setEngineParam(ParamIDs::synthVocoderMode, 0.0f);
+            setEngineParam(ParamIDs::timbreMode, static_cast<float>(std::clamp(value14, 0, 2)));
+            return ParamIDs::timbreMode;
+        }
+
+        // 1. Buscar en la tabla de parámetros comunes y de timbre
+        for (const auto &entry : param41Table())
+        {
+            const bool isT1 = (paramId14 == entry.paramIdT1);
+            const bool isT2 = (entry.t2Shift > 0 && paramId14 == (entry.paramIdT1 + entry.t2Shift));
+            if (!isT1 && !isT2)
+                continue;
+
+            const juce::String targetId = timbreParamId(entry.baseParamId, isT2);
+            float engineVal = static_cast<float>(value14);
+            if (entry.xform == Xform::ArpRange)
+                engineVal = static_cast<float>(std::clamp(value14 + 1, 1, 4));
+            else if (entry.xform == Xform::SeqLastStep)
+                engineVal = static_cast<float>(std::max(0, value14 - 1));  // DWGS 1..64 -> 0..63
+            else if (entry.xform == Xform::EqFreq)
+                engineVal = toEngineValue(static_cast<uint8_t>(std::clamp(value14, 0, 29)), Xform::EqFreq);
+            else if (entry.xform == Xform::EqGain)
+                engineVal = std::clamp(std::round(64.0f + static_cast<float>(value14) * (63.0f / 12.0f)), 0.0f, 127.0f);
+            else if (entry.xform == Xform::SeqMotionInv)
+                engineVal = (value14 == 0) ? 1.0f : 0.0f;
+
+            if (setEngineParam(targetId, engineVal))
+            {
+                if (std::strcmp(entry.baseParamId, ParamIDs::portamentoTime) == 0 && !isT2)
+                    setEngineParam(ParamIDs::portamentoOn, engineVal > 0.0f ? 1.0f : 0.0f);
+                return targetId.toStdString();
+            }
+        }
+
+        // 2. Pasos del Mod Sequencer: 3 filas × 16 pasos (0x108..0x117, 0x11A..0x129, 0x12C..0x13B, T2 +272)
+        static constexpr int kRowBase[3] = {0x108, 0x11A, 0x12C};
+        for (int t = 0; t < 2; ++t)
+        {
+            const int shift = (t == 1) ? 272 : 0;
+            for (size_t row = 0; row < 3; ++row)
+            {
+                const int startId = kRowBase[row] + shift;
+                if (paramId14 >= startId && paramId14 < startId + static_cast<int>(ModSequencer::NUM_STEPS))
+                {
+                    const size_t stepIdx = static_cast<size_t>(paramId14 - startId);
+                    const juce::String targetId = timbreParamId(seqStepParamId(row, stepIdx).c_str(), t == 1);
+                    if (setEngineParam(targetId, static_cast<float>(std::clamp(value14, -63, 63))))
+                        return targetId.toStdString();
+                }
+            }
+        }
+
+        return {};
+    }
+
+    /**
+     * Construye la trama `0x41` de 10 B para un parámetro del motor (`paramId` de T1, T2 o global).
+     * Devuelve vacío si el parámetro no tiene representación `0x41` en el MS2000.
+     */
+    static std::vector<uint8_t> buildParameterChangeForEngineParam(int channel,
+                                                                   const std::string &paramId,
+                                                                   float engineValue)
+    {
+        if (paramId == ParamIDs::synthVocoderMode)
+            return buildParameterChange(channel, 0x10, engineValue > 0.5f ? 3 : 0);
+
+        for (const auto &entry : param41Table())
+        {
+            const juce::String t1Id = timbreParamId(entry.baseParamId, false);
+            const juce::String t2Id = timbreParamId(entry.baseParamId, true);
+            const bool isT1 = (t1Id == juce::String(paramId));
+            const bool isT2 = (entry.t2Shift > 0 && t2Id == juce::String(paramId));
+            if (!isT1 && !isT2)
+                continue;
+
+            const int pid = entry.paramIdT1 + (isT2 ? entry.t2Shift : 0);
+            int val = static_cast<int>(std::lround(engineValue));
+            if (entry.xform == Xform::ArpRange)
+                val = std::clamp(val - 1, 0, 3);
+            else if (entry.xform == Xform::SeqLastStep)
+                val = std::clamp(val + 1, 1, 64);  // DWGS 0..63 -> 1..64
+            else if (entry.xform == Xform::EqFreq)
+                val = static_cast<int>(fromEngineValue(engineValue, Xform::EqFreq));
+            else if (entry.xform == Xform::EqGain)
+                val = std::clamp(static_cast<int>(std::lround((engineValue - 64.0f) * (12.0f / 63.0f))), -12, 12);
+            else if (entry.xform == Xform::SeqMotionInv)
+                val = (val == 0) ? 1 : 0;
+
+            return buildParameterChange(channel, pid, val);
+        }
+
+        static constexpr int kRowBase[3] = {0x108, 0x11A, 0x12C};
+        for (int t = 0; t < 2; ++t)
+        {
+            const int shift = (t == 1) ? 272 : 0;
+            for (size_t row = 0; row < 3; ++row)
+            {
+                for (size_t stepIdx = 0; stepIdx < ModSequencer::NUM_STEPS; ++stepIdx)
+                {
+                    const juce::String stepId = timbreParamId(seqStepParamId(row, stepIdx).c_str(), t == 1);
+                    if (stepId == juce::String(paramId))
+                    {
+                        const int pid = kRowBase[row] + shift + static_cast<int>(stepIdx);
+                        const int val = std::clamp(static_cast<int>(std::lround(engineValue)), -63, 63);
+                        return buildParameterChange(channel, pid, val);
+                    }
+                }
+            }
+        }
+
+        return {};
+    }
 #endif
 
     /**
@@ -1028,10 +1408,9 @@ struct MS2000HardwareProgram
                 "Amp SW (EG2/Gate): el VCA sigue a EG2, no a la puerta de tecla",
                 "Swing del arpegiador, su Target (Both/T1/T2) y su Key Sync",
                 "Delay Tempo Sync / Time Base, Mod FX Feedback y los On/Off de Mod FX y Delay",
-                "Mod Seq: el modo de disparo del reloj (1Shot/Loop) y el destino OSC1 CTRL2",
+                "Mod Seq: el modo de disparo del reloj (1Shot/Loop)",
                 "EQ: la frecuencia real tiene 30 pasos y el motor 4 (aproximado)",
-                "Escala: se conserva y vuelve al equipo, pero el motor no reafina (Equal Temp)",
-                "OSC2 Mod: el 4º modo del hardware (Ring+Sync) no es el CrossMod del motor"};
+                "Escala: se conserva y vuelve al equipo, pero el motor no reafina (Equal Temp)"};
     }
 };
 

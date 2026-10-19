@@ -119,7 +119,7 @@ Layout global:
 | 4 | Bend Range (+64) |
 | 5 | Transpose (+64) |
 | 6 | Vibrato Intensity (+64) |
-| 7 | OSC1 Wave (0 Saw, 1 Pulse, 2 Tri, 3 Sine, 4 Vox, 5 DWGS, 6 Noise, 7 Audio In) |
+| 7 | OSC1 Wave (0 Saw, 1 Pulse, 2 Tri, 3 Cross, 4 Vox, 5 DWGS, 6 Noise, 7 Audio In) |
 | 8 | OSC1 Control 1 |
 | 9 | OSC1 Control 2 |
 | 10 | OSC1 DWGS Wave (0..63, cuando Wave = DWGS) |

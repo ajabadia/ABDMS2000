@@ -53,6 +53,11 @@
               <button class="dropdown-item" data-action="factory-reset">
                 <span>Factory Preset Reset</span>
               </button>
+              <div class="dropdown-separator"></div>
+              <button class="dropdown-item" data-action="open-firmware-updater">
+                <span>Hardware Firmware Updater 1.07...</span>
+                <span class="dropdown-kbd">IPL</span>
+              </button>
 
             </div>
           </div>
@@ -71,16 +76,26 @@
               </button>
               <div class="dropdown-separator"></div>
               <button class="dropdown-item" data-action="copy-timbre">
-                <span>Copy Timbre A</span>
+                <span>Copy Timbre 1</span>
                 <span class="dropdown-kbd">Ctrl+C</span>
               </button>
               <button class="dropdown-item" data-action="paste-timbre">
-                <span>Paste Timbre</span>
+                <span>Paste to Timbre 2</span>
                 <span class="dropdown-kbd">Ctrl+V</span>
               </button>
+              <button class="dropdown-item" data-action="copy-timbre-1-to-2">
+                <span>Copy Timbre 1 &rarr; Timbre 2</span>
+              </button>
+              <button class="dropdown-item" data-action="copy-timbre-2-to-1">
+                <span>Copy Timbre 2 &rarr; Timbre 1</span>
+              </button>
+              <button class="dropdown-item" data-action="swap-timbres">
+                <span>Swap Timbre 1 &harr; Timbre 2</span>
+              </button>
+              <div class="dropdown-separator"></div>
               <button class="dropdown-item" data-action="randomize-patch">
                 <span>Randomize Parameters</span>
-                <span class="dropdown-kbd">Ctrl+R</span>
+                <span class="dropdown-kbd">Ctrl+Shift+R</span>
               </button>
             </div>
           </div>
@@ -88,17 +103,63 @@
           <!-- Mode Menu -->
           <div class="menu-item-container">
             <button class="menu-btn" data-menu="mode-menu">Mode</button>
-            <div class="dropdown-menu" id="mode-menu">
-              <button class="dropdown-item" data-action="voice-mode-single"><span>Voice: Single / Mono</span></button>
-              <button class="dropdown-item" data-action="voice-mode-poly"><span>Voice: Poly (4 Voices)</span></button>
-              <button class="dropdown-item" data-action="voice-mode-unison"><span>Voice: Unison Stack</span></button>
+            <div class="dropdown-menu" id="mode-menu" style="min-width: 270px;">
+              <button class="dropdown-item" data-action="voice-mode-single">
+                <span>Voice: Single / Mono</span>
+                <span class="dropdown-check" id="check-voice-0"></span>
+              </button>
+              <button class="dropdown-item" data-action="voice-mode-poly">
+                <span id="menu-voice-poly-label">Voice: Poly (4 Voices)</span>
+                <span class="dropdown-check" id="check-voice-1">&#10003;</span>
+              </button>
+              <button class="dropdown-item" data-action="voice-mode-unison">
+                <span id="menu-voice-unison-label">Voice: Unison Stack (4 Voices)</span>
+                <span class="dropdown-check" id="check-voice-2"></span>
+              </button>
               <div class="dropdown-separator"></div>
-              <button class="dropdown-item" data-action="skin-ms2000"><span>Skin: Korg MS2000 (Navy Blue)</span></button>
-              <button class="dropdown-item" data-action="skin-microkorg"><span>Skin: microKORG (Vintage Gold)</span></button>
-              <button class="dropdown-item" data-action="skin-cyberpunk"><span>Skin: ABD Ultra (Cyberpunk)</span></button>
+              <button class="dropdown-item" data-action="skin-ms2000">
+                <span>Korg MS2000 (4V &bull; 16B Vocoder &bull; Mod Seq)</span>
+                <span class="dropdown-check" id="check-mode-ms2000">&#10003;</span>
+              </button>
+              <button class="dropdown-item" data-action="skin-microkorg">
+                <span>microKORG (4V &bull; 8Ch Vocoder &bull; 8-Step Arp)</span>
+                <span class="dropdown-check" id="check-mode-microkorg"></span>
+              </button>
+              <button class="dropdown-item" data-action="skin-cyberpunk">
+                <span>Advanced (16V &bull; 512 DWGS &bull; Full Engine)</span>
+                <span class="dropdown-check" id="check-mode-advanced"></span>
+              </button>
               <div class="dropdown-separator"></div>
-              <button class="dropdown-item" data-action="midi-channel"><span>Global MIDI Channel: 1</span></button>
-              <button class="dropdown-item" data-action="midi-setup"><span>MIDI Device Configuration...</span></button>
+              <div class="dropdown-submenu-wrap" id="midi-channel-submenu-wrap">
+                <button class="dropdown-item has-submenu" data-action="toggle-midi-channel-submenu" type="button">
+                  <span id="menu-midi-channel-label">Global MIDI Channel: 1</span>
+                  <span class="dropdown-kbd" id="menu-midi-channel-badge">Ch 1 &#9656;</span>
+                </button>
+                <div class="dropdown-submenu" id="midi-channel-submenu">
+                  <div class="dropdown-submenu-title">SELECT GLOBAL MIDI CHANNEL (1&ndash;16)</div>
+                  <div class="midi-ch-grid" id="menu-midi-ch-grid">
+                    <button type="button" class="midi-ch-option active" data-midi-ch="1">Ch 1</button>
+                    <button type="button" class="midi-ch-option" data-midi-ch="2">Ch 2</button>
+                    <button type="button" class="midi-ch-option" data-midi-ch="3">Ch 3</button>
+                    <button type="button" class="midi-ch-option" data-midi-ch="4">Ch 4</button>
+                    <button type="button" class="midi-ch-option" data-midi-ch="5">Ch 5</button>
+                    <button type="button" class="midi-ch-option" data-midi-ch="6">Ch 6</button>
+                    <button type="button" class="midi-ch-option" data-midi-ch="7">Ch 7</button>
+                    <button type="button" class="midi-ch-option" data-midi-ch="8">Ch 8</button>
+                    <button type="button" class="midi-ch-option" data-midi-ch="9">Ch 9</button>
+                    <button type="button" class="midi-ch-option" data-midi-ch="10">Ch 10</button>
+                    <button type="button" class="midi-ch-option" data-midi-ch="11">Ch 11</button>
+                    <button type="button" class="midi-ch-option" data-midi-ch="12">Ch 12</button>
+                    <button type="button" class="midi-ch-option" data-midi-ch="13">Ch 13</button>
+                    <button type="button" class="midi-ch-option" data-midi-ch="14">Ch 14</button>
+                    <button type="button" class="midi-ch-option" data-midi-ch="15">Ch 15</button>
+                    <button type="button" class="midi-ch-option" data-midi-ch="16">Ch 16</button>
+                  </div>
+                </div>
+              </div>
+              <button class="dropdown-item" data-action="midi-setup">
+                <span>MIDI Device Configuration...</span>
+              </button>
             </div>
           </div>
 
@@ -151,6 +212,11 @@
           <span class="test-badge" style="background: rgba(var(--color-accent-rgb), 0.15); color: var(--color-accent);">BANK MGR</span>
         </button>
 
+        <!-- Oscilloscope Button -->
+        <button id="btn-open-scope" class="nav-test-btn" title="Open Real-Time Multi-Tap Oscilloscope &amp; Spectrum Analyzer">
+          <span class="test-badge">SCOPE</span>
+        </button>
+
         <!-- Diagnostic Test Mode Button -->
         <button id="btn-diagnostic-test" class="nav-test-btn" title="Audio Diagnostics &amp; Test Mode (440Hz / DSP Injection)">
           <span class="test-badge">TEST MODE</span>
@@ -169,7 +235,7 @@
 
     <!-- Main Content Workspace -->
     <main class="main-workspace">
-      <!-- Top Hero Section: LCD Matrix Left | LCD Main | LCD SysEx | Quick Actions Matrix Right -->
+      <!-- Top Hero Section: LCD Matrix Left | LCD Main + Bank/Timbre Bar | LCD SysEx | Quick Actions Matrix Right -->
       <section class="hero-panel">
         <!-- 1. LCD Programmer Navigation Matrix (2 Rows on the Left) -->
         <div class="lcd-nav-matrix">
@@ -187,10 +253,34 @@
           </div>
         </div>
 
-        <!-- 2. LCD Main Display (16x2 Characters, Compact Hardware Size) -->
-        <div class="lcd-container lcd-main-container" id="lcd-display">
-          <div class="lcd-line-1" id="lcd-line-1">A.01 Init Program</div>
-          <div class="lcd-line-2" id="lcd-line-2">VA Saw + MultiFilter</div>
+        <!-- 2. LCD Main Display (16x2 Characters, Click to Open 128-Preset Browser) -->
+        <div class="lcd-container lcd-main-container" id="lcd-display" title="Click to browse all 128 Presets (Banks A–H)">
+          <div class="lcd-line-1-row">
+            <div class="lcd-line-1" id="lcd-line-1">A.01 Stab Saw</div>
+            <span class="lcd-browse-hint" id="btn-preset-browse" title="Browse 128 Presets (Banks A-H)">BROWSE ▾</span>
+          </div>
+          <div class="lcd-line-2" id="lcd-line-2">Synth - Hard</div>
+        </div>
+
+        <!-- 2b. Bank A..H Quick Selector & Timbre 1/2 Switcher Matrix -->
+        <div class="lcd-nav-matrix bank-timbre-matrix" id="bank-timbre-matrix">
+          <div class="lcd-nav-row bank-quick-row" id="bank-selector-strip" role="group" aria-label="Bank Select A to H">
+            <span class="matrix-mini-label">BANK</span>
+            <button class="bank-quick-btn active" data-bank="0" title="Bank A (Programs A.01 - A.16)">A</button>
+            <button class="bank-quick-btn" data-bank="1" title="Bank B (Programs B.01 - B.16)">B</button>
+            <button class="bank-quick-btn" data-bank="2" title="Bank C (Programs C.01 - C.16)">C</button>
+            <button class="bank-quick-btn" data-bank="3" title="Bank D (Programs D.01 - D.16)">D</button>
+            <button class="bank-quick-btn" data-bank="4" title="Bank E (Programs E.01 - E.16)">E</button>
+            <button class="bank-quick-btn" data-bank="5" title="Bank F (Programs F.01 - F.16)">F</button>
+            <button class="bank-quick-btn" data-bank="6" title="Bank G (Programs G.01 - G.16)">G</button>
+            <button class="bank-quick-btn" data-bank="7" title="Bank H (Programs H.01 - H.16)">H</button>
+          </div>
+          <div class="lcd-nav-row timbre-quick-row" id="timbre-selector-group" role="group" aria-label="Active Timbre Edit Select">
+            <span class="matrix-mini-label">EDIT</span>
+            <button class="timbre-quick-btn active" id="btn-timbre-1" data-timbre="1" title="Edit Timbre 1 Parameters">TIMBRE 1</button>
+            <button class="timbre-quick-btn" id="btn-timbre-2" data-timbre="2" title="Edit Timbre 2 Parameters (Split / Layer)">TIMBRE 2</button>
+            <button class="timbre-mode-pill" id="btn-hero-timbre-mode" title="Click to cycle Timbre Mode (Single / Split / Layer / Vocoder)">SINGLE</button>
+          </div>
         </div>
 
         <!-- 3. LCD SysEx Display (Real-time Hex Stream + Copy Button on Right) -->
@@ -205,7 +295,7 @@
         <!-- 4. Global Keypad Matrix (2 Rows on the Right) -->
         <div class="lcd-nav-matrix global-actions-matrix">
           <div class="lcd-nav-row">
-            <button class="lcd-nav-btn" id="btn-compare" title="Toggle Compare Buffer">COMPARE</button>
+            <button class="lcd-nav-btn" id="btn-compare" title="Toggle Compare A/B Snapshot (Original vs Edited)">COMPARE</button>
             <button class="lcd-nav-btn" id="btn-random" title="Randomize Patch (Musical Bounded)">
               <svg class="ui-btn-icon" viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -1px; margin-right: 2px;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>RNDM
             </button>
@@ -216,6 +306,44 @@
               <svg class="ui-btn-icon" viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -1px; margin-right: 2px;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>PANIC
             </button>
           </div>
+        </div>
+
+        <!-- 5. 128-Preset Browser Popover (Banks A-H, 8x16 Grid + Search + Categories) -->
+        <div class="preset-browser-popover" id="preset-browser-popover" hidden>
+          <div class="preset-browser-header">
+            <div class="preset-browser-title-row">
+              <span class="preset-browser-title">KORG MS2000 PRESET BROWSER (128 PROGRAMS · BANKS A–H)</span>
+              <div class="preset-browser-search-wrap">
+                <input type="search" id="preset-search-input" class="preset-search-input" placeholder="Search preset name or number (e.g. A.01, Vocoder, Bass)..." autocomplete="off">
+              </div>
+              <button class="preset-browser-close-btn" id="btn-close-preset-browser" title="Close (Esc)">&times;</button>
+            </div>
+            <div class="preset-browser-filters-row">
+              <div class="preset-bank-tabs" id="preset-bank-tabs">
+                <button class="preset-tab-btn active" data-bank-tab="all">ALL (128)</button>
+                <button class="preset-tab-btn" data-bank-tab="0">BANK A</button>
+                <button class="preset-tab-btn" data-bank-tab="1">BANK B</button>
+                <button class="preset-tab-btn" data-bank-tab="2">BANK C</button>
+                <button class="preset-tab-btn" data-bank-tab="3">BANK D</button>
+                <button class="preset-tab-btn" data-bank-tab="4">BANK E</button>
+                <button class="preset-tab-btn" data-bank-tab="5">BANK F</button>
+                <button class="preset-tab-btn" data-bank-tab="6">BANK G</button>
+                <button class="preset-tab-btn" data-bank-tab="7">BANK H</button>
+              </div>
+              <div class="preset-cat-tabs" id="preset-cat-tabs">
+                <button class="preset-cat-btn active" data-cat="all">All</button>
+                <button class="preset-cat-btn" data-cat="Synth">Synth</button>
+                <button class="preset-cat-btn" data-cat="Bass">Bass</button>
+                <button class="preset-cat-btn" data-cat="Lead">Lead</button>
+                <button class="preset-cat-btn" data-cat="Pad">Pad/Str</button>
+                <button class="preset-cat-btn" data-cat="Arp">Arp/Seq</button>
+                <button class="preset-cat-btn" data-cat="Vocoder">Vocoder</button>
+                <button class="preset-cat-btn" data-cat="Bell">Bell/Kbd</button>
+                <button class="preset-cat-btn" data-cat="SFX">SFX/Hit</button>
+              </div>
+            </div>
+          </div>
+          <div class="preset-browser-grid" id="preset-browser-grid"></div>
         </div>
       </section>
 
@@ -539,6 +667,58 @@
         <div class="modal-sub">Signal Injector and Direct Trigger for Audio Chain Silence Troubleshooting</div>
 
         <div class="diag-body">
+          <!-- 0. Live Signal Chain Oscilloscope & Stage Telemetry -->
+          <div class="diag-card" style="border-color: rgba(56, 189, 248, 0.35);">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;">
+              <div class="diag-card-title" style="margin: 0;">LIVE SIGNAL CHAIN OSCILLOSCOPE &amp; STAGE PROBES</div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <label style="font-size: 0.7rem; color: #94a3b8;">Probe Tap:</label>
+                <select id="diag-scope-tap-select" style="background: #0f172a; color: #e2e8f0; border: 1px solid #334155; border-radius: 4px; padding: 3px 6px; font-size: 0.72rem;">
+                  <option value="master_out">Master Output (Post-Master)</option>
+                  <option value="pre_fx">Pre-FX Bus (Post-Voices)</option>
+                  <option value="post_vca">Voice 1 Post-VCA</option>
+                  <option value="post_filter">Voice 1 Post-Filter (VCF)</option>
+                  <option value="osc_mix">Voice 1 OSC Mixer Out</option>
+                  <option value="lfo1">Voice 1 LFO 1</option>
+                </select>
+                <button type="button" id="diag-btn-open-full-scope" class="card-action-btn" style="padding: 3px 8px; font-size: 0.68rem;">FULL SCOPE</button>
+              </div>
+            </div>
+
+            <!-- 5-Stage Signal Chain Activity Bars -->
+            <div id="diag-stage-meters" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 8px;">
+              <div class="diag-stage-box" data-tap="osc_mix" style="background: #090d16; border: 1px solid #1e293b; border-radius: 4px; padding: 5px 6px;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.64rem; color: #94a3b8;"><span>[5] OSC MIX</span><span id="diag-lvl-osc_mix">0%</span></div>
+                <div style="height: 5px; background: #1e293b; border-radius: 3px; overflow: hidden; margin-top: 3px;"><div id="diag-bar-osc_mix" style="width: 0%; height: 100%; background: #38bdf8; transition: width 60ms linear;"></div></div>
+              </div>
+              <div class="diag-stage-box" data-tap="post_filter" style="background: #090d16; border: 1px solid #1e293b; border-radius: 4px; padding: 5px 6px;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.64rem; color: #94a3b8;"><span>[4] POST VCF</span><span id="diag-lvl-post_filter">0%</span></div>
+                <div style="height: 5px; background: #1e293b; border-radius: 3px; overflow: hidden; margin-top: 3px;"><div id="diag-bar-post_filter" style="width: 0%; height: 100%; background: #38bdf8; transition: width 60ms linear;"></div></div>
+              </div>
+              <div class="diag-stage-box" data-tap="post_vca" style="background: #090d16; border: 1px solid #1e293b; border-radius: 4px; padding: 5px 6px;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.64rem; color: #94a3b8;"><span>[3b] POST VCA</span><span id="diag-lvl-post_vca">0%</span></div>
+                <div style="height: 5px; background: #1e293b; border-radius: 3px; overflow: hidden; margin-top: 3px;"><div id="diag-bar-post_vca" style="width: 0%; height: 100%; background: #38bdf8; transition: width 60ms linear;"></div></div>
+              </div>
+              <div class="diag-stage-box" data-tap="pre_fx" style="background: #090d16; border: 1px solid #1e293b; border-radius: 4px; padding: 5px 6px;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.64rem; color: #94a3b8;"><span>[3] PRE FX</span><span id="diag-lvl-pre_fx">0%</span></div>
+                <div style="height: 5px; background: #1e293b; border-radius: 3px; overflow: hidden; margin-top: 3px;"><div id="diag-bar-pre_fx" style="width: 0%; height: 100%; background: #38bdf8; transition: width 60ms linear;"></div></div>
+              </div>
+              <div class="diag-stage-box" data-tap="master_out" style="background: #090d16; border: 1px solid #1e293b; border-radius: 4px; padding: 5px 6px;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.64rem; color: #94a3b8;"><span>[1] MASTER</span><span id="diag-lvl-master_out">0%</span></div>
+                <div style="height: 5px; background: #1e293b; border-radius: 3px; overflow: hidden; margin-top: 3px;"><div id="diag-bar-master_out" style="width: 0%; height: 100%; background: #22c55e; transition: width 60ms linear;"></div></div>
+              </div>
+            </div>
+
+            <!-- Live Waveform Canvas -->
+            <div style="position: relative; background: #050811; border: 1px solid #1e293b; border-radius: 6px; overflow: hidden; height: 120px;">
+              <canvas id="diag-scope-canvas" width="640" height="120" style="width: 100%; height: 120px; display: block;"></canvas>
+              <div id="diag-scope-readout" style="position: absolute; top: 6px; left: 8px; right: 8px; display: flex; justify-content: space-between; font-family: monospace; font-size: 0.68rem; color: #94a3b8; pointer-events: none;">
+                <span id="diag-scope-tap-label">TAP: MASTER OUT</span>
+                <span id="diag-scope-metrics">PEAK: 0.000 | RMS: 0.000 | FREQ: --- Hz</span>
+              </div>
+            </div>
+          </div>
+
           <!-- 1. Test Tone / Injector -->
           <div class="diag-card">
             <div class="diag-card-title">1. TEST TONE INJECTION</div>
@@ -688,6 +868,12 @@
         </div>
       </div>
     </div>
+
+    <!-- Hardware Firmware Updater 1.07 & 1MB Flash Backup Modal -->
+    <div id="firmware-updater-modal" class="modal-overlay hidden" style="display: none;"></div>
+
+    <!-- MIDI Device & Routing Configuration Modal -->
+    <div id="midi-config-modal" class="modal-overlay hidden"></div>
 
     <!-- About Modal Dialog (Reactive AboutDialog with AutoUpdater) -->
     <div id="about-modal" class="modal-overlay abd-about-overlay" hidden></div>

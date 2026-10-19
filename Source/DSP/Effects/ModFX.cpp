@@ -10,9 +10,7 @@ void ModFX::prepare(double sampleRate) noexcept
     sampleRate_ = DSPUtils::validateSampleRate(sampleRate);
 
     chorusFlanger_.prepare(sampleRate_);
-
     ensemble_.prepare(sampleRate_);
-    ensemble_.setMode(abd::dsp::DspSolinaEnsemble::Mode::DualLFO);
 
     phaser_.prepare(sampleRate_);
     phaser_.setSweepRange(200.0f, 5500.0f);  // El barrido del MS2000
@@ -36,7 +34,7 @@ void ModFX::setSpeed(float speed0to1) noexcept
     speed_ = DSPUtils::clamp(speed0to1, 0.0f, 1.0f);
 
     chorusFlanger_.setSpeed(speed_);
-    ensemble_.setRateNorm(speed_);
+    ensemble_.setSpeed(speed_);
     phaser_.setRateHz(0.02f * abd::dsp::pow(DSPUtils::kSpeedLogScaleMax, speed_));
 }
 
@@ -45,7 +43,7 @@ void ModFX::setDepth(float depth0to1) noexcept
     depth_ = DSPUtils::clamp(depth0to1, 0.0f, 1.0f);
 
     chorusFlanger_.setDepth(depth_);
-    ensemble_.setDepthNorm(depth_);
+    ensemble_.setDepth(depth_);
     phaser_.setDepth(depth_);
 }
 
@@ -54,7 +52,7 @@ void ModFX::setFeedback(float feedback0to127) noexcept
     rawFeedback_ = DSPUtils::clamp(feedback0to127, 0.0f, 127.0f);
 
     chorusFlanger_.setFeedback(rawFeedback_);
-    phaser_.setFeedback(rawFeedback_ / 127.0f);
+    phaser_.setFeedback((rawFeedback_ / 127.0f) * 0.90f);
 }
 
 void ModFX::process(float &leftSample, float &rightSample) noexcept
@@ -68,7 +66,7 @@ void ModFX::process(float &leftSample, float &rightSample) noexcept
         chorusFlanger_.processSample(leftSample, rightSample);
         break;
     case ModFXType::Ensemble:
-        ensemble_.processSample(leftSample, rightSample);
+        ensemble_.processFrame(leftSample, rightSample);
         break;
     case ModFXType::Phaser:
         phaser_.processFrame(leftSample, rightSample);
@@ -77,3 +75,4 @@ void ModFX::process(float &leftSample, float &rightSample) noexcept
 }
 
 }  // namespace ABDMS2000
+

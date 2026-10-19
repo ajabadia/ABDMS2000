@@ -92,8 +92,10 @@ export class ABDSwitch {
             const next = this.value === 1 ? 0 : 1;
             this.setValue(next, true);
             if (this.paramId) {
+                bridge.beginGesture(this.paramId);
                 paramStore.set(this.paramId, next);
                 bridge.setParam(this.paramId, next);
+                bridge.endGesture(this.paramId);
             }
         };
 

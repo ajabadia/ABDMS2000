@@ -1,11 +1,50 @@
 import { wasmBridge } from './bridgeWasm.js';
 import { paramStore } from '../contracts/paramStore.js';
 import { announcesHostModel, hostModelPayload, answersHostInfo, hostInfoPayload } from '../contracts/hostModel.js';
+import { FACTORY_PROGRAMS } from '../contracts/factoryPresets.js';
 
 const IS_DEV = import.meta.env?.DEV === true;
 export const devLog = (...args) => {
   if (IS_DEV) console.log(...args);
 };
+
+function encodeAsciiName384(name = 'Init Synth') {
+  const bytes = new Uint8Array(384);
+  const clean = String(name || 'Init Synth').padEnd(12, ' ').slice(0, 12);
+  for (let i = 0; i < 12; i++) {
+    bytes[i] = clean.charCodeAt(i) & 0x7F;
+  }
+  return bytes;
+}
+
+function uint8ToBase64(bytes) {
+  let binary = '';
+  for (let i = 0; i < bytes.length; i++) {
+    binary += String.fromCharCode(bytes[i] & 0xFF);
+  }
+  return btoa(binary);
+}
+
+function base64ToUint8(b64) {
+  try {
+    const bin = atob(String(b64 || ''));
+    const out = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i) & 0xFF;
+    return out;
+  } catch {
+    return new Uint8Array(0);
+  }
+}
+
+function extractNameFromBytes(bytes, fallback = 'Init Synth') {
+  if (!bytes || bytes.length < 12) return fallback;
+  let s = '';
+  for (let i = 0; i < 12; i++) {
+    const c = bytes[i];
+    s += (c >= 32 && c <= 126) ? String.fromCharCode(c) : ' ';
+  }
+  return s.trim() || fallback;
+}
 
 // IPC Bridge between WebUI and C++ / WASM
 
@@ -14,7 +53,23 @@ export class BridgeCore {
     this.listeners = new Map();
     this.wasmBridge = wasmBridge;
     this._juceBound = false;
+    this._activeSlot = 0;
+    this._browserBank = null;
     this._initJuceBackend();
+  }
+
+  _ensureBrowserBank() {
+    if (this._browserBank) return this._browserBank;
+    this._browserBank = Array.from({ length: 128 }, (_, idx) => {
+      const fp = FACTORY_PROGRAMS[idx];
+      const name = fp?.name || `Init ${idx + 1}`;
+      return {
+        slot: idx,
+        name,
+        rawData: encodeAsciiName384(name),
+      };
+    });
+    return this._browserBank;
   }
 
   get isWebView() {
@@ -112,24 +167,116 @@ export class BridgeCore {
           this.wasmBridge.setTempoBPM(payload.bpm);
           break;
         case 'selectProgram':
-          // In the browser, LcdProgrammer already sends the complete UI patch
-          // through setAllParams/setParam. Do not apply the separate native
-          // factory-bank index as well: it is only a partial mapping and would
-          // overwrite the patch with a different sound. Native JUCE handles
-          // selectProgram through its own host bridge.
+          // Browser mode applies WebUI factoryPresets parameter maps directly in app.js.
+          // Do not apply the separate native C++ factory index here.
+          this._activeSlot = Math.max(0, Math.min(127, Number(payload.index) || 0));
           break;
         case 'hardware.listPorts':
-          // Physical MIDI is only available through the native JUCE host.
-          // Keep the browser Bank Manager deterministic instead of routing this
-          // host-only action into the WASM command switch.
           this.emitLocal('hardware.ports', { inputs: [], outputs: [] });
           break;
         case 'hardware.selectPorts':
-          // Selection is persisted by the browser UI; there is no hardware host
-          // to open while running under Vite.
           break;
         case 'getWavetableCatalog':
-          // The browser catalog has a local fallback; native hosts answer this.
+        case 'getPresetCatalog':
+          break;
+        case 'preset.read': {
+          const bank = this._ensureBrowserBank();
+          const slot = Math.max(0, Math.min(127, Number(payload.slot) || 0));
+          const entry = bank[slot];
+          this.emitLocal('preset.data', {
+            requestId: payload.requestId,
+            slot,
+            name: entry.name,
+            payload: uint8ToBase64(entry.rawData),
+          });
+          break;
+        }
+        case 'bank.read': {
+          const bank = this._ensureBrowserBank();
+          const slots = bank.map((entry, idx) => ({
+            slot: idx,
+            name: entry.name,
+            payload: uint8ToBase64(entry.rawData),
+          }));
+          this.emitLocal('bank.data', {
+            requestId: payload.requestId,
+            slots,
+          });
+          break;
+        }
+        case 'preset.write': {
+          const bank = this._ensureBrowserBank();
+          const slot = Math.max(0, Math.min(127, Number(payload.slot) || 0));
+          const raw = base64ToUint8(payload.payload);
+          const name = (payload.name && String(payload.name).trim()) || extractNameFromBytes(raw, bank[slot]?.name || `Prog ${slot + 1}`);
+          const padded = new Uint8Array(384);
+          padded.set(raw.subarray(0, 384));
+          const nameBytes = encodeAsciiName384(name);
+          padded.set(nameBytes.subarray(0, 12), 0);
+          if (!payload.audition) {
+            bank[slot] = { slot, name, rawData: padded };
+            this._activeSlot = slot;
+            this.emitLocal('presetCatalog', {
+              activeIndex: this._activeSlot,
+              programs: bank.map((b, i) => ({ index: i, name: b.name })),
+            });
+          }
+          this.emitLocal('preset.written', {
+            requestId: payload.requestId,
+            slot,
+            name,
+            audition: !!payload.audition,
+          });
+          break;
+        }
+        case 'bank.write': {
+          const bank = this._ensureBrowserBank();
+          const incoming = Array.isArray(payload.slots) ? payload.slots : [];
+          let count = 0;
+          for (const item of incoming) {
+            const slot = Number(item?.slot ?? -1);
+            if (slot < 0 || slot >= 128) continue;
+            const raw = base64ToUint8(item?.payload);
+            const name = (item?.name && String(item.name).trim()) || extractNameFromBytes(raw, bank[slot]?.name || `Prog ${slot + 1}`);
+            const padded = new Uint8Array(384);
+            padded.set(raw.subarray(0, 384));
+            const nameBytes = encodeAsciiName384(name);
+            padded.set(nameBytes.subarray(0, 12), 0);
+            bank[slot] = { slot, name, rawData: padded };
+            count++;
+          }
+          this.emitLocal('presetCatalog', {
+            activeIndex: this._activeSlot,
+            programs: bank.map((b, i) => ({ index: i, name: b.name })),
+          });
+          this.emitLocal('bank.written', {
+            requestId: payload.requestId,
+            count,
+          });
+          break;
+        }
+        case 'preset.capture': {
+          const bank = this._ensureBrowserBank();
+          const slot = payload.slot !== undefined && payload.slot !== null
+            ? Math.max(0, Math.min(127, Number(payload.slot) || 0))
+            : this._activeSlot;
+          const entry = bank[slot] || { slot, name: 'Captured', rawData: encodeAsciiName384('Captured') };
+          this.emitLocal('preset.captured', {
+            requestId: payload.requestId,
+            slot,
+            name: entry.name,
+            payload: uint8ToBase64(entry.rawData),
+          });
+          break;
+        }
+        case 'writeProgramToSlot':
+          this.emitLocal('programWritten', { index: payload.index ?? 0, name: payload.name ?? '' });
+          break;
+        case 'exportSysexProgram':
+        case 'beginGesture':
+        case 'endGesture':
+        case 'checkForUpdates':
+        case 'getUpdateStatus':
           break;
         default:
           // Unknown action — log for debugging
@@ -141,6 +288,16 @@ export class BridgeCore {
   setParam(paramId, value) {
     paramStore.set(paramId, value);
     this.send('setParam', { paramId, value });
+  }
+
+  beginGesture(paramId) {
+    if (!paramId) return;
+    this.send('beginGesture', { paramId });
+  }
+
+  endGesture(paramId) {
+    if (!paramId) return;
+    this.send('endGesture', { paramId });
   }
 
   noteOn(note, velocity = 0.8) {
@@ -196,7 +353,12 @@ export class BridgeCore {
   async getRawProgramData(name = 'Active Patch') {
     if (this.isWebView) {
       return new Promise((resolve) => {
+        const timeoutId = setTimeout(() => {
+          this.off('rawProgramDataResponse', handler);
+          resolve(null);
+        }, 3000);
         const handler = (data) => {
+          clearTimeout(timeoutId);
           this.off('rawProgramDataResponse', handler);
           if (data && data.dataBase64) {
             const binStr = atob(data.dataBase64);
@@ -230,6 +392,7 @@ export class BridgeCore {
       this.listeners.set(event, new Set());
     }
     this.listeners.get(event).add(callback);
+    return () => this.off(event, callback);
   }
 
   off(event, callback) {
@@ -246,3 +409,6 @@ export class BridgeCore {
 }
 
 export const bridge = new BridgeCore();
+if (typeof window !== 'undefined' && !window.__synthBridge) {
+  window.__synthBridge = bridge;
+}

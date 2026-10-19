@@ -25,6 +25,9 @@ class VoxWaveOscillator
     // Vowel morph: 0.0 = A, 0.25 = E, 0.5 = I, 0.75 = O, 1.0 = U
     void setVowel(float vowel0to1) noexcept;
 
+    // Control 2 formant shift / modulation offset (0.0 .. 1.0)
+    void setFormantShift(float shift0to1) noexcept;
+
     float getNextSample() noexcept;
 
   private:
@@ -33,6 +36,7 @@ class VoxWaveOscillator
     float phase_ {0.0f};
     float phaseIncrement_ {0.01f};
     float vowel_ {0.0f};
+    float formantShift_ {0.0f};
 
     // Five formant bandpass filters (Direct Form II Transposed)
     struct FormantBPF
@@ -49,6 +53,8 @@ class VoxWaveOscillator
     };
 
     FormantBPF formants_[5] {};
+    float s1_ {0.0f};
+    float s2_ {0.0f};
 
     void updateVowelCoefficients() noexcept;
 };

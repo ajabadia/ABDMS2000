@@ -9,6 +9,7 @@
 #include "../DSP/Oscillators/OSC2Modulator.h"
 #include "../DSP/Oscillators/VAOscillator.h"
 #include "../DSP/Oscillators/VoxWaveOscillator.h"
+#include "DspEffects/DspMS2000VoiceDistortion.h"
 
 namespace ABDMS2000
 {
@@ -52,6 +53,7 @@ struct SeqModulation
     float osc2Pitch {0.0f};  // semitonos (±24 a fondo de escala)
     float osc2Tune {0.0f};   // semitonos (±0.5 = ±50 cents)
     float osc1Ctrl1 {0.0f};
+    float osc1Ctrl2 {0.0f};
     float noiseLevel {0.0f};
     float osc1Level {0.0f};
     float osc2Level {0.0f};
@@ -145,6 +147,10 @@ struct VoiceParameters
 
     // Tempo (from DAW AudioPlayHead)
     float bpm {120.0f};
+
+    // Microtonal Scale / Temperament (ROM 0x13914 / 0x13980)
+    int scaleType {0};  // 0 = Equal Temp, 1 = Pure Major, 2 = Pure Minor, 3 = Arabic, 4 = Pythagoras, 5 = Werckmeister, 6 = Kirnberger, 7 = Slendro, 8 = Pelog
+    int scaleKey {0};   // 0..11 = C..B
 };
 
 /**
@@ -225,7 +231,11 @@ class Voice
 
     // Process a single stereo sample — only per-sample modulation values.
     // Assumes applyBlockParams() was already called this block.
-    void renderNextSample(float &leftOut, float &rightOut, int diagPoint = 0, float diagTone = 0.0f) noexcept;
+    void renderNextSample(float &leftOut,
+                          float &rightOut,
+                          int diagPoint = 0,
+                          float diagTone = 0.0f,
+                          float audioInSample = 0.0f) noexcept;
     void renderDiagnosticSample(float &leftOut, float &rightOut, int diagPoint, float diagTone) noexcept;
 
   private:
@@ -252,6 +262,10 @@ class Voice
     LFO lfo1_;
     LFO lfo2_;
     VirtualPatchMatrix patchMatrix_;
+    abd::dsp::DspMS2000VoiceDistortion voiceDistortion_;
+    float smoothedCutoffNorm_ {1.0f};
+    float cutoffSmoothCoeff_ {0.022f};
+    bool cutoffSmoothInitialized_ {false};
 };
 
 }  // namespace ABDMS2000

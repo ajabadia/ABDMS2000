@@ -27,14 +27,14 @@ Este documento contiene la estructura oficial de páginas de edición extraída 
 
 ### 3. OSC 1 (Oscilador Principal)
 * **Wave (Algoritmo base):**
-  * `SAW` / `PULSE` / `TRIANGLE` / `SINE` / `VOX` / `DWGS` / `NOISE` / `AUDIO IN`
+  * `SAW` / `PULSE` / `TRIANGLE` / `CROSS` / `VOX` / `DWGS` / `NOISE` / `AUDIO IN`
 * **OSC1 Control 1 (Función cambia según la onda elegida):** `0` a `127`
   * *Si es SAW/TRIANGLE:* Modula la forma de onda (Waveform Shaping).
   * *Si es PULSE:* Controla el ancho de pulso base (Pulse Width).
-  * *Si es SINE:* Ajusta la profundidad de la modulación cruzada (Cross Mod Depth).
+  * *Si es CROSS:* Ajusta la profundidad de la modulación cruzada (Cross Mod Depth).
   * *Si es VOX:* Modula el carácter de la formante vocal.
 * **OSC1 Control 2 (Sub-parámetro de modulación o selección):**
-  * *Si la onda es DWGS:* Selecciona la forma de onda digital entre `0` y `63` (64 ondas DWGS).
+  * *Si la onda es DWGS:* Selecciona la forma de onda digital entre `0` y `63` (64 ondas DWGS en modo estándar; extensible a 512 en Modo Avanzado).
   * *Si la onda es PULSE/SAW/TRIANGLE:* Permite asignar una fuente para modular automáticamente el Control 1 (`LFO1`, `LFO2`, `EG1`).
 
 ### 4. OSC 2 (Oscilador Secundario)
@@ -87,7 +87,7 @@ Este documento contiene la estructura oficial de páginas de edición extraída 
 
 ### Virtual Patch (4 Ranuras de Modulación Matricial)
 * **PATCH [1–4] SOURCE (Orígenes):** `EG1`, `EG2`, `LFO1`, `LFO2`, `VELOCITY` (Velocidad de pulsación), `KBD_TRK` (Seguimiento de nota), `PITCH_BEND`, `MOD_WHEEL`.
-* **PATCH [1–4] DESTINATION (Destinos):** `PITCH`, `OSC2_PITCH`, `OSC1_CTRL1`, `CUTOFF`, `AMP`, `PAN`, `LFO2_FREQ`.
+* **PATCH [1–4] DESTINATION (Destinos):** `PITCH`, `OSC2_PITCH`, `OSC1_CTRL1`, `NOISE_LEVEL`, `CUTOFF`, `AMP`, `PAN`, `LFO2_FREQ`.
 * **PATCH [1–4] INTENSITY (Intensidad de modulación bipolar):** `-63` a `+63` (Mapeado SysEx: `0` a `127`, neutro en `64`).
 
 ---

@@ -138,8 +138,10 @@ void MS2KVocoder16Band::updateFilterFrequencies() noexcept
 
 void MS2KVocoder16Band::updateHPFFilter() noexcept
 {
-    // Filtro Butterworth paso-altos a 8.0 kHz para el detector de sibilantes
-    float w0 = Constants::kVocoderSibilanceCutoffHz * DSPUtils::TWO_PI / static_cast<float>(sampleRate_);
+    // Filtro Butterworth paso-altos a 8.0 kHz para el detector de sibilantes (clamped bajo Nyquist)
+    const float safeCutoffHz =
+        std::min(Constants::kVocoderSibilanceCutoffHz, 0.45f * static_cast<float>(sampleRate_));
+    float w0 = safeCutoffHz * DSPUtils::TWO_PI / static_cast<float>(sampleRate_);
 
     float cos_w0 = std::cos(w0);
     float sin_w0 = std::sin(w0);

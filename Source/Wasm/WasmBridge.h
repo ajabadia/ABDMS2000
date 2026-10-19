@@ -38,6 +38,11 @@ extern "C"
     WASM_EXPORT void allNotesOff();
 
     /**
+     * Sets master tempo in BPM for Arpeggiator, Mod Sequencer and synced FX.
+     */
+    WASM_EXPORT void setTempoBPM(float bpm);
+
+    /**
      * Sets a parameter by its numeric parameter index.
      */
     WASM_EXPORT void setParamNormalized(int paramIndex, float normValue);

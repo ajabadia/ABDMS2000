@@ -2,16 +2,14 @@
    SLIDE DRAWER & FILMSTRIP SLIDER STYLES (CZ-101 Style)
    ═══════════════════════════════════════════════════════════════ */
 
-/* Backdrop */
+/* Backdrop (non-blocking so #piano-keyboard, .hero-panel, and .dashboard-card remain interactive) */
 .drawer-backdrop {
   position: fixed;
-  top: 0;
+  top: 44px;
   left: 0;
   width: 100vw;
-  height: 100vh;
-  background: rgba(4, 8, 14, 0.65);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  height: calc(100vh - 44px - 165px);
+  background: transparent;
   z-index: 850;
   opacity: 0;
   pointer-events: none;
@@ -20,21 +18,22 @@
 
 .drawer-backdrop.backdrop-visible {
   opacity: 1;
-  pointer-events: auto;
+  pointer-events: none;
 }
 
-/* Slide Drawer Container */
+/* Slide Drawer Container (leaves top navbar 44px and bottom keyboard 165px uncovered) */
 .slide-drawer {
   position: fixed;
-  top: 0;
+  top: 44px;
   right: 0;
   width: min(580px, 92vw);
-  height: 100vh;
-  background: var(--color-panel-bg, rgba(14, 18, 26, 0.95));
+  height: calc(100vh - 44px - 165px);
+  background: var(--color-panel-bg, rgba(14, 18, 26, 0.96));
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-left: 2px solid var(--synth-border, rgba(0, 212, 255, 0.3));
-  box-shadow: -12px 0 36px rgba(0, 0, 0, 0.85);
+  border-left: 2px solid var(--synth-border, rgba(0, 212, 255, 0.35));
+  border-bottom: 1px solid var(--synth-border, rgba(0, 212, 255, 0.25));
+  box-shadow: -12px 6px 36px rgba(0, 0, 0, 0.85);
   z-index: 900;
   display: flex;
   flex-direction: column;
@@ -53,7 +52,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 20px;
+  padding: 12px 18px;
   background: var(--color-panel-surface, rgba(22, 28, 40, 0.96));
   border-bottom: 1px solid var(--color-panel-border, rgba(255, 255, 255, 0.1));
 }
@@ -62,6 +61,45 @@
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.drawer-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.drawer-timbre-switch {
+  display: inline-flex;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 5px;
+  padding: 2px;
+  gap: 2px;
+}
+
+.drawer-timbre-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: #94a3b8;
+  font-family: var(--font-lcd);
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  letter-spacing: 0.6px;
+  transition: all 0.12s ease;
+}
+
+.drawer-timbre-btn:hover {
+  color: #f8fafc;
+}
+
+.drawer-timbre-btn.active {
+  background: var(--synth-accent, #00d4ff);
+  color: #040810;
+  box-shadow: 0 0 8px rgba(0, 212, 255, 0.4);
 }
 
 .drawer-badge {
@@ -76,7 +114,7 @@
 }
 
 .drawer-title {
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   font-weight: 700;
   letter-spacing: 0.5px;
   margin: 0;

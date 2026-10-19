@@ -3,13 +3,66 @@
 #include <cmath>
 #include "AppLogger.h"
 #include "Conversion.gen.h"
+#include "MS2000FirmwareTables.h"
 
 namespace ABDMS2000
 {
 
+namespace
+{
+/** `osc1Wave` → `t2Osc1Wave`: el id del mismo parámetro en el Timbre 2. */
+juce::String timbre2ParamId(juce::String id)
+{
+    if (id.isNotEmpty())
+        id = id.substring(0, 1).toUpperCase() + id.substring(1);
+    return "t2" + id;
+}
+}  // namespace
+
 SynthEngine::SynthEngine(juce::AudioProcessorValueTreeState &apvts) : apvts_(apvts)
 {
     ABD_LOG("[ENGINE] SynthEngine constructor called.");
+
+    // Pre-cachear el mapa estático de conversion::getMetaById fuera del hilo de audio
+    (void)conversion::getMetaById(ParamIDs::filterCutoff);
+
+    // Pre-cachear todos los punteros std::atomic<float>* del APVTS (Timbre 1 y Timbre 2)
+    const auto &allParams = ParameterRegistry::getAllParameters();
+    paramCache_.reserve(allParams.size());
+    timbre2ParamCache_.reserve(allParams.size());
+    for (const auto &meta : allParams)
+    {
+        if (meta.id == nullptr)
+            continue;
+        const std::string_view keyView(meta.id);
+        paramCache_[keyView] = apvts_.getRawParameterValue(meta.id);
+
+        const juce::String t2Key = timbre2ParamId(juce::String(meta.id));
+        if (auto *t2Ptr = apvts_.getRawParameterValue(t2Key))
+            timbre2ParamCache_[keyView] = t2Ptr;
+    }
+
+    // Pre-cachear los punteros de las 3 filas × 16 pasos del Mod Sequencer por timbre
+    for (int t = 0; t < 2; ++t)
+    {
+        const bool isT2 = (t == 1);
+        for (size_t row = 0; row < ModSequencer::TRACKS_PER_TIMBRE; ++row)
+        {
+            const juce::String base("seq" + juce::String(static_cast<int>(row) + 1));
+            const juce::String destId = isT2 ? timbre2ParamId(base + "Dest") : (base + "Dest");
+            const juce::String motionId = isT2 ? timbre2ParamId(base + "Motion") : (base + "Motion");
+
+            auto &rowPtrs = seqParamPtrs_[static_cast<size_t>(t)][row];
+            rowPtrs.dest = apvts_.getRawParameterValue(destId);
+            rowPtrs.motion = apvts_.getRawParameterValue(motionId);
+
+            for (size_t s = 0; s < ModSequencer::NUM_STEPS; ++s)
+            {
+                const juce::String stepId = base + "Step" + juce::String(static_cast<int>(s) + 1);
+                rowPtrs.steps[s] = apvts_.getRawParameterValue(isT2 ? timbre2ParamId(stepId) : stepId);
+            }
+        }
+    }
 }
 
 void SynthEngine::prepare(double sampleRate, int samplesPerBlock)
@@ -122,9 +175,10 @@ void SynthEngine::registerScopeTaps()
     scopeTapsRegistered_ = true;
 
     // Fase A tap set: Master out, Pre-FX, and Voice 0 stage taps
-    // (LFO1 control, Osc.Mix, Post-Filter, Post-VCA). Capacity = block size,
-    // enough to satisfy the 512-sample frame pull at 1:1 audio rate.
-    const size_t cap = static_cast<size_t>(samplesPerBlock_);
+    // (LFO1 control, Osc.Mix, Post-Filter, Post-VCA).
+    // Ring buffer capacity must exceed the 512-sample ScopeFrameSerializer target
+    // (SpscRingBuffer max readable is capacity - 1), and accumulate across blocks.
+    const size_t cap = std::max<size_t>(4096, static_cast<size_t>(samplesPerBlock_) * 4);
     tapMaster_ = scopeCollector_.registerTap("Master Output", abd::scope::ScopeTapType::StereoAudio, cap, "master_out");
     tapPreFx_ = scopeCollector_.registerTap("Pre FX", abd::scope::ScopeTapType::StereoAudio, cap, "pre_fx");
     tapOscMix_ = scopeCollector_.registerTap("Voice 1 Osc Mix", abd::scope::ScopeTapType::MonoAudio, cap, "osc_mix");
@@ -154,31 +208,36 @@ void SynthEngine::flushScopeTaps(int numSamples) noexcept
         tapLfo1_->write(scopeBufLfo1_.data(), n);
 }
 
-namespace
+float SynthEngine::paramValueById(const char *id, float defaultVal) const noexcept
 {
-/** `osc1Wave` → `t2Osc1Wave`: el id del mismo parámetro en el Timbre 2. */
-juce::String timbre2ParamId(juce::String id)
-{
-    if (id.isNotEmpty())
-        id = id.substring(0, 1).toUpperCase() + id.substring(1);
-    return "t2" + id;
+    if (id == nullptr)
+        return defaultVal;
+    const auto it = paramCache_.find(std::string_view(id));
+    if (it != paramCache_.end() && it->second != nullptr)
+        return it->second->load(std::memory_order_relaxed);
+    return defaultVal;
 }
-}  // namespace
 
 float SynthEngine::paramValueById(const juce::String &id, float defaultVal) const noexcept
 {
+    const auto it = paramCache_.find(std::string_view(id.toRawUTF8()));
+    if (it != paramCache_.end() && it->second != nullptr)
+        return it->second->load(std::memory_order_relaxed);
     if (auto *p = apvts_.getRawParameterValue(id))
         return p->load(std::memory_order_relaxed);
-    juce::ignoreUnused(defaultVal);
     return defaultVal;
 }
 
 float SynthEngine::paramValue(bool second, const char *id, float defaultVal) const noexcept
 {
-    juce::String key(id);
-    if (second)
-        key = timbre2ParamId(key);
-    return paramValueById(key, defaultVal);
+    if (id == nullptr)
+        return defaultVal;
+    const std::string_view keyView(id);
+    const auto &cache = second ? timbre2ParamCache_ : paramCache_;
+    const auto it = cache.find(keyView);
+    if (it != cache.end() && it->second != nullptr)
+        return it->second->load(std::memory_order_relaxed);
+    return defaultVal;
 }
 
 /**
@@ -188,6 +247,7 @@ float SynthEngine::paramValue(bool second, const char *id, float defaultVal) con
  */
 void SynthEngine::readTimbreParams(bool second, VoiceParameters &vp) noexcept
 {
+    vp.seq = {};
     auto P = [this, second](const char *id, float def) { return paramValue(second, id, def); };
 
     const bool portaOn = (paramValueById(ParamIDs::portamentoOn, 1.0f) > 0.5f);
@@ -196,7 +256,9 @@ void SynthEngine::readTimbreParams(bool second, VoiceParameters &vp) noexcept
     // OSC 1 — 8 algoritmos: Saw=0, Pulse=1, Tri=2, Sine=3, VoxWave=4, DWGS=5, Noise=6, AudioIn=7
     int o1w = static_cast<int>(P(ParamIDs::osc1Wave, 0.0f));
     vp.osc1Type = static_cast<OSC1Type>(std::min(o1w, 7));
-    vp.osc1DwgsIndex = static_cast<int>(P(ParamIDs::osc1DwgsWave, 0.0f));
+    const int synthModeForDwgs = static_cast<int>(paramValueById(ParamIDs::synthMode, 0.0f));
+    const int maxDwgsIdx = (synthModeForDwgs == 2) ? 511 : 63;
+    vp.osc1DwgsIndex = std::clamp(static_cast<int>(P(ParamIDs::osc1DwgsWave, 0.0f)), 0, maxDwgsIdx);
     vp.osc1Ctrl1 = conversion::normalizedToDomain("osc1Ctrl1", P(ParamIDs::osc1Ctrl1, 0.0f) / 127.0f);
     vp.osc1Ctrl2 = conversion::normalizedToDomain("osc1Ctrl2", P(ParamIDs::osc1Ctrl2, 0.0f) / 127.0f);
     vp.osc1Level = conversion::normalizedToDomain("mixOsc1Level", P(ParamIDs::mixOsc1Level, 127.0f) / 127.0f);
@@ -242,8 +304,8 @@ void SynthEngine::readTimbreParams(bool second, VoiceParameters &vp) noexcept
     int l1w = static_cast<int>(P(ParamIDs::lfo1Wave, 2.0f));
     vp.lfo1Wave = static_cast<LFOWaveform>(std::min(l1w, 3));
     vp.lfo1KeySync = static_cast<KeySyncMode>(static_cast<int>(P(ParamIDs::lfo1KeySync, 2.0f)));
-    float l1FreqNorm = P(ParamIDs::lfo1Freq, 40.0f) / 127.0f;
-    vp.lfo1FreqHz = conversion::normalizedToDomain("lfo1Freq", l1FreqNorm);
+    float l1RawKnob = P(ParamIDs::lfo1Freq, 40.0f);
+    vp.lfo1FreqHz = FirmwareTables::getHardwareLfo1FreqHz(l1RawKnob);
     vp.lfo1TempoSync = (P(ParamIDs::lfo1TempoSync, 0.0f) > 0.5f);
     vp.lfo1SyncNote = static_cast<int>(P(ParamIDs::lfo1SyncNote, 4.0f));
 
@@ -251,8 +313,8 @@ void SynthEngine::readTimbreParams(bool second, VoiceParameters &vp) noexcept
     int l2w = static_cast<int>(P(ParamIDs::lfo2Wave, 2.0f));
     vp.lfo2Wave = static_cast<LFOWaveformLFO2>(std::min(l2w, 3));
     vp.lfo2KeySync = static_cast<KeySyncMode>(static_cast<int>(P(ParamIDs::lfo2KeySync, 2.0f)));
-    float l2FreqNorm = P(ParamIDs::lfo2Freq, 40.0f) / 127.0f;
-    vp.lfo2FreqHz = conversion::normalizedToDomain("lfo2Freq", l2FreqNorm);
+    float l2RawKnob = P(ParamIDs::lfo2Freq, 40.0f);
+    vp.lfo2FreqHz = FirmwareTables::getHardwareLfo2FreqHz(l2RawKnob);
     vp.lfo2TempoSync = (P(ParamIDs::lfo2TempoSync, 0.0f) > 0.5f);
     vp.lfo2SyncNote = static_cast<int>(P(ParamIDs::lfo2SyncNote, 4.0f));
 
@@ -265,9 +327,12 @@ void SynthEngine::readTimbreParams(bool second, VoiceParameters &vp) noexcept
     float ampVeloNorm = (P(ParamIDs::ampVelo, 0.0f) + 63.0f) / 126.0f;
     vp.ampVeloSens = conversion::normalizedToDomain("ampVelo", ampVeloNorm);
 
-    // Wheels (comunes a los dos timbres)
+    // Wheels y escala global (comunes a los dos timbres)
     vp.pitchBendValue = pitchBendValue_.load(std::memory_order_relaxed);
-    vp.modWheelValue = modWheelValue_.load(std::memory_order_relaxed);
+    vp.modWheelValue = std::max(modWheelValue_.load(std::memory_order_relaxed),
+                                aftertouchValue_.load(std::memory_order_relaxed));
+    vp.scaleType = static_cast<int>(paramValueById(ParamIDs::scaleType, 0.0f));
+    vp.scaleKey = static_cast<int>(paramValueById(ParamIDs::scaleKey, 0.0f));
 
     // Virtual Patch Slots 1-4
     const char *slotSource[4] = {
@@ -298,28 +363,30 @@ void SynthEngine::readTimbreParams(bool second, VoiceParameters &vp) noexcept
 void SynthEngine::configureTimbreSeq(bool second, size_t firstTrack) noexcept
 {
     const int mode = static_cast<int>(paramValue(second, ParamIDs::modSeqType, 0.0f));
+    // En el hardware Korg MS2000 (byte 52 bit 6) y en ParameterRegistry ("1Shot"=0, "Loop"=1): 0 = 1Shot, 1 = Loop
+    const bool oneShot = (paramValue(second, ParamIDs::seqRunMode, 1.0f) < 0.5f);
     const int lastStep =
         static_cast<int>(std::max(1.0f, std::min(16.0f, paramValue(second, ParamIDs::seqLastStep, 16.0f))));
 
+    const auto &timbreRows = seqParamPtrs_[second ? 1 : 0];
     for (size_t row = 0; row < ModSequencer::TRACKS_PER_TIMBRE; ++row)
     {
         ModSeqTrack &track = modSeq_.getTrack(firstTrack + row);
-        const juce::String base("seq" + juce::String(static_cast<int>(row) + 1));
-        const juce::String destId = base + "Dest";
-        const juce::String motionId = base + "Motion";
+        const auto &rowPtrs = timbreRows[row];
 
-        const int destIndex = static_cast<int>(
-            std::max(0.0f, std::min(30.0f, paramValueById(second ? timbre2ParamId(destId) : destId, 0.0f))));
+        const float rawDest = (rowPtrs.dest != nullptr) ? rowPtrs.dest->load(std::memory_order_relaxed) : 0.0f;
+        const float rawMotion = (rowPtrs.motion != nullptr) ? rowPtrs.motion->load(std::memory_order_relaxed) : 0.0f;
+
+        const int destIndex = static_cast<int>(std::max(0.0f, std::min(30.0f, rawDest)));
         track.destination = static_cast<ModSeqDest>(destIndex);
-        track.motion = static_cast<ModSeqMotion>(
-            static_cast<int>(paramValueById(second ? timbre2ParamId(motionId) : motionId, 0.0f)));
+        track.motion = static_cast<ModSeqMotion>(static_cast<int>(rawMotion));
         track.mode = static_cast<ModSeqMode>(std::min(3, mode));
+        track.oneShot = oneShot;
         track.length = lastStep;
 
         for (size_t s = 0; s < ModSequencer::NUM_STEPS; ++s)
         {
-            const juce::String stepId = base + "Step" + juce::String(static_cast<int>(s) + 1);
-            const float raw = paramValueById(second ? timbre2ParamId(stepId) : stepId, 0.0f);
+            const float raw = (rowPtrs.steps[s] != nullptr) ? rowPtrs.steps[s]->load(std::memory_order_relaxed) : 0.0f;
             track.steps[s] = DSPUtils::clamp((raw + 63.0f) / 126.0f, 0.0f, 1.0f);
         }
     }
@@ -337,6 +404,7 @@ void SynthEngine::configureTimbreSeq(bool second, size_t firstTrack) noexcept
  */
 void SynthEngine::applySeqModulation(bool second, VoiceParameters &vp) noexcept
 {
+    vp.seq = {};
     const size_t firstTrack = second ? ModSequencer::TIMBRE2_TRACK : ModSequencer::TIMBRE1_TRACK;
     bool lengthModulated = false;
     float lengthAmount = 0.0f;
@@ -446,9 +514,12 @@ void SynthEngine::applySeqModulation(bool second, VoiceParameters &vp) noexcept
             break;
 
         case ModSeqDest::OSC1Ctrl2:
+            vp.seq.osc1Ctrl2 = value;
+            break;
+
         case ModSeqDest::None:
         default:
-            break;  // declarado no modelado (ver `MS2000HardwareProgram::unmodelled()`)
+            break;
         }
     }
 
@@ -468,9 +539,7 @@ void SynthEngine::updateParametersFromAPVTS() noexcept
 {
     auto getParam = [this](const char *id, float defaultVal = 0.0f) -> float
     {
-        if (auto *p = apvts_.getRawParameterValue(id))
-            return p->load(std::memory_order_relaxed);
-        return defaultVal;
+        return paramValueById(id, defaultVal);
     };
 
     // Master volume
@@ -518,7 +587,11 @@ void SynthEngine::updateParametersFromAPVTS() noexcept
     voiceManagerB_.setAssignMode(assignModeOf(static_cast<int>(paramValue(true, ParamIDs::voiceMode, 1.0f))));
 
     // Arpeggiator & Mod Sequencer BPM
-    float tempoBpm = (voiceParamsA_.bpm > 20.0f) ? voiceParamsA_.bpm : 120.0f;
+    float tempoBpm = tempoBpm_.load(std::memory_order_relaxed);
+    if (tempoBpm < 20.0f || tempoBpm > 300.0f)
+        tempoBpm = 120.0f;
+    voiceParamsA_.bpm = tempoBpm;
+    voiceParamsB_.bpm = tempoBpm;
     arpeggiator_.setTempoBPM(tempoBpm);
     arpeggiator_.setEnabled(getParam(ParamIDs::arpOn, 0.0f) > 0.5f);
     arpeggiator_.setType(static_cast<ArpType>(static_cast<int>(getParam(ParamIDs::arpType, 0.0f))));
@@ -545,6 +618,7 @@ void SynthEngine::updateParametersFromAPVTS() noexcept
     // en el equipo real la resolución también vive dentro de cada bloque de timbre).
     configureTimbreSeq(false, ModSequencer::TIMBRE1_TRACK);
     configureTimbreSeq(true, ModSequencer::TIMBRE2_TRACK);
+    modSeq_.setSyncResolution(static_cast<int>(getParam(ParamIDs::modSeqResolution, 3.0f)));
     modSeq_.setTempoBPM(tempoBpm);
     const bool allowModSeq = (synthMode != 1);  // microKORG no dispone de Modulation Sequencer
     modSeq_.setEnabled(
@@ -554,12 +628,12 @@ void SynthEngine::updateParametersFromAPVTS() noexcept
     // ── Global FX parameters ──
     int eqLRaw = static_cast<int>(getParam(ParamIDs::eqLowFreq, 1.0f));
     int eqLIdx = (eqLRaw > 3) ? (eqLRaw / 32) : eqLRaw;
-    float eqLGainNorm = getParam(ParamIDs::eqLowGain, 64.0f) / 127.0f;
+    float eqLGainNorm = (getParam(ParamIDs::eqLowGain, 0.0f) + 63.0f) / 126.0f;
     float eqLGain = conversion::normalizedToDomain("eqLowGain", eqLGainNorm);
 
     int eqHRaw = static_cast<int>(getParam(ParamIDs::eqHighFreq, 2.0f));
     int eqHIdx = (eqHRaw > 3) ? (eqHRaw / 32) : eqHRaw;
-    float eqHGainNorm = getParam(ParamIDs::eqHighGain, 64.0f) / 127.0f;
+    float eqHGainNorm = (getParam(ParamIDs::eqHighGain, 0.0f) + 63.0f) / 126.0f;
     float eqHGain = conversion::normalizedToDomain("eqHighGain", eqHGainNorm);
 
     masterEQ_.setLowFreqIndex(eqLIdx);
@@ -615,10 +689,91 @@ void SynthEngine::updateParametersFromAPVTS() noexcept
                                         ParamIDs::vocoderBandLevel14,
                                         ParamIDs::vocoderBandLevel15,
                                         ParamIDs::vocoderBandLevel16};
-        for (size_t b = 0; b < 16; ++b)
+        if (synthMode == 1)
         {
-            vocoder_.setBandLevel(b, getParam(bandParamIds[b], 127.0f) / 127.0f);
+            // En modo microKORG (8 canales), cada canal controla un par de bandas adyacentes (2*ch y 2*ch+1)
+            for (size_t ch = 0; ch < 8; ++ch)
+            {
+                const float lvl = getParam(bandParamIds[ch * 2], 127.0f) / 127.0f;
+                vocoder_.setBandLevel(ch * 2, lvl);
+                vocoder_.setBandLevel(ch * 2 + 1, lvl);
+            }
         }
+        else
+        {
+            for (size_t b = 0; b < 16; ++b)
+            {
+                vocoder_.setBandLevel(b, getParam(bandParamIds[b], 127.0f) / 127.0f);
+            }
+        }
+    }
+}
+
+void SynthEngine::dispatchMidiMessage(const juce::MidiMessage &msg)
+{
+    if (msg.isNoteOn())
+    {
+        noteOn(msg.getChannel(), msg.getNoteNumber(), msg.getFloatVelocity());
+    }
+    else if (msg.isNoteOff())
+    {
+        noteOff(msg.getChannel(), msg.getNoteNumber(), msg.getFloatVelocity());
+    }
+    else if (msg.isAllNotesOff() || msg.isAllSoundOff())
+    {
+        allNotesOff();
+    }
+    else if (msg.isPitchWheel())
+    {
+        const float pb = (msg.getPitchWheelValue() - 8192) / 8192.0f;
+        setPitchBend(pb);
+        voiceParamsA_.pitchBendValue = pitchBendValue_.load(std::memory_order_relaxed);
+        voiceParamsB_.pitchBendValue = voiceParamsA_.pitchBendValue;
+        voiceManagerA_.applyBlockParams(voiceParamsA_);
+        voiceManagerB_.applyBlockParams(voiceParamsB_);
+    }
+    else if (msg.isController() && msg.getControllerNumber() == 1)
+    {
+        const float mw = msg.getControllerValue() / 127.0f;
+        setModWheel(mw);
+        const float modCombined = std::clamp(
+            modWheelValue_.load(std::memory_order_relaxed) + aftertouchValue_.load(std::memory_order_relaxed),
+            0.0f,
+            1.0f);
+        voiceParamsA_.modWheelValue = modCombined;
+        voiceParamsB_.modWheelValue = modCombined;
+        voiceManagerA_.applyBlockParams(voiceParamsA_);
+        voiceManagerB_.applyBlockParams(voiceParamsB_);
+    }
+    else if (msg.isController() && msg.getControllerNumber() == 64)
+    {
+        const bool sustainDown = msg.getControllerValue() >= 64;
+        voiceManagerA_.setHoldButtonState(sustainDown);
+        voiceManagerB_.setHoldButtonState(sustainDown);
+    }
+    else if (msg.isChannelPressure())
+    {
+        setAftertouch(msg.getChannelPressureValue() / 127.0f);
+        const float modCombined = std::clamp(
+            modWheelValue_.load(std::memory_order_relaxed) + aftertouchValue_.load(std::memory_order_relaxed),
+            0.0f,
+            1.0f);
+        voiceParamsA_.modWheelValue = modCombined;
+        voiceParamsB_.modWheelValue = modCombined;
+        voiceManagerA_.applyBlockParams(voiceParamsA_);
+        voiceManagerB_.applyBlockParams(voiceParamsB_);
+    }
+    else if (msg.isAftertouch())
+    {
+        setAftertouch(msg.getAfterTouchValue() / 127.0f);
+        const float modCombined = std::clamp(
+            modWheelValue_.load(std::memory_order_relaxed) + aftertouchValue_.load(std::memory_order_relaxed),
+            0.0f,
+            1.0f);
+        voiceParamsA_.modWheelValue = modCombined;
+        voiceParamsB_.modWheelValue = modCombined;
+        voiceManagerA_.applyBlockParams(voiceParamsA_);
+        voiceManagerB_.applyBlockParams(voiceParamsB_);
     }
 }
 
@@ -638,12 +793,27 @@ void SynthEngine::processBlock(juce::AudioBuffer<float> &buffer,
                 float hostBpm = static_cast<float>(*pos->getBpm());
                 if (hostBpm >= 20.0f && hostBpm <= 300.0f)
                 {
+                    tempoBpm_.store(hostBpm, std::memory_order_relaxed);
                     voiceParamsA_.bpm = hostBpm;
                     voiceParamsB_.bpm = hostBpm;
                     arpeggiator_.setTempoBPM(hostBpm);
                     modSeq_.setTempoBPM(hostBpm);
                 }
             }
+            if (pos->getPpqPosition().hasValue())
+            {
+                hostPpqPosition_ = *pos->getPpqPosition();
+            }
+            const bool isPlaying = pos->getIsPlaying();
+            if (isPlaying && !wasHostPlaying_)
+            {
+                if (modSeq_.isEnabled())
+                {
+                    modSeq_.triggerKeySync(ModSequencer::TIMBRE1_TRACK, ModSequencer::TRACKS_PER_TIMBRE);
+                    modSeq_.triggerKeySync(ModSequencer::TIMBRE2_TRACK, ModSequencer::TRACKS_PER_TIMBRE);
+                }
+            }
+            wasHostPlaying_ = isPlaying;
         }
     }
 
@@ -672,32 +842,15 @@ void SynthEngine::processBlock(juce::AudioBuffer<float> &buffer,
     voiceManagerA_.applyBlockParams(voiceParamsA_);
     voiceManagerB_.applyBlockParams(voiceParamsB_);
 
-    // 2. Process MIDI Messages
-    for (const auto metadata : midiMessages)
+    // 2. Drain UI-queued MIDI events (from WebUI/Bridge thread) and dispatch sample-0 host MIDI events
+    drainUiMidiEvents();
+
+    auto midiIt = midiMessages.cbegin();
+    const auto midiEnd = midiMessages.cend();
+    while (midiIt != midiEnd && (*midiIt).samplePosition <= 0)
     {
-        const auto msg = metadata.getMessage();
-        if (msg.isNoteOn())
-        {
-            noteOn(msg.getChannel(), msg.getNoteNumber(), msg.getFloatVelocity());
-        }
-        else if (msg.isNoteOff())
-        {
-            noteOff(msg.getChannel(), msg.getNoteNumber(), msg.getFloatVelocity());
-        }
-        else if (msg.isAllNotesOff() || msg.isAllSoundOff())
-        {
-            allNotesOff();
-        }
-        else if (msg.isPitchWheel())
-        {
-            float pb = (msg.getPitchWheelValue() - 8192) / 8192.0f;
-            setPitchBend(pb);
-        }
-        else if (msg.isController() && msg.getControllerNumber() == 1)
-        {
-            float mw = msg.getControllerValue() / 127.0f;
-            setModWheel(mw);
-        }
+        dispatchMidiMessage((*midiIt).getMessage());
+        ++midiIt;
     }
 
     // 3. Advance Arpeggiator Clock
@@ -716,22 +869,30 @@ void SynthEngine::processBlock(juce::AudioBuffer<float> &buffer,
     const float *inL = (numChannels > 0) ? buffer.getReadPointer(0) : nullptr;
     const float *inR = (numChannels > 1) ? buffer.getReadPointer(1) : inL;
 
-    buffer.clear();
-
     float *channelL = buffer.getWritePointer(0);
     float *channelR = (numChannels > 1) ? buffer.getWritePointer(1) : nullptr;
 
     const bool isVocoderActive = vocoder_.isEnabled();
-    const bool isExternalCarrier = apvts_.getRawParameterValue("vocoderCarrierSrc")
-                                   && apvts_.getRawParameterValue("vocoderCarrierSrc")->load() > 0.5f;
+    const bool isExternalCarrier = paramValueById(ParamIDs::vocoderCarrierSrc, 0.0f) > 0.5f;
 
     const DiagnosticTonePoint diagPoint = diagTonePoint_.load(std::memory_order_relaxed);
     const float diagFreq = testToneFrequency_.load(std::memory_order_relaxed);
     const float diagLevel = testToneLevel_.load(std::memory_order_relaxed);
+    const int scopeCapacity = static_cast<int>(scopeBufMasterL_.size());
 
-    // 4. Render Voices (Timbre A + Timbre B)
+    // 4. Render Voices (Timbre A + Timbre B) with Sample-Accurate MIDI Dispatch
     for (int s = 0; s < numSamples; ++s)
     {
+        while (midiIt != midiEnd && (*midiIt).samplePosition <= s)
+        {
+            dispatchMidiMessage((*midiIt).getMessage());
+            ++midiIt;
+        }
+
+        // Capture external input samples before in-place output write
+        const float extInL = (inL != nullptr) ? inL[s] : 0.0f;
+        const float extInR = (inR != nullptr) ? inR[s] : extInL;
+
         // Compute Diagnostic Tone sample if enabled
         float diagTone = 0.0f;
         if (diagPoint != DiagnosticTonePoint::Disabled)
@@ -752,9 +913,10 @@ void SynthEngine::processBlock(juce::AudioBuffer<float> &buffer,
         float rightSample = 0.0f;
 
         const int diagPt = static_cast<int>(diagPoint);
-        voiceManagerA_.process(leftSample, rightSample, diagPt, diagTone);
+        voiceManagerA_.process(leftSample, rightSample, diagPt, diagTone, extInL);
 
         // ── ABDScope taps: capture Voice-0 stage signals per sample ──
+        if (s < scopeCapacity)
         {
             const auto &v0 = voiceManagerA_.getVoice(0).getDiagnosticStats();
             scopeBufOscMix_[s] = v0.mixedAudio;
@@ -766,7 +928,7 @@ void SynthEngine::processBlock(juce::AudioBuffer<float> &buffer,
         if (timbreMode_ == 1 || timbreMode_ == 2)  // Split or Dual
         {
             float leftB = 0.0f, rightB = 0.0f;
-            voiceManagerB_.process(leftB, rightB, diagPt, diagTone);
+            voiceManagerB_.process(leftB, rightB, diagPt, diagTone, extInL);
             leftSample += leftB;
             rightSample += rightB;
         }
@@ -774,12 +936,12 @@ void SynthEngine::processBlock(juce::AudioBuffer<float> &buffer,
         // Multimode Vocoder processing (only if active and not in diagnostic tone mode)
         if (isVocoderActive && diagPoint == DiagnosticTonePoint::Disabled)
         {
-            float modSample = (inL != nullptr) ? inL[s] : 0.0f;
+            float modSample = extInL;
             float carrierSample = (leftSample + rightSample) * 0.5f;
 
-            if (isExternalCarrier && inR != nullptr)
+            if (isExternalCarrier)
             {
-                carrierSample = inR[s];
+                carrierSample = extInR;
             }
 
             vocoder_.process(modSample, carrierSample, leftSample, rightSample);
@@ -792,15 +954,33 @@ void SynthEngine::processBlock(juce::AudioBuffer<float> &buffer,
             rightSample += diagTone;
         }
 
-        // FX chain: Mod FX → Delay FX → Master EQ (with diagnostic bypass checks)
-        scopeBufPreFxL_[s] = leftSample;
-        scopeBufPreFxR_[s] = rightSample;
-        if (!diagBypassModFX_.load(std::memory_order_relaxed))
-            modFX_.process(leftSample, rightSample);
-        if (!diagBypassDelayFX_.load(std::memory_order_relaxed))
-            delayFX_.process(leftSample, rightSample);
-        if (!diagBypassMasterEQ_.load(std::memory_order_relaxed))
-            masterEQ_.process(leftSample, rightSample);
+        // FX chain: Mod FX → Delay FX → Master EQ (with diagnostic bypass & dynamic silence suspension)
+        if (s < scopeCapacity)
+        {
+            scopeBufPreFxL_[s] = leftSample;
+            scopeBufPreFxR_[s] = rightSample;
+        }
+
+        const bool hasSignal = (voiceManagerA_.getActiveVoiceCount() > 0)
+                               || (voiceManagerB_.getActiveVoiceCount() > 0)
+                               || (std::abs(leftSample) > 1e-7f)
+                               || (std::abs(rightSample) > 1e-7f)
+                               || (diagPoint != DiagnosticTonePoint::Disabled);
+        if (hasSignal)
+        {
+            idleTailSamplesRemaining_ = static_cast<int>(sampleRate_ * 2.5);
+        }
+
+        if (idleTailSamplesRemaining_ > 0)
+        {
+            --idleTailSamplesRemaining_;
+            if (!diagBypassModFX_.load(std::memory_order_relaxed))
+                modFX_.process(leftSample, rightSample);
+            if (!diagBypassDelayFX_.load(std::memory_order_relaxed))
+                delayFX_.process(leftSample, rightSample);
+            if (!diagBypassMasterEQ_.load(std::memory_order_relaxed))
+                masterEQ_.process(leftSample, rightSample);
+        }
 
         // ── Point 2: Pre-Master Volume (Injects before master volume attenuation) ──
         if (diagPoint == DiagnosticTonePoint::PreMasterVolume)
@@ -827,55 +1007,36 @@ void SynthEngine::processBlock(juce::AudioBuffer<float> &buffer,
         }
 
         // ── ABDScope taps: capture post-master DAC bus ──
-        scopeBufMasterL_[s] = leftSample;
-        scopeBufMasterR_[s] = rightSample;
+        if (s < scopeCapacity)
+        {
+            scopeBufMasterL_[s] = leftSample;
+            scopeBufMasterR_[s] = rightSample;
+        }
 
         currentSnapshot_.scopeBuffer[currentSnapshot_.scopeWriteIndex] = leftSample;
         currentSnapshot_.scopeWriteIndex =
             (currentSnapshot_.scopeWriteIndex + 1) % AudioThreadSnapshot::kScopeBufferSize;
     }
 
+    // Flush any trailing MIDI events whose samplePosition was >= numSamples
+    while (midiIt != midiEnd)
+    {
+        dispatchMidiMessage((*midiIt).getMessage());
+        ++midiIt;
+    }
+
     // Flush the captured per-sample scratch buffers into the ABDScope taps once per block.
-    flushScopeTaps(numSamples);
+    flushScopeTaps(std::min(numSamples, scopeCapacity));
 
     currentSnapshot_.activeVoiceCount =
         static_cast<uint32_t>(voiceManagerA_.getActiveVoiceCount() + voiceManagerB_.getActiveVoiceCount());
     currentSnapshot_.vuLeft = buffer.getMagnitude(0, 0, numSamples);
     currentSnapshot_.vuRight = (numChannels > 1) ? buffer.getMagnitude(1, 0, numSamples) : currentSnapshot_.vuLeft;
-
-    static int s_blockCounter = 0;
-    if (++s_blockCounter >= 50)
-    {
-        s_blockCounter = 0;
-        uint32_t activeV = currentSnapshot_.activeVoiceCount;
-        float peak = currentSnapshot_.vuLeft;
-        if (activeV > 0 || diagPoint != DiagnosticTonePoint::Disabled || peak > 0.0001f
-            || diagBypassVCA_.load(std::memory_order_relaxed))
-        {
-            const auto &v0 = voiceManagerA_.getVoice(0).getDiagnosticStats();
-            ABD_LOG(juce::String("[DSP-AUDIT] ActiveVoices: ") + juce::String(activeV)
-                    + " DiagPt: " + juce::String(static_cast<int>(diagPoint)) + " PeakOut: " + juce::String(peak)
-                    + " MasterGain: " + juce::String(masterVolume_.load())
-                    + " VocoderActive: " + juce::String(isVocoderActive ? "1" : "0")
-                    + " Bypasses [Filt:" + juce::String(diagBypassFilter_.load() ? "1" : "0")
-                    + " VCA:" + juce::String(diagBypassVCA_.load() ? "1" : "0")
-                    + " Mix:" + juce::String(diagBypassOscMixer_.load() ? "1" : "0") + "]"
-                    + " Voice0 [Pitch:" + juce::String(v0.basePitch, 1) + " Osc1:" + juce::String(v0.osc1Sig, 4)
-                    + " EG2:" + juce::String(v0.eg2Val, 4) + " Filt:" + juce::String(v0.filtered, 4)
-                    + " VCA:" + juce::String(v0.vcaOut, 4) + " LOut:" + juce::String(v0.leftOutSample, 4) + "]"
-                    + " Params [CutoffNorm:" + juce::String(voiceParamsA_.filterCutoffNorm) + " AmpLvl:"
-                    + juce::String(voiceParamsA_.ampLevel) + " Osc1Lvl:" + juce::String(voiceParamsA_.osc1Level)
-                    + " Osc1Wave:" + juce::String(static_cast<int>(voiceParamsA_.osc1Type)) + "]");
-        }
-    }
 }
 
 void SynthEngine::noteOn(int midiChannel, int midiNoteNumber, float velocity)
 {
-    ABD_LOG(juce::String("[ENGINE] noteOn: ch=") + juce::String(midiChannel) + " note=" + juce::String(midiNoteNumber)
-            + " vel=" + juce::String(velocity) + " arp=" + juce::String(arpeggiator_.isEnabled() ? "ON" : "OFF")
-            + " timbreMode=" + juce::String(timbreMode_)
-            + " maxPoly=" + juce::String(voiceManagerA_.getMaxPolyphony()));
+    (void) midiChannel;
 
     // ¿Es la primera nota de cada timbre? El Key Sync "Timbre" reinicia la fila al
     // primer note-on del timbre, y "Voice" en cada uno (byte 53 bits 0,1 reales).
@@ -926,8 +1087,9 @@ void SynthEngine::noteOn(int midiChannel, int midiNoteNumber, float velocity)
 
 void SynthEngine::noteOff(int midiChannel, int midiNoteNumber, float velocity, bool allowTailOff)
 {
-    ABD_LOG(juce::String("[ENGINE] noteOff: ch=") + juce::String(midiChannel)
-            + " note=" + juce::String(midiNoteNumber));
+    (void) midiChannel;
+    (void) velocity;
+    (void) allowTailOff;
     if (arpeggiator_.isEnabled())
     {
         arpeggiator_.noteOff(midiNoteNumber);
@@ -1001,4 +1163,57 @@ void SynthEngine::allNotesOff()
     voiceManagerB_.allNotesOff();
     arpeggiator_.allNotesOff();
 }
+
+void SynthEngine::pushUiMidiEvent(const QueuedUiMidiEvent &ev) noexcept
+{
+    const size_t currentWrite = uiMidiWritePos_.load(std::memory_order_relaxed);
+    const size_t nextWrite = (currentWrite + 1) % kUiMidiQueueSize;
+    if (nextWrite != uiMidiReadPos_.load(std::memory_order_acquire))
+    {
+        uiMidiQueue_[currentWrite] = ev;
+        uiMidiWritePos_.store(nextWrite, std::memory_order_release);
+    }
+}
+
+void SynthEngine::drainUiMidiEvents() noexcept
+{
+    size_t currentRead = uiMidiReadPos_.load(std::memory_order_relaxed);
+    const size_t currentWrite = uiMidiWritePos_.load(std::memory_order_acquire);
+
+    while (currentRead != currentWrite)
+    {
+        const auto &ev = uiMidiQueue_[currentRead];
+        switch (ev.type)
+        {
+            case QueuedUiMidiEvent::Type::NoteOn:
+                noteOn(ev.channel, ev.note, ev.velocity);
+                break;
+            case QueuedUiMidiEvent::Type::NoteOff:
+                noteOff(ev.channel, ev.note, ev.velocity, ev.allowTailOff);
+                break;
+            case QueuedUiMidiEvent::Type::AllNotesOff:
+                allNotesOff();
+                break;
+        }
+        currentRead = (currentRead + 1) % kUiMidiQueueSize;
+    }
+
+    uiMidiReadPos_.store(currentRead, std::memory_order_release);
+}
+
+void SynthEngine::enqueueNoteOn(int midiChannel, int midiNoteNumber, float velocity) noexcept
+{
+    pushUiMidiEvent({QueuedUiMidiEvent::Type::NoteOn, midiChannel, midiNoteNumber, velocity, true});
+}
+
+void SynthEngine::enqueueNoteOff(int midiChannel, int midiNoteNumber, float velocity, bool allowTailOff) noexcept
+{
+    pushUiMidiEvent({QueuedUiMidiEvent::Type::NoteOff, midiChannel, midiNoteNumber, velocity, allowTailOff});
+}
+
+void SynthEngine::enqueueAllNotesOff() noexcept
+{
+    pushUiMidiEvent({QueuedUiMidiEvent::Type::AllNotesOff, 1, 0, 0.0f, false});
+}
+
 }  // namespace ABDMS2000

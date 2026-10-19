@@ -60,8 +60,9 @@ if defined SKIP_WASM (
 ) else (
     pushd wasm
     call build_wasm.bat
+    set WASM_ERR=!ERRORLEVEL!
     popd
-    if %ERRORLEVEL% neq 0 (
+    if !WASM_ERR! neq 0 (
         echo [ERROR] Fallo en la compilacion WebAssembly WASM.
         goto error_exit
     )

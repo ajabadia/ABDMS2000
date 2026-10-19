@@ -1,8 +1,11 @@
 #pragma once
 #include <juce_audio_processors/juce_audio_processors.h>
 #include <ScopeDataCollector.h>
+#include <array>
 #include <atomic>
 #include <memory>
+#include <string_view>
+#include <unordered_map>
 #include <vector>
 #include "AppLogger.h"
 #include "AudioThreadSnapshot.h"
@@ -86,10 +89,15 @@ class SynthEngine
         return currentSnapshot_;
     }
 
-    // Eventos MIDI de alto nivel
+    // Eventos MIDI de alto nivel (thread de audio / tests síncronos)
     void noteOn(int midiChannel, int midiNoteNumber, float velocity);
     void noteOff(int midiChannel, int midiNoteNumber, float velocity, bool allowTailOff = true);
     void allNotesOff();
+
+    // Cola lock-free SPSC para eventos MIDI disparados desde el hilo de UI (BridgeActions)
+    void enqueueNoteOn(int midiChannel, int midiNoteNumber, float velocity) noexcept;
+    void enqueueNoteOff(int midiChannel, int midiNoteNumber, float velocity, bool allowTailOff = true) noexcept;
+    void enqueueAllNotesOff() noexcept;
 
     // Ruedas de control (no bloqueantes)
     void setPitchBend(float bendMinus1to1) noexcept
@@ -99,6 +107,15 @@ class SynthEngine
     void setModWheel(float mod0to1) noexcept
     {
         modWheelValue_.store(mod0to1, std::memory_order_relaxed);
+    }
+    void setAftertouch(float at0to1) noexcept
+    {
+        aftertouchValue_.store(at0to1, std::memory_order_relaxed);
+    }
+    void setTempoBPM(float bpm) noexcept
+    {
+        if (bpm >= 20.0f && bpm <= 300.0f)
+            tempoBpm_.store(bpm, std::memory_order_relaxed);
     }
 
     // Diagnóstico (solo en desarrollo)
@@ -144,6 +161,7 @@ class SynthEngine
     juce::AudioProcessorValueTreeState &apvts_;
 
     // Helpers pinchados por DSPCoreTests (timbre params + mod-seq apply).
+    float paramValueById(const char *id, float defaultVal = 0.0f) const noexcept;
     float paramValueById(const juce::String &id, float defaultVal) const noexcept;
     float paramValue(bool second, const char *id, float defaultVal = 0.0f) const noexcept;
 
@@ -156,10 +174,44 @@ class SynthEngine
     /** Aplica la salida de las 3 filas del timbre a sus parámetros de voz. */
     void applySeqModulation(bool second, VoiceParameters &out) noexcept;
 
-  public:
   private:
     double sampleRate_ {44100.0};
     int samplesPerBlock_ {512};
+
+    // Caché RT-safe de punteros atómicos del APVTS (cero alojamientos en processBlock)
+    std::unordered_map<std::string_view, std::atomic<float> *> paramCache_;
+    std::unordered_map<std::string_view, std::atomic<float> *> timbre2ParamCache_;
+
+    struct SeqRowParamPtrs
+    {
+        std::atomic<float> *dest {nullptr};
+        std::atomic<float> *motion {nullptr};
+        std::array<std::atomic<float> *, ModSequencer::NUM_STEPS> steps {};
+    };
+    std::array<std::array<SeqRowParamPtrs, ModSequencer::TRACKS_PER_TIMBRE>, 2> seqParamPtrs_ {};
+
+    // Cola SPSC lock-free de eventos MIDI desde la UI
+    struct QueuedUiMidiEvent
+    {
+        enum class Type : uint8_t
+        {
+            NoteOn = 0,
+            NoteOff = 1,
+            AllNotesOff = 2
+        };
+        Type type {Type::NoteOn};
+        int channel {1};
+        int note {60};
+        float velocity {0.0f};
+        bool allowTailOff {true};
+    };
+    static constexpr size_t kUiMidiQueueSize = 256;
+    std::array<QueuedUiMidiEvent, kUiMidiQueueSize> uiMidiQueue_ {};
+    std::atomic<size_t> uiMidiWritePos_ {0};
+    std::atomic<size_t> uiMidiReadPos_ {0};
+
+    void pushUiMidiEvent(const QueuedUiMidiEvent &ev) noexcept;
+    void drainUiMidiEvents() noexcept;
 
     // Arquitectura de dos timbres (Single / Split / Layer), como el equipo real:
     // cada timbre tiene sus **propios** parámetros (`t2…` para el Timbre 2) y su
@@ -185,6 +237,8 @@ class SynthEngine
     std::atomic<float> masterVolume_ {0.8f};
     std::atomic<float> pitchBendValue_ {0.0f};
     std::atomic<float> modWheelValue_ {0.0f};
+    std::atomic<float> aftertouchValue_ {0.0f};
+    std::atomic<float> tempoBpm_ {120.0f};
     std::atomic<DiagnosticTonePoint> diagTonePoint_ {DiagnosticTonePoint::Disabled};
     std::atomic<float> testToneFrequency_ {440.0f};
     std::atomic<float> testToneLevel_ {0.25f};
@@ -198,6 +252,9 @@ class SynthEngine
     std::atomic<bool> diagBypassMasterEQ_ {false};
     double testTonePhase_ {0.0};
     juce::LinearSmoothedValue<float> smoothedMasterGain_ {0.8f};
+    bool wasHostPlaying_ {false};
+    double hostPpqPosition_ {0.0};
+    int idleTailSamplesRemaining_ {0};
 
     // ── ABDScope taps (native C++ capture, block-flushed) ──
     abd::scope::ScopeDataCollector scopeCollector_;
@@ -219,6 +276,7 @@ class SynthEngine
 
     void registerScopeTaps();
     void flushScopeTaps(int numSamples) noexcept;
+    void dispatchMidiMessage(const juce::MidiMessage &msg);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SynthEngine)
 };

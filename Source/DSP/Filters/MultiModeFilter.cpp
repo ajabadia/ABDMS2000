@@ -24,13 +24,19 @@ void MultiModeFilter::setType(FilterType type) noexcept
 
 void MultiModeFilter::setCutoff(float cutoffHz) noexcept
 {
-    cutoffHz_ = DSPUtils::clamp(cutoffHz, 20.0f, static_cast<float>(sampleRate_ * 0.49));
+    const float clamped = DSPUtils::clamp(cutoffHz, 5.0f, static_cast<float>(sampleRate_ * 0.49));
+    if (std::abs(clamped - cutoffHz_) <= 1e-3f)
+        return;
+    cutoffHz_ = clamped;
     updateCoefficients();
 }
 
 void MultiModeFilter::setResonance(float resonance0to1) noexcept
 {
-    resonance_ = DSPUtils::clamp(resonance0to1, 0.0f, 1.0f);
+    const float clamped = DSPUtils::clamp(resonance0to1, 0.0f, 1.0f);
+    if (std::abs(clamped - resonance_) <= 1e-5f)
+        return;
+    resonance_ = clamped;
     updateCoefficients();
 }
 
@@ -54,17 +60,17 @@ void MultiModeFilter::updateCoefficients() noexcept
 
 float MultiModeFilter::process(float inputSample) noexcept
 {
-    // Apply bass compensation
+    // Apply subtle resonance headroom compensation
     float gainComp = FilterResonanceComp::computeGainCompensation(resonance_);
     float in = inputSample * gainComp;
 
-    // Anti-denormal / soft-clip protection in feedback loop
-    in = DSPUtils::softClip(in);
+    // Headroom-preserving input soft-clip (keeps +/-1.0 linear while bounding +/-2.0 mixer sums)
+    in = DSPUtils::softClip(in * 0.5f) * 2.0f;
 
-    // --- First 2-pole SVF stage ---
+    // --- First 2-pole SVF stage (with DSP56362 internal resonator state saturation) ---
     float hp1 = (in - (2.0f * R_ + g_) * s1_1_ - s1_2_) * h_;
     float bp1 = g_ * hp1 + s1_1_;
-    s1_1_ = g_ * hp1 + bp1;  // Integrator 1 state update
+    s1_1_ = DSPUtils::softClip(g_ * hp1 + bp1);  // Integrator 1 state update with saturation
     float lp1 = g_ * bp1 + s1_2_;
     s1_2_ = g_ * bp1 + lp1;  // Integrator 2 state update
 
@@ -86,7 +92,7 @@ float MultiModeFilter::process(float inputSample) noexcept
         float in2 = lp1;
         float hp2 = (in2 - (2.0f * R_ + g_) * s2_1_ - s2_2_) * h_;
         float bp2 = g_ * hp2 + s2_1_;
-        s2_1_ = g_ * hp2 + bp2;
+        s2_1_ = DSPUtils::softClip(g_ * hp2 + bp2);
         float lp2 = g_ * bp2 + s2_2_;
         s2_2_ = g_ * bp2 + lp2;
 

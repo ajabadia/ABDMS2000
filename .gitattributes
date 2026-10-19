@@ -1,0 +1,7 @@
+# Este repo no llevaba .gitattributes: se crea con UNA sola regla, la minima
+# para que .github/prune_baselines.sh sobreviva al checkout. Un sh con CRLF no
+# arranca (bash se come el retorno de carro y el fallo sale como error de
+# sintaxis), y con core.autocrlf=true un checkout en Windows lo devolveria en
+# CRLF. No se anade nada mas (ni `* text=auto`) a proposito: el resto del
+# arbol se queda como lo decide cada maquina.
+/.github/prune_baselines.sh text eol=lf

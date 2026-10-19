@@ -1,4 +1,5 @@
 #pragma once
+#include <algorithm>
 #include <array>
 #include <cstdint>
 #include <cstring>
@@ -74,21 +75,49 @@ struct MS2000ProgramData
         rawData[VOICE_BYTE + 2] = 0;  // Portamento time 0
 
         // Populate default values from ParameterRegistry
+        int nonSysexIdx = 0;
         for (const auto &meta : ParameterRegistry::getAllParameters())
         {
-            if (meta.sysexOffset < 0 || isVoiceByteParam(meta.id))
+            if (isVoiceByteParam(meta.id))
                 continue;
-            const auto off = TIMBRE_START + static_cast<size_t>(meta.sysexOffset);
-            if (off >= UNPACKED_PROGRAM_SIZE)
+            const int offInt = (meta.sysexOffset >= 0)
+                                   ? (static_cast<int>(TIMBRE_START) + meta.sysexOffset)
+                                   : (static_cast<int>(NON_SYSEX_START) + (nonSysexIdx++));
+            if (offInt < 0 || static_cast<size_t>(offInt) >= UNPACKED_PROGRAM_SIZE)
                 continue;
+            const auto off = static_cast<size_t>(offInt);
 
             if (meta.type == ParamType::Boolean)
                 rawData[off] = (meta.defaultValue > 0.5f) ? 64 : 0;
+            else if (meta.type == ParamType::Continuous && meta.max <= 1.0f)
+                rawData[off] = static_cast<uint8_t>(std::clamp(static_cast<int>(meta.defaultValue * 100.0f + 0.5f), 0, 100));
             else if (meta.min < 0.0f)
                 rawData[off] = static_cast<uint8_t>(static_cast<int>(meta.defaultValue) + 64);
             else
                 rawData[off] = static_cast<uint8_t>(meta.defaultValue);
         }
+    }
+
+    static constexpr size_t NON_SYSEX_START = 0x10B;
+
+    static int getStorageOffsetById(const char *id) noexcept
+    {
+        if (id == nullptr)
+            return -1;
+        int nonSysexIdx = 0;
+        for (const auto &meta : ParameterRegistry::getAllParameters())
+        {
+            if (isVoiceByteParam(meta.id))
+                continue;
+            const int offInt = (meta.sysexOffset >= 0)
+                                   ? (static_cast<int>(TIMBRE_START) + meta.sysexOffset)
+                                   : (static_cast<int>(NON_SYSEX_START) + (nonSysexIdx++));
+            if (std::strcmp(meta.id, id) == 0)
+            {
+                return (offInt >= 0 && static_cast<size_t>(offInt) < UNPACKED_PROGRAM_SIZE) ? offInt : -1;
+            }
+        }
+        return -1;
     }
 
     // ─── Name ────────────────────────────────────────────────────────────────
@@ -158,21 +187,24 @@ struct MS2000ProgramData
         }
 
         const auto *meta = ParameterRegistry::getParameter(id);
-        if (!meta || meta->sysexOffset < 0)
+        if (!meta)
             return;
-        const auto off = TIMBRE_START + static_cast<size_t>(meta->sysexOffset);
-        if (off >= UNPACKED_PROGRAM_SIZE)
+        const int offInt = getStorageOffsetById(id);
+        if (offInt < 0 || static_cast<size_t>(offInt) >= UNPACKED_PROGRAM_SIZE)
             return;
+        const auto off = static_cast<size_t>(offInt);
 
         if (meta->type == ParamType::Boolean)
             rawData[off] = (value > 0.5f) ? 64 : 0;
+        else if (meta->type == ParamType::Continuous && meta->max <= 1.0f)
+            rawData[off] = static_cast<uint8_t>(std::clamp(static_cast<int>(value * 100.0f + 0.5f), 0, 100));
         else if (meta->min < 0.0f)
             rawData[off] = static_cast<uint8_t>(static_cast<int>(value) + 64);
         else
             rawData[off] = static_cast<uint8_t>(value);
     }
 
-    // ─── APVTS ↔ RawData (registry-driven) ───────────────────────────────────
+    // ─── APVTS / Engine ↔ RawData (registry-driven) ──────────────────────────
 
     static bool isVoiceByteParam(const char *id) noexcept
     {
@@ -180,38 +212,37 @@ struct MS2000ProgramData
                || id == ParamIDs::portamentoTime;
     }
 
-#if ABD_HAS_JUCE
-    void applyToAPVTS(juce::AudioProcessorValueTreeState &apvts) const
+    template <typename Fn> void forEachParameterValue(Fn &&callback) const
     {
-        // 1. Unpack the voice byte
         const uint8_t voiceByte = rawData[VOICE_BYTE];
-        auto setChoice = [&](const char *id, float rawVal)
-        {
-            if (auto *p = apvts.getParameter(id))
-                p->setValueNotifyingHost(p->convertTo0to1(rawVal));
-        };
-        setChoice(ParamIDs::voiceMode, static_cast<float>(voiceByte & 0x03));
-        setChoice(ParamIDs::unisonDetune, static_cast<float>((voiceByte >> 2) & 0x0F));
-        setChoice(ParamIDs::portamentoOn, static_cast<float>((voiceByte >> 6) & 0x01));
+        callback(ParamIDs::voiceMode, static_cast<float>(voiceByte & 0x03));
+        callback(ParamIDs::unisonDetune, static_cast<float>((voiceByte >> 2) & 0x0F));
+        callback(ParamIDs::portamentoOn, static_cast<float>((voiceByte >> 6) & 0x01));
+        callback(ParamIDs::portamentoTime, static_cast<float>(rawData[VOICE_BYTE + 2]));
 
-        if (auto *p = apvts.getParameter(ParamIDs::portamentoTime))
-            p->setValueNotifyingHost(p->convertTo0to1(static_cast<float>(rawData[VOICE_BYTE + 2])));
-
-        // 2. Iterate registry for all other timbre parameters
+        int nonSysexIdx = 0;
         for (const auto &meta : ParameterRegistry::getAllParameters())
         {
-            if (meta.sysexOffset < 0)
-                continue;
             if (isVoiceByteParam(meta.id))
                 continue;
-            const auto off = TIMBRE_START + static_cast<size_t>(meta.sysexOffset);
-            if (off >= UNPACKED_PROGRAM_SIZE)
+            const int offInt = (meta.sysexOffset >= 0)
+                                   ? (static_cast<int>(TIMBRE_START) + meta.sysexOffset)
+                                   : (static_cast<int>(NON_SYSEX_START) + (nonSysexIdx++));
+            if (offInt < 0 || static_cast<size_t>(offInt) >= UNPACKED_PROGRAM_SIZE)
                 continue;
+            const auto off = static_cast<size_t>(offInt);
 
             float value;
             if (meta.type == ParamType::Boolean)
             {
                 value = (rawData[off] >= 64) ? 1.0f : 0.0f;
+            }
+            else if (meta.type == ParamType::Continuous && meta.max <= 1.0f)
+            {
+                if (std::strcmp(meta.id, ParamIDs::masterVolume) == 0 && rawData[off] == 0)
+                    value = meta.defaultValue;
+                else
+                    value = static_cast<float>(std::min<uint8_t>(rawData[off], 100)) / 100.0f;
             }
             else if (meta.type == ParamType::Choice)
             {
@@ -219,17 +250,28 @@ struct MS2000ProgramData
             }
             else if (meta.min < 0.0f)
             {
-                // Signed parameters stored as unsigned with +64 bias
                 value = static_cast<float>(static_cast<int>(rawData[off]) - 64);
             }
             else
             {
                 value = static_cast<float>(rawData[off]);
             }
-
-            if (auto *p = apvts.getParameter(meta.id))
-                p->setValueNotifyingHost(p->convertTo0to1(value));
+            callback(meta.id, value);
         }
+    }
+
+#if ABD_HAS_JUCE
+    void applyToAPVTS(juce::AudioProcessorValueTreeState &apvts) const
+    {
+        forEachParameterValue(
+            [&apvts](const char *id, float value)
+            {
+                // Preserve global host settings across individual program changes
+                if (std::strcmp(id, ParamIDs::masterVolume) == 0 || std::strcmp(id, ParamIDs::synthMode) == 0)
+                    return;
+                if (auto *p = apvts.getParameter(id))
+                    p->setValueNotifyingHost(p->convertTo0to1(value));
+            });
     }
 
     void extractFromAPVTS(const juce::AudioProcessorValueTreeState &apvts, const std::string &progName)
@@ -251,15 +293,17 @@ struct MS2000ProgramData
             rawData[VOICE_BYTE + 2] = static_cast<uint8_t>(p->load());
 
         // 2. Iterate registry for all other timbre parameters
+        int nonSysexIdx = 0;
         for (const auto &meta : ParameterRegistry::getAllParameters())
         {
-            if (meta.sysexOffset < 0)
-                continue;
             if (isVoiceByteParam(meta.id))
                 continue;
-            const auto off = TIMBRE_START + static_cast<size_t>(meta.sysexOffset);
-            if (off >= UNPACKED_PROGRAM_SIZE)
+            const int offInt = (meta.sysexOffset >= 0)
+                                   ? (static_cast<int>(TIMBRE_START) + meta.sysexOffset)
+                                   : (static_cast<int>(NON_SYSEX_START) + (nonSysexIdx++));
+            if (offInt < 0 || static_cast<size_t>(offInt) >= UNPACKED_PROGRAM_SIZE)
                 continue;
+            const auto off = static_cast<size_t>(offInt);
 
             float native = 0.0f;
             if (auto *p = apvts.getRawParameterValue(meta.id))
@@ -268,6 +312,10 @@ struct MS2000ProgramData
             if (meta.type == ParamType::Boolean)
             {
                 rawData[off] = (native > 0.5f) ? 64 : 0;
+            }
+            else if (meta.type == ParamType::Continuous && meta.max <= 1.0f)
+            {
+                rawData[off] = static_cast<uint8_t>(std::clamp(static_cast<int>(native * 100.0f + 0.5f), 0, 100));
             }
             else if (meta.type == ParamType::Choice)
             {

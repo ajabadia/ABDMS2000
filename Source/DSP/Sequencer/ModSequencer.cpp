@@ -125,15 +125,22 @@ void ModSequencer::advanceStep() noexcept
     for (size_t t = 0; t < NUM_TRACKS; ++t)
     {
         const int len = std::max(1, std::min(16, tracks_[t].length));
+        const bool isOneShot = tracks_[t].oneShot;
 
         switch (tracks_[t].mode)
         {
         case ModSeqMode::Forward:
-            currentStep_[t] = (currentStep_[t] + 1) % len;
+            if (isOneShot && currentStep_[t] >= len - 1)
+                currentStep_[t] = len - 1;
+            else
+                currentStep_[t] = (currentStep_[t] + 1) % len;
             break;
 
         case ModSeqMode::Backward:
-            currentStep_[t] = (currentStep_[t] - 1 + len) % len;
+            if (isOneShot && currentStep_[t] <= 0)
+                currentStep_[t] = 0;
+            else
+                currentStep_[t] = (currentStep_[t] - 1 + len) % len;
             break;
 
         case ModSeqMode::Bounce:
@@ -148,11 +155,18 @@ void ModSequencer::advanceStep() noexcept
             }
             else
             {
-                currentStep_[t]--;
-                if (currentStep_[t] <= 0)
+                if (isOneShot && currentStep_[t] <= 0)
                 {
                     currentStep_[t] = 0;
-                    bounceDirection_[t] = true;
+                }
+                else
+                {
+                    currentStep_[t]--;
+                    if (currentStep_[t] <= 0)
+                    {
+                        currentStep_[t] = 0;
+                        bounceDirection_[t] = true;
+                    }
                 }
             }
             break;
