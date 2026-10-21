@@ -80,6 +80,7 @@ export function decodeHardwareProgram254(raw, index = 0) {
   const arpResolution = ARP_RES_TABLE[Math.min(5, raw[0x23])];
 
   const eqFreqXform = (v) => Math.min(3, Math.floor((v * 4) / 30));
+  const eqGainXform = (v) => Math.max(0, Math.min(127, Math.round(64 + Math.max(-12, Math.min(12, v - 64)) * (63 / 12))));
 
   const params = {
     synthVocoderMode: isVocoder ? 1 : 0,
@@ -98,9 +99,9 @@ export function decodeHardwareProgram254(raw, index = 0) {
     modFxType: raw[0x19],
     modFxOn: raw[0x18] > 0 ? 1 : 0,
     eqHighFreq: eqFreqXform(raw[0x1A]),
-    eqHighGain: raw[0x1B] - 64,
+    eqHighGain: eqGainXform(raw[0x1B]),
     eqLowFreq: eqFreqXform(raw[0x1C]),
-    eqLowGain: raw[0x1D] - 64,
+    eqLowGain: eqGainXform(raw[0x1D]),
     arpTempo,
     arpOn,
     arpLatch,
@@ -130,24 +131,36 @@ export function decodeHardwareProgram254(raw, index = 0) {
     const b = TIMBRE1_START;
     params.voiceMode = extractBits(raw[b + 1], 6, 7);
     params.unisonDetune = raw[b + 2];
+    params.pitchTune = raw[b + 3] - 64;
+    params.pitchBendRange = raw[b + 4] - 64;
+    params.pitchTranspose = raw[b + 5] - 64;
+    params.vibratoInt = raw[b + 6] - 64;
     params.portamentoTime = extractBits(raw[b + 15], 0, 6);
     params.portamentoOn = params.portamentoTime > 0 ? 1 : 0;
     params.osc1Wave = raw[b + 7];
     params.osc1Ctrl1 = raw[b + 8];
     params.osc1Ctrl2 = raw[b + 9];
     params.osc1DwgsWave = raw[b + 10];
+    params.vocoderHpfGate = extractBits(raw[b + 12], 0, 0);
     params.mixOsc1Level = raw[b + 16];
     params.mixOsc2Level = raw[b + 17];
     params.vocoderHpfLevel = raw[b + 18];
     params.filterType = raw[b + 19];
+    params.vocoderThreshold = raw[b + 19];
     params.filterCutoff = raw[b + 20];
+    params.vocoderCutoff = raw[b + 20] - 64;
     params.filterResonance = raw[b + 21];
+    params.vocoderResonance = raw[b + 21];
     params.vocoderFormantShift = FORMANT_SHIFT_TABLE[Math.min(4, raw[b + 22])];
     params.vocoderGateSense = raw[b + 23];
+    params.vocoderModSource = extractBits(raw[b + 24], 0, 2);
     params.ampLevel = raw[b + 25];
     params.ampPan = raw[b + 26] - 64;
+    params.vocoderEfSense = raw[b + 26];
     params.ampDistortion = extractBits(raw[b + 27], 0, 0);
+    params.ampGate = extractBits(raw[b + 27], 6, 6);
     params.vocoderDirectLevel = raw[b + 28];
+    params.vocoderModInt = raw[b + 29] - 64;
     params.eg1Attack = raw[b + 30];
     params.eg1Decay = raw[b + 31];
     params.eg1Sustain = raw[b + 32];
@@ -164,20 +177,21 @@ export function decodeHardwareProgram254(raw, index = 0) {
     params.lfo2Freq = raw[b + 42];
     for (let i = 0; i < 16; i++) {
       params[`vocoderBandLevel${i + 1}`] = raw[b + 46 + i];
+      params[`vocoderBandPan${i + 1}`] = raw[b + 62 + i] - 64;
     }
   } else {
     for (let t = 0; t < 2; t++) {
       const b = TIMBRE1_START + t * TIMBRE_SIZE;
       const pid = (k) => (t === 1 ? toTimbre2Id(k) : k);
 
-      if (t === 0) {
-        params.voiceMode = extractBits(raw[b + 1], 6, 7);
-        params.unisonDetune = raw[b + 2];
-        params.portamentoTime = extractBits(raw[b + 15], 0, 6);
-        params.portamentoOn = params.portamentoTime > 0 ? 1 : 0;
-      } else {
-        params.t2PortamentoTime = extractBits(raw[b + 15], 0, 6);
-      }
+      params[pid('voiceMode')] = extractBits(raw[b + 1], 6, 7);
+      params[pid('unisonDetune')] = raw[b + 2];
+      params[pid('pitchTune')] = raw[b + 3] - 64;
+      params[pid('pitchBendRange')] = raw[b + 4] - 64;
+      params[pid('pitchTranspose')] = raw[b + 5] - 64;
+      params[pid('vibratoInt')] = raw[b + 6] - 64;
+      params[pid('portamentoTime')] = extractBits(raw[b + 15], 0, 6);
+      params[pid('portamentoOn')] = params[pid('portamentoTime')] > 0 ? 1 : 0;
 
       params[pid('osc1Wave')] = raw[b + 7];
       params[pid('osc1Ctrl1')] = raw[b + 8];
@@ -199,6 +213,7 @@ export function decodeHardwareProgram254(raw, index = 0) {
       params[pid('ampLevel')] = raw[b + 25];
       params[pid('ampPan')] = raw[b + 26] - 64;
       params[pid('ampDistortion')] = extractBits(raw[b + 27], 0, 0);
+      params[pid('ampGate')] = extractBits(raw[b + 27], 6, 6);
       params[pid('ampVelo')] = raw[b + 28] - 64;
       params[pid('ampKeyTrack')] = raw[b + 29] - 64;
       params[pid('eg1Attack')] = raw[b + 30];
@@ -233,11 +248,9 @@ export function decodeHardwareProgram254(raw, index = 0) {
       params[pid('patch4Destination')] = extractBits(raw[b + 50], 4, 7);
       params[pid('patch4Intensity')] = raw[b + 51] - 64;
 
-      if (t === 0) {
-        params.modSeqOn = extractBits(raw[b + 52], 7, 7);
-        params.modSeqResolution = extractBits(raw[b + 52], 0, 4);
-        params.modSeqType = extractBits(raw[b + 53], 2, 3);
-      }
+      params[pid('modSeqOn')] = extractBits(raw[b + 52], 7, 7);
+      params[pid('modSeqResolution')] = extractBits(raw[b + 52], 0, 4);
+      params[pid('modSeqType')] = extractBits(raw[b + 53], 2, 3);
       params[pid('seqRunMode')] = extractBits(raw[b + 52], 6, 6);
       params[pid('seqLastStep')] = extractBits(raw[b + 53], 4, 7) + 1;
       params[pid('seqKeySync')] = extractBits(raw[b + 53], 0, 1);
