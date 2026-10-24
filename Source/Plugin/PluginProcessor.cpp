@@ -20,7 +20,7 @@ static struct PluginProcStaticInit
 
 ABDMS2000AudioProcessor::ABDMS2000AudioProcessor()
     : AudioProcessor(BusesProperties()
-                         .withInput("Input", juce::AudioChannelSet::stereo(), false)
+                         .withInput("Input", juce::AudioChannelSet::stereo(), true)
                          .withOutput("Output", juce::AudioChannelSet::stereo(), true))
     , apvts_(*this, nullptr, "Parameters", ParameterRegistry::createParameterLayout())
     , engine_(apvts_)
@@ -88,12 +88,6 @@ void ABDMS2000AudioProcessor::setCurrentProgram(int index)
     {
         sysexManager_->setActiveProgramIndex(index);
         sysexManager_->loadCurrentProgramIntoAPVTS(apvts_);
-
-        // Unless this is specifically a vocoder program (like index 4: A.05 Vocoder), disable vocoder mode
-        if (auto *p = apvts_.getParameter(ParamIDs::synthVocoderMode))
-        {
-            p->setValueNotifyingHost((index == 4) ? 1.0f : 0.0f);
-        }
 
         updateHostDisplay();
         notifyStateRestored();
@@ -333,10 +327,12 @@ void ABDMS2000AudioProcessor::notifyStateRestored()
         else
         {
             auto cb = onStateRestored_;
-            juce::MessageManager::callAsync([cb]() {
-                if (cb)
-                    cb();
-            });
+            juce::MessageManager::callAsync(
+                [cb]()
+                {
+                    if (cb)
+                        cb();
+                });
         }
     }
 }

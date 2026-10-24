@@ -95,7 +95,8 @@ std::optional<juce::WebBrowserComponent::Resource> pluginResourceProvider(const 
         if (decodedPath.containsChar('?'))
             decodedPath = decodedPath.upToFirstOccurrenceOf("?", false, false);
 
-        // Serve from ABDShared (Assets/abdbank) or ABDSharedAssets/abdbank junction (which points to ABDBankManager/WebUI)
+        // Serve from ABDShared (Assets/abdbank) or ABDSharedAssets/abdbank junction (which points to
+        // ABDBankManager/WebUI)
         juce::File bankRoot;
         if (auto sharedRoot = findABDSharedRoot(); sharedRoot.isDirectory())
         {

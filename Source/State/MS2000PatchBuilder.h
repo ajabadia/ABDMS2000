@@ -133,9 +133,7 @@ class MS2000PatchBuilder
             return static_cast<int>(seed % static_cast<uint32_t>(maxExclusive));
         };
         auto nextRangeInt = [&nextInt](int minInclusive, int maxInclusive) -> int
-        {
-            return minInclusive + nextInt(maxInclusive - minInclusive + 1);
-        };
+        { return minInclusive + nextInt(maxInclusive - minInclusive + 1); };
         auto nextBool = [&seed]() -> bool
         {
             seed = seed * 1664525u + 1013904223u;
@@ -173,9 +171,7 @@ class MS2000PatchBuilder
             setTParam("osc2ModType", static_cast<float>(osc2Mod));
 
             static constexpr int kMusicalIntervals[] = {-12, -7, -5, 0, 0, 7, 12};
-            const int semi = (osc2Mod == 0)
-                                 ? kMusicalIntervals[nextInt(7)]
-                                 : nextRangeInt(-12, 12);
+            const int semi = (osc2Mod == 0) ? kMusicalIntervals[nextInt(7)] : nextRangeInt(-12, 12);
             setTParam("osc2Semitone", static_cast<float>(semi));
             setTParam("osc2Tune", static_cast<float>(nextRangeInt(-15, 15)));
 
@@ -192,8 +188,8 @@ class MS2000PatchBuilder
             else
                 setTParam("filterCutoff", static_cast<float>(nextRangeInt(35, 127)));
 
-            setTParam("filterResonance", static_cast<float>(nextRangeInt(0, 38)));     // ReMS2000: * 0.3
-            setTParam("filterEg1Int", static_cast<float>(nextRangeInt(-25, 25)));      // ReMS2000: * 0.4
+            setTParam("filterResonance", static_cast<float>(nextRangeInt(0, 38)));  // ReMS2000: * 0.3
+            setTParam("filterEg1Int", static_cast<float>(nextRangeInt(-25, 25)));   // ReMS2000: * 0.4
             setTParam("filterKeyTrack", static_cast<float>(nextRangeInt(-30, 30)));
             setTParam("filterVelo", static_cast<float>(nextRangeInt(-30, 30)));
 

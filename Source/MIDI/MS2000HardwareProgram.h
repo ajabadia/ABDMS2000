@@ -419,7 +419,8 @@ struct MS2000HardwareProgram
     /** `F0 42 3n 58 4E <mode> 00 F7` — cambio de modo (0x00 = Play, 0x02 = Global/LCD Edit). */
     static std::vector<uint8_t> buildModeChange(int channel, uint8_t mode)
     {
-        return {0xF0, 0x42, korgChannelByte(channel), 0x58, CMD_MODE_CHANGE, static_cast<uint8_t>(mode & 0x7F), 0x00, 0xF7};
+        return {
+            0xF0, 0x42, korgChannelByte(channel), 0x58, CMD_MODE_CHANGE, static_cast<uint8_t>(mode & 0x7F), 0x00, 0xF7};
     }
 
     /**
@@ -571,6 +572,10 @@ struct MS2000HardwareProgram
             // timbre 1 — voz y osciladores
             {TIMBRE1_START + ti::FLAGS, 6, 7, ParamIDs::voiceMode, Xform::Bit},
             {TIMBRE1_START + ti::UNISON_DETUNE, 0, 0, ParamIDs::unisonDetune, Xform::Raw},
+            {TIMBRE1_START + ti::TUNE, 0, 0, ParamIDs::pitchTune, Xform::Signed},
+            {TIMBRE1_START + ti::BEND_RANGE, 0, 0, ParamIDs::pitchBendRange, Xform::Signed},
+            {TIMBRE1_START + ti::TRANSPOSE, 0, 0, ParamIDs::pitchTranspose, Xform::Signed},
+            {TIMBRE1_START + ti::VIBRATO, 0, 0, ParamIDs::vibratoInt, Xform::Signed},
             {TIMBRE1_START + ti::PORTAMENTO, 0, 6, ParamIDs::portamentoTime, Xform::Duration127},
             {TIMBRE1_START + ti::OSC1_WAVE, 0, 0, ParamIDs::osc1Wave, Xform::Raw},
             {TIMBRE1_START + ti::OSC1_CTRL1, 0, 0, ParamIDs::osc1Ctrl1, Xform::Raw},
@@ -593,6 +598,7 @@ struct MS2000HardwareProgram
             {TIMBRE1_START + ti::AMP_LEVEL, 0, 0, ParamIDs::ampLevel, Xform::Raw},
             {TIMBRE1_START + ti::AMP_PAN, 0, 0, ParamIDs::ampPan, Xform::Signed},
             {TIMBRE1_START + ti::AMP_FLAGS, 0, 0, ParamIDs::ampDistortion, Xform::Bit},
+            {TIMBRE1_START + ti::AMP_FLAGS, 6, 6, ParamIDs::ampGate, Xform::Bit},
             {TIMBRE1_START + ti::AMP_KEYTRACK, 0, 0, ParamIDs::ampKeyTrack, Xform::Signed},
             {TIMBRE1_START + ti::AMP_VELO, 0, 0, ParamIDs::ampVelo, Xform::Signed},
             {TIMBRE1_START + ti::EG1_ATTACK, 0, 0, ParamIDs::eg1Attack, Xform::Raw},
@@ -640,18 +646,37 @@ struct MS2000HardwareProgram
     static const std::vector<Field> &vocoderFields()
     {
         static const std::vector<Field> fields = {
+            {TIMBRE1_START + ti::FLAGS, 6, 7, ParamIDs::voiceMode, Xform::Bit},
+            {TIMBRE1_START + ti::UNISON_DETUNE, 0, 0, ParamIDs::unisonDetune, Xform::Raw},
+            {TIMBRE1_START + ti::TUNE, 0, 0, ParamIDs::pitchTune, Xform::Signed},
+            {TIMBRE1_START + ti::BEND_RANGE, 0, 0, ParamIDs::pitchBendRange, Xform::Signed},
+            {TIMBRE1_START + ti::TRANSPOSE, 0, 0, ParamIDs::pitchTranspose, Xform::Signed},
+            {TIMBRE1_START + ti::VIBRATO, 0, 0, ParamIDs::vibratoInt, Xform::Signed},
+            {TIMBRE1_START + ti::OSC1_WAVE, 0, 0, ParamIDs::osc1Wave, Xform::Raw},
+            {TIMBRE1_START + ti::OSC1_CTRL1, 0, 0, ParamIDs::osc1Ctrl1, Xform::Raw},
+            {TIMBRE1_START + ti::OSC1_CTRL2, 0, 0, ParamIDs::osc1Ctrl2, Xform::Raw},
+            {TIMBRE1_START + ti::OSC1_DWGS, 0, 0, ParamIDs::osc1DwgsWave, Xform::Raw},
+            {TIMBRE1_START + ti::OSC2_FLAGS, 0, 0, ParamIDs::vocoderHpfGate, Xform::Bit},
+            {TIMBRE1_START + ti::PORTAMENTO, 0, 6, ParamIDs::portamentoTime, Xform::Bit},
             {TIMBRE1_START + ti::MIX_OSC1, 0, 0, ParamIDs::mixOsc1Level, Xform::Raw},
             {TIMBRE1_START + ti::MIX_OSC2, 0, 0, ParamIDs::mixOsc2Level, Xform::Raw},
             {TIMBRE1_START + ti::MIX_NOISE, 0, 0, ParamIDs::vocoderHpfLevel, Xform::Raw},
             {TIMBRE1_START + ti::FILTER_TYPE, 0, 0, ParamIDs::filterType, Xform::Raw},
+            {TIMBRE1_START + ti::FILTER_TYPE, 0, 0, ParamIDs::vocoderThreshold, Xform::Raw},
             {TIMBRE1_START + ti::CUTOFF, 0, 0, ParamIDs::filterCutoff, Xform::Raw},
+            {TIMBRE1_START + ti::CUTOFF, 0, 0, ParamIDs::vocoderCutoff, Xform::Signed},
             {TIMBRE1_START + ti::RESONANCE, 0, 0, ParamIDs::filterResonance, Xform::Raw},
+            {TIMBRE1_START + ti::RESONANCE, 0, 0, ParamIDs::vocoderResonance, Xform::Raw},
             {TIMBRE1_START + ti::FILTER_EG1_INT, 0, 0, ParamIDs::vocoderFormantShift, Xform::FormantShift},
             {TIMBRE1_START + ti::FILTER_VELO, 0, 0, ParamIDs::vocoderGateSense, Xform::Raw},
+            {TIMBRE1_START + ti::FILTER_KEYTRACK, 0, 2, ParamIDs::vocoderModSource, Xform::Bit},
             {TIMBRE1_START + ti::AMP_LEVEL, 0, 0, ParamIDs::ampLevel, Xform::Raw},
             {TIMBRE1_START + ti::AMP_PAN, 0, 0, ParamIDs::ampPan, Xform::Signed},
+            {TIMBRE1_START + ti::AMP_PAN, 0, 0, ParamIDs::vocoderEfSense, Xform::Raw},
             {TIMBRE1_START + ti::AMP_FLAGS, 0, 0, ParamIDs::ampDistortion, Xform::Bit},
+            {TIMBRE1_START + ti::AMP_FLAGS, 6, 6, ParamIDs::ampGate, Xform::Bit},
             {TIMBRE1_START + ti::AMP_VELO, 0, 0, ParamIDs::vocoderDirectLevel, Xform::Raw},
+            {TIMBRE1_START + ti::AMP_KEYTRACK, 0, 0, ParamIDs::vocoderModInt, Xform::Signed},
             {TIMBRE1_START + ti::EG1_ATTACK, 0, 0, ParamIDs::eg1Attack, Xform::Raw},
             {TIMBRE1_START + ti::EG1_DECAY, 0, 0, ParamIDs::eg1Decay, Xform::Raw},
             {TIMBRE1_START + ti::EG1_SUSTAIN, 0, 0, ParamIDs::eg1Sustain, Xform::Raw},
@@ -666,14 +691,18 @@ struct MS2000HardwareProgram
             {TIMBRE1_START + ti::LFO2_FLAGS, 0, 1, ParamIDs::lfo2Wave, Xform::Bit},
             {TIMBRE1_START + ti::LFO2_FLAGS, 4, 5, ParamIDs::lfo2KeySync, Xform::Bit},
             {TIMBRE1_START + ti::LFO2_FREQ, 0, 0, ParamIDs::lfo2Freq, Xform::Raw},
-            // Delays / FX globales, con la misma lectura que en modo synth
+            // Delays / FX / EQ globales, con la misma lectura que en modo synth
             {DELAY_TIME, 0, 0, ParamIDs::delayTime, Xform::Raw},
             {DELAY_DEPTH, 0, 0, ParamIDs::delayDepth, Xform::Raw},
             {DELAY_DEPTH, 0, 0, ParamIDs::delayFeedback, Xform::Raw},
             {DELAY_TYPE, 0, 0, ParamIDs::delayType, Xform::Raw},
             {MODFX_SPEED, 0, 0, ParamIDs::modFxSpeed, Xform::Raw},
             {MODFX_DEPTH, 0, 0, ParamIDs::modFxDepth, Xform::Raw},
-            {MODFX_TYPE, 0, 0, ParamIDs::modFxType, Xform::Raw}};
+            {MODFX_TYPE, 0, 0, ParamIDs::modFxType, Xform::Raw},
+            {EQ_HI_FREQ, 0, 0, ParamIDs::eqHighFreq, Xform::EqFreq},
+            {EQ_HI_GAIN, 0, 0, ParamIDs::eqHighGain, Xform::EqGain},
+            {EQ_LO_FREQ, 0, 0, ParamIDs::eqLowFreq, Xform::EqFreq},
+            {EQ_LO_GAIN, 0, 0, ParamIDs::eqLowGain, Xform::EqGain}};
         return fields;
     }
 
@@ -729,13 +758,41 @@ struct MS2000HardwareProgram
             fn(kLevels[i], TIMBRE1_START + ti::VOCODER_BAND_LEVELS + static_cast<size_t>(i));
     }
 
+    /** Pans de las 16 bandas del vocoder (bytes 62..77 del timbre 1, signed 64±63). */
+    template <typename Fn> static void forEachVocoderPan(Fn &&fn)
+    {
+        static const char *const kPans[16] = {ParamIDs::vocoderBandPan1,
+                                              ParamIDs::vocoderBandPan2,
+                                              ParamIDs::vocoderBandPan3,
+                                              ParamIDs::vocoderBandPan4,
+                                              ParamIDs::vocoderBandPan5,
+                                              ParamIDs::vocoderBandPan6,
+                                              ParamIDs::vocoderBandPan7,
+                                              ParamIDs::vocoderBandPan8,
+                                              ParamIDs::vocoderBandPan9,
+                                              ParamIDs::vocoderBandPan10,
+                                              ParamIDs::vocoderBandPan11,
+                                              ParamIDs::vocoderBandPan12,
+                                              ParamIDs::vocoderBandPan13,
+                                              ParamIDs::vocoderBandPan14,
+                                              ParamIDs::vocoderBandPan15,
+                                              ParamIDs::vocoderBandPan16};
+        for (int i = 0; i < 16; ++i)
+            fn(kPans[i], TIMBRE1_START + ti::VOCODER_BAND_PANS + static_cast<size_t>(i));
+    }
+
     static float toEngineValue(uint8_t fieldValue, Xform xform)
     {
         switch (xform)
         {
         case Xform::Signed:
-        case Xform::EqGain:
             return static_cast<float>(static_cast<int>(fieldValue) - 64);
+        case Xform::EqGain:
+        {
+            // Hardware byte is 52..76 (64 + dB in [-12..+12]); engine parameter is 0..127 (64 = 0 dB)
+            const int dB = std::clamp(static_cast<int>(fieldValue) - 64, -12, 12);
+            return std::clamp(std::round(64.0f + static_cast<float>(dB) * (63.0f / 12.0f)), 0.0f, 127.0f);
+        }
         case Xform::EqFreq:
             return std::min(3.0f, std::floor(static_cast<float>(fieldValue) * 4.0f / 30.0f));
         case Xform::ArpRes:
@@ -780,7 +837,11 @@ struct MS2000HardwareProgram
             return static_cast<uint8_t>(kTable[std::clamp(iv, 0, 3)]);
         }
         case Xform::EqGain:
-            return static_cast<uint8_t>(std::clamp(iv + 64, 0, 127));
+        {
+            // Engine parameter is 0..127 (64 = 0 dB); hardware byte is 52..76 (64 + dB in [-12..+12])
+            const int dB = std::clamp(static_cast<int>(std::lround((value - 64.0f) * (12.0f / 63.0f))), -12, 12);
+            return static_cast<uint8_t>(64 + dB);
+        }
         case Xform::ArpRes:
         {
             static const int kTable[16] = {-1, -1, 0, 1, 2, 3, 4, 5, -1, -1, -1, -1, -1, -1, -1, -1};
@@ -854,6 +915,8 @@ struct MS2000HardwareProgram
                 setValue(f.paramId, toEngineValue(readField(f), f.xform), false);
             forEachVocoderBand([&](const char *id, size_t offset)
                                { setValue(id, static_cast<float>(raw[offset]), false); });
+            forEachVocoderPan([&](const char *id, size_t offset)
+                              { setValue(id, toEngineValue(raw[offset], Xform::Signed), false); });
         }
         else
         {
@@ -888,6 +951,15 @@ struct MS2000HardwareProgram
 
         const uint8_t porta = extractBits(raw[TIMBRE1_START + ti::PORTAMENTO], 0, 6);
         setValueById(ParamIDs::portamentoOn, porta > 0 ? 1.0f : 0.0f);
+        const uint8_t porta2 = extractBits(raw[TIMBRE2_START + ti::PORTAMENTO], 0, 6);
+        setValueById(ParamIDs::t2PortamentoOn, porta2 > 0 ? 1.0f : 0.0f);
+        setValueById(ParamIDs::modFxOn, raw[MODFX_DEPTH] > 0 ? 1.0f : 0.0f);
+        setValueById(ParamIDs::delayOn, raw[DELAY_DEPTH] > 0 ? 1.0f : 0.0f);
+
+        const int hwBpm = (static_cast<int>(raw[ARP_TEMPO_MSB]) << 8) | static_cast<int>(raw[ARP_TEMPO_LSB]);
+        native.setTempoBPM((hwBpm >= 20 && hwBpm <= 300) ? hwBpm : 120);
+        native.setArpTarget(extractBits(raw[ARP_FLAGS], 4, 5));
+        native.setArpKeySync(extractBits(raw[ARP_FLAGS], 0, 0) != 0);
 
         return native;
     }
@@ -938,6 +1010,8 @@ struct MS2000HardwareProgram
                 setValue(f.paramId, toEngineValue(readField(f), f.xform), false);
             forEachVocoderBand([&](const char *id, size_t offset)
                                { setValue(id, static_cast<float>(raw[offset]), false); });
+            forEachVocoderPan([&](const char *id, size_t offset)
+                              { setValue(id, toEngineValue(raw[offset], Xform::Signed), false); });
         }
         else
         {
@@ -958,9 +1032,20 @@ struct MS2000HardwareProgram
                     [&](const juce::String &id, float value) { setValueById(id, value); }, t == 1, t * TIMBRE_SIZE);
         }
 
-        // El portamento del MS2000 no tiene interruptor: está activo cuando el tiempo > 0.
+        // El portamento, Mod FX y Delay del MS2000 no tienen byte de interruptor separado:
+        // están activos cuando su tiempo/profundidad es > 0.
         const uint8_t porta = extractBits(raw[TIMBRE1_START + ti::PORTAMENTO], 0, 6);  // bit 7 sin usar
         setValueById(ParamIDs::portamentoOn, porta > 0 ? 1.0f : 0.0f);
+        const uint8_t porta2 = extractBits(raw[TIMBRE2_START + ti::PORTAMENTO], 0, 6);
+        setValueById(ParamIDs::t2PortamentoOn, porta2 > 0 ? 1.0f : 0.0f);
+        setValueById(ParamIDs::modFxOn, raw[MODFX_DEPTH] > 0 ? 1.0f : 0.0f);
+        setValueById(ParamIDs::delayOn, raw[DELAY_DEPTH] > 0 ? 1.0f : 0.0f);
+
+        const int hwBpm = (static_cast<int>(raw[ARP_TEMPO_MSB]) << 8) | static_cast<int>(raw[ARP_TEMPO_LSB]);
+        if (hwBpm >= 20 && hwBpm <= 300)
+            apvts.state.setProperty("presetTempoBPM", hwBpm, nullptr);
+        apvts.state.setProperty("arpTarget", static_cast<int>(extractBits(raw[ARP_FLAGS], 4, 5)), nullptr);
+        apvts.state.setProperty("arpKeySync", static_cast<int>(extractBits(raw[ARP_FLAGS], 0, 0)), nullptr);
 
         return applied;
     }
@@ -1014,6 +1099,8 @@ struct MS2000HardwareProgram
                     raw[offset] =
                         static_cast<uint8_t>(std::clamp(static_cast<int>(std::lround(getValueById(id, 0.0f))), 0, 127));
                 });
+            forEachVocoderPan([&](const char *id, size_t offset)
+                              { raw[offset] = fromEngineValue(getValueById(id, 0.0f), Xform::Signed); });
         }
         else
         {
@@ -1071,7 +1158,10 @@ struct MS2000HardwareProgram
         if (std::strcmp(raw, ParamIDs::voiceMode) == 0)
             return static_cast<float>(voiceByte & 0x03);
         if (std::strcmp(raw, ParamIDs::unisonDetune) == 0)
-            return static_cast<float>((voiceByte >> 2) & 0x0F);
+        {
+            const uint8_t fullDetune = native.rawData[MS2000ProgramData::TIMBRE_START + 1];
+            return static_cast<float>(fullDetune != 0 ? fullDetune : ((voiceByte >> 2) & 0x0F));
+        }
         if (std::strcmp(raw, ParamIDs::portamentoOn) == 0)
             return static_cast<float>((voiceByte >> 6) & 0x01);
         if (std::strcmp(raw, ParamIDs::portamentoTime) == 0)
@@ -1188,7 +1278,11 @@ struct MS2000HardwareProgram
             // Timbre 1 / Timbre 2 (0x40..0x7D)
             {ParamIDs::voiceMode, 0x40, 272, Xform::Raw},
             {ParamIDs::unisonDetune, 0x42, 544, Xform::Raw},
+            {ParamIDs::pitchTranspose, 0x44, 272, Xform::Raw},
+            {ParamIDs::pitchTune, 0x45, 272, Xform::Raw},
+            {ParamIDs::vibratoInt, 0x46, 272, Xform::Raw},
             {ParamIDs::portamentoTime, 0x47, 272, Xform::Raw},
+            {ParamIDs::pitchBendRange, 0x48, 272, Xform::Raw},
             {ParamIDs::osc1Wave, 0x49, 272, Xform::Raw},
             {ParamIDs::osc1Ctrl1, 0x4A, 272, Xform::Raw},
             {ParamIDs::osc1Ctrl2, 0x4B, 272, Xform::Raw},
@@ -1207,6 +1301,7 @@ struct MS2000HardwareProgram
             {ParamIDs::filterKeyTrack, 0x58, 272, Xform::Raw},
             {ParamIDs::ampLevel, 0x59, 272, Xform::Raw},
             {ParamIDs::ampPan, 0x5A, 272, Xform::Raw},
+            {ParamIDs::ampGate, 0x5B, 272, Xform::Raw},
             {ParamIDs::ampDistortion, 0x5C, 272, Xform::Raw},
             {ParamIDs::ampKeyTrack, 0x5D, 272, Xform::Raw},
             {ParamIDs::eg1Attack, 0x5E, 272, Xform::Raw},
@@ -1342,9 +1437,8 @@ struct MS2000HardwareProgram
      * Construye la trama `0x41` de 10 B para un parámetro del motor (`paramId` de T1, T2 o global).
      * Devuelve vacío si el parámetro no tiene representación `0x41` en el MS2000.
      */
-    static std::vector<uint8_t> buildParameterChangeForEngineParam(int channel,
-                                                                   const std::string &paramId,
-                                                                   float engineValue)
+    static std::vector<uint8_t>
+    buildParameterChangeForEngineParam(int channel, const std::string &paramId, float engineValue)
     {
         if (paramId == ParamIDs::synthVocoderMode)
             return buildParameterChange(channel, 0x10, engineValue > 0.5f ? 3 : 0);

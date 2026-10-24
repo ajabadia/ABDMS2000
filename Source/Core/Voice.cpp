@@ -38,6 +38,7 @@ void Voice::prepare(double sampleRate) noexcept
     lfo2_.prepare(sampleRate_);
     voiceDistortion_.prepare(sampleRate_);
     cutoffSmoothCoeff_ = 1.0f - std::exp(-1.0f / static_cast<float>(sampleRate_ * 0.002));
+    gateSmoothCoeff_ = 1.0f - std::exp(-1.0f / static_cast<float>(sampleRate_ * 0.0015));
     reset();
 }
 
@@ -62,6 +63,8 @@ void Voice::reset() noexcept
     noteAge_ = 0;
     prevMasterPhase_ = 0.0f;
     cutoffSmoothInitialized_ = false;
+    noteHeld_ = false;
+    gateEnv_ = 0.0f;
 }
 
 /**
@@ -76,27 +79,73 @@ void Voice::reset() noexcept
  */
 void Voice::noteOn(int midiNote, float velocity, bool glideEnabled, bool isFirstTimbreNote, bool isLegato) noexcept
 {
+    const bool wasIdle = !isActive();
     currentMidiNote_ = midiNote;
     velocity_ = velocity;
     noteAge_ = 0;
+    noteHeld_ = true;
 
     glide_.setTargetNote(static_cast<float>(midiNote), glideEnabled);
 
     if (!isLegato)
     {
-        osc1VA_.reset();
-        osc1DWGS_.reset();
-        osc1VoxWave_.reset();
-        osc2_.reset();
-        filter_.reset();
+        if (wasIdle || cachedParams_.osc2ModMode == OSC2ModulationMode::Sync
+            || cachedParams_.osc2ModMode == OSC2ModulationMode::CrossMod)
+        {
+            osc1VA_.reset();
+            osc1DWGS_.reset();
+            osc1VoxWave_.reset();
+            osc2_.reset();
+        }
+        if (wasIdle)
+        {
+            filter_.reset();
+        }
 
         eg1_.noteOn(1.0f);
         eg2_.noteOn(1.0f);
         cutoffSmoothInitialized_ = false;
     }
 
-    lfo1_.triggerKeySync(isFirstTimbreNote);
-    lfo2_.triggerKeySync(isFirstTimbreNote);
+    // Apply KeySync per the hardware mode (byte 38/41 bits 4-5):
+    //   Off = 0: never reset
+    //   Timbre = 1: reset on first note of the timbre
+    //   Voice = 2: reset on every note press per voice
+    // Read mode from cached params (set by applyBlockParams)
+    const auto lfo1Mode = cachedParams_.lfo1KeySync;
+    const auto lfo2Mode = cachedParams_.lfo2KeySync;
+
+    if (lfo1Mode != KeySyncMode::Off)
+    {
+        // KeySync is enabled - reset LFO phase appropriately
+        if (lfo1Mode == KeySyncMode::Timbre)
+        {
+            // Reset only on first note of the timbre
+            lfo1_.triggerKeySync(isFirstTimbreNote);
+        }
+        else
+        {
+            // Voice mode: reset on every note press
+            lfo1_.triggerKeySync(isFirstTimbreNote);
+        }
+    }
+    // else: lfo1Mode == Off, never reset
+
+    if (lfo2Mode != KeySyncMode::Off)
+    {
+        // KeySync is enabled - reset LFO phase appropriately
+        if (lfo2Mode == KeySyncMode::Timbre)
+        {
+            // Reset only on first note of the timbre
+            lfo2_.triggerKeySync(isFirstTimbreNote);
+        }
+        else
+        {
+            // Voice mode: reset on every note press
+            lfo2_.triggerKeySync(isFirstTimbreNote);
+        }
+    }
+    // else: lfo2Mode == Off, never reset
 }
 
 /**
@@ -106,6 +155,7 @@ void Voice::noteOn(int midiNote, float velocity, bool glideEnabled, bool isFirst
  */
 void Voice::noteOff() noexcept
 {
+    noteHeld_ = false;
     eg1_.noteOff();
     eg2_.noteOff();
 }
@@ -115,6 +165,8 @@ void Voice::noteOff() noexcept
  */
 void Voice::stopImmediately() noexcept
 {
+    noteHeld_ = false;
+    gateEnv_ = 0.0f;
     eg1_.reset();
     eg2_.reset();
 }
@@ -125,7 +177,7 @@ void Voice::stopImmediately() noexcept
  */
 bool Voice::isActive() const noexcept
 {
-    return !eg2_.isIdle();
+    return !eg2_.isIdle() || (cachedParams_.ampGate && (noteHeld_ || gateEnv_ > 0.0001f));
 }
 
 /**
@@ -134,7 +186,7 @@ bool Voice::isActive() const noexcept
  */
 float Voice::getCurrentAmpLevel() const noexcept
 {
-    return eg2_.getCurrentLevel();
+    return cachedParams_.ampGate ? gateEnv_ : eg2_.getCurrentLevel();
 }
 
 /**
@@ -209,11 +261,8 @@ void Voice::applyBlockParams(const VoiceParameters &params) noexcept
  * @param diagPoint Punto de inyección de tono diagnóstico (0-5) o 0 si no.
  * @param diagTone Valor del tono de diagnóstico a inyectar.
  */
-void Voice::renderNextSample(float &leftOut,
-                             float &rightOut,
-                             int diagPoint,
-                             float diagTone,
-                             float audioInSample) noexcept
+void Voice::renderNextSample(
+    float &leftOut, float &rightOut, int diagPoint, float diagTone, float audioInSample) noexcept
 {
     const VoiceParameters &p = cachedParams_;
     if (!isActive() && !p.diagBypassVCA)
@@ -226,8 +275,8 @@ void Voice::renderNextSample(float &leftOut,
 
     // 2. Step LFO1 and Envelopes
     float lfo1Val = lfo1_.getNextSample();
-    float eg1Val = eg1_.getNextSample();
-    float eg2Val = eg2_.getNextSample();
+    (void) eg1_.getNextSample();
+    (void) eg2_.getNextSample();
     // El VCA y el filtro usan el nivel **crudo** del EG (sin su ganancia por velocidad):
     // el MS2000 tiene sus propios controles de sensibilidad (AMP VELO / FILTER VELO) y
     // con ellos a 0 la velocidad no cambia el sonido. Los EG como fuente de patch siguen
@@ -237,8 +286,8 @@ void Voice::renderNextSample(float &leftOut,
 
     // 3. Evaluate LFO2 with potential Virtual Patch frequency cross-modulation
     PatchModulationSources prelimSources;
-    prelimSources.eg1 = eg1Val;
-    prelimSources.eg2 = eg2Val;
+    prelimSources.eg1 = eg1Raw;
+    prelimSources.eg2 = eg2Raw;
     prelimSources.lfo1 = lfo1Val;
     prelimSources.lfo2 = lfo2_.getCurrentValue();
     prelimSources.velocity = velocity_;
@@ -257,21 +306,25 @@ void Voice::renderNextSample(float &leftOut,
     sources.lfo2 = lfo2Val;
     PatchModulationOutputs mod = patchMatrix_.evaluate(sources);
 
-    // 5. Portamento + Microtonal Scale (ROM 0x13914) + Virtual Patch Pitch Modulation + Mod Seq + Voice Detune
+    // 5. Portamento + Timbre Transpose/Tune + Microtonal Scale (ROM 0x13914) + Virtual Patch Pitch + Mod Seq + Voice
+    // Detune
     const float scaleSemitones =
         FirmwareTables::getHardwareScaleDetuneSemitones(currentMidiNote_, p.scaleType, p.scaleKey);
-    float voiceDetuneSemitones = (p.voiceDetuneCents / Constants::kCentsPerSemitone) + scaleSemitones;
+    const float timbreTuningSemitones = p.pitchTranspose + (p.pitchTune / Constants::kCentsPerSemitone);
+    float voiceDetuneSemitones =
+        (p.voiceDetuneCents / Constants::kCentsPerSemitone) + scaleSemitones + timbreTuningSemitones;
     const float seqPitchSemis = p.seq.pitch * Constants::kVirtualPatchMaxPitchSemitones;  // "PITCH" del seq: ±24 st
     const float seqOsc2Semis =
         p.seq.osc2Pitch * Constants::kVirtualPatchMaxPitchSemitones;  // "OSC2 SEMI" del seq: ±24 st
-    float osc1PitchMod = (p.pitchBendValue * Constants::kPitchBendDefaultSemitones)
-                         + (mod.pitchMod * Constants::kVirtualPatchMaxPitchSemitones) + voiceDetuneSemitones
-                         + seqPitchSemis;
+    const float bendSemitones = p.pitchBendValue * p.pitchBendRange;
+    const float vibratoSemitones = lfo1Val * p.modWheelValue * p.vibratoInt * 12.0f;
+    float osc1PitchMod = bendSemitones + vibratoSemitones + (mod.pitchMod * Constants::kVirtualPatchMaxPitchSemitones)
+                         + voiceDetuneSemitones + seqPitchSemis;
     float osc1FinalPitch = basePitch + osc1PitchMod;
     float osc1Freq = DSPUtils::midiNoteToFrequency(osc1FinalPitch);
 
     float osc2PitchMod =
-        (p.pitchBendValue * Constants::kPitchBendDefaultSemitones)
+        bendSemitones + vibratoSemitones
         + ((mod.pitchMod + mod.osc2PitchMod) * Constants::kVirtualPatchMaxPitchSemitones) + voiceDetuneSemitones
         + seqPitchSemis + seqOsc2Semis + p.osc2Semitone
         + ((p.osc2Tune + (p.seq.osc2Tune * Constants::kCentsPerSemitone)) / Constants::kCentsPerSemitone);
@@ -394,13 +447,19 @@ void Voice::renderNextSample(float &leftOut,
             smoothedCutoffNorm_ += cutoffSmoothCoeff_ * (p.filterCutoffNorm - smoothedCutoffNorm_);
         }
 
-        float egOctaves = eg1Raw * (p.eg1FilterIntensity * Constants::kFilterModMaxOctaves);
-        float kbdOctaves = ((basePitch - Constants::kMidiMiddleC) / Constants::kSemitonesPerOctave) * p.filterKbdTrack;
-        float patchOctaves = (mod.cutoffMod + p.seq.cutoff) * Constants::kFilterModMaxOctaves;
-        // FILTER VELO del byte 23 (±63 → ±5 octavas a fondo): la velocidad abre el
-        // filtro con intensidad positiva y lo cierra con negativa. A 0, sin efecto.
-        float veloOctaves = p.filterVeloSens * velocity_ * Constants::kFilterModMaxOctaves;
-        float totalModOctaves = egOctaves + kbdOctaves + patchOctaves + veloOctaves;
+        constexpr float kRomFullCutoffSpanOctaves = 127.0f / 12.0f;  // 0..127 knob span in ROM 0x26154 (10.5833 oct)
+        // DSP P:$0749..$0751: el cutoff se suma en espacio de pitch lineal de 24 bits donde
+        // `asr #$13` extrae la octava ($080000 = 1 oct), así que EG1 Int a fondo recorre los
+        // 16 octavas completos ($800000). Validado contra ms2000r-emu (B01 33% -> 82%).
+        constexpr float kEg1FullSpanOctaves = 16.0f;
+        // FILTER VELO (byte 23): en el firmware (H8S 0x0163D0 -> 0x013466) la velocidad escala la
+        // amplitud del EG1 que llega al filtro (descriptores X:$0049..$004C), no el cutoff estático.
+        float eg1VeloFactor = std::max(0.0f, 1.0f + p.filterVeloSens * velocity_);
+        float egOctaves = eg1Raw * eg1VeloFactor * (p.eg1FilterIntensity * kEg1FullSpanOctaves);
+        float kbdOctaves =
+            ((basePitch - Constants::kMidiMiddleC) / Constants::kSemitonesPerOctave) * (p.filterKbdTrack * 2.0f);
+        float patchOctaves = (mod.cutoffMod + p.seq.cutoff) * kRomFullCutoffSpanOctaves;
+        float totalModOctaves = egOctaves + kbdOctaves + patchOctaves;
         float cutoffHz = FirmwareTables::getHardwareFilterCutoffHz(smoothedCutoffNorm_, totalModOctaves);
 
         filter_.setCutoff(cutoffHz);
@@ -422,8 +481,17 @@ void Voice::renderNextSample(float &leftOut,
         kbdAmpFactor = DSPUtils::clamp(1.0f + (p.ampKeyTrack * kbdNorm), 0.0f, 2.0f);
     }
 
-    float effectiveAmpLevel = DSPUtils::clamp(p.ampLevel + mod.ampMod + p.seq.amp, 0.0f, 1.0f);
-    float envGain = p.diagBypassVCA ? 1.0f : eg2Raw;
+    // H8S 0x013562: AMP LEVEL + Mod Seq se suman y recortan a [0,1]; después se MULTIPLICAN por
+    // el factor del Virtual Patch (1 + ampMod, recortado a >= 0) y el producto se recorta a 1.0.
+    // Así un LFO cuadrado negativo con Int +63 (o un paso de seq a -63) cierra el VCA del todo.
+    const float ampBase = DSPUtils::clamp(p.ampLevel + p.seq.amp, 0.0f, 1.0f);
+    const float ampPatchFactor = std::max(0.0f, 1.0f + mod.ampMod);
+    float effectiveAmpLevel = DSPUtils::clamp(ampBase * ampPatchFactor, 0.0f, 1.0f);
+    const float gateTarget = noteHeld_ ? 1.0f : 0.0f;
+    gateEnv_ += gateSmoothCoeff_ * (gateTarget - gateEnv_);
+    if (!noteHeld_ && gateEnv_ < 0.0001f)
+        gateEnv_ = 0.0f;
+    float envGain = p.diagBypassVCA ? 1.0f : (p.ampGate ? gateEnv_ : eg2Raw);
     float vcaOut = filtered * envGain * effectiveAmpLevel * vcaVelocity * kbdAmpFactor;
 
     if (p.distortionOn && !p.diagBypassDistortion)

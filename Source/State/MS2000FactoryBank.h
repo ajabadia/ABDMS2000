@@ -93,9 +93,8 @@ class MS2000FactoryBank
         for (size_t i = 0; i < FactoryPreload::kNumPrograms; ++i)
         {
             FactoryPreset p;
-            std::memcpy(p.hardwareProgram.raw.data(),
-                        FactoryPreload::kFactoryPreloadPrograms[i],
-                        FactoryPreload::kProgramSize);
+            std::memcpy(
+                p.hardwareProgram.raw.data(), FactoryPreload::kFactoryPreloadPrograms[i], FactoryPreload::kProgramSize);
             p.name = p.hardwareProgram.getName();
             p.category = inferCategory(i, p.name, p.hardwareProgram);
             p.programData = p.hardwareProgram.toNativeProgram();

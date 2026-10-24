@@ -36,8 +36,9 @@ BridgeActions::BridgeActions(BridgeHost &host) : host_(host)
                              info.version.isNotEmpty() ? info.version : autoUpdater_->getCurrentVersion());
             res->setProperty("isUpdateAvailable", autoUpdater_->isUpdateAvailable());
             res->setProperty("downloadUrl",
-                             info.downloadUrl.isNotEmpty() ? info.downloadUrl
-                                                           : juce::String("https://github.com/ajabadia/ABDMS2000/releases"));
+                             info.downloadUrl.isNotEmpty()
+                                 ? info.downloadUrl
+                                 : juce::String("https://github.com/ajabadia/ABDMS2000/releases"));
             res->setProperty("releaseNotes", info.releaseNotes);
             sendEventToJs("updateCheckResult", juce::var(res.get()));
         });
@@ -204,8 +205,9 @@ void BridgeActions::handleJsEvent(const juce::var &message)
                              info.version.isNotEmpty() ? info.version : autoUpdater_->getCurrentVersion());
             res->setProperty("isUpdateAvailable", autoUpdater_->isUpdateAvailable());
             res->setProperty("downloadUrl",
-                             info.downloadUrl.isNotEmpty() ? info.downloadUrl
-                                                           : juce::String("https://github.com/ajabadia/ABDMS2000/releases"));
+                             info.downloadUrl.isNotEmpty()
+                                 ? info.downloadUrl
+                                 : juce::String("https://github.com/ajabadia/ABDMS2000/releases"));
             res->setProperty("releaseNotes", info.releaseNotes);
             sendEventToJs("updateCheckResult", juce::var(res.get()));
         }
@@ -529,29 +531,29 @@ void BridgeActions::handleJsEvent(const juce::var &message)
     else if (action == "ipl.checkVersion")
     {
         const bool silent = static_cast<bool>(message.getProperty("silent", false));
-        iplUpdater_.startCheckVersion(
-            host_.getHardwareMidiTransport(),
-            silent,
-            [this](const std::string &evt, const std::string &json) { emitIplEventAsync(evt, json); });
+        iplUpdater_.startCheckVersion(host_.getHardwareMidiTransport(),
+                                      silent,
+                                      [this](const std::string &evt, const std::string &json)
+                                      { emitIplEventAsync(evt, json); });
     }
     else if (action == "ipl.installSystem")
     {
         const bool installDumpPatch = static_cast<bool>(message.getProperty("installDumpPatch", false));
         const int rateInt = static_cast<int>(message.getProperty("transferRate", 0));
         const auto rate = static_cast<ms2kipl::TransferRate>(juce::jlimit(0, 3, rateInt));
-        iplUpdater_.startInstallSystem(
-            host_.getHardwareMidiTransport(),
-            installDumpPatch,
-            rate,
-            [this](const std::string &evt, const std::string &json) { emitIplEventAsync(evt, json); });
+        iplUpdater_.startInstallSystem(host_.getHardwareMidiTransport(),
+                                       installDumpPatch,
+                                       rate,
+                                       [this](const std::string &evt, const std::string &json)
+                                       { emitIplEventAsync(evt, json); });
     }
     else if (action == "ipl.readFlashDump")
     {
         const int sizeInt = static_cast<int>(message.getProperty("sizeBytes", static_cast<int>(ms2kipl::kFlashSize)));
-        iplUpdater_.startFlashDump(
-            host_.getHardwareMidiTransport(),
-            static_cast<uint32_t>(sizeInt),
-            [this](const std::string &evt, const std::string &json) { emitIplEventAsync(evt, json); });
+        iplUpdater_.startFlashDump(host_.getHardwareMidiTransport(),
+                                   static_cast<uint32_t>(sizeInt),
+                                   [this](const std::string &evt, const std::string &json)
+                                   { emitIplEventAsync(evt, json); });
     }
     else if (action == "ipl.cancel")
     {

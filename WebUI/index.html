@@ -233,119 +233,122 @@
       </div>
     </header>
 
-    <!-- Main Content Workspace -->
+    <!-- Sticky Top Hero Bar: LCD Programmer Keypad | Wider 16x2 LCD + Original Value LED | Bank/Timbre Selector | Global & SysEx Actions -->
+    <section class="hero-panel" id="hero-panel">
+      <!-- 1. Hardware LCD Programmer Keypad (All MS2000 / MS2000R LCD Buttons) -->
+      <div class="lcd-nav-matrix">
+        <div class="lcd-nav-row">
+          <button id="btn-lcd-page-prev" class="lcd-nav-btn" title="Page Down (PAGE -)">PAGE -</button>
+          <button id="btn-lcd-page-next" class="lcd-nav-btn" title="Page Up (PAGE +)">PAGE +</button>
+          <button id="btn-lcd-cursor-prev" class="lcd-nav-btn" title="Cursor Left (CURSOR ◄)">CURSOR ◄</button>
+          <button id="btn-lcd-cursor-next" class="lcd-nav-btn" title="Cursor Right (CURSOR ►)">CURSOR ►</button>
+          <button id="btn-lcd-write" class="lcd-nav-btn lcd-nav-btn-write" title="Write / Store Program (Press WRITE or +/YES to confirm)">WRITE</button>
+        </div>
+        <div class="lcd-nav-row">
+          <button id="btn-lcd-val-down" class="lcd-nav-btn" title="Value Down / No (- / NO)">- / NO</button>
+          <button id="btn-lcd-val-up" class="lcd-nav-btn" title="Value Up / Yes (+ / YES)">+ / YES</button>
+          <button id="btn-lcd-edit" class="lcd-nav-btn" title="Enter / Step Parameter Edit Mode (EDIT)">EDIT</button>
+          <button id="btn-lcd-global" class="lcd-nav-btn" title="Global / MIDI / Master Tune / Dump Settings (GLOBAL)">GLOBAL</button>
+          <button id="btn-lcd-exit" class="lcd-nav-btn" title="Exit to Program Play Mode / Cancel (EXIT)">EXIT</button>
+        </div>
+      </div>
+
+      <!-- 2. Wider Main LCD Display (16x2 Characters + Hardware ORIGINAL VALUE LED, Click to Open 128-Preset Browser) -->
+      <div class="lcd-container lcd-main-container" id="lcd-display" title="Click to browse all 128 Presets (Banks A–H)">
+        <div class="lcd-top-meta-row">
+          <span class="lcd-bezel-tag">KORG MS2000 MULTI-MODE DISPLAY</span>
+          <span class="lcd-orig-val-indicator" id="orig-val-indicator" title="Lights up when the edited parameter matches the saved program's Original Value">
+            <span class="lcd-orig-led" id="led-original-value"></span>
+            <span class="lcd-orig-label">ORIGINAL VALUE</span>
+          </span>
+        </div>
+        <div class="lcd-line-1-row">
+          <div class="lcd-line-1" id="lcd-line-1">A.01 Stab Saw</div>
+          <span class="lcd-browse-hint" id="btn-preset-browse" title="Browse 128 Presets (Banks A-H)">BROWSE ▾</span>
+        </div>
+        <div class="lcd-line-2" id="lcd-line-2">Synth · Single     ♩=120</div>
+      </div>
+
+      <!-- 3. Bank A..H Quick Selector & Timbre 1/2 Switcher Matrix -->
+      <div class="lcd-nav-matrix bank-timbre-matrix" id="bank-timbre-matrix">
+        <div class="lcd-nav-row bank-quick-row" id="bank-selector-strip" role="group" aria-label="Bank Select A to H">
+          <span class="matrix-mini-label">BANK</span>
+          <button class="bank-quick-btn active" data-bank="0" title="Bank A (Programs A.01 - A.16)">A</button>
+          <button class="bank-quick-btn" data-bank="1" title="Bank B (Programs B.01 - B.16)">B</button>
+          <button class="bank-quick-btn" data-bank="2" title="Bank C (Programs C.01 - C.16)">C</button>
+          <button class="bank-quick-btn" data-bank="3" title="Bank D (Programs D.01 - D.16)">D</button>
+          <button class="bank-quick-btn" data-bank="4" title="Bank E (Programs E.01 - E.16)">E</button>
+          <button class="bank-quick-btn" data-bank="5" title="Bank F (Programs F.01 - F.16)">F</button>
+          <button class="bank-quick-btn" data-bank="6" title="Bank G (Programs G.01 - G.16)">G</button>
+          <button class="bank-quick-btn" data-bank="7" title="Bank H (Programs H.01 - H.16)">H</button>
+        </div>
+        <div class="lcd-nav-row timbre-quick-row" id="timbre-selector-group" role="group" aria-label="Active Timbre Edit Select">
+          <span class="matrix-mini-label">EDIT</span>
+          <button class="timbre-quick-btn active" id="btn-timbre-1" data-timbre="1" title="Edit Timbre 1 Parameters">TIMBRE 1</button>
+          <button class="timbre-quick-btn" id="btn-timbre-2" data-timbre="2" title="Edit Timbre 2 Parameters (Split / Layer)">TIMBRE 2</button>
+          <button class="timbre-mode-pill" id="btn-hero-timbre-mode" title="Click to cycle Timbre Mode (Single / Split / Layer / Vocoder)">SINGLE</button>
+        </div>
+      </div>
+
+      <!-- 4. Global Utility & SysEx Inspector Matrix (Right) -->
+      <div class="lcd-nav-matrix global-actions-matrix">
+        <div class="lcd-nav-row">
+          <button class="lcd-nav-btn" id="btn-compare" title="Compare A/B: Saved Original vs Edited Patch (Hardware EDIT + EXIT)">COMPARE</button>
+          <button class="lcd-nav-btn" id="btn-lcd-demo" title="Play / Stop Built-in MS2000 Demo Audition Sequence (Hardware EDIT + GLOBAL)">DEMO</button>
+          <button class="lcd-nav-btn lcd-nav-btn-accent" id="btn-open-sysex-inspector" title="Open Live SysEx Inspector (Ctrl+I)">SYSEX</button>
+        </div>
+        <div class="lcd-nav-row">
+          <button class="lcd-nav-btn" id="btn-random" title="Randomize Patch (Musical Bounded)">
+            <svg class="ui-btn-icon" viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -1px; margin-right: 2px;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>RNDM
+          </button>
+          <button class="lcd-nav-btn lcd-nav-btn-accent" id="btn-init-patch" title="Initialize Patch (Default Values)">INIT</button>
+          <button class="lcd-nav-btn lcd-nav-btn-danger" id="btn-panic" title="All Notes Off (Panic)">
+            <svg class="ui-btn-icon" viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -1px; margin-right: 2px;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>PANIC
+          </button>
+        </div>
+      </div>
+
+      <!-- 5. 128-Preset Browser Popover (Banks A-H, 8x16 Grid + Search + Categories) -->
+      <div class="preset-browser-popover" id="preset-browser-popover" hidden>
+        <div class="preset-browser-header">
+          <div class="preset-browser-title-row">
+            <span class="preset-browser-title">KORG MS2000 PRESET BROWSER (128 PROGRAMS · BANKS A–H)</span>
+            <div class="preset-browser-search-wrap">
+              <input type="search" id="preset-search-input" class="preset-search-input" placeholder="Search preset name or number (e.g. A.01, Vocoder, Bass)..." autocomplete="off">
+            </div>
+            <button class="preset-browser-close-btn" id="btn-close-preset-browser" title="Close (Esc)">&times;</button>
+          </div>
+          <div class="preset-browser-filters-row">
+            <div class="preset-bank-tabs" id="preset-bank-tabs">
+              <button class="preset-tab-btn active" data-bank-tab="all">ALL (128)</button>
+              <button class="preset-tab-btn" data-bank-tab="0">BANK A</button>
+              <button class="preset-tab-btn" data-bank-tab="1">BANK B</button>
+              <button class="preset-tab-btn" data-bank-tab="2">BANK C</button>
+              <button class="preset-tab-btn" data-bank-tab="3">BANK D</button>
+              <button class="preset-tab-btn" data-bank-tab="4">BANK E</button>
+              <button class="preset-tab-btn" data-bank-tab="5">BANK F</button>
+              <button class="preset-tab-btn" data-bank-tab="6">BANK G</button>
+              <button class="preset-tab-btn" data-bank-tab="7">BANK H</button>
+            </div>
+            <div class="preset-cat-tabs" id="preset-cat-tabs">
+              <button class="preset-cat-btn active" data-cat="all">All</button>
+              <button class="preset-cat-btn" data-cat="Synth">Synth</button>
+              <button class="preset-cat-btn" data-cat="Bass">Bass</button>
+              <button class="preset-cat-btn" data-cat="Lead">Lead</button>
+              <button class="preset-cat-btn" data-cat="Pad">Pad/Str</button>
+              <button class="preset-cat-btn" data-cat="Arp">Arp/Seq</button>
+              <button class="preset-cat-btn" data-cat="Vocoder">Vocoder</button>
+              <button class="preset-cat-btn" data-cat="Bell">Bell/Kbd</button>
+              <button class="preset-cat-btn" data-cat="SFX">SFX/Hit</button>
+            </div>
+          </div>
+        </div>
+        <div class="preset-browser-grid" id="preset-browser-grid"></div>
+      </div>
+    </section>
+
+    <!-- Scrollable Main Content Workspace (Cards scroll underneath the fixed Hero Bar) -->
     <main class="main-workspace">
-      <!-- Top Hero Section: LCD Matrix Left | LCD Main + Bank/Timbre Bar | LCD SysEx | Quick Actions Matrix Right -->
-      <section class="hero-panel">
-        <!-- 1. LCD Programmer Navigation Matrix (2 Rows on the Left) -->
-        <div class="lcd-nav-matrix">
-          <div class="lcd-nav-row">
-            <button id="btn-lcd-page-prev" class="lcd-nav-btn" title="Previous Menu Page">PAGE ◄</button>
-            <button id="btn-lcd-page-next" class="lcd-nav-btn" title="Next Menu Page">PAGE ►</button>
-            <button id="btn-lcd-cursor-prev" class="lcd-nav-btn" title="Cursor Left">CURSOR ◄</button>
-            <button id="btn-lcd-cursor-next" class="lcd-nav-btn" title="Cursor Right">CURSOR ►</button>
-          </div>
-          <div class="lcd-nav-row">
-            <button id="btn-lcd-val-down" class="lcd-nav-btn" title="Value Down / -">VALUE ▼</button>
-            <button id="btn-lcd-val-up" class="lcd-nav-btn" title="Value Up / +">VALUE ▲</button>
-            <button id="btn-lcd-edit" class="lcd-nav-btn" title="Edit / Exit Mode">EDIT/EXIT</button>
-            <button id="btn-lcd-write" class="lcd-nav-btn lcd-nav-btn-accent" title="Write / Store Program">WRITE</button>
-          </div>
-        </div>
-
-        <!-- 2. LCD Main Display (16x2 Characters, Click to Open 128-Preset Browser) -->
-        <div class="lcd-container lcd-main-container" id="lcd-display" title="Click to browse all 128 Presets (Banks A–H)">
-          <div class="lcd-line-1-row">
-            <div class="lcd-line-1" id="lcd-line-1">A.01 Stab Saw</div>
-            <span class="lcd-browse-hint" id="btn-preset-browse" title="Browse 128 Presets (Banks A-H)">BROWSE ▾</span>
-          </div>
-          <div class="lcd-line-2" id="lcd-line-2">Synth - Hard</div>
-        </div>
-
-        <!-- 2b. Bank A..H Quick Selector & Timbre 1/2 Switcher Matrix -->
-        <div class="lcd-nav-matrix bank-timbre-matrix" id="bank-timbre-matrix">
-          <div class="lcd-nav-row bank-quick-row" id="bank-selector-strip" role="group" aria-label="Bank Select A to H">
-            <span class="matrix-mini-label">BANK</span>
-            <button class="bank-quick-btn active" data-bank="0" title="Bank A (Programs A.01 - A.16)">A</button>
-            <button class="bank-quick-btn" data-bank="1" title="Bank B (Programs B.01 - B.16)">B</button>
-            <button class="bank-quick-btn" data-bank="2" title="Bank C (Programs C.01 - C.16)">C</button>
-            <button class="bank-quick-btn" data-bank="3" title="Bank D (Programs D.01 - D.16)">D</button>
-            <button class="bank-quick-btn" data-bank="4" title="Bank E (Programs E.01 - E.16)">E</button>
-            <button class="bank-quick-btn" data-bank="5" title="Bank F (Programs F.01 - F.16)">F</button>
-            <button class="bank-quick-btn" data-bank="6" title="Bank G (Programs G.01 - G.16)">G</button>
-            <button class="bank-quick-btn" data-bank="7" title="Bank H (Programs H.01 - H.16)">H</button>
-          </div>
-          <div class="lcd-nav-row timbre-quick-row" id="timbre-selector-group" role="group" aria-label="Active Timbre Edit Select">
-            <span class="matrix-mini-label">EDIT</span>
-            <button class="timbre-quick-btn active" id="btn-timbre-1" data-timbre="1" title="Edit Timbre 1 Parameters">TIMBRE 1</button>
-            <button class="timbre-quick-btn" id="btn-timbre-2" data-timbre="2" title="Edit Timbre 2 Parameters (Split / Layer)">TIMBRE 2</button>
-            <button class="timbre-mode-pill" id="btn-hero-timbre-mode" title="Click to cycle Timbre Mode (Single / Split / Layer / Vocoder)">SINGLE</button>
-          </div>
-        </div>
-
-        <!-- 3. LCD SysEx Display (Real-time Hex Stream + Copy Button on Right) -->
-        <div class="lcd-container lcd-sysex-container" id="sysex-lcd-display">
-          <div class="sysex-header-tag">SYSEX STREAM</div>
-          <div class="sysex-lcd-body">
-            <div id="sysex-hex-content" class="sysex-hex-content">F0 42 30 58 40 00 00 00 00 00 7F 00 00 00 00 00 00 00 00 00 F7</div>
-            <button id="btn-copy-sysex" class="sysex-copy-btn" title="Copy SysEx Hex to Clipboard">COPY</button>
-          </div>
-        </div>
-
-        <!-- 4. Global Keypad Matrix (2 Rows on the Right) -->
-        <div class="lcd-nav-matrix global-actions-matrix">
-          <div class="lcd-nav-row">
-            <button class="lcd-nav-btn" id="btn-compare" title="Toggle Compare A/B Snapshot (Original vs Edited)">COMPARE</button>
-            <button class="lcd-nav-btn" id="btn-random" title="Randomize Patch (Musical Bounded)">
-              <svg class="ui-btn-icon" viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -1px; margin-right: 2px;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>RNDM
-            </button>
-          </div>
-          <div class="lcd-nav-row">
-            <button class="lcd-nav-btn lcd-nav-btn-accent" id="btn-init-patch" title="Initialize Patch (Default Values)">INIT</button>
-            <button class="lcd-nav-btn lcd-nav-btn-danger" id="btn-panic" title="All Notes Off (Panic)">
-              <svg class="ui-btn-icon" viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -1px; margin-right: 2px;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>PANIC
-            </button>
-          </div>
-        </div>
-
-        <!-- 5. 128-Preset Browser Popover (Banks A-H, 8x16 Grid + Search + Categories) -->
-        <div class="preset-browser-popover" id="preset-browser-popover" hidden>
-          <div class="preset-browser-header">
-            <div class="preset-browser-title-row">
-              <span class="preset-browser-title">KORG MS2000 PRESET BROWSER (128 PROGRAMS · BANKS A–H)</span>
-              <div class="preset-browser-search-wrap">
-                <input type="search" id="preset-search-input" class="preset-search-input" placeholder="Search preset name or number (e.g. A.01, Vocoder, Bass)..." autocomplete="off">
-              </div>
-              <button class="preset-browser-close-btn" id="btn-close-preset-browser" title="Close (Esc)">&times;</button>
-            </div>
-            <div class="preset-browser-filters-row">
-              <div class="preset-bank-tabs" id="preset-bank-tabs">
-                <button class="preset-tab-btn active" data-bank-tab="all">ALL (128)</button>
-                <button class="preset-tab-btn" data-bank-tab="0">BANK A</button>
-                <button class="preset-tab-btn" data-bank-tab="1">BANK B</button>
-                <button class="preset-tab-btn" data-bank-tab="2">BANK C</button>
-                <button class="preset-tab-btn" data-bank-tab="3">BANK D</button>
-                <button class="preset-tab-btn" data-bank-tab="4">BANK E</button>
-                <button class="preset-tab-btn" data-bank-tab="5">BANK F</button>
-                <button class="preset-tab-btn" data-bank-tab="6">BANK G</button>
-                <button class="preset-tab-btn" data-bank-tab="7">BANK H</button>
-              </div>
-              <div class="preset-cat-tabs" id="preset-cat-tabs">
-                <button class="preset-cat-btn active" data-cat="all">All</button>
-                <button class="preset-cat-btn" data-cat="Synth">Synth</button>
-                <button class="preset-cat-btn" data-cat="Bass">Bass</button>
-                <button class="preset-cat-btn" data-cat="Lead">Lead</button>
-                <button class="preset-cat-btn" data-cat="Pad">Pad/Str</button>
-                <button class="preset-cat-btn" data-cat="Arp">Arp/Seq</button>
-                <button class="preset-cat-btn" data-cat="Vocoder">Vocoder</button>
-                <button class="preset-cat-btn" data-cat="Bell">Bell/Kbd</button>
-                <button class="preset-cat-btn" data-cat="SFX">SFX/Hit</button>
-              </div>
-            </div>
-          </div>
-          <div class="preset-browser-grid" id="preset-browser-grid"></div>
-        </div>
-      </section>
 
 
 
@@ -618,6 +621,257 @@
       </section>
     </main>
 
+    <!-- Korg MS2000 / MS2000R 16-Button Hardware Strip (Fixed Above Keyboard) -->
+    <section class="ms2k-bottom-strip" id="ms2k-bottom-strip" aria-label="MS2000 16-Key Function Strip">
+        <!-- Left Hardware Control Cluster: SEQ EDIT [CH PARAM] + BANK/OCTAVE + KEYBOARD -->
+        <div class="ms2k-strip-left">
+          <!-- SEQ EDIT / [CH PARAM] SELECT -->
+          <div class="ms2k-strip-module ms2k-seq-module">
+            <div class="ms2k-module-header">
+              <span class="ms2k-hdr-main">SEQ EDIT</span>
+              <span class="ms2k-hdr-inv">CH PARAM</span>
+            </div>
+            <div class="ms2k-seq-body">
+              <button type="button" class="ms2k-hw-btn" id="btn-ms2k-seq-edit" title="Cycle 16-Pad Mode: Program/Edit -> SEQ 1 [CH LEVEL] -> SEQ 2 [CH PAN] -> SEQ 3">
+                SELECT
+              </button>
+              <div class="ms2k-seq-leds">
+                <div class="ms2k-seq-led-row" data-seq-led="1" id="row-ms2k-seq-1" title="Select SEQ 1 / Vocoder [CH LEVEL]">
+                  <span class="ms2k-led-dot" id="led-ms2k-seq-1"></span>
+                  <span class="ms2k-led-lbl">SEQ 1</span>
+                  <span class="ms2k-hdr-inv ms2k-led-inv">LEVEL</span>
+                </div>
+                <div class="ms2k-seq-led-row" data-seq-led="2" id="row-ms2k-seq-2" title="Select SEQ 2 / Vocoder [CH PAN]">
+                  <span class="ms2k-led-dot" id="led-ms2k-seq-2"></span>
+                  <span class="ms2k-led-lbl">SEQ 2</span>
+                  <span class="ms2k-hdr-inv ms2k-led-inv">PAN</span>
+                </div>
+                <div class="ms2k-seq-led-row" data-seq-led="3" id="row-ms2k-seq-3" title="Select SEQ 3">
+                  <span class="ms2k-led-dot" id="led-ms2k-seq-3"></span>
+                  <span class="ms2k-led-lbl">SEQ 3</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BANK / OCTAVE & PAD KEYBOARD -->
+          <div class="ms2k-strip-module ms2k-bank-module">
+            <div class="ms2k-module-header">
+              <span class="ms2k-hdr-main" id="ms2k-bank-oct-title">BANK / OCT</span>
+              <span class="ms2k-bank-readout" id="ms2k-strip-mode-badge">PROG A</span>
+            </div>
+            <div class="ms2k-bank-btns">
+              <button type="button" class="ms2k-hw-btn ms2k-bank-btn" id="btn-ms2k-bank-down" title="Bank Down (A..H) / Octave Down in Pad Keyboard mode">
+                <span class="ms2k-led-dot" id="led-ms2k-bank-down"></span>
+                <span>DOWN</span>
+              </button>
+              <button type="button" class="ms2k-hw-btn ms2k-bank-btn" id="btn-ms2k-bank-up" title="Bank Up (A..H) / Octave Up in Pad Keyboard mode">
+                <span class="ms2k-led-dot" id="led-ms2k-bank-up"></span>
+                <span>UP</span>
+              </button>
+              <button type="button" class="ms2k-hw-btn ms2k-bank-btn" id="btn-ms2k-pad-kbd" title="Toggle 16-Pad Chromatic Keyboard (Shift+Click pad to Latch notes)">
+                <span class="ms2k-led-dot" id="led-ms2k-pad-kbd"></span>
+                <span>KBD</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 16 Illuminated Program / Edit / Sequencer / Vocoder / Keyboard Pads -->
+        <div class="ms2k-strip-pads" id="ms2k-strip-pads">
+          <div class="ms2k-pad-col" data-pad="1">
+            <div class="ms2k-pad-top"><span class="ms2k-pad-num">1</span><span class="ms2k-pad-subval" id="ms2k-pad-val-1"></span></div>
+            <button type="button" class="ms2k-pad-btn is-active" id="ms2k-pad-1" data-pad="1" title="Pad 1: Program 01 / Edit 1: COMMON / Step 1">
+              <span class="ms2k-pad-led"></span>
+              <span class="ms2k-pad-bar"><span class="ms2k-pad-bar-fill" id="ms2k-pad-bar-1"></span></span>
+            </button>
+            <button type="button" class="ms2k-pad-label-btn" data-pad-jump="1" title="Open Page 1: COMMON (Timbre Mode &amp; Scale)">
+              <span class="ms2k-legend-synth">COMMON</span>
+              <span class="ms2k-legend-voc">COMMON</span>
+            </button>
+          </div>
+
+          <div class="ms2k-pad-col" data-pad="2">
+            <div class="ms2k-pad-top"><span class="ms2k-pad-num">2</span><span class="ms2k-pad-subval" id="ms2k-pad-val-2"></span></div>
+            <button type="button" class="ms2k-pad-btn" id="ms2k-pad-2" data-pad="2" title="Pad 2: Program 02 / Edit 2: VOICE / Step 2">
+              <span class="ms2k-pad-led"></span>
+              <span class="ms2k-pad-bar"><span class="ms2k-pad-bar-fill" id="ms2k-pad-bar-2"></span></span>
+            </button>
+            <button type="button" class="ms2k-pad-label-btn" data-pad-jump="2" title="Open Page 2: VOICE (Single/Poly/Unison &amp; Split/Layer)">
+              <span class="ms2k-legend-synth">VOICE</span>
+              <span class="ms2k-legend-voc">VOICE</span>
+            </button>
+          </div>
+
+          <div class="ms2k-pad-col" data-pad="3">
+            <div class="ms2k-pad-top"><span class="ms2k-pad-num">3</span><span class="ms2k-pad-subval" id="ms2k-pad-val-3"></span></div>
+            <button type="button" class="ms2k-pad-btn" id="ms2k-pad-3" data-pad="3" title="Pad 3: Program 03 / Edit 3: PITCH / Step 3">
+              <span class="ms2k-pad-led"></span>
+              <span class="ms2k-pad-bar"><span class="ms2k-pad-bar-fill" id="ms2k-pad-bar-3"></span></span>
+            </button>
+            <button type="button" class="ms2k-pad-label-btn" data-pad-jump="3" title="Open Page 3: PITCH (Transpose, Tune, Bend, Portamento)">
+              <span class="ms2k-legend-synth">PITCH</span>
+              <span class="ms2k-legend-voc">PITCH</span>
+            </button>
+          </div>
+
+          <div class="ms2k-pad-col" data-pad="4">
+            <div class="ms2k-pad-top"><span class="ms2k-pad-num">4</span><span class="ms2k-pad-subval" id="ms2k-pad-val-4"></span></div>
+            <button type="button" class="ms2k-pad-btn" id="ms2k-pad-4" data-pad="4" title="Pad 4: Program 04 / Edit 4: OSC 1 / Step 4">
+              <span class="ms2k-pad-led"></span>
+              <span class="ms2k-pad-bar"><span class="ms2k-pad-bar-fill" id="ms2k-pad-bar-4"></span></span>
+            </button>
+            <button type="button" class="ms2k-pad-label-btn" data-pad-jump="4" title="Open Page 4: OSC 1 (Waveform &amp; DWGS)">
+              <span class="ms2k-legend-synth">OSC 1</span>
+              <span class="ms2k-legend-voc">OSC 1</span>
+            </button>
+          </div>
+
+          <div class="ms2k-pad-col" data-pad="5">
+            <div class="ms2k-pad-top"><span class="ms2k-pad-num">5</span><span class="ms2k-pad-subval" id="ms2k-pad-val-5"></span></div>
+            <button type="button" class="ms2k-pad-btn" id="ms2k-pad-5" data-pad="5" title="Pad 5: Program 05 / Edit 5: OSC 2 [AUDIO IN 2] / Step 5">
+              <span class="ms2k-pad-led"></span>
+              <span class="ms2k-pad-bar"><span class="ms2k-pad-bar-fill" id="ms2k-pad-bar-5"></span></span>
+            </button>
+            <button type="button" class="ms2k-pad-label-btn" data-pad-jump="5" title="Open Page 5: OSC 2 / Vocoder [AUDIO IN 2]">
+              <span class="ms2k-legend-synth">OSC 2</span>
+              <span class="ms2k-legend-voc">AUDIO IN 2</span>
+            </button>
+          </div>
+
+          <div class="ms2k-pad-col" data-pad="6">
+            <div class="ms2k-pad-top"><span class="ms2k-pad-num">6</span><span class="ms2k-pad-subval" id="ms2k-pad-val-6"></span></div>
+            <button type="button" class="ms2k-pad-btn" id="ms2k-pad-6" data-pad="6" title="Pad 6: Program 06 / Edit 6: FILTER / Step 6">
+              <span class="ms2k-pad-led"></span>
+              <span class="ms2k-pad-bar"><span class="ms2k-pad-bar-fill" id="ms2k-pad-bar-6"></span></span>
+            </button>
+            <button type="button" class="ms2k-pad-label-btn" data-pad-jump="6" title="Open Page 6: FILTER (Cutoff, Resonance, Mod)">
+              <span class="ms2k-legend-synth">FILTER</span>
+              <span class="ms2k-legend-voc">FILTER</span>
+            </button>
+          </div>
+
+          <div class="ms2k-pad-col" data-pad="7">
+            <div class="ms2k-pad-top"><span class="ms2k-pad-num">7</span><span class="ms2k-pad-subval" id="ms2k-pad-val-7"></span></div>
+            <button type="button" class="ms2k-pad-btn" id="ms2k-pad-7" data-pad="7" title="Pad 7: Program 07 / Edit 7: AMP / Step 7">
+              <span class="ms2k-pad-led"></span>
+              <span class="ms2k-pad-bar"><span class="ms2k-pad-bar-fill" id="ms2k-pad-bar-7"></span></span>
+            </button>
+            <button type="button" class="ms2k-pad-label-btn" data-pad-jump="7" title="Open Page 7: AMP (Level, Pan, Distortion, Key Track)">
+              <span class="ms2k-legend-synth">AMP</span>
+              <span class="ms2k-legend-voc">AMP</span>
+            </button>
+          </div>
+
+          <div class="ms2k-pad-col" data-pad="8">
+            <div class="ms2k-pad-top"><span class="ms2k-pad-num">8</span><span class="ms2k-pad-subval" id="ms2k-pad-val-8"></span></div>
+            <button type="button" class="ms2k-pad-btn" id="ms2k-pad-8" data-pad="8" title="Pad 8: Program 08 / Edit 8: EG 1 &amp; EG 2 / Step 8">
+              <span class="ms2k-pad-led"></span>
+              <span class="ms2k-pad-bar"><span class="ms2k-pad-bar-fill" id="ms2k-pad-bar-8"></span></span>
+            </button>
+            <button type="button" class="ms2k-pad-label-btn" data-pad-jump="8" title="Open Page 8: EG (Toggles EG1 Filter <-> EG2 Amp)">
+              <span class="ms2k-legend-synth">EG</span>
+              <span class="ms2k-legend-voc">EG</span>
+            </button>
+          </div>
+
+          <div class="ms2k-pad-col" data-pad="9">
+            <div class="ms2k-pad-top"><span class="ms2k-pad-num">9</span><span class="ms2k-pad-subval" id="ms2k-pad-val-9"></span></div>
+            <button type="button" class="ms2k-pad-btn" id="ms2k-pad-9" data-pad="9" title="Pad 9: Program 09 / Edit 9: LFO 1 &amp; LFO 2 / Step 9">
+              <span class="ms2k-pad-led"></span>
+              <span class="ms2k-pad-bar"><span class="ms2k-pad-bar-fill" id="ms2k-pad-bar-9"></span></span>
+            </button>
+            <button type="button" class="ms2k-pad-label-btn" data-pad-jump="9" title="Open Page 9: LFO (Toggles LFO 1 <-> LFO 2)">
+              <span class="ms2k-legend-synth">LFO</span>
+              <span class="ms2k-legend-voc">LFO</span>
+            </button>
+          </div>
+
+          <div class="ms2k-pad-col" data-pad="10">
+            <div class="ms2k-pad-top"><span class="ms2k-pad-num">10</span><span class="ms2k-pad-subval" id="ms2k-pad-val-10"></span></div>
+            <button type="button" class="ms2k-pad-btn" id="ms2k-pad-10" data-pad="10" title="Pad 10: Program 10 / Edit 10: PATCH [CH LEVEL] / Step 10">
+              <span class="ms2k-pad-led"></span>
+              <span class="ms2k-pad-bar"><span class="ms2k-pad-bar-fill" id="ms2k-pad-bar-10"></span></span>
+            </button>
+            <button type="button" class="ms2k-pad-label-btn" data-pad-jump="10" title="Open Page 10: VIRTUAL PATCH (4 Slots) / Vocoder [CH LEVEL]">
+              <span class="ms2k-legend-synth">PATCH</span>
+              <span class="ms2k-legend-voc">CH LEVEL</span>
+            </button>
+          </div>
+
+          <div class="ms2k-pad-col" data-pad="11">
+            <div class="ms2k-pad-top"><span class="ms2k-pad-num">11</span><span class="ms2k-pad-subval" id="ms2k-pad-val-11"></span></div>
+            <button type="button" class="ms2k-pad-btn" id="ms2k-pad-11" data-pad="11" title="Pad 11: Program 11 / Edit 11: MOD SEQ [CH PAN] / Step 11">
+              <span class="ms2k-pad-led"></span>
+              <span class="ms2k-pad-bar"><span class="ms2k-pad-bar-fill" id="ms2k-pad-bar-11"></span></span>
+            </button>
+            <button type="button" class="ms2k-pad-label-btn" data-pad-jump="11" title="Open Page 11: MOD SEQUENCER (3x16) / Vocoder [CH PAN]">
+              <span class="ms2k-legend-synth">SEQ</span>
+              <span class="ms2k-legend-voc">CH PAN</span>
+            </button>
+          </div>
+
+          <div class="ms2k-pad-col" data-pad="12">
+            <div class="ms2k-pad-top"><span class="ms2k-pad-num">12</span><span class="ms2k-pad-subval" id="ms2k-pad-val-12"></span></div>
+            <button type="button" class="ms2k-pad-btn" id="ms2k-pad-12" data-pad="12" title="Pad 12: Program 12 / Edit 12: MOD FX / Step 12">
+              <span class="ms2k-pad-led"></span>
+              <span class="ms2k-pad-bar"><span class="ms2k-pad-bar-fill" id="ms2k-pad-bar-12"></span></span>
+            </button>
+            <button type="button" class="ms2k-pad-label-btn" data-pad-jump="12" title="Open Page 12: MOD FX (Chorus / Ensemble / Phaser)">
+              <span class="ms2k-legend-synth">MOD FX</span>
+              <span class="ms2k-legend-voc">MOD FX</span>
+            </button>
+          </div>
+
+          <div class="ms2k-pad-col" data-pad="13">
+            <div class="ms2k-pad-top"><span class="ms2k-pad-num">13</span><span class="ms2k-pad-subval" id="ms2k-pad-val-13"></span></div>
+            <button type="button" class="ms2k-pad-btn" id="ms2k-pad-13" data-pad="13" title="Pad 13: Program 13 / Edit 13: DELAY FX / Step 13">
+              <span class="ms2k-pad-led"></span>
+              <span class="ms2k-pad-bar"><span class="ms2k-pad-bar-fill" id="ms2k-pad-bar-13"></span></span>
+            </button>
+            <button type="button" class="ms2k-pad-label-btn" data-pad-jump="13" title="Open Page 13: DELAY FX (Stereo / Cross / L-R)">
+              <span class="ms2k-legend-synth">DELAY FX</span>
+              <span class="ms2k-legend-voc">DELAY FX</span>
+            </button>
+          </div>
+
+          <div class="ms2k-pad-col" data-pad="14">
+            <div class="ms2k-pad-top"><span class="ms2k-pad-num">14</span><span class="ms2k-pad-subval" id="ms2k-pad-val-14"></span></div>
+            <button type="button" class="ms2k-pad-btn" id="ms2k-pad-14" data-pad="14" title="Pad 14: Program 14 / Edit 14: EQ / Step 14">
+              <span class="ms2k-pad-led"></span>
+              <span class="ms2k-pad-bar"><span class="ms2k-pad-bar-fill" id="ms2k-pad-bar-14"></span></span>
+            </button>
+            <button type="button" class="ms2k-pad-label-btn" data-pad-jump="14" title="Open Page 14: EQUALIZER (2-Band Shelving)">
+              <span class="ms2k-legend-synth">EQ</span>
+              <span class="ms2k-legend-voc">EQ</span>
+            </button>
+          </div>
+
+          <div class="ms2k-pad-col" data-pad="15">
+            <div class="ms2k-pad-top"><span class="ms2k-pad-num">15</span><span class="ms2k-pad-subval" id="ms2k-pad-val-15"></span></div>
+            <button type="button" class="ms2k-pad-btn" id="ms2k-pad-15" data-pad="15" title="Pad 15: Program 15 / Edit 15: ARPEGGIO / Step 15">
+              <span class="ms2k-pad-led"></span>
+              <span class="ms2k-pad-bar"><span class="ms2k-pad-bar-fill" id="ms2k-pad-bar-15"></span></span>
+            </button>
+            <button type="button" class="ms2k-pad-label-btn" data-pad-jump="15" title="Open Page 15: ARPEGGIATOR">
+              <span class="ms2k-legend-synth">ARPEGGIO</span>
+              <span class="ms2k-legend-voc">ARPEGGIO</span>
+            </button>
+          </div>
+
+          <div class="ms2k-pad-col" data-pad="16">
+            <div class="ms2k-pad-top"><span class="ms2k-pad-num">16</span><span class="ms2k-pad-subval" id="ms2k-pad-val-16"></span></div>
+            <button type="button" class="ms2k-pad-btn" id="ms2k-pad-16" data-pad="16" title="Pad 16: Program 16 / Edit 16: UTILITY / Step 16">
+              <span class="ms2k-pad-led"></span>
+              <span class="ms2k-pad-bar"><span class="ms2k-pad-bar-fill" id="ms2k-pad-bar-16"></span></span>
+            </button>
+            <button type="button" class="ms2k-pad-label-btn" data-pad-jump="16" title="Open Page 16: UTILITY (Copy/Swap Timbre, Write, SysEx, Diagnostics)">
+              <span class="ms2k-legend-synth">UTILITY</span>
+              <span class="ms2k-legend-voc">UTILITY</span>
+            </button>
+          </div>
+        </div>
+      </section>
 
     <!-- Virtual Keyboard Area -->
     <footer class="keyboard-container">

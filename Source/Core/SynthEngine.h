@@ -222,6 +222,8 @@ class SynthEngine
     VoiceManager voiceManagerB_;
     int timbreMode_ {0};  // 0: Single, 1: Split, 2: Layer
     int splitKey_ {60};   // C4 por defecto (byte 0x12 real)
+    int arpTarget_ {0};   // 0: Both, 1: Timbre 1, 2: Timbre 2 (byte 0x20 bits 4..5 real)
+    bool hasHostBpm_ {false};
 
     ModSequencer modSeq_;
     Arpeggiator arpeggiator_;

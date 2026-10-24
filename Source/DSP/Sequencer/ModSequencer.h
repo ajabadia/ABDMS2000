@@ -135,8 +135,9 @@ class ModSequencer
     void setTempoBPM(float bpm) noexcept;
 
     // Tempo Sync resolution: index 0..15 (MS2000 SysEx canonical)
-    // 0=1/48, 3=1/16, 7=1/4, 11=1/1, 15=4/1
+    // 0=1/48, 3=1/16, 6=1/8, 9=1/4, 15=1/1
     void setSyncResolution(int idx) noexcept;
+    void setTimbreSyncResolution(bool second, int idx) noexcept;
     static float syncResolutionToStepsPerBeat(int idx) noexcept;
 
     ModSeqTrack &getTrack(size_t index) noexcept
@@ -165,10 +166,10 @@ class ModSequencer
     double sampleRate_ {44100.0};
     bool enabled_ {false};
     float bpm_ {120.0f};
-    float syncStepsPerBeat_ {16.0f};  // Default: 1/16 (16 steps per beat)
+    std::array<float, 2> syncStepsPerBeat_ {4.0f, 4.0f};  // Default: 1/16 (4 steps per beat) por timbre
 
-    double samplesPerStep_ {5512.5};
-    double stepSampleCounter_ {0.0};
+    std::array<double, 2> samplesPerStep_ {5512.5, 5512.5};
+    std::array<double, 2> stepSampleCounter_ {0.0, 0.0};
 
     std::array<ModSeqTrack, NUM_TRACKS> tracks_ {};
     std::array<int, NUM_TRACKS> currentStep_ {0, 0, 0, 0, 0, 0};
@@ -181,7 +182,7 @@ class ModSequencer
 
     uint32_t rngState_ {0x12345678};
 
-    void advanceStep() noexcept;
+    void advanceStep(size_t firstTrack = 0, size_t count = NUM_TRACKS) noexcept;
 };
 
 }  // namespace ABDMS2000

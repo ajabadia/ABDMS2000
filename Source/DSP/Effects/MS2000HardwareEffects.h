@@ -1,10 +1,10 @@
 #pragma once
-#include "../Common/DSPUtils.h"
-#include "../../Core/MS2000FirmwareTables.h"
 #include <array>
 #include <cmath>
 #include <cstdint>
 #include <vector>
+#include "../../Core/MS2000FirmwareTables.h"
+#include "../Common/DSPUtils.h"
 
 namespace ABDMS2000::HardwareEffects
 {
@@ -70,15 +70,15 @@ class HardwareVoiceDistortion
         {
             // P:$083D - $0842: asl #$08,a,b -> move b,y1 (24-bit hard limit) -> mpy #$100000,y1,a
             float b = DSPUtils::clamp(a * 256.0f, -1.0f, 1.0f);
-            a = b * 0.125f; // $100000 in Q23
+            a = b * 0.125f;  // $100000 in Q23
 
             // P:$0875 - $0882: 2nd-order Cabinet Biquad (X:$0524..$0529 with asl #$03 = *8)
             // H_cab(z) poles from X:$0524=$044985 (0.0334940), X:$0526=$EC6079 (-0.1533062)
-            constexpr float kCabA2 = -0.0334940f; // -$044985 / $800000
-            constexpr float kCabA1 = +0.1533062f; // -$EC6079 / $800000
-            constexpr float kCabB0 = +0.0120468f; // Normalized passband unity with 8x shift
+            constexpr float kCabA2 = -0.0334940f;  // -$044985 / $800000
+            constexpr float kCabA1 = +0.1533062f;  // -$EC6079 / $800000
+            constexpr float kCabB0 = +0.0120468f;  // Normalized passband unity with 8x shift
             float acc = (kCabA2 * cabY2_) + (kCabA1 * cabY1_) + (kCabB0 * a);
-            float out = DSPUtils::clamp(acc * 8.0f, -1.0f, 1.0f); // asl #$03,a,a + 24-bit saturation
+            float out = DSPUtils::clamp(acc * 8.0f, -1.0f, 1.0f);  // asl #$03,a,a + 24-bit saturation
             cabY2_ = cabY1_;
             cabY1_ = out;
             return out;
@@ -150,8 +150,7 @@ class HardwareTwoBandEQ
     }
 
   private:
-    [[nodiscard]] float processChannel(
-        float x, float &lx1, float &ly1, float &hx1, float &hy1) const noexcept
+    [[nodiscard]] float processChannel(float x, float &lx1, float &ly1, float &hx1, float &hy1) const noexcept
     {
         // P:$08B7 - $08BD: Low Shelf 1st-order with asl #$02,a,a (*4.0)
         float accLow = (b0Low_ * x) + (b1Low_ * lx1) + (a1Low_ * ly1);
@@ -226,7 +225,7 @@ class HardwareTwoBandEQ
 class HardwareChorusFlanger
 {
   public:
-    static constexpr size_t kBufferSize = 4096; // $000FFF mask in X:$0235
+    static constexpr size_t kBufferSize = 4096;  // $000FFF mask in X:$0235
     static constexpr size_t kBufferMask = kBufferSize - 1;
 
     void prepare(double sampleRate) noexcept
@@ -271,8 +270,10 @@ class HardwareChorusFlanger
         const float baseSamples = (32.0f + depth_ * 384.0f) * srRatio;
         const float modSamples = (depth_ * 256.0f) * srRatio;
 
-        const float delayL = DSPUtils::clamp(baseSamples + shapedLfo * modSamples, 2.0f, static_cast<float>(kBufferSize - 4));
-        const float delayR = DSPUtils::clamp(baseSamples - shapedLfo * modSamples, 2.0f, static_cast<float>(kBufferSize - 4));
+        const float delayL =
+            DSPUtils::clamp(baseSamples + shapedLfo * modSamples, 2.0f, static_cast<float>(kBufferSize - 4));
+        const float delayR =
+            DSPUtils::clamp(baseSamples - shapedLfo * modSamples, 2.0f, static_cast<float>(kBufferSize - 4));
 
         // P:$0F57 - $0F5E: Read 16-bit DRAM with 8-bit fractional linear interpolation
         const float wetL = readInterpolated16(bufferL_, delayL);
@@ -300,7 +301,8 @@ class HardwareChorusFlanger
         return static_cast<int16_t>(clamped * 32768.0f);
     }
 
-    [[nodiscard]] float readInterpolated16(const std::array<int16_t, kBufferSize> &buf, float delaySamples) const noexcept
+    [[nodiscard]] float readInterpolated16(const std::array<int16_t, kBufferSize> &buf,
+                                           float delaySamples) const noexcept
     {
         // P:$0F88 / P:$0F8E: 8-bit fractional part (`lsr #$08`)
         float readPos = static_cast<float>(writePos_) - delaySamples;
@@ -388,12 +390,13 @@ class HardwareEnsemble
         if (fastPhase_ >= 1.0f)
             fastPhase_ -= 1.0f;
 
-        auto triWave = [](float p) noexcept -> float {
+        auto triWave = [](float p) noexcept -> float
+        {
             p -= std::floor(p);
             return 2.0f * std::abs(2.0f * p - 1.0f) - 1.0f;
         };
 
-        const float shimmer = 0.20f * triWave(fastPhase_); // Y:$0329 = $199999 (0.20)
+        const float shimmer = 0.20f * triWave(fastPhase_);  // Y:$0329 = $199999 (0.20)
         const float mod1 = triWave(slowPhase_) + shimmer;
         const float mod2 = triWave(slowPhase_ + (1.0f / 3.0f)) + shimmer;
         const float mod3 = triWave(slowPhase_ + (2.0f / 3.0f)) - shimmer;
@@ -492,13 +495,14 @@ class HardwarePhaser
             lfoPhase_ -= 1.0f;
 
         float triL = 2.0f * std::abs(2.0f * lfoPhase_ - 1.0f) - 1.0f;
-        float triR = -triL; // Stereo opposite LFO polarity (`P:$1099 eor y1,a`)
+        float triR = -triL;  // Stereo opposite LFO polarity (`P:$1099 eor y1,a`)
 
         // Quadratic curve mapping to all-pass coefficient g in [0.15, 0.92]
         // (Compare X:$026D = $E80000, X:$026E = $780000)
-        auto computeAllPassCoeff = [this](float lfoBipolar) noexcept -> float {
+        auto computeAllPassCoeff = [this](float lfoBipolar) noexcept -> float
+        {
             float norm = DSPUtils::clamp(0.5f + 0.5f * lfoBipolar * depth_, 0.0f, 1.0f);
-            float curved = norm * norm; // P:$1091 mpy x0,x0,b
+            float curved = norm * norm;  // P:$1091 mpy x0,x0,b
             float minFreq = 180.0f;
             float maxFreq = 4800.0f;
             float fc = minFreq + curved * (maxFreq - minFreq);
@@ -569,15 +573,15 @@ class HardwarePhaser
  */
 enum class HardwareDelayType
 {
-    StereoDelay = 0, // P:$0FE9 with straight L->L, R->R feedback
-    CrossDelay  = 1, // P:$0FE9 with crossed L->R, R->L feedback
-    LRDelay     = 2  // P:$1025 with mono-crossed feedback & split L/R output taps
+    StereoDelay = 0,  // P:$0FE9 with straight L->L, R->R feedback
+    CrossDelay = 1,   // P:$0FE9 with crossed L->R, R->L feedback
+    LRDelay = 2       // P:$1025 with mono-crossed feedback & split L/R output taps
 };
 
 class HardwareDelay
 {
   public:
-    static constexpr size_t kBufferSize = 262144; // $03FFFF + 1 words per channel
+    static constexpr size_t kBufferSize = 262144;  // $03FFFF + 1 words per channel
     static constexpr size_t kBufferMask = kBufferSize - 1;
 
     void prepare(double sampleRate) noexcept
@@ -601,11 +605,8 @@ class HardwareDelay
         dampStateR_ = 0.0f;
     }
 
-    void setParameters(HardwareDelayType type,
-                       float delayTimeMsL,
-                       float delayTimeMsR,
-                       float feedback0to1,
-                       float mix0to1) noexcept
+    void setParameters(
+        HardwareDelayType type, float delayTimeMsL, float delayTimeMsR, float feedback0to1, float mix0to1) noexcept
     {
         type_ = type;
         const float maxMs = static_cast<float>((kBufferSize - 8) * 1000.0 / sampleRate_);
@@ -646,7 +647,7 @@ class HardwareDelay
             fbL = left + feedback_ * dampStateR_;
             fbR = right + feedback_ * dampStateL_;
         }
-        else // HardwareDelayType::LRDelay (P:$1025 - $105C)
+        else  // HardwareDelayType::LRDelay (P:$1025 - $105C)
         {
             const float monoIn = 0.5f * (left + right);
             fbL = monoIn + feedback_ * dampStateR_;
@@ -701,4 +702,4 @@ class HardwareDelay
     size_t writePos_ {0};
 };
 
-} // namespace ABDMS2000::HardwareEffects
+}  // namespace ABDMS2000::HardwareEffects

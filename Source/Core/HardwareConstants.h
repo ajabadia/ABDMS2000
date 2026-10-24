@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include "SynthCore/LFO.h"
 
 namespace ABDMS2000
 {
@@ -53,8 +54,13 @@ inline constexpr float kPitchBendDefaultSemitones = 2.0f;       // Standard pitc
 inline constexpr float kVirtualPatchMaxPitchSemitones = 24.0f;  // Virtual patch pitch span (±24 semitones = ±2 octaves)
 
 // Filter & VCA modulation limits (MS2000 hardware specification & SysEx byte 23)
-inline constexpr float kFilterModMaxOctaves = 5.0f;     // Filter EG/Velo/Patch intensity max span (±5 octaves)
-inline constexpr float kLfoModMaxOctaves = 4.0f;        // LFO frequency cross-modulation max span (±4 octaves)
+inline constexpr float kFilterModMaxOctaves = 5.0f;  // Filter EG/Velo/Patch intensity max span (±5 octaves)
+inline constexpr float kLfoModMaxOctaves = 4.0f;     // LFO frequency cross-modulation max span (±4 octaves)
+inline constexpr float kLfoDefaultMinFrequencyHz = abd::synth::kLfoDefaultMinFrequencyHz;
+inline constexpr float kLfoDefaultMaxFrequencyHz = abd::synth::kLfoDefaultMaxFrequencyHz;
+inline constexpr float kLfoNonHardwareModulationMaxFrequencyHz = abd::synth::kLfoNonHardwareModulationMaxFrequencyHz;
+inline constexpr float kLfoModulationMinFrequencyHz = abd::synth::kLfoModulationMinFrequencyHz;
+inline constexpr float kLfoHardwareMaxFrequencyHz = abd::synth::kLfoHardwareMaxFrequencyHz;
 inline constexpr float kKbdTrackSpanSemitones = 64.0f;  // Keyboard tracking span normalization factor (±64 semitones)
 inline constexpr float kPanHalfWidth = 0.5f;            // Panning law half-width (0.5 for linear pan gain)
 

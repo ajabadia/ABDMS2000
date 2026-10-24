@@ -57,7 +57,7 @@ void ModFX::setFeedback(float feedback0to127) noexcept
 
 void ModFX::process(float &leftSample, float &rightSample) noexcept
 {
-    if (!enabled_)
+    if (!enabled_ || depth_ <= 0.0001f)
         return;
 
     switch (type_)
@@ -75,4 +75,3 @@ void ModFX::process(float &leftSample, float &rightSample) noexcept
 }
 
 }  // namespace ABDMS2000
-

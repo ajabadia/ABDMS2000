@@ -80,9 +80,8 @@ struct MS2000ProgramData
         {
             if (isVoiceByteParam(meta.id))
                 continue;
-            const int offInt = (meta.sysexOffset >= 0)
-                                   ? (static_cast<int>(TIMBRE_START) + meta.sysexOffset)
-                                   : (static_cast<int>(NON_SYSEX_START) + (nonSysexIdx++));
+            const int offInt = (meta.sysexOffset >= 0) ? (static_cast<int>(TIMBRE_START) + meta.sysexOffset)
+                                                       : (static_cast<int>(NON_SYSEX_START) + (nonSysexIdx++));
             if (offInt < 0 || static_cast<size_t>(offInt) >= UNPACKED_PROGRAM_SIZE)
                 continue;
             const auto off = static_cast<size_t>(offInt);
@@ -90,7 +89,8 @@ struct MS2000ProgramData
             if (meta.type == ParamType::Boolean)
                 rawData[off] = (meta.defaultValue > 0.5f) ? 64 : 0;
             else if (meta.type == ParamType::Continuous && meta.max <= 1.0f)
-                rawData[off] = static_cast<uint8_t>(std::clamp(static_cast<int>(meta.defaultValue * 100.0f + 0.5f), 0, 100));
+                rawData[off] =
+                    static_cast<uint8_t>(std::clamp(static_cast<int>(meta.defaultValue * 100.0f + 0.5f), 0, 100));
             else if (meta.min < 0.0f)
                 rawData[off] = static_cast<uint8_t>(static_cast<int>(meta.defaultValue) + 64);
             else
@@ -99,6 +99,44 @@ struct MS2000ProgramData
     }
 
     static constexpr size_t NON_SYSEX_START = 0x10B;
+    static constexpr size_t TEMPO_MSB_OFFSET = 0x170;
+    static constexpr size_t TEMPO_LSB_OFFSET = 0x171;
+    static constexpr size_t ARP_TARGET_OFFSET = 0x172;
+    static constexpr size_t ARP_KEYSYNC_OFFSET = 0x173;
+
+    int getTempoBPM() const noexcept
+    {
+        const int bpm =
+            (static_cast<int>(rawData[TEMPO_MSB_OFFSET]) << 8) | static_cast<int>(rawData[TEMPO_LSB_OFFSET]);
+        return (bpm >= 20 && bpm <= 300) ? bpm : 120;
+    }
+
+    void setTempoBPM(int bpm) noexcept
+    {
+        const int clamped = std::clamp(bpm, 20, 300);
+        rawData[TEMPO_MSB_OFFSET] = static_cast<uint8_t>((clamped >> 8) & 0xFF);
+        rawData[TEMPO_LSB_OFFSET] = static_cast<uint8_t>(clamped & 0xFF);
+    }
+
+    uint8_t getArpTarget() const noexcept
+    {
+        return rawData[ARP_TARGET_OFFSET] <= 2 ? rawData[ARP_TARGET_OFFSET] : 0;
+    }
+
+    void setArpTarget(uint8_t target) noexcept
+    {
+        rawData[ARP_TARGET_OFFSET] = std::min<uint8_t>(target, 2);
+    }
+
+    bool getArpKeySync() const noexcept
+    {
+        return rawData[ARP_KEYSYNC_OFFSET] != 0;
+    }
+
+    void setArpKeySync(bool sync) noexcept
+    {
+        rawData[ARP_KEYSYNC_OFFSET] = sync ? 1 : 0;
+    }
 
     static int getStorageOffsetById(const char *id) noexcept
     {
@@ -109,9 +147,8 @@ struct MS2000ProgramData
         {
             if (isVoiceByteParam(meta.id))
                 continue;
-            const int offInt = (meta.sysexOffset >= 0)
-                                   ? (static_cast<int>(TIMBRE_START) + meta.sysexOffset)
-                                   : (static_cast<int>(NON_SYSEX_START) + (nonSysexIdx++));
+            const int offInt = (meta.sysexOffset >= 0) ? (static_cast<int>(TIMBRE_START) + meta.sysexOffset)
+                                                       : (static_cast<int>(NON_SYSEX_START) + (nonSysexIdx++));
             if (std::strcmp(meta.id, id) == 0)
             {
                 return (offInt >= 0 && static_cast<size_t>(offInt) < UNPACKED_PROGRAM_SIZE) ? offInt : -1;
@@ -171,7 +208,9 @@ struct MS2000ProgramData
         }
         if (std::strcmp(id, ParamIDs::unisonDetune) == 0)
         {
-            rawData[VOICE_BYTE] = (rawData[VOICE_BYTE] & ~(0x0F << 2)) | ((static_cast<uint8_t>(value) & 0x0F) << 2);
+            const uint8_t u = static_cast<uint8_t>(std::clamp(static_cast<int>(value), 0, 99));
+            rawData[VOICE_BYTE] = (rawData[VOICE_BYTE] & ~(0x0F << 2)) | ((u & 0x0F) << 2);
+            rawData[TIMBRE_START + 1] = u;
             return;
         }
         if (std::strcmp(id, ParamIDs::portamentoOn) == 0)
@@ -208,15 +247,18 @@ struct MS2000ProgramData
 
     static bool isVoiceByteParam(const char *id) noexcept
     {
-        return id == ParamIDs::voiceMode || id == ParamIDs::unisonDetune || id == ParamIDs::portamentoOn
-               || id == ParamIDs::portamentoTime;
+        if (id == nullptr)
+            return false;
+        return std::strcmp(id, ParamIDs::voiceMode) == 0 || std::strcmp(id, ParamIDs::unisonDetune) == 0
+               || std::strcmp(id, ParamIDs::portamentoOn) == 0 || std::strcmp(id, ParamIDs::portamentoTime) == 0;
     }
 
     template <typename Fn> void forEachParameterValue(Fn &&callback) const
     {
         const uint8_t voiceByte = rawData[VOICE_BYTE];
+        const uint8_t fullDetune = rawData[TIMBRE_START + 1];
         callback(ParamIDs::voiceMode, static_cast<float>(voiceByte & 0x03));
-        callback(ParamIDs::unisonDetune, static_cast<float>((voiceByte >> 2) & 0x0F));
+        callback(ParamIDs::unisonDetune, static_cast<float>(fullDetune != 0 ? fullDetune : ((voiceByte >> 2) & 0x0F)));
         callback(ParamIDs::portamentoOn, static_cast<float>((voiceByte >> 6) & 0x01));
         callback(ParamIDs::portamentoTime, static_cast<float>(rawData[VOICE_BYTE + 2]));
 
@@ -225,9 +267,8 @@ struct MS2000ProgramData
         {
             if (isVoiceByteParam(meta.id))
                 continue;
-            const int offInt = (meta.sysexOffset >= 0)
-                                   ? (static_cast<int>(TIMBRE_START) + meta.sysexOffset)
-                                   : (static_cast<int>(NON_SYSEX_START) + (nonSysexIdx++));
+            const int offInt = (meta.sysexOffset >= 0) ? (static_cast<int>(TIMBRE_START) + meta.sysexOffset)
+                                                       : (static_cast<int>(NON_SYSEX_START) + (nonSysexIdx++));
             if (offInt < 0 || static_cast<size_t>(offInt) >= UNPACKED_PROGRAM_SIZE)
                 continue;
             const auto off = static_cast<size_t>(offInt);
@@ -272,11 +313,24 @@ struct MS2000ProgramData
                 if (auto *p = apvts.getParameter(id))
                     p->setValueNotifyingHost(p->convertTo0to1(value));
             });
+
+        const int bpm =
+            (static_cast<int>(rawData[TEMPO_MSB_OFFSET]) << 8) | static_cast<int>(rawData[TEMPO_LSB_OFFSET]);
+        if (bpm >= 20 && bpm <= 300)
+            apvts.state.setProperty("presetTempoBPM", bpm, nullptr);
+        apvts.state.setProperty("arpTarget", static_cast<int>(getArpTarget()), nullptr);
+        apvts.state.setProperty("arpKeySync", static_cast<int>(getArpKeySync() ? 1 : 0), nullptr);
     }
 
     void extractFromAPVTS(const juce::AudioProcessorValueTreeState &apvts, const std::string &progName)
     {
         setName(progName);
+        if (apvts.state.hasProperty("presetTempoBPM"))
+            setTempoBPM(static_cast<int>(apvts.state.getProperty("presetTempoBPM", 120)));
+        if (apvts.state.hasProperty("arpTarget"))
+            setArpTarget(static_cast<uint8_t>(static_cast<int>(apvts.state.getProperty("arpTarget", 0))));
+        if (apvts.state.hasProperty("arpKeySync"))
+            setArpKeySync(static_cast<int>(apvts.state.getProperty("arpKeySync", 0)) != 0);
 
         // 1. Pack voice parameters into voiceByte
         auto getChoice = [&](const char *id) -> uint8_t
@@ -285,9 +339,10 @@ struct MS2000ProgramData
                 return static_cast<uint8_t>(p->load());
             return 0;
         };
-        rawData[VOICE_BYTE] = (getChoice(ParamIDs::voiceMode) & 0x03)
-                              | ((getChoice(ParamIDs::unisonDetune) & 0x0F) << 2)
+        const uint8_t fullDetune = static_cast<uint8_t>(std::clamp<int>(getChoice(ParamIDs::unisonDetune), 0, 99));
+        rawData[VOICE_BYTE] = (getChoice(ParamIDs::voiceMode) & 0x03) | ((fullDetune & 0x0F) << 2)
                               | ((getChoice(ParamIDs::portamentoOn) & 0x01) << 6);
+        rawData[TIMBRE_START + 1] = fullDetune;
 
         if (auto *p = apvts.getRawParameterValue(ParamIDs::portamentoTime))
             rawData[VOICE_BYTE + 2] = static_cast<uint8_t>(p->load());
@@ -298,9 +353,8 @@ struct MS2000ProgramData
         {
             if (isVoiceByteParam(meta.id))
                 continue;
-            const int offInt = (meta.sysexOffset >= 0)
-                                   ? (static_cast<int>(TIMBRE_START) + meta.sysexOffset)
-                                   : (static_cast<int>(NON_SYSEX_START) + (nonSysexIdx++));
+            const int offInt = (meta.sysexOffset >= 0) ? (static_cast<int>(TIMBRE_START) + meta.sysexOffset)
+                                                       : (static_cast<int>(NON_SYSEX_START) + (nonSysexIdx++));
             if (offInt < 0 || static_cast<size_t>(offInt) >= UNPACKED_PROGRAM_SIZE)
                 continue;
             const auto off = static_cast<size_t>(offInt);

@@ -38,7 +38,7 @@ namespace
 {
 std::atomic<uint64_t> gAllocCount {0};
 std::atomic<uint64_t> gAllocBytes {0};
-} // namespace
+}  // namespace
 
 void *operator new(size_t size)
 {
@@ -160,7 +160,7 @@ namespace
 {
 constexpr double kSampleRate = 48000.0;
 constexpr int kBlockSize = 512;
-constexpr double kBlockBudgetUs = (kBlockSize / kSampleRate) * 1.0e6; // ~10667 µs @48kHz
+constexpr double kBlockBudgetUs = (kBlockSize / kSampleRate) * 1.0e6;  // ~10667 µs @48kHz
 
 class BenchmarkDummyProcessor : public juce::AudioProcessor
 {
@@ -224,8 +224,8 @@ struct ScenarioSpec
 {
     std::string name;
     int numNotes = 0;
-    int synthMode = 0;  // 0=MS2000, 1=microKORG, 2=Advanced
-    int timbreMode = 0; // 0=Single, 1=Split, 2=Layer, 3=Vocoder
+    int synthMode = 0;   // 0=MS2000, 1=microKORG, 2=Advanced
+    int timbreMode = 0;  // 0=Single, 1=Split, 2=Layer, 3=Vocoder
     bool enableModSeq = false;
     bool enableEffects = true;
     bool injectVocoderCarrier = false;
@@ -252,8 +252,7 @@ double percentile(const std::vector<double> &sorted, double p)
     return sorted[idx];
 }
 
-ScenarioResult
-runScenario(const ScenarioSpec &spec, const char *label, int warmupBlocks, int measuredBlocks)
+ScenarioResult runScenario(const ScenarioSpec &spec, const char *label, int warmupBlocks, int measuredBlocks)
 {
     ScenarioResult result;
     std::vector<double> times;
@@ -274,9 +273,9 @@ runScenario(const ScenarioSpec &spec, const char *label, int warmupBlocks, int m
     if (spec.enableModSeq)
     {
         setRawParam(apvts, "seqRunMode", 1.0f);
-        setRawParam(apvts, "seq1Knob", 5.0f); // Filter Cutoff
-        setRawParam(apvts, "seq2Knob", 6.0f); // Filter Resonance
-        setRawParam(apvts, "seq3Knob", 3.0f); // Osc1 Pitch
+        setRawParam(apvts, "seq1Knob", 5.0f);  // Filter Cutoff
+        setRawParam(apvts, "seq2Knob", 6.0f);  // Filter Resonance
+        setRawParam(apvts, "seq3Knob", 3.0f);  // Osc1 Pitch
     }
 
     if (spec.enableEffects)
@@ -295,11 +294,11 @@ runScenario(const ScenarioSpec &spec, const char *label, int warmupBlocks, int m
     }
 
     // Virtual patch routes active in max scenario
-    setRawParam(apvts, "patch1Src", 2.0f); // LFO1
-    setRawParam(apvts, "patch1Dst", 3.0f); // Cutoff
+    setRawParam(apvts, "patch1Src", 2.0f);  // LFO1
+    setRawParam(apvts, "patch1Dst", 3.0f);  // Cutoff
     setRawParam(apvts, "patch1Int", 0.5f);
-    setRawParam(apvts, "patch2Src", 3.0f); // LFO2
-    setRawParam(apvts, "patch2Dst", 1.0f); // Pitch
+    setRawParam(apvts, "patch2Src", 3.0f);  // LFO2
+    setRawParam(apvts, "patch2Dst", 1.0f);  // Pitch
     setRawParam(apvts, "patch2Int", 0.35f);
 
     engine.updateParametersFromAPVTS();
@@ -385,7 +384,7 @@ runScenario(const ScenarioSpec &spec, const char *label, int warmupBlocks, int m
     std::fflush(stdout);
     return result;
 }
-} // namespace
+}  // namespace
 
 int main(int argc, char *argv[])
 {

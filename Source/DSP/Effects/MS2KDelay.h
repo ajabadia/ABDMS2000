@@ -63,4 +63,3 @@ class MS2KDelay
 };
 
 }  // namespace ABDMS2000
-

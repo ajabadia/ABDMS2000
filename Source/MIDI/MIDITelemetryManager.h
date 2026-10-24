@@ -61,7 +61,9 @@ class MIDITelemetryManager : public juce::AudioProcessorValueTreeState::Listener
     // Activity callback for WebUI / Monitor
     void setActivityCallback(std::function<void(const MidiActivityEvent &)> cb)
     {
-        while (callbackLock_.test_and_set(std::memory_order_acquire)) {}
+        while (callbackLock_.test_and_set(std::memory_order_acquire))
+        {
+        }
         activityCallback_ = std::move(cb);
         callbackLock_.clear(std::memory_order_release);
     }

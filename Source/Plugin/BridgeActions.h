@@ -61,7 +61,10 @@ class BridgeActions
         onOpenAudioSettings_ = std::move(cb);
     }
 
-    MS2000IplUpdater &getIplUpdater() noexcept { return iplUpdater_; }
+    MS2000IplUpdater &getIplUpdater() noexcept
+    {
+        return iplUpdater_;
+    }
 
   private:
     /** Envía `{ type, data }` al sumidero inyectado. */

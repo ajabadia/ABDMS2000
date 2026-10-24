@@ -298,6 +298,7 @@ target_link_libraries(ABDMS2000 PUBLIC
 # --- C++ Unit Tests (Standalone executable, no JUCE GUI) ---
 add_executable(ABDMS2000_Tests
     Source/Tests/DSPCoreTests.cpp
+    Source/Tests/LfoFirmwareParityTests.cpp
     Source/Tests/DSPCoreTests_VCF.cpp
     Source/Tests/DSPCoreTests_Pitch.cpp
     Source/Tests/DSPCoreTests_Transfer.cpp
@@ -307,6 +308,7 @@ add_executable(ABDMS2000_Tests
     Source/Tests/DSPCoreTests_EqualizerParity.cpp
     Source/Tests/TestCompat.cpp
     Source/Tests/DSPCoreTests_Panic.cpp
+    tests/CalibrationTests.cpp
     # Source/Tests/DSPCoreTests_Voice.cpp          # TODO: Fix VirtualPatchMatrix/ADSREnvelope/LFO API
     # Source/Tests/DSPCoreTests_Portamento.cpp     # TODO: Fix PortamentoGlide API
     Source/Plugin/BridgeActions.cpp
@@ -352,6 +354,45 @@ target_include_directories(ABDMS2000_Tests PRIVATE
     Source/MIDI
     Source/State
     Source/Tests
+    tests
+)
+
+# --- Standalone Metrological Calibration Tool (tests/CalibrationTests.cpp) ---
+add_executable(CalibrationTests
+    tests/CalibrationTests.cpp
+    ${MS2000_DSP_SOURCES}
+    Source/MIDI/SysExManager.cpp
+)
+
+target_compile_definitions(CalibrationTests PRIVATE ABDMS2000_CALIBRATION_STANDALONE_MAIN=1)
+
+target_include_directories(CalibrationTests PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/GITS/JUCE/modules
+    Source
+    Source/Core
+    Source/DSP
+    Source/DSP/Common
+    Source/DSP/Oscillators
+    Source/DSP/Envelopes
+    Source/DSP/Modulation
+    Source/DSP/Filters
+    Source/MIDI
+    Source/State
+    Source/Tests
+    tests
+)
+
+target_link_libraries(CalibrationTests PRIVATE
+    juce::juce_audio_basics
+    juce::juce_audio_processors
+    juce::juce_data_structures
+    juce::juce_core
+    juce::juce_events
+    juce::juce_graphics
+    DWGSBinary
+    ABDShared::SynthCore
+    ABDShared::HardwareDrivers
+    ABDShared::ScopeCoreHeaders
 )
 
 # El core de Scope (ScopeDataCollector.h, <ScopeDataCollector.h> a pelo) llega

@@ -1,0 +1,5 @@
+Verified 128 x 254-byte USER and PRELOAD records from original flash.bin.
+Exactly 100 USER records match same-index PRELOAD byte-for-byte; 28 are owner-modified.
+The eight audited indices used for A/B are exact same-index matches:
+02 A03, 05 A06, 09 A10, 16 B01, 20 B05, 22 B07, 23 B08, 24 B09.
+ABDMS2000 Source/State/MS2000FactoryPreloadData.h also matched all 128 PRELOAD payload records exactly.

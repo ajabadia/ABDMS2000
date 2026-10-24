@@ -218,4 +218,19 @@ describe('WASM raw AudioWorklet bootstrap', () => {
     expect(bridgeSource).toContain('outputChannelCount: [2]');
     expect(workletSource).toContain('const outR = output[1] || output[0]');
   });
+
+  it('mapea lfo1KeySync, lfo2KeySync, seqKeySync y LFO TempoSync en WasmBridge.cpp setParam y noteOn', () => {
+    const wasmBridgeCpp = fs.readFileSync(
+      path.resolve(process.cwd(), 'Source/Wasm/WasmBridge.cpp'),
+      'utf8'
+    );
+    expect(wasmBridgeCpp).toContain('id == "lfo1KeySync"');
+    expect(wasmBridgeCpp).toContain('id == "lfo1TempoSync"');
+    expect(wasmBridgeCpp).toContain('id == "lfo1SyncNote"');
+    expect(wasmBridgeCpp).toContain('id == "lfo2KeySync"');
+    expect(wasmBridgeCpp).toContain('id == "lfo2TempoSync"');
+    expect(wasmBridgeCpp).toContain('id == "lfo2SyncNote"');
+    expect(wasmBridgeCpp).toContain('id == "seqKeySync"');
+    expect(wasmBridgeCpp).toContain('modSeq_.triggerKeySync');
+  });
 });

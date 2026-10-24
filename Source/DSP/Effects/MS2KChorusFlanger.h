@@ -64,4 +64,3 @@ class MS2KChorusFlanger
 };
 
 }  // namespace ABDMS2000
-

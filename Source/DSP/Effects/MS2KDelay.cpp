@@ -49,4 +49,3 @@ void MS2KDelay::process(float &leftSample, float &rightSample) noexcept
 }
 
 }  // namespace ABDMS2000
-

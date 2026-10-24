@@ -1,0 +1,4 @@
+132c24d6c54f201bdb4615af6a2ac9061861ff7fd462702007dcf52ea91b6914  source flash.bin, before runs
+132c24d6c54f201bdb4615af6a2ac9061861ff7fd462702007dcf52ea91b6914  source flash.bin, after runs
+943f5b62e55884cb079afbf64544beb8af1b67022b3c3ebffbc619f0bcd17bd0  source full FW/boot-362.ms2000.bin
+ae15c1aa498589421d8a15bee3f96fdeda4353544bda483315515a41e74cc448  source MS2000_V107/x811v107.sys

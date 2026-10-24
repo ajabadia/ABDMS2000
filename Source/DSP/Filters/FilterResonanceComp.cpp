@@ -1,5 +1,6 @@
 #include "FilterResonanceComp.h"
 #include <algorithm>
+#include <cmath>
 
 namespace ABDMS2000
 {

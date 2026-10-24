@@ -103,11 +103,8 @@ class VoiceManager
     void applyBlockParams(const VoiceParameters &params) noexcept;
 
     // Process one stereo sample across all active voices
-    void process(float &leftOut,
-                 float &rightOut,
-                 int diagPoint = 0,
-                 float diagTone = 0.0f,
-                 float audioInSample = 0.0f) noexcept;
+    void process(
+        float &leftOut, float &rightOut, int diagPoint = 0, float diagTone = 0.0f, float audioInSample = 0.0f) noexcept;
 
     [[nodiscard]] size_t getActiveVoiceCount() const noexcept;
     [[nodiscard]] const Voice &getVoice(size_t index) const noexcept

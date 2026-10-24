@@ -124,8 +124,15 @@ struct VoiceParameters
     float ampLevel {0.8f};
     float panpot {0.0f};  // -1.0 (L) to +1.0 (R)
     bool distortionOn {false};
+    bool ampGate {false};      // false = EG2, true = Gate (organ envelope, bit 6 of byte 27)
     float ampKeyTrack {0.0f};  // -1.0 to +1.0
     float ampVeloSens {0.0f};  // -1.0 to +1.0 (byte 28 del bloque real, ±63)
+
+    // Timbre Pitch / Tuning (bytes 3..6 del bloque de timbre real)
+    float pitchTranspose {0.0f};  // semitones (-24..+24)
+    float pitchTune {0.0f};       // cents (-50..+50)
+    float pitchBendRange {2.0f};  // semitones (-12..+12)
+    float vibratoInt {0.0f};      // -1.0 to +1.0 (byte 6 del bloque real, ±63)
 
     // Mod Sequence de este timbre
     SeqModulation seq {};
@@ -149,7 +156,8 @@ struct VoiceParameters
     float bpm {120.0f};
 
     // Microtonal Scale / Temperament (ROM 0x13914 / 0x13980)
-    int scaleType {0};  // 0 = Equal Temp, 1 = Pure Major, 2 = Pure Minor, 3 = Arabic, 4 = Pythagoras, 5 = Werckmeister, 6 = Kirnberger, 7 = Slendro, 8 = Pelog
+    int scaleType {0};  // 0 = Equal Temp, 1 = Pure Major, 2 = Pure Minor, 3 = Arabic, 4 = Pythagoras, 5 = Werckmeister,
+                        // 6 = Kirnberger, 7 = Slendro, 8 = Pelog
     int scaleKey {0};   // 0..11 = C..B
 };
 
@@ -231,11 +239,8 @@ class Voice
 
     // Process a single stereo sample — only per-sample modulation values.
     // Assumes applyBlockParams() was already called this block.
-    void renderNextSample(float &leftOut,
-                          float &rightOut,
-                          int diagPoint = 0,
-                          float diagTone = 0.0f,
-                          float audioInSample = 0.0f) noexcept;
+    void renderNextSample(
+        float &leftOut, float &rightOut, int diagPoint = 0, float diagTone = 0.0f, float audioInSample = 0.0f) noexcept;
     void renderDiagnosticSample(float &leftOut, float &rightOut, int diagPoint, float diagTone) noexcept;
 
   private:
@@ -266,6 +271,9 @@ class Voice
     float smoothedCutoffNorm_ {1.0f};
     float cutoffSmoothCoeff_ {0.022f};
     bool cutoffSmoothInitialized_ {false};
+    bool noteHeld_ {false};
+    float gateEnv_ {0.0f};
+    float gateSmoothCoeff_ {0.015f};
 };
 
 }  // namespace ABDMS2000

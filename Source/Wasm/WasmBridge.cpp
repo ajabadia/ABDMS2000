@@ -5,6 +5,8 @@
 #include <memory>
 #include <vector>
 #include "../Core/AudioThreadSnapshot.h"
+#include "../Core/HardwareConstants.h"
+#include "../Core/MS2000FirmwareTables.h"
 #include "../Core/Voice.h"
 #include "../Core/VoiceManager.h"
 #include "../DSP/Effects/DelayFX.h"
@@ -13,7 +15,6 @@
 #include "../DSP/Sequencer/Arpeggiator.h"
 #include "../DSP/Sequencer/ModSequencer.h"
 #include "../DSP/Vocoder/Vocoder16Band.h"
-#include "../Core/MS2000FirmwareTables.h"
 #include "../State/MS2000FactoryBank.h"
 
 namespace ABDMS2000
@@ -133,12 +134,28 @@ class WasmEngineInstance
 
     void setTempoBPM(float bpm)
     {
+        voiceParams_.bpm = bpm;
         arpeggiator_.setTempoBPM(bpm);
         modSeq_.setTempoBPM(bpm);
     }
 
     void noteOn(int noteNumber, float velocity)
     {
+        const bool firstNoteOfTimbre = (voiceManager_.getActiveVoiceCount() == 0);
+        if (seqKeySync_ != static_cast<int>(ModSeqKeySync::Off))
+        {
+            if (seqKeySync_ != static_cast<int>(ModSeqKeySync::Timbre) || firstNoteOfTimbre)
+            {
+                modSeq_.triggerKeySync(ModSequencer::TIMBRE1_TRACK, ModSequencer::TRACKS_PER_TIMBRE);
+                if (modSeq_.isEnabled())
+                {
+                    VoiceParameters blockParams = voiceParams_;
+                    applyModSeq(blockParams);
+                    voiceManager_.applyBlockParams(blockParams);
+                }
+            }
+        }
+
         if (arpeggiator_.isEnabled())
             arpeggiator_.noteOn(noteNumber, velocity);
         else
@@ -242,6 +259,12 @@ class WasmEngineInstance
         }
         else if (id == "lfo1Freq")
             voiceParams_.lfo1FreqHz = FirmwareTables::getHardwareLfo1FreqHz(value);
+        else if (id == "lfo1KeySync")
+            voiceParams_.lfo1KeySync = static_cast<KeySyncMode>(std::clamp(static_cast<int>(value), 0, 3));
+        else if (id == "lfo1TempoSync")
+            voiceParams_.lfo1TempoSync = (value > 0.5f);
+        else if (id == "lfo1SyncNote")
+            voiceParams_.lfo1SyncNote = std::clamp(static_cast<int>(value), 0, 14);
         else if (id == "lfo2Wave")
         {
             const int w = std::clamp(static_cast<int>(value), 0, 3);
@@ -249,6 +272,12 @@ class WasmEngineInstance
         }
         else if (id == "lfo2Freq")
             voiceParams_.lfo2FreqHz = FirmwareTables::getHardwareLfo2FreqHz(value);
+        else if (id == "lfo2KeySync")
+            voiceParams_.lfo2KeySync = static_cast<KeySyncMode>(std::clamp(static_cast<int>(value), 0, 3));
+        else if (id == "lfo2TempoSync")
+            voiceParams_.lfo2TempoSync = (value > 0.5f);
+        else if (id == "lfo2SyncNote")
+            voiceParams_.lfo2SyncNote = std::clamp(static_cast<int>(value), 0, 14);
         else if (id == "patch1Source")
             voiceParams_.patchSlots[0].source = static_cast<PatchSource>(std::clamp(static_cast<int>(value), 0, 7));
         else if (id == "patch1Dest" || id == "patch1Destination")
@@ -326,8 +355,44 @@ class WasmEngineInstance
             delayFX_.setFeedback(value / 127.0f);
         else if (id == "synthVocoderMode")
             vocoder_.setEnabled(value > 0.5f);
+        else if (id == "vocoderFormantShift")
+            vocoder_.setFormantShift(static_cast<int>(value) - 2);
+        else if (id == "vocoderCutoff")
+            vocoder_.setCutoffOffset(value / 63.0f);
+        else if (id == "vocoderResonance")
+            vocoder_.setResonance(value / 127.0f);
+        else if (id == "vocoderModSource")
+            vocoder_.setModSource(static_cast<int>(value));
+        else if (id == "vocoderModInt")
+            vocoder_.setModIntensity(value / 63.0f);
+        else if (id == "vocoderEfSense")
+            vocoder_.setEfSense(value / 127.0f);
+        else if (id == "vocoderHold")
+            vocoder_.setFormantHold(value > 0.5f);
+        else if (id == "vocoderHpfLevel")
+            vocoder_.setHPFLevel(value / 127.0f);
+        else if (id == "vocoderHpfGate")
+            vocoder_.setHPFGate(value > 0.5f);
+        else if (id == "vocoderGateSense")
+            vocoder_.setGateSense(value / 127.0f);
+        else if (id == "vocoderThreshold")
+            vocoder_.setHPFThreshold(value / 127.0f);
+        else if (id == "vocoderDirectLevel")
+            vocoder_.setDirectLevel(value / 127.0f);
+        else if (id.rfind("vocoderBandLevel", 0) == 0)
+        {
+            const int b = std::atoi(id.c_str() + 16) - 1;
+            if (b >= 0 && b < 16)
+                vocoder_.setBandLevel(static_cast<size_t>(b), value / 127.0f);
+        }
+        else if (id.rfind("vocoderBandPan", 0) == 0)
+        {
+            const int b = std::atoi(id.c_str() + 14) - 1;
+            if (b >= 0 && b < 16)
+                vocoder_.setBandPan(static_cast<size_t>(b), std::clamp((value + 63.0f) / 126.0f, 0.0f, 1.0f));
+        }
         else if (id == "masterVolume")
-            masterVolume_ = value / 127.0f;
+            masterVolume_ = (value <= 1.0f) ? value : (value / 127.0f);
 
         // EQ parameters
         else if (id == "eqLowFreq")
@@ -437,6 +502,26 @@ class WasmEngineInstance
         {
             modSeq_.setSyncResolution(static_cast<int>(value));
         }
+        else if (id == "seqKeySync")
+        {
+            seqKeySync_ = std::clamp(static_cast<int>(value), 0, 3);
+        }
+        else if (id == "ampGate")
+            voiceParams_.ampGate = (value > 0.5f);
+        else if (id == "pitchTranspose")
+            voiceParams_.pitchTranspose = std::clamp(value, -24.0f, 24.0f);
+        else if (id == "pitchTune")
+            voiceParams_.pitchTune = std::clamp(value, -50.0f, 50.0f);
+        else if (id == "pitchBendRange")
+            voiceParams_.pitchBendRange = std::clamp(value, -12.0f, 12.0f);
+        else if (id == "vibratoInt")
+            voiceParams_.vibratoInt = std::clamp(value / 63.0f, -1.0f, 1.0f);
+        else if (id == "seq1Dest" || id == "seq2Dest" || id == "seq3Dest")
+        {
+            const int row = (id[3] - '1');
+            const int destIdx = std::clamp(static_cast<int>(value), 0, 30);
+            modSeq_.getTrack(row).destination = static_cast<ModSeqDest>(destIdx);
+        }
     }
 
     void applyModSeq(VoiceParameters &vp)
@@ -504,7 +589,9 @@ class WasmEngineInstance
                 vp.portamentoTime = std::clamp(vp.portamentoTime + (value * 64.0f), 0.0f, 127.0f);
                 break;
             case ModSeqDest::LFO1Freq:
-                vp.lfo1FreqHz = std::clamp(vp.lfo1FreqHz * std::pow(2.0f, value * 4.0f), 0.01f, 20000.0f);
+                vp.lfo1FreqHz = std::clamp(vp.lfo1FreqHz * std::pow(2.0f, value * Constants::kLfoModMaxOctaves),
+                                           Constants::kLfoDefaultMinFrequencyHz,
+                                           Constants::kLfoHardwareMaxFrequencyHz);
                 break;
             case ModSeqDest::EG1Attack:
                 vp.eg1Attack = std::clamp(vp.eg1Attack * (1.0f + value), 0.0f, 1.0f);
@@ -586,6 +673,7 @@ class WasmEngineInstance
     double sampleRate_ {44100.0};
     int synthMode_ {0};
     int seqLastStep_ {16};
+    int seqKeySync_ {0};
     VoiceManager voiceManager_;
     VoiceParameters voiceParams_;
     float masterVolume_ {0.8f};

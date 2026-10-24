@@ -48,10 +48,9 @@ void MultiModeFilter::updateCoefficients() noexcept
     float wa = (2.0f / T) * std::tan(wd * T * 0.5f);
     g_ = wa * T * 0.5f;
 
-    // Damping / Feedback
+    // Damping / Feedback (Zavalishin TPT SVF: denominator is 1 + 2*R*g + g^2, so R = zeta = 1/(2Q))
     float feedback = FilterResonanceComp::computeEffectiveFeedback(resonance_);
-    // R = 2 - 2 * resonance damping
-    R_ = 2.0f * (1.0f - (feedback * DSPUtils::kResonanceFeedbackScale));
+    R_ = 1.0f - (feedback * DSPUtils::kResonanceFeedbackScale);
     if (R_ < DSPUtils::kResonanceMinFeedback)
         R_ = DSPUtils::kResonanceMinFeedback;
 
@@ -64,13 +63,16 @@ float MultiModeFilter::process(float inputSample) noexcept
     float gainComp = FilterResonanceComp::computeGainCompensation(resonance_);
     float in = inputSample * gainComp;
 
-    // Headroom-preserving input soft-clip (keeps +/-1.0 linear while bounding +/-2.0 mixer sums)
-    in = DSPUtils::softClip(in * 0.5f) * 2.0f;
+    // Headroom-preserving input soft-clip (keeps +/-1.0 linear while bounding extreme mixer sums)
+    in = DSPUtils::softClip(in * 0.25f) * 4.0f;
 
     // --- First 2-pole SVF stage (with DSP56362 internal resonator state saturation) ---
     float hp1 = (in - (2.0f * R_ + g_) * s1_1_ - s1_2_) * h_;
     float bp1 = g_ * hp1 + s1_1_;
-    s1_1_ = DSPUtils::softClip(g_ * hp1 + bp1);  // Integrator 1 state update with saturation
+    const float nextS1_1 = g_ * hp1 + bp1;
+    // Preserve exact linear trapezoidal integration for HPF12/BPF12 so low-frequency zeros do not leak
+    s1_1_ = (type_ == FilterType::HPF12 || type_ == FilterType::BPF12) ? nextS1_1
+                                                                       : (DSPUtils::softClip(nextS1_1 * 0.25f) * 4.0f);
     float lp1 = g_ * bp1 + s1_2_;
     s1_2_ = g_ * bp1 + lp1;  // Integrator 2 state update
 
@@ -80,10 +82,10 @@ float MultiModeFilter::process(float inputSample) noexcept
         return lp1;
 
     case FilterType::BPF12:
-        return bp1;
+        return DSPUtils::softClip(bp1 * 0.25f) * 4.0f;
 
     case FilterType::HPF12:
-        return hp1;
+        return DSPUtils::softClip(hp1 * 0.25f) * 4.0f;
 
     case FilterType::LPF24:
     default:
@@ -92,7 +94,7 @@ float MultiModeFilter::process(float inputSample) noexcept
         float in2 = lp1;
         float hp2 = (in2 - (2.0f * R_ + g_) * s2_1_ - s2_2_) * h_;
         float bp2 = g_ * hp2 + s2_1_;
-        s2_1_ = DSPUtils::softClip(g_ * hp2 + bp2);
+        s2_1_ = DSPUtils::softClip((g_ * hp2 + bp2) * 0.5f) * 2.0f;
         float lp2 = g_ * bp2 + s2_2_;
         s2_2_ = g_ * bp2 + lp2;
 

@@ -29,14 +29,14 @@ namespace ms2kipl
 
 using Bytes = std::vector<uint8_t>;
 
-constexpr uint32_t kSysSize   = 0x40000;   // 256 KB System OS area (0x000000..0x03FFFF)
-constexpr uint32_t kPcmSize   = 0x60000;   // 384 KB DWGS PCM area  (0x040000..0x09FFFF)
-constexpr uint32_t kUsrSize   = 0x60000;   // 384 KB User/Preload   (0x0A0000..0x0FFFFF)
+constexpr uint32_t kSysSize = 0x40000;     // 256 KB System OS area (0x000000..0x03FFFF)
+constexpr uint32_t kPcmSize = 0x60000;     // 384 KB DWGS PCM area  (0x040000..0x09FFFF)
+constexpr uint32_t kUsrSize = 0x60000;     // 384 KB User/Preload   (0x0A0000..0x0FFFFF)
 constexpr uint32_t kFlashSize = 0x100000;  // 1 MB Full Flash       (MBM29LV800BA)
 constexpr uint32_t kBlockSize = 0x2000;    // 8 KB per IPL Data Block (cmd 0x04)
 
 // Official Korg MS2000 v1.07 system updater file (x811v107.sys) SHA-1
-constexpr const char *kV107Sha1    = "945a75555fcd3f17d7ad9f15d38a431869a07bb8";
+constexpr const char *kV107Sha1 = "945a75555fcd3f17d7ad9f15d38a431869a07bb8";
 // Patched v1.07 system image with IPL cmd 0x01 Flash Dump handler at 0x408084
 constexpr const char *kDumpSysSha1 = "cd85d579969411b8cd55a6ccd83690247b51c7ca";
 
@@ -52,8 +52,8 @@ enum class Type : uint8_t
 enum class TransferRate : int
 {
     VeryFast = 0,  // Full 9372-byte block frame at once, 20 ms inter-block wait
-    Fast     = 1,  // 512-byte chunks with 15 ms pacing
-    Slow     = 2,  // 256-byte chunks with 30 ms pacing
+    Fast = 1,      // 512-byte chunks with 15 ms pacing
+    Slow = 2,      // 256-byte chunks with 30 ms pacing
     VerySlow = 3   // 256-byte chunks with 60 ms pacing
 };
 
@@ -127,17 +127,8 @@ struct Result
 };
 
 Result getVersion(Transport &t, Version &v, int timeoutMs = 2500);
-Result install(Transport &t,
-               Type type,
-               const Bytes &image,
-               TransferRate rate,
-               const ProgressCallback &progress);
-Result dump(Transport &t,
-            uint32_t addr,
-            uint32_t size,
-            Bytes &out,
-            const ProgressCallback &progress,
-            int retries = 3);
+Result install(Transport &t, Type type, const Bytes &image, TransferRate rate, const ProgressCallback &progress);
+Result dump(Transport &t, uint32_t addr, uint32_t size, Bytes &out, const ProgressCallback &progress, int retries = 3);
 
 }  // namespace ms2kipl
 
@@ -153,14 +144,35 @@ class MS2000IplUpdater
     MS2000IplUpdater();
     ~MS2000IplUpdater();
 
-    const ms2kipl::Bytes &getEmbeddedV107() const noexcept { return embeddedV107_; }
-    const ms2kipl::Bytes &getEmbeddedDumpSys() const noexcept { return embeddedDumpSys_; }
-    bool isEmbeddedFirmwareValid() const noexcept { return embeddedValid_; }
-    std::string getEmbeddedSha1() const noexcept { return embeddedSha1_; }
-    std::string getDumpSysSha1() const noexcept { return dumpSysSha1_; }
+    const ms2kipl::Bytes &getEmbeddedV107() const noexcept
+    {
+        return embeddedV107_;
+    }
+    const ms2kipl::Bytes &getEmbeddedDumpSys() const noexcept
+    {
+        return embeddedDumpSys_;
+    }
+    bool isEmbeddedFirmwareValid() const noexcept
+    {
+        return embeddedValid_;
+    }
+    std::string getEmbeddedSha1() const noexcept
+    {
+        return embeddedSha1_;
+    }
+    std::string getDumpSysSha1() const noexcept
+    {
+        return dumpSysSha1_;
+    }
 
-    bool isBusy() const noexcept { return busy_.load(); }
-    void requestCancel() noexcept { cancel_.store(true); }
+    bool isBusy() const noexcept
+    {
+        return busy_.load();
+    }
+    void requestCancel() noexcept
+    {
+        cancel_.store(true);
+    }
 
     /** Runs a quick version check (or silent poll) on a background thread. */
     void startCheckVersion(HardwareMidiTransport &transport, bool silentPoll, EventCallback emit);
@@ -172,9 +184,7 @@ class MS2000IplUpdater
                             EventCallback emit);
 
     /** Reads the flash (either full 1 MB or 256 KB SYS) over MIDI using cmd 0x01. */
-    void startFlashDump(HardwareMidiTransport &transport,
-                        uint32_t sizeBytes,
-                        EventCallback emit);
+    void startFlashDump(HardwareMidiTransport &transport, uint32_t sizeBytes, EventCallback emit);
 
   private:
     void joinWorker();

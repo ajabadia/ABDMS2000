@@ -7,10 +7,10 @@ namespace ABDMS2000
 enum class OSC2ModulationMode
 {
     Off = 0,
-    RingMod,               // Multiplicative ring modulation: OSC2 branch outputs OSC1 * OSC2
-    Sync,                  // Hard sync: OSC2 phase resets at OSC1 cycle wrap
-    CrossMod,              // Mode 3: Ring+Sync on MS2000 hardware (also supports FM/CrossMod)
-    RingSync = CrossMod    // Alias matching hardware SysEx bits 4,5 = 3 (Ring+Sync)
+    RingMod,             // Multiplicative ring modulation: OSC2 branch outputs OSC1 * OSC2
+    Sync,                // Hard sync: OSC2 phase resets at OSC1 cycle wrap
+    CrossMod,            // Mode 3: Ring+Sync on MS2000 hardware (also supports FM/CrossMod)
+    RingSync = CrossMod  // Alias matching hardware SysEx bits 4,5 = 3 (Ring+Sync)
 };
 
 /**

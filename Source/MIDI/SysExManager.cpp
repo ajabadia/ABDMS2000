@@ -195,8 +195,8 @@ SysExParseResult SysExManager::parseSysEx(const uint8_t *data, size_t size, juce
     // `0x0E` es Global Data Dump Request (también aceptado por compatibilidad).
     if (func == 0x10 || func == 0x0E || func == 0x1C)
     {
-        result.messageType =
-            (func == 0x0E || func == 0x1C) ? SysExMessageType::AllDataDumpRequest : SysExMessageType::ProgramDumpRequest;
+        result.messageType = (func == 0x0E || func == 0x1C) ? SysExMessageType::AllDataDumpRequest
+                                                            : SysExMessageType::ProgramDumpRequest;
         result.success = true;
         if (func == 0x10)
         {

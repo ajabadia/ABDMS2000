@@ -7,8 +7,9 @@
      by the shared fitStage (onlyShrink). Do NOT raise: it is the design. */
   min-width: 1080px;
   min-height: 680px;
-  background-color: var(--color-bg-base);
-  background-image: radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.05) 0%, rgba(0, 0, 0, 0.35) 100%), var(--bg-image-theme);
+  background-color: var(--abd-bg-tint, var(--color-bg-base));
+  background-image: var(--bg-tint-overlay, radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.05) 0%, rgba(0, 0, 0, 0.35) 100%)), var(--bg-image-theme);
+  background-blend-mode: normal, soft-light;
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
@@ -101,29 +102,34 @@
 
 /* .mode-tab fue retirado: el selector universal del paquete pinta el <select>. */
 
-/* Main Content Workspace */
+/* Scrollable Main Content Workspace (Dashboard Cards scroll underneath the fixed Hero Panel) */
 .main-workspace {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 16px;
-  gap: 16px;
+  padding: 8px 14px;
+  gap: 8px;
   overflow-y: auto;
+  min-height: 0;
 }
 
 .hero-panel {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  background: rgba(10, 14, 22, 0.55);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  gap: 10px;
+  background: rgba(10, 14, 22, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: var(--chassis-radius);
-  padding: 10px 14px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  margin: 6px 14px 0 14px;
+  padding: 6px 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65), inset 0 1px 1px rgba(255, 255, 255, 0.12);
   box-sizing: border-box;
+  flex-shrink: 0;
+  z-index: 25;
+  position: relative;
 }
 
 /* 1. LCD Programmer Navigation Matrix (Left) & Global Actions Matrix (Right) */
@@ -151,12 +157,12 @@
   font-family: var(--font-lcd);
   font-size: 8.5px;
   font-weight: 700;
-  padding: 4px 7px;
+  padding: 4px 6px;
   border-radius: 3px;
   cursor: pointer;
   transition: all 0.12s ease;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-  min-width: 58px;
+  min-width: 54px;
   text-align: center;
   letter-spacing: 0.3px;
 }
@@ -173,9 +179,29 @@
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.8);
 }
 
+.lcd-nav-btn.active {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #040810;
+  box-shadow: 0 0 8px rgba(var(--color-accent-rgb), 0.6);
+}
+
 .lcd-nav-btn-accent {
   border-color: var(--color-accent);
   color: var(--color-accent);
+}
+
+.lcd-nav-btn-write {
+  background: linear-gradient(180deg, #b91c1c 0%, #881313 100%) !important;
+  color: #ffffff !important;
+  border-color: #f87171 !important;
+  font-weight: 800;
+}
+
+.lcd-nav-btn-write:hover,
+.lcd-nav-btn-write.active {
+  background: linear-gradient(180deg, #ef4444 0%, #b91c1c 100%) !important;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.8) !important;
 }
 
 .lcd-nav-btn-danger {
@@ -190,113 +216,100 @@
   box-shadow: 0 0 8px rgba(230, 57, 70, 0.7) !important;
 }
 
-/* 2. Main LCD Display (Original Hardware 16x2 Character Width) */
+/* 2. Wider Main LCD Display (16x2 Characters + Hardware ORIGINAL VALUE LED) */
 .lcd-container {
   background: var(--color-lcd-bg);
-  border: 2px solid rgba(0, 0, 0, 0.6);
-  border-radius: 4px;
+  border: 2px solid rgba(0, 0, 0, 0.65);
+  border-radius: 5px;
   font-family: var(--font-lcd);
   color: var(--color-lcd-text);
-  box-shadow: inset 0 0 14px rgba(0, 0, 0, 0.85);
+  box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.88);
   box-sizing: border-box;
 }
 
 .lcd-main-container {
-  width: 250px;
-  min-width: 240px;
-  max-width: 260px;
-  height: 52px;
+  flex: 1;
+  min-width: 280px;
+  max-width: 440px;
+  height: 58px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 6px 12px;
-  flex-shrink: 0;
+  justify-content: space-between;
+  padding: 4px 12px 5px 12px;
+}
+
+.lcd-top-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 2px;
+  margin-bottom: 1px;
+}
+
+.lcd-bezel-tag {
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 0.7px;
+  opacity: 0.58;
+  user-select: none;
+}
+
+.lcd-orig-val-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 4px;
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  user-select: none;
+}
+
+.lcd-orig-led {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #2b1414;
+  border: 1px solid rgba(0, 0, 0, 0.7);
+  transition: all 0.12s ease;
+}
+
+.lcd-orig-led.active {
+  background: #ff2a2a;
+  box-shadow: 0 0 7px #ff2a2a, 0 0 3px #ff9999;
+}
+
+.lcd-orig-label {
+  font-size: 6.8px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: var(--color-text-muted, #94a3b8);
+}
+
+.lcd-orig-val-indicator.active .lcd-orig-label {
+  color: #fca5a5;
 }
 
 .lcd-line-1 {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
-  letter-spacing: 0.8px;
-  line-height: 1.2;
+  letter-spacing: 1px;
+  line-height: 1.15;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .lcd-line-2 {
-  font-size: 11px;
-  opacity: 0.88;
-  letter-spacing: 0.5px;
-  line-height: 1.2;
-  margin-top: 1px;
-}
-
-/* 3. SysEx Stream LCD Display */
-.lcd-sysex-container {
-  flex: 1;
-  min-width: 220px;
-  height: 52px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 4px 10px;
-  position: relative;
-}
-
-.sysex-header-tag {
-  font-size: 7.5px;
-  font-weight: 700;
-  color: var(--color-text-muted);
-  letter-spacing: 0.8px;
-  line-height: 1;
-  margin-bottom: 3px;
-}
-
-.sysex-lcd-body {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 1;
-  min-height: 0;
-}
-
-.sysex-hex-content {
-  flex: 1;
-  font-family: var(--font-lcd);
-  font-size: 10px;
-  color: var(--color-lcd-text);
-  overflow-x: auto;
-  overflow-y: hidden;
+  font-size: 11.5px;
+  opacity: 0.92;
+  letter-spacing: 0.7px;
+  line-height: 1.15;
   white-space: nowrap;
-  padding: 3px 6px;
-  background: rgba(0, 0, 0, 0.35);
-  border-radius: 3px;
-  border: 1px solid rgba(0, 0, 0, 0.4);
-  user-select: text;
-  line-height: 1.2;
-}
-
-.sysex-copy-btn {
-  background: var(--color-panel-surface);
-  border: 1px solid var(--color-panel-border);
-  color: var(--color-accent);
-  font-family: var(--font-lcd);
-  font-size: 8.5px;
-  font-weight: 800;
-  padding: 4px 8px;
-  border-radius: 3px;
-  cursor: pointer;
-  transition: all 0.12s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-  flex-shrink: 0;
-  letter-spacing: 0.5px;
-}
-
-.sysex-copy-btn:hover {
-  background: var(--color-accent);
-  color: #000000;
-  box-shadow: 0 0 8px rgba(var(--color-accent-rgb), 0.6);
-}
-
-.sysex-copy-btn:active {
-  transform: translateY(1px);
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .quick-actions {
@@ -1819,5 +1832,434 @@
   border-color: var(--color-accent, #00d4ff);
   color: #040810;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   KORG MS2000 / MS2000R 16-BUTTON HARDWARE STRIP
+   (Program Select, Section Jump, 3x16 Seq Edit, Vocoder Ch Param, 16-Pad Latch Keyboard)
+   ═══════════════════════════════════════════════════════════════════════════ */
+.ms2k-bottom-strip {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  background: linear-gradient(180deg, rgba(10, 15, 24, 0.86) 0%, rgba(6, 9, 15, 0.94) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+  margin: 0 14px 6px 14px;
+  padding: 6px 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+  z-index: 24;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+.ms2k-strip-left {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.ms2k-strip-module {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: rgba(0, 0, 0, 0.42);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 4px 7px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.65);
+}
+
+.ms2k-module-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 2px;
+  margin-bottom: 3px;
+}
+
+.ms2k-hdr-main {
+  font-family: var(--font-lcd);
+  font-size: 7.5px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  color: #cbd5e1;
+  white-space: nowrap;
+}
+
+.ms2k-hdr-inv {
+  font-family: var(--font-lcd);
+  font-size: 6.5px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  background: rgba(203, 213, 225, 0.85);
+  color: #060a10;
+  padding: 1px 3.5px;
+  border-radius: 2px;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.ms2k-bottom-strip.is-vocoder-mode .ms2k-hdr-inv {
+  background: #fb7185;
+  color: #080407;
+  box-shadow: 0 0 6px rgba(251, 113, 133, 0.45);
+}
+
+.ms2k-seq-body {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.ms2k-hw-btn {
+  background: linear-gradient(180deg, #283244 0%, #151c28 100%);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 4px;
+  color: #e2e8f0;
+  font-family: var(--font-lcd);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  padding: 5px 7px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  transition: all 0.12s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.ms2k-hw-btn:hover {
+  border-color: var(--color-accent, #00d4ff);
+  color: #ffffff;
+  box-shadow: 0 0 8px rgba(var(--color-accent-rgb), 0.35);
+}
+
+.ms2k-hw-btn:active {
+  transform: translateY(1px);
+  background: #111722;
+}
+
+.ms2k-hw-btn.is-active {
+  border-color: #ff4d5a;
+  color: #ffccd0;
+  box-shadow: 0 0 8px rgba(255, 60, 75, 0.4), inset 0 0 6px rgba(255, 60, 75, 0.25);
+}
+
+.ms2k-seq-leds {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ms2k-seq-led-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  padding: 1px 3px;
+  border-radius: 3px;
+  transition: background 0.12s ease;
+}
+
+.ms2k-seq-led-row:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.ms2k-led-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #2b181c;
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.7);
+  flex-shrink: 0;
+  transition: all 0.12s ease;
+}
+
+.ms2k-led-dot.is-on {
+  background: #ff2e43;
+  box-shadow: 0 0 7px #ff2e43, 0 0 12px rgba(255, 46, 67, 0.75);
+  border-color: #ff9aa4;
+}
+
+.ms2k-led-dot.is-amber {
+  background: #f59e0b;
+  box-shadow: 0 0 7px #f59e0b, 0 0 12px rgba(245, 158, 11, 0.75);
+  border-color: #fde68a;
+}
+
+.ms2k-led-lbl {
+  font-family: var(--font-lcd);
+  font-size: 7px;
+  font-weight: 700;
+  color: #94a3b8;
+  min-width: 28px;
+}
+
+.ms2k-seq-led-row.is-active .ms2k-led-lbl {
+  color: #f8fafc;
+}
+
+.ms2k-led-inv {
+  font-size: 6px;
+  padding: 0.5px 3px;
+}
+
+.ms2k-bank-readout {
+  font-family: var(--font-lcd);
+  font-size: 7.5px;
+  font-weight: 800;
+  color: var(--color-accent, #00d4ff);
+  background: rgba(0, 212, 255, 0.12);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  border-radius: 3px;
+  padding: 0.5px 4px;
+}
+
+.ms2k-bank-btns {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ms2k-bank-btn {
+  padding: 5px 6px;
+  font-size: 7.5px;
+}
+
+/* 16-Pad Matrix Container */
+.ms2k-strip-pads {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(16, minmax(0, 1fr));
+  gap: 4px;
+  align-items: stretch;
+}
+
+.ms2k-pad-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2px;
+  min-width: 0;
+}
+
+/* Visual group divider between pads 8 and 9 (like hardware MS2000 1-8 / 9-16) */
+.ms2k-pad-col[data-pad="8"] {
+  margin-right: 2px;
+}
+
+.ms2k-pad-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 2px;
+  box-sizing: border-box;
+  line-height: 1;
+}
+
+.ms2k-pad-num {
+  font-family: var(--font-lcd);
+  font-size: 8px;
+  font-weight: 800;
+  color: #94a3b8;
+}
+
+.ms2k-pad-col.is-active .ms2k-pad-num {
+  color: #ff6b78;
+}
+
+.ms2k-pad-subval {
+  font-family: var(--font-lcd);
+  font-size: 7px;
+  font-weight: 700;
+  color: var(--color-accent, #38bdf8);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Illuminated Translucent Rubber Hardware Pad */
+.ms2k-pad-btn {
+  position: relative;
+  width: 100%;
+  height: 22px;
+  background: linear-gradient(180deg, #323946 0%, #1e2430 100%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.18);
+  transition: background 0.1s ease, border-color 0.1s ease, box-shadow 0.1s ease, transform 0.06s ease;
+  touch-action: none;
+}
+
+.ms2k-pad-btn:hover {
+  border-color: rgba(255, 255, 255, 0.45);
+  background: linear-gradient(180deg, #3b4454 0%, #252c3a 100%);
+}
+
+.ms2k-pad-btn:active {
+  transform: translateY(1px);
+}
+
+/* Red LED Lens inside the Rubber Pad */
+.ms2k-pad-led {
+  width: 14px;
+  height: 5px;
+  border-radius: 2px;
+  background: rgba(65, 22, 28, 0.85);
+  border: 1px solid rgba(0, 0, 0, 0.65);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.7);
+  z-index: 2;
+  pointer-events: none;
+  transition: all 0.1s ease;
+}
+
+/* Lit Red Pad (Active Program 1..16, Active Edit Page, or Pressed Key) */
+.ms2k-pad-btn.is-active {
+  background: radial-gradient(circle at 50% 45%, #ff5a67 0%, #c81d2b 75%, #7f1019 100%);
+  border-color: #ff9aa2;
+  box-shadow: 0 0 10px rgba(255, 56, 72, 0.65), inset 0 1px 2px rgba(255, 255, 255, 0.45);
+}
+
+.ms2k-pad-btn.is-active .ms2k-pad-led {
+  background: #fff0f2;
+  border-color: #ffffff;
+  box-shadow: 0 0 8px #ffffff, 0 0 14px #ff2e43;
+}
+
+/* Amber Latched Pad (Shift+Click in KBD mode or Muted Band in Vocoder mode) */
+.ms2k-pad-btn.is-latched {
+  border-color: #fbbf24;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.75), inset 0 0 6px rgba(245, 158, 11, 0.45);
+}
+
+.ms2k-pad-btn.is-latched .ms2k-pad-led {
+  background: #fde68a;
+  border-color: #fbbf24;
+  box-shadow: 0 0 8px #f59e0b;
+}
+
+/* Running Sequencer / Arpeggiator Step Chaser Highlight */
+.ms2k-pad-btn.is-seq-step {
+  border-color: var(--color-accent, #00d4ff) !important;
+  box-shadow: 0 0 12px rgba(var(--color-accent-rgb), 0.9), inset 0 0 8px rgba(var(--color-accent-rgb), 0.55) !important;
+}
+
+.ms2k-pad-btn.is-seq-step .ms2k-pad-led {
+  background: #e0f2fe;
+  box-shadow: 0 0 9px var(--color-accent, #00d4ff);
+}
+
+.ms2k-pad-col.is-beyond-last {
+  opacity: 0.35;
+}
+
+/* Mini Value Bar inside Pad (used in SEQ EDIT 1..3 & Vocoder CH LEVEL / PAN modes) */
+.ms2k-pad-bar {
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  height: 4px;
+  background: rgba(0, 0, 0, 0.55);
+  border-radius: 2px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity 0.12s ease;
+}
+
+.ms2k-bottom-strip.is-value-edit-mode .ms2k-pad-bar {
+  opacity: 1;
+}
+
+.ms2k-bottom-strip.is-value-edit-mode .ms2k-pad-btn {
+  cursor: ns-resize;
+}
+
+.ms2k-pad-bar-fill {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #ef4444, #f97316, #38bdf8);
+  border-radius: 2px;
+  transition: width 0.05s linear;
+}
+
+/* Dual Synth / Vocoder Bottom Legend Button */
+.ms2k-pad-label-btn {
+  width: 100%;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  padding: 1px 1px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  transition: all 0.12s ease;
+}
+
+.ms2k-pad-label-btn:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(var(--color-accent-rgb), 0.35);
+}
+
+.ms2k-legend-synth {
+  font-family: var(--font-lcd);
+  font-size: 6.8px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  color: #cbd5e1;
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.ms2k-pad-col.is-editing-section .ms2k-legend-synth {
+  color: var(--color-accent, #00d4ff);
+  text-shadow: 0 0 6px rgba(var(--color-accent-rgb), 0.55);
+}
+
+.ms2k-legend-voc {
+  font-family: var(--font-lcd);
+  font-size: 5.8px;
+  font-weight: 800;
+  letter-spacing: 0.15px;
+  background: rgba(148, 163, 184, 0.22);
+  color: #94a3b8;
+  padding: 0.5px 2.5px;
+  border-radius: 2px;
+  line-height: 1.05;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.ms2k-bottom-strip.is-vocoder-mode .ms2k-legend-voc {
+  background: rgba(251, 113, 133, 0.24);
+  color: #fda4af;
+  border: 1px solid rgba(251, 113, 133, 0.35);
+}
+
 
 

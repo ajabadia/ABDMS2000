@@ -280,6 +280,7 @@ export function decodeHardwareProgram254(raw, index = 0) {
     number: progNum,
     name,
     cat,
+    raw254: Uint8Array.from(raw.subarray(0, 254)),
     params,
   };
 }
@@ -311,7 +312,7 @@ function setBits(byte, lo, hi, value) {
  * Encodes a complete 254-byte Korg MS2000 unpacked hardware program from a WebUI/APVTS parameter map.
  * Exact inverse of decodeHardwareProgram254() and mirrors MS2000HardwareProgram::fromNativeProgram().
  */
-export function encodeHardwareProgram254(paramsMap = {}, progName = 'Init Prog') {
+function encodeHardwareProgram254FromParams(paramsMap = {}, progName = 'Init Prog') {
   const raw = new Uint8Array(254);
   const p = paramsMap || {};
   const val = (k, def = 0) => (p[k] !== undefined ? Number(p[k]) : def);
@@ -345,10 +346,11 @@ export function encodeHardwareProgram254(paramsMap = {}, progName = 'Init Prog')
   raw[0x19] = clampByte(val('modFxType', 0), 0, 2);
 
   const eqInvXform = (idx) => clampByte(Math.round(clampByte(idx, 0, 3) * 8), 0, 29);
+  const eqGainInvXform = (value) => clampByte(64 + Math.round((Number(value) - 64) * (12 / 63)), 52, 76);
   raw[0x1A] = eqInvXform(val('eqHighFreq', 2));
-  raw[0x1B] = clampByte(val('eqHighGain', 0) + 64, 1, 127);
+  raw[0x1B] = eqGainInvXform(val('eqHighGain', 64));
   raw[0x1C] = eqInvXform(val('eqLowFreq', 1));
-  raw[0x1D] = clampByte(val('eqLowGain', 0) + 64, 1, 127);
+  raw[0x1D] = eqGainInvXform(val('eqLowGain', 64));
 
   // Arpeggiator
   const arpTempo = clampByte(val('arpTempo', 120), 20, 300);
@@ -375,6 +377,10 @@ export function encodeHardwareProgram254(paramsMap = {}, progName = 'Init Prog')
     const b = TIMBRE1_START;
     raw[b + 1] = setBits(0, 6, 7, clampByte(val('voiceMode', 0), 0, 2));
     raw[b + 2] = clampByte(val('unisonDetune', 0), 0, 99);
+    raw[b + 3] = clampByte(val('pitchTune', 0) + 64, 0, 127);
+    raw[b + 4] = clampByte(val('pitchBendRange', 0) + 64, 0, 127);
+    raw[b + 5] = clampByte(val('pitchTranspose', 0) + 64, 0, 127);
+    raw[b + 6] = clampByte(val('vibratoInt', 0) + 64, 0, 127);
     raw[b + 7] = clampByte(val('osc1Wave', 0), 0, 7);
     raw[b + 8] = clampByte(val('osc1Ctrl1', 0), 0, 127);
     raw[b + 9] = clampByte(val('osc1Ctrl2', 0), 0, 127);
@@ -393,7 +399,7 @@ export function encodeHardwareProgram254(paramsMap = {}, progName = 'Init Prog')
     raw[b + 23] = clampByte(val('vocoderGateSense', 50), 0, 127);
     raw[b + 25] = clampByte(val('ampLevel', 127), 0, 127);
     raw[b + 26] = clampByte(val('ampPan', 0) + 64, 1, 127);
-    raw[b + 27] = clampByte(val('ampDistortion', 0), 0, 1);
+    raw[b + 27] = setBits(setBits(0, 0, 0, clampByte(val('ampDistortion', 0), 0, 1)), 6, 6, clampByte(val('ampGate', 0), 0, 1));
     raw[b + 28] = clampByte(val('vocoderDirectLevel', 0), 0, 127);
     raw[b + 30] = clampByte(val('eg1Attack', 0), 0, 127);
     raw[b + 31] = clampByte(val('eg1Decay', 64), 0, 127);
@@ -403,12 +409,13 @@ export function encodeHardwareProgram254(paramsMap = {}, progName = 'Init Prog')
     raw[b + 35] = clampByte(val('eg2Decay', 64), 0, 127);
     raw[b + 36] = clampByte(val('eg2Sustain', 127), 0, 127);
     raw[b + 37] = clampByte(val('eg2Release', 40), 0, 127);
-    raw[b + 38] = setBits(setBits(0, 0, 1, clampByte(val('lfo1Wave', 2), 0, 3)), 4, 5, clampByte(val('lfo1KeySync', 0), 0, 2));
+    raw[b + 38] = setBits(setBits(0, 0, 1, clampByte(val('lfo1Wave', 2), 0, 3)), 4, 5, clampByte(val('lfo1KeySync', 0), 0, 3));
     raw[b + 39] = clampByte(val('lfo1Freq', 40), 0, 127);
-    raw[b + 41] = setBits(setBits(0, 0, 1, clampByte(val('lfo2Wave', 2), 0, 3)), 4, 5, clampByte(val('lfo2KeySync', 0), 0, 2));
+    raw[b + 41] = setBits(setBits(0, 0, 1, clampByte(val('lfo2Wave', 2), 0, 3)), 4, 5, clampByte(val('lfo2KeySync', 0), 0, 3));
     raw[b + 42] = clampByte(val('lfo2Freq', 40), 0, 127);
     for (let i = 0; i < 16; i++) {
       raw[b + 46 + i] = clampByte(val(`vocoderBandLevel${i + 1}`, 127), 0, 127);
+      raw[b + 62 + i] = clampByte(val(`vocoderBandPan${i + 1}`, 0) + 64, 1, 127);
     }
   } else {
     for (let t = 0; t < 2; t++) {
@@ -418,6 +425,10 @@ export function encodeHardwareProgram254(paramsMap = {}, progName = 'Init Prog')
       const vMode = clampByte(val(pid('voiceMode'), val('voiceMode', 1)), 0, 2);
       raw[b + 1] = setBits(0, 6, 7, vMode);
       raw[b + 2] = clampByte(val(pid('unisonDetune'), val('unisonDetune', 0)), 0, 99);
+      raw[b + 3] = clampByte(val(pid('pitchTune'), val('pitchTune', 0)) + 64, 0, 127);
+      raw[b + 4] = clampByte(val(pid('pitchBendRange'), val('pitchBendRange', 0)) + 64, 0, 127);
+      raw[b + 5] = clampByte(val(pid('pitchTranspose'), val('pitchTranspose', 0)) + 64, 0, 127);
+      raw[b + 6] = clampByte(val(pid('vibratoInt'), val('vibratoInt', 0)) + 64, 0, 127);
 
       raw[b + 7] = clampByte(val(pid('osc1Wave'), 0), 0, 7);
       raw[b + 8] = clampByte(val(pid('osc1Ctrl1'), 0), 0, 127);
@@ -447,7 +458,7 @@ export function encodeHardwareProgram254(paramsMap = {}, progName = 'Init Prog')
 
       raw[b + 25] = clampByte(val(pid('ampLevel'), 127), 0, 127);
       raw[b + 26] = clampByte(val(pid('ampPan'), 0) + 64, 1, 127);
-      raw[b + 27] = clampByte(val(pid('ampDistortion'), 0), 0, 1);
+      raw[b + 27] = setBits(setBits(0, 0, 0, clampByte(val(pid('ampDistortion'), 0), 0, 1)), 6, 6, clampByte(val(pid('ampGate'), 0), 0, 1));
       raw[b + 28] = clampByte(val(pid('ampVelo'), 0) + 64, 1, 127);
       raw[b + 29] = clampByte(val(pid('ampKeyTrack'), 0) + 64, 1, 127);
 
@@ -461,11 +472,11 @@ export function encodeHardwareProgram254(paramsMap = {}, progName = 'Init Prog')
       raw[b + 36] = clampByte(val(pid('eg2Sustain'), 127), 0, 127);
       raw[b + 37] = clampByte(val(pid('eg2Release'), 40), 0, 127);
 
-      raw[b + 38] = setBits(setBits(0, 0, 1, clampByte(val(pid('lfo1Wave'), 2), 0, 3)), 4, 5, clampByte(val(pid('lfo1KeySync'), 0), 0, 2));
+      raw[b + 38] = setBits(setBits(0, 0, 1, clampByte(val(pid('lfo1Wave'), 2), 0, 3)), 4, 5, clampByte(val(pid('lfo1KeySync'), 0), 0, 3));
       raw[b + 39] = clampByte(val(pid('lfo1Freq'), 40), 0, 127);
       raw[b + 40] = setBits(setBits(0, 7, 7, clampByte(val(pid('lfo1TempoSync'), 0), 0, 1)), 0, 4, clampByte(val(pid('lfo1SyncNote'), 4), 0, 14));
 
-      raw[b + 41] = setBits(setBits(0, 0, 1, clampByte(val(pid('lfo2Wave'), 2), 0, 3)), 4, 5, clampByte(val(pid('lfo2KeySync'), 0), 0, 2));
+      raw[b + 41] = setBits(setBits(0, 0, 1, clampByte(val(pid('lfo2Wave'), 2), 0, 3)), 4, 5, clampByte(val(pid('lfo2KeySync'), 0), 0, 3));
       raw[b + 42] = clampByte(val(pid('lfo2Freq'), 40), 0, 127);
       raw[b + 43] = setBits(setBits(0, 7, 7, clampByte(val(pid('lfo2TempoSync'), 0), 0, 1)), 0, 4, clampByte(val(pid('lfo2SyncNote'), 4), 0, 14));
 
@@ -479,12 +490,12 @@ export function encodeHardwareProgram254(paramsMap = {}, progName = 'Init Prog')
 
       const modSeqOn = clampByte(val(pid('modSeqOn'), val('modSeqOn', 0)), 0, 1);
       const seqRunMode = clampByte(val(pid('seqRunMode'), 1), 0, 1);
-      const modSeqRes = clampByte(val('modSeqResolution', 3), 0, 5);
+      const modSeqRes = clampByte(val(pid('modSeqResolution'), val('modSeqResolution', 3)), 0, 15);
       raw[b + 52] = setBits(setBits(setBits(0, 7, 7, modSeqOn), 6, 6, seqRunMode), 0, 4, modSeqRes);
 
       const seqLastStep = clampByte(val(pid('seqLastStep'), 16) - 1, 0, 15);
       const modSeqType = clampByte(val(pid('modSeqType'), val('modSeqType', 0)), 0, 3);
-      const seqKeySync = clampByte(val(pid('seqKeySync'), 0), 0, 2);
+      const seqKeySync = clampByte(val(pid('seqKeySync'), 0), 0, 3);
       raw[b + 53] = setBits(setBits(setBits(0, 4, 7, seqLastStep), 2, 3, modSeqType), 0, 1, seqKeySync);
 
       const seqRows = [
@@ -507,12 +518,82 @@ export function encodeHardwareProgram254(paramsMap = {}, progName = 'Init Prog')
   return raw;
 }
 
+const PACKED_PARAMETER_MASKS = {
+  timbreMode: 0x30, timbreVoices: 0xc0, scaleType: 0x0f, scaleKey: 0xf0,
+  arpOn: 0x80, arpLatch: 0x40, arpType: 0x0f, arpRange: 0xf0,
+  voiceMode: 0xc0, osc2ModType: 0x30, osc2Wave: 0x03,
+  ampDistortion: 0x01, ampGate: 0x40,
+  lfo1Wave: 0x03, lfo1KeySync: 0x30, lfo1TempoSync: 0x80, lfo1SyncNote: 0x1f,
+  lfo2Wave: 0x03, lfo2KeySync: 0x30, lfo2TempoSync: 0x80, lfo2SyncNote: 0x1f,
+  patch1Source: 0x0f, patch1Destination: 0xf0, patch2Source: 0x0f, patch2Destination: 0xf0,
+  patch3Source: 0x0f, patch3Destination: 0xf0, patch4Source: 0x0f, patch4Destination: 0xf0,
+  modSeqOn: 0x80, seqRunMode: 0x40, modSeqResolution: 0x1f,
+  seqLastStep: 0xf0, modSeqType: 0x0c, seqKeySync: 0x03,
+  seq1Motion: 0x01, seq2Motion: 0x01, seq3Motion: 0x01,
+};
+
+function packedMaskForParameter(paramId) {
+  if (PACKED_PARAMETER_MASKS[paramId] !== undefined) return PACKED_PARAMETER_MASKS[paramId];
+  if (paramId.startsWith('t2')) {
+    const baseId = paramId.charAt(2).toLowerCase() + paramId.slice(3);
+    if (PACKED_PARAMETER_MASKS[baseId] !== undefined) return PACKED_PARAMETER_MASKS[baseId];
+  }
+  return 0xff;
+}
+
+/**
+ * Encodes a 254-byte MS2000 payload. When a factory program is supplied, the original
+ * bytes are the baseline and only parameters changed from that program are re-encoded.
+ */
+export function encodeHardwareProgram254(paramsMap = {}, progName = 'Init Prog', sourceProgram = null) {
+  if (!sourceProgram) return encodeHardwareProgram254FromParams(paramsMap, progName);
+  if (!(sourceProgram.raw254 instanceof Uint8Array) || sourceProgram.raw254.length !== 254 || !sourceProgram.params) {
+    throw new TypeError('sourceProgram must contain raw254 (Uint8Array[254]) and decoded params');
+  }
+
+  const currentParams = { ...sourceProgram.params };
+  for (const [key, value] of Object.entries(paramsMap || {})) {
+    if (value !== undefined) currentParams[key] = value;
+  }
+
+  const vocoderModeChanged = Math.round(Number(currentParams.synthVocoderMode) || 0) !== Math.round(Number(sourceProgram.params.synthVocoderMode) || 0);
+  const timbreModeChanged = Math.round(Number(currentParams.timbreMode) || 0) !== Math.round(Number(sourceProgram.params.timbreMode) || 0);
+  if (vocoderModeChanged || timbreModeChanged) {
+    return encodeHardwareProgram254FromParams(currentParams, progName);
+  }
+
+  const output = Uint8Array.from(sourceProgram.raw254);
+  const sourceName = sourceProgram.name || 'Init Prog';
+  const outputName = String(progName || 'Init Prog').padEnd(12, ' ').slice(0, 12);
+  const sourceNameBytes = String(sourceName || 'Init Prog').padEnd(12, ' ').slice(0, 12);
+  if (outputName !== sourceNameBytes) {
+    const encodedName = encodeHardwareProgram254FromParams({}, progName).subarray(0, 12);
+    output.set(encodedName, 0);
+  }
+
+  const baselineRaw = encodeHardwareProgram254FromParams(sourceProgram.params, sourceName);
+  const candidateRaw = encodeHardwareProgram254FromParams(currentParams, progName);
+  for (const [paramId, value] of Object.entries(currentParams)) {
+    if (Object.is(value, sourceProgram.params[paramId])) continue;
+    const probeParams = { ...sourceProgram.params, [paramId]: value };
+    const probeRaw = encodeHardwareProgram254FromParams(probeParams, sourceName);
+    const mask = packedMaskForParameter(paramId);
+    for (let offset = 0; offset < 254; offset++) {
+      if (probeRaw[offset] !== baselineRaw[offset]) {
+        output[offset] = (output[offset] & ~mask) | (candidateRaw[offset] & mask);
+      }
+    }
+  }
+
+  return output;
+}
+
 /**
  * Generate a 288-byte Korg MS2000 Current Program Dump SysEx Uint8Array buffer
  * (F0 42 3g 58 40 + 254-byte complete hardware program + padding + F7) for any parameter map.
  */
-export function generateMS2000SysExBuffer(paramsMap, progName = 'Init Prog', midiChannel = 1) {
-  const raw254 = encodeHardwareProgram254(paramsMap, progName);
+export function generateMS2000SysExBuffer(paramsMap, progName = 'Init Prog', midiChannel = 1, sourceProgram = null) {
+  const raw254 = encodeHardwareProgram254(paramsMap, progName, sourceProgram);
   const bytes = new Uint8Array(288);
   const chNibble = Math.max(0, Math.min(15, (Math.round(Number(midiChannel) || 1) - 1)));
   // Header: F0 42 3g 58 40 (Korg ID: 42, Global Ch: 30+g, Model MS2000: 58, Current Program Dump: 40)
@@ -529,12 +610,11 @@ export function generateMS2000SysExBuffer(paramsMap, progName = 'Init Prog', mid
 /**
  * Generate a Korg MS2000 formatted SysEx Hex string preview for any parameter map.
  */
-export function generateMS2000SysExHex(paramsMap, progName = 'Init Prog', midiChannel = 1) {
-  const bytes = generateMS2000SysExBuffer(paramsMap, progName, midiChannel);
+export function generateMS2000SysExHex(paramsMap, progName = 'Init Prog', midiChannel = 1, sourceProgram = null) {
+  const bytes = generateMS2000SysExBuffer(paramsMap, progName, midiChannel, sourceProgram);
   let hex = '';
   for (let i = 0; i < bytes.length; i++) {
     hex += bytes[i].toString(16).toUpperCase().padStart(2, '0') + ' ';
   }
   return hex.trim();
 }
-

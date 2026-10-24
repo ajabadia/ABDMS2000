@@ -29,7 +29,8 @@ juce::File getAndPrepareWebView2UserDataFolder()
 
     if (baseDir.isDirectory())
     {
-        for (const auto &entry : juce::RangedDirectoryIterator(baseDir, false, "*", juce::File::findFilesAndDirectories))
+        for (const auto &entry :
+             juce::RangedDirectoryIterator(baseDir, false, "*", juce::File::findFilesAndDirectories))
         {
             const juce::File child = entry.getFile();
             if (child != currentFolder)

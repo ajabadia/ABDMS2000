@@ -1,0 +1,37 @@
+ CMakeLists.txt                              |   40 +
+ Source/Core/BuildVersion.h                  |    4 +-
+ Source/Core/MS2000FirmwareTables.h          |   67 ++
+ Source/Core/SynthEngine.cpp                 |  282 +++++--
+ Source/Core/SynthEngine.h                   |    2 +
+ Source/Core/Voice.cpp                       |  123 ++-
+ Source/Core/Voice.h                         |   10 +
+ Source/DSP/Effects/ModFX.cpp                |    2 +-
+ Source/DSP/Filters/FilterResonanceComp.cpp  |    1 +
+ Source/DSP/Filters/MultiModeFilter.cpp      |   21 +-
+ Source/DSP/Sequencer/ModSequencer.cpp       |  109 ++-
+ Source/DSP/Sequencer/ModSequencer.h         |   11 +-
+ Source/DSP/Vocoder/MS2KVocoder16Band.cpp    |  221 +++++-
+ Source/DSP/Vocoder/MS2KVocoder16Band.h      |   53 ++
+ Source/MIDI/MS2000HardwareProgram.h         |  108 ++-
+ Source/MIDI/MS2000ProgramData.h             |   69 +-
+ Source/Plugin/HostModelId.gen.h             |    2 +-
+ Source/Plugin/PluginProcessor.cpp           |    8 +-
+ Source/State/ParameterRegistry.gen.cpp      |   56 +-
+ Source/State/ParameterRegistry.gen.h        |   36 +
+ Source/Tests/DSPCoreTests.cpp               |  305 +++++++-
+ Source/Wasm/WasmBridge.cpp                  |   65 +-
+ WebUI/assets/backgrounds/bg_advanced.webp   |  Bin 482906 -> 0 bytes
+ WebUI/assets/backgrounds/bg_microkorg.webp  |  Bin 690774 -> 0 bytes
+ WebUI/assets/backgrounds/bg_ms2000.webp     |  Bin 416128 -> 0 bytes
+ WebUI/index.html                            |  456 +++++++++---
+ WebUI/src/app.js                            | 1075 ++++++++++++++++++++++++---
+ WebUI/src/contracts/buildVersion.js         |    4 +-
+ WebUI/src/contracts/factoryPresets.js       |   10 +-
+ WebUI/src/contracts/registry.gen.js         |  467 ++++++++++++
+ WebUI/src/styles/dashboard.css              |   18 +-
+ WebUI/src/styles/main.css                   |  628 +++++++++++++---
+ WebUI/src/styles/themes.css                 |   32 +-
+ WebUI/src/ui/lcdProgrammer.js               |  573 ++++++++++++--
+ WebUI/tests/unit/uxMasterPlanParity.test.js |   89 ++-
+ WebUI/tests/unit/wasmBridge.test.js         |   15 +
+ 36 files changed, 4398 insertions(+), 564 deletions(-)

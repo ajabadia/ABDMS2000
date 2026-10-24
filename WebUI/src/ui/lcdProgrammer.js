@@ -7,7 +7,7 @@
 
 import { paramStore } from '../contracts/paramStore.js';
 import { PARAM_LOOKUP } from '../contracts/registry.gen.js';
-import { FACTORY_PROGRAMS, generateMS2000SysExHex } from '../contracts/factoryPresets.js';
+import { FACTORY_PROGRAMS, generateMS2000SysExHex, encodeHardwareProgram254 } from '../contracts/factoryPresets.js';
 
 const BANK_LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 const VOICE_MODE_NAMES = ['SINGLE', 'SPLIT', 'LAYER', 'VOCODER'];
@@ -19,16 +19,37 @@ export class LcdProgrammer {
 
     this.line1Elem = document.getElementById('lcd-line-1');
     this.line2Elem = document.getElementById('lcd-line-2');
+    this.origLedElem = document.getElementById('led-original-value');
+    this.origIndicatorElem = document.getElementById('orig-val-indicator');
     this.sysexHexElem = document.getElementById('sysex-hex-content');
     this.popoverElem = document.getElementById('preset-browser-popover');
     this.gridElem = document.getElementById('preset-browser-grid');
     this.searchInputElem = document.getElementById('preset-search-input');
 
     this.isEditMode = false;
+    this.isGlobalMode = false;
     this.currentPageIndex = 0;
+    this.currentGlobalPageIndex = 0;
     this.currentCursorIndex = 0;
     this.currentProgramIndex = 1; // 1..128 (A.01 .. H.16)
     this.activeTimbre = 1; // 1 or 2
+    this.lastEditedParamId = null;
+
+    // Hardware MS2000 Global Mode State
+    this.globalState = {
+      masterTune: 440.0,
+      transpose: 0,
+      position: 'PostKBD',
+      midiCh: 1,
+      clockMode: 'Auto',
+      memoryProtect: false
+    };
+
+    // Built-in MS2000 Hardware Demo Riff Sequencer State (EDIT + GLOBAL = DEMO)
+    this.isDemoPlaying = false;
+    this._demoTimer = null;
+    this._demoStep = 0;
+    this._demoActiveNotes = [];
 
     // Clone factory programs so user edits/writes in session don't mutate frozen static objects
     this.programs = FACTORY_PROGRAMS.map((p, idx) => ({
@@ -53,27 +74,12 @@ export class LcdProgrammer {
     // Temporary LCD readout timer
     this._flashTimer = null;
 
-    // Menu Pages available in EDIT mode
+    // 16 Hardware-Mapped Edit Pages (1: COMMON .. 16: UTILITY)
     this.menuPages = [
       {
-        title: 'PAGE 01: PROGRAM',
-        fields: ['PROGRAM'],
-        getValue: () => this.getProgramLabel(),
-        onIncrement: () => this.nextProgram(),
-        onDecrement: () => this.prevProgram()
-      },
-      {
-        title: 'PAGE 02: BANK A-H',
-        fields: ['BANK'],
-        getValue: () => {
-          const bankIdx = this.getCurrentBankIndex();
-          return `Bank ${BANK_LETTERS[bankIdx]} (${BANK_LETTERS[bankIdx]}.01-${BANK_LETTERS[bankIdx]}.16)`;
-        },
-        onIncrement: () => this.selectBank((this.getCurrentBankIndex() + 1) % 8),
-        onDecrement: () => this.selectBank((this.getCurrentBankIndex() + 7) % 8)
-      },
-      {
-        title: 'PAGE 03: TIMBRE MODE',
+        id: 'common',
+        pad: 1,
+        title: 'P01: COMMON MODE',
         fields: ['TIMBRE'],
         getValue: () => {
           const voc = Math.round(paramStore.values.get('synthVocoderMode') || 0);
@@ -85,17 +91,9 @@ export class LcdProgrammer {
         onDecrement: () => this.stepTimbreMode(-1)
       },
       {
-        title: 'PAGE 04: SYNTH MODE',
-        fields: ['MODE'],
-        getValue: () => {
-          const m = Math.round(paramStore.values.get('synthMode') || 0);
-          return m === 1 ? 'microKORG' : m === 2 ? 'ABD Ultra (32v)' : 'MS2000 (4v)';
-        },
-        onIncrement: () => this.stepParam('synthMode', 1, 0, 2),
-        onDecrement: () => this.stepParam('synthMode', -1, 0, 2)
-      },
-      {
-        title: 'PAGE 05: VOICE ASSIGN',
+        id: 'voice',
+        pad: 2,
+        title: 'P02: VOICE ASSIGN',
         fields: ['ASSIGN'],
         getValue: () => {
           const pid = this.tParam('voiceMode');
@@ -106,50 +104,165 @@ export class LcdProgrammer {
         onDecrement: () => this.stepParam(this.tParam('voiceMode'), -1, 0, 2)
       },
       {
-        title: 'PAGE 06: FILTER CUTOFF',
-        fields: ['CUTOFF'],
-        getValue: () => {
-          const pid = this.tParam('filterCutoff');
-          return `T${this.activeTimbre} Cutoff: ${Math.round(paramStore.values.get(pid) ?? 127)}`;
-        },
-        onIncrement: () => this.stepParam(this.tParam('filterCutoff'), 2, 0, 127),
-        onDecrement: () => this.stepParam(this.tParam('filterCutoff'), -2, 0, 127)
-      },
-      {
-        title: 'PAGE 07: FILTER RESO',
-        fields: ['RESO'],
-        getValue: () => {
-          const pid = this.tParam('filterResonance');
-          return `T${this.activeTimbre} Reso: ${Math.round(paramStore.values.get(pid) ?? 0)}`;
-        },
-        onIncrement: () => this.stepParam(this.tParam('filterResonance'), 2, 0, 127),
-        onDecrement: () => this.stepParam(this.tParam('filterResonance'), -2, 0, 127)
-      },
-      {
-        title: 'PAGE 08: PORTAMENTO',
-        fields: ['TIME'],
+        id: 'pitch',
+        pad: 3,
+        title: 'P03: PITCH & GLIDE',
+        fields: ['PORTA'],
         getValue: () => {
           const pid = this.tParam('portamentoTime');
-          return `T${this.activeTimbre} Glide: ${Math.round(paramStore.values.get(pid) ?? 0)}`;
+          const tr = Math.round(paramStore.values.get(this.tParam('pitchTranspose')) ?? 0);
+          return `T${this.activeTimbre} Tr:${tr >= 0 ? '+' : ''}${tr} Porta:${Math.round(paramStore.values.get(pid) ?? 0)}`;
         },
         onIncrement: () => this.stepParam(this.tParam('portamentoTime'), 2, 0, 127),
         onDecrement: () => this.stepParam(this.tParam('portamentoTime'), -2, 0, 127)
       },
       {
-        title: 'PAGE 09: SCALE TUNING',
-        fields: ['SCALE'],
+        id: 'osc1',
+        pad: 4,
+        title: 'P04: OSCILLATOR 1',
+        fields: ['WAVE'],
         getValue: () => {
-          const st = Math.round(paramStore.values.get('scaleType') || 0);
-          const sk = Math.round(paramStore.values.get('scaleKey') || 0);
-          const types = ['Equal Temp', 'Pure Major', 'Pure Minor', 'Arabic', 'Pythagorean', 'Werckmeister', 'Kirnberger', 'Slendro', 'Pelog', 'User Scale'];
-          const keys = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-          return `${types[st] || 'Equal'} (${keys[sk] || 'C'})`;
+          const pid = this.tParam('osc1Wave');
+          const w = Math.round(paramStore.values.get(pid) ?? 0);
+          const names = ['Saw', 'Pulse', 'Tri', 'Sine', 'Vox', 'DWGS', 'Noise', 'AudioIn'];
+          return `T${this.activeTimbre} Wave: ${names[w] || 'Saw'}`;
         },
-        onIncrement: () => this.stepParam('scaleType', 1, 0, 9),
-        onDecrement: () => this.stepParam('scaleType', -1, 0, 9)
+        onIncrement: () => this.stepParam(this.tParam('osc1Wave'), 1, 0, 7),
+        onDecrement: () => this.stepParam(this.tParam('osc1Wave'), -1, 0, 7)
       },
       {
-        title: 'PAGE 10: MOD EFFECTS',
+        id: 'osc2',
+        pad: 5,
+        title: 'P05: OSC 2 / IN 2',
+        fields: ['WAVE'],
+        getValue: () => {
+          const voc = Math.round(paramStore.values.get('synthVocoderMode') || 0);
+          if (voc === 1) {
+            const g = Math.round(paramStore.values.get('vocoderGateSense') ?? 50);
+            const hpf = Math.round(paramStore.values.get('vocoderHpfLevel') ?? 64);
+            return `Gate:${g} HPF:${hpf}`;
+          }
+          const w = Math.round(paramStore.values.get(this.tParam('osc2Wave')) ?? 0);
+          const m = Math.round(paramStore.values.get(this.tParam('osc2ModType')) ?? 0);
+          return `T${this.activeTimbre} ${['Saw', 'Sqr', 'Tri'][w] || 'Saw'} (${['Off', 'Ring', 'Sync', 'X-Mod'][m] || 'Off'})`;
+        },
+        onIncrement: () => {
+          const voc = Math.round(paramStore.values.get('synthVocoderMode') || 0);
+          if (voc === 1) this.stepParam('vocoderGateSense', 2, 0, 127);
+          else this.stepParam(this.tParam('osc2Wave'), 1, 0, 2);
+        },
+        onDecrement: () => {
+          const voc = Math.round(paramStore.values.get('synthVocoderMode') || 0);
+          if (voc === 1) this.stepParam('vocoderGateSense', -2, 0, 127);
+          else this.stepParam(this.tParam('osc2Wave'), -1, 0, 2);
+        }
+      },
+      {
+        id: 'filter',
+        pad: 6,
+        title: 'P06: FILTER VCF',
+        fields: ['CUTOFF'],
+        getValue: () => {
+          const voc = Math.round(paramStore.values.get('synthVocoderMode') || 0);
+          if (voc === 1) {
+            const sh = ['-2', '-1', '0', '+1', '+2'][Math.round(paramStore.values.get('vocoderFormantShift') ?? 2)] || '0';
+            const fc = Math.round(paramStore.values.get('vocoderCutoff') ?? 0);
+            const res = Math.round(paramStore.values.get('vocoderResonance') ?? 64);
+            return `Sh:${sh} Fc:${fc >= 0 ? '+' : ''}${fc} R:${res}`;
+          }
+          const pid = this.tParam('filterCutoff');
+          const rPid = this.tParam('filterResonance');
+          return `T${this.activeTimbre} Cut:${Math.round(paramStore.values.get(pid) ?? 127)} Res:${Math.round(paramStore.values.get(rPid) ?? 0)}`;
+        },
+        onIncrement: () => {
+          const voc = Math.round(paramStore.values.get('synthVocoderMode') || 0);
+          if (voc === 1) this.stepParam('vocoderCutoff', 2, -63, 63);
+          else this.stepParam(this.tParam('filterCutoff'), 2, 0, 127);
+        },
+        onDecrement: () => {
+          const voc = Math.round(paramStore.values.get('synthVocoderMode') || 0);
+          if (voc === 1) this.stepParam('vocoderCutoff', -2, -63, 63);
+          else this.stepParam(this.tParam('filterCutoff'), -2, 0, 127);
+        }
+      },
+      {
+        id: 'amp',
+        pad: 7,
+        title: 'P07: AMPLIFIER VCA',
+        fields: ['LEVEL'],
+        getValue: () => {
+          const pid = this.tParam('ampLevel');
+          const pan = Math.round(paramStore.values.get(this.tParam('ampPan')) ?? 0);
+          return `T${this.activeTimbre} Vol:${Math.round(paramStore.values.get(pid) ?? 100)} Pan:${pan === 0 ? 'CNT' : (pan > 0 ? 'R' + pan : 'L' + Math.abs(pan))}`;
+        },
+        onIncrement: () => this.stepParam(this.tParam('ampLevel'), 2, 0, 127),
+        onDecrement: () => this.stepParam(this.tParam('ampLevel'), -2, 0, 127)
+      },
+      {
+        id: 'eg',
+        pad: 8,
+        title: 'P08: ENVELOPES EG',
+        fields: ['DECAY'],
+        getValue: () => {
+          const a = Math.round(paramStore.values.get(this.tParam('eg2Attack')) ?? 0);
+          const d = Math.round(paramStore.values.get(this.tParam('eg2Decay')) ?? 64);
+          const s = Math.round(paramStore.values.get(this.tParam('eg2Sustain')) ?? 127);
+          const r = Math.round(paramStore.values.get(this.tParam('eg2Release')) ?? 20);
+          return `T${this.activeTimbre} EG2 ${a}/${d}/${s}/${r}`;
+        },
+        onIncrement: () => this.stepParam(this.tParam('eg2Release'), 2, 0, 127),
+        onDecrement: () => this.stepParam(this.tParam('eg2Release'), -2, 0, 127)
+      },
+      {
+        id: 'lfo',
+        pad: 9,
+        title: 'P09: LFO 1 & 2',
+        fields: ['FREQ'],
+        getValue: () => {
+          const pid = this.tParam('lfo1Freq');
+          return `T${this.activeTimbre} LFO1 Spd: ${Math.round(paramStore.values.get(pid) ?? 30)}`;
+        },
+        onIncrement: () => this.stepParam(this.tParam('lfo1Freq'), 2, 0, 127),
+        onDecrement: () => this.stepParam(this.tParam('lfo1Freq'), -2, 0, 127)
+      },
+      {
+        id: 'patch',
+        pad: 10,
+        title: 'P10: PATCH / CH LVL',
+        fields: ['INT'],
+        getValue: () => {
+          const voc = Math.round(paramStore.values.get('synthVocoderMode') || 0);
+          if (voc === 1) {
+            return `Vocoder 16-Ch Levels`;
+          }
+          const pid = this.tParam('patch1Intensity');
+          const v = Math.round(paramStore.values.get(pid) ?? 0);
+          return `T${this.activeTimbre} P1 Int: ${v >= 0 ? '+' : ''}${v}`;
+        },
+        onIncrement: () => this.stepParam(this.tParam('patch1Intensity'), 1, -63, 63),
+        onDecrement: () => this.stepParam(this.tParam('patch1Intensity'), -1, -63, 63)
+      },
+      {
+        id: 'seq',
+        pad: 11,
+        title: 'P11: MOD SEQ / PAN',
+        fields: ['SEQ'],
+        getValue: () => {
+          const voc = Math.round(paramStore.values.get('synthVocoderMode') || 0);
+          if (voc === 1) {
+            return `Vocoder 16-Ch Panpot`;
+          }
+          const on = Math.round(paramStore.values.get('modSeqOn') || 0);
+          const len = Math.round(paramStore.values.get(this.tParam('seqLastStep')) || 16);
+          return `ModSeq: ${on ? 'ON' : 'OFF'} (Len:${len})`;
+        },
+        onIncrement: () => this.stepParam('modSeqOn', 1, 0, 1),
+        onDecrement: () => this.stepParam('modSeqOn', -1, 0, 1)
+      },
+      {
+        id: 'modfx',
+        pad: 12,
+        title: 'P12: MOD EFFECTS',
         fields: ['TYPE'],
         getValue: () => {
           const t = Math.round(paramStore.values.get('modFxType') || 0);
@@ -159,7 +272,9 @@ export class LcdProgrammer {
         onDecrement: () => this.stepParam('modFxType', -1, 0, 2)
       },
       {
-        title: 'PAGE 11: DELAY FX',
+        id: 'delayfx',
+        pad: 13,
+        title: 'P13: DELAY FX',
         fields: ['TYPE'],
         getValue: () => {
           const d = Math.round(paramStore.values.get('delayType') || 0);
@@ -169,25 +284,149 @@ export class LcdProgrammer {
         onDecrement: () => this.stepParam('delayType', -1, 0, 2)
       },
       {
-        title: 'PAGE 12: GLOBAL MIDI',
-        fields: ['CHANNEL'],
-        getValue: () => `MIDI Ch: ${Math.round(paramStore.values.get('midiChannel') || 1)}`,
-        onIncrement: () => this.stepParam('midiChannel', 1, 1, 16),
-        onDecrement: () => this.stepParam('midiChannel', -1, 1, 16)
+        id: 'eq',
+        pad: 14,
+        title: 'P14: EQUALIZER',
+        fields: ['GAIN'],
+        getValue: () => {
+          const lg = Math.round(paramStore.values.get('eqLowGain') ?? 64) - 64;
+          const hg = Math.round(paramStore.values.get('eqHighGain') ?? 64) - 64;
+          return `Lo:${lg >= 0 ? '+' : ''}${lg} Hi:${hg >= 0 ? '+' : ''}${hg}`;
+        },
+        onIncrement: () => this.stepParam('eqHighGain', 2, 0, 127),
+        onDecrement: () => this.stepParam('eqHighGain', -2, 0, 127)
       },
       {
-        title: 'PAGE 13: UTILITY',
+        id: 'arp',
+        pad: 15,
+        title: 'P15: ARPEGGIATOR',
+        fields: ['ARP'],
+        getValue: () => {
+          const on = Math.round(paramStore.values.get('arpOn') || 0);
+          const t = Math.round(paramStore.values.get('arpType') || 0);
+          const types = ['Up', 'Down', 'Alt1', 'Alt2', 'Random', 'Trigger'];
+          return `${on ? 'ON' : 'OFF'} (${types[t] || 'Up'})`;
+        },
+        onIncrement: () => this.stepParam('arpOn', 1, 0, 1),
+        onDecrement: () => this.stepParam('arpOn', -1, 0, 1)
+      },
+      {
+        id: 'utility',
+        pad: 16,
+        title: 'P16: UTILITY',
         fields: ['SYSEX'],
-        getValue: () => '[DUMP PROGRAM]',
+        getValue: () => '[COPY / WRITE / SYSEX]',
         onIncrement: () => this.bridge.send('exportSysexProgram', {}),
         onDecrement: () => this.bridge.send('exportSysexProgram', {})
       }
     ];
 
+    // 6 Hardware Global Mode Pages (GLOBAL Button)
+    this.globalPages = [
+      {
+        id: 'g_tune',
+        title: 'G01: MASTER TUNE',
+        getParamId: () => 'masterVolume',
+        getValue: () => {
+          const tune = Number(this.globalState.masterTune || 440.0).toFixed(1);
+          const vol = Math.round((paramStore.values.get('masterVolume') ?? 0.8) * 100);
+          return `A4=${tune}Hz  Master:${vol}%`;
+        },
+        onIncrement: () => {
+          this.globalState.masterTune = Math.min(450.0, Math.round((this.globalState.masterTune + 0.5) * 10) / 10);
+        },
+        onDecrement: () => {
+          this.globalState.masterTune = Math.max(430.0, Math.round((this.globalState.masterTune - 0.5) * 10) / 10);
+        }
+      },
+      {
+        id: 'g_transpose',
+        title: 'G02: KEY TRANSPOSE',
+        getParamId: () => 'pitchTranspose',
+        getValue: () => {
+          const tr = Math.round(paramStore.values.get('pitchTranspose') ?? 0);
+          return `Global Transpose: ${tr >= 0 ? '+' : ''}${tr} st`;
+        },
+        onIncrement: () => this.stepParam('pitchTranspose', 1, -24, 24),
+        onDecrement: () => this.stepParam('pitchTranspose', -1, -24, 24)
+      },
+      {
+        id: 'g_position',
+        title: 'G03: POSITION / LOCAL',
+        getValue: () => `Pos: ${this.globalState.position} (Local:ON)`,
+        onIncrement: () => {
+          this.globalState.position = this.globalState.position === 'PostKBD' ? 'PreTG' : 'PostKBD';
+        },
+        onDecrement: () => {
+          this.globalState.position = this.globalState.position === 'PostKBD' ? 'PreTG' : 'PostKBD';
+        }
+      },
+      {
+        id: 'g_midich',
+        title: 'G04: MIDI CHANNEL',
+        getValue: () => `Global MIDI Ch: ${String(this.globalState.midiCh).padStart(2, '0')}`,
+        onIncrement: () => {
+          this.globalState.midiCh = Math.min(16, (this.globalState.midiCh || 1) + 1);
+          if (typeof this.onGlobalMidiChannelChanged === 'function') {
+            this.onGlobalMidiChannelChanged(this.globalState.midiCh);
+          }
+        },
+        onDecrement: () => {
+          this.globalState.midiCh = Math.max(1, (this.globalState.midiCh || 1) - 1);
+          if (typeof this.onGlobalMidiChannelChanged === 'function') {
+            this.onGlobalMidiChannelChanged(this.globalState.midiCh);
+          }
+        }
+      },
+      {
+        id: 'g_clock',
+        title: 'G05: MIDI CLOCK',
+        getValue: () => {
+          const bpm = Math.round(paramStore.values.get('arpTempo') ?? 120);
+          return `Clock: ${this.globalState.clockMode} (♩=${bpm})`;
+        },
+        onIncrement: () => {
+          const modes = ['Auto', 'Internal', 'External'];
+          const idx = (modes.indexOf(this.globalState.clockMode) + 1) % modes.length;
+          this.globalState.clockMode = modes[idx];
+        },
+        onDecrement: () => {
+          const modes = ['Auto', 'Internal', 'External'];
+          const idx = (modes.indexOf(this.globalState.clockMode) - 1 + modes.length) % modes.length;
+          this.globalState.clockMode = modes[idx];
+        }
+      },
+      {
+        id: 'g_dump',
+        title: 'G06: SYSEX DATA DUMP',
+        getValue: () => 'Press +/YES to Dump Patch',
+        onIncrement: () => {
+          this.bridge.send('exportSysexProgram', {});
+          this.flashMessage('SYSEX DUMP', '1 PROGRAM TRANSMITTED', 1400);
+        },
+        onDecrement: () => {
+          this.bridge.send('exportSysexBank', {});
+          this.flashMessage('SYSEX DUMP', 'ALL DATA TRANSMITTED', 1400);
+        }
+      }
+    ];
+
+    this.onStateSync = options.onStateSync || null;
+    this.onExitButton = options.onExitButton || null;
+    this.onGlobalMidiChannelChanged = options.onGlobalMidiChannelChanged || null;
+
     this.attachButtonEvents();
     this.attachBridgeListeners();
     this.loadProgramIndex(0);
     this.bridge.send('getPresetCatalog', {});
+  }
+
+  jumpToEditPage(padNum) {
+    const idx = Math.max(0, Math.min(this.menuPages.length - 1, (Number(padNum) || 1) - 1));
+    this.isGlobalMode = false;
+    this.isEditMode = true;
+    this.currentPageIndex = idx;
+    this.updateDisplay();
   }
 
   tParam(baseId) {
@@ -254,35 +493,54 @@ export class LcdProgrammer {
   }
 
   attachButtonEvents() {
-    // PAGE Buttons
+    // PAGE Buttons (PAGE - / PAGE +)
     document.getElementById('btn-lcd-page-next')?.addEventListener('click', () => {
-      this.isEditMode = true;
-      this.currentPageIndex = (this.currentPageIndex + 1) % this.menuPages.length;
+      if (this.isGlobalMode) {
+        this.currentGlobalPageIndex = (this.currentGlobalPageIndex + 1) % this.globalPages.length;
+      } else {
+        this.isEditMode = true;
+        this.currentPageIndex = (this.currentPageIndex + 1) % this.menuPages.length;
+      }
       this.updateDisplay();
     });
 
     document.getElementById('btn-lcd-page-prev')?.addEventListener('click', () => {
-      this.isEditMode = true;
-      this.currentPageIndex = (this.currentPageIndex - 1 + this.menuPages.length) % this.menuPages.length;
+      if (this.isGlobalMode) {
+        this.currentGlobalPageIndex = (this.currentGlobalPageIndex - 1 + this.globalPages.length) % this.globalPages.length;
+      } else {
+        this.isEditMode = true;
+        this.currentPageIndex = (this.currentPageIndex - 1 + this.menuPages.length) % this.menuPages.length;
+      }
       this.updateDisplay();
     });
 
-    // CURSOR Buttons
+    // CURSOR Buttons (CURSOR ◄ / CURSOR ►)
     document.getElementById('btn-lcd-cursor-next')?.addEventListener('click', () => {
-      this.isEditMode = true;
-      this.currentCursorIndex = (this.currentCursorIndex + 1) % 2;
+      if (this.isGlobalMode) {
+        this.currentGlobalPageIndex = (this.currentGlobalPageIndex + 1) % this.globalPages.length;
+      } else {
+        this.isEditMode = true;
+        this.currentCursorIndex = (this.currentCursorIndex + 1) % 2;
+      }
       this.updateDisplay();
     });
 
     document.getElementById('btn-lcd-cursor-prev')?.addEventListener('click', () => {
-      this.isEditMode = true;
-      this.currentCursorIndex = (this.currentCursorIndex - 1 + 2) % 2;
+      if (this.isGlobalMode) {
+        this.currentGlobalPageIndex = (this.currentGlobalPageIndex - 1 + this.globalPages.length) % this.globalPages.length;
+      } else {
+        this.isEditMode = true;
+        this.currentCursorIndex = (this.currentCursorIndex - 1 + 2) % 2;
+      }
       this.updateDisplay();
     });
 
-    // VALUE Buttons
+    // VALUE Buttons (- / NO and + / YES)
     document.getElementById('btn-lcd-val-up')?.addEventListener('click', () => {
-      if (!this.isEditMode) {
+      if (this.isGlobalMode) {
+        const gPage = this.globalPages[this.currentGlobalPageIndex];
+        if (gPage && gPage.onIncrement) gPage.onIncrement();
+      } else if (!this.isEditMode) {
         this.nextProgram();
       } else {
         const page = this.menuPages[this.currentPageIndex];
@@ -292,7 +550,10 @@ export class LcdProgrammer {
     });
 
     document.getElementById('btn-lcd-val-down')?.addEventListener('click', () => {
-      if (!this.isEditMode) {
+      if (this.isGlobalMode) {
+        const gPage = this.globalPages[this.currentGlobalPageIndex];
+        if (gPage && gPage.onDecrement) gPage.onDecrement();
+      } else if (!this.isEditMode) {
         this.prevProgram();
       } else {
         const page = this.menuPages[this.currentPageIndex];
@@ -301,10 +562,32 @@ export class LcdProgrammer {
       this.updateDisplay();
     });
 
-    // EDIT / EXIT Button
+    // EDIT Button
     document.getElementById('btn-lcd-edit')?.addEventListener('click', () => {
+      this.isGlobalMode = false;
       this.isEditMode = !this.isEditMode;
       this.updateDisplay();
+    });
+
+    // GLOBAL Button (Hardware MS2000 Global Mode)
+    document.getElementById('btn-lcd-global')?.addEventListener('click', () => {
+      if (!this.isGlobalMode) {
+        this.isGlobalMode = true;
+        this.isEditMode = false;
+      } else {
+        this.currentGlobalPageIndex = (this.currentGlobalPageIndex + 1) % this.globalPages.length;
+      }
+      this.updateDisplay();
+    });
+
+    // EXIT Button (Hardware MS2000 Exit to Program Play Mode)
+    document.getElementById('btn-lcd-exit')?.addEventListener('click', () => {
+      this.exitToPlayMode();
+    });
+
+    // DEMO Button (Hardware EDIT + GLOBAL = DEMO Riff Audition)
+    document.getElementById('btn-lcd-demo')?.addEventListener('click', () => {
+      this.toggleDemoSequence();
     });
 
     // WRITE Button (UX1.3)
@@ -580,6 +863,7 @@ export class LcdProgrammer {
     const p = this.programs[safeIdx];
     const currentParams = Object.fromEntries(paramStore.values);
 
+    p.raw254 = encodeHardwareProgram254(currentParams, p.name, p);
     p.params = { ...currentParams };
     this.savedSnapshot = { ...currentParams };
     this.editedSnapshot = null;
@@ -642,6 +926,9 @@ export class LcdProgrammer {
     const spec = PARAM_LOOKUP[paramId];
     if (!spec) return;
 
+    this.lastEditedParamId = paramId;
+    this.updateOriginalValueLed(paramId, value);
+
     const isT2 = paramId.startsWith('t2');
     const prefix = isT2 ? 'T2' : (PARAM_LOOKUP['t2' + paramId.charAt(0).toUpperCase() + paramId.slice(1)] ? 'T1' : 'GLB');
     const cleanName = (spec.name || paramId).replace(/^T2\s+/i, '').toUpperCase().slice(0, 12);
@@ -665,9 +952,9 @@ export class LcdProgrammer {
 
   updateSysExDisplay(prog) {
     if (!this.sysexHexElem) this.sysexHexElem = document.getElementById('sysex-hex-content');
+    const p = prog || this.programs[(this.currentProgramIndex - 1) % this.programs.length];
     if (this.sysexHexElem) {
-      const p = prog || this.programs[(this.currentProgramIndex - 1) % this.programs.length];
-      const hex = generateMS2000SysExHex(paramStore.values ? Object.fromEntries(paramStore.values) : p.params, p.name);
+      const hex = generateMS2000SysExHex(paramStore.values ? Object.fromEntries(paramStore.values) : p.params, p.name, 1, p);
       this.sysexHexElem.textContent = hex;
     }
     if (typeof window !== 'undefined' && typeof window.__onMS2000ParamMutated === 'function') {
@@ -685,18 +972,143 @@ export class LcdProgrammer {
     }, duration);
   }
 
+  exitToPlayMode() {
+    if (this.isDemoPlaying) {
+      this.stopDemoSequence();
+    }
+    this.isEditMode = false;
+    this.isGlobalMode = false;
+    if (this.isComparing) {
+      this.exitCompareMode(true);
+    }
+    this.closePresetBrowser();
+    if (typeof this.onExitButton === 'function') {
+      this.onExitButton();
+    }
+    this.updateDisplay();
+  }
+
+  toggleDemoSequence() {
+    if (this.isDemoPlaying) {
+      this.stopDemoSequence();
+      this.flashMessage('DEMO STOPPED', this.getProgramLabel(), 1000);
+    } else {
+      this.startDemoSequence();
+    }
+  }
+
+  startDemoSequence() {
+    this.stopDemoSequence();
+    this.isDemoPlaying = true;
+    this._demoStep = 0;
+    document.getElementById('btn-lcd-demo')?.classList.add('active');
+
+    // Classic Korg MS2000 Trance / Electro Demo Pattern (C minor / Eb / F / G)
+    const demoPattern = [
+      [48, 60, 67], [63], [60], [70],
+      [48, 60, 68], [67], [63], [60],
+      [44, 56, 63], [67], [68], [72],
+      [43, 55, 62], [67], [71], [74]
+    ];
+
+    const playStep = () => {
+      if (!this.isDemoPlaying) return;
+      for (const n of this._demoActiveNotes) {
+        this.bridge.noteOff(n);
+      }
+      this._demoActiveNotes = [];
+
+      const notes = demoPattern[this._demoStep % demoPattern.length] || [60];
+      for (const n of notes) {
+        this.bridge.noteOn(n, 0.85);
+        this._demoActiveNotes.push(n);
+      }
+      this._demoStep = (this._demoStep + 1) % demoPattern.length;
+    };
+
+    const bpm = Math.max(40, Math.min(240, Math.round(paramStore.values.get('arpTempo') ?? 125)));
+    const stepMs = Math.round((60000 / bpm) / 2); // 8th-note groove
+    this.flashMessage('♪ MS2000 DEMO ♪', `${this.getProgramLabel()} (♩=${bpm})`, 1600);
+    playStep();
+    this._demoTimer = setInterval(playStep, stepMs);
+  }
+
+  stopDemoSequence() {
+    if (this._demoTimer) {
+      clearInterval(this._demoTimer);
+      this._demoTimer = null;
+    }
+    if (this._demoActiveNotes.length > 0) {
+      for (const n of this._demoActiveNotes) {
+        this.bridge.noteOff(n);
+      }
+      this._demoActiveNotes = [];
+    }
+    this.isDemoPlaying = false;
+    document.getElementById('btn-lcd-demo')?.classList.remove('active');
+  }
+
+  /**
+   * Hardware ORIGINAL VALUE LED: lights up when the active parameter matches the saved program's original value
+   */
+  updateOriginalValueLed(paramId = null, currentValOverride = undefined) {
+    if (!this.origLedElem) this.origLedElem = document.getElementById('led-original-value');
+    if (!this.origIndicatorElem) this.origIndicatorElem = document.getElementById('orig-val-indicator');
+    if (!this.origLedElem) return;
+
+    let isOriginal = false;
+    if (this.isComparing) {
+      isOriginal = true;
+    } else if (this.savedSnapshot) {
+      const targetId = paramId || this.lastEditedParamId;
+      if (targetId && this.savedSnapshot[targetId] !== undefined) {
+        const cur = currentValOverride !== undefined ? currentValOverride : paramStore.values.get(targetId);
+        const orig = this.savedSnapshot[targetId];
+        if (cur !== undefined) {
+          isOriginal = Math.abs(Number(cur) - Number(orig)) < 0.01;
+        }
+      } else {
+        // In Play mode with no specific param selected, check if current program is unmodified
+        isOriginal = true;
+        for (const [k, origVal] of Object.entries(this.savedSnapshot)) {
+          const curVal = paramStore.values.get(k);
+          if (curVal !== undefined && Math.abs(Number(curVal) - Number(origVal)) >= 0.05) {
+            isOriginal = false;
+            break;
+          }
+        }
+      }
+    }
+
+    this.origLedElem.classList.toggle('active', isOriginal);
+    this.origIndicatorElem?.classList.toggle('active', isOriginal);
+  }
+
   updateDisplay() {
+    document.getElementById('btn-lcd-edit')?.classList.toggle('active', this.isEditMode);
+    document.getElementById('btn-lcd-global')?.classList.toggle('active', this.isGlobalMode);
+    this.updateOriginalValueLed();
+
+    if (typeof this.onStateSync === 'function') {
+      this.onStateSync();
+    }
     if (!this.line1Elem || !this.line2Elem) return;
 
-    if (!this.isEditMode) {
-      // Program Play Mode
+    if (this.isGlobalMode) {
+      // Hardware Global Mode
+      const gPage = this.globalPages[this.currentGlobalPageIndex] || this.globalPages[0];
+      this.line1Elem.textContent = gPage.title;
+      this.line2Elem.textContent = `> ${gPage.getValue()}`;
+    } else if (!this.isEditMode) {
+      // Program Play Mode (Matches ms2000r-emu-main: Line 1 = Program ID & Name, Line 2 = Category · Mode [Timbre] ♩=BPM)
       const p = this.programs[(this.currentProgramIndex - 1) % this.programs.length];
       const cmpTag = this.isComparing ? '[CMP] ' : '';
       this.line1Elem.textContent = `${cmpTag}${p.id} ${p.name}`;
       const voc = Math.round(paramStore.values.get('synthVocoderMode') || 0);
       const tm = voc === 1 ? 3 : Math.round(paramStore.values.get('timbreMode') || 0);
       const modeBadge = VOICE_MODE_NAMES[tm] || 'SINGLE';
-      this.line2Elem.textContent = `${p.cat} · ${modeBadge} [T${this.activeTimbre}]`;
+      const bpm = Math.round(paramStore.values.get('arpTempo') ?? 120);
+      this.line2Elem.textContent = `${p.cat} · ${modeBadge} [T${this.activeTimbre}]  ♩=${bpm}`;
     } else {
       // Edit Parameter Menu Mode
       const page = this.menuPages[this.currentPageIndex];

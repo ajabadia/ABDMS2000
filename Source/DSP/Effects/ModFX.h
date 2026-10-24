@@ -19,7 +19,8 @@ enum class ModFXType
  * Bloque coordinador de modulación fiel al microcódigo del DSP56362 y agnóstico al sample rate:
  * - Chorus/Flanger: MS2KChorusFlanger / abd::dsp::DspMS2000ChorusFlanger (P:$0F48–$0F95).
  * - Ensemble: abd::dsp::DspMS2000Ensemble (P:$0F96–$0FE8, 3 fases a 120° + shimmer 20% + matriz 0.8/0.4/0.2).
- * - Phaser: abd::dsp::DspMS2000Phaser<4> (P:$105D–$10A7, 4 etapas todo-paso con LFO cuadrático y polaridad L/R opuesta).
+ * - Phaser: abd::dsp::DspMS2000Phaser<4> (P:$105D–$10A7, 4 etapas todo-paso con LFO cuadrático y polaridad L/R
+ * opuesta).
  */
 class ModFX
 {
@@ -63,4 +64,3 @@ class ModFX
 };
 
 }  // namespace ABDMS2000
-

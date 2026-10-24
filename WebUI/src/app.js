@@ -54,6 +54,18 @@ let globalMidiChannel = 1;
 let activeTimbre = 1; // 1 = Timbre 1, 2 = Timbre 2
 let activeModSeqTrack = 1; // 1 = SEQ 1, 2 = SEQ 2, 3 = SEQ 3
 
+// Korg MS2000 16-Button Hardware Strip State
+// ms2kStripSeqMode: 0 = Program/Edit, 1 = SEQ 1 / [CH LEVEL], 2 = SEQ 2 / [CH PAN], 3 = SEQ 3
+let ms2kStripSeqMode = 0;
+let ms2kPadKbdMode = false;
+let ms2kPadOctaveShift = 0; // -3 .. +3 (0 = C4..D#5, MIDI 60..75)
+const ms2kLatchedPadNotes = new Set();
+const ms2kActivePadNotes = new Map();
+const ms2kVocoderBandPans = new Float32Array(16); // -63 .. +63 (0 = CNT)
+const ms2kVocoderSavedLevels = new Float32Array(16).fill(127);
+let ms2kStepChaserIdx = 0;
+let ms2kStepChaserTimer = null;
+
 /**
  * Resolves a base parameter ID (e.g. 'osc1Wave') to the currently active timbre's
  * parameter ID ('osc1Wave' for Timbre 1, 't2Osc1Wave' for Timbre 2 if per-timbre).
@@ -74,8 +86,13 @@ function setActiveTimbre(timbreNum, silent = false) {
   if (btnT2) btnT2.classList.toggle('active', activeTimbre === 2);
   document.body.setAttribute('data-active-timbre', String(activeTimbre));
 
+  if (lcdProgrammer) {
+    lcdProgrammer.activeTimbre = activeTimbre;
+  }
+
   slideDrawer.setTimbre(activeTimbre);
   refreshAllDashboardCards();
+  refreshMs2kBottomStrip();
 
   if (slideDrawer.isOpenState) {
     slideDrawer.refresh();
@@ -92,7 +109,7 @@ function getLiveSysExInspector() {
   if (!liveSysExInspectorInstance) {
     const prog = (lcdProgrammer && lcdProgrammer.getCurrentProgram) ? lcdProgrammer.getCurrentProgram() : FACTORY_PROGRAMS[0];
     const paramsMap = paramStore.values ? Object.fromEntries(paramStore.values) : (prog ? prog.params : {});
-    const initialBuf = generateMS2000SysExBuffer(paramsMap, prog ? prog.name : 'Init Prog', globalMidiChannel);
+    const initialBuf = generateMS2000SysExBuffer(paramsMap, prog ? prog.name : 'Init Prog', globalMidiChannel, prog);
 
     liveSysExInspectorInstance = createLiveSysExInspector({
       title: 'MS2000 Live SysEx Inspector',
@@ -136,7 +153,7 @@ function updateLiveSysExInspector() {
   if (!liveSysExInspectorInstance || !liveSysExInspectorInstance.isOpen()) return;
   const prog = (lcdProgrammer && lcdProgrammer.getCurrentProgram) ? lcdProgrammer.getCurrentProgram() : FACTORY_PROGRAMS[0];
   const paramsMap = paramStore.values ? Object.fromEntries(paramStore.values) : (prog ? prog.params : {});
-  const buf = generateMS2000SysExBuffer(paramsMap, prog ? prog.name : 'Init Prog', globalMidiChannel);
+  const buf = generateMS2000SysExBuffer(paramsMap, prog ? prog.name : 'Init Prog', globalMidiChannel, prog);
   liveSysExInspectorInstance.updateBuffer(buf);
 }
 
@@ -196,13 +213,41 @@ document.addEventListener('DOMContentLoaded', () => {
   syncCatalogFromEngine(bridge);
 
   // Instantiate LCD Programmer Navigation Controller
-  lcdProgrammer = new LcdProgrammer(bridge);
+  lcdProgrammer = new LcdProgrammer(bridge, {
+    onTimbreModeMutated: () => {
+      refreshAllDashboardCards();
+      refreshMs2kBottomStrip();
+      if (slideDrawer.isOpenState) slideDrawer.refresh();
+    },
+    onStateSync: () => {
+      refreshMs2kBottomStrip();
+    },
+    onExitButton: () => {
+      if (slideDrawer.isOpenState) {
+        slideDrawer.close();
+      }
+      ms2kStripSeqMode = 0;
+      if (ms2kStripPadKbdMode) {
+        ms2kStripPadKbdMode = false;
+        releaseAllPadLatchedNotes();
+      }
+      refreshAllDashboardCards();
+      refreshMs2kBottomStrip();
+    },
+    onGlobalMidiChannelChanged: (ch) => {
+      setGlobalMidiChannel(ch, false);
+    }
+  });
+
+  // Mount the Korg MS2000 16-Button Hardware Strip
+  setupMs2000BottomStrip();
 
   // Listen for full parameter state sync from C++ APVTS / SysEx
   bridge.on('syncAllParams', (data) => {
     if (data) {
       paramStore.syncAll(data);
       refreshAllDashboardCards();
+      refreshMs2kBottomStrip();
       if (slideDrawer.isOpenState) slideDrawer.refresh();
       if (lcdProgrammer) lcdProgrammer.updateDisplay();
       devLog('[ParamStore]: Synced all UI controls with APVTS state');
@@ -510,18 +555,34 @@ function renderMixerDrawer(container) {
 function renderVocoderConfigDrawer(container) {
   container.innerHTML = `
     <div class="drawer-section-card">
-      <h3>MODE &amp; CARRIER SOURCE</h3>
-      <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px;">
-        <div id="drawer-sel-vocoder-mode"></div>
-        <div id="drawer-sel-vocoder-carrier"></div>
+      <h3>MODE &amp; FORMANT CONTROL</h3>
+      <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 8px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div id="drawer-sel-vocoder-mode"></div>
+          <div id="drawer-sel-vocoder-hold"></div>
+        </div>
         <div id="drawer-sel-vocoder-shift"></div>
       </div>
     </div>
     <div class="drawer-section-card">
-      <h3>DYNAMICS &amp; INPUT LEVEL</h3>
+      <h3>SYNTHESIS FILTER &amp; FC MODULATION</h3>
+      <div class="drawer-controls-row" style="margin-bottom: 10px;">
+        <div id="drawer-ctrl-voccutoff"></div>
+        <div id="drawer-ctrl-vocres"></div>
+        <div id="drawer-ctrl-vocmodint"></div>
+        <div id="drawer-ctrl-vocefsense"></div>
+      </div>
+      <div id="drawer-sel-vocoder-modsrc"></div>
+    </div>
+    <div class="drawer-section-card">
+      <h3>AUDIO IN, GATE &amp; SIBILANCE (HPF)</h3>
+      <div style="margin-bottom: 10px;">
+        <div id="drawer-sel-vocoder-hpfgate"></div>
+      </div>
       <div class="drawer-controls-row">
         <div id="drawer-ctrl-vochpf"></div>
         <div id="drawer-ctrl-vocgate"></div>
+        <div id="drawer-ctrl-vocthresh"></div>
         <div id="drawer-ctrl-vocdirect"></div>
       </div>
     </div>
@@ -529,24 +590,24 @@ function renderVocoderConfigDrawer(container) {
 
   new ABDSegmented(container.querySelector('#drawer-sel-vocoder-mode'), {
     paramId: 'synthVocoderMode',
-    label: 'SYNTH MODE',
+    label: 'VOICE MODE',
     options: [
-      { value: 0, label: 'SYNTH (NORMAL)' },
-      { value: 1, label: 'VOCODER (VOCAL)' }
+      { value: 0, label: 'SYNTH' },
+      { value: 1, label: 'VOCODER' }
     ],
     variant: 'strip',
-    size: 'md',
+    size: 'sm',
   });
 
-  new ABDSegmented(container.querySelector('#drawer-sel-vocoder-carrier'), {
-    paramId: 'vocoderCarrierSrc',
-    label: 'CARRIER SOURCE',
+  new ABDSegmented(container.querySelector('#drawer-sel-vocoder-hold'), {
+    paramId: 'vocoderHold',
+    label: 'FORMANT HOLD',
     options: [
-      { value: 0, label: 'INTERNAL SYNTH' },
-      { value: 1, label: 'EXTERNAL AUDIO IN' }
+      { value: 0, label: 'LIVE' },
+      { value: 1, label: 'HOLD (FREEZE)' }
     ],
     variant: 'strip',
-    size: 'md',
+    size: 'sm',
   });
 
   new ABDSegmented(container.querySelector('#drawer-sel-vocoder-shift'), {
@@ -555,7 +616,7 @@ function renderVocoderConfigDrawer(container) {
     options: [
       { value: 0, label: '-2 (LOW)' },
       { value: 1, label: '-1' },
-      { value: 2, label: '0 (NORMAL)' },
+      { value: 2, label: '0 (NORM)' },
       { value: 3, label: '+1' },
       { value: 4, label: '+2 (HIGH)' }
     ],
@@ -563,18 +624,64 @@ function renderVocoderConfigDrawer(container) {
     size: 'md',
   });
 
+  new ABDKnob(container.querySelector('#drawer-ctrl-voccutoff'), {
+    paramId: 'vocoderCutoff', label: 'FC OFFSET', min: -63, max: 63, defaultValue: 0, bipolar: true, size: 46
+  });
+  new ABDKnob(container.querySelector('#drawer-ctrl-vocres'), {
+    paramId: 'vocoderResonance', label: 'RESONANCE', min: 0, max: 127, defaultValue: 64, size: 46
+  });
+  new ABDKnob(container.querySelector('#drawer-ctrl-vocmodint'), {
+    paramId: 'vocoderModInt', label: 'FC MOD INT', min: -63, max: 63, defaultValue: 0, bipolar: true, size: 46
+  });
+  new ABDKnob(container.querySelector('#drawer-ctrl-vocefsense'), {
+    paramId: 'vocoderEfSense', label: 'E.F. SENSE', min: 0, max: 127, defaultValue: 64, size: 46
+  });
+
+  new ABDSegmented(container.querySelector('#drawer-sel-vocoder-modsrc'), {
+    paramId: 'vocoderModSource',
+    label: 'FC MOD SOURCE',
+    options: [
+      { value: 0, label: 'EG1' },
+      { value: 1, label: 'EG2' },
+      { value: 2, label: 'LFO1' },
+      { value: 3, label: 'LFO2' },
+      { value: 4, label: 'VEL' },
+      { value: 5, label: 'KBD' },
+      { value: 6, label: 'BEND' },
+      { value: 7, label: 'WHEEL' }
+    ],
+    variant: 'grid',
+    columns: 4,
+    size: 'sm',
+  });
+
+  new ABDSegmented(container.querySelector('#drawer-sel-vocoder-hpfgate'), {
+    paramId: 'vocoderHpfGate',
+    label: 'HPF GATE (SIBILANCE)',
+    options: [
+      { value: 0, label: 'DISABLE (DIRECT HI)' },
+      { value: 1, label: 'ENABLE (NOISE GATE)' }
+    ],
+    variant: 'strip',
+    size: 'sm',
+  });
+
   new ABDKnob(container.querySelector('#drawer-ctrl-vochpf'), {
-    paramId: 'vocoderHpfLevel', label: 'HPF LEVEL', min: 0, max: 127, defaultValue: 64, size: 48
+    paramId: 'vocoderHpfLevel', label: 'HPF LEVEL', min: 0, max: 127, defaultValue: 64, size: 46
   });
   new ABDKnob(container.querySelector('#drawer-ctrl-vocgate'), {
-    paramId: 'vocoderGateSense', label: 'GATE SENSE', min: 0, max: 127, defaultValue: 50, size: 48
+    paramId: 'vocoderGateSense', label: 'GATE SENSE', min: 0, max: 127, defaultValue: 50, size: 46
+  });
+  new ABDKnob(container.querySelector('#drawer-ctrl-vocthresh'), {
+    paramId: 'vocoderThreshold', label: 'THRESHOLD', min: 0, max: 127, defaultValue: 12, size: 46
   });
   new ABDKnob(container.querySelector('#drawer-ctrl-vocdirect'), {
-    paramId: 'vocoderDirectLevel', label: 'DIRECT LEVEL', min: 0, max: 127, defaultValue: 0, size: 48
+    paramId: 'vocoderDirectLevel', label: 'DIRECT LVL', min: 0, max: 127, defaultValue: 0, size: 46
   });
 }
 
 let vocoderBandSliders = [];
+let vocoderBandsEditMode = 'levels'; // 'levels' | 'pans'
 
 function renderVocoderBandsDrawer(container) {
   // Destroy previous instances to avoid memory leaks
@@ -582,20 +689,32 @@ function renderVocoderBandsDrawer(container) {
   vocoderBandSliders = [];
 
   const isMicrokorg = (paramStore.get('synthMode') === 1) || (currentTheme() === 'microkorg');
+  const isPanMode = vocoderBandsEditMode === 'pans';
+  const titleText = isMicrokorg
+    ? (isPanMode ? 'FILTER BANK PANPOTS (8 CH - microKORG)' : 'FILTER BANK LEVELS (8 CH - microKORG)')
+    : (isPanMode ? 'FILTER BANK PANPOTS (16 BANDS - MS2000)' : 'FILTER BANK LEVELS (16 BANDS - MS2000)');
+  const resetLabel = isPanMode ? 'STEREO SPREAD' : 'ALL 100%';
+
+  container.innerHTML = `
+    <div class="drawer-section-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap;">
+        <h3 style="margin: 0; border: none; padding: 0;">${titleText}</h3>
+        <div style="display: flex; gap: 6px; align-items: center;">
+          <button id="btn-vocoder-mode-levels" class="card-action-btn" style="padding: 4px 10px; opacity: ${!isPanMode ? '1' : '0.55'};">LEVELS (1-16)</button>
+          <button id="btn-vocoder-mode-pans" class="card-action-btn" style="padding: 4px 10px; opacity: ${isPanMode ? '1' : '0.55'};">PANPOTS (1-16)</button>
+          <button id="btn-vocoder-reset-bands" class="card-action-btn" style="padding: 4px 10px;">${resetLabel}</button>
+        </div>
+      </div>
+      <div class="vocoder-bands-grid" id="vocoder-bands-grid-el"></div>
+    </div>
+  `;
+
+  const gridEl = container.querySelector('#vocoder-bands-grid-el');
+  const paramPrefix = isPanMode ? 'vocoderBandPan' : 'vocoderBandLevel';
+  const minVal = isPanMode ? -63 : 0;
+  const maxVal = isPanMode ? 63 : 127;
 
   if (isMicrokorg) {
-    container.innerHTML = `
-      <div class="drawer-section-card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-          <h3 style="margin: 0; border: none; padding: 0;">FILTER BANK LEVELS (8 CHANNELS - microKORG)</h3>
-          <button id="btn-vocoder-reset-bands" class="card-action-btn" style="max-width: 120px; padding: 4px 8px;">ALL 100%</button>
-        </div>
-        <div class="vocoder-bands-grid" id="vocoder-bands-grid-el"></div>
-      </div>
-    `;
-
-    const gridEl = container.querySelector('#vocoder-bands-grid-el');
-
     for (let ch = 1; ch <= 8; ch++) {
       const cell = document.createElement('div');
       cell.className = 'vocoder-band-cell';
@@ -603,15 +722,16 @@ function renderVocoderBandsDrawer(container) {
 
       const bA = (ch * 2) - 1;
       const bB = ch * 2;
-      const valA = paramStore.get(`vocoderBandLevel${bA}`) ?? 127;
-      const valB = paramStore.get(`vocoderBandLevel${bB}`) ?? 127;
+      const defVal = isPanMode ? ((ch % 2 === 1) ? -22 : 22) : 127;
+      const valA = paramStore.get(`${paramPrefix}${bA}`) ?? defVal;
+      const valB = paramStore.get(`${paramPrefix}${bB}`) ?? defVal;
       const initialVal = Math.round((valA + valB) / 2);
 
       const slider = new ABDVerticalSlider(cell, {
-        paramId: `vocoderBandLevel${bA}`,
+        paramId: `${paramPrefix}${bA}`,
         label: `CH ${ch}`,
-        min: 0,
-        max: 127,
+        min: minVal,
+        max: maxVal,
         defaultValue: initialVal,
         height: 110,
         trackWidth: 6,
@@ -619,36 +739,25 @@ function renderVocoderBandsDrawer(container) {
         showLabel: true,
         showValue: true,
         onChange: (val) => {
-          bridge.setParam(`vocoderBandLevel${bB}`, val);
-          paramStore.set(`vocoderBandLevel${bB}`, val);
+          bridge.setParam(`${paramPrefix}${bB}`, val);
+          paramStore.set(`${paramPrefix}${bB}`, val);
         }
       });
       vocoderBandSliders.push(slider);
     }
   } else {
-    container.innerHTML = `
-      <div class="drawer-section-card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-          <h3 style="margin: 0; border: none; padding: 0;">FILTER BANK LEVELS (16 BANDS - MS2000)</h3>
-          <button id="btn-vocoder-reset-bands" class="card-action-btn" style="max-width: 120px; padding: 4px 8px;">ALL 100%</button>
-        </div>
-        <div class="vocoder-bands-grid" id="vocoder-bands-grid-el"></div>
-      </div>
-    `;
-
-    const gridEl = container.querySelector('#vocoder-bands-grid-el');
-
     for (let i = 1; i <= 16; i++) {
       const cell = document.createElement('div');
       cell.className = 'vocoder-band-cell';
       gridEl.appendChild(cell);
 
+      const defVal = isPanMode ? ((i % 2 === 1) ? -22 : 22) : 127;
       const slider = new ABDVerticalSlider(cell, {
-        paramId: `vocoderBandLevel${i}`,
+        paramId: `${paramPrefix}${i}`,
         label: `B${i}`,
-        min: 0,
-        max: 127,
-        defaultValue: 127,
+        min: minVal,
+        max: maxVal,
+        defaultValue: defVal,
         height: 110,
         trackWidth: 6,
         thumbSize: 16,
@@ -659,9 +768,20 @@ function renderVocoderBandsDrawer(container) {
     }
   }
 
+  container.querySelector('#btn-vocoder-mode-levels')?.addEventListener('click', () => {
+    vocoderBandsEditMode = 'levels';
+    renderVocoderBandsDrawer(container);
+  });
+
+  container.querySelector('#btn-vocoder-mode-pans')?.addEventListener('click', () => {
+    vocoderBandsEditMode = 'pans';
+    renderVocoderBandsDrawer(container);
+  });
+
   container.querySelector('#btn-vocoder-reset-bands')?.addEventListener('click', () => {
-    vocoderBandSliders.forEach((slider) => {
-      slider.setValue(127, true);
+    vocoderBandSliders.forEach((slider, idx) => {
+      const target = isPanMode ? ((idx % 2 === 0) ? -22 : 22) : 127;
+      slider.setValue(target, true);
     });
   });
 }
@@ -1395,7 +1515,9 @@ function renderModSeqDrawer(container) {
   ];
 
   const getDestShortName = (trk) => {
-    const knobVal = Math.round(paramStore.get(tParam(`seq${trk}Knob`)) || 0);
+    const destId = tParam(`seq${trk}Dest`);
+    const knobId = tParam(`seq${trk}Knob`);
+    const knobVal = Math.round(paramStore.get(destId) ?? paramStore.get(knobId) ?? 0);
     const entry = MODSEQ_DESTINATIONS_31[knobVal];
     return entry ? entry.label.replace(/^\d+:\s*/, '') : 'None';
   };
@@ -1501,15 +1623,18 @@ function renderModSeqDrawer(container) {
     size: 'sm',
   });
 
+  const trkDestParam = tParam(`seq${activeModSeqTrack}Dest`);
   const trkKnobParam = tParam(`seq${activeModSeqTrack}Knob`);
   const trkMotionParam = tParam(`seq${activeModSeqTrack}Motion`);
   const lastStepParam = tParam('seqLastStep');
 
   const destSelect = container.querySelector('#modseq-dest-select');
   if (destSelect) {
-    destSelect.value = String(Math.round(paramStore.get(trkKnobParam) || 0));
+    destSelect.value = String(Math.round(paramStore.get(trkDestParam) ?? paramStore.get(trkKnobParam) ?? 0));
     destSelect.addEventListener('change', () => {
       const nextDest = parseInt(destSelect.value, 10) || 0;
+      paramStore.set(trkDestParam, nextDest);
+      bridge.setParam(trkDestParam, nextDest);
       paramStore.set(trkKnobParam, nextDest);
       bridge.setParam(trkKnobParam, nextDest);
       const tabSpan = container.querySelector(`#modseq-tab-dest-${activeModSeqTrack}`);
@@ -1542,6 +1667,7 @@ function renderModSeqDrawer(container) {
       paramStore.set(stepParamId, val);
       bridge.setParam(stepParamId, val);
       updateSingleBarVisual(colEl, val);
+      refreshMs2kBottomStrip();
     };
 
     const updateSingleBarVisual = (colEl, val) => {
@@ -1615,6 +1741,7 @@ function renderModSeqDrawer(container) {
         paramStore.set(stepParamId, 0);
         bridge.setParam(stepParamId, 0);
         updateSingleBarVisual(col, 0);
+        refreshMs2kBottomStrip();
       });
 
       barsGrid.appendChild(col);
@@ -1634,14 +1761,21 @@ function renderModSeqDrawer(container) {
     })),
     layout: 'grid-8',
     size: 'sm',
-    onChange: () => renderStepBars()
+    onChange: () => {
+      renderStepBars();
+      refreshMs2kBottomStrip();
+    }
   });
 
   // Track switch buttons [SEQ 1] [SEQ 2] [SEQ 3]
   container.querySelectorAll('.modseq-trk-tab').forEach((btn) => {
     btn.addEventListener('click', () => {
       activeModSeqTrack = parseInt(btn.dataset.trk, 10) || 1;
+      if (ms2kStripSeqMode > 0) {
+        ms2kStripSeqMode = activeModSeqTrack;
+      }
       renderModSeqDrawer(container);
+      refreshMs2kBottomStrip();
     });
   });
 
@@ -1663,6 +1797,7 @@ function renderModSeqDrawer(container) {
         bridge.setParam(stepParamId, next);
       }
       renderStepBars();
+      refreshMs2kBottomStrip();
     });
   });
 
@@ -2216,19 +2351,25 @@ function refreshAllDashboardCards() {
   const titleVoc = document.getElementById('title-vocoder-card');
   const btnBands = document.getElementById('btn-edit-vocoder-bands');
   const vocOn = (paramStore.get('synthVocoderMode') || 0) > 0.5;
+  const vocHold = (paramStore.get('vocoderHold') || 0) > 0.5 || Math.round(paramStore.get('vocoderEfSense') ?? 64) >= 127;
   if (titleVoc) titleVoc.textContent = isMicrokorg ? '8-CHANNEL VOCODER' : '16-BAND VOCODER';
   if (btnBands) btnBands.textContent = isMicrokorg ? '8 CHANNELS' : '16 BANDS';
-  if (badgeVoc) badgeVoc.textContent = vocOn ? 'VOCODER' : 'SYNTH';
+  if (badgeVoc) badgeVoc.textContent = vocOn ? (vocHold ? 'VOC HOLD' : 'VOCODER') : 'SYNTH';
   if (txtVoc) {
     txtVoc.textContent = vocOn
-      ? (isMicrokorg ? 'ON (8 Channels Active)' : 'ON (16 Bands Active)')
+      ? (isMicrokorg
+          ? `ON (8Ch${vocHold ? ' · Formant Hold' : ''})`
+          : `ON (16B${vocHold ? ' · Formant Hold' : ''})`)
       : 'OFF (Synth Mode)';
   }
   const fShiftNames = ['-2', '-1', '0', '+1', '+2'];
   const fShift = fShiftNames[Math.round(paramStore.get('vocoderFormantShift') ?? 2)] || '0';
+  const fcOff = Math.round(paramStore.get('vocoderCutoff') ?? 0);
   const gSense = Math.round(paramStore.get('vocoderGateSense') ?? 50);
   const txtVocShift = document.getElementById('val-vocoder-shift-gate');
-  if (txtVocShift) txtVocShift.textContent = `Shift: ${fShift} | Gate: ${gSense}`;
+  if (txtVocShift) {
+    txtVocShift.textContent = `Shift: ${fShift} | Fc: ${fcOff >= 0 ? '+' : ''}${fcOff} | Gate: ${gSense}`;
+  }
 
   // Card 3: FILTER (Active Timbre)
   const fType = Math.round(paramStore.get(tParam('filterType')) || 0);
@@ -2396,6 +2537,7 @@ function refreshAllDashboardCards() {
   if (txtMaster) txtMaster.textContent = `${Math.round(mVol * 100)}%`;
 
   updateModeMenuState();
+  refreshMs2kBottomStrip();
 }
 
 function updateModeMenuState() {
@@ -3100,6 +3242,8 @@ function setupButtons() {
 
   const panicBtn = document.getElementById('btn-panic');
   panicBtn?.addEventListener('click', () => {
+    if (lcdProgrammer) lcdProgrammer.stopDemoSequence();
+    releaseAllPadLatchedNotes();
     bridge.allNotesOff();
     if (keyboardInstance) keyboardInstance.panic();
     devLog('[Panic All Notes Off]');
@@ -3128,31 +3272,9 @@ function setupButtons() {
     if (lcdProgrammer) lcdProgrammer.updateSysExDisplay();
   });
 
-  const copySysexBtn = document.getElementById('btn-copy-sysex');
-  const sysexHexContent = document.getElementById('sysex-hex-content');
-  if (sysexHexContent) {
-    sysexHexContent.style.cursor = 'pointer';
-    sysexHexContent.title = 'Click to open Live SysEx Inspector (Ctrl+I)';
-    sysexHexContent.addEventListener('click', () => {
-      toggleLiveSysExInspector();
-    });
-  }
-
-  copySysexBtn?.addEventListener('click', () => {
-    if (sysexHexContent) {
-      const text = sysexHexContent.textContent.trim();
-      navigator.clipboard.writeText(text).then(() => {
-        const orig = copySysexBtn.textContent;
-        copySysexBtn.textContent = 'COPIED!';
-        copySysexBtn.style.background = 'var(--color-accent)';
-        copySysexBtn.style.color = '#000';
-        setTimeout(() => {
-          copySysexBtn.textContent = orig;
-          copySysexBtn.style.background = '';
-          copySysexBtn.style.color = '';
-        }, 1200);
-      });
-    }
+  const openSysexBtn = document.getElementById('btn-open-sysex-inspector');
+  openSysexBtn?.addEventListener('click', () => {
+    toggleLiveSysExInspector();
   });
 }
 
@@ -3472,3 +3594,784 @@ function closeMidiConfigModal() {
   modal.style.display = 'none';
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   KORG MS2000 / MS2000R 16-BUTTON HARDWARE STRIP CONTROLLER
+   - 16 Program Buttons (01..16 within Bank A..H)
+   - 16 Page Jump Edit Buttons (1: COMMON .. 16: UTILITY)
+   - SEQ EDIT [CH PARAM] 3-Track x 16-Step Editor + Step Chaser
+   - Vocoder 16-Channel [CH LEVEL] & [CH PAN] Editor
+   - 16-Pad Chromatic Keyboard with Shift+Click Latch & Octave Shift
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+function renderCommonDrawer(container) {
+  const scaleTypes = [
+    { value: 0, label: 'EQUAL' },
+    { value: 1, label: 'PURE MAJ' },
+    { value: 2, label: 'PURE MIN' },
+    { value: 3, label: 'ARABIC' },
+    { value: 4, label: 'PYTHAG' },
+    { value: 5, label: 'WERCK' },
+    { value: 6, label: 'KIRNBG' },
+    { value: 7, label: 'SLENDRO' },
+    { value: 8, label: 'PELOG' },
+    { value: 9, label: 'USER' }
+  ];
+  const scaleKeys = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'].map((k, idx) => ({
+    value: idx,
+    label: k
+  }));
+
+  container.innerHTML = `
+    <div class="drawer-section-card">
+      <h3>PAGE 01: COMMON VOICE MODE &amp; ENGINE PROFILE</h3>
+      <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px;">
+        <div id="drawer-common-timbre-mode"></div>
+        <div id="drawer-common-vocoder-mode"></div>
+        <div id="drawer-common-synth-profile"></div>
+      </div>
+    </div>
+    <div class="drawer-section-card">
+      <h3>PROGRAM SCALE TEMPERAMENT &amp; KEY</h3>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div id="drawer-common-scale-type"></div>
+        <div id="drawer-common-scale-key"></div>
+      </div>
+    </div>
+  `;
+
+  new ABDSegmented(container.querySelector('#drawer-common-timbre-mode'), {
+    paramId: 'timbreMode',
+    label: 'VOICE MODE (SINGLE / SPLIT / LAYER)',
+    options: [
+      { value: 0, label: 'SINGLE (1T)' },
+      { value: 1, label: 'SPLIT (2T)' },
+      { value: 2, label: 'LAYER (2T)' }
+    ],
+    variant: 'strip',
+    size: 'md',
+    onChange: () => {
+      paramStore.set('synthVocoderMode', 0);
+      bridge.setParam('synthVocoderMode', 0);
+      refreshAllDashboardCards();
+    }
+  });
+
+  new ABDSegmented(container.querySelector('#drawer-common-vocoder-mode'), {
+    paramId: 'synthVocoderMode',
+    label: 'SYNTH / 16-BAND VOCODER MODE',
+    options: [
+      { value: 0, label: 'SYNTHESIZER' },
+      { value: 1, label: '16-BAND VOCODER' }
+    ],
+    variant: 'strip',
+    size: 'md',
+    onChange: () => {
+      refreshAllDashboardCards();
+    }
+  });
+
+  new ABDSegmented(container.querySelector('#drawer-common-synth-profile'), {
+    paramId: 'synthMode',
+    label: 'HARDWARE ENGINE PROFILE',
+    options: [
+      { value: 0, label: 'MS2000 (4V)' },
+      { value: 1, label: 'microKORG (4V)' },
+      { value: 2, label: 'ADVANCED (16V)' }
+    ],
+    variant: 'strip',
+    size: 'md',
+    onChange: (val) => {
+      const targetTheme = themeIdOfSynthMode(val);
+      if (themeSwitcher) {
+        themeSwitcher.setValue(targetTheme);
+      } else {
+        applyThemeEffects(targetTheme, Number(val));
+      }
+    }
+  });
+
+  new ABDSegmented(container.querySelector('#drawer-common-scale-type'), {
+    paramId: 'scaleType',
+    label: 'TEMPERAMENT SCALE',
+    options: scaleTypes,
+    layout: 'grid-5',
+    size: 'sm',
+  });
+
+  new ABDSegmented(container.querySelector('#drawer-common-scale-key'), {
+    paramId: 'scaleKey',
+    label: 'SCALE KEY',
+    options: scaleKeys,
+    layout: 'grid-6',
+    size: 'sm',
+  });
+}
+
+function renderUtilityDrawer(container) {
+  const prog = lcdProgrammer?.getCurrentProgram?.() || { id: 'A.01', name: 'Init Program' };
+  container.innerHTML = `
+    <div class="drawer-section-card">
+      <h3>PAGE 16: TIMBRE EDIT UTILITIES (${prog.id} ${prog.name})</h3>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 10px;">
+        <button type="button" id="util-btn-copy-t1-t2" class="card-action-btn" style="padding: 8px;">COPY T1 &rarr; T2</button>
+        <button type="button" id="util-btn-copy-t2-t1" class="card-action-btn" style="padding: 8px;">COPY T2 &rarr; T1</button>
+        <button type="button" id="util-btn-swap-timbres" class="card-action-btn" style="padding: 8px; border-color: var(--color-accent); color: var(--color-accent);">SWAP T1 &harr; T2</button>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;">
+        <button type="button" id="util-btn-write" class="card-action-btn" style="padding: 8px; background: #d62828; color: #fff; border-color: #ff4d5a;">WRITE PATCH</button>
+        <button type="button" id="util-btn-compare" class="card-action-btn" style="padding: 8px;">COMPARE A/B</button>
+        <button type="button" id="util-btn-init" class="card-action-btn" style="padding: 8px;">INIT PATCH</button>
+        <button type="button" id="util-btn-random" class="card-action-btn" style="padding: 8px;">RANDOMIZE</button>
+      </div>
+    </div>
+    <div class="drawer-section-card">
+      <h3>SYSEX DUMP, FIRMWARE 1.07 &amp; DIAGNOSTICS</h3>
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
+        <button type="button" id="util-btn-export-syx" class="card-action-btn" style="padding: 8px;">EXPORT .SYX DUMP</button>
+        <button type="button" id="util-btn-import-syx" class="card-action-btn" style="padding: 8px;">IMPORT .SYX FILE</button>
+        <button type="button" id="util-btn-sysex-inspector" class="card-action-btn" style="padding: 8px;">LIVE SYSEX INSPECTOR</button>
+        <button type="button" id="util-btn-midi-setup" class="card-action-btn" style="padding: 8px;">MIDI PORTS &amp; CLOCK</button>
+        <button type="button" id="util-btn-firmware" class="card-action-btn" style="padding: 8px;">FIRMWARE 1.07 UPDATER</button>
+        <button type="button" id="util-btn-diagnostics" class="card-action-btn" style="padding: 8px;">DSP DIAGNOSTICS &amp; SCOPE</button>
+      </div>
+    </div>
+  `;
+
+  container.querySelector('#util-btn-copy-t1-t2')?.addEventListener('click', copyTimbre1To2);
+  container.querySelector('#util-btn-copy-t2-t1')?.addEventListener('click', copyTimbre2To1);
+  container.querySelector('#util-btn-swap-timbres')?.addEventListener('click', swapTimbres1And2);
+  container.querySelector('#util-btn-write')?.addEventListener('click', () => lcdProgrammer?.writeCurrentProgram());
+  container.querySelector('#util-btn-compare')?.addEventListener('click', () => {
+    lcdProgrammer?.toggleCompare();
+    refreshAllDashboardCards();
+  });
+  container.querySelector('#util-btn-init')?.addEventListener('click', () => handleMenuAction('new-patch'));
+  container.querySelector('#util-btn-random')?.addEventListener('click', () => handleMenuAction('randomize-patch'));
+  container.querySelector('#util-btn-export-syx')?.addEventListener('click', () => bridge.send('exportSysexProgram', {}));
+  container.querySelector('#util-btn-import-syx')?.addEventListener('click', () => triggerSysexFileInput());
+  container.querySelector('#util-btn-sysex-inspector')?.addEventListener('click', () => toggleLiveSysExInspector());
+  container.querySelector('#util-btn-midi-setup')?.addEventListener('click', () => openMidiConfigModal('devices'));
+  container.querySelector('#util-btn-firmware')?.addEventListener('click', () => firmwareUpdaterModal?.open());
+  container.querySelector('#util-btn-diagnostics')?.addEventListener('click', () => diagnosticModal?.open());
+}
+
+/**
+ * Opens the MS2000 Hardware Edit Page (1..16), syncing both the LCD Programmer
+ * and the corresponding SlideDrawer (including 8A/8B EG1/EG2 and 9A/9B LFO1/LFO2 toggles).
+ */
+function openMs2kHardwarePage(padNum) {
+  const k = Math.max(1, Math.min(16, Number(padNum) || 1));
+  const isVocoder = (paramStore.get('synthVocoderMode') || 0) > 0.5;
+  const isMicrokorg = (paramStore.get('synthMode') === 1) || (currentTheme() === 'microkorg');
+
+  if (lcdProgrammer) {
+    lcdProgrammer.jumpToEditPage(k);
+  }
+
+  switch (k) {
+    case 1:
+      slideDrawer.open({ title: 'PAGE 01: COMMON (TIMBRE MODE & SCALE)', badge: '1 COMMON', sectionId: 'common', render: renderCommonDrawer });
+      break;
+    case 2:
+      slideDrawer.open({ title: 'PAGE 02: VOICE ASSIGN & UNISON', badge: '2 VOICE', sectionId: 'voice', render: renderVoiceDrawer });
+      break;
+    case 3:
+      slideDrawer.open({ title: 'PAGE 03: PITCH, PORTAMENTO & SCALE', badge: '3 PITCH', sectionId: 'pitch', render: renderPitchDrawer });
+      break;
+    case 4:
+      slideDrawer.open({ title: 'PAGE 04: OSCILLATOR 1 (VA & DWGS)', badge: '4 OSC 1', sectionId: 'osc1', render: renderOsc1Drawer });
+      break;
+    case 5:
+      if (isVocoder) {
+        slideDrawer.open({ title: 'PAGE 05: VOCODER [AUDIO IN 2] & CARRIER', badge: '5 [AUDIO IN 2]', sectionId: 'vocoder-cfg', render: renderVocoderConfigDrawer });
+      } else if (slideDrawer.isOpenState && slideDrawer.activeSection === 'osc2') {
+        slideDrawer.open({ title: 'PAGE 05B: AUDIO MIXER (OSC 1 / OSC 2 / NOISE)', badge: '5B MIXER', sectionId: 'mixer', render: renderMixerDrawer });
+      } else {
+        slideDrawer.open({ title: 'PAGE 05: OSCILLATOR 2 & MODULATION', badge: '5 OSC 2', sectionId: 'osc2', render: renderOsc2Drawer });
+      }
+      break;
+    case 6:
+      if (isVocoder) {
+        slideDrawer.open({ title: 'PAGE 06: VOCODER FORMANT & FILTER', badge: '6 [FILTER]', sectionId: 'vocoder-cfg', render: renderVocoderConfigDrawer });
+      } else if (slideDrawer.isOpenState && slideDrawer.activeSection === 'filter-main') {
+        slideDrawer.open({ title: 'PAGE 06B: FILTER MODULATION & KEY TRACK', badge: '6B FILTER MOD', sectionId: 'filter-mod', render: renderFilterModDrawer });
+      } else {
+        slideDrawer.open({ title: 'PAGE 06A: MULTIMODE FILTER & RESONANCE', badge: '6A FILTER', sectionId: 'filter-main', render: renderFilterMainDrawer });
+      }
+      break;
+    case 7:
+      slideDrawer.open({ title: 'PAGE 07: MAIN AMPLIFIER (VCA)', badge: '7 AMP', sectionId: 'amp-main', render: renderAmpMainDrawer });
+      break;
+    case 8:
+      if (slideDrawer.isOpenState && slideDrawer.activeSection === 'eg1') {
+        slideDrawer.open({ title: 'PAGE 08B: ENVELOPE 2 (AMPLITUDE EG2)', badge: '8B EG 2', sectionId: 'eg2', render: renderEg2Drawer });
+      } else {
+        slideDrawer.open({ title: 'PAGE 08A: ENVELOPE 1 (FILTER EG1)', badge: '8A EG 1', sectionId: 'eg1', render: renderEg1Drawer });
+      }
+      break;
+    case 9:
+      if (slideDrawer.isOpenState && slideDrawer.activeSection === 'lfo1') {
+        slideDrawer.open({ title: 'PAGE 09B: LOW FREQUENCY OSCILLATOR 2 (LFO 2)', badge: '9B LFO 2', sectionId: 'lfo2', render: renderLfo2Drawer });
+      } else {
+        slideDrawer.open({ title: 'PAGE 09A: LOW FREQUENCY OSCILLATOR 1 (LFO 1)', badge: '9A LFO 1', sectionId: 'lfo1', render: renderLfo1Drawer });
+      }
+      break;
+    case 10:
+      if (isVocoder) {
+        ms2kStripSeqMode = 1; // [CH LEVEL]
+        slideDrawer.open({
+          title: isMicrokorg ? 'PAGE 10: VOCODER [CH LEVEL] (8 CHANNELS)' : 'PAGE 10: VOCODER [CH LEVEL] (16 BANDS)',
+          badge: '10 [CH LEVEL]',
+          sectionId: 'vocoder-bands',
+          render: renderVocoderBandsDrawer
+        });
+      } else {
+        slideDrawer.open({ title: 'PAGE 10: VIRTUAL PATCH MATRIX (4 SLOTS)', badge: '10 PATCH', sectionId: 'modmatrix', render: renderModMatrixDrawer });
+      }
+      break;
+    case 11:
+      if (isVocoder) {
+        ms2kStripSeqMode = 2; // [CH PAN]
+        slideDrawer.open({
+          title: 'PAGE 11: VOCODER [CH PAN] & BAND LEVELS',
+          badge: '11 [CH PAN]',
+          sectionId: 'vocoder-bands',
+          render: renderVocoderBandsDrawer
+        });
+      } else {
+        if (ms2kStripSeqMode === 0) ms2kStripSeqMode = activeModSeqTrack || 1;
+        slideDrawer.open({ title: 'PAGE 11: MODULATION SEQUENCER (3x16)', badge: '11 SEQ', sectionId: 'modseq', render: renderModSeqDrawer });
+      }
+      break;
+    case 12:
+      slideDrawer.open({ title: 'PAGE 12: MODULATION FX (CHORUS / ENSEMBLE / PHASER)', badge: '12 MOD FX', sectionId: 'modfx', render: renderModFxDrawer });
+      break;
+    case 13:
+      slideDrawer.open({ title: 'PAGE 13: STEREO DELAY FX', badge: '13 DELAY FX', sectionId: 'delayfx', render: renderDelayFxDrawer });
+      break;
+    case 14:
+      slideDrawer.open({ title: 'PAGE 14: MASTER EQUALIZER (2 BANDS)', badge: '14 EQ', sectionId: 'eq', render: renderEqDrawer });
+      break;
+    case 15:
+      slideDrawer.open({ title: 'PAGE 15: PROGRAMMABLE ARPEGGIATOR', badge: '15 ARPEGGIO', sectionId: 'arp', render: renderArpDrawer });
+      break;
+    case 16:
+      slideDrawer.open({ title: 'PAGE 16: UTILITY, TIMBRE COPY & SYSEX', badge: '16 UTILITY', sectionId: 'utility', render: renderUtilityDrawer });
+      break;
+  }
+
+  refreshMs2kBottomStrip();
+}
+
+const MS2K_NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+
+function formatPadMidiNote(midiNote) {
+  const m = Math.max(0, Math.min(127, Math.round(midiNote)));
+  const name = MS2K_NOTE_NAMES[m % 12];
+  const oct = Math.floor(m / 12) - 1;
+  return `${name}${oct}`;
+}
+
+function getActiveSectionPadNumber() {
+  if (!slideDrawer?.isOpenState || !slideDrawer.activeSection) {
+    if (lcdProgrammer?.isEditMode) {
+      return (lcdProgrammer.currentPageIndex % 16) + 1;
+    }
+    return 0;
+  }
+  const map = {
+    common: 1,
+    voice: 2,
+    pitch: 3,
+    osc1: 4,
+    osc2: 5,
+    mixer: 5,
+    'vocoder-cfg': 5,
+    'filter-main': 6,
+    'filter-mod': 6,
+    'amp-main': 7,
+    eg1: 8,
+    eg2: 8,
+    lfo1: 9,
+    lfo2: 9,
+    modmatrix: 10,
+    'vocoder-bands': (ms2kStripSeqMode === 2 ? 11 : 10),
+    modseq: 11,
+    modfx: 12,
+    delayfx: 13,
+    eq: 14,
+    arp: 15,
+    global: 16,
+    utility: 16
+  };
+  return map[slideDrawer.activeSection] || 0;
+}
+
+function refreshMs2kBottomStrip() {
+  const stripEl = document.getElementById('ms2k-bottom-strip');
+  if (!stripEl) return;
+
+  const isVocoder = (paramStore.get('synthVocoderMode') || 0) > 0.5;
+  const isValueEdit = !ms2kPadKbdMode && ms2kStripSeqMode > 0;
+  stripEl.classList.toggle('is-vocoder-mode', isVocoder);
+  stripEl.classList.toggle('is-value-edit-mode', isValueEdit);
+  stripEl.classList.toggle('is-pad-kbd-mode', ms2kPadKbdMode);
+
+  // 1. Update SEQ EDIT [CH PARAM] LEDs (1..3)
+  const seqSelectBtn = document.getElementById('btn-ms2k-seq-edit');
+  if (seqSelectBtn) {
+    seqSelectBtn.classList.toggle('is-active', !ms2kPadKbdMode && ms2kStripSeqMode > 0);
+  }
+  for (let i = 1; i <= 3; i++) {
+    const led = document.getElementById(`led-ms2k-seq-${i}`);
+    const row = document.getElementById(`row-ms2k-seq-${i}`);
+    const on = !ms2kPadKbdMode && ms2kStripSeqMode === i;
+    if (led) led.classList.toggle('is-on', on);
+    if (row) row.classList.toggle('is-active', on);
+  }
+
+  // 2. Update BANK / OCTAVE & KBD LEDs + Mode Readout Badge
+  const kbdBtn = document.getElementById('btn-ms2k-pad-kbd');
+  const kbdLed = document.getElementById('led-ms2k-pad-kbd');
+  const downLed = document.getElementById('led-ms2k-bank-down');
+  const upLed = document.getElementById('led-ms2k-bank-up');
+  const modeBadge = document.getElementById('ms2k-strip-mode-badge');
+
+  if (kbdBtn) kbdBtn.classList.toggle('is-active', ms2kPadKbdMode);
+  if (kbdLed) {
+    kbdLed.classList.toggle('is-on', ms2kPadKbdMode && ms2kLatchedPadNotes.size === 0);
+    kbdLed.classList.toggle('is-amber', ms2kPadKbdMode && ms2kLatchedPadNotes.size > 0);
+  }
+
+  if (ms2kPadKbdMode) {
+    if (downLed) {
+      downLed.classList.toggle('is-on', ms2kPadOctaveShift === -1);
+      downLed.classList.toggle('is-amber', ms2kPadOctaveShift <= -2);
+    }
+    if (upLed) {
+      upLed.classList.toggle('is-on', ms2kPadOctaveShift === 1);
+      upLed.classList.toggle('is-amber', ms2kPadOctaveShift >= 2);
+    }
+    if (modeBadge) {
+      const baseNote = 60 + ms2kPadOctaveShift * 12;
+      modeBadge.textContent = ms2kLatchedPadNotes.size > 0
+        ? `HOLD (${ms2kLatchedPadNotes.size})`
+        : `KBD ${formatPadMidiNote(baseNote)}`;
+    }
+  } else {
+    const bankIdx = lcdProgrammer ? lcdProgrammer.getCurrentBankIndex() : 0;
+    const bankLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+    const bankChar = bankLetters[bankIdx] || 'A';
+    if (downLed) {
+      downLed.classList.toggle('is-on', bankIdx < 4);
+      downLed.classList.remove('is-amber');
+    }
+    if (upLed) {
+      upLed.classList.toggle('is-on', bankIdx >= 4);
+      upLed.classList.remove('is-amber');
+    }
+    if (modeBadge) {
+      if (ms2kStripSeqMode > 0) {
+        if (isVocoder) {
+          modeBadge.textContent = ms2kStripSeqMode === 1 ? 'CH LEVEL' : 'CH PAN';
+        } else {
+          modeBadge.textContent = `SEQ ${ms2kStripSeqMode} [T${activeTimbre}]`;
+        }
+      } else if (lcdProgrammer?.isEditMode || slideDrawer?.isOpenState) {
+        const secPad = getActiveSectionPadNumber();
+        modeBadge.textContent = secPad ? `EDIT P${String(secPad).padStart(2, '0')}` : 'EDIT MODE';
+      } else {
+        const progSlot = lcdProgrammer ? (((lcdProgrammer.currentProgramIndex - 1) % 16) + 1) : 1;
+        modeBadge.textContent = `BANK ${bankChar}.${String(progSlot).padStart(2, '0')}`;
+      }
+    }
+  }
+
+  // 3. Update all 16 Pads
+  const currentProgPad = lcdProgrammer ? (((lcdProgrammer.currentProgramIndex - 1) % 16) + 1) : 1;
+  const activeSectionPad = getActiveSectionPadNumber();
+  const lastStep = Math.round(paramStore.get(tParam('seqLastStep')) || 16);
+  const seqRunning = ((paramStore.get('modSeqOn') || 0) > 0.5) || ((paramStore.get('arpOn') || 0) > 0.5);
+
+  for (let k = 1; k <= 16; k++) {
+    const colEl = stripEl.querySelector(`.ms2k-pad-col[data-pad="${k}"]`);
+    const btnEl = document.getElementById(`ms2k-pad-${k}`);
+    const subValEl = document.getElementById(`ms2k-pad-val-${k}`);
+    const barFillEl = document.getElementById(`ms2k-pad-bar-${k}`);
+    if (!colEl || !btnEl) continue;
+
+    let isLit = false;
+    let isLatched = false;
+    let isBeyondLast = false;
+    let subText = '';
+    let barWidthPct = 0;
+
+    if (ms2kPadKbdMode) {
+      const midiNote = 60 + ms2kPadOctaveShift * 12 + (k - 1);
+      subText = formatPadMidiNote(midiNote);
+      isLatched = ms2kLatchedPadNotes.has(midiNote);
+      isLit = ms2kActivePadNotes.get(k) === midiNote || isLatched;
+    } else if (ms2kStripSeqMode > 0) {
+      if (isVocoder) {
+        if (ms2kStripSeqMode === 1) {
+          // Vocoder [CH LEVEL] 1..16 (0..127)
+          const lvl = Math.round(paramStore.get(`vocoderBandLevel${k}`) ?? 127);
+          subText = `${lvl}`;
+          barWidthPct = (lvl / 127) * 100;
+          isLit = lvl > 0;
+          isLatched = lvl === 0;
+        } else {
+          // Vocoder [CH PAN] 1..16 (-63..+63)
+          const pan = Math.round(ms2kVocoderBandPans[k - 1] || 0);
+          subText = pan === 0 ? 'CNT' : (pan > 0 ? `R${pan}` : `L${Math.abs(pan)}`);
+          barWidthPct = ((pan + 63) / 126) * 100;
+          isLit = pan !== 0;
+        }
+      } else {
+        // Mod Sequencer Track 1..3 Step 1..16 (-63..+63)
+        const stepId = tParam(`seq${ms2kStripSeqMode}Step${k}`);
+        const stepVal = Math.round(paramStore.get(stepId) || 0);
+        isBeyondLast = k > lastStep;
+        subText = stepVal > 0 ? `+${stepVal}` : `${stepVal}`;
+        barWidthPct = ((stepVal + 63) / 126) * 100;
+        isLit = !isBeyondLast && stepVal !== 0;
+      }
+    } else if (lcdProgrammer?.isEditMode || slideDrawer?.isOpenState) {
+      isLit = (activeSectionPad === k);
+      subText = isLit ? 'EDIT' : '';
+    } else {
+      // Program Play Mode (1..16)
+      isLit = (currentProgPad === k);
+      const bankIdx = lcdProgrammer ? lcdProgrammer.getCurrentBankIndex() : 0;
+      const bankLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+      subText = isLit ? `${bankLetters[bankIdx] || 'A'}.${String(k).padStart(2, '0')}` : '';
+    }
+
+    const isChaserStep = seqRunning && (ms2kStepChaserIdx + 1 === k) && (k <= lastStep);
+
+    colEl.classList.toggle('is-active', isLit);
+    colEl.classList.toggle('is-editing-section', activeSectionPad === k);
+    colEl.classList.toggle('is-beyond-last', isBeyondLast);
+
+    btnEl.classList.toggle('is-active', isLit);
+    btnEl.classList.toggle('is-latched', isLatched);
+    btnEl.classList.toggle('is-seq-step', isChaserStep);
+
+    if (subValEl) subValEl.textContent = subText;
+    if (barFillEl) barFillEl.style.width = `${Math.max(0, Math.min(100, barWidthPct))}%`;
+  }
+}
+
+function setupMs2000BottomStrip() {
+  const stripEl = document.getElementById('ms2k-bottom-strip');
+  if (!stripEl) return;
+
+  // Close drawer listener so strip refreshes back to Program mode when drawer closes
+  const origClose = slideDrawer.close.bind(slideDrawer);
+  slideDrawer.close = () => {
+    origClose();
+    if (lcdProgrammer) {
+      lcdProgrammer.isEditMode = false;
+      lcdProgrammer.updateDisplay();
+    }
+    refreshMs2kBottomStrip();
+  };
+
+  // 1. SEQ EDIT [CH PARAM] SELECT button
+  document.getElementById('btn-ms2k-seq-edit')?.addEventListener('click', () => {
+    ms2kPadKbdMode = false;
+    const isVocoder = (paramStore.get('synthVocoderMode') || 0) > 0.5;
+    if (isVocoder) {
+      ms2kStripSeqMode = (ms2kStripSeqMode + 1) % 3; // 0 -> 1 (CH LEVEL) -> 2 (CH PAN) -> 0
+      if (lcdProgrammer) {
+        const names = ['PROGRAM / EDIT MODE', 'VOCODER [CH LEVEL] 1-16', 'VOCODER [CH PAN] 1-16'];
+        lcdProgrammer.flashMessage('CH PARAM SELECT', names[ms2kStripSeqMode]);
+      }
+    } else {
+      ms2kStripSeqMode = (ms2kStripSeqMode + 1) % 4; // 0 -> 1 (SEQ 1) -> 2 (SEQ 2) -> 3 (SEQ 3) -> 0
+      if (ms2kStripSeqMode > 0) {
+        activeModSeqTrack = ms2kStripSeqMode;
+        if (slideDrawer.isOpenState && slideDrawer.activeSection === 'modseq') {
+          renderModSeqDrawer(slideDrawer.contentElem);
+        }
+      }
+      if (lcdProgrammer) {
+        const names = ['PROGRAM / EDIT MODE', `SEQ 1 EDIT (T${activeTimbre})`, `SEQ 2 EDIT (T${activeTimbre})`, `SEQ 3 EDIT (T${activeTimbre})`];
+        lcdProgrammer.flashMessage('SEQ EDIT SELECT', names[ms2kStripSeqMode]);
+      }
+    }
+    refreshMs2kBottomStrip();
+  });
+
+  // Direct click on LED rows 1..3
+  for (let i = 1; i <= 3; i++) {
+    document.getElementById(`row-ms2k-seq-${i}`)?.addEventListener('click', () => {
+      ms2kPadKbdMode = false;
+      const isVocoder = (paramStore.get('synthVocoderMode') || 0) > 0.5;
+      if (isVocoder && i === 3) return;
+      ms2kStripSeqMode = (ms2kStripSeqMode === i) ? 0 : i;
+      if (!isVocoder && ms2kStripSeqMode > 0) {
+        activeModSeqTrack = ms2kStripSeqMode;
+        if (slideDrawer.isOpenState && slideDrawer.activeSection === 'modseq') {
+          renderModSeqDrawer(slideDrawer.contentElem);
+        }
+      }
+      refreshMs2kBottomStrip();
+    });
+  }
+
+  // 2. BANK / OCTAVE DOWN & UP buttons
+  document.getElementById('btn-ms2k-bank-down')?.addEventListener('click', () => {
+    if (ms2kPadKbdMode) {
+      ms2kPadOctaveShift = Math.max(-3, ms2kPadOctaveShift - 1);
+      const baseNote = 60 + ms2kPadOctaveShift * 12;
+      lcdProgrammer?.flashMessage('PAD KBD OCTAVE', `${formatPadMidiNote(baseNote)} .. ${formatPadMidiNote(baseNote + 15)}`);
+    } else if (lcdProgrammer) {
+      const nextBank = (lcdProgrammer.getCurrentBankIndex() + 7) % 8;
+      lcdProgrammer.selectBank(nextBank);
+    }
+    refreshMs2kBottomStrip();
+  });
+
+  document.getElementById('btn-ms2k-bank-up')?.addEventListener('click', () => {
+    if (ms2kPadKbdMode) {
+      ms2kPadOctaveShift = Math.min(3, ms2kPadOctaveShift + 1);
+      const baseNote = 60 + ms2kPadOctaveShift * 12;
+      lcdProgrammer?.flashMessage('PAD KBD OCTAVE', `${formatPadMidiNote(baseNote)} .. ${formatPadMidiNote(baseNote + 15)}`);
+    } else if (lcdProgrammer) {
+      const nextBank = (lcdProgrammer.getCurrentBankIndex() + 1) % 8;
+      lcdProgrammer.selectBank(nextBank);
+    }
+    refreshMs2kBottomStrip();
+  });
+
+  // 3. KBD (16-Pad Chromatic Keyboard + Latch) button
+  document.getElementById('btn-ms2k-pad-kbd')?.addEventListener('click', (e) => {
+    if (e.shiftKey && ms2kLatchedPadNotes.size > 0) {
+      for (const note of ms2kLatchedPadNotes) {
+        bridge.noteOff(note, 0.0);
+      }
+      ms2kLatchedPadNotes.clear();
+      lcdProgrammer?.flashMessage('16-PAD KEYBOARD', 'LATCH CLEARED');
+      refreshMs2kBottomStrip();
+      return;
+    }
+    ms2kPadKbdMode = !ms2kPadKbdMode;
+    if (!ms2kPadKbdMode) {
+      for (const [, note] of ms2kActivePadNotes) {
+        if (!ms2kLatchedPadNotes.has(note)) {
+          bridge.noteOff(note, 0.0);
+        }
+      }
+      ms2kActivePadNotes.clear();
+    }
+    lcdProgrammer?.flashMessage(
+      '16-PAD KEYBOARD',
+      ms2kPadKbdMode ? 'ACTIVE (SHIFT=LATCH)' : 'PROGRAM / EDIT PADS'
+    );
+    refreshMs2kBottomStrip();
+  });
+
+  // 4. Bottom Section Labels (1: COMMON .. 16: UTILITY) -> Instant Page Jump + Drawer Open
+  stripEl.querySelectorAll('.ms2k-pad-label-btn[data-pad-jump]').forEach((lblBtn) => {
+    lblBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const padNum = Number(lblBtn.dataset.padJump) || 1;
+      ms2kPadKbdMode = false;
+      openMs2kHardwarePage(padNum);
+    });
+  });
+
+  // 5. 16 Illuminated Rubber Pads (1..16)
+  const applyPadValueDelta = (k, newVal) => {
+    const isVocoder = (paramStore.get('synthVocoderMode') || 0) > 0.5;
+    if (isVocoder) {
+      if (ms2kStripSeqMode === 1) {
+        const clamped = Math.max(0, Math.min(127, Math.round(newVal)));
+        const pid = `vocoderBandLevel${k}`;
+        paramStore.set(pid, clamped);
+        bridge.setParam(pid, clamped);
+        if (clamped > 0) ms2kVocoderSavedLevels[k - 1] = clamped;
+        if (slideDrawer.isOpenState && slideDrawer.activeSection === 'vocoder-bands') {
+          renderVocoderBandsDrawer(slideDrawer.contentElem);
+        }
+        lcdProgrammer?.flashMessage(`VOCODER CH ${String(k).padStart(2, '0')}`, `Level: ${clamped}`, 900);
+      } else if (ms2kStripSeqMode === 2) {
+        const clamped = Math.max(-63, Math.min(63, Math.round(newVal)));
+        ms2kVocoderBandPans[k - 1] = clamped;
+        const pid = `vocoderBandPan${k}`;
+        paramStore.set(pid, clamped);
+        bridge.setParam(pid, clamped);
+        const panStr = clamped === 0 ? 'CNT' : (clamped > 0 ? `R${clamped}` : `L${Math.abs(clamped)}`);
+        lcdProgrammer?.flashMessage(`VOCODER CH ${String(k).padStart(2, '0')}`, `Panpot: ${panStr}`, 900);
+      }
+    } else {
+      const clamped = Math.max(-63, Math.min(63, Math.round(newVal)));
+      const stepId = tParam(`seq${ms2kStripSeqMode}Step${k}`);
+      paramStore.set(stepId, clamped);
+      bridge.setParam(stepId, clamped);
+      if (slideDrawer.isOpenState && slideDrawer.activeSection === 'modseq') {
+        renderModSeqDrawer(slideDrawer.contentElem);
+      }
+      lcdProgrammer?.flashMessage(
+        `SEQ ${ms2kStripSeqMode} STEP ${String(k).padStart(2, '0')}`,
+        `Value: ${clamped > 0 ? '+' + clamped : clamped}`,
+        900
+      );
+    }
+    refreshMs2kBottomStrip();
+  };
+
+  for (let k = 1; k <= 16; k++) {
+    const padBtn = document.getElementById(`ms2k-pad-${k}`);
+    if (!padBtn) continue;
+
+    padBtn.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+
+      // Mode A: 16-Pad Chromatic Keyboard + Shift-Latch
+      if (ms2kPadKbdMode) {
+        const midiNote = 60 + ms2kPadOctaveShift * 12 + (k - 1);
+        bridge.initWebAudio();
+
+        if (e.shiftKey) {
+          if (ms2kLatchedPadNotes.has(midiNote)) {
+            ms2kLatchedPadNotes.delete(midiNote);
+            bridge.noteOff(midiNote, 0.0);
+            lcdProgrammer?.flashMessage(`PAD ${k} (${formatPadMidiNote(midiNote)})`, 'UNLATCHED', 800);
+          } else {
+            ms2kLatchedPadNotes.add(midiNote);
+            bridge.noteOn(midiNote, 0.85);
+            lcdProgrammer?.flashMessage(`PAD ${k} (${formatPadMidiNote(midiNote)})`, 'LATCHED (HOLD)', 800);
+          }
+          refreshMs2kBottomStrip();
+          return;
+        }
+
+        ms2kActivePadNotes.set(k, midiNote);
+        bridge.noteOn(midiNote, 0.85);
+        lcdProgrammer?.flashMessage(`PAD KEYBOARD`, `Note: ${formatPadMidiNote(midiNote)} (MIDI ${midiNote})`, 700);
+        refreshMs2kBottomStrip();
+
+        const releasePadNote = () => {
+          const heldNote = ms2kActivePadNotes.get(k);
+          ms2kActivePadNotes.delete(k);
+          if (heldNote !== undefined && !ms2kLatchedPadNotes.has(heldNote)) {
+            bridge.noteOff(heldNote, 0.0);
+          }
+          refreshMs2kBottomStrip();
+        };
+        window.addEventListener('pointerup', releasePadNote, { once: true });
+        window.addEventListener('pointercancel', releasePadNote, { once: true });
+        return;
+      }
+
+      // Mode B: SEQ EDIT (1..3) or Vocoder CH PARAM ([LEVEL] / [PAN])
+      if (ms2kStripSeqMode > 0) {
+        const isVocoder = (paramStore.get('synthVocoderMode') || 0) > 0.5;
+        if (e.shiftKey) {
+          if (isVocoder && ms2kStripSeqMode === 1) {
+            const pid = `vocoderBandLevel${k}`;
+            const cur = Math.round(paramStore.get(pid) ?? 127);
+            const next = cur > 0 ? 0 : (ms2kVocoderSavedLevels[k - 1] || 127);
+            applyPadValueDelta(k, next);
+          } else if (!isVocoder) {
+            const lastStepPid = tParam('seqLastStep');
+            paramStore.set(lastStepPid, k);
+            bridge.setParam(lastStepPid, k);
+            if (slideDrawer.isOpenState && slideDrawer.activeSection === 'modseq') {
+              renderModSeqDrawer(slideDrawer.contentElem);
+            }
+            lcdProgrammer?.flashMessage('SEQ LAST STEP', `LENGTH: ${k} STEPS`, 1000);
+            refreshMs2kBottomStrip();
+          }
+          return;
+        }
+
+        const startY = e.clientY;
+        const startVal = isVocoder
+          ? (ms2kStripSeqMode === 1
+              ? Math.round(paramStore.get(`vocoderBandLevel${k}`) ?? 127)
+              : Math.round(ms2kVocoderBandPans[k - 1] || 0))
+          : Math.round(paramStore.get(tParam(`seq${ms2kStripSeqMode}Step${k}`)) || 0);
+
+        let moved = false;
+        const onMove = (moveEvt) => {
+          const dy = startY - moveEvt.clientY;
+          if (Math.abs(dy) > 2) moved = true;
+          const delta = Math.round(dy * 0.85);
+          applyPadValueDelta(k, startVal + delta);
+        };
+        const onUp = () => {
+          window.removeEventListener('pointermove', onMove);
+          if (!moved) {
+            // Single click on pad in SEQ EDIT / CH PARAM: open corresponding drawer & show current value
+            applyPadValueDelta(k, startVal);
+          }
+        };
+        window.addEventListener('pointermove', onMove);
+        window.addEventListener('pointerup', onUp, { once: true });
+        return;
+      }
+
+      // Mode C: PROGRAM SELECT (01..16) or PAGE JUMP EDIT (when Shift or EDIT mode is active)
+      if (e.shiftKey || lcdProgrammer?.isEditMode) {
+        openMs2kHardwarePage(k);
+      } else if (lcdProgrammer) {
+        const bankIdx = lcdProgrammer.getCurrentBankIndex();
+        const targetIdx = bankIdx * 16 + (k - 1);
+        lcdProgrammer.loadProgramIndex(targetIdx);
+        refreshAllDashboardCards();
+        refreshMs2kBottomStrip();
+      }
+    });
+
+    // Double-click resets step/band in SEQ EDIT / CH PARAM, or opens Edit Page in Program mode
+    padBtn.addEventListener('dblclick', (e) => {
+      e.preventDefault();
+      if (ms2kPadKbdMode) return;
+      if (ms2kStripSeqMode > 0) {
+        const isVocoder = (paramStore.get('synthVocoderMode') || 0) > 0.5;
+        const resetVal = (isVocoder && ms2kStripSeqMode === 1) ? 127 : 0;
+        applyPadValueDelta(k, resetVal);
+      } else {
+        openMs2kHardwarePage(k);
+      }
+    });
+
+    // Mouse wheel fine-adjusts step/band in SEQ EDIT / CH PARAM
+    padBtn.addEventListener('wheel', (e) => {
+      if (ms2kPadKbdMode || ms2kStripSeqMode === 0) return;
+      e.preventDefault();
+      const isVocoder = (paramStore.get('synthVocoderMode') || 0) > 0.5;
+      const curVal = isVocoder
+        ? (ms2kStripSeqMode === 1
+            ? Math.round(paramStore.get(`vocoderBandLevel${k}`) ?? 127)
+            : Math.round(ms2kVocoderBandPans[k - 1] || 0))
+        : Math.round(paramStore.get(tParam(`seq${ms2kStripSeqMode}Step${k}`)) || 0);
+      const step = e.shiftKey ? 4 : 1;
+      const delta = e.deltaY < 0 ? step : -step;
+      applyPadValueDelta(k, curVal + delta);
+    }, { passive: false });
+  }
+
+  // 6. Step Chaser Animation when Mod Sequencer or Arpeggiator is active
+  if (ms2kStepChaserTimer) clearInterval(ms2kStepChaserTimer);
+  ms2kStepChaserTimer = setInterval(() => {
+    const seqOn = (paramStore.get('modSeqOn') || 0) > 0.5;
+    const arpOn = (paramStore.get('arpOn') || 0) > 0.5;
+    if (!seqOn && !arpOn) return;
+    const lastStep = Math.max(1, Math.min(16, Math.round(paramStore.get(tParam('seqLastStep')) || 16)));
+    const dir = Math.round(paramStore.get('modSeqType') || 0);
+    if (dir === 1) {
+      ms2kStepChaserIdx = (ms2kStepChaserIdx - 1 + lastStep) % lastStep;
+    } else if (dir === 3) {
+      ms2kStepChaserIdx = Math.floor(Math.random() * lastStep);
+    } else {
+      ms2kStepChaserIdx = (ms2kStepChaserIdx + 1) % lastStep;
+    }
+    refreshMs2kBottomStrip();
+  }, 160);
+
+  refreshMs2kBottomStrip();
+}

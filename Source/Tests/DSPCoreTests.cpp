@@ -15,6 +15,7 @@
 #include "../State/MS2000FactoryBank.h"
 #include "../State/MS2000PatchBuilder.h"
 #include "../State/ParameterRegistry.gen.h"
+#include "LfoFirmwareParityTests.h"
 
 #include "../../ABDSharedCode/HardwareDrivers/NRPNParser.h"
 #include "../../ABDSharedCode/HardwareDrivers/SysExCodec.h"
@@ -708,6 +709,24 @@ static void testFilterVocoderStability()
     }
     check(!vocoderHasNanOrInf, "Vocoder 16-band unrolled engine generates zero NaN/Inf under white noise stress");
     check(maxVocoderPeak < 6.0f, "Vocoder dynamic headroom is stably bounded (< +15dB limit)");
+
+    // 12.2b: Internal Formant Self-Modulator & Formant Hold Verification
+    Vocoder16Band vocoderSelfMod;
+    vocoderSelfMod.prepare(testSampleRate);
+    vocoderSelfMod.setEnabled(true);
+    vocoderSelfMod.setCutoffOffset(0.25f);
+    vocoderSelfMod.setResonance(0.7f);
+    vocoderSelfMod.setEfSense(0.5f);
+    float selfModRms = 0.0f;
+    for (int i = 0; i < 1024; ++i)
+    {
+        float sawCarrier =
+            2.0f * std::fmod(static_cast<float>(i) * 110.0f / static_cast<float>(testSampleRate), 1.0f) - 1.0f;
+        float oL = 0.0f, oR = 0.0f;
+        vocoderSelfMod.process(0.0f, sawCarrier, oL, oR);
+        selfModRms += (oL * oL + oR * oR);
+    }
+    check(selfModRms > 1.0e-4f, "Vocoder generates audible formant speech modulation when played without external mic");
 
     // 12.3: Nyquist Sanity Check
     float illegalHighCutoff = 99000.0f;
@@ -1692,15 +1711,20 @@ static void testHardwareProgramToEngine()
         voc.timbre(0)[Hw::ti::MIX_NOISE] = 77;      // en vocoder = HPF level
         voc.timbre(0)[Hw::ti::FILTER_VELO] = 61;    // en vocoder = Gate Sense
         voc.timbre(0)[Hw::ti::FILTER_EG1_INT] = 1;  // en vocoder = Filter Shift (+1)
+        voc.timbre(0)[Hw::ti::CUTOFF] = 74;         // en vocoder = Fc Offset (+10 signed)
+        voc.timbre(0)[Hw::ti::RESONANCE] = 88;      // en vocoder = Resonance (88)
         voc.timbre(0)[Hw::ti::VOCODER_BAND_LEVELS] = 55;
+        voc.timbre(0)[Hw::ti::VOCODER_BAND_PANS] = 44;  // -20 signed (64 - 20)
         voc.applyToAPVTS(hwApvts);
         check(raw(ParamIDs::synthVocoderMode) == 1.0f, "a vocoder program switches the engine to vocoder mode");
         check(raw(ParamIDs::vocoderHpfLevel) == 77.0f && raw(ParamIDs::vocoderGateSense) == 61.0f,
               "the vocoder reads those bytes as HPF level / gate sense, not as mixer / velocity sense");
         check(raw(ParamIDs::vocoderFormantShift) == 3.0f,
               "filter shift 0,+1,+2,-1,-2 is reordered to the engine's -2..+2 (real +1 -> engine +1)");
-        check(raw(ParamIDs::vocoderBandLevel1) == 55.0f,
-              "the 16 vocoder band levels come from the timbre bytes 46..61");
+        check(raw(ParamIDs::vocoderCutoff) == 10.0f && raw(ParamIDs::vocoderResonance) == 88.0f,
+              "the vocoder Fc Offset and Resonance reach the engine from the timbre block");
+        check(raw(ParamIDs::vocoderBandLevel1) == 55.0f && raw(ParamIDs::vocoderBandPan1) == -20.0f,
+              "the 16 vocoder band levels (46..61) and pans (62..77) come from the timbre block");
 
         // 5. De vuelta al hardware: los DOS timbres, escala/split y el mod sequence.
         setParam(ParamIDs::synthVocoderMode, 0.0f);  // el paso 4 dejó el motor en vocoder
@@ -2217,7 +2241,7 @@ static void testEngineExtension()
                 maxOffset = std::max(maxOffset, static_cast<int>(m.sysexOffset));
             }
         }
-        check(timbre2Params == 115, "the registry declares the Timbre 2 mirror (115 parameters)");
+        check(timbre2Params == 122, "the registry declares the Timbre 2 mirror (122 parameters)");
         check(seqStepParams == 96, "each timbre's 3 sequencer rows have their 16 real steps (96 parameters)");
         check(withSysex == 253 && maxOffset == 252,
               "every parameter the engine models has its own byte in the program");
@@ -2679,21 +2703,27 @@ static ABD_TEST_NOINLINE void testFirmwareHardwareParity()
 {
     printf("\n[Test 29] Firmware v1.07 Hardware Tables & DSP Signal Path Parity...\n");
 
+    check(runLfoFirmwareParityTests(),
+          "Both LFO ROM tables match embedded v1.07 firmware; LFO1/LFO2 base and modulated limits are 500 Hz");
+
     // 1. ROM Envelope table (0x27D54) calibrated at 48 kHz
     float envMinSec = FirmwareTables::getHardwareEnvelopeTimeSeconds(0);
     float envMaxSec = FirmwareTables::getHardwareEnvelopeTimeSeconds(127);
     check(std::abs(envMinSec - 0.001f) < 0.0001f, "ROM Envelope index 0 equals 1.000 ms (48 samples @ 48 kHz)");
     check(std::abs(envMaxSec - 3.7992f) < 0.01f, "ROM Envelope index 127 equals 3.7992 s (182,361 samples @ 48 kHz)");
 
-    // 2. ROM LFO1 (0x295E8) vs LFO2 (0x29BE8) divergence at knob 115..127
+    // 2. ROM LFO1 (0x295E8) vs LFO2 (0x29BE8): first differ at knob 115
     check(std::abs(FirmwareTables::getHardwareLfo2SpeedRatio(0.0f) - 1.0f) < 1e-5f,
           "LFO2/LFO1 speed ratio is 1.0x at knob 0");
     check(std::abs(FirmwareTables::getHardwareLfo2SpeedRatio(114.0f) - 1.0f) < 1e-5f,
-          "LFO2/LFO1 speed ratio is 1.0x up to knob 114");
-    check(FirmwareTables::getHardwareLfo2SpeedRatio(122.0f) > 1.20f,
-          "LFO2/LFO1 speed ratio accelerates in the upper audio-rate region (115..127)");
-    check( std::abs(FirmwareTables::getHardwareLfo2SpeedRatio(127.0f) - 5.3202f) < 0.01f,
-          "LFO2/LFO1 speed ratio reaches 5.3202x at knob 127");
+          "LFO2/LFO1 speed ratio is 1.0x through knob 114");
+    check(FirmwareTables::getHardwareLfo2SpeedRatio(115.0f) < 1.0f
+              && FirmwareTables::getHardwareLfo2SpeedRatio(120.0f) < 1.0f,
+          "LFO2 ROM increments are lower than LFO1 at knobs 115 and 120");
+    check(FirmwareTables::getHardwareLfo2SpeedRatio(121.0f) > 1.0f,
+          "LFO2 ROM increments first exceed LFO1 at knob 121");
+    check(std::abs(FirmwareTables::getHardwareLfo2SpeedRatio(127.0f) - 5.32385f) < 0.001f,
+          "LFO2/LFO1 ROM increment ratio is 5.32385x at knob 127");
 
     // 3. ROM Master Pitch table (0x240F0) 12-TET octave doubling in linear region
     uint32_t p60 = FirmwareTables::kRomMasterPitchQ23[60];
@@ -2751,7 +2781,8 @@ static ABD_TEST_NOINLINE void testFirmwareHardwareParity()
 
     // 7. 128 Authentic Factory Preload Presets (extracted from flash.bin @ 0x0B0000)
     auto factoryBank = std::make_unique<MS2000FactoryBank>();
-    check(factoryBank->getNumPresets() == 128, "MS2000FactoryBank contains all 128 authentic factory presets (A01..H16)");
+    check(factoryBank->getNumPresets() == 128,
+          "MS2000FactoryBank contains all 128 authentic factory presets (A01..H16)");
     check(factoryBank->getPreset(0).name == "Stab Saw", "Factory preset A01 (index 0) is 'Stab Saw'");
     check(factoryBank->getPreset(127).name == "INIT Program", "Factory preset H16 (index 127) is 'INIT Program'");
 
@@ -2778,18 +2809,27 @@ static ABD_TEST_NOINLINE void testFirmwareHardwareParity()
     check(std::abs(FirmwareTables::getHardwareLfo1FreqHz(127.0f) - 36.610f) < 0.05f,
           "ROM LFO1 knob 127 equals 36.61 Hz without premature clamping at knob 108");
     check(std::abs(FirmwareTables::getHardwareLfo2FreqHz(127.0f) - 194.904f) < 0.1f,
-          "ROM LFO2 knob 127 reaches 194.90 Hz audio-rate modulation (5.3202x LFO1)");
-    check(std::abs(FirmwareTables::getHardwareFilterCutoffHz(0.0f) - 17.737f) < 0.1f,
-          "ROM VCF Cutoff knob 0 (idx 47 = 0x003958) equals ~17.74 Hz");
-    check(std::abs(FirmwareTables::getHardwareFilterCutoffHz(1.0f) - 20000.0f) < 0.1f,
-          "ROM VCF Cutoff knob 127 (idx 174 = 0xFC9536) equals 20,000 Hz ceiling");
+          "ROM LFO2 knob 127 reaches 194.90 Hz audio-rate modulation (~5.3239x LFO1)");
+    check(std::abs(FirmwareTables::getHardwareFilterCutoffHz(0.0f) - 65.399f) < 0.1f,
+          "VCF Cutoff knob 0 (kRomMasterPitchQ23[128] = 0x004621, c = 0.00428) equals 65.40 Hz");
+    check(std::abs(FirmwareTables::getHardwareFilterCutoffHz(1.0f) - 18236.31f) < 0.5f,
+          "VCF Cutoff knob 127 saturates at the $770000 coefficient ceiling (18,236 Hz, not 20 kHz)");
     check(std::abs(FirmwareTables::getHardwareFilterCutoffHz(0.0f, -4.0f) - 5.0f) < 0.01f,
-          "ROM VCF Cutoff negative modulation reaches sub-20Hz closing region (5.0 Hz floor)");
+          "VCF Cutoff negative modulation reaches sub-20Hz closing region (5.0 Hz floor)");
     {
-        float fcBase = FirmwareTables::getHardwareFilterCutoffHz(64.0f / 127.0f, 0.0f);
-        float fcPlus1Oct = FirmwareTables::getHardwareFilterCutoffHz(64.0f / 127.0f, 1.0f);
-        check(std::abs((fcPlus1Oct / fcBase) - 2.0f) < 0.002f,
-              "ROM VCF Cutoff doubles exactly (2.000x) per +1.0 octave (+12 ROM indices)");
+        // El coeficiente del DSP c = min(2w, 0x770000/2^23) y fc = (48000/pi)*asin(c): +12 índices
+        // de la tabla de pitch duplican c, pero asin comprime, así que la octava NO es exacta
+        // (1.911x en el knob 64). El tope 0x770000 aplana el cutoff desde el knob 109.
+        const float fcBase = FirmwareTables::getHardwareFilterCutoffHz(64.0f / 127.0f, 0.0f);
+        const float fcPlus1Oct = FirmwareTables::getHardwareFilterCutoffHz(64.0f / 127.0f, 1.0f);
+        const float fcKnob108 = FirmwareTables::getHardwareFilterCutoffHz(108.0f / 127.0f, 0.0f);
+        const float fcKnob110 = FirmwareTables::getHardwareFilterCutoffHz(110.0f / 127.0f, 0.0f);
+        check(std::abs(fcBase - 2636.77f) < 0.5f, "VCF Cutoff knob 64 equals 2,636.8 Hz (c = 0.1717, asin law)");
+        check(std::abs((fcPlus1Oct / fcBase) - 1.9106f) < 0.002f,
+              "VCF Cutoff +1.0 octave follows the asin law (1.911x at knob 64, not 2.000x)");
+        check(fcKnob108 < fcKnob110 && std::abs(fcKnob110 - 18236.31f) < 0.5f
+                  && fcKnob110 == FirmwareTables::getHardwareFilterCutoffHz(1.0f),
+              "VCF Cutoff is flat above knob 109 ($770000 coefficient clamp)");
     }
     check(std::abs(conversion::wireToDomain("eqLowGain", 64) - 0.0f) < 1e-4f
               && conversion::domainToWire("eqLowGain", 0.0f) == 64,
@@ -2822,46 +2862,36 @@ static ABD_TEST_NOINLINE void testHardwareMidiSysEx41AndTimbreOps()
     check(ccModType != nullptr && juce::String(ccModType->paramId) == "osc2ModType",
           "CC#82 maps to osc2ModType (Official Korg MS2000 MIDI Implementation)");
     const auto *ccSemitone = MIDIMap::findByCC(18);
-    check(ccSemitone != nullptr && juce::String(ccSemitone->paramId) == "osc2Semitone",
-          "CC#18 maps to osc2Semitone");
+    check(ccSemitone != nullptr && juce::String(ccSemitone->paramId) == "osc2Semitone", "CC#18 maps to osc2Semitone");
     const auto *ccTune = MIDIMap::findByCC(19);
-    check(ccTune != nullptr && juce::String(ccTune->paramId) == "osc2Tune",
-          "CC#19 maps to osc2Tune");
+    check(ccTune != nullptr && juce::String(ccTune->paramId) == "osc2Tune", "CC#19 maps to osc2Tune");
     const auto *ccKbdTrack = MIDIMap::findByCC(85);
     check(ccKbdTrack != nullptr && juce::String(ccKbdTrack->paramId) == "filterKeyTrack",
           "CC#85 maps to filterKeyTrack");
     const auto *ccAmpLevel = MIDIMap::findByCC(7);
-    check(ccAmpLevel != nullptr && juce::String(ccAmpLevel->paramId) == "ampLevel",
-          "CC#7 maps to ampLevel");
+    check(ccAmpLevel != nullptr && juce::String(ccAmpLevel->paramId) == "ampLevel", "CC#7 maps to ampLevel");
     const auto *ccDistortion = MIDIMap::findByCC(92);
     check(ccDistortion != nullptr && juce::String(ccDistortion->paramId) == "ampDistortion",
           "CC#92 maps to ampDistortion");
     const auto *ccEg2Sustain = MIDIMap::findByCC(70);
-    check(ccEg2Sustain != nullptr && juce::String(ccEg2Sustain->paramId) == "eg2Sustain",
-          "CC#70 maps to eg2Sustain");
+    check(ccEg2Sustain != nullptr && juce::String(ccEg2Sustain->paramId) == "eg2Sustain", "CC#70 maps to eg2Sustain");
     const auto *ccLfo1Wave = MIDIMap::findByCC(87);
-    check(ccLfo1Wave != nullptr && juce::String(ccLfo1Wave->paramId) == "lfo1Wave",
-          "CC#87 maps to lfo1Wave");
+    check(ccLfo1Wave != nullptr && juce::String(ccLfo1Wave->paramId) == "lfo1Wave", "CC#87 maps to lfo1Wave");
     const auto *ccLfo1Freq = MIDIMap::findByCC(27);
-    check(ccLfo1Freq != nullptr && juce::String(ccLfo1Freq->paramId) == "lfo1Freq",
-          "CC#27 maps to lfo1Freq");
+    check(ccLfo1Freq != nullptr && juce::String(ccLfo1Freq->paramId) == "lfo1Freq", "CC#27 maps to lfo1Freq");
     const auto *ccLfo2Freq = MIDIMap::findByCC(76);
-    check(ccLfo2Freq != nullptr && juce::String(ccLfo2Freq->paramId) == "lfo2Freq",
-          "CC#76 maps to lfo2Freq");
+    check(ccLfo2Freq != nullptr && juce::String(ccLfo2Freq->paramId) == "lfo2Freq", "CC#76 maps to lfo2Freq");
     const auto *ccPatch1Int = MIDIMap::findByCC(28);
     check(ccPatch1Int != nullptr && juce::String(ccPatch1Int->paramId) == "patch1Intensity",
           "CC#28 maps to patch1Intensity");
     const auto *ccModSeqOn = MIDIMap::findByCC(89);
-    check(ccModSeqOn != nullptr && juce::String(ccModSeqOn->paramId) == "modSeqOn",
-          "CC#89 maps to modSeqOn");
+    check(ccModSeqOn != nullptr && juce::String(ccModSeqOn->paramId) == "modSeqOn", "CC#89 maps to modSeqOn");
 
     // 2. Official Korg MS2000 Hardware NRPN Table (MSB 0 Arp, MSB 4 Virtual Patch & Mod Seq)
     const auto *nrpnArpOn = MIDIMap::findByNRPN(0, 2);
-    check(nrpnArpOn != nullptr && juce::String(nrpnArpOn->paramId) == "arpOn",
-          "NRPN (0, 2) maps to arpOn");
+    check(nrpnArpOn != nullptr && juce::String(nrpnArpOn->paramId) == "arpOn", "NRPN (0, 2) maps to arpOn");
     const auto *nrpnArpType = MIDIMap::findByNRPN(0, 7);
-    check(nrpnArpType != nullptr && juce::String(nrpnArpType->paramId) == "arpType",
-          "NRPN (0, 7) maps to arpType");
+    check(nrpnArpType != nullptr && juce::String(nrpnArpType->paramId) == "arpType", "NRPN (0, 7) maps to arpType");
     const auto *nrpnPatch1Src = MIDIMap::findByNRPN(4, 0);
     check(nrpnPatch1Src != nullptr && juce::String(nrpnPatch1Src->paramId) == "patch1Source",
           "NRPN (4, 0) maps to patch1Source");
@@ -2877,8 +2907,7 @@ static ABD_TEST_NOINLINE void testHardwareMidiSysEx41AndTimbreOps()
 
     // Discrete Choice CC mapping verification (e.g. Filter Type CC#83: 0,32,64,96 <-> 0..3)
     const auto *ccFilterType = MIDIMap::findByCC(83);
-    check(ccFilterType != nullptr
-              && std::round(MIDIMap::midiValueToParamValue(*ccFilterType, 96)) == 3.0f,
+    check(ccFilterType != nullptr && std::round(MIDIMap::midiValueToParamValue(*ccFilterType, 96)) == 3.0f,
           "CC#83 value 96 maps to Filter Type index 3 (HPF12)");
 
     // 3. SysEx Parameter Change (0x41), Program Write Request (0x11), Mode Change (0x4E)
@@ -2924,8 +2953,7 @@ static ABD_TEST_NOINLINE void testHardwareMidiSysEx41AndTimbreOps()
           "SysExManager::parseSysEx recognizes 0x11 Program Write Request and updates active slot");
 
     auto msgMode = MS2000HardwareProgram::buildModeChange(1, 0);
-    check(msgMode.size() == 8 && msgMode[4] == 0x4E && msgMode[5] == 0x00,
-          "buildModeChange builds 8-byte 0x4E frame");
+    check(msgMode.size() == 8 && msgMode[4] == 0x4E && msgMode[5] == 0x00, "buildModeChange builds 8-byte 0x4E frame");
     auto res4E = sysex.parseSysEx(msgMode.data(), msgMode.size(), apvts);
     check(res4E.success && res4E.messageType == SysExMessageType::ParameterChange,
           "SysExManager::parseSysEx recognizes 0x4E Mode Change");
@@ -2949,8 +2977,7 @@ static ABD_TEST_NOINLINE void testHardwareMidiSysEx41AndTimbreOps()
     setApvtsParam("t2Osc1Wave", 1.0f);
 
     MS2000PatchBuilder::swapTimbres(apvts);
-    check(std::round(getApvtsParam("filterCutoff")) == 22.0f
-              && std::round(getApvtsParam("t2FilterCutoff")) == 88.0f,
+    check(std::round(getApvtsParam("filterCutoff")) == 22.0f && std::round(getApvtsParam("t2FilterCutoff")) == 88.0f,
           "MS2000PatchBuilder::swapTimbres exchanges Timbre 1 and Timbre 2 parameters");
 
     MS2000PatchBuilder::copyTimbre2ToTimbre1(apvts);
@@ -3020,11 +3047,11 @@ static ABD_TEST_NOINLINE void testHardwareMidiSysEx41AndTimbreOps()
         seq.prepare(44100.0);
         seq.setEnabled(true);
         seq.setTempoBPM(120.0f);
-        seq.setSyncResolution(3); // 1/16
+        seq.setSyncResolution(3);  // 1/16
         auto &trk = seq.getTrack(0);
         trk.destination = ModSeqDest::Cutoff;
         trk.mode = ModSeqMode::Forward;
-        trk.length = 4; // 4 steps: 0, 1, 2, 3
+        trk.length = 4;  // 4 steps: 0, 1, 2, 3
         trk.oneShot = true;
         trk.steps[0] = 0.1f;
         trk.steps[1] = 0.3f;
@@ -3060,14 +3087,14 @@ static ABD_TEST_NOINLINE void testHardwareMidiSysEx41AndTimbreOps()
                 a4Always440 = false;
             }
         }
-        check(a4Always440,
-              "ROM Pure Major (1) and Pure Minor (2) keep A4 (note 69) at 0 cents (440.00 Hz) across all 12 Scale Keys");
+        check(
+            a4Always440,
+            "ROM Pure Major (1) and Pure Minor (2) keep A4 (note 69) at 0 cents (440.00 Hz) across all 12 Scale Keys");
 
         const float cPureMaj = FirmwareTables::getHardwareScaleDetuneSemitones(60, 1, 0);
         const float ePureMaj = FirmwareTables::getHardwareScaleDetuneSemitones(64, 1, 0);
         const float gPureMaj = FirmwareTables::getHardwareScaleDetuneSemitones(67, 1, 0);
-        check(std::abs((ePureMaj - cPureMaj) - (-0.14f)) < 1e-5f
-                  && std::abs((gPureMaj - cPureMaj) - 0.02f) < 1e-5f,
+        check(std::abs((ePureMaj - cPureMaj) - (-0.14f)) < 1e-5f && std::abs((gPureMaj - cPureMaj) - 0.02f) < 1e-5f,
               "ROM Pure Major intervals relative to tonic are -14 cents (M3) and +2 cents (P5)");
 
         const float eArabic = FirmwareTables::getHardwareScaleDetuneSemitones(64, 3, 0);
@@ -3088,7 +3115,279 @@ static ABD_TEST_NOINLINE void testHardwareMidiSysEx41AndTimbreOps()
                   && MS2000HardwareProgram::extractBits(hw.timbre(1)[MS2000HardwareProgram::ti::SEQ_FLAGS], 6, 6) == 0,
               "MS2000HardwareProgram captures seqRunMode (bit 6 of SEQ_FLAGS) independently for Timbre 1 and Timbre 2");
         check(hw.get(MS2000HardwareProgram::DELAY_DEPTH) == 73,
-              "MS2000HardwareProgram::captureFromAPVTS preserves delayDepth in byte 0x15 without overwrite by delayFeedback");
+              "MS2000HardwareProgram::captureFromAPVTS preserves delayDepth in byte 0x15 without overwrite by "
+              "delayFeedback");
+    }
+}
+
+static void testCalibrationAndPresetValidation()
+{
+    printf("\n[Test 28] 3-Tier DSP Calibration, Hardware Routing & Factory Preset Validation Suite...\n");
+    auto &apvts = dummyFixture().apvts;
+    using Hw = MS2000HardwareProgram;
+
+    auto setParam = [&apvts](const char *id, float value)
+    {
+        if (auto *p = apvts.getParameter(id))
+            p->setValueNotifyingHost(p->convertTo0to1(value));
+    };
+    auto getRaw = [&apvts](const char *id) -> float
+    {
+        if (auto *v = apvts.getRawParameterValue(id))
+            return v->load(std::memory_order_relaxed);
+        return -9999.0f;
+    };
+
+    // =========================================================================
+    // TIER 1: Parameter Contract & 254-Byte Hardware Mapping Integrity
+    // =========================================================================
+    {
+        // 1.1 EQ Gain neutral (64 = 0 dB), +12 dB (76 -> 127), -12 dB (52 -> 1)
+        Hw hwEq;
+        hwEq.set(Hw::EQ_LO_GAIN, 64);
+        hwEq.set(Hw::EQ_HI_GAIN, 64);
+        hwEq.applyToAPVTS(apvts);
+        check(std::abs(getRaw(ParamIDs::eqLowGain) - 64.0f) < 0.01f
+                  && std::abs(getRaw(ParamIDs::eqHighGain) - 64.0f) < 0.01f,
+              "Tier 1.1a: Hardware EQ byte 64 (0 dB) maps to engine neutral 64.0f (not 0.0f/-12 dB)");
+
+        hwEq.set(Hw::EQ_LO_GAIN, 76);  // +12 dB
+        hwEq.set(Hw::EQ_HI_GAIN, 52);  // -12 dB
+        hwEq.applyToAPVTS(apvts);
+        check(std::abs(getRaw(ParamIDs::eqLowGain) - 127.0f) < 0.5f
+                  && std::abs(getRaw(ParamIDs::eqHighGain) - 1.0f) < 0.5f,
+              "Tier 1.1b: Hardware EQ bytes 76 (+12 dB) and 52 (-12 dB) map to 127 and 1");
+
+        Hw capturedEq;
+        capturedEq.captureFromAPVTS(apvts, "EQRoundTrip");
+        check(capturedEq.get(Hw::EQ_LO_GAIN) == 76 && capturedEq.get(Hw::EQ_HI_GAIN) == 52,
+              "Tier 1.1c: EQ Gain round-trips symmetrically back to hardware bytes 76 and 52");
+
+        // 1.2 Single / Vocoder polyphony vs Split / Layer polyphony
+        MS2000PatchBuilder::buildInitPatch(apvts);
+        setParam(ParamIDs::synthMode, 0.0f);     // MS2000 (4 hardware voices)
+        setParam(ParamIDs::timbreMode, 0.0f);    // Single mode
+        setParam(ParamIDs::timbreVoices, 0.0f);  // 1+3 setting in byte 0x10 (ignored in Single!)
+        setParam(ParamIDs::voiceMode, 1.0f);     // Poly
+        SynthEngine polyEngine(apvts);
+        polyEngine.prepare(48000.0, 256);
+        polyEngine.updateParametersFromAPVTS();
+        polyEngine.noteOn(1, 60, 0.9f);
+        polyEngine.noteOn(1, 64, 0.9f);
+        polyEngine.noteOn(1, 67, 0.9f);
+        polyEngine.noteOn(1, 72, 0.9f);
+        juce::AudioBuffer<float> chordBuf(2, 256);
+        chordBuf.clear();
+        juce::MidiBuffer emptyMidi;
+        polyEngine.processBlock(chordBuf, emptyMidi, nullptr);
+        check(polyEngine.getSnapshot().activeVoiceCount == 4,
+              "Tier 1.2: Single mode allocates all 4 hardware voices to Timbre 1 regardless of timbreVoices byte");
+
+        // 1.3 Timbre Transpose, Tune, BendRange, VibratoInt, and AmpGate hardware mapping
+        Hw hwPitch;
+        hwPitch.timbre(0)[Hw::ti::TRANSPOSE] = 64 - 12;    // -12 st
+        hwPitch.timbre(0)[Hw::ti::TUNE] = 64 + 25;         // +25 cents
+        hwPitch.timbre(0)[Hw::ti::BEND_RANGE] = 64 + 7;    // +7 st
+        hwPitch.timbre(0)[Hw::ti::VIBRATO] = 64 + 30;      // +30
+        hwPitch.timbre(0)[Hw::ti::AMP_FLAGS] = (1u << 6);  // Amp Gate = Gate (bit 6 = 1)
+        hwPitch.timbre(1)[Hw::ti::TRANSPOSE] = 64 + 12;    // +12 st on Timbre 2
+        hwPitch.timbre(1)[Hw::ti::AMP_FLAGS] = 0;          // Amp Gate = EG2 on Timbre 2
+        hwPitch.applyToAPVTS(apvts);
+
+        check(std::abs(getRaw(ParamIDs::pitchTranspose) - (-12.0f)) < 0.01f
+                  && std::abs(getRaw(ParamIDs::pitchTune) - 25.0f) < 0.01f
+                  && std::abs(getRaw(ParamIDs::pitchBendRange) - 7.0f) < 0.01f
+                  && std::abs(getRaw(ParamIDs::vibratoInt) - 30.0f) < 0.01f && getRaw(ParamIDs::ampGate) > 0.5f
+                  && std::abs(getRaw(ParamIDs::t2PitchTranspose) - 12.0f) < 0.01f && getRaw(ParamIDs::t2AmpGate) < 0.5f,
+              "Tier 1.3: Timbre 1/2 Transpose, Tune, BendRange, VibratoInt, and AmpGate map from 254B dump");
+
+        // 1.4 ModFX bypass when Depth = 0 (no static comb filter)
+        ModFX modFx;
+        modFx.prepare(48000.0);
+        modFx.setEnabled(true);
+        modFx.setType(ModFXType::ChorusFlanger);
+        modFx.setDepth(0.0f);
+        float maxCombDiff = 0.0f;
+        for (int i = 0; i < 256; ++i)
+        {
+            const float inSample = std::sin(2.0f * 3.14159265f * 440.0f * static_cast<float>(i) / 48000.0f);
+            float l = inSample, r = inSample;
+            modFx.process(l, r);
+            maxCombDiff = std::max(maxCombDiff, std::max(std::abs(l - inSample), std::abs(r - inSample)));
+        }
+        check(maxCombDiff < 1e-6f, "Tier 1.4: ModFX with depth=0 is bit-transparent (zero static comb filtering)");
+    }
+
+    // =========================================================================
+    // TIER 2: Atomic Block-by-Block DSP Probes (Pitch, Gate, Voice Steal)
+    // =========================================================================
+    {
+        // 2.1 Fundamental pitch probe with pitchTranspose (-12, 0, +12 semitones)
+        auto measureFreqHz = [](float transposeSemitones) -> float
+        {
+            Voice v;
+            v.prepare(48000.0);
+            VoiceParameters vp;
+            vp.osc1Type = OSC1Type::Sine;
+            vp.osc1Level = 1.0f;
+            vp.osc2Level = 0.0f;
+            vp.noiseLevel = 0.0f;
+            vp.filterType = FilterType::LPF24;
+            vp.filterCutoffNorm = 1.0f;
+            vp.eg2Attack = 0.0f;
+            vp.eg2Decay = 0.0f;
+            vp.eg2Sustain = 1.0f;
+            vp.eg2Release = 0.1f;
+            vp.ampLevel = 1.0f;
+            vp.pitchTranspose = transposeSemitones;
+            v.applyBlockParams(vp);
+            v.noteOn(69, 1.0f, false);  // A4
+
+            // Skip transient (200 samples), then measure zero-crossings over 8000 samples
+            float prev = 0.0f;
+            for (int i = 0; i < 200; ++i)
+            {
+                float l = 0.0f, r = 0.0f;
+                v.renderNextSample(l, r);
+                prev = l;
+            }
+            int crossings = 0;
+            int firstCross = -1, lastCross = -1;
+            for (int i = 0; i < 8000; ++i)
+            {
+                float l = 0.0f, r = 0.0f;
+                v.renderNextSample(l, r);
+                if (prev <= 0.0f && l > 0.0f)
+                {
+                    if (firstCross < 0)
+                        firstCross = i;
+                    lastCross = i;
+                    ++crossings;
+                }
+                prev = l;
+            }
+            if (crossings < 2 || lastCross <= firstCross)
+                return 0.0f;
+            const float avgPeriodSamples =
+                static_cast<float>(lastCross - firstCross) / static_cast<float>(crossings - 1);
+            return 48000.0f / avgPeriodSamples;
+        };
+
+        const float f0 = measureFreqHz(0.0f);
+        const float fDown12 = measureFreqHz(-12.0f);
+        const float fUp12 = measureFreqHz(12.0f);
+        check(std::abs(f0 - 440.0f) < 1.5f && std::abs(fDown12 - 220.0f) < 1.0f && std::abs(fUp12 - 880.0f) < 3.0f,
+              "Tier 2.1: Voice fundamental pitch tracks pitchTranspose accurately (220 Hz, 440 Hz, 880 Hz)");
+
+        // 2.2 Amp Gate mode (AMP_FLAGS bit 6 = 1) sustains even when EG2 Sustain = 0
+        {
+            Voice v;
+            v.prepare(48000.0);
+            VoiceParameters vp;
+            vp.osc1Type = OSC1Type::Saw;
+            vp.osc1Level = 1.0f;
+            vp.filterCutoffNorm = 1.0f;
+            vp.eg2Attack = 0.0f;
+            vp.eg2Decay = 0.0f;
+            vp.eg2Sustain = 0.0f;  // Zero sustain in EG2!
+            vp.eg2Release = 0.0f;
+            vp.ampLevel = 1.0f;
+            vp.ampGate = true;  // Organ Gate bypasses EG2
+            v.applyBlockParams(vp);
+            v.noteOn(60, 1.0f, false);
+
+            float latePeak = 0.0f;
+            for (int i = 0; i < 4000; ++i)
+            {
+                float l = 0.0f, r = 0.0f;
+                v.renderNextSample(l, r);
+                if (i > 3000)
+                    latePeak = std::max(latePeak, std::abs(l));
+            }
+            check(latePeak > 0.25f,
+                  "Tier 2.2: Amp Gate mode (AMP_FLAGS bit 6 = 1) sustains organ patches when EG2 sustain is 0");
+        }
+
+        // 2.3 Voice Steal Continuity Probe (no hard reset discontinuity jump on active voice steal)
+        {
+            Voice v;
+            v.prepare(48000.0);
+            VoiceParameters vp;
+            vp.osc1Type = OSC1Type::Sine;
+            vp.osc1Level = 1.0f;
+            vp.filterCutoffNorm = 1.0f;
+            vp.eg2Attack = 0.0f;
+            vp.eg2Decay = 0.5f;
+            vp.eg2Sustain = 1.0f;
+            vp.eg2Release = 0.5f;
+            vp.ampLevel = 1.0f;
+            v.applyBlockParams(vp);
+            v.noteOn(48, 1.0f, false);  // C3 (~130.8 Hz)
+
+            // Advance until sine wave is near peak amplitude (> 0.4)
+            float prevL = 0.0f;
+            for (int i = 0; i < 500; ++i)
+            {
+                float l = 0.0f, r = 0.0f;
+                v.renderNextSample(l, r);
+                prevL = l;
+                if (i > 50 && std::abs(l) > 0.35f)
+                    break;
+            }
+            // Retrigger active voice (steal)
+            v.noteOn(60, 1.0f, false);
+            float nextL = 0.0f, nextR = 0.0f;
+            v.renderNextSample(nextL, nextR);
+            const float stepJump = std::abs(nextL - prevL);
+            check(stepJump < 0.15f,
+                  "Tier 2.3: Active voice retrigger preserves oscillator/filter state without hard-zero click");
+        }
+    }
+
+    // =========================================================================
+    // TIER 3: Automated Factory Bank Preset Validation (128 Presets)
+    // =========================================================================
+    {
+        MS2000FactoryBank factoryBank;
+        check(factoryBank.getNumPresets() == 128, "Tier 3.1: Factory bank contains 128 MS2000 presets");
+
+        // Check representative presets (0: TeraByte, 1: Standchen, 2: DwgsOrgan, 4: Stab Saw, 16: Clean Funk)
+        const int probeIndices[] = {0, 1, 2, 4, 8, 16, 32, 64, 96, 127};
+        bool allValid = true;
+        for (int idx : probeIndices)
+        {
+            const auto &prog = factoryBank.getPresetProgramData(idx);
+            prog.applyToAPVTS(apvts);
+
+            SynthEngine eng(apvts);
+            eng.prepare(44100.0, 256);
+            eng.updateParametersFromAPVTS();
+            eng.noteOn(1, 60, 0.9f);
+
+            juce::AudioBuffer<float> buf(2, 256);
+            juce::MidiBuffer midi;
+            float maxAbs = 0.0f;
+            bool hasNaN = false;
+
+            for (int block = 0; block < 8; ++block)
+            {
+                buf.clear();
+                eng.processBlock(buf, midi, nullptr);
+                for (int ch = 0; ch < 2; ++ch)
+                {
+                    const float *ptr = buf.getReadPointer(ch);
+                    for (int s = 0; s < 256; ++s)
+                    {
+                        if (!std::isfinite(ptr[s]))
+                            hasNaN = true;
+                        maxAbs = std::max(maxAbs, std::abs(ptr[s]));
+                    }
+                }
+            }
+            if (hasNaN || maxAbs > 4.0f)
+                allValid = false;
+        }
+        check(allValid, "Tier 3.2: Representative factory presets render finite, bounded audio without NaN/runaway");
     }
 }
 
@@ -3107,6 +3406,7 @@ static ABD_TEST_NOINLINE void testHardwareMidiSysEx41AndTimbreOps()
     de la implementacion anterior, y esa copia no tiene nada que ver con esta
     horquilla. */
 void testEqualizerParity();
+void testTier2FirmwareBlockCalibration();
 
 static void runAllTests()
 {
@@ -3136,6 +3436,8 @@ static void runAllTests()
     testDspConversionsAndClamping();
     testFirmwareHardwareParity();
     testHardwareMidiSysEx41AndTimbreOps();
+    testCalibrationAndPresetValidation();
+    testTier2FirmwareBlockCalibration();
 
     printf("\n=== Test Summary ===\n");
     printf("  Passed: %d\n", testsPassed);

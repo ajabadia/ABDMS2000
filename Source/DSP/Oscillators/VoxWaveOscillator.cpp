@@ -104,11 +104,12 @@ float VoxWaveOscillator::getNextSample() noexcept
     if (phase_ >= 1.0f)
         phase_ -= 1.0f;
 
-    // 2. Quadratic formant/window shaping from Control 1 + Control 2 offset (Y:$0450 constants: $3DDF2D = 0.48337, $312BE1 = 0.38415)
-    constexpr float kC2 = 0.483373f; // $3DDF2D / $800000
-    constexpr float kC1 = 0.384152f; // $312BE1 / $800000
+    // 2. Quadratic formant/window shaping from Control 1 + Control 2 offset (Y:$0450 constants: $3DDF2D = 0.48337,
+    // $312BE1 = 0.38415)
+    constexpr float kC2 = 0.483373f;  // $3DDF2D / $800000
+    constexpr float kC1 = 0.384152f;  // $312BE1 / $800000
     float effCtrl = DSPUtils::clamp(vowel_ + (formantShift_ * 0.35f), 0.0f, 1.0f);
-    float ctrlShaped = 2.0f * (effCtrl * (kC1 + effCtrl * kC2)); // P:$0A41..$0A46
+    float ctrlShaped = 2.0f * (effCtrl * (kC1 + effCtrl * kC2));  // P:$0A41..$0A46
 
     // 3. Parabolic edge-rounded sawtooth window (P:$0A37..$0A4E):
     //    u = clamp((1 - |phi|) * slope, 0, 1), w = 1 - (1 - u)^2, exc = phi * w
@@ -123,8 +124,9 @@ float VoxWaveOscillator::getNextSample() noexcept
     //    Resonant frequency tracks oscillator pitch + Control 1 formant offset (1.5x to 6.5x f0).
     float formantRatio = 1.5f + ctrlShaped * 3.0f;
     float formantHz = DSPUtils::clamp(frequency_ * formantRatio, 150.0f, static_cast<float>(sampleRate_ * 0.42));
-    float f = DSPUtils::clamp(2.0f * std::sin(DSPUtils::PI * formantHz / static_cast<float>(sampleRate_)), 0.01f, 0.92f);
-    constexpr float qDamp = 0.22f; // High vocal resonance Q (~4.5)
+    float f =
+        DSPUtils::clamp(2.0f * std::sin(DSPUtils::PI * formantHz / static_cast<float>(sampleRate_)), 0.01f, 0.92f);
+    constexpr float qDamp = 0.22f;  // High vocal resonance Q (~4.5)
 
     // 2-pole chamber state update with internal DSP56362 24-bit saturation [-1, +1]
     float hp = excitation * 0.35f - s2_ - qDamp * s1_;

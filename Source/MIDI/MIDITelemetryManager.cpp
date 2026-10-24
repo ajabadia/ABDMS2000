@@ -39,7 +39,9 @@ MIDITelemetryManager::~MIDITelemetryManager()
 
 void MIDITelemetryManager::notifyActivity(const MidiActivityEvent &ev) noexcept
 {
-    while (callbackLock_.test_and_set(std::memory_order_acquire)) {}
+    while (callbackLock_.test_and_set(std::memory_order_acquire))
+    {
+    }
     auto cb = activityCallback_;
     callbackLock_.clear(std::memory_order_release);
     if (cb)
@@ -48,7 +50,9 @@ void MIDITelemetryManager::notifyActivity(const MidiActivityEvent &ev) noexcept
 
 void MIDITelemetryManager::pushOutgoingMessage(const juce::MidiMessage &msg, int sampleOffset) noexcept
 {
-    while (queueWriteLock_.test_and_set(std::memory_order_acquire)) {}
+    while (queueWriteLock_.test_and_set(std::memory_order_acquire))
+    {
+    }
     size_t currentWrite = queueWritePos_.load(std::memory_order_relaxed);
     size_t nextWrite = (currentWrite + 1) % kMaxOutgoingEvents;
 
@@ -76,10 +80,12 @@ void MIDITelemetryManager::processIncomingMidi(juce::MidiBuffer &midiMessages) n
             {
                 int paramId14 = 0;
                 int value14 = 0;
-                if (MS2000HardwareProgram::decodeParameterChangePayload(sx + 4, static_cast<size_t>(sxLen - 4), paramId14, value14))
+                if (MS2000HardwareProgram::decodeParameterChangePayload(
+                        sx + 4, static_cast<size_t>(sxLen - 4), paramId14, value14))
                 {
                     isInternalMidiUpdate_.store(true, std::memory_order_release);
-                    const std::string updatedId = MS2000HardwareProgram::applyParameterChange41(paramId14, value14, apvts_);
+                    const std::string updatedId =
+                        MS2000HardwareProgram::applyParameterChange41(paramId14, value14, apvts_);
                     isInternalMidiUpdate_.store(false, std::memory_order_release);
                     if (!updatedId.empty())
                     {

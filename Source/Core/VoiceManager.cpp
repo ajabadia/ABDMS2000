@@ -326,11 +326,7 @@ void VoiceManager::applyBlockParams(const VoiceParameters &params) noexcept
     }
 }
 
-void VoiceManager::process(float &leftOut,
-                           float &rightOut,
-                           int diagPoint,
-                           float diagTone,
-                           float audioInSample) noexcept
+void VoiceManager::process(float &leftOut, float &rightOut, int diagPoint, float diagTone, float audioInSample) noexcept
 {
     leftOut = 0.0f;
     rightOut = 0.0f;
