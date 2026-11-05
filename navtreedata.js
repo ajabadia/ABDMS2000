@@ -276,15 +276,15 @@ var NAVTREEINDEX =
 "classABDMS2000_1_1SynthEngine.html#af72aef55f612e1778d86c60586a34bc2",
 "classABDMS2000_1_1Tests_1_1TransferTests.html#a076271c55e43db8d46572d5578a4fa8a",
 "classABDMS2000_1_1VoiceManager.html#a4297f9cd743ea35858e078d155932d64",
-"functions_vars_l.html",
-"namespaceABDMS2000.html#a495c6af1070566573e5fb9f7628c8d46a92d5e5b37cb2705150a13281aed56d07",
-"namespaceABDMS2000_1_1FirmwareTables.html#a4a33ab86ce1febe1362db9d7546ac1d6",
-"namespaceABDMS2000_1_1ParamIDs.html#aabbca43cb462502eb71b33cdefd48bd3",
-"namespaceABDMS2000_1_1ms2kipl.html#aa6f99dc5eb441295d030c26eb968893b",
-"structABDMS2000_1_1MIDITelemetryManager_1_1PendingTransaction.html#aa0d04c6221a4ecd2eea8336bab79061f",
-"structABDMS2000_1_1MS2000ProgramData.html#a3febdd46b4a9ed7b69d160af8d8c5ae8",
-"structABDMS2000_1_1SeqModulation.html#ab4302a201f1e6eefd93f25eb3908fe85",
-"structABDMS2000_1_1Voice_1_1DiagnosticStats.html#ae6791815ea6eeaf6de3c21ccbc190ae3"
+"functions_vars_b.html",
+"namespaceABDMS2000.html#a495c6af1070566573e5fb9f7628c8d46a390a01ec11d719c03627e4bc762026f1",
+"namespaceABDMS2000_1_1FirmwareTables.html#a2437f8c32e6f9ee2f391de1e9571333e",
+"namespaceABDMS2000_1_1ParamIDs.html#aa47e2c03550cfe817c2ccc2d10821b00",
+"namespaceABDMS2000_1_1ms2kipl.html#a62b4165c84406ff521193d97434d12c4",
+"structABDMS2000_1_1MIDICCInfo.html#a619ce108f21df31bb5c246493b1bab36",
+"structABDMS2000_1_1MS2000ProgramData.html#a0ceff980804a6fb70e9316748295a698",
+"structABDMS2000_1_1SeqModulation.html",
+"structABDMS2000_1_1Voice_1_1DiagnosticStats.html"
 ];
 
 var SYNCONMSG = 'pulsar para deshabilitar sincronización';
