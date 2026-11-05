@@ -49,6 +49,11 @@ void Arpeggiator::setLatch(bool latch) noexcept
     latch_ = latch;
 }
 
+void Arpeggiator::setSwing(float swingPercent) noexcept
+{
+    swingPercent_ = DSPUtils::clamp(swingPercent, -100.0f, 100.0f);
+}
+
 void Arpeggiator::prepare(double sampleRate) noexcept
 {
     sampleRate_ = (sampleRate > 1000.0) ? sampleRate : 44100.0;
@@ -66,6 +71,7 @@ void Arpeggiator::reset() noexcept
     patternIndex_ = 0;
     patternDirection_ = true;
     currentRhythmStep_ = 0;
+    totalStepsExecuted_ = 0;
 }
 
 void Arpeggiator::setOctaveRange(int octaves1to4) noexcept
@@ -187,10 +193,22 @@ bool Arpeggiator::processStep(int numSamples, std::vector<ArpNoteEvent> &outEven
         currentNoteActive_ = false;
     }
 
-    // Step trigger event
-    if (stepSampleCounter_ >= samplesPerStep_)
+    // Step trigger event (con swing: paso par/impar alternan duracion)
+    double stepDuration = samplesPerStep_;
+    if (swingPercent_ != 0.0f)
     {
-        stepSampleCounter_ -= samplesPerStep_;
+        // Usamos un contador global de pasos para la paridad del swing,
+        // ya que patternIndex_ puede reiniciarse (wrap) en patrones cortos.
+        int stepParity = static_cast<int>(totalStepsExecuted_ % 2);
+        double swingFactor = 1.0 + (0.5 * swingPercent_ / 100.0) * (stepParity == 0 ? 1.0 : -1.0);
+        stepDuration = samplesPerStep_ * swingFactor;
+    }
+    if (stepSampleCounter_ >= stepDuration)
+    {
+        stepSampleCounter_ -= stepDuration;
+
+        // Incrementar contador de pasos para el calculo de swing (global, antes del switch)
+        totalStepsExecuted_++;
 
         if (generatedPattern_.empty())
             return !outEvents.empty();

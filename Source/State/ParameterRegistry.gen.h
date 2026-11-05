@@ -124,6 +124,7 @@ namespace ParamIDs {
     inline constexpr const char* arpGate = "arpGate";
     inline constexpr const char* arpLatch = "arpLatch";
     inline constexpr const char* arpResolution = "arpResolution";
+    inline constexpr const char* arpSwing = "arpSwing";
     inline constexpr const char* arpKeySync = "arpKeySync";
     inline constexpr const char* arpTarget = "arpTarget";
     inline constexpr const char* arpLastStep = "arpLastStep";

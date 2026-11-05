@@ -75,6 +75,7 @@ static const std::vector<ParameterMeta> kAllParameters = {
     { "arpGate", "Arpeggiator Gate", "Arp", -1, 0.0f, 127.0f, 100.0f, 1.0f, ParamType::Integer, "", 58, -1, 0, 0, 0, 0, 0.0f, 1.0f, 0, {} },
     { "arpLatch", "Arpeggiator Latch", "Arp", -1, 0.0f, 1.0f, 0.0f, 1.0f, ParamType::Boolean, "", 59, -1, 0, 0, 0, 0, 0, 0, 0, {} },
     { "arpResolution", "Arp Resolution", "Arp", -1, 0.0f, 15.0f, 3.0f, 1.0f, ParamType::Choice, "", 60, -1, 0, 0, 0, 0, 0, 0, 0, { "1/48", "1/32", "1/24", "1/16", "1/12", "1/8", "1/6", "1/4", "1/3", "1/2", "3/4", "1/1", "3/2", "2/1", "3/1", "4/1" } },
+    { "arpSwing", "Arpeggiator Swing", "Arp", -1, -100.0f, 100.0f, 0.0f, 1.0f, ParamType::Integer, "%", -1, -1, 0, 0, 0, 0, 0, 0, 0, {} },
     { "arpKeySync", "Arp Key Sync", "Arp", -1, 0.0f, 1.0f, 0.0f, 1.0f, ParamType::Boolean, "", -1, -1, 0, 0, 0, 0, 0, 0, 0, {} },
     { "arpTarget", "Arp Target Timbre", "Arp", -1, 0.0f, 2.0f, 0.0f, 1.0f, ParamType::Choice, "", -1, -1, 0, 0, 0, 0, 0, 0, 0, { "Both", "Timbre 1", "Timbre 2" } },
     { "arpLastStep", "Arp Last Step", "Arp", -1, 1.0f, 8.0f, 8.0f, 1.0f, ParamType::Integer, "", -1, -1, 0, 0, 0, 0, 0, 0, 0, {} },

@@ -1313,6 +1313,7 @@ function renderArpDrawer(container) {
         <div class="drawer-controls-row" style="display: flex; align-items: center; justify-content: center; gap: 48px; padding-top: 4px;">
           <div id="drawer-ctrl-arptempo"></div>
           <div id="drawer-ctrl-arpgate"></div>
+          <div id="drawer-ctrl-arpswing"></div>
         </div>
       </div>
     </div>
@@ -1401,6 +1402,11 @@ function renderArpDrawer(container) {
   new ABDKnob(container.querySelector('#drawer-ctrl-arpgate'), {
     paramId: 'arpGate', label: 'GATE TIME', min: 0, max: 127, defaultValue: 100, size: 50,
     displayFormatter: (v) => `${Math.round((v / 127) * 100)}%`
+  });
+  new ABDKnob(container.querySelector('#drawer-ctrl-arpswing'), {
+    paramId: 'arpSwing', label: 'SWING', min: -100, max: 100, defaultValue: 0, size: 50,
+    isBipolar: true,
+    displayFormatter: (v) => `${v > 0 ? '+' : ''}${Math.round(v)}%`
   });
 
   if (!isMaskSupported) {

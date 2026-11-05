@@ -75,7 +75,7 @@ env:
   SHA_BANK: '31cd46fc9c5b59eee430f6532db773723a6db0c0'    # ABDBankManager main
   SHA_SHARED: '180cf7866fca43fdc5035ebab9d4cc7f9713ff80'  # ABDSharedCode master (con Scope)
   SHA_ASSETS: 'fd3f295e4f9a4b31a93d425bdfbea00c743894c3'  # ABDSharedAssets fix/contract-dest-73
-  SHA_SHARED_JS: '3548836167f16b4af29d53d0e5021a8b4b2c5ee6'  # ABDShared master (paquete @abdsynths/shared)
+  SHA_SHARED_JS: '24c13b4bfbfbd4aff365c68dd3f2fbfdf1c83a0c'  # ABDShared master (paquete @abdsynths/shared)
 
 jobs:
   # ---------------------------------------------------------------------------

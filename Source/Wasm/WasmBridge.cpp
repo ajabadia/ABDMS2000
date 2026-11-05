@@ -500,6 +500,8 @@ class WasmEngineInstance
             int idx = static_cast<int>(value);
             arpeggiator_.setSyncResolution(idx);
         }
+        else if (id == "arpSwing")
+            arpeggiator_.setSwing(value);
         else if (id == "arpKeySync")
             arpeggiator_.setKeySync(value > 0.5f);
         else if (id == "arpLastStep")

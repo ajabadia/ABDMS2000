@@ -9,6 +9,7 @@
 #include "../../DSP/Modulation/LFO.h"
 #include "../../DSP/Oscillators/DWGSTables.h"
 #include "../../DSP/Oscillators/VoxWaveOscillator.h"
+#include "../../DSP/Sequencer/Arpeggiator.h"
 #include "../../DSP/Vocoder/Vocoder16Band.h"
 #include "../../MIDI/MIDIMap.h"
 #include "../State/Conversion.gen.h"
@@ -3457,6 +3458,101 @@ static void testCalibrationAndPresetValidation()
 void testEqualizerParity();
 void testTier2FirmwareBlockCalibration();
 
+static void testArpeggiatorSwing()
+{
+    printf("\n=== Arpeggiator Swing Tests ===\n");
+    {
+        constexpr double kSr = 48000.0;
+        Arpeggiator arp;
+        arp.prepare(kSr);
+        arp.setEnabled(true);
+        arp.setTempoBPM(120.0);
+        arp.setSyncResolution(3);  // 1/16 = 0.125 s (6000 samples @ 48 kHz)
+        arp.setGateTime(0.5f);
+        arp.setSwing(0.0f);
+
+        arp.noteOn(60, 0.8f);
+        arp.noteOn(64, 0.8f);
+
+        std::vector<ArpNoteEvent> events;
+        std::vector<double> timesZero;
+        for (int b = 0; b < 2000; ++b)
+        {
+            events.clear();
+            if (arp.processStep(48, events))
+            {
+                for (const auto &ev : events)
+                    if (ev.isNoteOn)
+                        timesZero.push_back((b + 1) * 48.0 / kSr);
+            }
+        }
+        check(timesZero.size() >= 12, "swing=0%: genera multiples pasos en 2 segundos");
+
+        double avgIntervalZero = (timesZero.back() - timesZero.front()) / static_cast<double>(timesZero.size() - 1);
+
+        arp.reset();
+        arp.setSwing(50.0f);
+        arp.noteOn(60, 0.8f);
+        arp.noteOn(64, 0.8f);
+
+        std::vector<double> timesPlus50;
+        for (int b = 0; b < 2000; ++b)
+        {
+            events.clear();
+            if (arp.processStep(48, events))
+            {
+                for (const auto &ev : events)
+                    if (ev.isNoteOn)
+                        timesPlus50.push_back((b + 1) * 48.0 / kSr);
+            }
+        }
+        check(timesPlus50.size() >= 12, "swing=+50%: genera multiples pasos");
+
+        std::vector<double> intervalsPlus50;
+        for (size_t i = 1; i < timesPlus50.size(); ++i)
+            intervalsPlus50.push_back(timesPlus50[i] - timesPlus50[i - 1]);
+
+        double meanPlus50 = 0.0;
+        for (double iv : intervalsPlus50)
+            meanPlus50 += iv;
+        meanPlus50 /= static_cast<double>(intervalsPlus50.size());
+
+        double variance = 0.0;
+        for (double iv : intervalsPlus50)
+            variance += (iv - meanPlus50) * (iv - meanPlus50);
+        variance /= static_cast<double>(intervalsPlus50.size());
+        double stddev = std::sqrt(variance);
+
+        check(std::abs(meanPlus50 - avgIntervalZero) < 0.005, "swing=+50%: promedio conservado (dentro de 5ms)");
+        check(stddev > 0.020, "swing=+50%: variabilidad significativa entre pasos pares e impares");
+    }
+
+    {
+        MS2000HardwareProgram prog;
+        prog.set(MS2000HardwareProgram::ARP_SWING, 0x1C);
+        check(prog.get(MS2000HardwareProgram::ARP_SWING) == 0x1C, "round-trip ARP_SWING +28 (0x1C) en complemento a 2");
+
+        prog.set(MS2000HardwareProgram::ARP_SWING, 0xCE);
+        check(prog.get(MS2000HardwareProgram::ARP_SWING) == 0xCE, "round-trip ARP_SWING -50 (0xCE) en complemento a 2");
+
+        float engineValuePlus28 =
+            MS2000HardwareProgram::toEngineValue(0x1C, MS2000HardwareProgram::Xform::Signed2sComplement);
+        check(std::abs(engineValuePlus28 - 28.0f) < 0.001f, "toEngineValue(0x1C) = +28%");
+
+        float engineValueMinus50 =
+            MS2000HardwareProgram::toEngineValue(0xCE, MS2000HardwareProgram::Xform::Signed2sComplement);
+        check(std::abs(engineValueMinus50 - (-50.0f)) < 0.001f, "toEngineValue(0xCE) = -50%");
+
+        uint8_t byteFromPlus28 =
+            MS2000HardwareProgram::fromEngineValue(28.0f, MS2000HardwareProgram::Xform::Signed2sComplement);
+        check(byteFromPlus28 == 0x1C, "fromEngineValue(+28%) = 0x1C");
+
+        uint8_t byteFromMinus50 =
+            MS2000HardwareProgram::fromEngineValue(-50.0f, MS2000HardwareProgram::Xform::Signed2sComplement);
+        check(byteFromMinus50 == 0xCE, "fromEngineValue(-50%) = 0xCE");
+    }
+}
+
 static void runAllTests()
 {
     testDspUtils();
@@ -3487,6 +3583,7 @@ static void runAllTests()
     testHardwareMidiSysEx41AndTimbreOps();
     testCalibrationAndPresetValidation();
     testTier2FirmwareBlockCalibration();
+    testArpeggiatorSwing();
 
     printf("\n=== Test Summary ===\n");
     printf("  Passed: %d\n", testsPassed);
@@ -3495,10 +3592,10 @@ static void runAllTests()
 }
 
 }  // namespace Tests
-}  // namespace ABDMS2000
-
+}
 int main()
 {
     ABDMS2000::Tests::runAllTests();
     return ABDMS2000::Tests::testsFailed > 0 ? 1 : 0;
 }
+  // namespace ABDMS2000

@@ -1738,6 +1738,26 @@ export const PARAMETERS_SPEC = {
       "sysexOffset": 60
     },
     {
+      "id": "arpSwing",
+      "name": "Arpeggiator Swing",
+      "group": "Arp",
+      "cc": null,
+      "min": -100,
+      "max": 100,
+      "default": 0,
+      "type": "integer",
+      "unit": "%",
+      "binaryPacking": {
+        "byteOffset": 36,
+        "bitMask": 255,
+        "bitShift": 0,
+        "byteSize": 1,
+        "encoding": "Signed2sComplement"
+      },
+      "scope": "global",
+      "sysexOffset": null
+    },
+    {
       "id": "arpKeySync",
       "name": "Arp Key Sync",
       "group": "Arp",

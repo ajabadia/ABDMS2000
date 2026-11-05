@@ -648,6 +648,7 @@ void SynthEngine::updateParametersFromAPVTS() noexcept
     arpeggiator_.setLatch(getParam(ParamIDs::arpLatch, 0.0f) > 0.5f);
     arpeggiator_.setSyncResolution(static_cast<int>(getParam(ParamIDs::arpResolution, 3.0f)));
     arpeggiator_.setKeySync(getParam(ParamIDs::arpKeySync, 0.0f) > 0.5f);
+    arpeggiator_.setSwing(getParam(ParamIDs::arpSwing, 0.0f));
 
     // microKORG / Advanced 8-step rhythm mask
     const bool allowStepMask = (synthMode != 0);  // Active in microKORG (1) & Advanced (2)

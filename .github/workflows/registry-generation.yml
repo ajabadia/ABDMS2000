@@ -79,7 +79,7 @@ env:
   # Tiene que ser la revision de ABDShared con la que se generaron los .gen:
   # subir el SHA sin regenerar (o al reves) hace saltar este job, que es
   # justo lo que se le pide.
-  SHA_SHARED_JS: '9e73a193d5c2ff0ef3a2a6677e5d9dba41f12241'
+  SHA_SHARED_JS: '24c13b4bfbfbd4aff365c68dd3f2fbfdf1c83a0c'
 
 permissions:
   contents: read

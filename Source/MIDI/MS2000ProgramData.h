@@ -91,6 +91,8 @@ struct MS2000ProgramData
             else if (meta.type == ParamType::Continuous && meta.max <= 1.0f)
                 rawData[off] =
                     static_cast<uint8_t>(std::clamp(static_cast<int>(meta.defaultValue * 100.0f + 0.5f), 0, 100));
+            else if (meta.min < -64.0f)
+                rawData[off] = static_cast<uint8_t>(static_cast<int8_t>(std::clamp(static_cast<int>(meta.defaultValue), -100, 100)));
             else if (meta.min < 0.0f)
                 rawData[off] = static_cast<uint8_t>(static_cast<int>(meta.defaultValue) + 64);
             else
@@ -259,6 +261,8 @@ struct MS2000ProgramData
             rawData[off] = (value > 0.5f) ? 64 : 0;
         else if (meta->type == ParamType::Continuous && meta->max <= 1.0f)
             rawData[off] = static_cast<uint8_t>(std::clamp(static_cast<int>(value * 100.0f + 0.5f), 0, 100));
+        else if (meta->min < -64.0f)
+            rawData[off] = static_cast<uint8_t>(static_cast<int8_t>(std::clamp(static_cast<int>(value), -100, 100)));
         else if (meta->min < 0.0f)
             rawData[off] = static_cast<uint8_t>(static_cast<int>(value) + 64);
         else
@@ -310,6 +314,10 @@ struct MS2000ProgramData
             else if (meta.type == ParamType::Choice)
             {
                 value = static_cast<float>(rawData[off]);
+            }
+            else if (meta.min < -64.0f)
+            {
+                value = static_cast<float>(std::clamp<int>(static_cast<int8_t>(rawData[off]), -100, 100));
             }
             else if (meta.min < 0.0f)
             {
@@ -419,6 +427,11 @@ struct MS2000ProgramData
             else if (meta.type == ParamType::Choice)
             {
                 rawData[off] = static_cast<uint8_t>(native);
+            }
+            else if (meta.min < -64.0f)
+            {
+                // Complemento a 2: rango -100..+100 (ej. arpSwing)
+                rawData[off] = static_cast<uint8_t>(static_cast<int8_t>(std::clamp(static_cast<int>(native), -100, 100)));
             }
             else if (meta.min < 0.0f)
             {

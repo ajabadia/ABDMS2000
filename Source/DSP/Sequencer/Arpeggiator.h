@@ -55,6 +55,8 @@ class Arpeggiator
     void setSyncResolution(int idx) noexcept;
     static float syncResolutionToStepsPerBeat(int idx) noexcept;
     void setLatch(bool latch) noexcept;
+    void setSwing(float swingPercent) noexcept;
+    float getSwing() const noexcept { return swingPercent_; }
     void setKeySync(bool keySync) noexcept
     {
         keySync_ = keySync;
@@ -101,6 +103,7 @@ class Arpeggiator
     int octaveRange_ {1};
     float gateTime_ {0.8f};
     float bpm_ {120.0f};
+    float swingPercent_ {0.0f};  // Swing -100..+100%
     bool latch_ {false};
     bool keySync_ {true};
     int physicallyHeldCount_ {0};
@@ -114,6 +117,7 @@ class Arpeggiator
     float syncStepsPerBeat_ {16.0f};  // Default: 1/16 (16 steps per beat)
     double samplesPerStep_ {5512.5};
     double stepSampleCounter_ {0.0};
+    uint32_t totalStepsExecuted_ {0};  // Contador global de pasos para swing
     bool currentNoteActive_ {false};
     int currentPlayingNote_ {-1};
 

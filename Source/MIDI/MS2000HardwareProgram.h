@@ -467,17 +467,18 @@ struct MS2000HardwareProgram
      */
     enum class Xform : uint8_t
     {
-        Raw,           // 0..127 igual
-        Signed,        // byte - 64
-        Bit,           // bit suelto
-        EqFreq,        // 0..29 real → 0..3 del motor (aproximación declarada)
-        EqGain,        // +64 igual que el motor
-        ArpRes,        // 0..5 real → índice del enum del motor (1/24 … 1/4)
-        ArpRange,      // 0..3 real (1..4 octavas) → 1..4 del motor
-        FormantShift,  // 0..4 real (0,+1,+2,-1,-2) → 0..4 del motor (-2,-1,0,+1,+2)
-        Duration127,   // bits 0..6 (portamento)
-        SeqLastStep,   // bits 4..7 almacenan último paso − 1 → 1..16 del motor
-        SeqMotionInv   // bit 0 con el sentido invertido (real 0 = Smooth, motor 0 = Step)
+        Raw,                // 0..127 igual
+        Signed,             // byte - 64
+        Signed2sComplement, // byte en complemento a 2 -100..+100 (arpSwing)
+        Bit,                // bit suelto
+        EqFreq,             // 0..29 real → 0..3 del motor (aproximación declarada)
+        EqGain,             // +64 igual que el motor
+        ArpRes,             // 0..5 real → índice del enum del motor (1/24 … 1/4)
+        ArpRange,           // 0..3 real (1..4 octavas) → 1..4 del motor
+        FormantShift,       // 0..4 real (0,+1,+2,-1,-2) → 0..4 del motor (-2,-1,0,+1,+2)
+        Duration127,        // bits 0..6 (portamento)
+        SeqLastStep,        // bits 4..7 almacenan último paso − 1 → 1..16 del motor
+        SeqMotionInv        // bit 0 con el sentido invertido (real 0 = Smooth, motor 0 = Step)
     };
 
     struct Field
@@ -569,6 +570,7 @@ struct MS2000HardwareProgram
             {ARP_TYPE_RNG, 4, 7, ParamIDs::arpRange, Xform::ArpRange},
             {ARP_GATE, 0, 0, ParamIDs::arpGate, Xform::Raw},
             {ARP_RES, 0, 0, ParamIDs::arpResolution, Xform::ArpRes},
+            {ARP_SWING, 0, 0, ParamIDs::arpSwing, Xform::Signed2sComplement},
             // timbre 1 — voz y osciladores
             {TIMBRE1_START + ti::FLAGS, 6, 7, ParamIDs::voiceMode, Xform::Bit},
             {TIMBRE1_START + ti::FLAGS, 3, 3, ParamIDs::triggerMode, Xform::Bit},
@@ -791,6 +793,8 @@ struct MS2000HardwareProgram
         {
         case Xform::Signed:
             return static_cast<float>(static_cast<int>(fieldValue) - 64);
+        case Xform::Signed2sComplement:
+            return static_cast<float>(std::clamp<int>(static_cast<int8_t>(fieldValue), -100, 100));
         case Xform::EqGain:
         {
             // Hardware byte is 52..76 (64 + dB in [-12..+12]); engine parameter is 0..127 (64 = 0 dB)
@@ -834,6 +838,8 @@ struct MS2000HardwareProgram
         {
         case Xform::Signed:
             return static_cast<uint8_t>(std::clamp(iv + 64, 0, 255));
+        case Xform::Signed2sComplement:
+            return static_cast<uint8_t>(static_cast<int8_t>(std::clamp(iv, -100, 100)));
         case Xform::EqFreq:
         {
             // inversa: 4 pasos del motor → centro de cada tercio de los 30 pasos reales
@@ -1548,8 +1554,6 @@ struct MS2000HardwareProgram
     static std::vector<const char *> unmodelled()
     {
         return {"MIDI channel por timbre",
-                "EG1/EG2 Reset, Trigger Mode y Key Priority",
-                "Swing del arpegiador",
                 "Mod FX Feedback (el DSP lo fija por tipo de efecto)",
                 "EQ: la frecuencia real tiene 30 pasos y el motor 4 (aproximado)"};
     }
