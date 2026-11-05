@@ -1,16 +1,16 @@
 <map id="Source/Plugin/SoftwarePresetProtocol.h" name="Source/Plugin/SoftwarePresetProtocol.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="135,5,347,45"/>
-<area shape="rect" id="Node000002" href="$BridgeActions_8cpp.html" title=" " alt="" coords="5,167,236,192"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="219,58,132,168,128,165,215,55"/>
-<area shape="rect" id="Node000003" href="$BridgeActions_8h.html" title=" " alt="" coords="230,93,446,119"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="276,52,325,91,322,95,273,56"/>
-<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="291,125,157,169,155,164,289,120"/>
-<area shape="rect" id="Node000004" href="$PluginEditor_8h.html" title=" " alt="" coords="261,167,463,192"/>
-<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="349,131,361,166,356,167,344,133"/>
-<area shape="rect" id="Node000007" href="$DSPCoreTests_8cpp.html" title=" " alt="" coords="488,167,711,192"/>
-<area shape="poly" id="edge7_Node000003_Node000007" title=" " alt="" coords="394,120,558,164,556,169,392,125"/>
-<area shape="rect" id="Node000005" href="$PluginEditor_8cpp.html" title=" " alt="" coords="125,240,343,265"/>
-<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="331,201,256,242,254,237,328,196"/>
-<area shape="rect" id="Node000006" href="$PluginProcessor_8cpp.html" title=" " alt="" coords="367,240,610,265"/>
-<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="396,196,469,237,467,242,393,201"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="134,5,345,50"/>
+<area shape="rect" id="Node000002" href="$BridgeActions_8cpp.html" title=" " alt="" coords="5,174,236,201"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="217,61,132,175,128,171,212,63"/>
+<area shape="rect" id="Node000003" href="$BridgeActions_8h.html" title=" " alt="" coords="229,98,444,126"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="277,57,323,97,318,98,276,63"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="282,133,160,176,158,171,286,129"/>
+<area shape="rect" id="Node000004" href="$PluginEditor_8h.html" title=" " alt="" coords="259,174,462,201"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="347,138,359,174,354,172,344,143"/>
+<area shape="rect" id="Node000007" href="$DSPCoreTests_8cpp.html" title=" " alt="" coords="485,174,708,201"/>
+<area shape="poly" id="edge7_Node000003_Node000007" title=" " alt="" coords="398,128,553,173,547,174,397,133"/>
+<area shape="rect" id="Node000005" href="$PluginEditor_8cpp.html" title=" " alt="" coords="125,249,342,277"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="328,209,257,251,255,246,322,210"/>
+<area shape="rect" id="Node000006" href="$PluginProcessor_8cpp.html" title=" " alt="" coords="366,249,608,277"/>
+<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="397,207,467,249,462,249,395,212"/>
 </map>

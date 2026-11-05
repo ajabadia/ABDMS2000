@@ -1,0 +1,663 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Referencia de la clase ABDMS2000::HardwareEffects::HardwareDelay</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.15.0 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Buscar',true);
+  $(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){initNavTree('classABDMS2000_1_1HardwareEffects_1_1HardwareDelay.html','','classABDMS2000_1_1HardwareEffects_1_1HardwareDelay-members'); });
+</script>
+<div id="container">
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">Referencia de la clase ABDMS2000::HardwareEffects::HardwareDelay</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p><code>#include &lt;<a class="el" href="MS2000HardwareEffects_8h_source.html">MS2000HardwareEffects.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Métodos públicos</h2></td></tr>
+<tr class="memitem:a4655c8a28da4ab68c2f25846069c5b5d" id="r_a4655c8a28da4ab68c2f25846069c5b5d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4655c8a28da4ab68c2f25846069c5b5d">prepare</a> (double sampleRate) noexcept</td></tr>
+<tr class="memitem:a4d9d35604ed677aae314c800046aed06" id="r_a4d9d35604ed677aae314c800046aed06"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4d9d35604ed677aae314c800046aed06">reset</a> () noexcept</td></tr>
+<tr class="memitem:a3ba7c73a89f3dbcbcd5d4509ac3008a2" id="r_a3ba7c73a89f3dbcbcd5d4509ac3008a2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3ba7c73a89f3dbcbcd5d4509ac3008a2">setParameters</a> (<a class="el" href="namespaceABDMS2000_1_1HardwareEffects.html#a1843a62086c9a3a935da86b0686364f4">HardwareDelayType</a> type, float delayTimeMsL, float delayTimeMsR, float feedback0to1, float mix0to1) noexcept</td></tr>
+<tr class="memitem:a7116ff2147c8df254a3a398b3fe9ba49" id="r_a7116ff2147c8df254a3a398b3fe9ba49"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7116ff2147c8df254a3a398b3fe9ba49">processStereo</a> (float &amp;left, float &amp;right) noexcept</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-static-attribs" class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
+Atributos públicos estáticos</h2></td></tr>
+<tr class="memitem:a5d5b3b5830fdc3d1633d218d17aa26ae" id="r_a5d5b3b5830fdc3d1633d218d17aa26ae"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5d5b3b5830fdc3d1633d218d17aa26ae">kBufferSize</a> = 262144</td></tr>
+<tr class="memitem:aace9d6262c78a926bdf8bf8667eacad8" id="r_aace9d6262c78a926bdf8bf8667eacad8"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aace9d6262c78a926bdf8bf8667eacad8">kBufferMask</a> = <a class="el" href="#a5d5b3b5830fdc3d1633d218d17aa26ae">kBufferSize</a> - 1</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pri-methods" class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Métodos privados</h2></td></tr>
+<tr class="memitem:a9e662b24347b0a6ec1f26d011b16411e" id="r_a9e662b24347b0a6ec1f26d011b16411e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9e662b24347b0a6ec1f26d011b16411e">readInterpolated6Bit</a> (const std::vector&lt; int16_t &gt; &amp;buf, float delaySamples) const noexcept</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pri-static-methods" class="groupheader"><a id="pri-static-methods" name="pri-static-methods"></a>
+Métodos privados estáticos</h2></td></tr>
+<tr class="memitem:aa7f67a6a441f4f5d9df7b3a5098cfcb3" id="r_aa7f67a6a441f4f5d9df7b3a5098cfcb3"><td class="memItemLeft" align="right" valign="top">static int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa7f67a6a441f4f5d9df7b3a5098cfcb3">quantize16</a> (float x) noexcept</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pri-attribs" class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Atributos privados</h2></td></tr>
+<tr class="memitem:a77fad34428e13f96d4db20ee5fdd5444" id="r_a77fad34428e13f96d4db20ee5fdd5444"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a77fad34428e13f96d4db20ee5fdd5444">sampleRate_</a> {48000.0}</td></tr>
+<tr class="memitem:af23fca22679c0a3d2d8945fb4d515a96" id="r_af23fca22679c0a3d2d8945fb4d515a96"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceABDMS2000_1_1HardwareEffects.html#a1843a62086c9a3a935da86b0686364f4">HardwareDelayType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af23fca22679c0a3d2d8945fb4d515a96">type_</a> {<a class="el" href="namespaceABDMS2000_1_1HardwareEffects.html#a1843a62086c9a3a935da86b0686364f4a7661f30a4684522cd17b8249007ca199">HardwareDelayType::StereoDelay</a>}</td></tr>
+<tr class="memitem:a4f890e771c802c577c74c66e25eeddf5" id="r_a4f890e771c802c577c74c66e25eeddf5"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4f890e771c802c577c74c66e25eeddf5">targetDelayL_</a> {12000.0f}</td></tr>
+<tr class="memitem:a1c05fcedf7863db5bc69e9be933d0520" id="r_a1c05fcedf7863db5bc69e9be933d0520"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1c05fcedf7863db5bc69e9be933d0520">targetDelayR_</a> {12000.0f}</td></tr>
+<tr class="memitem:adc1121ed7f5654ba118cbf7d1f4e0756" id="r_adc1121ed7f5654ba118cbf7d1f4e0756"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adc1121ed7f5654ba118cbf7d1f4e0756">smoothDelayL_</a> {12000.0f}</td></tr>
+<tr class="memitem:a969eb4868777e06808b4ccd390a3f165" id="r_a969eb4868777e06808b4ccd390a3f165"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a969eb4868777e06808b4ccd390a3f165">smoothDelayR_</a> {12000.0f}</td></tr>
+<tr class="memitem:a84c5258cc961991ef03d45fe63b0778e" id="r_a84c5258cc961991ef03d45fe63b0778e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a84c5258cc961991ef03d45fe63b0778e">feedback_</a> {0.35f}</td></tr>
+<tr class="memitem:a661b2c7983793bc0aee7d6baddcaec5f" id="r_a661b2c7983793bc0aee7d6baddcaec5f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a661b2c7983793bc0aee7d6baddcaec5f">mix_</a> {0.35f}</td></tr>
+<tr class="memitem:a9fabb38c14d0c9f3cd3d3707647e7e5f" id="r_a9fabb38c14d0c9f3cd3d3707647e7e5f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9fabb38c14d0c9f3cd3d3707647e7e5f">dampStateL_</a> {0.0f}</td></tr>
+<tr class="memitem:a5700abf8094d5c83ad2d15651ba7019e" id="r_a5700abf8094d5c83ad2d15651ba7019e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5700abf8094d5c83ad2d15651ba7019e">dampStateR_</a> {0.0f}</td></tr>
+<tr class="memitem:af990b827ad2d9c818e1f7bf8f832037c" id="r_af990b827ad2d9c818e1f7bf8f832037c"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int16_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af990b827ad2d9c818e1f7bf8f832037c">bufferL_</a></td></tr>
+<tr class="memitem:ae206f77287a642f9444e6b4e58d23e7f" id="r_ae206f77287a642f9444e6b4e58d23e7f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int16_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae206f77287a642f9444e6b4e58d23e7f">bufferR_</a></td></tr>
+<tr class="memitem:abd9e5e7b3e30a8d4f81351635f5349ba" id="r_abd9e5e7b3e30a8d4f81351635f5349ba"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abd9e5e7b3e30a8d4f81351635f5349ba">writePos_</a> {0}</td></tr>
+</table>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Documentación de funciones miembro</h2>
+<a id="a4655c8a28da4ab68c2f25846069c5b5d" name="a4655c8a28da4ab68c2f25846069c5b5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4655c8a28da4ab68c2f25846069c5b5d">&#9670;&#160;</a></span>prepare()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::HardwareEffects::HardwareDelay::prepare </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>sampleRate</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7116ff2147c8df254a3a398b3fe9ba49" name="a7116ff2147c8df254a3a398b3fe9ba49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7116ff2147c8df254a3a398b3fe9ba49">&#9670;&#160;</a></span>processStereo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::HardwareEffects::HardwareDelay::processStereo </td>
+          <td>(</td>
+          <td class="paramtype">float &amp;</td>          <td class="paramname"><span class="paramname"><em>left</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float &amp;</td>          <td class="paramname"><span class="paramname"><em>right</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa7f67a6a441f4f5d9df7b3a5098cfcb3" name="aa7f67a6a441f4f5d9df7b3a5098cfcb3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7f67a6a441f4f5d9df7b3a5098cfcb3">&#9670;&#160;</a></span>quantize16()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t ABDMS2000::HardwareEffects::HardwareDelay::quantize16 </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>x</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span><span class="mlabel private">private</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9e662b24347b0a6ec1f26d011b16411e" name="a9e662b24347b0a6ec1f26d011b16411e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e662b24347b0a6ec1f26d011b16411e">&#9670;&#160;</a></span>readInterpolated6Bit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::HardwareEffects::HardwareDelay::readInterpolated6Bit </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; int16_t &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>buf</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>delaySamples</em></span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel private">private</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4d9d35604ed677aae314c800046aed06" name="a4d9d35604ed677aae314c800046aed06"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d9d35604ed677aae314c800046aed06">&#9670;&#160;</a></span>reset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::HardwareEffects::HardwareDelay::reset </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3ba7c73a89f3dbcbcd5d4509ac3008a2" name="a3ba7c73a89f3dbcbcd5d4509ac3008a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ba7c73a89f3dbcbcd5d4509ac3008a2">&#9670;&#160;</a></span>setParameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::HardwareEffects::HardwareDelay::setParameters </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceABDMS2000_1_1HardwareEffects.html#a1843a62086c9a3a935da86b0686364f4">HardwareDelayType</a></td>          <td class="paramname"><span class="paramname"><em>type</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>delayTimeMsL</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>delayTimeMsR</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>feedback0to1</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>mix0to1</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Documentación de datos miembro</h2>
+<a id="af990b827ad2d9c818e1f7bf8f832037c" name="af990b827ad2d9c818e1f7bf8f832037c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af990b827ad2d9c818e1f7bf8f832037c">&#9670;&#160;</a></span>bufferL_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;int16_t&gt; ABDMS2000::HardwareEffects::HardwareDelay::bufferL_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae206f77287a642f9444e6b4e58d23e7f" name="ae206f77287a642f9444e6b4e58d23e7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae206f77287a642f9444e6b4e58d23e7f">&#9670;&#160;</a></span>bufferR_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;int16_t&gt; ABDMS2000::HardwareEffects::HardwareDelay::bufferR_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9fabb38c14d0c9f3cd3d3707647e7e5f" name="a9fabb38c14d0c9f3cd3d3707647e7e5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9fabb38c14d0c9f3cd3d3707647e7e5f">&#9670;&#160;</a></span>dampStateL_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::HardwareEffects::HardwareDelay::dampStateL_ {0.0f}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5700abf8094d5c83ad2d15651ba7019e" name="a5700abf8094d5c83ad2d15651ba7019e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5700abf8094d5c83ad2d15651ba7019e">&#9670;&#160;</a></span>dampStateR_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::HardwareEffects::HardwareDelay::dampStateR_ {0.0f}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a84c5258cc961991ef03d45fe63b0778e" name="a84c5258cc961991ef03d45fe63b0778e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84c5258cc961991ef03d45fe63b0778e">&#9670;&#160;</a></span>feedback_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::HardwareEffects::HardwareDelay::feedback_ {0.35f}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aace9d6262c78a926bdf8bf8667eacad8" name="aace9d6262c78a926bdf8bf8667eacad8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aace9d6262c78a926bdf8bf8667eacad8">&#9670;&#160;</a></span>kBufferMask</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t ABDMS2000::HardwareEffects::HardwareDelay::kBufferMask = <a class="el" href="#a5d5b3b5830fdc3d1633d218d17aa26ae">kBufferSize</a> - 1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5d5b3b5830fdc3d1633d218d17aa26ae" name="a5d5b3b5830fdc3d1633d218d17aa26ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d5b3b5830fdc3d1633d218d17aa26ae">&#9670;&#160;</a></span>kBufferSize</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t ABDMS2000::HardwareEffects::HardwareDelay::kBufferSize = 262144</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a661b2c7983793bc0aee7d6baddcaec5f" name="a661b2c7983793bc0aee7d6baddcaec5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a661b2c7983793bc0aee7d6baddcaec5f">&#9670;&#160;</a></span>mix_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::HardwareEffects::HardwareDelay::mix_ {0.35f}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a77fad34428e13f96d4db20ee5fdd5444" name="a77fad34428e13f96d4db20ee5fdd5444"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77fad34428e13f96d4db20ee5fdd5444">&#9670;&#160;</a></span>sampleRate_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double ABDMS2000::HardwareEffects::HardwareDelay::sampleRate_ {48000.0}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="adc1121ed7f5654ba118cbf7d1f4e0756" name="adc1121ed7f5654ba118cbf7d1f4e0756"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc1121ed7f5654ba118cbf7d1f4e0756">&#9670;&#160;</a></span>smoothDelayL_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::HardwareEffects::HardwareDelay::smoothDelayL_ {12000.0f}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a969eb4868777e06808b4ccd390a3f165" name="a969eb4868777e06808b4ccd390a3f165"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a969eb4868777e06808b4ccd390a3f165">&#9670;&#160;</a></span>smoothDelayR_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::HardwareEffects::HardwareDelay::smoothDelayR_ {12000.0f}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4f890e771c802c577c74c66e25eeddf5" name="a4f890e771c802c577c74c66e25eeddf5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f890e771c802c577c74c66e25eeddf5">&#9670;&#160;</a></span>targetDelayL_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::HardwareEffects::HardwareDelay::targetDelayL_ {12000.0f}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1c05fcedf7863db5bc69e9be933d0520" name="a1c05fcedf7863db5bc69e9be933d0520"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c05fcedf7863db5bc69e9be933d0520">&#9670;&#160;</a></span>targetDelayR_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::HardwareEffects::HardwareDelay::targetDelayR_ {12000.0f}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af23fca22679c0a3d2d8945fb4d515a96" name="af23fca22679c0a3d2d8945fb4d515a96"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af23fca22679c0a3d2d8945fb4d515a96">&#9670;&#160;</a></span>type_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceABDMS2000_1_1HardwareEffects.html#a1843a62086c9a3a935da86b0686364f4">HardwareDelayType</a> ABDMS2000::HardwareEffects::HardwareDelay::type_ {<a class="el" href="namespaceABDMS2000_1_1HardwareEffects.html#a1843a62086c9a3a935da86b0686364f4a7661f30a4684522cd17b8249007ca199">HardwareDelayType::StereoDelay</a>}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abd9e5e7b3e30a8d4f81351635f5349ba" name="abd9e5e7b3e30a8d4f81351635f5349ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd9e5e7b3e30a8d4f81351635f5349ba">&#9670;&#160;</a></span>writePos_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t ABDMS2000::HardwareEffects::HardwareDelay::writePos_ {0}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>La documentación de esta clase está generada del siguiente archivo:<ul>
+<li>Source/DSP/Effects/<a class="el" href="MS2000HardwareEffects_8h_source.html">MS2000HardwareEffects.h</a></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<div id="page-nav" class="page-nav-panel">
+<div id="page-nav-resize-handle"></div>
+<div id="page-nav-tree">
+<div id="page-nav-contents">
+</div><!-- page-nav-contents -->
+</div><!-- page-nav-tree -->
+</div><!-- page-nav -->
+</div><!-- container -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a href="namespaceABDMS2000.html">ABDMS2000</a></li><li class="navelem"><a href="namespaceABDMS2000_1_1HardwareEffects.html">HardwareEffects</a></li><li class="navelem"><a href="classABDMS2000_1_1HardwareEffects_1_1HardwareDelay.html">HardwareDelay</a></li>
+    <li class="footer">Generado por <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0 </li>
+  </ul>
+</div>
+</body>
+</html>

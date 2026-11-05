@@ -1,0 +1,21 @@
+<map id="Source/DSP/Effects/MS2000HardwareEffects.h" name="Source/DSP/Effects/MS2000HardwareEffects.h">
+<area shape="rect" id="Node000001" title="Standalone, bit&#45;accurate C++20 reference implementations of all Korg MS2000 DSP56362 hardware effects..." alt="" coords="200,5,396,50"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,106,61,134"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="222,53,81,101,76,102,73,98,79,95,223,48"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="86,191,148,218"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="197,48,159,69,141,83,126,100,117,117,113,136,114,176,109,174,108,136,112,115,121,96,137,79,156,65,202,45"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="315,191,380,218"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="315,48,331,71,342,97,350,138,351,176,347,173,345,138,337,99,326,74,314,53"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="402,106,464,134"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="331,48,404,98,399,98,330,53"/>
+<area shape="rect" id="Node000006" href="$MS2000FirmwareTables_8h.html" title=" " alt="" coords="136,98,328,143"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="285,49,258,88,255,84,280,52"/>
+<area shape="rect" id="Node000008" href="$DSPUtils_8h.html" title=" " alt="" coords="488,106,652,134"/>
+<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="364,48,519,101,514,102,363,53"/>
+<area shape="poly" id="edge7_Node000006_Node000003" title=" " alt="" coords="204,142,149,184,147,179,199,144"/>
+<area shape="poly" id="edge8_Node000006_Node000004" title=" " alt="" coords="263,141,319,181,314,181,261,146"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="190,191,274,218"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="234,141,234,176,229,174,230,145"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="490,191,650,218"/>
+<area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="572,133,572,177,568,174,568,137"/>
+</map>

@@ -1,7 +1,7 @@
 <map id="Source/Plugin/SoftwarePresetProtocol.h" name="Source/Plugin/SoftwarePresetProtocol.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="51,5,263,45"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,93,168,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="142,47,108,85,104,81,138,44"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="193,93,263,119"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="176,44,210,81,206,85,172,47"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="50,5,261,50"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,98,167,126"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="139,49,109,88,105,84,135,52"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="191,98,261,126"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="175,48,207,86,202,86,173,53"/>
 </map>

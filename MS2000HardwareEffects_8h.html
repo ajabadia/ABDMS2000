@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Referencia del archivo Source/DSP/Effects/MS2000HardwareEffects.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.15.0 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Buscar',true);
+  $(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){initNavTree('MS2000HardwareEffects_8h.html','',''); });
+</script>
+<div id="container">
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">Referencia del archivo MS2000HardwareEffects.h</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>Standalone, bit-accurate C++20 reference implementations of all Korg MS2000 DSP56362 hardware effects and voice post-processing blocks, extracted directly from the Motorola DSP56362 microcode (<span class="tt">P:$0000..$12DA</span>, <span class="tt">X:$0000..$0BFF</span>, <span class="tt">Y:$0020..$0BFF</span>) and Hitachi H8S/2350 host driver (<span class="tt">x811v107.sys</span> / <span class="tt">flash.bin</span>).  
+<a href="#details">Más...</a></p>
+<div class="textblock"><code>#include &lt;array&gt;</code><br />
+<code>#include &lt;cmath&gt;</code><br />
+<code>#include &lt;cstdint&gt;</code><br />
+<code>#include &lt;vector&gt;</code><br />
+<code>#include &quot;<a class="el" href="MS2000FirmwareTables_8h_source.html">../../Core/MS2000FirmwareTables.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="DSPUtils_8h_source.html">../Common/DSPUtils.h</a>&quot;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Gráfico de dependencias incluidas en MS2000HardwareEffects.h:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="MS2000HardwareEffects_8h__incl.svg" width="658" height="224"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
+<p><a href="MS2000HardwareEffects_8h_source.html">Ir al código fuente de este archivo.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Clases</h2></td></tr>
+<tr class="memitem:ABDMS2000_3A_3AHardwareEffects_3A_3AHardwareVoiceDistortion" id="r_ABDMS2000_3A_3AHardwareEffects_3A_3AHardwareVoiceDistortion"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1HardwareEffects_1_1HardwareVoiceDistortion.html">ABDMS2000::HardwareEffects::HardwareVoiceDistortion</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Per-voice VCA pre-filter, +48.16 dB hard-limiting clipper, and 2nd-order Cabinet / Speaker-Simulator biquad extracted from <span class="tt">P:$0834 - $0890</span>.  <a href="classABDMS2000_1_1HardwareEffects_1_1HardwareVoiceDistortion.html#details">Más...</a><br /></td></tr>
+<tr class="memitem:ABDMS2000_3A_3AHardwareEffects_3A_3AHardwareTwoBandEQ" id="r_ABDMS2000_3A_3AHardwareEffects_3A_3AHardwareTwoBandEQ"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1HardwareEffects_1_1HardwareTwoBandEQ.html">ABDMS2000::HardwareEffects::HardwareTwoBandEQ</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stereo cascaded 1st-order Low-Shelf + 1st-order High-Shelf <a class="el" href="classABDMS2000_1_1Equalizer.html" title="2-Band Cascaded Shelving Equalizer based on reverse-engineered Korg MS2000 DSP specs....">Equalizer</a> extracted from <span class="tt">P:$08B0 - $08E7</span> (<span class="tt">r3 = $0011</span>, <span class="tt">X:$0016..$001B</span>).  <a href="classABDMS2000_1_1HardwareEffects_1_1HardwareTwoBandEQ.html#details">Más...</a><br /></td></tr>
+<tr class="memitem:ABDMS2000_3A_3AHardwareEffects_3A_3AHardwareChorusFlanger" id="r_ABDMS2000_3A_3AHardwareEffects_3A_3AHardwareChorusFlanger"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1HardwareEffects_1_1HardwareChorusFlanger.html">ABDMS2000::HardwareEffects::HardwareChorusFlanger</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stereo Chorus / Flanger extracted from <span class="tt">P:$0F50 - $0F95</span> (<span class="tt">r3 = $0220</span>).  <a href="classABDMS2000_1_1HardwareEffects_1_1HardwareChorusFlanger.html#details">Más...</a><br /></td></tr>
+<tr class="memitem:ABDMS2000_3A_3AHardwareEffects_3A_3AHardwareEnsemble" id="r_ABDMS2000_3A_3AHardwareEffects_3A_3AHardwareEnsemble"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1HardwareEffects_1_1HardwareEnsemble.html">ABDMS2000::HardwareEffects::HardwareEnsemble</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">3-Tap BBD String Ensemble extracted from <span class="tt">P:$0F96 - $0FE8</span> (<span class="tt">r3 = $0240</span>).  <a href="classABDMS2000_1_1HardwareEffects_1_1HardwareEnsemble.html#details">Más...</a><br /></td></tr>
+<tr class="memitem:ABDMS2000_3A_3AHardwareEffects_3A_3AHardwarePhaser" id="r_ABDMS2000_3A_3AHardwareEffects_3A_3AHardwarePhaser"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1HardwareEffects_1_1HardwarePhaser.html">ABDMS2000::HardwareEffects::HardwarePhaser</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">4-Stage Stereo All-Pass Phaser extracted from <span class="tt">P:$105D - $10A7</span> (<span class="tt">r3 = $0260</span>).  <a href="classABDMS2000_1_1HardwareEffects_1_1HardwarePhaser.html#details">Más...</a><br /></td></tr>
+<tr class="memitem:ABDMS2000_3A_3AHardwareEffects_3A_3AHardwareDelay" id="r_ABDMS2000_3A_3AHardwareEffects_3A_3AHardwareDelay"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1HardwareEffects_1_1HardwareDelay.html">ABDMS2000::HardwareEffects::HardwareDelay</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-namespaces" class="groupheader"><a id="namespaces" name="namespaces"></a>
+Espacios de nombres</h2></td></tr>
+<tr class="memitem:ABDMS2000" id="r_ABDMS2000"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html">ABDMS2000</a></td></tr>
+<tr class="memitem:ABDMS2000_3A_3AHardwareEffects" id="r_ABDMS2000_3A_3AHardwareEffects"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1HardwareEffects.html">ABDMS2000::HardwareEffects</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-enum-members" class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumeraciones</h2></td></tr>
+<tr class="memitem:a1843a62086c9a3a935da86b0686364f4" id="r_a1843a62086c9a3a935da86b0686364f4"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1HardwareEffects.html#a1843a62086c9a3a935da86b0686364f4">ABDMS2000::HardwareEffects::HardwareDelayType</a> { <a class="el" href="namespaceABDMS2000_1_1HardwareEffects.html#a1843a62086c9a3a935da86b0686364f4a7661f30a4684522cd17b8249007ca199">ABDMS2000::HardwareEffects::StereoDelay</a> = 0
+, <a class="el" href="namespaceABDMS2000_1_1HardwareEffects.html#a1843a62086c9a3a935da86b0686364f4ac6afcf92fccf01e78f30cc4acb0ea778">ABDMS2000::HardwareEffects::CrossDelay</a> = 1
+, <a class="el" href="namespaceABDMS2000_1_1HardwareEffects.html#a1843a62086c9a3a935da86b0686364f4a8cab03087f77b48c098db1a6e90dd00a">ABDMS2000::HardwareEffects::LRDelay</a> = 2
+ }</td></tr>
+<tr class="memdesc:a1843a62086c9a3a935da86b0686364f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stereo, Cross, and L/R Delay extracted from <span class="tt">P:$0FE9 - $1024</span> (<span class="tt">r3 = $0200</span>) and <span class="tt">P:$1025 - $105C</span> (<span class="tt">r3 = $0280</span>).  <a href="namespaceABDMS2000_1_1HardwareEffects.html#a1843a62086c9a3a935da86b0686364f4">Más...</a><br /></td></tr>
+</table>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Descripción detallada</h2>
+<div class="textblock"><p>Standalone, bit-accurate C++20 reference implementations of all Korg MS2000 DSP56362 hardware effects and voice post-processing blocks, extracted directly from the Motorola DSP56362 microcode (<span class="tt">P:$0000..$12DA</span>, <span class="tt">X:$0000..$0BFF</span>, <span class="tt">Y:$0020..$0BFF</span>) and Hitachi H8S/2350 host driver (<span class="tt">x811v107.sys</span> / <span class="tt">flash.bin</span>). </p>
+<p>All effects on the Korg MS2000 run inside the single Motorola DSP56362 @ 100 MHz (<span class="tt">48,000 Hz</span> ESAI sample interrupt <span class="tt">P:$03B3</span>), sharing a 1M x 16-bit external EDO DRAM (<span class="tt">KM416V1204CT</span> mapped at <span class="tt">Y:$400000..$4FFFFF</span>).</p>
+<p>This module is intentionally self-contained and decoupled from <span class="tt">ABDSharedCode</span> so individual algorithms can be inspected, tested, or migrated independently. </p>
+</div></div><!-- contents -->
+</div><!-- doc-content -->
+<div id="page-nav" class="page-nav-panel">
+<div id="page-nav-resize-handle"></div>
+<div id="page-nav-tree">
+<div id="page-nav-contents">
+</div><!-- page-nav-contents -->
+</div><!-- page-nav-tree -->
+</div><!-- page-nav -->
+</div><!-- container -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a href="dir_28f92771c0af6f341cedd07750149305.html">DSP</a></li><li class="navelem"><a href="dir_93b0420c202dab069e0f3b7b5bb42654.html">Effects</a></li><li class="navelem"><a href="MS2000HardwareEffects_8h.html">MS2000HardwareEffects.h</a></li>
+    <li class="footer">Generado por <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0 </li>
+  </ul>
+</div>
+</body>
+</html>

@@ -1,5 +1,5 @@
 <map id="ABDMS2000::ModFX" name="ABDMS2000::ModFX">
-<area shape="rect" id="Node000001" title="Modulation FX Block for MS2000." alt="" coords="48,93,203,119"/>
-<area shape="rect" id="Node000002" href="$classABDMS2000_1_1MS2KChorusFlanger.html" title="MS2KChorusFlanger &#45; Efecto híbrido continuo Chorus/Flanger del Korg MS2000 (DSP56362)." alt="" coords="5,5,245,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="128,45,128,93,123,93,123,45"/>
+<area shape="rect" id="Node000001" title="Modulation FX Block for MS2000 (DSP56362 P:$0F48–$10A7)." alt="" coords="48,106,202,134"/>
+<area shape="rect" id="Node000002" href="$classABDMS2000_1_1MS2KChorusFlanger.html" title="MS2KChorusFlanger &#45; Envoltorio sobre abd::dsp::DspMS2000ChorusFlanger (DSP56362 P:$0F48–$0F95)." alt="" coords="5,5,245,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="127,47,128,106,122,104,123,50"/>
 </map>

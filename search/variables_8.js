@@ -1,13 +1,21 @@
 var searchData=
 [
   ['i_0',['I',['../structABDMS2000_1_1VowelFormants.html#a722774a9f0f9718253a883e017f97f04',1,'ABDMS2000::VowelFormants']]],
-  ['id_1',['id',['../structABDMS2000_1_1ParameterMeta.html#a06cfa9aaa36b7898e39dc0afb5a303f6',1,'ABDMS2000::ParameterMeta']]],
-  ['intensity_2',['intensity',['../structABDMS2000_1_1PatchSlot.html#a5fed20885ad41e5a964da918f43da501',1,'ABDMS2000::PatchSlot']]],
-  ['isheldbylatch_3',['isHeldByLatch',['../structABDMS2000_1_1VoiceSlotState.html#ab629f337ded45c4b7a5ceac46ad883c5',1,'ABDMS2000::VoiceSlotState']]],
-  ['isholdactive_5f_4',['isHoldActive_',['../classABDMS2000_1_1VoiceManager.html#a33579a3f1a78c62bfd5482a1552dbb1b',1,'ABDMS2000::VoiceManager']]],
-  ['isincoming_5',['isIncoming',['../structABDMS2000_1_1MidiActivityEvent.html#a216adbda5730727cd63ae0a9b0980c93',1,'ABDMS2000::MidiActivityEvent']]],
-  ['isinitialized_5f_6',['isInitialized_',['../classABDMS2000_1_1DWGSTables.html#a6dd8dffd2abb1b4f73d3f5716df1d026',1,'ABDMS2000::DWGSTables']]],
-  ['isinternalmidiupdate_5f_7',['isInternalMidiUpdate_',['../classABDMS2000_1_1MIDITelemetryManager.html#a7ac6c5ad073c054dc22aa853fe844e83',1,'ABDMS2000::MIDITelemetryManager']]],
-  ['iskeypressed_8',['isKeyPressed',['../structABDMS2000_1_1VoiceSlotState.html#af4bd1b699602de4b2a55e169470c258f',1,'ABDMS2000::VoiceSlotState']]],
-  ['isnoteon_9',['isNoteOn',['../structABDMS2000_1_1ArpNoteEvent.html#a0ef539a3058798dca7706648e50e066a',1,'ABDMS2000::ArpNoteEvent']]]
+  ['id_1',['id',['../structABDMS2000_1_1ParameterMeta.html#a06cfa9aaa36b7898e39dc0afb5a303f6',1,'ABDMS2000::ParameterMeta::id'],['../structconversion_1_1ParameterMeta.html#a06cfa9aaa36b7898e39dc0afb5a303f6',1,'conversion::ParameterMeta::id']]],
+  ['idletailsamplesremaining_5f_2',['idleTailSamplesRemaining_',['../classABDMS2000_1_1SynthEngine.html#a128bed2f86320ff987a5a42536538a61',1,'ABDMS2000::SynthEngine']]],
+  ['intensity_3',['intensity',['../structABDMS2000_1_1PatchSlot.html#a5fed20885ad41e5a964da918f43da501',1,'ABDMS2000::PatchSlot']]],
+  ['intformant1_5f_4',['intFormant1_',['../classABDMS2000_1_1MS2KVocoder16Band.html#a838c28e4088264d246e13495dce76230',1,'ABDMS2000::MS2KVocoder16Band']]],
+  ['intformant2_5f_5',['intFormant2_',['../classABDMS2000_1_1MS2KVocoder16Band.html#a4dc6caed863c675bd963ea120c1ecd2a',1,'ABDMS2000::MS2KVocoder16Band']]],
+  ['intformant3_5f_6',['intFormant3_',['../classABDMS2000_1_1MS2KVocoder16Band.html#a7f713547d89600e87e798130667557bf',1,'ABDMS2000::MS2KVocoder16Band']]],
+  ['intglottalphase_5f_7',['intGlottalPhase_',['../classABDMS2000_1_1MS2KVocoder16Band.html#a51d7a6775d47517d94aa22257c731759',1,'ABDMS2000::MS2KVocoder16Band']]],
+  ['intvowelphase_5f_8',['intVowelPhase_',['../classABDMS2000_1_1MS2KVocoder16Band.html#a1ae9373d2bc65930cb5b54d0e8ee06b5',1,'ABDMS2000::MS2KVocoder16Band']]],
+  ['iplupdater_5f_9',['iplUpdater_',['../classABDMS2000_1_1BridgeActions.html#a368f7dc2170413ab14ebfb2debb48122',1,'ABDMS2000::BridgeActions']]],
+  ['isheldbylatch_10',['isHeldByLatch',['../structABDMS2000_1_1VoiceSlotState.html#ab629f337ded45c4b7a5ceac46ad883c5',1,'ABDMS2000::VoiceSlotState']]],
+  ['isholdactive_5f_11',['isHoldActive_',['../classABDMS2000_1_1VoiceManager.html#a33579a3f1a78c62bfd5482a1552dbb1b',1,'ABDMS2000::VoiceManager']]],
+  ['isincoming_12',['isIncoming',['../structABDMS2000_1_1MidiActivityEvent.html#a216adbda5730727cd63ae0a9b0980c93',1,'ABDMS2000::MidiActivityEvent']]],
+  ['isinitialized_5f_13',['isInitialized_',['../classABDMS2000_1_1DWGSTables.html#a6dd8dffd2abb1b4f73d3f5716df1d026',1,'ABDMS2000::DWGSTables']]],
+  ['isinternalmidiupdate_5f_14',['isInternalMidiUpdate_',['../classABDMS2000_1_1MIDITelemetryManager.html#a7ac6c5ad073c054dc22aa853fe844e83',1,'ABDMS2000::MIDITelemetryManager']]],
+  ['iskeypressed_15',['isKeyPressed',['../structABDMS2000_1_1VoiceSlotState.html#af4bd1b699602de4b2a55e169470c258f',1,'ABDMS2000::VoiceSlotState']]],
+  ['isnoteon_16',['isNoteOn',['../structABDMS2000_1_1ArpNoteEvent.html#a0ef539a3058798dca7706648e50e066a',1,'ABDMS2000::ArpNoteEvent']]],
+  ['isosc2_5f_17',['isOsc2_',['../classABDMS2000_1_1VAOscillator.html#a1f64289f9dccb1d9cf22597a189a6754',1,'ABDMS2000::VAOscillator']]]
 ];

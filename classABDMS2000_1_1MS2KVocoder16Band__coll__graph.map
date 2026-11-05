@@ -1,7 +1,9 @@
 <map id="ABDMS2000::MS2KVocoder16Band" name="ABDMS2000::MS2KVocoder16Band">
-<area shape="rect" id="Node000001" title="MS2KVocoder16Band &#45; Motor de vocoder de 16 bandas del Korg MS2000." alt="" coords="115,93,363,119"/>
-<area shape="rect" id="Node000002" href="$classABDMS2000_1_1EnvelopeFollower.html" title="High&#45;precision Envelope Follower with configurable release time (Gate Sense)." alt="" coords="5,5,231,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="147,37,224,91,221,95,144,41"/>
-<area shape="rect" id="Node000003" href="$classABDMS2000_1_1NoiseGenerator.html" title="Real&#45;Time Safe White and Pink Noise Generator (LCG algorithm)." alt="" coords="255,5,467,31"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="346,44,318,71,273,96,271,91,315,67,342,40"/>
+<area shape="rect" id="Node000001" title="MS2KVocoder16Band &#45; Motor de vocoder de 16 bandas del Korg MS2000." alt="" coords="235,151,482,178"/>
+<area shape="rect" id="Node000002" href="$classABDMS2000_1_1EnvelopeFollower.html" title="High&#45;precision Envelope Follower with configurable release time (Gate Sense)." alt="" coords="5,5,230,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="137,42,176,85,200,106,227,124,255,138,288,150,282,150,253,143,224,129,197,110,172,89,135,47"/>
+<area shape="rect" id="Node000003" href="$classABDMS2000_1_1NoiseGenerator.html" title="Real&#45;Time Safe White and Pink Noise Generator (LCG algorithm)." alt="" coords="253,5,464,33"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="361,47,361,151,356,149,357,50"/>
+<area shape="rect" id="Node000004" href="$structABDMS2000_1_1BiquadBPF.html" title=" " alt="" coords="489,5,668,33"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="564,44,528,89,505,111,480,129,453,143,424,153,423,147,451,138,477,124,502,106,524,85,559,47"/>
 </map>

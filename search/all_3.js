@@ -7,7 +7,7 @@ var searchData=
   ['4_20arquitectura_20completa_20del_20ms2000_4',['4. Arquitectura Completa del MS2000',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md52',1,'']]],
   ['4_20arquitectura_20recomendada_20en_20juce_5',['3.4 Arquitectura recomendada en JUCE',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md50',1,'']]],
   ['4_20coeficiente_20de_20decay_20por_20muestra_6',['8.4 Coeficiente de Decay por Muestra',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md79',1,'']]],
-  ['4_20conectividad_20externa_20y_20serialización_20sysex_20persistencia_7',['4. Conectividad Externa y Serialización (SysEx / Persistencia)',['..//home/runner/work/ABDMS2000/ABDMS2000/README.md#autotoc_md285',1,'']]],
+  ['4_20conectividad_20externa_20y_20serialización_20sysex_20persistencia_7',['4. Conectividad Externa y Serialización (SysEx / Persistencia)',['../index.html#autotoc_md285',1,'']]],
   ['4_20datos_20de_20audio_20de_20referencia_20calibración_8',['2.4 Datos de Audio de Referencia (Calibración)',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md43',1,'']]],
   ['4_20implementación_20del_20motor_9',['11.4 Implementación del Motor',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md98',1,'']]],
   ['4_20integración_20con_20el_20editor_20midi_10',['6.4 Integración con el Editor MIDI',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md67',1,'']]],

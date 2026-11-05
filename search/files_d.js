@@ -9,5 +9,6 @@ var searchData=
   ['pluginprocessor_2ecpp_6',['PluginProcessor.cpp',['../PluginProcessor_8cpp.html',1,'']]],
   ['pluginprocessor_2eh_7',['PluginProcessor.h',['../PluginProcessor_8h.html',1,'']]],
   ['polyblep_2eh_8',['PolyBLEP.h',['../PolyBLEP_8h.html',1,'']]],
-  ['portamentoglide_2eh_9',['PortamentoGlide.h',['../PortamentoGlide_8h.html',1,'']]]
+  ['portamentoglide_2eh_9',['PortamentoGlide.h',['../PortamentoGlide_8h.html',1,'']]],
+  ['processblockbenchmark_2ecpp_10',['ProcessBlockBenchmark.cpp',['../ProcessBlockBenchmark_8cpp.html',1,'']]]
 ];

@@ -3,12 +3,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
-<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Referencia del archivo Source/Tests/DSPCoreTests.cpp</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -29,23 +34,38 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- Generado por Doxygen 1.9.8 -->
+<!-- Generado por Doxygen 1.15.0 -->
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 var searchBox = new SearchBox("searchBox", "search/",'.html');
-/* @license-end */
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
 </script>
 <script type="text/javascript" src="menudata.js"></script>
 <script type="text/javascript" src="menu.js"></script>
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,false,'search.php','Buscar');
-  $(document).ready(function() { init_search(); });
+  initMenu('',true,false,'search.php','Buscar',true);
+  $(function() { init_search(); });
 });
-/* @license-end */
 </script>
 <div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){initNavTree('DSPCoreTests_8cpp.html','',''); });
+</script>
+<div id="container">
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -67,21 +87,12 @@ $(function() {
 </div>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a class="el" href="dir_c4649485c883873e4a98325dc46175f5.html">Tests</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
-  <div class="summary">
-<a href="#nested-classes">Clases</a> &#124;
-<a href="#namespaces">Espacios de nombres</a> &#124;
-<a href="#func-members">Funciones</a> &#124;
-<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">Referencia del archivo DSPCoreTests.cpp</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;juce_audio_processors/juce_audio_processors.h&gt;</code><br />
+<code>#include &quot;../../Core/MS2000FirmwareTables.h&quot;</code><br />
 <code>#include &quot;../../Core/SynthEngine.h&quot;</code><br />
 <code>#include &quot;../../Core/VoiceManager.h&quot;</code><br />
 <code>#include &quot;../../DSP/Common/DSPUtils.h&quot;</code><br />
@@ -89,12 +100,15 @@ $(function() {
 <code>#include &quot;../../DSP/Filters/FilterResonanceComp.h&quot;</code><br />
 <code>#include &quot;../../DSP/Filters/MultiModeFilter.h&quot;</code><br />
 <code>#include &quot;../../DSP/Modulation/LFO.h&quot;</code><br />
+<code>#include &quot;../../DSP/Oscillators/DWGSTables.h&quot;</code><br />
 <code>#include &quot;../../DSP/Oscillators/VoxWaveOscillator.h&quot;</code><br />
 <code>#include &quot;../../DSP/Vocoder/Vocoder16Band.h&quot;</code><br />
 <code>#include &quot;../../MIDI/MIDIMap.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="Conversion_8gen_8h_source.html">../State/Conversion.gen.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="MS2000FactoryBank_8h_source.html">../State/MS2000FactoryBank.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="MS2000PatchBuilder_8h_source.html">../State/MS2000PatchBuilder.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="ParameterRegistry_8gen_8h_source.html">../State/ParameterRegistry.gen.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="LfoFirmwareParityTests_8h_source.html">LfoFirmwareParityTests.h</a>&quot;</code><br />
 <code>#include &quot;../../ABDSharedCode/HardwareDrivers/NRPNParser.h&quot;</code><br />
 <code>#include &quot;../../ABDSharedCode/HardwareDrivers/SysExCodec.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="ABDSynthsSysEx_8h_source.html">../MIDI/ABDSynthsSysEx.h</a>&quot;</code><br />
@@ -117,98 +131,83 @@ $(function() {
 </div><div class="textblock"><div class="dynheader">
 Gráfico de dependencias incluidas en DSPCoreTests.cpp:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="DSPCoreTests_8cpp__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="DSPCoreTests_8cpp__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+<tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Clases</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Tests_1_1BridgeTestProcessor.html">ABDMS2000::Tests::BridgeTestProcessor</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Tests_1_1FakeBridgeHost.html">ABDMS2000::Tests::FakeBridgeHost</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1Tests_1_1BridgeTestHarness.html">ABDMS2000::Tests::BridgeTestHarness</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Tests_1_1DummyProcessor.html">ABDMS2000::Tests::DummyProcessor</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1Tests_1_1DummySynthFixture.html">ABDMS2000::Tests::DummySynthFixture</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ABDMS2000_3A_3ATests_3A_3ABridgeTestProcessor" id="r_ABDMS2000_3A_3ATests_3A_3ABridgeTestProcessor"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Tests_1_1BridgeTestProcessor.html">ABDMS2000::Tests::BridgeTestProcessor</a></td></tr>
+<tr class="memitem:ABDMS2000_3A_3ATests_3A_3AFakeBridgeHost" id="r_ABDMS2000_3A_3ATests_3A_3AFakeBridgeHost"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Tests_1_1FakeBridgeHost.html">ABDMS2000::Tests::FakeBridgeHost</a></td></tr>
+<tr class="memitem:ABDMS2000_3A_3ATests_3A_3ABridgeTestHarness" id="r_ABDMS2000_3A_3ATests_3A_3ABridgeTestHarness"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1Tests_1_1BridgeTestHarness.html">ABDMS2000::Tests::BridgeTestHarness</a></td></tr>
+<tr class="memitem:ABDMS2000_3A_3ATests_3A_3ADummyProcessor" id="r_ABDMS2000_3A_3ATests_3A_3ADummyProcessor"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1Tests_1_1DummyProcessor.html">ABDMS2000::Tests::DummyProcessor</a></td></tr>
+<tr class="memitem:ABDMS2000_3A_3ATests_3A_3ADummySynthFixture" id="r_ABDMS2000_3A_3ATests_3A_3ADummySynthFixture"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1Tests_1_1DummySynthFixture.html">ABDMS2000::Tests::DummySynthFixture</a></td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
+<tr class="heading"><td colspan="2"><h2 id="header-namespaces" class="groupheader"><a id="namespaces" name="namespaces"></a>
 Espacios de nombres</h2></td></tr>
-<tr class="memitem:namespaceABDMS2000" id="r_namespaceABDMS2000"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html">ABDMS2000</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespaceABDMS2000_1_1Tests" id="r_namespaceABDMS2000_1_1Tests"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html">ABDMS2000::Tests</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ABDMS2000" id="r_ABDMS2000"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html">ABDMS2000</a></td></tr>
+<tr class="memitem:ABDMS2000_3A_3ATests" id="r_ABDMS2000_3A_3ATests"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html">ABDMS2000::Tests</a></td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+<tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
+defines</h2></td></tr>
+<tr class="memitem:a69f318e4c30a60613f04936dbb6616d3" id="r_a69f318e4c30a60613f04936dbb6616d3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a69f318e4c30a60613f04936dbb6616d3">ABD_TEST_NOINLINE</a>&#160;&#160;&#160;__attribute__((noinline))</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Funciones</h2></td></tr>
 <tr class="memitem:a14275341ce845995addc34a73e4ed454" id="r_a14275341ce845995addc34a73e4ed454"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#a14275341ce845995addc34a73e4ed454">ABDMS2000::Tests::check</a> (bool condition, const char *testName)</td></tr>
-<tr class="separator:a14275341ce845995addc34a73e4ed454"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ef871e45083c53884ef59f602c1090e" id="r_a8ef871e45083c53884ef59f602c1090e"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structABDMS2000_1_1Tests_1_1DummySynthFixture.html">DummySynthFixture</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#a8ef871e45083c53884ef59f602c1090e">ABDMS2000::Tests::dummyFixture</a> ()</td></tr>
-<tr class="separator:a8ef871e45083c53884ef59f602c1090e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1cde43aefa0dd3b5fd79fbc99197851" id="r_aa1cde43aefa0dd3b5fd79fbc99197851"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#aa1cde43aefa0dd3b5fd79fbc99197851">ABDMS2000::Tests::testDspUtils</a> ()</td></tr>
-<tr class="separator:aa1cde43aefa0dd3b5fd79fbc99197851"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03fccfb5fd3418e003e3fde54dbcf3aa" id="r_a03fccfb5fd3418e003e3fde54dbcf3aa"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#a03fccfb5fd3418e003e3fde54dbcf3aa">ABDMS2000::Tests::testEnvelopeCurves</a> ()</td></tr>
-<tr class="separator:a03fccfb5fd3418e003e3fde54dbcf3aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f0414bc7363bb2703fca14c22836fa9" id="r_a5f0414bc7363bb2703fca14c22836fa9"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#a5f0414bc7363bb2703fca14c22836fa9">ABDMS2000::Tests::testLfo</a> ()</td></tr>
-<tr class="separator:a5f0414bc7363bb2703fca14c22836fa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9974d868401a1a3a5e58d3fee5154af" id="r_ad9974d868401a1a3a5e58d3fee5154af"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#ad9974d868401a1a3a5e58d3fee5154af">ABDMS2000::Tests::testFilterResonanceComp</a> ()</td></tr>
-<tr class="separator:ad9974d868401a1a3a5e58d3fee5154af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a068088505728503effb619cec154892d" id="r_a068088505728503effb619cec154892d"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#a068088505728503effb619cec154892d">ABDMS2000::Tests::testVoxWaveOscillator</a> ()</td></tr>
-<tr class="separator:a068088505728503effb619cec154892d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7cfa0eed8ed6b5c2a546d61949d52d89" id="r_a7cfa0eed8ed6b5c2a546d61949d52d89"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#a7cfa0eed8ed6b5c2a546d61949d52d89">ABDMS2000::Tests::testMidiMapTelemetry</a> ()</td></tr>
-<tr class="separator:a7cfa0eed8ed6b5c2a546d61949d52d89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ca96a8e3e8f4a8835362c2bd6ab130c" id="r_a2ca96a8e3e8f4a8835362c2bd6ab130c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#a2ca96a8e3e8f4a8835362c2bd6ab130c">ABDMS2000::Tests::testLcdMenuFormatter</a> ()</td></tr>
-<tr class="separator:a2ca96a8e3e8f4a8835362c2bd6ab130c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf58df353f586cdd0ec9e17639043301" id="r_aaf58df353f586cdd0ec9e17639043301"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#aaf58df353f586cdd0ec9e17639043301">ABDMS2000::Tests::testSysExCodec</a> ()</td></tr>
-<tr class="separator:aaf58df353f586cdd0ec9e17639043301"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa65af9e63ebaa0b30382a9c836d71f9b" id="r_aa65af9e63ebaa0b30382a9c836d71f9b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#aa65af9e63ebaa0b30382a9c836d71f9b">ABDMS2000::Tests::testFilterVocoderStability</a> ()</td></tr>
-<tr class="separator:aa65af9e63ebaa0b30382a9c836d71f9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7571b874c6ed1ae49f9df43520675cd" id="r_ad7571b874c6ed1ae49f9df43520675cd"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#ad7571b874c6ed1ae49f9df43520675cd">ABDMS2000::Tests::testVoiceAllocation</a> ()</td></tr>
-<tr class="separator:ad7571b874c6ed1ae49f9df43520675cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a849801be9b8190b987d9e15b297f7bbe" id="r_a849801be9b8190b987d9e15b297f7bbe"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#a849801be9b8190b987d9e15b297f7bbe">ABDMS2000::Tests::testEmbeddedWebUiAssets</a> ()</td></tr>
-<tr class="separator:a849801be9b8190b987d9e15b297f7bbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a267f0ab237417270ee9dc9812bbb27b2" id="r_a267f0ab237417270ee9dc9812bbb27b2"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#a267f0ab237417270ee9dc9812bbb27b2">ABDMS2000::Tests::testHostModelAnnouncement</a> ()</td></tr>
-<tr class="separator:a267f0ab237417270ee9dc9812bbb27b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70e424fe6815e9f157c05a4cd1a1f38e" id="r_a70e424fe6815e9f157c05a4cd1a1f38e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#a70e424fe6815e9f157c05a4cd1a1f38e">ABDMS2000::Tests::testBridgeActionsDispatch</a> ()</td></tr>
-<tr class="separator:a70e424fe6815e9f157c05a4cd1a1f38e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3163f3b25dc11c64419fef743573ec1" id="r_ab3163f3b25dc11c64419fef743573ec1"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#ab3163f3b25dc11c64419fef743573ec1">ABDMS2000::Tests::testHardwareMidiBridge</a> ()</td></tr>
-<tr class="separator:ab3163f3b25dc11c64419fef743573ec1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abfd2393f4a040d73cca6d862c4937e5a" id="r_abfd2393f4a040d73cca6d862c4937e5a"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#abfd2393f4a040d73cca6d862c4937e5a">ABDMS2000::Tests::testSoftwarePresetTransport</a> ()</td></tr>
-<tr class="separator:abfd2393f4a040d73cca6d862c4937e5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92c4d553be8cd366710e4969f864f631" id="r_a92c4d553be8cd366710e4969f864f631"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#a92c4d553be8cd366710e4969f864f631">ABDMS2000::Tests::testHardwareProgramToEngine</a> ()</td></tr>
-<tr class="separator:a92c4d553be8cd366710e4969f864f631"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a31202b047210aa26bc1312ea908a78" id="r_a7a31202b047210aa26bc1312ea908a78"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#a7a31202b047210aa26bc1312ea908a78">ABDMS2000::Tests::testDumpRequests</a> ()</td></tr>
-<tr class="separator:a7a31202b047210aa26bc1312ea908a78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acdff34df15d43f3b04282060785f4ed6" id="r_acdff34df15d43f3b04282060785f4ed6"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#acdff34df15d43f3b04282060785f4ed6">ABDMS2000::Tests::testWriteAcknowledgement</a> ()</td></tr>
-<tr class="separator:acdff34df15d43f3b04282060785f4ed6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63e84cdb22e33ce8977c9b10c742070a" id="r_a63e84cdb22e33ce8977c9b10c742070a"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#a63e84cdb22e33ce8977c9b10c742070a">ABDMS2000::Tests::testAllDataDumpRequest</a> ()</td></tr>
-<tr class="separator:a63e84cdb22e33ce8977c9b10c742070a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac00b45b5bc5d74b423efb907ef9ec89f" id="r_ac00b45b5bc5d74b423efb907ef9ec89f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#ac00b45b5bc5d74b423efb907ef9ec89f">ABDMS2000::Tests::testKorgChannelEndToEnd</a> ()</td></tr>
-<tr class="separator:ac00b45b5bc5d74b423efb907ef9ec89f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f8c34372aea0c0a56f3cf2935eef6fe" id="r_a7f8c34372aea0c0a56f3cf2935eef6fe"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#a7f8c34372aea0c0a56f3cf2935eef6fe">ABDMS2000::Tests::testEngineExtension</a> ()</td></tr>
-<tr class="separator:a7f8c34372aea0c0a56f3cf2935eef6fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a824e80455da4b916130fd4ca63d3eb0e" id="r_a824e80455da4b916130fd4ca63d3eb0e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#a824e80455da4b916130fd4ca63d3eb0e">ABDMS2000::Tests::testMicrokorgHardwareParity</a> ()</td></tr>
-<tr class="separator:a824e80455da4b916130fd4ca63d3eb0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aded0d2a7ecce30628fb57e2d7567b47e" id="r_aded0d2a7ecce30628fb57e2d7567b47e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#aded0d2a7ecce30628fb57e2d7567b47e">ABDMS2000::Tests::testDspConversionsAndClamping</a> ()</td></tr>
-<tr class="separator:aded0d2a7ecce30628fb57e2d7567b47e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e49314c2f0aa4910a724f638b311b0f" id="r_a5e49314c2f0aa4910a724f638b311b0f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="#a69f318e4c30a60613f04936dbb6616d3">ABD_TEST_NOINLINE</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#a5e49314c2f0aa4910a724f638b311b0f">ABDMS2000::Tests::testFirmwareHardwareParity</a> ()</td></tr>
+<tr class="memitem:ac82ce9e8265b38f765c937c8bc45968a" id="r_ac82ce9e8265b38f765c937c8bc45968a"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="#a69f318e4c30a60613f04936dbb6616d3">ABD_TEST_NOINLINE</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#ac82ce9e8265b38f765c937c8bc45968a">ABDMS2000::Tests::testHardwareMidiSysEx41AndTimbreOps</a> ()</td></tr>
+<tr class="memitem:a0153571cf6e8c9b6cc511dd7cf6b00b5" id="r_a0153571cf6e8c9b6cc511dd7cf6b00b5"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#a0153571cf6e8c9b6cc511dd7cf6b00b5">ABDMS2000::Tests::testCalibrationAndPresetValidation</a> ()</td></tr>
 <tr class="memitem:a071a8681aad4162a784205452acdcfec" id="r_a071a8681aad4162a784205452acdcfec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#a071a8681aad4162a784205452acdcfec">ABDMS2000::Tests::testEqualizerParity</a> ()</td></tr>
-<tr class="separator:a071a8681aad4162a784205452acdcfec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8967794ea007d489e86839f69263277f" id="r_a8967794ea007d489e86839f69263277f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#a8967794ea007d489e86839f69263277f">ABDMS2000::Tests::testTier2FirmwareBlockCalibration</a> ()</td></tr>
 <tr class="memitem:a89476fd8fd506d0096cee512b4f9b65d" id="r_a89476fd8fd506d0096cee512b4f9b65d"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#a89476fd8fd506d0096cee512b4f9b65d">ABDMS2000::Tests::runAllTests</a> ()</td></tr>
-<tr class="separator:a89476fd8fd506d0096cee512b4f9b65d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae66f6b31b5ad750f1fe042a706a4e3d4" id="r_ae66f6b31b5ad750f1fe042a706a4e3d4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="DSPCoreTests_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a> ()</td></tr>
-<tr class="separator:ae66f6b31b5ad750f1fe042a706a4e3d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae66f6b31b5ad750f1fe042a706a4e3d4" id="r_ae66f6b31b5ad750f1fe042a706a4e3d4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a> ()</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+<tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a4ba74ad7f965243686c8193dddb1adcc" id="r_a4ba74ad7f965243686c8193dddb1adcc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#a4ba74ad7f965243686c8193dddb1adcc">ABDMS2000::Tests::testsPassed</a> = 0</td></tr>
-<tr class="separator:a4ba74ad7f965243686c8193dddb1adcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85d37bd5aea47fbe808403acf9abb3f5" id="r_a85d37bd5aea47fbe808403acf9abb3f5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#a85d37bd5aea47fbe808403acf9abb3f5">ABDMS2000::Tests::testsFailed</a> = 0</td></tr>
-<tr class="separator:a85d37bd5aea47fbe808403acf9abb3f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d51532dc58706795965360186f59f2d" id="r_a8d51532dc58706795965360186f59f2d"><td class="memItemLeft" align="right" valign="top">static constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Tests.html#a8d51532dc58706795965360186f59f2d">ABDMS2000::Tests::testSampleRate</a> = 44100.0</td></tr>
-<tr class="separator:a8d51532dc58706795965360186f59f2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Documentación de funciones</h2>
+<a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Documentación de «define»</h2>
+<a id="a69f318e4c30a60613f04936dbb6616d3" name="a69f318e4c30a60613f04936dbb6616d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69f318e4c30a60613f04936dbb6616d3">&#9670;&#160;</a></span>ABD_TEST_NOINLINE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ABD_TEST_NOINLINE&#160;&#160;&#160;__attribute__((noinline))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Documentación de funciones</h2>
 <a id="ae66f6b31b5ad750f1fe042a706a4e3d4" name="ae66f6b31b5ad750f1fe042a706a4e3d4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae66f6b31b5ad750f1fe042a706a4e3d4">&#9670;&#160;</a></span>main()</h2>
 
@@ -218,7 +217,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">int main </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -227,9 +226,21 @@ Variables</h2></td></tr>
 </div>
 </div>
 </div><!-- contents -->
+</div><!-- doc-content -->
+<div id="page-nav" class="page-nav-panel">
+<div id="page-nav-resize-handle"></div>
+<div id="page-nav-tree">
+<div id="page-nav-contents">
+</div><!-- page-nav-contents -->
+</div><!-- page-nav-tree -->
+</div><!-- page-nav -->
+</div><!-- container -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a href="dir_c4649485c883873e4a98325dc46175f5.html">Tests</a></li><li class="navelem"><a href="DSPCoreTests_8cpp.html">DSPCoreTests.cpp</a></li>
+    <li class="footer">Generado por <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0 </li>
+  </ul>
+</div>
 </body>
 </html>

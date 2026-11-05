@@ -1,0 +1,13 @@
+<map id="Gráfico de jerarquía de clases" name="Gráfico de jerarquía de clases">
+<area shape="rect" id="Node000000" title=" " alt="" coords="18,74,174,102"/>
+<area shape="rect" id="Node000001" href="$classABDMS2000_1_1ABDMS2000AudioProcessor.html" title=" " alt="" coords="254,125,480,170"/>
+<area shape="poly" id="edge1_Node000000_Node000001" title=" " alt="" coords="177,103,266,124,261,126,177,108"/>
+<area shape="rect" id="Node000004" href="$classABDMS2000_1_1Tests_1_1BridgeTestProcessor.html" title=" " alt="" coords="271,5,464,50"/>
+<area shape="poly" id="edge2_Node000000_Node000004" title=" " alt="" coords="176,67,273,47,269,50,178,72"/>
+<area shape="rect" id="Node000005" href="$classABDMS2000_1_1Tests_1_1DummyProcessor.html" title=" " alt="" coords="235,74,500,102"/>
+<area shape="poly" id="edge3_Node000000_Node000005" title=" " alt="" coords="189,85,237,87,232,89,191,90"/>
+<area shape="rect" id="Node000002" href="$classABDMS2000_1_1BridgeHost.html" title=" " alt="" coords="5,163,187,191"/>
+<area shape="poly" id="edge4_Node000002_Node000001" title=" " alt="" coords="201,163,256,159,251,161,202,168"/>
+<area shape="rect" id="Node000003" href="$classABDMS2000_1_1Tests_1_1FakeBridgeHost.html" title=" " alt="" coords="242,194,493,222"/>
+<area shape="poly" id="edge5_Node000002_Node000003" title=" " alt="" coords="202,186,244,193,239,194,202,192"/>
+</map>

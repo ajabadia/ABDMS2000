@@ -3,12 +3,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
-<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Archivo de código fuente Source/Tests/TestCompat.h</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -29,28 +34,38 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- Generado por Doxygen 1.9.8 -->
+<!-- Generado por Doxygen 1.15.0 -->
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 var searchBox = new SearchBox("searchBox", "search/",'.html');
-/* @license-end */
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
 </script>
 <script type="text/javascript" src="menudata.js"></script>
 <script type="text/javascript" src="menu.js"></script>
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,false,'search.php','Buscar');
-  $(document).ready(function() { init_search(); });
+  initMenu('',true,false,'search.php','Buscar',true);
+  $(function() { init_search(); });
 });
-/* @license-end */
 </script>
 <div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function() { init_codefold(0); });
-/* @license-end */
+$(function(){initNavTree('TestCompat_8h_source.html','',''); });
 </script>
+<div id="container">
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -72,11 +87,6 @@ $(document).ready(function() { init_codefold(0); });
 </div>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a class="el" href="dir_c4649485c883873e4a98325dc46175f5.html">Tests</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="headertitle"><div class="title">TestCompat.h</div></div>
 </div><!--header-->
@@ -85,10 +95,10 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;cmath&gt;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;../Core/SynthEngine.h&quot;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;../Core/VoiceManager.h&quot;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;../DSP/Common/DSPUtils.h&quot;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;../DSP/Modulation/VirtualPatchMatrix.h&quot;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="SynthEngine_8h.html">../Core/SynthEngine.h</a>&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="VoiceManager_8h.html">../Core/VoiceManager.h</a>&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="DSPUtils_8h.html">../DSP/Common/DSPUtils.h</a>&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="VirtualPatchMatrix_8h.html">../DSP/Modulation/VirtualPatchMatrix.h</a>&quot;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="code" href="JuceHeader_8h.html">JuceHeader.h</a>&quot;</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="MS2000SysExExporter_8h.html">MS2000SysExExporter.h</a>&quot;</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="SysExManager_8h.html">SysExManager.h</a>&quot;</span></div>
@@ -110,7 +120,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment">// ── MS2000SysExExporter shim (actual API: exportSingleProgram) ──</span></div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceABDMS2000.html">ABDMS2000</a></div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>{</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>std::vector&lt;uint8_t&gt; <a class="code hl_function" href="namespaceABDMS2000.html#acce320945fbf1f72359b9f7c0464ac64">exportProgramShim</a>(MS2000SysExExporter &amp;exporter,</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>std::vector&lt;uint8_t&gt; <a class="code hl_function" href="namespaceABDMS2000.html#acce320945fbf1f72359b9f7c0464ac64">exportProgramShim</a>(<a class="code hl_class" href="classABDMS2000_1_1MS2000SysExExporter.html">MS2000SysExExporter</a> &amp;exporter,</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>                                       juce::AudioProcessorValueTreeState &amp;apvts,</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>                                       <span class="keywordtype">int</span> programIndex,</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>                                       <span class="keyword">const</span> juce::String &amp;name);</div>
@@ -119,7 +129,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment">// ── SysExManager shim (actual API: parseSysEx) ──</span></div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceABDMS2000.html">ABDMS2000</a></div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>{</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>SysExParseResult <a class="code hl_function" href="namespaceABDMS2000.html#a10c78a00754eca46cbfbb6392cbc6463">handleIncomingSysExShim</a>(SysExManager &amp;manager,</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><a class="code hl_struct" href="structABDMS2000_1_1SysExParseResult.html">SysExParseResult</a> <a class="code hl_function" href="namespaceABDMS2000.html#a10c78a00754eca46cbfbb6392cbc6463">handleIncomingSysExShim</a>(<a class="code hl_class" href="classABDMS2000_1_1SysExManager.html">SysExManager</a> &amp;manager,</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>                                         <span class="keyword">const</span> uint8_t *data,</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>                                         <span class="keywordtype">size_t</span> size,</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>                                         juce::AudioProcessorValueTreeState &amp;apvts);</div>
@@ -128,16 +138,16 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment">// ── SynthEngine API mapping ──</span></div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceABDMS2000.html">ABDMS2000</a></div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>{</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="keywordtype">void</span> <a class="code hl_function" href="namespaceABDMS2000.html#aa478231338cacc949c1b1a3b5a186f0e">panicShim</a>(SynthEngine &amp;engine);</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>std::vector&lt;uint8_t&gt; <a class="code hl_function" href="namespaceABDMS2000.html#acce320945fbf1f72359b9f7c0464ac64">exportProgramShim</a>(MS2000SysExExporter &amp;exporter,</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="keywordtype">void</span> <a class="code hl_function" href="namespaceABDMS2000.html#aa478231338cacc949c1b1a3b5a186f0e">panicShim</a>(<a class="code hl_class" href="classABDMS2000_1_1SynthEngine.html">SynthEngine</a> &amp;engine);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>std::vector&lt;uint8_t&gt; <a class="code hl_function" href="namespaceABDMS2000.html#acce320945fbf1f72359b9f7c0464ac64">exportProgramShim</a>(<a class="code hl_class" href="classABDMS2000_1_1MS2000SysExExporter.html">MS2000SysExExporter</a> &amp;exporter,</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>                                       juce::AudioProcessorValueTreeState &amp;apvts,</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>                                       <span class="keywordtype">int</span> programIndex,</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>                                       <span class="keyword">const</span> juce::String &amp;name);</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>SysExParseResult <a class="code hl_function" href="namespaceABDMS2000.html#a10c78a00754eca46cbfbb6392cbc6463">handleIncomingSysExShim</a>(SysExManager &amp;manager,</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><a class="code hl_struct" href="structABDMS2000_1_1SysExParseResult.html">SysExParseResult</a> <a class="code hl_function" href="namespaceABDMS2000.html#a10c78a00754eca46cbfbb6392cbc6463">handleIncomingSysExShim</a>(<a class="code hl_class" href="classABDMS2000_1_1SysExManager.html">SysExManager</a> &amp;manager,</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>                                         <span class="keyword">const</span> uint8_t *data,</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>                                         <span class="keywordtype">size_t</span> size,</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>                                         juce::AudioProcessorValueTreeState &amp;apvts);</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="keywordtype">void</span> <a class="code hl_function" href="namespaceABDMS2000.html#a8f2e70c96dffe91698c6ad3eb45e5d78">processBlockShim</a>(SynthEngine &amp;engine, juce::AudioBuffer&lt;float&gt; &amp;buffer, juce::MidiBuffer &amp;midi);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="keywordtype">void</span> <a class="code hl_function" href="namespaceABDMS2000.html#a8f2e70c96dffe91698c6ad3eb45e5d78">processBlockShim</a>(<a class="code hl_class" href="classABDMS2000_1_1SynthEngine.html">SynthEngine</a> &amp;engine, juce::AudioBuffer&lt;float&gt; &amp;buffer, juce::MidiBuffer &amp;midi);</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>}  <span class="comment">// namespace ABDMS2000</span></div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="comment">// ── El recuento de la suite y su `check`, para los ficheros de test que no son</span></div>
@@ -145,7 +155,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="comment">//    definidos ahi SIN `static` por esto mismo. ──</span></div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceABDMS2000.html">ABDMS2000</a></div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>{</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="keyword">namespace </span>Tests</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceABDMS2000_1_1Tests.html">Tests</a></div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>{</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="keyword">extern</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="namespaceABDMS2000_1_1Tests.html#a4ba74ad7f965243686c8193dddb1adcc">testsPassed</a>;</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="keyword">extern</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="namespaceABDMS2000_1_1Tests.html#a85d37bd5aea47fbe808403acf9abb3f5">testsFailed</a>;</div>
@@ -184,22 +194,36 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="comment">// ── Process block with 3 args ──</span></div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="TestCompat_8h.html#af5f54aa639e1a23c24fd51085fea9d36">   97</a></span><span class="preprocessor">#define PROCESS_BLOCK(engine, buffer, midi) engine.processBlock(buffer, midi, nullptr)</span></div>
+<div class="ttc" id="aDSPUtils_8h_html"><div class="ttname"><a href="DSPUtils_8h.html">DSPUtils.h</a></div></div>
 <div class="ttc" id="aJuceHeader_8h_html"><div class="ttname"><a href="JuceHeader_8h.html">JuceHeader.h</a></div></div>
 <div class="ttc" id="aMS2000SysExExporter_8h_html"><div class="ttname"><a href="MS2000SysExExporter_8h.html">MS2000SysExExporter.h</a></div></div>
+<div class="ttc" id="aSynthEngine_8h_html"><div class="ttname"><a href="SynthEngine_8h.html">SynthEngine.h</a></div></div>
 <div class="ttc" id="aSysExManager_8h_html"><div class="ttname"><a href="SysExManager_8h.html">SysExManager.h</a></div></div>
+<div class="ttc" id="aVirtualPatchMatrix_8h_html"><div class="ttname"><a href="VirtualPatchMatrix_8h.html">VirtualPatchMatrix.h</a></div></div>
+<div class="ttc" id="aVoiceManager_8h_html"><div class="ttname"><a href="VoiceManager_8h.html">VoiceManager.h</a></div></div>
+<div class="ttc" id="aclassABDMS2000_1_1MS2000SysExExporter_html"><div class="ttname"><a href="classABDMS2000_1_1MS2000SysExExporter.html">ABDMS2000::MS2000SysExExporter</a></div><div class="ttdoc">Exportador de presets propios del plugin a .syx.</div><div class="ttdef"><b>Definition</b> MS2000SysExExporter.h:29</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1SynthEngine_html"><div class="ttname"><a href="classABDMS2000_1_1SynthEngine.html">ABDMS2000::SynthEngine</a></div><div class="ttdoc">Motor de sintetizador principal (abstracción de hardware MS2000/microKORG).</div><div class="ttdef"><b>Definition</b> SynthEngine.h:53</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1SysExManager_html"><div class="ttname"><a href="classABDMS2000_1_1SysExManager.html">ABDMS2000::SysExManager</a></div><div class="ttdef"><b>Definition</b> SysExManager.h:49</div></div>
 <div class="ttc" id="anamespaceABDMS2000_1_1DSPUtils_html_a72d16f0052df3eacab24bac2510a6171"><div class="ttname"><a href="namespaceABDMS2000_1_1DSPUtils.html#a72d16f0052df3eacab24bac2510a6171">ABDMS2000::DSPUtils::filterKeyTrackRatio</a></div><div class="ttdeci">float filterKeyTrackRatio(float freqHz, float referenceHz, float keyTrackAmount)</div><div class="ttdef"><b>Definition</b> TestCompat.cpp:11</div></div>
-<div class="ttc" id="anamespaceABDMS2000_1_1Tests_html_a14275341ce845995addc34a73e4ed454"><div class="ttname"><a href="namespaceABDMS2000_1_1Tests.html#a14275341ce845995addc34a73e4ed454">ABDMS2000::Tests::check</a></div><div class="ttdeci">void check(bool condition, const char *testName)</div><div class="ttdef"><b>Definition</b> DSPCoreTests.cpp:55</div></div>
-<div class="ttc" id="anamespaceABDMS2000_1_1Tests_html_a4ba74ad7f965243686c8193dddb1adcc"><div class="ttname"><a href="namespaceABDMS2000_1_1Tests.html#a4ba74ad7f965243686c8193dddb1adcc">ABDMS2000::Tests::testsPassed</a></div><div class="ttdeci">int testsPassed</div><div class="ttdef"><b>Definition</b> DSPCoreTests.cpp:52</div></div>
-<div class="ttc" id="anamespaceABDMS2000_1_1Tests_html_a85d37bd5aea47fbe808403acf9abb3f5"><div class="ttname"><a href="namespaceABDMS2000_1_1Tests.html#a85d37bd5aea47fbe808403acf9abb3f5">ABDMS2000::Tests::testsFailed</a></div><div class="ttdeci">int testsFailed</div><div class="ttdef"><b>Definition</b> DSPCoreTests.cpp:53</div></div>
+<div class="ttc" id="anamespaceABDMS2000_1_1Tests_html"><div class="ttname"><a href="namespaceABDMS2000_1_1Tests.html">ABDMS2000::Tests</a></div><div class="ttdef"><b>Definition</b> DSPCoreTests.cpp:51</div></div>
+<div class="ttc" id="anamespaceABDMS2000_1_1Tests_html_a14275341ce845995addc34a73e4ed454"><div class="ttname"><a href="namespaceABDMS2000_1_1Tests.html#a14275341ce845995addc34a73e4ed454">ABDMS2000::Tests::check</a></div><div class="ttdeci">void check(bool condition, const char *testName)</div><div class="ttdef"><b>Definition</b> DSPCoreTests.cpp:59</div></div>
+<div class="ttc" id="anamespaceABDMS2000_1_1Tests_html_a4ba74ad7f965243686c8193dddb1adcc"><div class="ttname"><a href="namespaceABDMS2000_1_1Tests.html#a4ba74ad7f965243686c8193dddb1adcc">ABDMS2000::Tests::testsPassed</a></div><div class="ttdeci">int testsPassed</div><div class="ttdef"><b>Definition</b> DSPCoreTests.cpp:56</div></div>
+<div class="ttc" id="anamespaceABDMS2000_1_1Tests_html_a85d37bd5aea47fbe808403acf9abb3f5"><div class="ttname"><a href="namespaceABDMS2000_1_1Tests.html#a85d37bd5aea47fbe808403acf9abb3f5">ABDMS2000::Tests::testsFailed</a></div><div class="ttdeci">int testsFailed</div><div class="ttdef"><b>Definition</b> DSPCoreTests.cpp:57</div></div>
 <div class="ttc" id="anamespaceABDMS2000_html"><div class="ttname"><a href="namespaceABDMS2000.html">ABDMS2000</a></div><div class="ttdef"><b>Definition</b> AppLogger.h:18</div></div>
 <div class="ttc" id="anamespaceABDMS2000_html_a10c78a00754eca46cbfbb6392cbc6463"><div class="ttname"><a href="namespaceABDMS2000.html#a10c78a00754eca46cbfbb6392cbc6463">ABDMS2000::handleIncomingSysExShim</a></div><div class="ttdeci">SysExParseResult handleIncomingSysExShim(SysExManager &amp;manager, const uint8_t *data, size_t size, juce::AudioProcessorValueTreeState &amp;apvts)</div><div class="ttdef"><b>Definition</b> TestCompat.cpp:30</div></div>
 <div class="ttc" id="anamespaceABDMS2000_html_a8f2e70c96dffe91698c6ad3eb45e5d78"><div class="ttname"><a href="namespaceABDMS2000.html#a8f2e70c96dffe91698c6ad3eb45e5d78">ABDMS2000::processBlockShim</a></div><div class="ttdeci">void processBlockShim(SynthEngine &amp;engine, juce::AudioBuffer&lt; float &gt; &amp;buffer, juce::MidiBuffer &amp;midi)</div><div class="ttdef"><b>Definition</b> TestCompat.cpp:45</div></div>
 <div class="ttc" id="anamespaceABDMS2000_html_aa478231338cacc949c1b1a3b5a186f0e"><div class="ttname"><a href="namespaceABDMS2000.html#aa478231338cacc949c1b1a3b5a186f0e">ABDMS2000::panicShim</a></div><div class="ttdeci">void panicShim(SynthEngine &amp;engine)</div><div class="ttdef"><b>Definition</b> TestCompat.cpp:38</div></div>
 <div class="ttc" id="anamespaceABDMS2000_html_acce320945fbf1f72359b9f7c0464ac64"><div class="ttname"><a href="namespaceABDMS2000.html#acce320945fbf1f72359b9f7c0464ac64">ABDMS2000::exportProgramShim</a></div><div class="ttdeci">std::vector&lt; uint8_t &gt; exportProgramShim(MS2000SysExExporter &amp;exporter, juce::AudioProcessorValueTreeState &amp;apvts, int programIndex, const juce::String &amp;name)</div><div class="ttdef"><b>Definition</b> TestCompat.cpp:19</div></div>
+<div class="ttc" id="astructABDMS2000_1_1SysExParseResult_html"><div class="ttname"><a href="structABDMS2000_1_1SysExParseResult.html">ABDMS2000::SysExParseResult</a></div><div class="ttdef"><b>Definition</b> SysExManager.h:30</div></div>
 </div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+</div><!-- container -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a href="dir_c4649485c883873e4a98325dc46175f5.html">Tests</a></li><li class="navelem"><a href="TestCompat_8h.html">TestCompat.h</a></li>
+    <li class="footer">Generado por <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0 </li>
+  </ul>
+</div>
 </body>
 </html>

@@ -3,12 +3,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
-<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: GM Program Chooser</title>
+<title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: ABDMS2000 — Virtual Korg MS2000 &amp; microKORG (con Modo Avanzado)</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -29,24 +34,38 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- Generado por Doxygen 1.9.8 -->
+<!-- Generado por Doxygen 1.15.0 -->
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 var searchBox = new SearchBox("searchBox", "search/",'.html');
-/* @license-end */
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
 </script>
 <script type="text/javascript" src="menudata.js"></script>
 <script type="text/javascript" src="menu.js"></script>
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,false,'search.php','Buscar');
-  $(document).ready(function() { init_search(); });
+  initMenu('',true,false,'search.php','Buscar',true);
+  $(function() { init_search(); });
 });
-/* @license-end */
 </script>
 <div id="main-nav"></div>
 </div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){initNavTree('index.html','',''); });
+</script>
+<div id="container">
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -69,28 +88,185 @@ $(function() {
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">GM Program Chooser </div></div>
+  <div class="headertitle"><div class="title"><a class="el" href="namespaceABDMS2000.html">ABDMS2000</a> — Virtual Korg MS2000 &amp; microKORG (con Modo Avanzado) </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="md_DOCS_2MAX_2max4live-main_2GM_01Progam_01Chooser_2README"></a> <img src="https://github.com/user-attachments/assets/aed02fce-2c98-4009-98f6-43afb25c306e" alt="Untitled" class="inline"/></p>
-<p>This is a simple device that will allow you to use General MIDI programs very quickly.</p>
+<div class="textblock"><p><a class="anchor" id="md_README"></a></p>
+<p><a href="https://isocpp.org/"><img src="https://img.shields.io/badge/C%2B%2B-20-blue.svg" alt="C++20" style="pointer-events: none;" class="inline"/></a> <a href="https://juce.com/"><img src="https://img.shields.io/badge/JUCE-8.0-orange.svg" alt="JUCE 8" style="pointer-events: none;" class="inline"/></a> [<img src="https://img.shields.io/badge/UI-WebView2%20%2F%20HTML%2FCSS%2FJS-brightgreen.svg" alt="WebUI" style="pointer-events: none;" class="inline"/>]() [<img src="https://img.shields.io/badge/WASM-AudioWorklet-purple.svg" alt="WASM" style="pointer-events: none;" class="inline"/>]() [<img src="https://img.shields.io/badge/License-Proprietary-red.svg" alt="License" style="pointer-events: none;" class="inline"/>]()</p>
+<p><b><a class="el" href="namespaceABDMS2000.html">ABDMS2000</a></b> es un sintetizador virtual analógico híbrido y editor/gestor integral basado en la arquitectura de síntesis del <b>Korg MS2000</b> y <b>microKORG</b>, incorporando además un <b>Modo Avanzado (ABD Ultra Engine)</b>.</p>
+<hr  />
+<h1 class="doxsection"><a class="anchor" id="autotoc_md274"></a>
+🌟 Características Principales</h1>
 <ol type="1">
-<li>Create a new track.</li>
-<li>Setup the channel and device on the track.</li>
-<li>Drag the device onto the new track.</li>
-<li>Choose programs from device.</li>
+<li><b>Arquitectura Tri-Modo conmutable:</b><ul>
+<li><b>Modo Korg MS2000:</b> Réplica fiel con panel analógico azul, potenciómetros dedicados, pantalla LCD de 2 líneas (menús oficiales 1A-4D) y Secuenciador de Modulación de 3 pistas × 16 pasos.</li>
+<li><b>Modo microKORG:</b> Panel retro con matriz gráfica, diales de género musical, perillas de edición dinámica y display LED de 3 dígitos.</li>
+<li><b>Modo Avanzado (ABD Ultra):</b> Polifonía de hasta 32 voces, Reverb Shimmer, Tape Delay analógico, 4 LFOs, 4 Envolventes DAHDSR y Secuenciador polifónico de 64 pasos.</li>
+</ul>
+</li>
+<li><b>Motor de Síntesis Fiel al Hardware:</b><ul>
+<li>2 Osciladores (68 ondas en OSC 1 incluyendo las 64 tablas DWGS + 3 en OSC 2 + Noise + Audio In).</li>
+<li>Ring Modulation, Hard Sync y Cross Mod (FM).</li>
+<li>Filtro Multimodo (LP24, LP12, BP12, HP12) con modelado no lineal y compensación de ganancia analógica.</li>
+<li>Distorsión asimétrica post-filtro dependiente del nivel de mezcla.</li>
+<li>Vocoder de 16 bandas con Formant Shift y HPF Gate (detector de transitorios para consonantes).</li>
+</ul>
+</li>
+<li><b>Telemetría y Control MIDI / SysEx Bidireccional:</b><ul>
+<li>Control en tiempo real del hardware físico vía CCs y NRPNs.</li>
+<li>Petición y recepción de volcados (<em>Program Dump</em> y <em>All Data Dump</em>) mediante códec Korg 7-to-8 bits.</li>
+<li>Pantalla dedicada <b>SysEx Inspector</b> con visor/editor Hexadecimal y copiado/pegado.</li>
+</ul>
+</li>
+<li><b>Gestor Universal de Bancos (ABD Universal Bank Manager):</b><ul>
+<li>Sistema de adaptadores de modelo (<span class="tt">ISynthModelContract</span>) y tokens de diseño CSS.</li>
+<li>Almacenamiento infinito, búsqueda instantánea, categorización, tags y comparador visual A/B (Diff Viewer).</li>
+</ul>
+</li>
+<li><b>Teclado Virtual Interactivo (Estilo ABDEep):</b><ul>
+<li>Ruedas físicas de Pitch Bend y Mod Wheel.</li>
+<li>Indicadores LED de transposición de octavas (Apagado / Parpadeo / Fijo).</li>
+<li>Barra de luces LED con animaciones de cambio de patch (<em>Sweep Wave</em>), cambio de banco (<em>Ripple Pulse</em>) y pánico (<em>Flash Cut</em>).</li>
+</ul>
+</li>
+<li><b>Multiplataforma:</b><ul>
+<li>Standalone y VST3 para Windows (WebView2) y macOS (WKWebView).</li>
+<li>Versión Web PWA compilada a WebAssembly (AudioWorklet) con IndexedDB.</li>
+<li>Modo Headless / Servidor RPC para Raspberry Pi.</li>
+</ul>
+</li>
 </ol>
 <hr  />
-<p>For DRUMS you must use MIDI Channel 10 for your track.</p>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md276"></a>
+📁 Arquitectura General del Repositorio</h1>
+<div class="fragment"><div class="line">ABDMS2000/</div>
+<div class="line">├── CMakeLists.txt                    # Configuración principal de build (JUCE 8 + C++20)</div>
+<div class="line">├── build.bat                         # Script de compilación Standalone + VST3</div>
+<div class="line">├── ROADMAP.md                        # Seguimiento y validación de fases 0 a 9</div>
+<div class="line">├── implementation_plan.md            # Especificación técnica exhaustiva</div>
+<div class="line">├── DOCS/                             # Especificaciones de ingeniería inversa y SysEx</div>
+<div class="line">├── schemas/                          # Contratos JSON canónicos</div>
+<div class="line">├── Scripts/                          # Generadores de código y empaquetadores</div>
+<div class="line">│</div>
+<div class="line">├── Source/</div>
+<div class="line">│   ├── Core/                         # Motor de Síntesis y Telemetría RT</div>
+<div class="line">│   │   ├── SynthEngine.h / .cpp      # Orquestador del hilo de audio y cadena DSP</div>
+<div class="line">│   │   ├── Voice.h / .cpp            # Voz individual analógico-virtual</div>
+<div class="line">│   │   ├── VoiceManager.h / .cpp     # Asignador de polifonía (4 voces) y robo inteligente</div>
+<div class="line">│   │   ├── VoiceParameters.h         # Estructura POD de parámetros por bloque</div>
+<div class="line">│   │   └── AudioThreadSnapshot.h     # Estructura POD Lock-Free para telemetría a 60 FPS</div>
+<div class="line">│   │</div>
+<div class="line">│   ├── DSP/                          # Algoritmos DSP y Procesamiento de Señal</div>
+<div class="line">│   │   ├── Oscillators/              # PolyBLEP (Saw/Pulse/Tri/Sine), DWGS (64 ondas), VoxWave</div>
+<div class="line">│   │   ├── Filters/                  # VCF Multimodo (24dB LPF, 12dB LPF/BPF/HPF) ZDF/TPT</div>
+<div class="line">│   │   ├── Envelopes/                # Generadores ADSR exponenciales analógicos</div>
+<div class="line">│   │   ├── LFO/                      # LFOs 1 &amp; 2 sincronizados por fase métrica al DAW</div>
+<div class="line">│   │   ├── Modulation/               # Virtual Patch (4 slots), ModSequencer (3x16), Arp, Portamento</div>
+<div class="line">│   │   ├── FX/                       # ModFX (Chorus/Ensemble/Phaser), DelayFX, Equalizer</div>
+<div class="line">│   │   └── Vocoder/                  # Vocoder 16 bandas unrolled, Follower y Bus HPF Sibilancia</div>
+<div class="line">│   │</div>
+<div class="line">│   ├── MIDI/                         # Telemetría MIDI y Sistema Exclusivo (SysEx)</div>
+<div class="line">│   │   ├── MIDIMap.h / .cpp          # Tabla de 74 Control Changes canónicos</div>
+<div class="line">│   │   ├── NRPNParser.h / .cpp       # Intérprete y serializador de parámetros de 14 bits</div>
+<div class="line">│   │   ├── MIDITelemetryManager.h    # Filtro anti-eco y gestor bidireccional MIDI</div>
+<div class="line">│   │   ├── SysExCodec.h / .cpp       # Algoritmo de empaquetado/desempaquetado 7 &lt;-&gt; 8 bits</div>
+<div class="line">│   │   ├── MS2000ProgramData.h       # Mapa binario estructurado de 256 bytes de memoria</div>
+<div class="line">│   │   ├── SysExManager.h / .cpp     # Gestor de volcados (.syx / .mid), banco 128 programas</div>
+<div class="line">│   │   └── MS2000SysExExporter.h     # Exportador de archivos .syx para hardware físico</div>
+<div class="line">│   │</div>
+<div class="line">│   ├── State/                        # Estado, Parches y Presets</div>
+<div class="line">│   │   ├── ParameterRegistry.gen.h   # Árbol canónico APVTS generado automáticamente</div>
+<div class="line">│   │   ├── MS2000PatchBuilder.h      # Inicializador &quot;Init Synth&quot; y Randomizador Acotado</div>
+<div class="line">│   │   ├── MS2000FactoryBank.h       # Banco de presets de fábrica grabado en binario</div>
+<div class="line">│   │   └── LCDMenuFormatter.h        # Motor de texto para pantalla LCD 16x2</div>
+<div class="line">│   │</div>
+<div class="line">│   ├── Plugin/                       # Wrappers de Plugin e Interfaz Gráfica</div>
+<div class="line">│   │   ├── PluginProcessor.h / .cpp  # Implementación AudioProcessor y getState/setState</div>
+<div class="line">│   │   ├── PluginEditor.h / .cpp     # Contenedor WebView2 y componentes nativos</div>
+<div class="line">│   │   ├── PluginEditor_ResourceProvider.h / .cpp  # Servidor de recursos embebidos y disco</div>
+<div class="line">│   │   └── BridgeActions.h / .cpp    # Handlers IPC entre JavaScript y C++</div>
+<div class="line">│   │</div>
+<div class="line">│   └── Tests/                        # Pruebas Unitarias de Rendimiento y Paridad</div>
+<div class="line">│       └── DSPCoreTests.cpp          # Suite de verificación DSP, MIDI y códec SysEx</div>
+<div class="line">│</div>
+<div class="line">├── WebUI/                            # Interfaz de Usuario Gráfica (HTML5, CSS3, JS)</div>
+<div class="line">│   ├── index.html                    # Layout principal y modales</div>
+<div class="line">│   ├── src/                          # Módulos JS (app.js, bridge.js, panel*.js, bankManager.js)</div>
+<div class="line">│   └── styles/                       # CSS Tokens y temas (themes.css, main.css)</div>
+<div class="line">│</div>
+<div class="line">└── wasm/                             # Pipeline de compilación WebAssembly (AudioWorklet)</div>
+</div><!-- fragment --><hr  />
+<h1 class="doxsection"><a class="anchor" id="autotoc_md278"></a>
+🛠️ Firmas Técnicas y Contratos de Métodos Clave</h1>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md279"></a>
+1. Sistema de Control de Voces y Afinación</h2>
+<ul>
+<li><b><span class="tt">VoiceManager::noteOn(int midiNote, float velocity)</span></b>: Registra eventos de nota presionada. En modo <span class="tt">Mono/Unison</span>, implementa prioridad de última nota. En modo <span class="tt">Poly</span>, administra la asignación a las 4 voces analógico-virtuales con algoritmo de ladrón de voces estricto (<em>Priority 1: Release más tenue; Priority 2: FIFO en Sustain; Priority 3: Re-trigger de misma nota sin clics</em>).</li>
+<li><b><span class="tt">PortamentoGlide::process(double targetFreq) -&gt; double</span></b>: Implementa el <em>Slew Limiter</em> exponencial muestra a muestra con coeficiente $\alpha = \exp(-1.0 / (T \times f_s))$. Si <span class="tt">noteCounter == 1</span>, salta de frecuencia instantáneamente para ejecutar <em>Fingered/Legato Glide</em>.</li>
+</ul>
 <hr  />
-<p>Icons thanks to noun-icon <a href="https://thenounproject.com/legal/terms-of-use/#icon-licenses">https://thenounproject.com/legal/terms-of-use/#icon-licenses</a></p>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md281"></a>
+2. Motor DSP del Vocoder Polifónico Multimodo</h2>
+<ul>
+<li><b><span class="tt">Vocoder16Band::process(float modSample, float carrierSample, float&amp; outLeft, float&amp; outRight)</span></b>: Ejecuta la modulación cruzada de las 16 bandas fijas mediante <b>Loop Unrolling</b> total sin condiciones de salto (<em>zero branch overhead</em>). Procesa el bus paralelo de sibilancia a $8.0\text{ kHz}$ con inyección de ruido blanco o bypass de audio de entrada según <span class="tt">hpfGate</span>.</li>
+</ul>
 <hr  />
-<p>I used a work-around for the buttons and clicking without selecting one, because would you believe that the Ableton Buttons M4L control only allows up to 64 buttons? :) </p>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md283"></a>
+3. Matriz de Modulación Virtual (<em>Virtual Patch</em>)</h2>
+<ul>
+<li><b><span class="tt">ModMatrix::process(size_t slotIndex, float sourceValue) -&gt; float</span></b>: Calcula el aporte de modulación de los 4 <em>slots</em> asignables:<ul>
+<li><span class="tt">VCF Cutoff</span>: Escala de 5 Octavas exponenciales.</li>
+<li><span class="tt">Pitch / OSC2 Tune</span>: Escala rígida de $\pm 24$ semitonos (2 octavas).</li>
+</ul>
+</li>
+</ul>
+<hr  />
+<h2 class="doxsection"><a class="anchor" id="autotoc_md285"></a>
+4. Conectividad Externa y Serialización (SysEx / Persistencia)</h2>
+<ul>
+<li><b><span class="tt">SysExCodec::unpack7to8(...)</span> &amp; <span class="tt">SysExCodec::pack8to7(...)</span></b>: Codificación/decodificación sin pérdidas de bloques de 7 bytes de 8 bits a 8 bytes de 7 bits con recolección de MSB.</li>
+<li><b><span class="tt">ABDMS2000AudioProcessor::getStateInformation(...) / setStateInformation(...)</span></b>: Serializa el árbol de parámetros <span class="tt">APVTS</span> y metadatos persistentes (<span class="tt">currentProgramIndex</span>, <span class="tt">currentProgramName</span> de 12 caracteres) en flujo XML binario comprimido para guardado/restauración de sesiones en el DAW con protección anti-clics vía <span class="tt">LinearSmoothedValue</span>.</li>
+</ul>
+<hr  />
+<h2 class="doxsection"><a class="anchor" id="autotoc_md287"></a>
+5. Generador Estocástico Inteligente</h2>
+<ul>
+<li><b><span class="tt">MS2000PatchBuilder::buildMusicalRandomPatch(juce::AudioProcessorValueTreeState&amp; apvts)</span></b>: Algoritmo estocástico acotado por zonas de síntesis que previene sonidos nulos, asegurando presencia en osciladores ($80 - 127$), filtro en zona dulce ($40 - 127$), y acoplamiento dinámico de envolventes contra silencios.</li>
+</ul>
+<hr  />
+<h1 class="doxsection"><a class="anchor" id="autotoc_md289"></a>
+🚦 Protocolo de Integración Continua y Buenas Prácticas</h1>
+<ol type="1">
+<li><b>Protección Real-Time en Audio Thread</b>: Prohibida la asignación dinámica de memoria (<span class="tt">new</span>/<span class="tt">malloc</span>), redimensionamiento de contenedores o llamadas bloqueantes en <span class="tt">processBlock</span> y métodos de audio DSP.</li>
+<li><b>Compilación en Release para Profiling</b>: Para medir el rendimiento real de los LFOs sincronizados y las cadenas del vocoder, compilar en modo <b>Release</b> (<span class="tt">-O3</span> / <span class="tt">/O2</span>) aprovechando vectorización SIMD / AVX.</li>
+<li><b>Desacoplo de Componentes Gráficos</b>: Todo componente al que se le asigne un <span class="tt">LookAndFeel</span> debe llamar estrictamente a <span class="tt">setLookAndFeel(nullptr)</span> en el destructor de su contenedor para evitar fugas de memoria o punteros colgantes (<em>Dangling Pointers</em>).</li>
+</ol>
+<hr  />
+<h1 class="doxsection"><a class="anchor" id="autotoc_md291"></a>
+🛠️ Compilación</h1>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md292"></a>
+Requisitos</h2>
+<ul>
+<li><b>Windows:</b> Visual Studio 2022 (MSVC C++20) o Clang + CMake 3.22+</li>
+<li><b>Node.js:</b> v18+ (para generadores y tests de UI)</li>
+<li><b>Emscripten SDK:</b> (opcional, para compilar la versión WASM)</li>
+</ul>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md293"></a>
+Construcción</h2>
+<div class="fragment"><div class="line"># Compilación completa (Genera Standalone y VST3 en build/)</div>
+<div class="line">build.bat</div>
+</div><!-- fragment --><hr  />
+<p><em>Desarrollado por ajabadia — Suite de Sintetizadores ABD.</em> </p>
 </div></div><!-- PageDoc -->
+<a href="doxygen_crawl.html"></a>
 </div><!-- contents -->
+</div><!-- doc-content -->
+</div><!-- container -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generado por <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0 </li>
+  </ul>
+</div>
 </body>
 </html>

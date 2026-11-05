@@ -3,12 +3,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
-<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Archivo de código fuente Source/DSP/Common/DSPUtils.h</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -29,28 +34,38 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- Generado por Doxygen 1.9.8 -->
+<!-- Generado por Doxygen 1.15.0 -->
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 var searchBox = new SearchBox("searchBox", "search/",'.html');
-/* @license-end */
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
 </script>
 <script type="text/javascript" src="menudata.js"></script>
 <script type="text/javascript" src="menu.js"></script>
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,false,'search.php','Buscar');
-  $(document).ready(function() { init_search(); });
+  initMenu('',true,false,'search.php','Buscar',true);
+  $(function() { init_search(); });
 });
-/* @license-end */
 </script>
 <div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function() { init_codefold(0); });
-/* @license-end */
+$(function(){initNavTree('DSPUtils_8h_source.html','',''); });
 </script>
+<div id="container">
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -72,11 +87,6 @@ $(document).ready(function() { init_codefold(0); });
 </div>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a class="el" href="dir_28f92771c0af6f341cedd07750149305.html">DSP</a></li><li class="navelem"><a class="el" href="dir_132e1d2b9f0362af9e887ffea5c22880.html">Common</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="headertitle"><div class="title">DSPUtils.h</div></div>
 </div><!--header-->
@@ -97,7 +107,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">// Historical code calls DSPUtils::clamp(...) / DSPUtils::TWO_PI inside</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">// namespace ABDMS2000 — re-export as a nested namespace, not a flat using.</span></div>
 <div class="foldopen" id="foldopen00016" data-start="{" data-end="}">
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="namespaceABDMS2000_1_1DSPUtils.html">   16</a></span><span class="keyword">namespace </span>DSPUtils</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="namespaceABDMS2000_1_1DSPUtils.html">   16</a></span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceABDMS2000_1_1DSPUtils.html">DSPUtils</a></div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>{</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">using namespace </span>abd::synth::DSPUtils;</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
@@ -127,6 +137,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>}  <span class="comment">// namespace DSPUtils</span></div>
 </div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>}  <span class="comment">// namespace ABDMS2000</span></div>
+<div class="ttc" id="anamespaceABDMS2000_1_1DSPUtils_html"><div class="ttname"><a href="namespaceABDMS2000_1_1DSPUtils.html">ABDMS2000::DSPUtils</a></div><div class="ttdef"><b>Definition</b> DSPUtils.h:17</div></div>
 <div class="ttc" id="anamespaceABDMS2000_1_1DSPUtils_html_a17930b1878a7c02e6e5d9ccb1a62a1ff"><div class="ttname"><a href="namespaceABDMS2000_1_1DSPUtils.html#a17930b1878a7c02e6e5d9ccb1a62a1ff">ABDMS2000::DSPUtils::kMinSampleRate</a></div><div class="ttdeci">static constexpr double kMinSampleRate</div><div class="ttdef"><b>Definition</b> DSPUtils.h:22</div></div>
 <div class="ttc" id="anamespaceABDMS2000_1_1DSPUtils_html_a4cd4aa850479b755b79b67a7a8b2c5b1"><div class="ttname"><a href="namespaceABDMS2000_1_1DSPUtils.html#a4cd4aa850479b755b79b67a7a8b2c5b1">ABDMS2000::DSPUtils::kDefaultSampleRate</a></div><div class="ttdeci">static constexpr double kDefaultSampleRate</div><div class="ttdef"><b>Definition</b> DSPUtils.h:23</div></div>
 <div class="ttc" id="anamespaceABDMS2000_1_1DSPUtils_html_a552d74debe391b3ee31b66a24de3cfbd"><div class="ttname"><a href="namespaceABDMS2000_1_1DSPUtils.html#a552d74debe391b3ee31b66a24de3cfbd">ABDMS2000::DSPUtils::kSpeedLogScaleMax</a></div><div class="ttdeci">static constexpr float kSpeedLogScaleMax</div><div class="ttdef"><b>Definition</b> DSPUtils.h:36</div></div>
@@ -139,9 +150,14 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="anamespaceABDMS2000_1_1DSPUtils_html_ad9e9f2e4ea3438faf3270f5ac5b2e273"><div class="ttname"><a href="namespaceABDMS2000_1_1DSPUtils.html#ad9e9f2e4ea3438faf3270f5ac5b2e273">ABDMS2000::DSPUtils::kFlangerExcursionRangeSec</a></div><div class="ttdeci">static constexpr float kFlangerExcursionRangeSec</div><div class="ttdef"><b>Definition</b> DSPUtils.h:40</div></div>
 <div class="ttc" id="anamespaceABDMS2000_html"><div class="ttname"><a href="namespaceABDMS2000.html">ABDMS2000</a></div><div class="ttdef"><b>Definition</b> AppLogger.h:18</div></div>
 </div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+</div><!-- container -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a href="dir_28f92771c0af6f341cedd07750149305.html">DSP</a></li><li class="navelem"><a href="dir_132e1d2b9f0362af9e887ffea5c22880.html">Common</a></li><li class="navelem"><a href="DSPUtils_8h.html">DSPUtils.h</a></li>
+    <li class="footer">Generado por <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0 </li>
+  </ul>
+</div>
 </body>
 </html>

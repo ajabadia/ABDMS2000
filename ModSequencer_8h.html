@@ -3,12 +3,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
-<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Referencia del archivo Source/DSP/Sequencer/ModSequencer.h</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -29,23 +34,38 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- Generado por Doxygen 1.9.8 -->
+<!-- Generado por Doxygen 1.15.0 -->
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 var searchBox = new SearchBox("searchBox", "search/",'.html');
-/* @license-end */
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
 </script>
 <script type="text/javascript" src="menudata.js"></script>
 <script type="text/javascript" src="menu.js"></script>
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,false,'search.php','Buscar');
-  $(document).ready(function() { init_search(); });
+  initMenu('',true,false,'search.php','Buscar',true);
+  $(function() { init_search(); });
 });
-/* @license-end */
 </script>
 <div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){initNavTree('ModSequencer_8h.html','',''); });
+</script>
+<div id="container">
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -67,17 +87,7 @@ $(function() {
 </div>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a class="el" href="dir_28f92771c0af6f341cedd07750149305.html">DSP</a></li><li class="navelem"><a class="el" href="dir_f22db3c5347e9cc6d7c87df2e020db26.html">Sequencer</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
-  <div class="summary">
-<a href="#nested-classes">Clases</a> &#124;
-<a href="#namespaces">Espacios de nombres</a> &#124;
-<a href="#enum-members">Enumeraciones</a> &#124;
-<a href="#func-members">Funciones</a>  </div>
   <div class="headertitle"><div class="title">Referencia del archivo ModSequencer.h</div></div>
 </div><!--header-->
 <div class="contents">
@@ -86,46 +96,40 @@ $(function() {
 </div><div class="textblock"><div class="dynheader">
 Gráfico de dependencias incluidas en ModSequencer.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="ModSequencer_8h__incl.svg" width="179" height="124"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="ModSequencer_8h__incl.svg" width="179" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 Gráfico de los archivos que directa o indirectamente incluyen a este archivo:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="ModSequencer_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="ModSequencer_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div>
 <p><a href="ModSequencer_8h_source.html">Ir al código fuente de este archivo.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+<tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Clases</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1ModSeqTrack.html">ABDMS2000::ModSeqTrack</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1ModSequencer.html">ABDMS2000::ModSequencer</a></td></tr>
+<tr class="memitem:ABDMS2000_3A_3AModSeqTrack" id="r_ABDMS2000_3A_3AModSeqTrack"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1ModSeqTrack.html">ABDMS2000::ModSeqTrack</a></td></tr>
+<tr class="memitem:ABDMS2000_3A_3AModSequencer" id="r_ABDMS2000_3A_3AModSequencer"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1ModSequencer.html">ABDMS2000::ModSequencer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mod sequencer de 6 pistas de 16 pasos.  <a href="classABDMS2000_1_1ModSequencer.html#details">Más...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
+<tr class="heading"><td colspan="2"><h2 id="header-namespaces" class="groupheader"><a id="namespaces" name="namespaces"></a>
 Espacios de nombres</h2></td></tr>
-<tr class="memitem:namespaceABDMS2000" id="r_namespaceABDMS2000"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html">ABDMS2000</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ABDMS2000" id="r_ABDMS2000"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html">ABDMS2000</a></td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+<tr class="heading"><td colspan="2"><h2 id="header-enum-members" class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumeraciones</h2></td></tr>
 <tr class="memitem:abc4cdc119202c5543784333a46122675" id="r_abc4cdc119202c5543784333a46122675"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#abc4cdc119202c5543784333a46122675">ABDMS2000::ModSeqMotion</a> { <a class="el" href="namespaceABDMS2000.html#abc4cdc119202c5543784333a46122675a48c7c41b72e1d678923ce3571aa65b2d">ABDMS2000::Step</a> = 0
 , <a class="el" href="namespaceABDMS2000.html#abc4cdc119202c5543784333a46122675ae510cdf33cd497134b47b9316314d4b4">ABDMS2000::Smooth</a>
  }</td></tr>
-<tr class="separator:abc4cdc119202c5543784333a46122675"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab30c4f4d8014ea1f4949a9b5ce870a4e" id="r_ab30c4f4d8014ea1f4949a9b5ce870a4e"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#ab30c4f4d8014ea1f4949a9b5ce870a4e">ABDMS2000::ModSeqKeySync</a> { <a class="el" href="namespaceABDMS2000.html#ab30c4f4d8014ea1f4949a9b5ce870a4ead15305d7a4e34e02489c74a5ef542f36">ABDMS2000::Off</a> = 0
 , <a class="el" href="namespaceABDMS2000.html#ab30c4f4d8014ea1f4949a9b5ce870a4eaea20af6dcd1f907b9ffe0b505672bb85">ABDMS2000::Timbre</a>
 , <a class="el" href="namespaceABDMS2000.html#ab30c4f4d8014ea1f4949a9b5ce870a4ead7a3fdf1351b72249a47454751549deb">ABDMS2000::Voice</a>
  }</td></tr>
-<tr class="separator:ab30c4f4d8014ea1f4949a9b5ce870a4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaaf29fbe991106158616956838595e83" id="r_aaaf29fbe991106158616956838595e83"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#aaaf29fbe991106158616956838595e83">ABDMS2000::ModSeqMode</a> { <a class="el" href="namespaceABDMS2000.html#aaaf29fbe991106158616956838595e83a67d2f6740a8eaebf4d5c6f79be8da481">ABDMS2000::Forward</a> = 0
 , <a class="el" href="namespaceABDMS2000.html#aaaf29fbe991106158616956838595e83ab3263eb38f8903efc271cc7a760da510">ABDMS2000::Backward</a>
 , <a class="el" href="namespaceABDMS2000.html#aaaf29fbe991106158616956838595e83aeb9a56428f85bbdfd3846322baaffe6e">ABDMS2000::Bounce</a>
 , <a class="el" href="namespaceABDMS2000.html#aaaf29fbe991106158616956838595e83a64663f4646781c9c0110838b905daa23">ABDMS2000::Random</a>
  }</td></tr>
-<tr class="separator:aaaf29fbe991106158616956838595e83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a495c6af1070566573e5fb9f7628c8d46" id="r_a495c6af1070566573e5fb9f7628c8d46"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#a495c6af1070566573e5fb9f7628c8d46">ABDMS2000::ModSeqDest</a> { <br />
 &#160;&#160;<a class="el" href="namespaceABDMS2000.html#a495c6af1070566573e5fb9f7628c8d46a6adf97f83acf6453d4a6a4b1070f3754">ABDMS2000::None</a> = 0
 , <a class="el" href="namespaceABDMS2000.html#a495c6af1070566573e5fb9f7628c8d46a87f800274a7f46c50e17114f89171e2e">ABDMS2000::Pitch</a>
@@ -167,17 +171,27 @@ Enumeraciones</h2></td></tr>
 , <a class="el" href="namespaceABDMS2000.html#a495c6af1070566573e5fb9f7628c8d46ab1ce480218c24bc0ea09b61c01711001">ABDMS2000::Patch4Int</a>
 <br />
  }</td></tr>
-<tr class="separator:a495c6af1070566573e5fb9f7628c8d46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+<tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Funciones</h2></td></tr>
 <tr class="memitem:aca33568c2caa9e78dec5c94951c1cb1d" id="r_aca33568c2caa9e78dec5c94951c1cb1d"><td class="memItemLeft" align="right" valign="top">static constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#aca33568c2caa9e78dec5c94951c1cb1d">ABDMS2000::modSeqStepRange</a> (<a class="el" href="namespaceABDMS2000.html#a495c6af1070566573e5fb9f7628c8d46">ModSeqDest</a> dest) noexcept</td></tr>
-<tr class="separator:aca33568c2caa9e78dec5c94951c1cb1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
+</div><!-- doc-content -->
+<div id="page-nav" class="page-nav-panel">
+<div id="page-nav-resize-handle"></div>
+<div id="page-nav-tree">
+<div id="page-nav-contents">
+</div><!-- page-nav-contents -->
+</div><!-- page-nav-tree -->
+</div><!-- page-nav -->
+</div><!-- container -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a href="dir_28f92771c0af6f341cedd07750149305.html">DSP</a></li><li class="navelem"><a href="dir_f22db3c5347e9cc6d7c87df2e020db26.html">Sequencer</a></li><li class="navelem"><a href="ModSequencer_8h.html">ModSequencer.h</a></li>
+    <li class="footer">Generado por <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0 </li>
+  </ul>
+</div>
 </body>
 </html>

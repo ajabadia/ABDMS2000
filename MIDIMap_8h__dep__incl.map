@@ -1,24 +1,24 @@
 <map id="Source/MIDI/MIDIMap.h" name="Source/MIDI/MIDIMap.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="376,5,551,31"/>
-<area shape="rect" id="Node000002" href="$MIDIMap_8cpp.html" title=" " alt="" coords="259,86,449,111"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="437,41,372,88,369,84,434,37"/>
-<area shape="rect" id="Node000003" href="$MIDITelemetryManager_8h.html" title=" " alt="" coords="473,79,672,119"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="492,36,548,76,545,81,489,41"/>
-<area shape="rect" id="Node000004" href="$MIDITelemetryManager_8cpp.html" title=" " alt="" coords="5,167,204,207"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="460,123,205,170,204,165,459,118"/>
-<area shape="rect" id="Node000005" href="$BridgeActions_8cpp.html" title=" " alt="" coords="228,174,459,199"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="511,126,375,176,373,171,509,121"/>
-<area shape="rect" id="Node000006" href="$PluginEditor_8cpp.html" title=" " alt="" coords="399,328,618,353"/>
-<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="547,131,524,168,513,213,508,258,510,328,505,328,503,258,508,212,520,166,542,128"/>
-<area shape="rect" id="Node000007" href="$PluginProcessor_8cpp.html" title=" " alt="" coords="653,328,895,353"/>
-<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="687,109,737,129,759,145,777,165,789,186,795,208,797,255,790,298,781,329,776,327,785,297,792,255,790,209,784,188,773,168,755,149,734,134,685,114"/>
-<area shape="rect" id="Node000008" href="$PluginProcessor_8h.html" title=" " alt="" coords="535,174,763,199"/>
-<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="600,127,640,172,636,175,596,131"/>
-<area shape="rect" id="Node000010" href="$DSPCoreTests_8cpp.html" title=" " alt="" coords="861,174,1084,199"/>
-<area shape="poly" id="edge12_Node000003_Node000010" title=" " alt="" coords="674,119,920,171,919,177,673,124"/>
-<area shape="poly" id="edge11_Node000008_Node000007" title=" " alt="" coords="689,204,722,224,751,253,762,272,769,292,776,327,770,328,764,294,757,274,747,256,719,229,686,208"/>
-<area shape="rect" id="Node000009" href="$PluginEditor_8h.html" title=" " alt="" coords="534,255,737,280"/>
-<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="647,213,640,255,635,254,642,212"/>
-<area shape="poly" id="edge9_Node000009_Node000006" title=" " alt="" coords="604,289,531,330,528,325,602,284"/>
-<area shape="poly" id="edge10_Node000009_Node000007" title=" " alt="" coords="671,284,753,325,750,330,668,289"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="374,5,547,33"/>
+<area shape="rect" id="Node000002" href="$MIDIMap_8cpp.html" title=" " alt="" coords="258,90,447,117"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="429,44,371,91,368,87,433,41"/>
+<area shape="rect" id="Node000003" href="$MIDITelemetryManager_8h.html" title=" " alt="" coords="471,81,669,126"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="491,40,543,80,538,80,490,45"/>
+<area shape="rect" id="Node000004" href="$MIDITelemetryManager_8cpp.html" title=" " alt="" coords="5,174,204,218"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="454,129,205,178,203,173,456,125"/>
+<area shape="rect" id="Node000005" href="$BridgeActions_8cpp.html" title=" " alt="" coords="228,182,458,210"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="499,133,377,184,375,179,504,131"/>
+<area shape="rect" id="Node000006" href="$PluginEditor_8cpp.html" title=" " alt="" coords="398,342,616,370"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="543,136,523,175,511,221,507,269,508,343,504,340,501,269,506,220,518,173,539,139"/>
+<area shape="rect" id="Node000007" href="$PluginProcessor_8cpp.html" title=" " alt="" coords="651,342,894,370"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="684,116,734,137,755,152,773,172,785,193,792,217,795,265,788,310,779,344,775,340,783,309,789,265,787,218,780,195,769,175,752,156,731,141,684,121"/>
+<area shape="rect" id="Node000008" href="$PluginProcessor_8h.html" title=" " alt="" coords="532,182,760,210"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="599,135,637,182,632,181,597,140"/>
+<area shape="rect" id="Node000010" href="$DSPCoreTests_8cpp.html" title=" " alt="" coords="860,182,1082,210"/>
+<area shape="poly" id="edge12_Node000003_Node000010" title=" " alt="" coords="681,127,915,181,910,182,681,132"/>
+<area shape="poly" id="edge11_Node000008_Node000007" title=" " alt="" coords="689,215,721,236,749,265,760,284,768,305,774,344,769,340,762,307,755,286,745,268,718,240,688,220"/>
+<area shape="rect" id="Node000009" href="$PluginEditor_8h.html" title=" " alt="" coords="533,266,735,294"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="644,223,638,268,634,264,640,227"/>
+<area shape="poly" id="edge9_Node000009_Node000006" title=" " alt="" coords="601,301,531,344,529,339,596,303"/>
+<area shape="poly" id="edge10_Node000009_Node000007" title=" " alt="" coords="673,299,751,342,745,341,671,304"/>
 </map>

@@ -1,26 +1,28 @@
 <map id="Source/DSP/Vocoder/MS2KVocoder16Band.cpp" name="Source/DSP/Vocoder/MS2KVocoder16Band.cpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="443,5,634,45"/>
-<area shape="rect" id="Node000002" href="$MS2KVocoder16Band_8h.html" title=" " alt="" coords="223,93,395,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="485,48,357,91,355,86,483,43"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="5,240,91,265"/>
-<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="444,40,326,58,196,85,136,102,84,122,43,144,17,168,12,182,14,197,30,228,26,230,9,199,7,182,12,165,40,140,82,117,135,97,195,80,325,53,443,35"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="122,240,185,265"/>
-<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="545,45,547,77,546,117,536,158,527,177,514,194,491,209,458,222,372,239,278,249,199,253,198,248,278,243,371,234,456,216,488,204,510,190,522,174,531,156,541,117,542,78,539,46"/>
-<area shape="rect" id="Node000009" href="$DSPUtils_8h.html" title=" " alt="" coords="763,93,928,119"/>
-<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="613,43,788,87,786,92,611,48"/>
-<area shape="rect" id="Node000011" href="$HardwareConstants_8h.html" title=" " alt="" coords="576,93,739,119"/>
-<area shape="poly" id="edge12_Node000001_Node000011" title=" " alt="" coords="569,43,630,84,627,88,566,48"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="200,167,256,192"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="298,121,253,160,250,156,295,117"/>
-<area shape="rect" id="Node000004" href="$NoiseGenerator_8h.html" title=" " alt="" coords="281,167,501,192"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="324,117,369,156,365,160,321,121"/>
-<area shape="rect" id="Node000006" href="$EnvelopeFollower_8h.html" title=" " alt="" coords="27,167,175,192"/>
-<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="277,121,149,165,147,160,275,116"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="491,240,557,265"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="413,190,491,231,489,236,411,194"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="95,194,67,231,63,228,90,191"/>
-<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="112,191,139,227,135,230,108,194"/>
-<area shape="rect" id="Node000010" title=" " alt="" coords="765,167,926,192"/>
-<area shape="poly" id="edge11_Node000009_Node000010" title=" " alt="" coords="848,119,848,153,843,153,843,119"/>
-<area shape="poly" id="edge13_Node000011_Node000005" title=" " alt="" coords="648,121,546,231,542,228,644,117"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="483,5,673,50"/>
+<area shape="rect" id="Node000002" href="$MS2KVocoder16Band_8h.html" title=" " alt="" coords="492,98,664,126"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="580,48,580,84,576,81,576,53"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="460,249,544,277"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="480,43,421,61,357,87,326,104,298,124,272,148,251,175,243,198,249,216,268,230,296,242,370,255,447,262,441,262,369,260,295,247,265,235,245,219,237,198,246,172,268,144,294,120,323,100,355,82,420,56,485,41"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="623,249,685,277"/>
+<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="621,48,656,70,691,98,723,132,746,173,750,188,746,203,726,227,700,245,698,240,722,223,741,200,744,188,741,175,719,135,687,101,653,74,620,53"/>
+<area shape="rect" id="Node000009" href="$DSPUtils_8h.html" title=" " alt="" coords="806,98,971,126"/>
+<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="661,48,827,93,821,94,660,53"/>
+<area shape="rect" id="Node000011" href="$HardwareConstants_8h.html" title=" " alt="" coords="24,98,185,126"/>
+<area shape="poly" id="edge12_Node000001_Node000011" title=" " alt="" coords="481,48,196,97,195,92,483,43"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="676,174,731,201"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="601,124,671,166,666,166,600,129"/>
+<area shape="rect" id="Node000004" href="$NoiseGenerator_8h.html" title=" " alt="" coords="260,174,480,201"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="543,125,422,171,420,166,538,127"/>
+<area shape="rect" id="Node000006" href="$EnvelopeFollower_8h.html" title=" " alt="" coords="504,174,652,201"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="580,124,580,160,576,156,576,128"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="239,249,304,277"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="355,201,302,242,300,238,350,203"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="567,201,527,241,525,236,562,203"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="593,199,632,239,627,238,591,204"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="808,174,969,201"/>
+<area shape="poly" id="edge11_Node000009_Node000010" title=" " alt="" coords="890,124,891,160,887,156,887,128"/>
+<area shape="poly" id="edge13_Node000011_Node000005" title=" " alt="" coords="120,123,248,237,243,240,118,128"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="5,174,135,201"/>
+<area shape="poly" id="edge14_Node000011_Node000012" title=" " alt="" coords="100,124,85,161,80,158,97,129"/>
 </map>

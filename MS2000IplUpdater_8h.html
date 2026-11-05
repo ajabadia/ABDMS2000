@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Referencia del archivo Source/MIDI/MS2000IplUpdater.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.15.0 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Buscar',true);
+  $(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){initNavTree('MS2000IplUpdater_8h.html','',''); });
+</script>
+<div id="container">
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">Referencia del archivo MS2000IplUpdater.h</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><code>#include &lt;atomic&gt;</code><br />
+<code>#include &lt;cstdint&gt;</code><br />
+<code>#include &lt;functional&gt;</code><br />
+<code>#include &lt;mutex&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
+<code>#include &lt;thread&gt;</code><br />
+<code>#include &lt;vector&gt;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Gráfico de dependencias incluidas en MS2000IplUpdater.h:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="MS2000IplUpdater_8h__incl.svg" width="620" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div><div class="textblock"><div class="dynheader">
+Gráfico de los archivos que directa o indirectamente incluyen a este archivo:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="MS2000IplUpdater_8h__dep__incl.svg" width="100%" height="499"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+</div>
+<p><a href="MS2000IplUpdater_8h_source.html">Ir al código fuente de este archivo.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Clases</h2></td></tr>
+<tr class="memitem:ABDMS2000_3A_3Ams2kipl_3A_3AVersion" id="r_ABDMS2000_3A_3Ams2kipl_3A_3AVersion"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1ms2kipl_1_1Version.html">ABDMS2000::ms2kipl::Version</a></td></tr>
+<tr class="memitem:ABDMS2000_3A_3Ams2kipl_3A_3ATransport" id="r_ABDMS2000_3A_3Ams2kipl_3A_3ATransport"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1ms2kipl_1_1Transport.html">ABDMS2000::ms2kipl::Transport</a></td></tr>
+<tr class="memitem:ABDMS2000_3A_3Ams2kipl_3A_3AProgressUpdate" id="r_ABDMS2000_3A_3Ams2kipl_3A_3AProgressUpdate"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1ms2kipl_1_1ProgressUpdate.html">ABDMS2000::ms2kipl::ProgressUpdate</a></td></tr>
+<tr class="memitem:ABDMS2000_3A_3Ams2kipl_3A_3AResult" id="r_ABDMS2000_3A_3Ams2kipl_3A_3AResult"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1ms2kipl_1_1Result.html">ABDMS2000::ms2kipl::Result</a></td></tr>
+<tr class="memitem:ABDMS2000_3A_3AMS2000IplUpdater" id="r_ABDMS2000_3A_3AMS2000IplUpdater"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1MS2000IplUpdater.html">ABDMS2000::MS2000IplUpdater</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-namespaces" class="groupheader"><a id="namespaces" name="namespaces"></a>
+Espacios de nombres</h2></td></tr>
+<tr class="memitem:ABDMS2000" id="r_ABDMS2000"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html">ABDMS2000</a></td></tr>
+<tr class="memitem:ABDMS2000_3A_3Ams2kipl" id="r_ABDMS2000_3A_3Ams2kipl"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html">ABDMS2000::ms2kipl</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-typedef-members" class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+typedefs</h2></td></tr>
+<tr class="memitem:a061d5b6914885b1b04bdc57497e8b02a" id="r_a061d5b6914885b1b04bdc57497e8b02a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a061d5b6914885b1b04bdc57497e8b02a">ABDMS2000::ms2kipl::Bytes</a> = std::vector&lt;uint8_t&gt;</td></tr>
+<tr class="memitem:ad9e1ec7befef77e2ec9d16988a5edd7f" id="r_ad9e1ec7befef77e2ec9d16988a5edd7f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#ad9e1ec7befef77e2ec9d16988a5edd7f">ABDMS2000::ms2kipl::ProgressCallback</a> = std::function&lt;bool(const <a class="el" href="structABDMS2000_1_1ms2kipl_1_1ProgressUpdate.html">ProgressUpdate</a> &amp;update)&gt;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-enum-members" class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumeraciones</h2></td></tr>
+<tr class="memitem:a5d3448adf45c007b809c71090a505808" id="r_a5d3448adf45c007b809c71090a505808"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a5d3448adf45c007b809c71090a505808">ABDMS2000::ms2kipl::Type</a> : uint8_t { <a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a5d3448adf45c007b809c71090a505808a834c3d60d84e11303f54a7dabaacb567">ABDMS2000::ms2kipl::SYS</a> = 0
+, <a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a5d3448adf45c007b809c71090a505808a1088fbc901dc88b6c18085220cc33de9">ABDMS2000::ms2kipl::PCM</a> = 1
+, <a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a5d3448adf45c007b809c71090a505808a2b6cc9c30eaad9c109091ea928529cbd">ABDMS2000::ms2kipl::USR</a> = 2
+, <a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a5d3448adf45c007b809c71090a505808a5fb1f955b45e38e31789286a1790398d">ABDMS2000::ms2kipl::ALL</a> = 3
+ }</td></tr>
+<tr class="memitem:a898fe8eeaa40442a9e605f85d86b3c5b" id="r_a898fe8eeaa40442a9e605f85d86b3c5b"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a898fe8eeaa40442a9e605f85d86b3c5b">ABDMS2000::ms2kipl::TransferRate</a> : int { <a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a898fe8eeaa40442a9e605f85d86b3c5bac3f886add2c17b5e2a344c3848e41a55">ABDMS2000::ms2kipl::VeryFast</a> = 0
+, <a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a898fe8eeaa40442a9e605f85d86b3c5bae16b5b7f26f54214445cbe38d72c2828">ABDMS2000::ms2kipl::Fast</a> = 1
+, <a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a898fe8eeaa40442a9e605f85d86b3c5baefa5397985b8609a5dbeb430a4bcadd3">ABDMS2000::ms2kipl::Slow</a> = 2
+, <a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a898fe8eeaa40442a9e605f85d86b3c5ba285959ed93c5be2b06ea3d7e1785aa67">ABDMS2000::ms2kipl::VerySlow</a> = 3
+ }</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
+Funciones</h2></td></tr>
+<tr class="memitem:aef4f5c9016f70de7effea6b31600c6fe" id="r_aef4f5c9016f70de7effea6b31600c6fe"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#aef4f5c9016f70de7effea6b31600c6fe">ABDMS2000::ms2kipl::typeSize</a> (<a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a5d3448adf45c007b809c71090a505808">Type</a> t) noexcept</td></tr>
+<tr class="memitem:a912f3ab335f9b0af049da4bcd17a7fc4" id="r_a912f3ab335f9b0af049da4bcd17a7fc4"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a912f3ab335f9b0af049da4bcd17a7fc4">ABDMS2000::ms2kipl::sha1Hex</a> (const uint8_t *data, size_t n)</td></tr>
+<tr class="memitem:a74cfad8bce234c7d65ab1d82ba01b767" id="r_a74cfad8bce234c7d65ab1d82ba01b767"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a74cfad8bce234c7d65ab1d82ba01b767">ABDMS2000::ms2kipl::sha1Hex</a> (const <a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a061d5b6914885b1b04bdc57497e8b02a">Bytes</a> &amp;b)</td></tr>
+<tr class="memitem:abc633aa44216532e52d827e4d76676fe" id="r_abc633aa44216532e52d827e4d76676fe"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#abc633aa44216532e52d827e4d76676fe">ABDMS2000::ms2kipl::makeDumpSys</a> (const <a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a061d5b6914885b1b04bdc57497e8b02a">Bytes</a> &amp;v107, <a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a061d5b6914885b1b04bdc57497e8b02a">Bytes</a> &amp;out, std::string &amp;err)</td></tr>
+<tr class="memitem:aef8db612865f9492ff5ae00c90a25d4a" id="r_aef8db612865f9492ff5ae00c90a25d4a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#aef8db612865f9492ff5ae00c90a25d4a">ABDMS2000::ms2kipl::validateImage</a> (<a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a5d3448adf45c007b809c71090a505808">Type</a> t, const <a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a061d5b6914885b1b04bdc57497e8b02a">Bytes</a> &amp;image)</td></tr>
+<tr class="memitem:a68b2bb60c69644354e7a73fabd3853ba" id="r_a68b2bb60c69644354e7a73fabd3853ba"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a68b2bb60c69644354e7a73fabd3853ba">ABDMS2000::ms2kipl::isOfficialV107</a> (const <a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a061d5b6914885b1b04bdc57497e8b02a">Bytes</a> &amp;image)</td></tr>
+<tr class="memitem:a7ca5b7583c43b7c9c0dd68b14877ade7" id="r_a7ca5b7583c43b7c9c0dd68b14877ade7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a7ca5b7583c43b7c9c0dd68b14877ade7">ABDMS2000::ms2kipl::isDumpSys</a> (const <a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a061d5b6914885b1b04bdc57497e8b02a">Bytes</a> &amp;image)</td></tr>
+<tr class="memitem:a0e9913ab0494da16f3fe9d65cb8203df" id="r_a0e9913ab0494da16f3fe9d65cb8203df"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a061d5b6914885b1b04bdc57497e8b02a">Bytes</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a0e9913ab0494da16f3fe9d65cb8203df">ABDMS2000::ms2kipl::msgVersion</a> ()</td></tr>
+<tr class="memitem:acded056aee197827ed66e8ef3acd2f31" id="r_acded056aee197827ed66e8ef3acd2f31"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a061d5b6914885b1b04bdc57497e8b02a">Bytes</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#acded056aee197827ed66e8ef3acd2f31">ABDMS2000::ms2kipl::msgSetType</a> (<a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a5d3448adf45c007b809c71090a505808">Type</a> t)</td></tr>
+<tr class="memitem:a21c872c3772fe8b23c9fa486f78c3ad7" id="r_a21c872c3772fe8b23c9fa486f78c3ad7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a061d5b6914885b1b04bdc57497e8b02a">Bytes</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a21c872c3772fe8b23c9fa486f78c3ad7">ABDMS2000::ms2kipl::msgBlock</a> (uint8_t bb, const uint8_t *d)</td></tr>
+<tr class="memitem:a79b90401ec4a3881b6833176b0208a31" id="r_a79b90401ec4a3881b6833176b0208a31"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a061d5b6914885b1b04bdc57497e8b02a">Bytes</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a79b90401ec4a3881b6833176b0208a31">ABDMS2000::ms2kipl::msgDump</a> (uint32_t addr, uint32_t size)</td></tr>
+<tr class="memitem:ad2fb565129dcf56dcf38c31434ab0651" id="r_ad2fb565129dcf56dcf38c31434ab0651"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#ad2fb565129dcf56dcf38c31434ab0651">ABDMS2000::ms2kipl::parseVersion</a> (const <a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a061d5b6914885b1b04bdc57497e8b02a">Bytes</a> &amp;s, <a class="el" href="structABDMS2000_1_1ms2kipl_1_1Version.html">Version</a> &amp;v)</td></tr>
+<tr class="memitem:a3ef08f44be44de3b2f498185ceb6ee27" id="r_a3ef08f44be44de3b2f498185ceb6ee27"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a3ef08f44be44de3b2f498185ceb6ee27">ABDMS2000::ms2kipl::parseStatus</a> (const <a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a061d5b6914885b1b04bdc57497e8b02a">Bytes</a> &amp;s)</td></tr>
+<tr class="memitem:a7dd012cc21c75766bfccc93405266141" id="r_a7dd012cc21c75766bfccc93405266141"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a7dd012cc21c75766bfccc93405266141">ABDMS2000::ms2kipl::statusText</a> (int c)</td></tr>
+<tr class="memitem:a8ee318185810f0d0d7bc41bc77170563" id="r_a8ee318185810f0d0d7bc41bc77170563"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a8ee318185810f0d0d7bc41bc77170563">ABDMS2000::ms2kipl::statusLcdCode</a> (int c)</td></tr>
+<tr class="memitem:a2c8d80bbf83aa158bfd179cfd37cfd4a" id="r_a2c8d80bbf83aa158bfd179cfd37cfd4a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a2c8d80bbf83aa158bfd179cfd37cfd4a">ABDMS2000::ms2kipl::decodeDump</a> (const <a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a061d5b6914885b1b04bdc57497e8b02a">Bytes</a> &amp;s, uint32_t size, <a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a061d5b6914885b1b04bdc57497e8b02a">Bytes</a> &amp;out)</td></tr>
+<tr class="memitem:a09f615ee965d914a0c43454765da1f4c" id="r_a09f615ee965d914a0c43454765da1f4c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a09f615ee965d914a0c43454765da1f4c">ABDMS2000::ms2kipl::versionText</a> (uint16_t v)</td></tr>
+<tr class="memitem:aa13c7b1f574509b58f61b76c0af62722" id="r_aa13c7b1f574509b58f61b76c0af62722"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structABDMS2000_1_1ms2kipl_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#aa13c7b1f574509b58f61b76c0af62722">ABDMS2000::ms2kipl::getVersion</a> (<a class="el" href="structABDMS2000_1_1ms2kipl_1_1Transport.html">Transport</a> &amp;t, <a class="el" href="structABDMS2000_1_1ms2kipl_1_1Version.html">Version</a> &amp;v, int timeoutMs)</td></tr>
+<tr class="memitem:a62b4165c84406ff521193d97434d12c4" id="r_a62b4165c84406ff521193d97434d12c4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structABDMS2000_1_1ms2kipl_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a62b4165c84406ff521193d97434d12c4">ABDMS2000::ms2kipl::install</a> (<a class="el" href="structABDMS2000_1_1ms2kipl_1_1Transport.html">Transport</a> &amp;t, <a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a5d3448adf45c007b809c71090a505808">Type</a> type, const <a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a061d5b6914885b1b04bdc57497e8b02a">Bytes</a> &amp;image, <a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a898fe8eeaa40442a9e605f85d86b3c5b">TransferRate</a> rate, const <a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#ad9e1ec7befef77e2ec9d16988a5edd7f">ProgressCallback</a> &amp;progress)</td></tr>
+<tr class="memitem:aeb25bfe2807d6834ff9e3e8f26788604" id="r_aeb25bfe2807d6834ff9e3e8f26788604"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structABDMS2000_1_1ms2kipl_1_1Result.html">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#aeb25bfe2807d6834ff9e3e8f26788604">ABDMS2000::ms2kipl::dump</a> (<a class="el" href="structABDMS2000_1_1ms2kipl_1_1Transport.html">Transport</a> &amp;t, uint32_t addr, uint32_t size, <a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a061d5b6914885b1b04bdc57497e8b02a">Bytes</a> &amp;out, const <a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#ad9e1ec7befef77e2ec9d16988a5edd7f">ProgressCallback</a> &amp;progress, int retries)</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:aa6f99dc5eb441295d030c26eb968893b" id="r_aa6f99dc5eb441295d030c26eb968893b"><td class="memItemLeft" align="right" valign="top">constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#aa6f99dc5eb441295d030c26eb968893b">ABDMS2000::ms2kipl::kSysSize</a> = 0x40000</td></tr>
+<tr class="memitem:a2d0050177f9606afa66898ed33ca92d3" id="r_a2d0050177f9606afa66898ed33ca92d3"><td class="memItemLeft" align="right" valign="top">constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a2d0050177f9606afa66898ed33ca92d3">ABDMS2000::ms2kipl::kPcmSize</a> = 0x60000</td></tr>
+<tr class="memitem:ad772848ef82c1312be58305e98954b73" id="r_ad772848ef82c1312be58305e98954b73"><td class="memItemLeft" align="right" valign="top">constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#ad772848ef82c1312be58305e98954b73">ABDMS2000::ms2kipl::kUsrSize</a> = 0x60000</td></tr>
+<tr class="memitem:a0bbefe8bca73f158ccd962f67bb21cb0" id="r_a0bbefe8bca73f158ccd962f67bb21cb0"><td class="memItemLeft" align="right" valign="top">constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a0bbefe8bca73f158ccd962f67bb21cb0">ABDMS2000::ms2kipl::kFlashSize</a> = 0x100000</td></tr>
+<tr class="memitem:a65f6b4d3b5438fbbba4d191d10bbdf15" id="r_a65f6b4d3b5438fbbba4d191d10bbdf15"><td class="memItemLeft" align="right" valign="top">constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a65f6b4d3b5438fbbba4d191d10bbdf15">ABDMS2000::ms2kipl::kBlockSize</a> = 0x2000</td></tr>
+<tr class="memitem:a615443a84738e7128eab7fedd85cb266" id="r_a615443a84738e7128eab7fedd85cb266"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#a615443a84738e7128eab7fedd85cb266">ABDMS2000::ms2kipl::kV107Sha1</a> = &quot;945a75555fcd3f17d7ad9f15d38a431869a07bb8&quot;</td></tr>
+<tr class="memitem:af9e6db211a44e3e1c2ea61543a84a66f" id="r_af9e6db211a44e3e1c2ea61543a84a66f"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1ms2kipl.html#af9e6db211a44e3e1c2ea61543a84a66f">ABDMS2000::ms2kipl::kDumpSysSha1</a> = &quot;cd85d579969411b8cd55a6ccd83690247b51c7ca&quot;</td></tr>
+</table>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<div id="page-nav" class="page-nav-panel">
+<div id="page-nav-resize-handle"></div>
+<div id="page-nav-tree">
+<div id="page-nav-contents">
+</div><!-- page-nav-contents -->
+</div><!-- page-nav-tree -->
+</div><!-- page-nav -->
+</div><!-- container -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a href="dir_dc3ca98ec04499128e0990907e6131c0.html">MIDI</a></li><li class="navelem"><a href="MS2000IplUpdater_8h.html">MS2000IplUpdater.h</a></li>
+    <li class="footer">Generado por <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0 </li>
+  </ul>
+</div>
+</body>
+</html>

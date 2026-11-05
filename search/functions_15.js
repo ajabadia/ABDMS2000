@@ -1,13 +1,14 @@
 var searchData=
 [
-  ['_7eabdms2000audioprocessor_0',['~ABDMS2000AudioProcessor',['../classABDMS2000_1_1ABDMS2000AudioProcessor.html#a820b709810264332264ab8e628d3e071',1,'ABDMS2000::ABDMS2000AudioProcessor']]],
-  ['_7eabdms2000audioprocessoreditor_1',['~ABDMS2000AudioProcessorEditor',['../classABDMS2000_1_1ABDMS2000AudioProcessorEditor.html#a480029842e50b68bac8f58360693bbff',1,'ABDMS2000::ABDMS2000AudioProcessorEditor']]],
-  ['_7ebridgeactions_2',['~BridgeActions',['../classABDMS2000_1_1BridgeActions.html#a842289656baa61f425727e64458ec992',1,'ABDMS2000::BridgeActions']]],
-  ['_7ebridgehost_3',['~BridgeHost',['../classABDMS2000_1_1BridgeHost.html#a48a7da2ab377d5eb9021caaeab0c5027',1,'ABDMS2000::BridgeHost']]],
-  ['_7emiditelemetrymanager_4',['~MIDITelemetryManager',['../classABDMS2000_1_1MIDITelemetryManager.html#ad260a1b278b9df24c5e02ef65161baea',1,'ABDMS2000::MIDITelemetryManager']]],
-  ['_7ems2000factorybank_5',['~MS2000FactoryBank',['../classABDMS2000_1_1MS2000FactoryBank.html#a4cba352d898adae5d7cfbf56b15b7022',1,'ABDMS2000::MS2000FactoryBank']]],
-  ['_7ems2000sysexexporter_6',['~MS2000SysExExporter',['../classABDMS2000_1_1MS2000SysExExporter.html#a3a818ae2358abede5babb86f3a0eabe8',1,'ABDMS2000::MS2000SysExExporter']]],
-  ['_7escopefloatingwindow_7',['~ScopeFloatingWindow',['../classABDMS2000_1_1ScopeFloatingWindow.html#af79949e34038cd313db35aaf488eadea',1,'ABDMS2000::ScopeFloatingWindow']]],
-  ['_7esynthengine_8',['~SynthEngine',['../classABDMS2000_1_1SynthEngine.html#a23d87d2393cc1e99fecd05040e878316',1,'ABDMS2000::SynthEngine']]],
-  ['_7esysexmanager_9',['~SysExManager',['../classABDMS2000_1_1SysExManager.html#ae6080d368c561427d83b0812b245f51d',1,'ABDMS2000::SysExManager']]]
+  ['validate_0',['validate',['../structABDMS2000_1_1MS2000ProgramData.html#af05184b34ebd775c6ba467d638e5866d',1,'ABDMS2000::MS2000ProgramData']]],
+  ['validateimage_1',['validateImage',['../namespaceABDMS2000_1_1ms2kipl.html#aef8db612865f9492ff5ae00c90a25d4a',1,'ABDMS2000::ms2kipl']]],
+  ['validatesamplerate_2',['validateSampleRate',['../namespaceABDMS2000_1_1DSPUtils.html#a811ef7806eb2bb6d1dd6c1625b8f1d18',1,'ABDMS2000::DSPUtils']]],
+  ['vaoscillator_3',['VAOscillator',['../classABDMS2000_1_1VAOscillator.html#a5fac7c7313a7eea3eeb3c32af149bb23',1,'ABDMS2000::VAOscillator']]],
+  ['versiontext_4',['versionText',['../namespaceABDMS2000_1_1ms2kipl.html#a09f615ee965d914a0c43454765da1f4c',1,'ABDMS2000::ms2kipl']]],
+  ['virtualpatchmatrix_5',['VirtualPatchMatrix',['../classABDMS2000_1_1VirtualPatchMatrix.html#af54d98e303c87488516e88b5b4c61b34',1,'ABDMS2000::VirtualPatchMatrix']]],
+  ['vocoderfields_6',['vocoderFields',['../structABDMS2000_1_1MS2000HardwareProgram.html#ade2740d965cd14d370f1ed27995bde2e',1,'ABDMS2000::MS2000HardwareProgram']]],
+  ['voice_7',['Voice',['../classABDMS2000_1_1Voice.html#abc8962f85959463fdd33deb4ebe38c56',1,'ABDMS2000::Voice::Voice()=default'],['../classABDMS2000_1_1Voice.html#a94d581d160fdfe0ea5f5213399c52930',1,'ABDMS2000::Voice::Voice(Voice &amp;&amp;) noexcept=default']]],
+  ['voicemanager_8',['VoiceManager',['../classABDMS2000_1_1VoiceManager.html#ae41becd6b622e57c6159232b88708fe3',1,'ABDMS2000::VoiceManager']]],
+  ['voicetests_9',['VoiceTests',['../classABDMS2000_1_1Tests_1_1VoiceTests.html#a70c9b40886ccdedc526e861c053d10f5',1,'ABDMS2000::Tests::VoiceTests']]],
+  ['voxwaveoscillator_10',['VoxWaveOscillator',['../classABDMS2000_1_1VoxWaveOscillator.html#a594324642a7fd397311397f1e7b397d2',1,'ABDMS2000::VoxWaveOscillator']]]
 ];

@@ -1,7 +1,7 @@
 <map id="ABDMS2000::SysExManager" name="ABDMS2000::SysExManager">
-<area shape="rect" id="Node000001" title=" " alt="" coords="143,108,349,133"/>
-<area shape="rect" id="Node000002" href="$structABDMS2000_1_1MS2000HardwareProgram.html" title="Programa de fábrica del Korg MS2000 / MS2000R / microKORG — 254 bytes reales." alt="" coords="5,5,231,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="156,51,232,106,229,110,153,55"/>
-<area shape="rect" id="Node000003" href="$structABDMS2000_1_1MicroKorgHardwareProgram.html" title="Formato SysEx nativo y binario del Korg microKORG físico (254 bytes decodificados)." alt="" coords="255,5,493,45"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="356,58,329,86,306,100,283,110,281,106,304,95,326,82,352,55"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="142,123,347,151"/>
+<area shape="rect" id="Node000002" href="$structABDMS2000_1_1MS2000HardwareProgram.html" title="Programa de fábrica del Korg MS2000 / MS2000R / microKORG — 254 bytes reales." alt="" coords="5,5,230,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="156,58,231,122,226,123,154,63"/>
+<area shape="rect" id="Node000003" href="$structABDMS2000_1_1MicroKorgHardwareProgram.html" title="Formato SysEx nativo y binario del Korg microKORG físico (254 bytes decodificados)." alt="" coords="254,5,491,50"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="362,63,352,84,338,101,318,115,296,125,295,120,316,110,334,97,348,81,358,66"/>
 </map>

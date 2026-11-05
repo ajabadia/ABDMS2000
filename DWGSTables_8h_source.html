@@ -3,12 +3,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
-<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Archivo de código fuente Source/DSP/Oscillators/DWGSTables.h</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -29,28 +34,38 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- Generado por Doxygen 1.9.8 -->
+<!-- Generado por Doxygen 1.15.0 -->
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 var searchBox = new SearchBox("searchBox", "search/",'.html');
-/* @license-end */
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
 </script>
 <script type="text/javascript" src="menudata.js"></script>
 <script type="text/javascript" src="menu.js"></script>
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,false,'search.php','Buscar');
-  $(document).ready(function() { init_search(); });
+  initMenu('',true,false,'search.php','Buscar',true);
+  $(function() { init_search(); });
 });
-/* @license-end */
 </script>
 <div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function() { init_codefold(0); });
-/* @license-end */
+$(function(){initNavTree('DWGSTables_8h_source.html','',''); });
 </script>
+<div id="container">
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -72,11 +87,6 @@ $(document).ready(function() { init_codefold(0); });
 </div>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a class="el" href="dir_28f92771c0af6f341cedd07750149305.html">DSP</a></li><li class="navelem"><a class="el" href="dir_56dd9e7cfcdef65c2e847cdb4c0a413b.html">Oscillators</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="headertitle"><div class="title">DWGSTables.h</div></div>
 </div><!--header-->
@@ -158,27 +168,27 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html">ABDMS2000::DWGSTables</a></div><div class="ttdoc">DWGS Wavetable Engine — 512-slot architecture.</div><div class="ttdef"><b>Definition</b> DWGSTables.h:27</div></div>
 <div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_a05ce7af40040cfe9b24824fe19fffab6"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#a05ce7af40040cfe9b24824fe19fffab6">ABDMS2000::DWGSTables::loadAKWFCurated</a></div><div class="ttdeci">static void loadAKWFCurated() noexcept</div></div>
 <div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_a060efdb31aa1f00e6b5446c84e2a370b"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#a060efdb31aa1f00e6b5446c84e2a370b">ABDMS2000::DWGSTables::SAMPLES_PER_TABLE</a></div><div class="ttdeci">static constexpr size_t SAMPLES_PER_TABLE</div><div class="ttdef"><b>Definition</b> DWGSTables.h:32</div></div>
-<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_a0a1dd6d289980ce3f1086d294dbd3666"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#a0a1dd6d289980ce3f1086d294dbd3666">ABDMS2000::DWGSTables::registerWaveform</a></div><div class="ttdeci">static bool registerWaveform(size_t index, const std::string &amp;name, WaveCategory cat, const float *samples, size_t numSamples) noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:742</div></div>
-<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_a24b56e45d3d38d32dc180e27ea2deb3e"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#a24b56e45d3d38d32dc180e27ea2deb3e">ABDMS2000::DWGSTables::filterByCategory</a></div><div class="ttdeci">static std::vector&lt; WaveEntry &gt; filterByCategory(WaveCategory cat) noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:731</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_a0a1dd6d289980ce3f1086d294dbd3666"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#a0a1dd6d289980ce3f1086d294dbd3666">ABDMS2000::DWGSTables::registerWaveform</a></div><div class="ttdeci">static bool registerWaveform(size_t index, const std::string &amp;name, WaveCategory cat, const float *samples, size_t numSamples) noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:752</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_a24b56e45d3d38d32dc180e27ea2deb3e"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#a24b56e45d3d38d32dc180e27ea2deb3e">ABDMS2000::DWGSTables::filterByCategory</a></div><div class="ttdeci">static std::vector&lt; WaveEntry &gt; filterByCategory(WaveCategory cat) noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:741</div></div>
 <div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_a2a0d1243788b1e16156fab251d468b53"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#a2a0d1243788b1e16156fab251d468b53">ABDMS2000::DWGSTables::catalog_</a></div><div class="ttdeci">static std::vector&lt; WaveEntry &gt; catalog_</div><div class="ttdef"><b>Definition</b> DWGSTables.h:65</div></div>
 <div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_a302bab3fb1c270078f49b2b706b7c4e4"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#a302bab3fb1c270078f49b2b706b7c4e4">ABDMS2000::DWGSTables::USER_START_SLOT</a></div><div class="ttdeci">static constexpr size_t USER_START_SLOT</div><div class="ttdef"><b>Definition</b> DWGSTables.h:36</div></div>
 <div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_a3e4186219d40746bdae814baee58bb8e"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#a3e4186219d40746bdae814baee58bb8e">ABDMS2000::DWGSTables::TOTAL_MAX_SAMPLES</a></div><div class="ttdeci">static constexpr size_t TOTAL_MAX_SAMPLES</div><div class="ttdef"><b>Definition</b> DWGSTables.h:33</div></div>
 <div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_a58e0564dbc3882f3391127b46b64fbff"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#a58e0564dbc3882f3391127b46b64fbff">ABDMS2000::DWGSTables::MAX_EXPANDED_TABLES</a></div><div class="ttdeci">static constexpr size_t MAX_EXPANDED_TABLES</div><div class="ttdef"><b>Definition</b> DWGSTables.h:31</div></div>
 <div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_a5c1a30efb7e330da301120f8c72bad0f"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#a5c1a30efb7e330da301120f8c72bad0f">ABDMS2000::DWGSTables::waveCategories_</a></div><div class="ttdeci">static std::vector&lt; WaveCategory &gt; waveCategories_</div><div class="ttdef"><b>Definition</b> DWGSTables.h:64</div></div>
-<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_a5e6856a2cdc83fcb97f203f18c3cbfad"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#a5e6856a2cdc83fcb97f203f18c3cbfad">ABDMS2000::DWGSTables::loadWavToSlot</a></div><div class="ttdeci">static bool loadWavToSlot(size_t slot, const std::string &amp;name, WaveCategory cat, const uint8_t *data, size_t size) noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:768</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_a5e6856a2cdc83fcb97f203f18c3cbfad"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#a5e6856a2cdc83fcb97f203f18c3cbfad">ABDMS2000::DWGSTables::loadWavToSlot</a></div><div class="ttdeci">static bool loadWavToSlot(size_t slot, const std::string &amp;name, WaveCategory cat, const uint8_t *data, size_t size) noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:778</div></div>
 <div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_a6dd8dffd2abb1b4f73d3f5716df1d026"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#a6dd8dffd2abb1b4f73d3f5716df1d026">ABDMS2000::DWGSTables::isInitialized_</a></div><div class="ttdeci">static bool isInitialized_</div><div class="ttdef"><b>Definition</b> DWGSTables.h:66</div></div>
 <div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_a6f079b1839c9a839d7d2c9a292a14630"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#a6f079b1839c9a839d7d2c9a292a14630">ABDMS2000::DWGSTables::wavetableMemory_</a></div><div class="ttdeci">static std::vector&lt; float &gt; wavetableMemory_</div><div class="ttdef"><b>Definition</b> DWGSTables.h:62</div></div>
 <div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_a706316d072a7f49f91512dc1e61f486b"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#a706316d072a7f49f91512dc1e61f486b">ABDMS2000::DWGSTables::NUM_AKWF_TABLES</a></div><div class="ttdeci">static constexpr size_t NUM_AKWF_TABLES</div><div class="ttdef"><b>Definition</b> DWGSTables.h:30</div></div>
-<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_a74be0ddc94e51ebbf7b3f1548bb44141"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#a74be0ddc94e51ebbf7b3f1548bb44141">ABDMS2000::DWGSTables::getTotalWaveforms</a></div><div class="ttdeci">static size_t getTotalWaveforms() noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:699</div></div>
-<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_ab8039f0a36dfb31654c12324bff5a084"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#ab8039f0a36dfb31654c12324bff5a084">ABDMS2000::DWGSTables::getWaveName</a></div><div class="ttdeci">static const char * getWaveName(size_t index) noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:687</div></div>
-<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_abd6e106f60ac2d9f13561d2c01d8fead"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#abd6e106f60ac2d9f13561d2c01d8fead">ABDMS2000::DWGSTables::getCatalog</a></div><div class="ttdeci">static const std::vector&lt; WaveEntry &gt; &amp; getCatalog() noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:703</div></div>
-<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_abded6359c7bfff3fc85cb1271ed7cd60"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#abded6359c7bfff3fc85cb1271ed7cd60">ABDMS2000::DWGSTables::getWaveCategory</a></div><div class="ttdeci">static WaveCategory getWaveCategory(size_t index) noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:693</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_a74be0ddc94e51ebbf7b3f1548bb44141"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#a74be0ddc94e51ebbf7b3f1548bb44141">ABDMS2000::DWGSTables::getTotalWaveforms</a></div><div class="ttdeci">static size_t getTotalWaveforms() noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:709</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_ab8039f0a36dfb31654c12324bff5a084"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#ab8039f0a36dfb31654c12324bff5a084">ABDMS2000::DWGSTables::getWaveName</a></div><div class="ttdeci">static const char * getWaveName(size_t index) noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:697</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_abd6e106f60ac2d9f13561d2c01d8fead"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#abd6e106f60ac2d9f13561d2c01d8fead">ABDMS2000::DWGSTables::getCatalog</a></div><div class="ttdeci">static const std::vector&lt; WaveEntry &gt; &amp; getCatalog() noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:713</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_abded6359c7bfff3fc85cb1271ed7cd60"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#abded6359c7bfff3fc85cb1271ed7cd60">ABDMS2000::DWGSTables::getWaveCategory</a></div><div class="ttdeci">static WaveCategory getWaveCategory(size_t index) noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:703</div></div>
 <div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_aca4d23873e7a15d9533f32532fc3ac8d"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#aca4d23873e7a15d9533f32532fc3ac8d">ABDMS2000::DWGSTables::NUM_STANDARD_TABLES</a></div><div class="ttdeci">static constexpr size_t NUM_STANDARD_TABLES</div><div class="ttdef"><b>Definition</b> DWGSTables.h:29</div></div>
-<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_acd71ce62f0d392f0205a179639af78ee"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#acd71ce62f0d392f0205a179639af78ee">ABDMS2000::DWGSTables::search</a></div><div class="ttdeci">static std::vector&lt; WaveEntry &gt; search(const std::string &amp;query) noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:710</div></div>
-<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_ad9e5d87d3a1bce1759c6714643b35a0a"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#ad9e5d87d3a1bce1759c6714643b35a0a">ABDMS2000::DWGSTables::getTableData</a></div><div class="ttdeci">static const float * getTableData() noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:681</div></div>
-<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_ae0c089cb00a8a0f00824e15586d63f23"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#ae0c089cb00a8a0f00824e15586d63f23">ABDMS2000::DWGSTables::generateStandardProcedural</a></div><div class="ttdeci">static void generateStandardProcedural(size_t slot) noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:458</div></div>
-<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_ae1d630487ee0a25575ebf9ec9f97c16a"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#ae1d630487ee0a25575ebf9ec9f97c16a">ABDMS2000::DWGSTables::initTables</a></div><div class="ttdeci">static void initTables() noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:570</div></div>
-<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_aedefcb4201c536ffbd3fd1e8a7d9d371"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#aedefcb4201c536ffbd3fd1e8a7d9d371">ABDMS2000::DWGSTables::loadM1Bank</a></div><div class="ttdeci">static bool loadM1Bank(const uint8_t *data, size_t size, size_t startSlot, size_t numWaves, WaveCategory cat) noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:785</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_acd71ce62f0d392f0205a179639af78ee"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#acd71ce62f0d392f0205a179639af78ee">ABDMS2000::DWGSTables::search</a></div><div class="ttdeci">static std::vector&lt; WaveEntry &gt; search(const std::string &amp;query) noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:720</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_ad9e5d87d3a1bce1759c6714643b35a0a"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#ad9e5d87d3a1bce1759c6714643b35a0a">ABDMS2000::DWGSTables::getTableData</a></div><div class="ttdeci">static const float * getTableData() noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:691</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_ae0c089cb00a8a0f00824e15586d63f23"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#ae0c089cb00a8a0f00824e15586d63f23">ABDMS2000::DWGSTables::generateStandardProcedural</a></div><div class="ttdeci">static void generateStandardProcedural(size_t slot) noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:459</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_ae1d630487ee0a25575ebf9ec9f97c16a"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#ae1d630487ee0a25575ebf9ec9f97c16a">ABDMS2000::DWGSTables::initTables</a></div><div class="ttdeci">static void initTables() noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:571</div></div>
+<div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_aedefcb4201c536ffbd3fd1e8a7d9d371"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#aedefcb4201c536ffbd3fd1e8a7d9d371">ABDMS2000::DWGSTables::loadM1Bank</a></div><div class="ttdeci">static bool loadM1Bank(const uint8_t *data, size_t size, size_t startSlot, size_t numWaves, WaveCategory cat) noexcept</div><div class="ttdef"><b>Definition</b> DWGSTables.cpp:795</div></div>
 <div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_af98a3db7b4b4bf9a186614416290a7c1"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#af98a3db7b4b4bf9a186614416290a7c1">ABDMS2000::DWGSTables::waveNames_</a></div><div class="ttdeci">static std::vector&lt; std::string &gt; waveNames_</div><div class="ttdef"><b>Definition</b> DWGSTables.h:63</div></div>
 <div class="ttc" id="aclassABDMS2000_1_1DWGSTables_html_afe045e8191c8869bd807f664c4a1a0f3"><div class="ttname"><a href="classABDMS2000_1_1DWGSTables.html#afe045e8191c8869bd807f664c4a1a0f3">ABDMS2000::DWGSTables::AKWF_START_SLOT</a></div><div class="ttdeci">static constexpr size_t AKWF_START_SLOT</div><div class="ttdef"><b>Definition</b> DWGSTables.h:35</div></div>
 <div class="ttc" id="anamespaceABDMS2000_html"><div class="ttname"><a href="namespaceABDMS2000.html">ABDMS2000</a></div><div class="ttdef"><b>Definition</b> AppLogger.h:18</div></div>
@@ -188,9 +198,14 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="astructABDMS2000_1_1WaveEntry_html_a7028b832d116b9e6296b734a3094baa6"><div class="ttname"><a href="structABDMS2000_1_1WaveEntry.html#a7028b832d116b9e6296b734a3094baa6">ABDMS2000::WaveEntry::slot</a></div><div class="ttdeci">size_t slot</div><div class="ttdef"><b>Definition</b> DWGSTables.h:14</div></div>
 <div class="ttc" id="astructABDMS2000_1_1WaveEntry_html_ae5583df973fc006fa59c4170d31b7667"><div class="ttname"><a href="structABDMS2000_1_1WaveEntry.html#ae5583df973fc006fa59c4170d31b7667">ABDMS2000::WaveEntry::name</a></div><div class="ttdeci">std::string name</div><div class="ttdef"><b>Definition</b> DWGSTables.h:12</div></div>
 </div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+</div><!-- container -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a href="dir_28f92771c0af6f341cedd07750149305.html">DSP</a></li><li class="navelem"><a href="dir_56dd9e7cfcdef65c2e847cdb4c0a413b.html">Oscillators</a></li><li class="navelem"><a href="DWGSTables_8h.html">DWGSTables.h</a></li>
+    <li class="footer">Generado por <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0 </li>
+  </ul>
+</div>
 </body>
 </html>

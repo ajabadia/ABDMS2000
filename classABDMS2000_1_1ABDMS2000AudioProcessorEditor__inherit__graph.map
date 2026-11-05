@@ -1,9 +1,9 @@
 <map id="ABDMS2000::ABDMS2000AudioProcessorEditor" name="ABDMS2000::ABDMS2000AudioProcessorEditor">
-<area shape="rect" id="Node000001" title=" " alt="" coords="159,79,385,119"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,200,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="141,34,232,76,230,81,139,39"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="225,5,319,31"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="275,44,275,79,269,79,269,44"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="343,5,518,31"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="396,39,312,81,309,76,394,34"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="157,81,384,126"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,200,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="144,38,228,79,223,81,143,43"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="223,5,318,33"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="272,47,273,82,268,79,269,51"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="341,5,514,33"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="392,40,313,83,311,78,386,41"/>
 </map>

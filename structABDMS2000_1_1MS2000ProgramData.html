@@ -3,12 +3,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
-<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Referencia de la estructura ABDMS2000::MS2000ProgramData</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -29,23 +34,38 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- Generado por Doxygen 1.9.8 -->
+<!-- Generado por Doxygen 1.15.0 -->
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 var searchBox = new SearchBox("searchBox", "search/",'.html');
-/* @license-end */
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
 </script>
 <script type="text/javascript" src="menudata.js"></script>
 <script type="text/javascript" src="menu.js"></script>
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,false,'search.php','Buscar');
-  $(document).ready(function() { init_search(); });
+  initMenu('',true,false,'search.php','Buscar',true);
+  $(function() { init_search(); });
 });
-/* @license-end */
 </script>
 <div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){initNavTree('structABDMS2000_1_1MS2000ProgramData.html','','structABDMS2000_1_1MS2000ProgramData-members'); });
+</script>
+<div id="container">
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -67,86 +87,75 @@ $(function() {
 </div>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="namespaceABDMS2000.html">ABDMS2000</a></li><li class="navelem"><a class="el" href="structABDMS2000_1_1MS2000ProgramData.html">MS2000ProgramData</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
-  <div class="summary">
-<a href="#pub-methods">Métodos públicos</a> &#124;
-<a href="#pub-static-methods">Métodos públicos estáticos</a> &#124;
-<a href="#pub-attribs">Atributos públicos</a> &#124;
-<a href="#pub-static-attribs">Atributos públicos estáticos</a> &#124;
-<a href="structABDMS2000_1_1MS2000ProgramData-members.html">Lista de todos los miembros</a>  </div>
   <div class="headertitle"><div class="title">Referencia de la estructura ABDMS2000::MS2000ProgramData</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Programa <b>propio</b> del plugin (el sistema <code>native</code> que declara el contrato del host, ver <code><a class="el" href="HostModelId_8gen_8h.html">Source/Plugin/HostModelId.gen.h</a></code>): bloque de 384 B con codificación dirigida por el <code><a class="el" href="classABDMS2000_1_1ParameterRegistry.html">ParameterRegistry</a></code>.  
- <a href="structABDMS2000_1_1MS2000ProgramData.html#details">Más...</a></p>
+<p>Programa <b>propio</b> del plugin (el sistema <span class="tt">native</span> que declara el contrato del host, ver <span class="tt"><a class="el" href="HostModelId_8gen_8h.html">Source/Plugin/HostModelId.gen.h</a></span>): bloque de 384 B con codificación dirigida por el <span class="tt"><a class="el" href="classABDMS2000_1_1ParameterRegistry.html">ParameterRegistry</a></span>.  
+ <a href="#details">Más...</a></p>
 
 <p><code>#include &lt;<a class="el" href="MS2000ProgramData_8h_source.html">MS2000ProgramData.h</a>&gt;</code></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Métodos públicos</h2></td></tr>
-<tr class="memitem:ad5a40ebb1e32f57b7c35ce29d0ae2091" id="r_ad5a40ebb1e32f57b7c35ce29d0ae2091"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1MS2000ProgramData.html#ad5a40ebb1e32f57b7c35ce29d0ae2091">MS2000ProgramData</a> ()</td></tr>
-<tr class="separator:ad5a40ebb1e32f57b7c35ce29d0ae2091"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73eee242aa1b7e5db70922c97f2a3ecb" id="r_a73eee242aa1b7e5db70922c97f2a3ecb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1MS2000ProgramData.html#a73eee242aa1b7e5db70922c97f2a3ecb">reset</a> ()</td></tr>
-<tr class="separator:a73eee242aa1b7e5db70922c97f2a3ecb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ceff980804a6fb70e9316748295a698" id="r_a0ceff980804a6fb70e9316748295a698"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1MS2000ProgramData.html#a0ceff980804a6fb70e9316748295a698">setName</a> (const std::string &amp;newName)</td></tr>
-<tr class="separator:a0ceff980804a6fb70e9316748295a698"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a67b76be93c11e5b0dd0fa67265895579" id="r_a67b76be93c11e5b0dd0fa67265895579"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1MS2000ProgramData.html#a67b76be93c11e5b0dd0fa67265895579">getName</a> () const</td></tr>
-<tr class="separator:a67b76be93c11e5b0dd0fa67265895579"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a67875b256cc891ca86480bbf0c5f5e81" id="r_a67875b256cc891ca86480bbf0c5f5e81"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1MS2000ProgramData.html#a67875b256cc891ca86480bbf0c5f5e81">getByte</a> (uint8_t offset) const</td></tr>
-<tr class="separator:a67875b256cc891ca86480bbf0c5f5e81"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29e8b277f1e63ba02fbdedb58246eee4" id="r_a29e8b277f1e63ba02fbdedb58246eee4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1MS2000ProgramData.html#a29e8b277f1e63ba02fbdedb58246eee4">setByte</a> (uint8_t offset, uint8_t value)</td></tr>
-<tr class="separator:a29e8b277f1e63ba02fbdedb58246eee4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af0945d9d32dad2c1dfd1110d4a9db1e1" id="r_af0945d9d32dad2c1dfd1110d4a9db1e1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1MS2000ProgramData.html#af0945d9d32dad2c1dfd1110d4a9db1e1">setParam</a> (const char *id, float value)</td></tr>
-<tr class="separator:af0945d9d32dad2c1dfd1110d4a9db1e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace72189ad19befc3d5ae438f22378132" id="r_ace72189ad19befc3d5ae438f22378132"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1MS2000ProgramData.html#ace72189ad19befc3d5ae438f22378132">unpackFromSysexPayload</a> (const uint8_t *payload, size_t payloadLen)</td></tr>
-<tr class="separator:ace72189ad19befc3d5ae438f22378132"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5fe5c995757418d0e4eb3a499740d3da" id="r_a5fe5c995757418d0e4eb3a499740d3da"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1MS2000ProgramData.html#a5fe5c995757418d0e4eb3a499740d3da">packToSysexPayload</a> (std::vector&lt; uint8_t &gt; &amp;outPayload) const</td></tr>
-<tr class="separator:a5fe5c995757418d0e4eb3a499740d3da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af05184b34ebd775c6ba467d638e5866d" id="r_af05184b34ebd775c6ba467d638e5866d"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1MS2000ProgramData.html#af05184b34ebd775c6ba467d638e5866d">validate</a> () const</td></tr>
-<tr class="separator:af05184b34ebd775c6ba467d638e5866d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3febdd46b4a9ed7b69d160af8d8c5ae8" id="r_a3febdd46b4a9ed7b69d160af8d8c5ae8"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1MS2000ProgramData.html#a3febdd46b4a9ed7b69d160af8d8c5ae8">getVoiceModeName</a> () const</td></tr>
-<tr class="separator:a3febdd46b4a9ed7b69d160af8d8c5ae8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a17804d7c6bb0ef707ba298b7a2a8a575" id="r_a17804d7c6bb0ef707ba298b7a2a8a575"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1MS2000ProgramData.html#a17804d7c6bb0ef707ba298b7a2a8a575">toHexDump</a> (size_t bytesPerLine=16) const</td></tr>
-<tr class="separator:a17804d7c6bb0ef707ba298b7a2a8a575"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5a40ebb1e32f57b7c35ce29d0ae2091" id="r_ad5a40ebb1e32f57b7c35ce29d0ae2091"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad5a40ebb1e32f57b7c35ce29d0ae2091">MS2000ProgramData</a> ()</td></tr>
+<tr class="memitem:a73eee242aa1b7e5db70922c97f2a3ecb" id="r_a73eee242aa1b7e5db70922c97f2a3ecb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a73eee242aa1b7e5db70922c97f2a3ecb">reset</a> ()</td></tr>
+<tr class="memitem:a8abcb8ca6dc7edbb108fac75a43c58dc" id="r_a8abcb8ca6dc7edbb108fac75a43c58dc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8abcb8ca6dc7edbb108fac75a43c58dc">getTempoBPM</a> () const noexcept</td></tr>
+<tr class="memitem:ad275ef91c9d1d69bca1f0be97b46c36f" id="r_ad275ef91c9d1d69bca1f0be97b46c36f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad275ef91c9d1d69bca1f0be97b46c36f">setTempoBPM</a> (int bpm) noexcept</td></tr>
+<tr class="memitem:a6cad84b9f74c05e6caa65847cee74d56" id="r_a6cad84b9f74c05e6caa65847cee74d56"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6cad84b9f74c05e6caa65847cee74d56">getArpTarget</a> () const noexcept</td></tr>
+<tr class="memitem:a3dba0b948a1740ce1ed7c4ae199d2dbc" id="r_a3dba0b948a1740ce1ed7c4ae199d2dbc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3dba0b948a1740ce1ed7c4ae199d2dbc">setArpTarget</a> (uint8_t target) noexcept</td></tr>
+<tr class="memitem:ac412aa47bffc1ed5a229d246fff5c689" id="r_ac412aa47bffc1ed5a229d246fff5c689"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac412aa47bffc1ed5a229d246fff5c689">getArpKeySync</a> () const noexcept</td></tr>
+<tr class="memitem:a5bf0c98d35293e0afe62110fe42499d5" id="r_a5bf0c98d35293e0afe62110fe42499d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5bf0c98d35293e0afe62110fe42499d5">setArpKeySync</a> (bool sync) noexcept</td></tr>
+<tr class="memitem:a85cb5b85b8db91babdb169766702a5c7" id="r_a85cb5b85b8db91babdb169766702a5c7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a85cb5b85b8db91babdb169766702a5c7">getDelayTempoSync</a> () const noexcept</td></tr>
+<tr class="memitem:a8920881a882052dedeaf5fcac268711a" id="r_a8920881a882052dedeaf5fcac268711a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8920881a882052dedeaf5fcac268711a">setDelayTempoSync</a> (bool sync) noexcept</td></tr>
+<tr class="memitem:abb42397c86b063027bfccb756e0fe6f2" id="r_abb42397c86b063027bfccb756e0fe6f2"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abb42397c86b063027bfccb756e0fe6f2">getDelaySyncNote</a> () const noexcept</td></tr>
+<tr class="memitem:a5b8caf85f7c96b39606d0e5f1593560a" id="r_a5b8caf85f7c96b39606d0e5f1593560a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5b8caf85f7c96b39606d0e5f1593560a">setDelaySyncNote</a> (uint8_t noteIdx) noexcept</td></tr>
+<tr class="memitem:a0ceff980804a6fb70e9316748295a698" id="r_a0ceff980804a6fb70e9316748295a698"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0ceff980804a6fb70e9316748295a698">setName</a> (const std::string &amp;newName)</td></tr>
+<tr class="memitem:a67b76be93c11e5b0dd0fa67265895579" id="r_a67b76be93c11e5b0dd0fa67265895579"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a67b76be93c11e5b0dd0fa67265895579">getName</a> () const</td></tr>
+<tr class="memitem:a67875b256cc891ca86480bbf0c5f5e81" id="r_a67875b256cc891ca86480bbf0c5f5e81"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a67875b256cc891ca86480bbf0c5f5e81">getByte</a> (uint8_t offset) const</td></tr>
+<tr class="memitem:a29e8b277f1e63ba02fbdedb58246eee4" id="r_a29e8b277f1e63ba02fbdedb58246eee4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a29e8b277f1e63ba02fbdedb58246eee4">setByte</a> (uint8_t offset, uint8_t value)</td></tr>
+<tr class="memitem:af0945d9d32dad2c1dfd1110d4a9db1e1" id="r_af0945d9d32dad2c1dfd1110d4a9db1e1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af0945d9d32dad2c1dfd1110d4a9db1e1">setParam</a> (const char *id, float value)</td></tr>
+<tr class="memitem:a3aceac4afb42b2c7b95461b6212416bc" id="r_a3aceac4afb42b2c7b95461b6212416bc"><td class="memTemplParams" colspan="2">template&lt;typename Fn&gt; </td></tr>
+<tr class="memitem:a3aceac4afb42b2c7b95461b6212416bc template"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3aceac4afb42b2c7b95461b6212416bc">forEachParameterValue</a> (Fn &amp;&amp;callback) const</td></tr>
+<tr class="memitem:ace72189ad19befc3d5ae438f22378132" id="r_ace72189ad19befc3d5ae438f22378132"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ace72189ad19befc3d5ae438f22378132">unpackFromSysexPayload</a> (const uint8_t *payload, size_t payloadLen)</td></tr>
+<tr class="memitem:a5fe5c995757418d0e4eb3a499740d3da" id="r_a5fe5c995757418d0e4eb3a499740d3da"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5fe5c995757418d0e4eb3a499740d3da">packToSysexPayload</a> (std::vector&lt; uint8_t &gt; &amp;outPayload) const</td></tr>
+<tr class="memitem:af05184b34ebd775c6ba467d638e5866d" id="r_af05184b34ebd775c6ba467d638e5866d"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af05184b34ebd775c6ba467d638e5866d">validate</a> () const</td></tr>
+<tr class="memitem:a3febdd46b4a9ed7b69d160af8d8c5ae8" id="r_a3febdd46b4a9ed7b69d160af8d8c5ae8"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3febdd46b4a9ed7b69d160af8d8c5ae8">getVoiceModeName</a> () const</td></tr>
+<tr class="memitem:a17804d7c6bb0ef707ba298b7a2a8a575" id="r_a17804d7c6bb0ef707ba298b7a2a8a575"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a17804d7c6bb0ef707ba298b7a2a8a575">toHexDump</a> (size_t bytesPerLine=16) const</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+<tr class="heading"><td colspan="2"><h2 id="header-pub-static-methods" class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Métodos públicos estáticos</h2></td></tr>
-<tr class="memitem:a018782833681ebe1782f9145d6a9735a" id="r_a018782833681ebe1782f9145d6a9735a"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1MS2000ProgramData.html#a018782833681ebe1782f9145d6a9735a">isVoiceByteParam</a> (const char *id) noexcept</td></tr>
-<tr class="separator:a018782833681ebe1782f9145d6a9735a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a540fdf9c488984dac63fe507c8984954" id="r_a540fdf9c488984dac63fe507c8984954"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a540fdf9c488984dac63fe507c8984954">getStorageOffsetById</a> (const char *id) noexcept</td></tr>
+<tr class="memitem:a018782833681ebe1782f9145d6a9735a" id="r_a018782833681ebe1782f9145d6a9735a"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a018782833681ebe1782f9145d6a9735a">isVoiceByteParam</a> (const char *id) noexcept</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+<tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Atributos públicos</h2></td></tr>
-<tr class="memitem:a54fb03d5f22075ea58512995d5eefe92" id="r_a54fb03d5f22075ea58512995d5eefe92"><td class="memItemLeft" align="right" valign="top">std::array&lt; uint8_t, <a class="el" href="structABDMS2000_1_1MS2000ProgramData.html#a6d99c5ab129ed7c468fdbbe24de61ce2">UNPACKED_PROGRAM_SIZE</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1MS2000ProgramData.html#a54fb03d5f22075ea58512995d5eefe92">rawData</a> {}</td></tr>
-<tr class="separator:a54fb03d5f22075ea58512995d5eefe92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54fb03d5f22075ea58512995d5eefe92" id="r_a54fb03d5f22075ea58512995d5eefe92"><td class="memItemLeft" align="right" valign="top">std::array&lt; uint8_t, <a class="el" href="#a6d99c5ab129ed7c468fdbbe24de61ce2">UNPACKED_PROGRAM_SIZE</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a54fb03d5f22075ea58512995d5eefe92">rawData</a> {}</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
+<tr class="heading"><td colspan="2"><h2 id="header-pub-static-attribs" class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Atributos públicos estáticos</h2></td></tr>
-<tr class="memitem:a6d99c5ab129ed7c468fdbbe24de61ce2" id="r_a6d99c5ab129ed7c468fdbbe24de61ce2"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1MS2000ProgramData.html#a6d99c5ab129ed7c468fdbbe24de61ce2">UNPACKED_PROGRAM_SIZE</a> = 384</td></tr>
-<tr class="separator:a6d99c5ab129ed7c468fdbbe24de61ce2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56bc62f310f817e43dc11b7e8194df5c" id="r_a56bc62f310f817e43dc11b7e8194df5c"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1MS2000ProgramData.html#a56bc62f310f817e43dc11b7e8194df5c">UNPACKED_PROGRAM_SIZE_V1</a> = 128</td></tr>
-<tr class="separator:a56bc62f310f817e43dc11b7e8194df5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61abe1dc60dcadc97bce402d9b97457a" id="r_a61abe1dc60dcadc97bce402d9b97457a"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1MS2000ProgramData.html#a61abe1dc60dcadc97bce402d9b97457a">NAME_LENGTH</a> = 12</td></tr>
-<tr class="separator:a61abe1dc60dcadc97bce402d9b97457a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade06654d9f6fb4628fd2c6adca181bbb" id="r_ade06654d9f6fb4628fd2c6adca181bbb"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1MS2000ProgramData.html#ade06654d9f6fb4628fd2c6adca181bbb">NAME_END</a> = 12</td></tr>
-<tr class="separator:ade06654d9f6fb4628fd2c6adca181bbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a733ae79ef480754005580d8274d854d6" id="r_a733ae79ef480754005580d8274d854d6"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1MS2000ProgramData.html#a733ae79ef480754005580d8274d854d6">VOICE_BYTE</a> = 0x0C</td></tr>
-<tr class="separator:a733ae79ef480754005580d8274d854d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf90d6e1a51a5d5af5a3106b42a198ed" id="r_acf90d6e1a51a5d5af5a3106b42a198ed"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1MS2000ProgramData.html#acf90d6e1a51a5d5af5a3106b42a198ed">TIMBRE_START</a> = 0x0E</td></tr>
-<tr class="separator:acf90d6e1a51a5d5af5a3106b42a198ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d99c5ab129ed7c468fdbbe24de61ce2" id="r_a6d99c5ab129ed7c468fdbbe24de61ce2"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6d99c5ab129ed7c468fdbbe24de61ce2">UNPACKED_PROGRAM_SIZE</a> = 384</td></tr>
+<tr class="memitem:a56bc62f310f817e43dc11b7e8194df5c" id="r_a56bc62f310f817e43dc11b7e8194df5c"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a56bc62f310f817e43dc11b7e8194df5c">UNPACKED_PROGRAM_SIZE_V1</a> = 128</td></tr>
+<tr class="memitem:a61abe1dc60dcadc97bce402d9b97457a" id="r_a61abe1dc60dcadc97bce402d9b97457a"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a61abe1dc60dcadc97bce402d9b97457a">NAME_LENGTH</a> = 12</td></tr>
+<tr class="memitem:ade06654d9f6fb4628fd2c6adca181bbb" id="r_ade06654d9f6fb4628fd2c6adca181bbb"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ade06654d9f6fb4628fd2c6adca181bbb">NAME_END</a> = 12</td></tr>
+<tr class="memitem:a733ae79ef480754005580d8274d854d6" id="r_a733ae79ef480754005580d8274d854d6"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a733ae79ef480754005580d8274d854d6">VOICE_BYTE</a> = 0x0C</td></tr>
+<tr class="memitem:acf90d6e1a51a5d5af5a3106b42a198ed" id="r_acf90d6e1a51a5d5af5a3106b42a198ed"><td class="memItemLeft" align="right" valign="top">static constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acf90d6e1a51a5d5af5a3106b42a198ed">TIMBRE_START</a> = 0x0E</td></tr>
+<tr class="memitem:a2eea464180be74be84b79e848fa814ac" id="r_a2eea464180be74be84b79e848fa814ac"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2eea464180be74be84b79e848fa814ac">NON_SYSEX_START</a> = 0x10B</td></tr>
+<tr class="memitem:a181deb556282b8818dff63926a0c2a48" id="r_a181deb556282b8818dff63926a0c2a48"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a181deb556282b8818dff63926a0c2a48">TEMPO_MSB_OFFSET</a> = 0x170</td></tr>
+<tr class="memitem:a474e016721424e4aafc581b1c7f9f604" id="r_a474e016721424e4aafc581b1c7f9f604"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a474e016721424e4aafc581b1c7f9f604">TEMPO_LSB_OFFSET</a> = 0x171</td></tr>
+<tr class="memitem:aab4fb15e23c851d03779eb7e779c5f5b" id="r_aab4fb15e23c851d03779eb7e779c5f5b"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aab4fb15e23c851d03779eb7e779c5f5b">ARP_TARGET_OFFSET</a> = 0x172</td></tr>
+<tr class="memitem:a8cc1e507fe25c883a2aa6ef73bad6aeb" id="r_a8cc1e507fe25c883a2aa6ef73bad6aeb"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8cc1e507fe25c883a2aa6ef73bad6aeb">ARP_KEYSYNC_OFFSET</a> = 0x173</td></tr>
+<tr class="memitem:a27fe317a7bcea03a48c4d6f79e4b7156" id="r_a27fe317a7bcea03a48c4d6f79e4b7156"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a27fe317a7bcea03a48c4d6f79e4b7156">DELAY_SYNC_OFFSET</a> = 0x174</td></tr>
+<tr class="memitem:aa78a7b1c96a1284cb23a83803732177f" id="r_aa78a7b1c96a1284cb23a83803732177f"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa78a7b1c96a1284cb23a83803732177f">DELAY_SYNC_NOTE_OFFSET</a> = 0x175</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Descripción detallada</h2>
-<div class="textblock"><p>Programa <b>propio</b> del plugin (el sistema <code>native</code> que declara el contrato del host, ver <code><a class="el" href="HostModelId_8gen_8h.html">Source/Plugin/HostModelId.gen.h</a></code>): bloque de 384 B con codificación dirigida por el <code><a class="el" href="classABDMS2000_1_1ParameterRegistry.html">ParameterRegistry</a></code>. </p>
-<p>Byte Layout (384 bytes — v2): [0x00..0x0B] Program Name (12 bytes, ASCII) [0x0C] <a class="el" href="classABDMS2000_1_1Voice.html" title="Voz sintetizadora individual en la arquitectura de 4 voces.">Voice</a> Mode byte (packed: voiceMode | unisonDetune | portamentoTime | portamentoOn) [0x0D] Reserved [0x0E..0x10A] Parámetros — byte dirigido por el <code>sysexOffset</code> del registro (1 byte por parámetro marcado <code>sysex != false</code>, hoy 253). Cubre Timbre 1 <b>y Timbre 2</b>, velocidades, escala/split y los pasos del mod sequence. [0x10B..0x17F] Reservado</p>
-<p>La v1 (128 B) solo cabía Timbre 1 + voz: los 30 parámetros marcados <code>sysex: false</code> (vocoder entero, <code>modSeqOn/Type</code>, <code>unisonSpread</code>, <code>masterVolume</code>…) ya se perdían, y Timbre 2 ni existía. La v2 es el mismo layout al principio, así que <b>un bloque v1 se sigue leyendo</b> (<code>unpackFromSysexPayload</code> rellena con ceros el resto). El bloque es opaco para el ABD Bank Manager: el tamaño no viaja en el contrato, solo en la carga útil base64.</p>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Descripción detallada</h2>
+<div class="textblock"><p>Programa <b>propio</b> del plugin (el sistema <span class="tt">native</span> que declara el contrato del host, ver <span class="tt"><a class="el" href="HostModelId_8gen_8h.html">Source/Plugin/HostModelId.gen.h</a></span>): bloque de 384 B con codificación dirigida por el <span class="tt"><a class="el" href="classABDMS2000_1_1ParameterRegistry.html">ParameterRegistry</a></span>. </p>
+<p>Byte Layout (384 bytes — v2): [0x00..0x0B] Program Name (12 bytes, ASCII) [0x0C] <a class="el" href="classABDMS2000_1_1Voice.html" title="Voz sintetizadora individual en la arquitectura de 4 voces.">Voice</a> Mode byte (packed: voiceMode | unisonDetune | portamentoTime | portamentoOn) [0x0D] Reserved [0x0E..0x10A] Parámetros — byte dirigido por el <span class="tt">sysexOffset</span> del registro (1 byte por parámetro marcado <span class="tt">sysex != false</span>, hoy 253). Cubre Timbre 1 <b>y Timbre 2</b>, velocidades, escala/split y los pasos del mod sequence. [0x10B..0x17F] Reservado</p>
+<p>La v1 (128 B) solo cabía Timbre 1 + voz: los 30 parámetros marcados <span class="tt">sysex: false</span> (vocoder entero, <span class="tt">modSeqOn/Type</span>, <span class="tt">unisonSpread</span>, <span class="tt">masterVolume</span>…) ya se perdían, y Timbre 2 ni existía. La v2 es el mismo layout al principio, así que <b>un bloque v1 se sigue leyendo</b> (<span class="tt"><a class="el" href="#ace72189ad19befc3d5ae438f22378132">unpackFromSysexPayload</a></span> rellena con ceros el resto). El bloque es opaco para el ABD Bank Manager: el tamaño no viaja en el contrato, solo en la carga útil base64.</p>
 <p>Conversion between 8-bit rawData and APVTS is fully automatic: it iterates <a class="el" href="classABDMS2000_1_1ParameterRegistry.html#ac8e7ae1ae111382cc821974b1a0ff3e9">ParameterRegistry::getAllParameters()</a> and reads/writes bytes at the sysexOffset position for each parameter that has a valid offset.</p>
 <p>Special-case signed parameters (bias = 64) are hardcoded in the registry via their min/max ranges and handled by a small lookup set. </p>
-</div><h2 class="groupheader">Documentación de constructores y destructores</h2>
+</div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Documentación de constructores y destructores</h2>
 <a id="ad5a40ebb1e32f57b7c35ce29d0ae2091" name="ad5a40ebb1e32f57b7c35ce29d0ae2091"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad5a40ebb1e32f57b7c35ce29d0ae2091">&#9670;&#160;</a></span>MS2000ProgramData()</h2>
 
@@ -159,20 +168,97 @@ Atributos públicos estáticos</h2></td></tr>
         <tr>
           <td class="memname">ABDMS2000::MS2000ProgramData::MS2000ProgramData </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<h2 class="groupheader">Documentación de funciones miembro</h2>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Documentación de funciones miembro</h2>
+<a id="a3aceac4afb42b2c7b95461b6212416bc" name="a3aceac4afb42b2c7b95461b6212416bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3aceac4afb42b2c7b95461b6212416bc">&#9670;&#160;</a></span>forEachParameterValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Fn&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::MS2000ProgramData::forEachParameterValue </td>
+          <td>(</td>
+          <td class="paramtype">Fn &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>callback</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac412aa47bffc1ed5a229d246fff5c689" name="ac412aa47bffc1ed5a229d246fff5c689"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac412aa47bffc1ed5a229d246fff5c689">&#9670;&#160;</a></span>getArpKeySync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ABDMS2000::MS2000ProgramData::getArpKeySync </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6cad84b9f74c05e6caa65847cee74d56" name="a6cad84b9f74c05e6caa65847cee74d56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6cad84b9f74c05e6caa65847cee74d56">&#9670;&#160;</a></span>getArpTarget()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t ABDMS2000::MS2000ProgramData::getArpTarget </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a67875b256cc891ca86480bbf0c5f5e81" name="a67875b256cc891ca86480bbf0c5f5e81"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a67875b256cc891ca86480bbf0c5f5e81">&#9670;&#160;</a></span>getByte()</h2>
 
@@ -185,18 +271,67 @@ Atributos públicos estáticos</h2></td></tr>
         <tr>
           <td class="memname">uint8_t ABDMS2000::MS2000ProgramData::getByte </td>
           <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>offset</em></td><td>)</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>offset</em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 <p>Read a raw byte at the given sysexOffset position. </p>
+
+</div>
+</div>
+<a id="abb42397c86b063027bfccb756e0fe6f2" name="abb42397c86b063027bfccb756e0fe6f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb42397c86b063027bfccb756e0fe6f2">&#9670;&#160;</a></span>getDelaySyncNote()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t ABDMS2000::MS2000ProgramData::getDelaySyncNote </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a85cb5b85b8db91babdb169766702a5c7" name="a85cb5b85b8db91babdb169766702a5c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a85cb5b85b8db91babdb169766702a5c7">&#9670;&#160;</a></span>getDelayTempoSync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ABDMS2000::MS2000ProgramData::getDelayTempoSync </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -212,13 +347,63 @@ Atributos públicos estáticos</h2></td></tr>
         <tr>
           <td class="memname">std::string ABDMS2000::MS2000ProgramData::getName </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a540fdf9c488984dac63fe507c8984954" name="a540fdf9c488984dac63fe507c8984954"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a540fdf9c488984dac63fe507c8984954">&#9670;&#160;</a></span>getStorageOffsetById()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int ABDMS2000::MS2000ProgramData::getStorageOffsetById </td>
+          <td>(</td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>id</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8abcb8ca6dc7edbb108fac75a43c58dc" name="a8abcb8ca6dc7edbb108fac75a43c58dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8abcb8ca6dc7edbb108fac75a43c58dc">&#9670;&#160;</a></span>getTempoBPM()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int ABDMS2000::MS2000ProgramData::getTempoBPM </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -237,13 +422,13 @@ Atributos públicos estáticos</h2></td></tr>
         <tr>
           <td class="memname">const char * ABDMS2000::MS2000ProgramData::getVoiceModeName </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -261,16 +446,15 @@ Atributos públicos estáticos</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool ABDMS2000::MS2000ProgramData::isVoiceByteParam </td>
+          <td class="memname">bool ABDMS2000::MS2000ProgramData::isVoiceByteParam </td>
           <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>id</em></td><td>)</td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>id</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span><span class="mlabel noexcept">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -289,14 +473,13 @@ Atributos públicos estáticos</h2></td></tr>
         <tr>
           <td class="memname">bool ABDMS2000::MS2000ProgramData::packToSysexPayload </td>
           <td>(</td>
-          <td class="paramtype">std::vector&lt; uint8_t &gt; &amp;&#160;</td>
-          <td class="paramname"><em>outPayload</em></td><td>)</td>
+          <td class="paramtype">std::vector&lt; uint8_t &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>outPayload</em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -316,17 +499,67 @@ Atributos públicos estáticos</h2></td></tr>
         <tr>
           <td class="memname">void ABDMS2000::MS2000ProgramData::reset </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 <p>Resets to the canonical "Init Synth" state. </p>
+
+</div>
+</div>
+<a id="a5bf0c98d35293e0afe62110fe42499d5" name="a5bf0c98d35293e0afe62110fe42499d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5bf0c98d35293e0afe62110fe42499d5">&#9670;&#160;</a></span>setArpKeySync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::MS2000ProgramData::setArpKeySync </td>
+          <td>(</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>sync</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3dba0b948a1740ce1ed7c4ae199d2dbc" name="a3dba0b948a1740ce1ed7c4ae199d2dbc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3dba0b948a1740ce1ed7c4ae199d2dbc">&#9670;&#160;</a></span>setArpTarget()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::MS2000ProgramData::setArpTarget </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>target</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -342,28 +575,71 @@ Atributos públicos estáticos</h2></td></tr>
         <tr>
           <td class="memname">void ABDMS2000::MS2000ProgramData::setByte </td>
           <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>offset</em>, </td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>offset</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>value</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>value</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 <p>Write a raw byte at the given sysexOffset position. </p>
+
+</div>
+</div>
+<a id="a5b8caf85f7c96b39606d0e5f1593560a" name="a5b8caf85f7c96b39606d0e5f1593560a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b8caf85f7c96b39606d0e5f1593560a">&#9670;&#160;</a></span>setDelaySyncNote()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::MS2000ProgramData::setDelaySyncNote </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>noteIdx</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8920881a882052dedeaf5fcac268711a" name="a8920881a882052dedeaf5fcac268711a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8920881a882052dedeaf5fcac268711a">&#9670;&#160;</a></span>setDelayTempoSync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::MS2000ProgramData::setDelayTempoSync </td>
+          <td>(</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>sync</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -379,14 +655,13 @@ Atributos públicos estáticos</h2></td></tr>
         <tr>
           <td class="memname">void ABDMS2000::MS2000ProgramData::setName </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>newName</em></td><td>)</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>newName</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -405,28 +680,46 @@ Atributos públicos estáticos</h2></td></tr>
         <tr>
           <td class="memname">void ABDMS2000::MS2000ProgramData::setParam </td>
           <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>id</em>, </td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>id</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>value</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>value</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 <p>Convenient parameter setter by ID </p>
+
+</div>
+</div>
+<a id="ad275ef91c9d1d69bca1f0be97b46c36f" name="ad275ef91c9d1d69bca1f0be97b46c36f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad275ef91c9d1d69bca1f0be97b46c36f">&#9670;&#160;</a></span>setTempoBPM()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::MS2000ProgramData::setTempoBPM </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>bpm</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -442,14 +735,13 @@ Atributos públicos estáticos</h2></td></tr>
         <tr>
           <td class="memname">std::string ABDMS2000::MS2000ProgramData::toHexDump </td>
           <td>(</td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>bytesPerLine</em> = <code>16</code></td><td>)</td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>bytesPerLine</em></span><span class="paramdefsep"> = </span><span class="paramdefval">16</span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -469,24 +761,17 @@ Atributos públicos estáticos</h2></td></tr>
         <tr>
           <td class="memname">bool ABDMS2000::MS2000ProgramData::unpackFromSysexPayload </td>
           <td>(</td>
-          <td class="paramtype">const uint8_t *&#160;</td>
-          <td class="paramname"><em>payload</em>, </td>
+          <td class="paramtype">const uint8_t *</td>          <td class="paramname"><span class="paramname"><em>payload</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>payloadLen</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>payloadLen</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -506,13 +791,13 @@ Atributos públicos estáticos</h2></td></tr>
         <tr>
           <td class="memname">std::string ABDMS2000::MS2000ProgramData::validate </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -520,7 +805,95 @@ Atributos públicos estáticos</h2></td></tr>
 
 </div>
 </div>
-<h2 class="groupheader">Documentación de datos miembro</h2>
+<a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Documentación de datos miembro</h2>
+<a id="a8cc1e507fe25c883a2aa6ef73bad6aeb" name="a8cc1e507fe25c883a2aa6ef73bad6aeb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8cc1e507fe25c883a2aa6ef73bad6aeb">&#9670;&#160;</a></span>ARP_KEYSYNC_OFFSET</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t ABDMS2000::MS2000ProgramData::ARP_KEYSYNC_OFFSET = 0x173</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aab4fb15e23c851d03779eb7e779c5f5b" name="aab4fb15e23c851d03779eb7e779c5f5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab4fb15e23c851d03779eb7e779c5f5b">&#9670;&#160;</a></span>ARP_TARGET_OFFSET</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t ABDMS2000::MS2000ProgramData::ARP_TARGET_OFFSET = 0x172</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa78a7b1c96a1284cb23a83803732177f" name="aa78a7b1c96a1284cb23a83803732177f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa78a7b1c96a1284cb23a83803732177f">&#9670;&#160;</a></span>DELAY_SYNC_NOTE_OFFSET</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t ABDMS2000::MS2000ProgramData::DELAY_SYNC_NOTE_OFFSET = 0x175</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a27fe317a7bcea03a48c4d6f79e4b7156" name="a27fe317a7bcea03a48c4d6f79e4b7156"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27fe317a7bcea03a48c4d6f79e4b7156">&#9670;&#160;</a></span>DELAY_SYNC_OFFSET</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t ABDMS2000::MS2000ProgramData::DELAY_SYNC_OFFSET = 0x174</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ade06654d9f6fb4628fd2c6adca181bbb" name="ade06654d9f6fb4628fd2c6adca181bbb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ade06654d9f6fb4628fd2c6adca181bbb">&#9670;&#160;</a></span>NAME_END</h2>
 
@@ -531,12 +904,12 @@ Atributos públicos estáticos</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint8_t ABDMS2000::MS2000ProgramData::NAME_END = 12</td>
+          <td class="memname">uint8_t ABDMS2000::MS2000ProgramData::NAME_END = 12</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -553,12 +926,34 @@ Atributos públicos estáticos</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr size_t ABDMS2000::MS2000ProgramData::NAME_LENGTH = 12</td>
+          <td class="memname">size_t ABDMS2000::MS2000ProgramData::NAME_LENGTH = 12</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2eea464180be74be84b79e848fa814ac" name="a2eea464180be74be84b79e848fa814ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2eea464180be74be84b79e848fa814ac">&#9670;&#160;</a></span>NON_SYSEX_START</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t ABDMS2000::MS2000ProgramData::NON_SYSEX_START = 0x10B</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -572,9 +967,53 @@ Atributos públicos estáticos</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::array&lt;uint8_t, <a class="el" href="structABDMS2000_1_1MS2000ProgramData.html#a6d99c5ab129ed7c468fdbbe24de61ce2">UNPACKED_PROGRAM_SIZE</a>&gt; ABDMS2000::MS2000ProgramData::rawData {}</td>
+          <td class="memname">std::array&lt;uint8_t, <a class="el" href="#a6d99c5ab129ed7c468fdbbe24de61ce2">UNPACKED_PROGRAM_SIZE</a>&gt; ABDMS2000::MS2000ProgramData::rawData {}</td>
         </tr>
       </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a474e016721424e4aafc581b1c7f9f604" name="a474e016721424e4aafc581b1c7f9f604"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a474e016721424e4aafc581b1c7f9f604">&#9670;&#160;</a></span>TEMPO_LSB_OFFSET</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t ABDMS2000::MS2000ProgramData::TEMPO_LSB_OFFSET = 0x171</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a181deb556282b8818dff63926a0c2a48" name="a181deb556282b8818dff63926a0c2a48"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a181deb556282b8818dff63926a0c2a48">&#9670;&#160;</a></span>TEMPO_MSB_OFFSET</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t ABDMS2000::MS2000ProgramData::TEMPO_MSB_OFFSET = 0x170</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -589,12 +1028,12 @@ Atributos públicos estáticos</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint8_t ABDMS2000::MS2000ProgramData::TIMBRE_START = 0x0E</td>
+          <td class="memname">uint8_t ABDMS2000::MS2000ProgramData::TIMBRE_START = 0x0E</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -611,12 +1050,12 @@ Atributos públicos estáticos</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr size_t ABDMS2000::MS2000ProgramData::UNPACKED_PROGRAM_SIZE = 384</td>
+          <td class="memname">size_t ABDMS2000::MS2000ProgramData::UNPACKED_PROGRAM_SIZE = 384</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -633,12 +1072,12 @@ Atributos públicos estáticos</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr size_t ABDMS2000::MS2000ProgramData::UNPACKED_PROGRAM_SIZE_V1 = 128</td>
+          <td class="memname">size_t ABDMS2000::MS2000ProgramData::UNPACKED_PROGRAM_SIZE_V1 = 128</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -656,12 +1095,12 @@ Atributos públicos estáticos</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint8_t ABDMS2000::MS2000ProgramData::VOICE_BYTE = 0x0C</td>
+          <td class="memname">uint8_t ABDMS2000::MS2000ProgramData::VOICE_BYTE = 0x0C</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -672,9 +1111,21 @@ Atributos públicos estáticos</h2></td></tr>
 <li>Source/MIDI/<a class="el" href="MS2000ProgramData_8h_source.html">MS2000ProgramData.h</a></li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
+<div id="page-nav" class="page-nav-panel">
+<div id="page-nav-resize-handle"></div>
+<div id="page-nav-tree">
+<div id="page-nav-contents">
+</div><!-- page-nav-contents -->
+</div><!-- page-nav-tree -->
+</div><!-- page-nav -->
+</div><!-- container -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a href="namespaceABDMS2000.html">ABDMS2000</a></li><li class="navelem"><a href="structABDMS2000_1_1MS2000ProgramData.html">MS2000ProgramData</a></li>
+    <li class="footer">Generado por <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0 </li>
+  </ul>
+</div>
 </body>
 </html>

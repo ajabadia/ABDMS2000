@@ -3,12 +3,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
-<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Lista de los miembros</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -29,23 +34,38 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- Generado por Doxygen 1.9.8 -->
+<!-- Generado por Doxygen 1.15.0 -->
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 var searchBox = new SearchBox("searchBox", "search/",'.html');
-/* @license-end */
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
 </script>
 <script type="text/javascript" src="menudata.js"></script>
 <script type="text/javascript" src="menu.js"></script>
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,false,'search.php','Buscar');
-  $(document).ready(function() { init_search(); });
+  initMenu('',true,false,'search.php','Buscar',true);
+  $(function() { init_search(); });
 });
-/* @license-end */
 </script>
 <div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){initNavTree('classABDMS2000_1_1VoiceManager.html','',''); });
+</script>
+<div id="container">
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -67,11 +87,6 @@ $(function() {
 </div>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="namespaceABDMS2000.html">ABDMS2000</a></li><li class="navelem"><a class="el" href="classABDMS2000_1_1VoiceManager.html">VoiceManager</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="headertitle"><div class="title">ABDMS2000::VoiceManager Lista de los miembros</div></div>
 </div><!--header-->
@@ -100,7 +115,7 @@ $(function() {
   <tr class="even"><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a4c5f4eb62f0f436b35be8b394db35d6d">NUM_HW_VOICES</a></td><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html">ABDMS2000::VoiceManager</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a92e34034061435a7ae61044b94c21164">portamentoTimeParam_</a></td><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html">ABDMS2000::VoiceManager</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a256ab5ef9c53e747a820cb0c9b11fb07">prepare</a>(double sampleRate) noexcept</td><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html">ABDMS2000::VoiceManager</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a41d43c08a515791b124f9b9549f13433">process</a>(float &amp;leftOut, float &amp;rightOut, int diagPoint=0, float diagTone=0.0f) noexcept</td><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html">ABDMS2000::VoiceManager</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a93647f6836d38afb693d034285be0406">process</a>(float &amp;leftOut, float &amp;rightOut, int diagPoint=0, float diagTone=0.0f, float audioInSample=0.0f) noexcept</td><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html">ABDMS2000::VoiceManager</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a5ea16700ecf8bb46d3337d4fdcfd3847">releaseVoiceSlot</a>(size_t index) noexcept</td><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html">ABDMS2000::VoiceManager</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html#accd7a00e4085efe8732aab0927835bc0">reset</a>() noexcept</td><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html">ABDMS2000::VoiceManager</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a5c0fd06efb5711bd9fe1ab5df2983b2e">sampleRate_</a></td><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html">ABDMS2000::VoiceManager</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
@@ -108,19 +123,25 @@ $(function() {
   <tr class="even"><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a4297f9cd743ea35858e078d155932d64">setHoldButtonState</a>(bool active) noexcept</td><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html">ABDMS2000::VoiceManager</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a83bc2f18c5db4572163900e3eb5b1b61">setMaxPolyphony</a>(size_t numVoices) noexcept</td><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html">ABDMS2000::VoiceManager</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a32493a6613dedcb631159239bc8fbc45">setPortamentoTime</a>(float portamentoTime0to127) noexcept</td><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html">ABDMS2000::VoiceManager</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html#aceceab0150b174147c2e12930fd16b7e">setTriggerMode</a>(TriggerMode mode) noexcept</td><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html">ABDMS2000::VoiceManager</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a912a10f352028b6cd78e1077f81321a5">setUnisonDetune</a>(float detuneCents) noexcept</td><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html">ABDMS2000::VoiceManager</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a96d38e1dfe5b48869e57832caea98f32">setUnisonSpread</a>(float spread0to1) noexcept</td><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html">ABDMS2000::VoiceManager</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a1d285302b62f01843ee3545f3701d5b4">slotStates_</a></td><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html">ABDMS2000::VoiceManager</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a3d869bc76d2fed92c62d7715aa4d3981">setSynthMode</a>(int synthMode) noexcept</td><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html">ABDMS2000::VoiceManager</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html#aceceab0150b174147c2e12930fd16b7e">setTriggerMode</a>(TriggerMode mode) noexcept</td><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html">ABDMS2000::VoiceManager</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a912a10f352028b6cd78e1077f81321a5">setUnisonDetune</a>(float detuneCents) noexcept</td><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html">ABDMS2000::VoiceManager</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a96d38e1dfe5b48869e57832caea98f32">setUnisonSpread</a>(float spread0to1) noexcept</td><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html">ABDMS2000::VoiceManager</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a1d285302b62f01843ee3545f3701d5b4">slotStates_</a></td><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html">ABDMS2000::VoiceManager</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a746f809f6afaa26469d276dc1b1b98cf">synthMode_</a></td><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html">ABDMS2000::VoiceManager</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a5eb28727bb999f2dd1e34c6f83bdefab">triggerMode_</a></td><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html">ABDMS2000::VoiceManager</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html#aee5252147a61fa1a27938ea2a9ff46e2">unisonDetune_</a></td><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html">ABDMS2000::VoiceManager</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a09998a33921fc6f22ff6ba256d82b276">unisonSpread_</a></td><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html">ABDMS2000::VoiceManager</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html#ae41becd6b622e57c6159232b88708fe3">VoiceManager</a>()=default</td><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html">ABDMS2000::VoiceManager</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html#a60dd397578ff51d191b4a3bf686b3675">voices_</a></td><td class="entry"><a class="el" href="classABDMS2000_1_1VoiceManager.html">ABDMS2000::VoiceManager</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
 </table></div><!-- contents -->
+</div><!-- doc-content -->
+</div><!-- container -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generado por <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0 </li>
+  </ul>
+</div>
 </body>
 </html>

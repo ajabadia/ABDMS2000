@@ -1,0 +1,28 @@
+var classABDMS2000_1_1DWGSTables =
+[
+    [ "filterByCategory", "classABDMS2000_1_1DWGSTables.html#a24b56e45d3d38d32dc180e27ea2deb3e", null ],
+    [ "generateStandardProcedural", "classABDMS2000_1_1DWGSTables.html#ae0c089cb00a8a0f00824e15586d63f23", null ],
+    [ "getCatalog", "classABDMS2000_1_1DWGSTables.html#abd6e106f60ac2d9f13561d2c01d8fead", null ],
+    [ "getTableData", "classABDMS2000_1_1DWGSTables.html#ad9e5d87d3a1bce1759c6714643b35a0a", null ],
+    [ "getTotalWaveforms", "classABDMS2000_1_1DWGSTables.html#a74be0ddc94e51ebbf7b3f1548bb44141", null ],
+    [ "getWaveCategory", "classABDMS2000_1_1DWGSTables.html#abded6359c7bfff3fc85cb1271ed7cd60", null ],
+    [ "getWaveName", "classABDMS2000_1_1DWGSTables.html#ab8039f0a36dfb31654c12324bff5a084", null ],
+    [ "initTables", "classABDMS2000_1_1DWGSTables.html#ae1d630487ee0a25575ebf9ec9f97c16a", null ],
+    [ "loadAKWFCurated", "classABDMS2000_1_1DWGSTables.html#a05ce7af40040cfe9b24824fe19fffab6", null ],
+    [ "loadM1Bank", "classABDMS2000_1_1DWGSTables.html#aedefcb4201c536ffbd3fd1e8a7d9d371", null ],
+    [ "loadWavToSlot", "classABDMS2000_1_1DWGSTables.html#a5e6856a2cdc83fcb97f203f18c3cbfad", null ],
+    [ "registerWaveform", "classABDMS2000_1_1DWGSTables.html#a0a1dd6d289980ce3f1086d294dbd3666", null ],
+    [ "search", "classABDMS2000_1_1DWGSTables.html#acd71ce62f0d392f0205a179639af78ee", null ],
+    [ "AKWF_START_SLOT", "classABDMS2000_1_1DWGSTables.html#afe045e8191c8869bd807f664c4a1a0f3", null ],
+    [ "catalog_", "classABDMS2000_1_1DWGSTables.html#a2a0d1243788b1e16156fab251d468b53", null ],
+    [ "isInitialized_", "classABDMS2000_1_1DWGSTables.html#a6dd8dffd2abb1b4f73d3f5716df1d026", null ],
+    [ "MAX_EXPANDED_TABLES", "classABDMS2000_1_1DWGSTables.html#a58e0564dbc3882f3391127b46b64fbff", null ],
+    [ "NUM_AKWF_TABLES", "classABDMS2000_1_1DWGSTables.html#a706316d072a7f49f91512dc1e61f486b", null ],
+    [ "NUM_STANDARD_TABLES", "classABDMS2000_1_1DWGSTables.html#aca4d23873e7a15d9533f32532fc3ac8d", null ],
+    [ "SAMPLES_PER_TABLE", "classABDMS2000_1_1DWGSTables.html#a060efdb31aa1f00e6b5446c84e2a370b", null ],
+    [ "TOTAL_MAX_SAMPLES", "classABDMS2000_1_1DWGSTables.html#a3e4186219d40746bdae814baee58bb8e", null ],
+    [ "USER_START_SLOT", "classABDMS2000_1_1DWGSTables.html#a302bab3fb1c270078f49b2b706b7c4e4", null ],
+    [ "waveCategories_", "classABDMS2000_1_1DWGSTables.html#a5c1a30efb7e330da301120f8c72bad0f", null ],
+    [ "waveNames_", "classABDMS2000_1_1DWGSTables.html#af98a3db7b4b4bf9a186614416290a7c1", null ],
+    [ "wavetableMemory_", "classABDMS2000_1_1DWGSTables.html#a6f079b1839c9a839d7d2c9a292a14630", null ]
+];

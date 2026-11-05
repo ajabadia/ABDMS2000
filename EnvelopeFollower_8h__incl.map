@@ -1,7 +1,7 @@
 <map id="Source/DSP/Vocoder/EnvelopeFollower.h" name="Source/DSP/Vocoder/EnvelopeFollower.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="21,5,173,45"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,93,91,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="88,47,65,83,60,80,83,44"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="115,93,178,119"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="112,44,134,80,130,83,107,47"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="20,5,171,50"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,98,90,126"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,49,65,86,61,83,81,52"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="114,98,176,126"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="110,48,132,85,126,84,107,53"/>
 </map>

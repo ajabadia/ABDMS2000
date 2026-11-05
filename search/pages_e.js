@@ -1,4 +1,29 @@
 var searchData=
 [
-  ['valores_20del_20korg_20ms2000_20árbol_20completo_0',['Mapa de Menús, Parámetros y Valores del Korg MS2000 (Árbol Completo)',['../md_DOCS_2korg__ms2000__menu__map.html',1,'']]]
+  ['fórmula_20de_20mapeo_20sysex_20→_20tiempo_20real_0',['8.3 Fórmula de Mapeo SysEx → Tiempo Real',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md78',1,'']]],
+  ['fidelidad_20alcanzable_1',['1.3 Estimación de fidelidad alcanzable',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md37',1,'']]],
+  ['fijas_20ruteo_20por_20defecto_2',['4.3 Interconexiones de Control Fijas (Ruteo por Defecto)',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md55',1,'']]],
+  ['filtro_20amplificador_20y_20envolventes_3',['PARTE 2: FILTRO, AMPLIFICADOR Y ENVOLVENTES',['../md_DOCS_2korg__ms2000__menu__map.html#autotoc_md9',1,'']]],
+  ['filtro_20intensity_20y_20tracking_4',['7.4 Modulación del Filtro (Intensity y Tracking)',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md73',1,'']]],
+  ['filtro_20multimodo_5',['Filtro Multimodo',['../md_DOCS_2korg__ms2000__menu__map.html#autotoc_md10',1,'6. VCF (Filtro Multimodo)'],['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md69',1,'7. Filtro Multimodo']]],
+  ['filtro_20y_20datos_20sysex_6',['7.1 Modos de Filtro y Datos SysEx',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md70',1,'']]],
+  ['filtros_20y_20modos_20especiales_7',['13. VOCODER (Filtros y Modos Especiales)',['../md_DOCS_2korg__ms2000__menu__map.html#autotoc_md20',1,'']]],
+  ['firmas_20técnicas_20y_20contratos_20de_20métodos_20clave_8',['🛠️ Firmas Técnicas y Contratos de Métodos Clave',['../index.html#autotoc_md278',1,'']]],
+  ['flujo_20de_20datos_20del_20editor_20híbrido_9',['3.2 Flujo de datos del editor híbrido',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md48',1,'']]],
+  ['flujo_20de_20señal_20completo_20y_20orden_20de_20procesamiento_10',['17. Flujo de Señal Completo y Orden de Procesamiento',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md127',1,'']]],
+  ['follower_11',['15.2 Envelope Follower',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md117',1,'']]],
+  ['formas_20de_20onda_12',['9.1 Formas de Onda',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md83',1,'']]],
+  ['formas_20de_20onda_13',['formas de onda',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md57',1,'5. Osciladores (71 formas de onda)'],['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md59',1,'5.2 Oscilador 2 (OSC2) — 3 formas de onda']]],
+  ['formas_20de_20onda_208_20algoritmos_14',['5.1 Oscilador 1 (OSC1) — 68 formas de onda, 8 algoritmos',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md58',1,'']]],
+  ['formas_20de_20onda_20digitales_20dwgs_15',['2.2 Formas de Onda Digitales (DWGS)',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md41',1,'']]],
+  ['frecuencia_16',['9. LFO 1 &amp;amp; LFO 2 (Osciladores de Baja Frecuencia)',['../md_DOCS_2korg__ms2000__menu__map.html#autotoc_md13',1,'']]],
+  ['frecuencia_20de_20corte_17',['7.2 Conversión del Cutoff (Frecuencia de Corte)',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md71',1,'']]],
+  ['frecuencias_20del_20ecualizador_18',['16.1 Frecuencias del Ecualizador',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md124',1,'']]],
+  ['frecuencias_20exactas_20del_20eq_20y_20escalas_20del_20virtual_20patch_19',['16. Frecuencias Exactas del EQ y Escalas del Virtual Patch',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md123',1,'']]],
+  ['fuera_20de_20la_20voz_20',['4.2 Componentes Globales (fuera de la voz)',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md54',1,'']]],
+  ['fx_21',['FX',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md112',1,'14.2 Bloque 2: Efectos de Modulación (Mod FX)'],['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md113',1,'14.3 Bloque 3: Delay FX']]],
+  ['fx_20delay_22',['14. Efectos (EQ, Mod FX, Delay)',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md110',1,'']]],
+  ['fx_20ecualizador_20eq_20y_20vocoder_23',['PARTE 3: EFECTOS (FX), ECUALIZADOR (EQ) Y VOCODER',['../md_DOCS_2korg__ms2000__menu__map.html#autotoc_md16',1,'']]],
+  ['fx_20efectos_20de_20modulación_24',['10. CHORUS/MOD FX (Efectos de Modulación)',['../md_DOCS_2korg__ms2000__menu__map.html#autotoc_md17',1,'']]],
+  ['fx_20efectos_20de_20retardo_20maestro_25',['11. DELAY FX (Efectos de Retardo Maestro)',['../md_DOCS_2korg__ms2000__menu__map.html#autotoc_md18',1,'']]]
 ];

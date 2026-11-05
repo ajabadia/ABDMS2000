@@ -3,12 +3,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
-<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Miembros de clases</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -29,24 +34,38 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- Generado por Doxygen 1.9.8 -->
+<!-- Generado por Doxygen 1.15.0 -->
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 var searchBox = new SearchBox("searchBox", "search/",'.html');
-/* @license-end */
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
 </script>
 <script type="text/javascript" src="menudata.js"></script>
 <script type="text/javascript" src="menu.js"></script>
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,false,'search.php','Buscar');
-  $(document).ready(function() { init_search(); });
+  initMenu('',true,false,'search.php','Buscar',true);
+  $(function() { init_search(); });
 });
-/* @license-end */
 </script>
 <div id="main-nav"></div>
 </div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){initNavTree('functions_r.html','',''); });
+</script>
+<div id="container">
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -71,17 +90,20 @@ $(function() {
 <div class="contents">
 <div class="textblock">Lista de todos los campos de clases con enlaces a las clases a las que pertenecen:</div>
 
-<h3><a id="index_r" name="index_r"></a>- r -</h3><ul>
+<h3 class="doxsection"><a id="index_r" name="index_r"></a>- r -</h3><ul>
 <li>R_&#160;:&#160;<a class="el" href="classABDMS2000_1_1MultiModeFilter.html#a455229a098ae0687a171fed3e7648ecb">ABDMS2000::MultiModeFilter</a></li>
 <li>RapidSweepTests()&#160;:&#160;<a class="el" href="classABDMS2000_1_1Tests_1_1RapidSweepTests.html#a4381a42e178047a7b278d8d2096a41df">ABDMS2000::Tests::RapidSweepTests</a></li>
 <li>raw&#160;:&#160;<a class="el" href="structABDMS2000_1_1MicroKorgHardwareProgram.html#a7c193f2656c16ad03409dedb928f611f">ABDMS2000::MicroKorgHardwareProgram</a>, <a class="el" href="structABDMS2000_1_1MS2000HardwareProgram.html#a27e804063e8712aa6d74ef6a5a87607c">ABDMS2000::MS2000HardwareProgram</a></li>
 <li>rawData&#160;:&#160;<a class="el" href="structABDMS2000_1_1MS2000ProgramData.html#a54fb03d5f22075ea58512995d5eefe92">ABDMS2000::MS2000ProgramData</a></li>
 <li>rawFeedback_&#160;:&#160;<a class="el" href="classABDMS2000_1_1ModFX.html#a4706c03f0a8a53cb35388bfd4c08c53a">ABDMS2000::ModFX</a>, <a class="el" href="classABDMS2000_1_1MS2KChorusFlanger.html#a58da1263eaae4f09b34fd3c3865cdc51">ABDMS2000::MS2KChorusFlanger</a></li>
 <li>readField()&#160;:&#160;<a class="el" href="structABDMS2000_1_1MS2000HardwareProgram.html#a50f662622f08881585db62cd36f72402">ABDMS2000::MS2000HardwareProgram</a></li>
-<li>readHermite()&#160;:&#160;<a class="el" href="classABDMS2000_1_1MS2KChorusFlanger.html#a53a7170954a78882f4a84a90f9435d13">ABDMS2000::MS2KChorusFlanger</a>, <a class="el" href="classABDMS2000_1_1MS2KDelay.html#a0797b96e63f886a32a6ad2ed00100115">ABDMS2000::MS2KDelay</a></li>
+<li>readInterpolated16()&#160;:&#160;<a class="el" href="classABDMS2000_1_1HardwareEffects_1_1HardwareChorusFlanger.html#aa196777133e88668b7a1af9f28e8001d">ABDMS2000::HardwareEffects::HardwareChorusFlanger</a></li>
+<li>readInterpolated6Bit()&#160;:&#160;<a class="el" href="classABDMS2000_1_1HardwareEffects_1_1HardwareDelay.html#a9e662b24347b0a6ec1f26d011b16411e">ABDMS2000::HardwareEffects::HardwareDelay</a></li>
 <li>readProgramBlob()&#160;:&#160;<a class="el" href="classABDMS2000_1_1BridgeActions.html#abbbb597d5ae88c88cd86106a46b8b070">ABDMS2000::BridgeActions</a></li>
+<li>readTap()&#160;:&#160;<a class="el" href="classABDMS2000_1_1HardwareEffects_1_1HardwareEnsemble.html#af8559cf944a567d07d6332c1cfd8c585">ABDMS2000::HardwareEffects::HardwareEnsemble</a></li>
 <li>readTimbreParams()&#160;:&#160;<a class="el" href="classABDMS2000_1_1SynthEngine.html#a07e7744fe8b893cf8d3e338432bed6e3">ABDMS2000::SynthEngine</a></li>
 <li>rebuildPattern()&#160;:&#160;<a class="el" href="classABDMS2000_1_1Arpeggiator.html#ab2b892de13652448610e24c42018947d">ABDMS2000::Arpeggiator</a></li>
+<li>receive()&#160;:&#160;<a class="el" href="structABDMS2000_1_1ms2kipl_1_1Transport.html#a9cc004866fd1295719c05bdf9c310d5d">ABDMS2000::ms2kipl::Transport</a></li>
 <li>ReceiveSink&#160;:&#160;<a class="el" href="classABDMS2000_1_1HardwareMidiTransport.html#aac83ed083194c416746b5b5eb7451bdf">ABDMS2000::HardwareMidiTransport</a></li>
 <li>receiveSink&#160;:&#160;<a class="el" href="classABDMS2000_1_1HardwareMidiTransport.html#ade0889d947d2e3142a321b3b30ec9cb4">ABDMS2000::HardwareMidiTransport</a></li>
 <li>refreshHardwareMidiAvailability()&#160;:&#160;<a class="el" href="classABDMS2000_1_1ABDMS2000AudioProcessorEditor.html#a19e784e40cb41531587f2e6aa0c98ec9">ABDMS2000::ABDMS2000AudioProcessorEditor</a></li>
@@ -92,24 +114,29 @@ $(function() {
 <li>releaseResources()&#160;:&#160;<a class="el" href="classABDMS2000_1_1ABDMS2000AudioProcessor.html#ad8ac8dd57b3ad086372396a1df6abcf2">ABDMS2000::ABDMS2000AudioProcessor</a>, <a class="el" href="classABDMS2000_1_1Tests_1_1BridgeTestProcessor.html#a3862cfa0693e23316e852498b1cf0587">ABDMS2000::Tests::BridgeTestProcessor</a>, <a class="el" href="classABDMS2000_1_1Tests_1_1DummyProcessor.html#ae22efc9dcb0b73e6307abc7ff904b19d">ABDMS2000::Tests::DummyProcessor</a></li>
 <li>releaseVoiceSlot()&#160;:&#160;<a class="el" href="classABDMS2000_1_1VoiceManager.html#a5ea16700ecf8bb46d3337d4fdcfd3847">ABDMS2000::VoiceManager</a></li>
 <li>renderDiagnosticSample()&#160;:&#160;<a class="el" href="classABDMS2000_1_1Voice.html#a5d24cede58001e8bf95a95a8fff6283c">ABDMS2000::Voice</a></li>
-<li>renderNextSample()&#160;:&#160;<a class="el" href="classABDMS2000_1_1Voice.html#a7bb4d1c2b6c8168c6d78317107c324e3">ABDMS2000::Voice</a></li>
+<li>renderNextSample()&#160;:&#160;<a class="el" href="classABDMS2000_1_1Voice.html#a83651191455e420a4dfa4e77b8a8a3bc">ABDMS2000::Voice</a></li>
 <li>renderOutgoingMidi()&#160;:&#160;<a class="el" href="classABDMS2000_1_1MIDITelemetryManager.html#a3b51112cfcb747b1e7d25c05c3472ff1">ABDMS2000::MIDITelemetryManager</a></li>
 <li>reply&#160;:&#160;<a class="el" href="structABDMS2000_1_1SysExParseResult.html#a795b35fd4129ddc2b61aa53c6b7f6ff7">ABDMS2000::SysExParseResult</a></li>
-<li>reset()&#160;:&#160;<a class="el" href="classABDMS2000_1_1Arpeggiator.html#a77550bb665427c10f52ef0da4b4cd6a8">ABDMS2000::Arpeggiator</a>, <a class="el" href="structABDMS2000_1_1BiquadBPF.html#a5c8f28d5db77546521cb3de0b7644301">ABDMS2000::BiquadBPF</a>, <a class="el" href="classABDMS2000_1_1DWGSOscillator.html#a39446688a9d2a0eba71622cf5d54e06f">ABDMS2000::DWGSOscillator</a>, <a class="el" href="classABDMS2000_1_1EnvelopeFollower.html#adff5ea1d941a89a2fd8ecde2a59489ff">ABDMS2000::EnvelopeFollower</a>, <a class="el" href="classABDMS2000_1_1Equalizer.html#adfeabec8ca081db51cb64c2293c79186">ABDMS2000::Equalizer</a>, <a class="el" href="classABDMS2000_1_1ModFX.html#a8303fed5c451e74befa95f1cec6be47e">ABDMS2000::ModFX</a>, <a class="el" href="classABDMS2000_1_1ModSequencer.html#ab7435240eb6e5a2ba8f0023353fb9fdc">ABDMS2000::ModSequencer</a>, <a class="el" href="structABDMS2000_1_1MS2000HardwareProgram.html#a85182eb2fe1588f4904b90157218ce81">ABDMS2000::MS2000HardwareProgram</a>, <a class="el" href="structABDMS2000_1_1MS2000ProgramData.html#a73eee242aa1b7e5db70922c97f2a3ecb">ABDMS2000::MS2000ProgramData</a>, <a class="el" href="classABDMS2000_1_1MS2KChorusFlanger.html#a3a2bb5deef200872f06490e7750d053e">ABDMS2000::MS2KChorusFlanger</a>, <a class="el" href="classABDMS2000_1_1MS2KDelay.html#ab795800c6eb7855aa92349dad48cf45d">ABDMS2000::MS2KDelay</a>, <a class="el" href="classABDMS2000_1_1MS2KVocoder16Band.html#ab108e6b8c1339bb07a4aa1d2b013086b">ABDMS2000::MS2KVocoder16Band</a>, <a class="el" href="classABDMS2000_1_1MultiModeFilter.html#a4a893f227168e4b79143df7d8c58921a">ABDMS2000::MultiModeFilter</a>, <a class="el" href="classABDMS2000_1_1NoiseGenerator.html#a98d928388b139ff2df15e78714ecbdcf">ABDMS2000::NoiseGenerator</a>, <a class="el" href="classABDMS2000_1_1SynthEngine.html#a3a8e31c9bb45f9fde440663fe591ae02">ABDMS2000::SynthEngine</a>, <a class="el" href="classABDMS2000_1_1Tests_1_1congelado_1_1Equalizer.html#a0bbc32fe306985702412c649756a04f0">ABDMS2000::Tests::congelado::Equalizer</a>, <a class="el" href="classABDMS2000_1_1VAOscillator.html#a6136d47c2b8652ec609daf282a3b5b60">ABDMS2000::VAOscillator</a>, <a class="el" href="classABDMS2000_1_1Voice.html#a4120f56f34ab098b89f4c7d1c1465793">ABDMS2000::Voice</a>, <a class="el" href="classABDMS2000_1_1VoiceManager.html#accd7a00e4085efe8732aab0927835bc0">ABDMS2000::VoiceManager</a>, <a class="el" href="structABDMS2000_1_1VoxWaveOscillator_1_1FormantBPF.html#a66366ac4c10907f49507e52f8294e41c">ABDMS2000::VoxWaveOscillator::FormantBPF</a>, <a class="el" href="classABDMS2000_1_1VoxWaveOscillator.html#ac1244ee92376c6c845f398bc44af9df8">ABDMS2000::VoxWaveOscillator</a></li>
+<li>requestCancel()&#160;:&#160;<a class="el" href="classABDMS2000_1_1MS2000IplUpdater.html#ac89a206c26e736be73ed53624de0b760">ABDMS2000::MS2000IplUpdater</a></li>
+<li>reset()&#160;:&#160;<a class="el" href="classABDMS2000_1_1Arpeggiator.html#a77550bb665427c10f52ef0da4b4cd6a8">ABDMS2000::Arpeggiator</a>, <a class="el" href="structABDMS2000_1_1BiquadBPF.html#a5c8f28d5db77546521cb3de0b7644301">ABDMS2000::BiquadBPF</a>, <a class="el" href="classABDMS2000_1_1DWGSOscillator.html#a39446688a9d2a0eba71622cf5d54e06f">ABDMS2000::DWGSOscillator</a>, <a class="el" href="classABDMS2000_1_1EnvelopeFollower.html#adff5ea1d941a89a2fd8ecde2a59489ff">ABDMS2000::EnvelopeFollower</a>, <a class="el" href="classABDMS2000_1_1Equalizer.html#adfeabec8ca081db51cb64c2293c79186">ABDMS2000::Equalizer</a>, <a class="el" href="classABDMS2000_1_1HardwareEffects_1_1HardwareChorusFlanger.html#ac67ea5fc0999c9d901824583b59335f3">ABDMS2000::HardwareEffects::HardwareChorusFlanger</a>, <a class="el" href="classABDMS2000_1_1HardwareEffects_1_1HardwareDelay.html#a4d9d35604ed677aae314c800046aed06">ABDMS2000::HardwareEffects::HardwareDelay</a>, <a class="el" href="classABDMS2000_1_1HardwareEffects_1_1HardwareEnsemble.html#aef826d70204ea9f3a2e6abdce7abe743">ABDMS2000::HardwareEffects::HardwareEnsemble</a>, <a class="el" href="classABDMS2000_1_1HardwareEffects_1_1HardwarePhaser.html#a10e676f73efbbef739cf8b1ea11c0a0e">ABDMS2000::HardwareEffects::HardwarePhaser</a>, <a class="el" href="classABDMS2000_1_1HardwareEffects_1_1HardwareTwoBandEQ.html#a6133d48a3bff4f131cb383491d45c872">ABDMS2000::HardwareEffects::HardwareTwoBandEQ</a>, <a class="el" href="classABDMS2000_1_1HardwareEffects_1_1HardwareVoiceDistortion.html#ac25b70c3494757366943b0decfa76056">ABDMS2000::HardwareEffects::HardwareVoiceDistortion</a>, <a class="el" href="classABDMS2000_1_1ModFX.html#a8303fed5c451e74befa95f1cec6be47e">ABDMS2000::ModFX</a>, <a class="el" href="classABDMS2000_1_1ModSequencer.html#ab7435240eb6e5a2ba8f0023353fb9fdc">ABDMS2000::ModSequencer</a>, <a class="el" href="structABDMS2000_1_1MS2000HardwareProgram.html#a85182eb2fe1588f4904b90157218ce81">ABDMS2000::MS2000HardwareProgram</a>, <a class="el" href="structABDMS2000_1_1MS2000ProgramData.html#a73eee242aa1b7e5db70922c97f2a3ecb">ABDMS2000::MS2000ProgramData</a>, <a class="el" href="classABDMS2000_1_1MS2KChorusFlanger.html#a3a2bb5deef200872f06490e7750d053e">ABDMS2000::MS2KChorusFlanger</a>, <a class="el" href="classABDMS2000_1_1MS2KDelay.html#ab795800c6eb7855aa92349dad48cf45d">ABDMS2000::MS2KDelay</a>, <a class="el" href="classABDMS2000_1_1MS2KVocoder16Band.html#ab108e6b8c1339bb07a4aa1d2b013086b">ABDMS2000::MS2KVocoder16Band</a>, <a class="el" href="classABDMS2000_1_1MultiModeFilter.html#a4a893f227168e4b79143df7d8c58921a">ABDMS2000::MultiModeFilter</a>, <a class="el" href="classABDMS2000_1_1NoiseGenerator.html#a98d928388b139ff2df15e78714ecbdcf">ABDMS2000::NoiseGenerator</a>, <a class="el" href="classABDMS2000_1_1SynthEngine.html#a3a8e31c9bb45f9fde440663fe591ae02">ABDMS2000::SynthEngine</a>, <a class="el" href="classABDMS2000_1_1Tests_1_1congelado_1_1Equalizer.html#a0bbc32fe306985702412c649756a04f0">ABDMS2000::Tests::congelado::Equalizer</a>, <a class="el" href="classABDMS2000_1_1VAOscillator.html#a6136d47c2b8652ec609daf282a3b5b60">ABDMS2000::VAOscillator</a>, <a class="el" href="classABDMS2000_1_1Voice.html#a4120f56f34ab098b89f4c7d1c1465793">ABDMS2000::Voice</a>, <a class="el" href="classABDMS2000_1_1VoiceManager.html#accd7a00e4085efe8732aab0927835bc0">ABDMS2000::VoiceManager</a>, <a class="el" href="structABDMS2000_1_1VoxWaveOscillator_1_1FormantBPF.html#a66366ac4c10907f49507e52f8294e41c">ABDMS2000::VoxWaveOscillator::FormantBPF</a>, <a class="el" href="classABDMS2000_1_1VoxWaveOscillator.html#ac1244ee92376c6c845f398bc44af9df8">ABDMS2000::VoxWaveOscillator</a></li>
 <li>resetAllDiagnosticBypasses()&#160;:&#160;<a class="el" href="classABDMS2000_1_1SynthEngine.html#a7370a3f9505b43a8122be129eaf5e0df">ABDMS2000::SynthEngine</a></li>
 <li>resized()&#160;:&#160;<a class="el" href="classABDMS2000_1_1ABDMS2000AudioProcessorEditor.html#a4c5eca6855eede6b47c984d15e766482">ABDMS2000::ABDMS2000AudioProcessorEditor</a></li>
 <li>resName&#160;:&#160;<a class="el" href="structABDMS2000_1_1M1FileEntry.html#a5798384aa55c3e770be0c6acafa0adff">ABDMS2000::M1FileEntry</a></li>
-<li>RESONANCE&#160;:&#160;<a class="el" href="structABDMS2000_1_1MS2000HardwareProgram_1_1ti.html#a419a390f4e12b6119fb0e0a27a43dd09a46f27b5665c7485ac447fb70edf856e1">ABDMS2000::MS2000HardwareProgram::ti</a></li>
-<li>resonance_&#160;:&#160;<a class="el" href="classABDMS2000_1_1MultiModeFilter.html#a63f1ecc4d209d4a165bbef33711b75ac">ABDMS2000::MultiModeFilter</a></li>
+<li>RESONANCE&#160;:&#160;<a class="el" href="structABDMS2000_1_1MS2000HardwareProgram_1_1ti.html#a96f318e1a53cdb601e3e749d38746340a46f27b5665c7485ac447fb70edf856e1">ABDMS2000::MS2000HardwareProgram::ti</a></li>
+<li>resonance_&#160;:&#160;<a class="el" href="classABDMS2000_1_1MS2KVocoder16Band.html#a772693f41810d5ef6c929c54c3f6c4bf">ABDMS2000::MS2KVocoder16Band</a>, <a class="el" href="classABDMS2000_1_1MultiModeFilter.html#a63f1ecc4d209d4a165bbef33711b75ac">ABDMS2000::MultiModeFilter</a></li>
 <li>rGain&#160;:&#160;<a class="el" href="structABDMS2000_1_1Voice_1_1DiagnosticStats.html#aebdfe29364b6ef16a5311a2c3948e539">ABDMS2000::Voice::DiagnosticStats</a></li>
 <li>rightOutSample&#160;:&#160;<a class="el" href="structABDMS2000_1_1Voice_1_1DiagnosticStats.html#ae3e8f36f3d15a709325d62223ccc55e6">ABDMS2000::Voice::DiagnosticStats</a></li>
 <li>rngState_&#160;:&#160;<a class="el" href="classABDMS2000_1_1Arpeggiator.html#ac15bb089b2fc624a2b1ddd57359980ee">ABDMS2000::Arpeggiator</a>, <a class="el" href="classABDMS2000_1_1ModSequencer.html#a6ea9cd83b8b48074d8067649f36693f8">ABDMS2000::ModSequencer</a></li>
 <li>runTest()&#160;:&#160;<a class="el" href="classABDMS2000_1_1Tests_1_1CalSpecTests.html#a3aef034ad3d11459e8a2540e44f9792d">ABDMS2000::Tests::CalSpecTests</a>, <a class="el" href="classABDMS2000_1_1Tests_1_1MultiModeFilterTests.html#acfd0e6ff9fcaf4fe3cdd3a3f79254503">ABDMS2000::Tests::MultiModeFilterTests</a>, <a class="el" href="classABDMS2000_1_1Tests_1_1PanicTests.html#ab264699b59a5de0f63413e5bbd71e62c">ABDMS2000::Tests::PanicTests</a>, <a class="el" href="classABDMS2000_1_1Tests_1_1PitchTests.html#a63cb6983c6a6c2ace79d7ce2e8908201">ABDMS2000::Tests::PitchTests</a>, <a class="el" href="classABDMS2000_1_1Tests_1_1PortamentoTests.html#aa6fd436aa902c665a4f38ee7bd68f866">ABDMS2000::Tests::PortamentoTests</a>, <a class="el" href="classABDMS2000_1_1Tests_1_1RapidSweepTests.html#aefe46f795f11134fc2794c15e98be497">ABDMS2000::Tests::RapidSweepTests</a>, <a class="el" href="classABDMS2000_1_1Tests_1_1TransferTests.html#a31965601035b735e89a50785f8eb4ebd">ABDMS2000::Tests::TransferTests</a>, <a class="el" href="classABDMS2000_1_1Tests_1_1VoiceTests.html#a0600c0a909d2cbc32e56a3ad58c8d314">ABDMS2000::Tests::VoiceTests</a></li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
+</div><!-- container -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generado por <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0 </li>
+  </ul>
+</div>
 </body>
 </html>

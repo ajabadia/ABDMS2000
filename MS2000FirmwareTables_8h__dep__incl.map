@@ -1,0 +1,17 @@
+<map id="Source/Core/MS2000FirmwareTables.h" name="Source/Core/MS2000FirmwareTables.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="619,5,835,50"/>
+<area shape="rect" id="Node000002" href="$SynthEngine_8cpp.html" title=" " alt="" coords="5,106,217,134"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="603,47,229,101,182,109,181,103,228,95,603,42"/>
+<area shape="rect" id="Node000003" href="$Voice_8cpp.html" title=" " alt="" coords="240,106,406,134"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="618,54,383,108,382,103,613,54"/>
+<area shape="rect" id="Node000004" href="$MS2000HardwareEffects_8h.html" title="Standalone, bit&#45;accurate C++20 reference implementations of all Korg MS2000 DSP56362 hardware effects..." alt="" coords="430,98,626,143"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="668,56,577,100,575,95,663,57"/>
+<area shape="rect" id="Node000005" href="$MultiModeFilter_8cpp.html" title=" " alt="" coords="650,98,804,143"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="729,64,729,100,725,96,725,67"/>
+<area shape="rect" id="Node000006" href="$VAOscillator_8cpp.html" title=" " alt="" coords="828,98,996,143"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="786,55,871,98,866,97,784,60"/>
+<area shape="rect" id="Node000007" href="$LfoFirmwareParityTests_8cpp.html" title=" " alt="" coords="1020,98,1207,143"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="835,51,1023,97,1018,97,834,57"/>
+<area shape="rect" id="Node000008" href="$WasmBridge_8cpp.html" title=" " alt="" coords="1232,106,1454,134"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="851,43,1219,95,1270,106,1265,106,1219,101,850,48"/>
+</map>

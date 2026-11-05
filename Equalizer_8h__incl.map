@@ -1,7 +1,7 @@
 <map id="Source/DSP/Effects/Equalizer.h" name="Source/DSP/Effects/Equalizer.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="140,5,284,45"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,101,216,126"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="191,48,137,93,133,89,188,44"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="240,93,387,133"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="236,44,282,82,279,86,233,48"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="140,5,284,50"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,106,216,134"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="190,49,138,98,135,94,185,51"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="240,98,386,143"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="237,48,280,88,275,87,235,53"/>
 </map>

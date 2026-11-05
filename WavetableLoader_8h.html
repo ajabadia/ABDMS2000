@@ -3,12 +3,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
-<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Referencia del archivo Source/DSP/Oscillators/WavetableLoader.h</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -29,23 +34,38 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- Generado por Doxygen 1.9.8 -->
+<!-- Generado por Doxygen 1.15.0 -->
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 var searchBox = new SearchBox("searchBox", "search/",'.html');
-/* @license-end */
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
 </script>
 <script type="text/javascript" src="menudata.js"></script>
 <script type="text/javascript" src="menu.js"></script>
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,false,'search.php','Buscar');
-  $(document).ready(function() { init_search(); });
+  initMenu('',true,false,'search.php','Buscar',true);
+  $(function() { init_search(); });
 });
-/* @license-end */
 </script>
 <div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){initNavTree('WavetableLoader_8h.html','',''); });
+</script>
+<div id="container">
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -67,16 +87,7 @@ $(function() {
 </div>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a class="el" href="dir_28f92771c0af6f341cedd07750149305.html">DSP</a></li><li class="navelem"><a class="el" href="dir_56dd9e7cfcdef65c2e847cdb4c0a413b.html">Oscillators</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
-  <div class="summary">
-<a href="#namespaces">Espacios de nombres</a> &#124;
-<a href="#func-members">Funciones</a> &#124;
-<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">Referencia del archivo WavetableLoader.h</div></div>
 </div><!--header-->
 <div class="contents">
@@ -88,51 +99,55 @@ $(function() {
 </div><div class="textblock"><div class="dynheader">
 Gráfico de dependencias incluidas en WavetableLoader.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="WavetableLoader_8h__incl.svg" width="454" height="124"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="WavetableLoader_8h__incl.svg" width="447" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 Gráfico de los archivos que directa o indirectamente incluyen a este archivo:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="WavetableLoader_8h__dep__incl.svg" width="180" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="WavetableLoader_8h__dep__incl.svg" width="179" height="148"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="WavetableLoader_8h_source.html">Ir al código fuente de este archivo.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
+<tr class="heading"><td colspan="2"><h2 id="header-namespaces" class="groupheader"><a id="namespaces" name="namespaces"></a>
 Espacios de nombres</h2></td></tr>
-<tr class="memitem:namespaceABDMS2000" id="r_namespaceABDMS2000"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html">ABDMS2000</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespaceABDMS2000_1_1WavetableLoader" id="r_namespaceABDMS2000_1_1WavetableLoader"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1WavetableLoader.html">ABDMS2000::WavetableLoader</a></td></tr>
+<tr class="memitem:ABDMS2000" id="r_ABDMS2000"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html">ABDMS2000</a></td></tr>
+<tr class="memitem:ABDMS2000_3A_3AWavetableLoader" id="r_ABDMS2000_3A_3AWavetableLoader"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1WavetableLoader.html">ABDMS2000::WavetableLoader</a></td></tr>
 <tr class="memdesc:namespaceABDMS2000_1_1WavetableLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility functions for loading wavetables from raw binary formats. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+<tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Funciones</h2></td></tr>
 <tr class="memitem:aa0febd68fc3913738de3da68bb6f17d7" id="r_aa0febd68fc3913738de3da68bb6f17d7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1WavetableLoader.html#aa0febd68fc3913738de3da68bb6f17d7">ABDMS2000::WavetableLoader::loadRaw16BitBE</a> (const uint8_t *data, size_t size, std::vector&lt; float &gt; &amp;out) noexcept</td></tr>
 <tr class="memdesc:aa0febd68fc3913738de3da68bb6f17d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load raw 16-bit big-endian signed PCM samples into a float vector.  <br /></td></tr>
-<tr class="separator:aa0febd68fc3913738de3da68bb6f17d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0494f2ab2ed734590d62aedeb81f477" id="r_ab0494f2ab2ed734590d62aedeb81f477"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1WavetableLoader.html#ab0494f2ab2ed734590d62aedeb81f477">ABDMS2000::WavetableLoader::loadRaw16BitLE</a> (const uint8_t *data, size_t size, std::vector&lt; float &gt; &amp;out) noexcept</td></tr>
 <tr class="memdesc:ab0494f2ab2ed734590d62aedeb81f477"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load 16-bit signed little-endian PCM samples into a float vector.  <br /></td></tr>
-<tr class="separator:ab0494f2ab2ed734590d62aedeb81f477"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56620ea654e8c7afc513b575d4ab86f7" id="r_a56620ea654e8c7afc513b575d4ab86f7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1WavetableLoader.html#a56620ea654e8c7afc513b575d4ab86f7">ABDMS2000::WavetableLoader::loadWav</a> (const uint8_t *data, size_t size, std::vector&lt; float &gt; &amp;out) noexcept</td></tr>
 <tr class="memdesc:a56620ea654e8c7afc513b575d4ab86f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a standard RIFF WAV file (16-bit PCM mono) into float samples. Returns raw samples — caller should resample to target size.  <br /></td></tr>
-<tr class="separator:a56620ea654e8c7afc513b575d4ab86f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab575dbdb8a9fb1c93655cec104abad22" id="r_ab575dbdb8a9fb1c93655cec104abad22"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1WavetableLoader.html#ab575dbdb8a9fb1c93655cec104abad22">ABDMS2000::WavetableLoader::resample</a> (const std::vector&lt; float &gt; &amp;src, float *dest) noexcept</td></tr>
 <tr class="memdesc:ab575dbdb8a9fb1c93655cec104abad22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resample a source wavetable to TARGET_SIZE (2048) samples using linear interpolation.  <br /></td></tr>
-<tr class="separator:ab575dbdb8a9fb1c93655cec104abad22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e5f060f36e71057daf51ad8dc7b7146" id="r_a3e5f060f36e71057daf51ad8dc7b7146"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1WavetableLoader.html#a3e5f060f36e71057daf51ad8dc7b7146">ABDMS2000::WavetableLoader::loadM1Bank</a> (const uint8_t *data, size_t size, size_t numWaves, std::vector&lt; std::vector&lt; float &gt; &gt; &amp;out) noexcept</td></tr>
 <tr class="memdesc:a3e5f060f36e71057daf51ad8dc7b7146"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a .m1 bank file and extract individual single-cycle waves.  <br /></td></tr>
-<tr class="separator:a3e5f060f36e71057daf51ad8dc7b7146"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+<tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a130ab02ae0714b80bc67abc6b45bee06" id="r_a130ab02ae0714b80bc67abc6b45bee06"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1WavetableLoader.html#a130ab02ae0714b80bc67abc6b45bee06">ABDMS2000::WavetableLoader::TARGET_SIZE</a> = 2048</td></tr>
-<tr class="separator:a130ab02ae0714b80bc67abc6b45bee06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
+</div><!-- doc-content -->
+<div id="page-nav" class="page-nav-panel">
+<div id="page-nav-resize-handle"></div>
+<div id="page-nav-tree">
+<div id="page-nav-contents">
+</div><!-- page-nav-contents -->
+</div><!-- page-nav-tree -->
+</div><!-- page-nav -->
+</div><!-- container -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a href="dir_28f92771c0af6f341cedd07750149305.html">DSP</a></li><li class="navelem"><a href="dir_56dd9e7cfcdef65c2e847cdb4c0a413b.html">Oscillators</a></li><li class="navelem"><a href="WavetableLoader_8h.html">WavetableLoader.h</a></li>
+    <li class="footer">Generado por <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0 </li>
+  </ul>
+</div>
 </body>
 </html>

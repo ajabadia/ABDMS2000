@@ -1,9 +1,21 @@
 <map id="Source/Plugin/HardwareMidiTransport.h" name="Source/Plugin/HardwareMidiTransport.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="133,5,339,45"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,93,168,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="201,48,122,89,120,84,199,43"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="193,93,279,119"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="239,46,239,79,233,79,233,46"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="303,93,363,119"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="261,43,310,82,307,87,258,48"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="465,5,670,50"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,98,167,126"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="465,49,179,97,178,92,464,44"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="191,98,256,126"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="472,51,272,100,271,95,466,51"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="281,98,422,126"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="513,50,401,95,399,90,507,51"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="447,98,512,126"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="547,49,506,90,503,85,542,51"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="537,98,598,126"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="569,49,569,84,565,81,565,52"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="622,98,708,126"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="594,48,640,89,635,87,592,53"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="732,98,795,126"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="620,48,721,92,715,91,619,53"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="819,98,878,126"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="644,48,807,97,801,97,643,53"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="903,98,965,126"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="670,46,890,98,885,98,670,52"/>
 </map>

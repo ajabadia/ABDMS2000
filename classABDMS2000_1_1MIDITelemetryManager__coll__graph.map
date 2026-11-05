@@ -1,7 +1,5 @@
 <map id="ABDMS2000::MIDITelemetryManager" name="ABDMS2000::MIDITelemetryManager">
-<area shape="rect" id="Node000001" title="Bidirectional MIDI Telemetry Manager. Handles:" alt="" coords="85,108,290,148"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,199,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="129,54,173,106,169,110,125,58"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="223,13,322,38"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="256,50,205,110,201,106,252,47"/>
+<area shape="rect" id="Node000001" title="Bidirectional MIDI Telemetry Manager. Handles:" alt="" coords="5,98,210,143"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="11,5,204,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,64,110,99,105,97,106,68"/>
 </map>

@@ -1,6 +1,25 @@
 var searchData=
 [
-  ['—_20análisis_20del_20código_20lua_20y_20algoritmos_20midi_20sysex_0',['ReMS2000 — Análisis del Código Lua y Algoritmos MIDI/SysEx',['../md_DOCS_2ReMS2000__Lua__Analysis.html',1,'']]],
-  ['—_20arquitectura_20dsp_20e_20ingeniería_20inversa_1',['Investigación Completa del Korg MS2000 — Arquitectura, DSP e Ingeniería Inversa',['../md_DOCS_2MS2000__Research__Notes.html',1,'']]],
-  ['—_20especificación_20de_20mensajes_20sysex_20y_20offsets_20hexadecimales_2',['Korg MS2000 — Especificación de Mensajes SysEx y Offsets Hexadecimales',['../md_DOCS_2MS2000__SysEx__Spec.html',1,'']]]
+  ['implementación_20del_20motor_0',['11.4 Implementación del Motor',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md98',1,'']]],
+  ['implementación_20en_20juce_1',['10.3 Implementación en JUCE',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md91',1,'']]],
+  ['implementación_20en_20juce_20midibuffer_2',['12.3 Implementación en JUCE (MidiBuffer)',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md103',1,'']]],
+  ['información_20está_20disponible_3',['1.1 Qué información está disponible',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md35',1,'']]],
+  ['ingeniería_20inversa_4',['Ingeniería Inversa',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md77',1,'8.2 Tiempos Reales Medidos (Ingeniería Inversa)'],['../md_DOCS_2MS2000__Research__Notes.html',1,'Investigación Completa del Korg MS2000 — Arquitectura, DSP e Ingeniería Inversa']]],
+  ['initbufferwithinitpatch_5',['&lt;span class=&quot;tt&quot;&gt;initBufferWithInitPatch&lt;/span&gt;',['../md_DOCS_2ReMS2000__Lua__Analysis.html#autotoc_md242',1,'']]],
+  ['initpatchdata_6',['&lt;span class=&quot;tt&quot;&gt;initPatchData&lt;/span&gt;',['../md_DOCS_2ReMS2000__Lua__Analysis.html#autotoc_md234',1,'']]],
+  ['initpatchrawdata_7',['&lt;span class=&quot;tt&quot;&gt;initPatchRawData&lt;/span&gt;',['../md_DOCS_2ReMS2000__Lua__Analysis.html#autotoc_md232',1,'']]],
+  ['initpresetbank_8',['&lt;span class=&quot;tt&quot;&gt;initPresetBank&lt;/span&gt;',['../md_DOCS_2ReMS2000__Lua__Analysis.html#autotoc_md236',1,'']]],
+  ['initvocoderbuffer_9',['&lt;span class=&quot;tt&quot;&gt;initVocoderBuffer&lt;/span&gt;',['../md_DOCS_2ReMS2000__Lua__Analysis.html#autotoc_md238',1,'']]],
+  ['inputmidiparser_10',['&lt;span class=&quot;tt&quot;&gt;inputMIDIParser&lt;/span&gt;',['../md_DOCS_2ReMS2000__Lua__Analysis.html#autotoc_md210',1,'']]],
+  ['integración_20con_20el_20editor_20midi_11',['6.4 Integración con el Editor MIDI',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md67',1,'']]],
+  ['integración_20continua_20y_20buenas_20prácticas_12',['🚦 Protocolo de Integración Continua y Buenas Prácticas',['../index.html#autotoc_md289',1,'']]],
+  ['inteligente_13',['5. Generador Estocástico Inteligente',['../index.html#autotoc_md287',1,'']]],
+  ['intensidad_14',['Intensidad',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md108',1,'13.3 Intensidad'],['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md125',1,'16.2 Escala Máxima del Virtual Patch (Intensidad)']]],
+  ['intensity_20y_20tracking_15',['7.4 Modulación del Filtro (Intensity y Tracking)',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md73',1,'']]],
+  ['intentos_20anteriores_16',['3.1 El problema de los intentos anteriores',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md47',1,'']]],
+  ['interconexiones_20de_20control_20fijas_20ruteo_20por_20defecto_17',['4.3 Interconexiones de Control Fijas (Ruteo por Defecto)',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md55',1,'']]],
+  ['internet_18',['2. Recursos Disponibles en Internet',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md39',1,'']]],
+  ['internos_20por_20voz_19',['4.1 Listado de Componentes (Módulos Internos por Voz)',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md53',1,'']]],
+  ['inversa_20',['Inversa',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md77',1,'8.2 Tiempos Reales Medidos (Ingeniería Inversa)'],['../md_DOCS_2MS2000__Research__Notes.html',1,'Investigación Completa del Korg MS2000 — Arquitectura, DSP e Ingeniería Inversa']]],
+  ['investigación_20completa_20del_20korg_20ms2000_20—_20arquitectura_20dsp_20e_20ingeniería_20inversa_21',['Investigación Completa del Korg MS2000 — Arquitectura, DSP e Ingeniería Inversa',['../md_DOCS_2MS2000__Research__Notes.html',1,'']]]
 ];

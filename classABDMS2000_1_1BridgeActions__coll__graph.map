@@ -1,5 +1,7 @@
 <map id="ABDMS2000::BridgeActions" name="ABDMS2000::BridgeActions">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,93,205,119"/>
-<area shape="rect" id="Node000002" href="$classABDMS2000_1_1BridgeHost.html" title=" " alt="" coords="14,5,197,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="108,45,108,93,103,93,103,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="111,106,310,134"/>
+<area shape="rect" id="Node000002" href="$classABDMS2000_1_1BridgeHost.html" title=" " alt="" coords="5,5,187,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="124,41,198,105,193,106,121,46"/>
+<area shape="rect" id="Node000003" href="$classABDMS2000_1_1MS2000IplUpdater.html" title=" " alt="" coords="211,5,440,33"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="301,42,227,108,225,103,296,44"/>
 </map>

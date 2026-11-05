@@ -3,12 +3,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
-<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Referencia del archivo Source/Core/HardwareConstants.h</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -29,23 +34,38 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- Generado por Doxygen 1.9.8 -->
+<!-- Generado por Doxygen 1.15.0 -->
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 var searchBox = new SearchBox("searchBox", "search/",'.html');
-/* @license-end */
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
 </script>
 <script type="text/javascript" src="menudata.js"></script>
 <script type="text/javascript" src="menu.js"></script>
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,false,'search.php','Buscar');
-  $(document).ready(function() { init_search(); });
+  initMenu('',true,false,'search.php','Buscar',true);
+  $(function() { init_search(); });
 });
-/* @license-end */
 </script>
 <div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){initNavTree('HardwareConstants_8h.html','',''); });
+</script>
+<div id="container">
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -67,135 +87,99 @@ $(function() {
 </div>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a class="el" href="dir_1ad6433457b0067ef8f54a4fa85f5c9a.html">Core</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
-  <div class="summary">
-<a href="#namespaces">Espacios de nombres</a> &#124;
-<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">Referencia del archivo HardwareConstants.h</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;cstdint&gt;</code><br />
+<code>#include &quot;SynthCore/LFO.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Gráfico de dependencias incluidas en HardwareConstants.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="HardwareConstants_8h__incl.svg" width="255" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="HardwareConstants_8h__incl.svg" width="259" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 Gráfico de los archivos que directa o indirectamente incluyen a este archivo:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="HardwareConstants_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="HardwareConstants_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div>
 <p><a href="HardwareConstants_8h_source.html">Ir al código fuente de este archivo.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
+<tr class="heading"><td colspan="2"><h2 id="header-namespaces" class="groupheader"><a id="namespaces" name="namespaces"></a>
 Espacios de nombres</h2></td></tr>
-<tr class="memitem:namespaceABDMS2000" id="r_namespaceABDMS2000"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html">ABDMS2000</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespaceABDMS2000_1_1Constants" id="r_namespaceABDMS2000_1_1Constants"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html">ABDMS2000::Constants</a></td></tr>
+<tr class="memitem:ABDMS2000" id="r_ABDMS2000"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html">ABDMS2000</a></td></tr>
+<tr class="memitem:ABDMS2000_3A_3AConstants" id="r_ABDMS2000_3A_3AConstants"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html">ABDMS2000::Constants</a></td></tr>
 <tr class="memdesc:namespaceABDMS2000_1_1Constants"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hardware constants for <a class="el" href="namespaceABDMS2000.html">ABDMS2000</a> and microKORG synthesizers. These constants represent the actual hardware parameters and limits as documented in the Korg MS2000 and microKORG manuals. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+<tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:ad0df14ca1e7966063e44a84a95b5906d" id="r_ad0df14ca1e7966063e44a84a95b5906d"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#ad0df14ca1e7966063e44a84a95b5906d">ABDMS2000::Constants::kMaxPolyphony</a> = 4</td></tr>
-<tr class="separator:ad0df14ca1e7966063e44a84a95b5906d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa33427ce5def23159452cbe134996d4d" id="r_aa33427ce5def23159452cbe134996d4d"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#aa33427ce5def23159452cbe134996d4d">ABDMS2000::Constants::kMaxPolyphonyAdvanced</a> = 32</td></tr>
-<tr class="separator:aa33427ce5def23159452cbe134996d4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf65f5b4db449cf6e3d0f3049cef90af" id="r_adf65f5b4db449cf6e3d0f3049cef90af"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#adf65f5b4db449cf6e3d0f3049cef90af">ABDMS2000::Constants::kNumProgramsPerBank</a> = 16</td></tr>
-<tr class="separator:adf65f5b4db449cf6e3d0f3049cef90af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63a2f2a3872dcb19f47d66a7c6480086" id="r_a63a2f2a3872dcb19f47d66a7c6480086"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#a63a2f2a3872dcb19f47d66a7c6480086">ABDMS2000::Constants::kNumBanks</a> = 8</td></tr>
-<tr class="separator:a63a2f2a3872dcb19f47d66a7c6480086"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6dc6aba0fa56dd041e55e9c39aa38948" id="r_a6dc6aba0fa56dd041e55e9c39aa38948"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#a6dc6aba0fa56dd041e55e9c39aa38948">ABDMS2000::Constants::kTotalPrograms</a> = 128</td></tr>
-<tr class="separator:a6dc6aba0fa56dd041e55e9c39aa38948"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67273cbce2bd4a9b6035c93923745bec" id="r_a67273cbce2bd4a9b6035c93923745bec"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#a67273cbce2bd4a9b6035c93923745bec">ABDMS2000::Constants::kDwgWaveCount</a> = 512</td></tr>
-<tr class="separator:a67273cbce2bd4a9b6035c93923745bec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a36a52ff953cc0a7c057deb1ce8247a77" id="r_a36a52ff953cc0a7c057deb1ce8247a77"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#a36a52ff953cc0a7c057deb1ce8247a77">ABDMS2000::Constants::kDwgTableSize</a> = 2048</td></tr>
-<tr class="separator:a36a52ff953cc0a7c057deb1ce8247a77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7c4807d1113b0adbc855a05ee886e54" id="r_ab7c4807d1113b0adbc855a05ee886e54"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#ab7c4807d1113b0adbc855a05ee886e54">ABDMS2000::Constants::kDwgTotalSamples</a> = <a class="el" href="namespaceABDMS2000_1_1Constants.html#a67273cbce2bd4a9b6035c93923745bec">kDwgWaveCount</a> * <a class="el" href="namespaceABDMS2000_1_1Constants.html#a36a52ff953cc0a7c057deb1ce8247a77">kDwgTableSize</a></td></tr>
-<tr class="separator:ab7c4807d1113b0adbc855a05ee886e54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb1ec9ae6ddd7cd2ca79b58cdcc8026e" id="r_aeb1ec9ae6ddd7cd2ca79b58cdcc8026e"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#aeb1ec9ae6ddd7cd2ca79b58cdcc8026e">ABDMS2000::Constants::kNumModSeqTracks</a> = 3</td></tr>
-<tr class="separator:aeb1ec9ae6ddd7cd2ca79b58cdcc8026e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc9f6503046ceb1836bf2f64ad42f657" id="r_abc9f6503046ceb1836bf2f64ad42f657"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#abc9f6503046ceb1836bf2f64ad42f657">ABDMS2000::Constants::kNumModSeqSteps</a> = 16</td></tr>
-<tr class="separator:abc9f6503046ceb1836bf2f64ad42f657"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3765c25061090f1e0b3e1bf4bb9f0fef" id="r_a3765c25061090f1e0b3e1bf4bb9f0fef"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#a3765c25061090f1e0b3e1bf4bb9f0fef">ABDMS2000::Constants::kNumModSeqStepsAdvanced</a> = 64</td></tr>
-<tr class="separator:a3765c25061090f1e0b3e1bf4bb9f0fef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba699ed8f6a930e0be7d40a6033fb04f" id="r_aba699ed8f6a930e0be7d40a6033fb04f"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#aba699ed8f6a930e0be7d40a6033fb04f">ABDMS2000::Constants::kNumVocoderBands</a> = 16</td></tr>
-<tr class="separator:aba699ed8f6a930e0be7d40a6033fb04f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40554f241353f18e2c82bee5c1a1343f" id="r_a40554f241353f18e2c82bee5c1a1343f"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#a40554f241353f18e2c82bee5c1a1343f">ABDMS2000::Constants::kNumVirtualPatchSlots</a> = 4</td></tr>
-<tr class="separator:a40554f241353f18e2c82bee5c1a1343f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af10c5894fd5da5cbaf0dc780ce6f17b6" id="r_af10c5894fd5da5cbaf0dc780ce6f17b6"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#af10c5894fd5da5cbaf0dc780ce6f17b6">ABDMS2000::Constants::kNumVirtualPatchSlotsAdvanced</a> = 8</td></tr>
-<tr class="separator:af10c5894fd5da5cbaf0dc780ce6f17b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb62b9bd68ef1a88fd860df64d239d0f" id="r_acb62b9bd68ef1a88fd860df64d239d0f"><td class="memItemLeft" align="right" valign="top">constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#acb62b9bd68ef1a88fd860df64d239d0f">ABDMS2000::Constants::kKorgManufacturerId</a> = 0x42</td></tr>
-<tr class="separator:acb62b9bd68ef1a88fd860df64d239d0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a696947ff866ab235d29f127b1a7da0f8" id="r_a696947ff866ab235d29f127b1a7da0f8"><td class="memItemLeft" align="right" valign="top">constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#a696947ff866ab235d29f127b1a7da0f8">ABDMS2000::Constants::kMS2000ModelId</a> = 0x58</td></tr>
-<tr class="separator:a696947ff866ab235d29f127b1a7da0f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae36bc55b4b159d179e3bf917805e5868" id="r_ae36bc55b4b159d179e3bf917805e5868"><td class="memItemLeft" align="right" valign="top">constexpr uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#ae36bc55b4b159d179e3bf917805e5868">ABDMS2000::Constants::kMicroKorgModelId</a> = 0x71</td></tr>
-<tr class="separator:ae36bc55b4b159d179e3bf917805e5868"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75624479571746cfeb2fd2b5de7be924" id="r_a75624479571746cfeb2fd2b5de7be924"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#a75624479571746cfeb2fd2b5de7be924">ABDMS2000::Constants::kMinPitchBend</a> = -8192.0f</td></tr>
-<tr class="separator:a75624479571746cfeb2fd2b5de7be924"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab590470fcba31f129dd855f4c06e98b4" id="r_ab590470fcba31f129dd855f4c06e98b4"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#ab590470fcba31f129dd855f4c06e98b4">ABDMS2000::Constants::kMaxPitchBend</a> = 8191.0f</td></tr>
-<tr class="separator:ab590470fcba31f129dd855f4c06e98b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12a402ca1fc2c732e4dbdd1232c723e0" id="r_a12a402ca1fc2c732e4dbdd1232c723e0"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#a12a402ca1fc2c732e4dbdd1232c723e0">ABDMS2000::Constants::kMinModWheel</a> = 0.0f</td></tr>
-<tr class="separator:a12a402ca1fc2c732e4dbdd1232c723e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8254c776e943c8fc496889d5e50b553" id="r_ac8254c776e943c8fc496889d5e50b553"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#ac8254c776e943c8fc496889d5e50b553">ABDMS2000::Constants::kMaxModWheel</a> = 1.0f</td></tr>
-<tr class="separator:ac8254c776e943c8fc496889d5e50b553"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0791de8999915a50d2e55b9fad6c66be" id="r_a0791de8999915a50d2e55b9fad6c66be"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#a0791de8999915a50d2e55b9fad6c66be">ABDMS2000::Constants::kMidiMiddleC</a> = 60.0f</td></tr>
-<tr class="separator:a0791de8999915a50d2e55b9fad6c66be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9049b1a16a861c364454ac8fb0bad030" id="r_a9049b1a16a861c364454ac8fb0bad030"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#a9049b1a16a861c364454ac8fb0bad030">ABDMS2000::Constants::kSemitonesPerOctave</a> = 12.0f</td></tr>
-<tr class="separator:a9049b1a16a861c364454ac8fb0bad030"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46d928a57ec299c4de4ed6e301335a96" id="r_a46d928a57ec299c4de4ed6e301335a96"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#a46d928a57ec299c4de4ed6e301335a96">ABDMS2000::Constants::kCentsPerSemitone</a> = 100.0f</td></tr>
-<tr class="separator:a46d928a57ec299c4de4ed6e301335a96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab48887f9a4bd1cef9b064b5d16a44e7c" id="r_ab48887f9a4bd1cef9b064b5d16a44e7c"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#ab48887f9a4bd1cef9b064b5d16a44e7c">ABDMS2000::Constants::kPitchBendDefaultSemitones</a> = 2.0f</td></tr>
-<tr class="separator:ab48887f9a4bd1cef9b064b5d16a44e7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad8536e49ba35281713d0f279a765fe92" id="r_ad8536e49ba35281713d0f279a765fe92"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#ad8536e49ba35281713d0f279a765fe92">ABDMS2000::Constants::kVirtualPatchMaxPitchSemitones</a> = 24.0f</td></tr>
-<tr class="separator:ad8536e49ba35281713d0f279a765fe92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84bd4f92a86be634baf16aff27aebef8" id="r_a84bd4f92a86be634baf16aff27aebef8"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#a84bd4f92a86be634baf16aff27aebef8">ABDMS2000::Constants::kFilterModMaxOctaves</a> = 5.0f</td></tr>
-<tr class="separator:a84bd4f92a86be634baf16aff27aebef8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1600efd28d33a8a984163c7ced1a41d9" id="r_a1600efd28d33a8a984163c7ced1a41d9"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#a1600efd28d33a8a984163c7ced1a41d9">ABDMS2000::Constants::kLfoModMaxOctaves</a> = 4.0f</td></tr>
-<tr class="separator:a1600efd28d33a8a984163c7ced1a41d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c5d21d808e8cf7d376d1dc7da2f0b66" id="r_a2c5d21d808e8cf7d376d1dc7da2f0b66"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#a2c5d21d808e8cf7d376d1dc7da2f0b66">ABDMS2000::Constants::kLfoDefaultMinFrequencyHz</a> = abd::synth::kLfoDefaultMinFrequencyHz</td></tr>
+<tr class="memitem:a1dfc7842a958a46fcbf4df0ac983c8fb" id="r_a1dfc7842a958a46fcbf4df0ac983c8fb"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#a1dfc7842a958a46fcbf4df0ac983c8fb">ABDMS2000::Constants::kLfoDefaultMaxFrequencyHz</a> = abd::synth::kLfoDefaultMaxFrequencyHz</td></tr>
+<tr class="memitem:af4259531351f0b0abffb0f8d810f6cd7" id="r_af4259531351f0b0abffb0f8d810f6cd7"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#af4259531351f0b0abffb0f8d810f6cd7">ABDMS2000::Constants::kLfoNonHardwareModulationMaxFrequencyHz</a> = abd::synth::kLfoNonHardwareModulationMaxFrequencyHz</td></tr>
+<tr class="memitem:a7c2bc3ac82c2d2dcaf95884cd7ca2dab" id="r_a7c2bc3ac82c2d2dcaf95884cd7ca2dab"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#a7c2bc3ac82c2d2dcaf95884cd7ca2dab">ABDMS2000::Constants::kLfoModulationMinFrequencyHz</a> = abd::synth::kLfoModulationMinFrequencyHz</td></tr>
+<tr class="memitem:aec297ae9b550c2039ee897a5f71f2e9e" id="r_aec297ae9b550c2039ee897a5f71f2e9e"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#aec297ae9b550c2039ee897a5f71f2e9e">ABDMS2000::Constants::kLfoHardwareMaxFrequencyHz</a> = abd::synth::kLfoHardwareMaxFrequencyHz</td></tr>
 <tr class="memitem:a379a612139b5fa65f9e6ed456eebfd20" id="r_a379a612139b5fa65f9e6ed456eebfd20"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#a379a612139b5fa65f9e6ed456eebfd20">ABDMS2000::Constants::kKbdTrackSpanSemitones</a> = 64.0f</td></tr>
-<tr class="separator:a379a612139b5fa65f9e6ed456eebfd20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aead1de26da4830c14eed42d25e33eb8c" id="r_aead1de26da4830c14eed42d25e33eb8c"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#aead1de26da4830c14eed42d25e33eb8c">ABDMS2000::Constants::kPanHalfWidth</a> = 0.5f</td></tr>
-<tr class="separator:aead1de26da4830c14eed42d25e33eb8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b4de3080b56cea88ea54b9edde6ff52" id="r_a6b4de3080b56cea88ea54b9edde6ff52"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#a6b4de3080b56cea88ea54b9edde6ff52">ABDMS2000::Constants::kDelayBufferHeadroomRatio</a> = 1.5f</td></tr>
-<tr class="separator:a6b4de3080b56cea88ea54b9edde6ff52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad8d0406fb4c073d05558930e49ac6feb" id="r_ad8d0406fb4c073d05558930e49ac6feb"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#ad8d0406fb4c073d05558930e49ac6feb">ABDMS2000::Constants::kDelayGlideTimeSec</a> = 0.05f</td></tr>
-<tr class="separator:ad8d0406fb4c073d05558930e49ac6feb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a540e9033aa081f2e5c799ab5ae022d8b" id="r_a540e9033aa081f2e5c799ab5ae022d8b"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#a540e9033aa081f2e5c799ab5ae022d8b">ABDMS2000::Constants::kDelayLeftRightRatio</a> = 0.75f</td></tr>
-<tr class="separator:a540e9033aa081f2e5c799ab5ae022d8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a896fc3b07a66d418a22bf7105dd1936b" id="r_a896fc3b07a66d418a22bf7105dd1936b"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#a896fc3b07a66d418a22bf7105dd1936b">ABDMS2000::Constants::kDelayMaxFeedback</a> = 0.95f</td></tr>
-<tr class="separator:a896fc3b07a66d418a22bf7105dd1936b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41f69311c3ffdd0a3f908712eba92bca" id="r_a41f69311c3ffdd0a3f908712eba92bca"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#a41f69311c3ffdd0a3f908712eba92bca">ABDMS2000::Constants::kDelayDampingCoeff</a> = 0.35f</td></tr>
-<tr class="separator:a41f69311c3ffdd0a3f908712eba92bca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5c79432529a111e47422226f7f75258" id="r_ad5c79432529a111e47422226f7f75258"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#ad5c79432529a111e47422226f7f75258">ABDMS2000::Constants::kDelayWetMixScale</a> = 0.88f</td></tr>
-<tr class="separator:ad5c79432529a111e47422226f7f75258"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5f0fa76b5897f97433013044461b90b" id="r_ad5f0fa76b5897f97433013044461b90b"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#ad5f0fa76b5897f97433013044461b90b">ABDMS2000::Constants::kVocoderSibilanceCutoffHz</a> = 8000.0f</td></tr>
-<tr class="separator:ad5f0fa76b5897f97433013044461b90b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84fd7852f23065a5fca1981948a9b8ba" id="r_a84fd7852f23065a5fca1981948a9b8ba"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#a84fd7852f23065a5fca1981948a9b8ba">ABDMS2000::Constants::kVocoderBandQ</a> = 6.5f</td></tr>
-<tr class="separator:a84fd7852f23065a5fca1981948a9b8ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5da09df06fb59e24e7a7626379628668" id="r_a5da09df06fb59e24e7a7626379628668"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#a5da09df06fb59e24e7a7626379628668">ABDMS2000::Constants::kVocoderSibilanceReleaseSec</a> = 0.010f</td></tr>
-<tr class="separator:a5da09df06fb59e24e7a7626379628668"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af321e967ab5c43029f6f997f9a60776d" id="r_af321e967ab5c43029f6f997f9a60776d"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#af321e967ab5c43029f6f997f9a60776d">ABDMS2000::Constants::kVocoderGateSenseMinReleaseSec</a> = 0.005f</td></tr>
-<tr class="separator:af321e967ab5c43029f6f997f9a60776d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2c5c574fbb3587a70ccd921ae6e585a" id="r_aa2c5c574fbb3587a70ccd921ae6e585a"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#aa2c5c574fbb3587a70ccd921ae6e585a">ABDMS2000::Constants::kVocoderGateSenseReleaseRangeSec</a></td></tr>
-<tr class="separator:aa2c5c574fbb3587a70ccd921ae6e585a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60768002de95d9455afd415fadf8f61b" id="r_a60768002de95d9455afd415fadf8f61b"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#a60768002de95d9455afd415fadf8f61b">ABDMS2000::Constants::kMidiMaxVal</a> = 127.0f</td></tr>
-<tr class="separator:a60768002de95d9455afd415fadf8f61b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab81ba79bd8dc220ce1560a1237148855" id="r_ab81ba79bd8dc220ce1560a1237148855"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#ab81ba79bd8dc220ce1560a1237148855">ABDMS2000::Constants::kFlangerMaxFeedback</a> = 0.94f</td></tr>
-<tr class="separator:ab81ba79bd8dc220ce1560a1237148855"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aace147a48c82c76f89ee7105999f76d1" id="r_aace147a48c82c76f89ee7105999f76d1"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1Constants.html#aace147a48c82c76f89ee7105999f76d1">ABDMS2000::Constants::kTwoPi</a> = 6.28318530717958647692f</td></tr>
-<tr class="separator:aace147a48c82c76f89ee7105999f76d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
+</div><!-- doc-content -->
+<div id="page-nav" class="page-nav-panel">
+<div id="page-nav-resize-handle"></div>
+<div id="page-nav-tree">
+<div id="page-nav-contents">
+</div><!-- page-nav-contents -->
+</div><!-- page-nav-tree -->
+</div><!-- page-nav -->
+</div><!-- container -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a href="dir_1ad6433457b0067ef8f54a4fa85f5c9a.html">Core</a></li><li class="navelem"><a href="HardwareConstants_8h.html">HardwareConstants.h</a></li>
+    <li class="footer">Generado por <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0 </li>
+  </ul>
+</div>
 </body>
 </html>

@@ -3,12 +3,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
-<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Archivo de código fuente Source/MIDI/MS2000SysExExporter.h</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -29,28 +34,38 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- Generado por Doxygen 1.9.8 -->
+<!-- Generado por Doxygen 1.15.0 -->
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 var searchBox = new SearchBox("searchBox", "search/",'.html');
-/* @license-end */
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
 </script>
 <script type="text/javascript" src="menudata.js"></script>
 <script type="text/javascript" src="menu.js"></script>
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,false,'search.php','Buscar');
-  $(document).ready(function() { init_search(); });
+  initMenu('',true,false,'search.php','Buscar',true);
+  $(function() { init_search(); });
 });
-/* @license-end */
 </script>
 <div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function() { init_codefold(0); });
-/* @license-end */
+$(function(){initNavTree('MS2000SysExExporter_8h_source.html','',''); });
 </script>
+<div id="container">
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -72,11 +87,6 @@ $(document).ready(function() { init_codefold(0); });
 </div>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a class="el" href="dir_dc3ca98ec04499128e0990907e6131c0.html">MIDI</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="headertitle"><div class="title">MS2000SysExExporter.h</div></div>
 </div><!--header-->
@@ -109,7 +119,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment"> * incluía; el formato que emite es el de la casa.)</span></div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment"> */</span></div>
 <div class="foldopen" id="foldopen00028" data-start="{" data-end="};">
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2000SysExExporter.html">   28</a></span><span class="keyword">class </span><a class="code hl_class" href="classABDMS2000_1_1MS2000SysExExporter.html">MS2000SysExExporter</a></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2000SysExExporter.html">   28</a></span><span class="keyword">class </span><a class="code hl_function" href="classABDMS2000_1_1MS2000SysExExporter.html#aa126bcfee39f8e11d43091cafcf616e2">MS2000SysExExporter</a></div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>{</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <span class="keyword">public</span>:</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="classABDMS2000_1_1MS2000SysExExporter.html#aa126bcfee39f8e11d43091cafcf616e2">   31</a></span>    <a class="code hl_function" href="classABDMS2000_1_1MS2000SysExExporter.html#aa126bcfee39f8e11d43091cafcf616e2">MS2000SysExExporter</a>() = <span class="keywordflow">default</span>;</div>
@@ -160,7 +170,6 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="aABDSynthsSysEx_8h_html"><div class="ttname"><a href="ABDSynthsSysEx_8h.html">ABDSynthsSysEx.h</a></div></div>
 <div class="ttc" id="aMS2000ProgramData_8h_html"><div class="ttname"><a href="MS2000ProgramData_8h.html">MS2000ProgramData.h</a></div></div>
 <div class="ttc" id="aSysExManager_8h_html"><div class="ttname"><a href="SysExManager_8h.html">SysExManager.h</a></div></div>
-<div class="ttc" id="aclassABDMS2000_1_1MS2000SysExExporter_html"><div class="ttname"><a href="classABDMS2000_1_1MS2000SysExExporter.html">ABDMS2000::MS2000SysExExporter</a></div><div class="ttdoc">Exportador de presets propios del plugin a .syx.</div><div class="ttdef"><b>Definition</b> MS2000SysExExporter.h:29</div></div>
 <div class="ttc" id="aclassABDMS2000_1_1MS2000SysExExporter_html_a3a818ae2358abede5babb86f3a0eabe8"><div class="ttname"><a href="classABDMS2000_1_1MS2000SysExExporter.html#a3a818ae2358abede5babb86f3a0eabe8">ABDMS2000::MS2000SysExExporter::~MS2000SysExExporter</a></div><div class="ttdeci">~MS2000SysExExporter()=default</div></div>
 <div class="ttc" id="aclassABDMS2000_1_1MS2000SysExExporter_html_a82842d9ace2cdaf6f9bdeb57216b53fb"><div class="ttname"><a href="classABDMS2000_1_1MS2000SysExExporter.html#a82842d9ace2cdaf6f9bdeb57216b53fb">ABDMS2000::MS2000SysExExporter::exportBank</a></div><div class="ttdeci">static void exportBank(const std::array&lt; MS2000ProgramData, 128 &gt; &amp;bank, juce::MemoryBlock &amp;outSysExBuffer, int midiChannel=1)</div><div class="ttdef"><b>Definition</b> MS2000SysExExporter.h:60</div></div>
 <div class="ttc" id="aclassABDMS2000_1_1MS2000SysExExporter_html_aa126bcfee39f8e11d43091cafcf616e2"><div class="ttname"><a href="classABDMS2000_1_1MS2000SysExExporter.html#aa126bcfee39f8e11d43091cafcf616e2">ABDMS2000::MS2000SysExExporter::MS2000SysExExporter</a></div><div class="ttdeci">MS2000SysExExporter()=default</div></div>
@@ -168,11 +177,16 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="anamespaceABDMS2000_html"><div class="ttname"><a href="namespaceABDMS2000.html">ABDMS2000</a></div><div class="ttdef"><b>Definition</b> AppLogger.h:18</div></div>
 <div class="ttc" id="astructABDMS2000_1_1ABDSynthsSysEx_html_a04406a44e60455d8911c547c231e9acc"><div class="ttname"><a href="structABDMS2000_1_1ABDSynthsSysEx.html#a04406a44e60455d8911c547c231e9acc">ABDMS2000::ABDSynthsSysEx::buildProgramDump</a></div><div class="ttdeci">static std::vector&lt; uint8_t &gt; buildProgramDump(const MS2000ProgramData &amp;program)</div><div class="ttdef"><b>Definition</b> ABDSynthsSysEx.h:89</div></div>
 <div class="ttc" id="astructABDMS2000_1_1ABDSynthsSysEx_html_af8b2c6273ee79edf93f350678b4721ee"><div class="ttname"><a href="structABDMS2000_1_1ABDSynthsSysEx.html#af8b2c6273ee79edf93f350678b4721ee">ABDMS2000::ABDSynthsSysEx::buildBankDump</a></div><div class="ttdeci">static std::vector&lt; uint8_t &gt; buildBankDump(const Container &amp;programs)</div><div class="ttdef"><b>Definition</b> ABDSynthsSysEx.h:107</div></div>
-<div class="ttc" id="astructABDMS2000_1_1MS2000ProgramData_html"><div class="ttname"><a href="structABDMS2000_1_1MS2000ProgramData.html">ABDMS2000::MS2000ProgramData</a></div><div class="ttdoc">Programa propio del plugin (el sistema native que declara el contrato del host, ver Source/Plugin/Hos...</div><div class="ttdef"><b>Definition</b> MS2000ProgramData.h:48</div></div>
+<div class="ttc" id="astructABDMS2000_1_1MS2000ProgramData_html"><div class="ttname"><a href="structABDMS2000_1_1MS2000ProgramData.html">ABDMS2000::MS2000ProgramData</a></div><div class="ttdoc">Programa propio del plugin (el sistema native que declara el contrato del host, ver Source/Plugin/Hos...</div><div class="ttdef"><b>Definition</b> MS2000ProgramData.h:49</div></div>
 </div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+</div><!-- container -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a href="dir_dc3ca98ec04499128e0990907e6131c0.html">MIDI</a></li><li class="navelem"><a href="MS2000SysExExporter_8h.html">MS2000SysExExporter.h</a></li>
+    <li class="footer">Generado por <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0 </li>
+  </ul>
+</div>
 </body>
 </html>

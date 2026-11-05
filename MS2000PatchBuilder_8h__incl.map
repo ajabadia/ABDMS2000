@@ -1,11 +1,11 @@
 <map id="Source/State/MS2000PatchBuilder.h" name="Source/State/MS2000PatchBuilder.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="23,5,217,45"/>
-<area shape="rect" id="Node000002" href="$ParameterRegistry_8gen_8h.html" title=" " alt="" coords="29,93,211,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="123,46,123,79,117,79,117,46"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="5,167,64,192"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="108,121,61,160,57,156,105,117"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="89,167,151,192"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="123,119,123,153,117,153,117,119"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="175,167,299,192"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="140,116,208,157,205,162,137,121"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="21,5,216,50"/>
+<area shape="rect" id="Node000002" href="$ParameterRegistry_8gen_8h.html" title=" " alt="" coords="28,98,209,126"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="120,48,121,83,116,82,117,53"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,174,64,201"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="106,125,63,165,59,161,101,127"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="87,174,150,201"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="120,124,121,159,116,157,117,128"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="174,174,298,201"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="140,124,205,165,200,166,139,129"/>
 </map>

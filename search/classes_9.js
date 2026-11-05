@@ -11,11 +11,12 @@ var searchData=
   ['modsequencer_8',['ModSequencer',['../classABDMS2000_1_1ModSequencer.html',1,'ABDMS2000']]],
   ['ms2000factorybank_9',['MS2000FactoryBank',['../classABDMS2000_1_1MS2000FactoryBank.html',1,'ABDMS2000']]],
   ['ms2000hardwareprogram_10',['MS2000HardwareProgram',['../structABDMS2000_1_1MS2000HardwareProgram.html',1,'ABDMS2000']]],
-  ['ms2000programdata_11',['MS2000ProgramData',['../structABDMS2000_1_1MS2000ProgramData.html',1,'ABDMS2000']]],
-  ['ms2000sysexexporter_12',['MS2000SysExExporter',['../classABDMS2000_1_1MS2000SysExExporter.html',1,'ABDMS2000']]],
-  ['ms2kchorusflanger_13',['MS2KChorusFlanger',['../classABDMS2000_1_1MS2KChorusFlanger.html',1,'ABDMS2000']]],
-  ['ms2kdelay_14',['MS2KDelay',['../classABDMS2000_1_1MS2KDelay.html',1,'ABDMS2000']]],
-  ['ms2kvocoder16band_15',['MS2KVocoder16Band',['../classABDMS2000_1_1MS2KVocoder16Band.html',1,'ABDMS2000']]],
-  ['multimodefilter_16',['MultiModeFilter',['../classABDMS2000_1_1MultiModeFilter.html',1,'ABDMS2000']]],
-  ['multimodefiltertests_17',['MultiModeFilterTests',['../classABDMS2000_1_1Tests_1_1MultiModeFilterTests.html',1,'ABDMS2000::Tests']]]
+  ['ms2000iplupdater_11',['MS2000IplUpdater',['../classABDMS2000_1_1MS2000IplUpdater.html',1,'ABDMS2000']]],
+  ['ms2000programdata_12',['MS2000ProgramData',['../structABDMS2000_1_1MS2000ProgramData.html',1,'ABDMS2000']]],
+  ['ms2000sysexexporter_13',['MS2000SysExExporter',['../classABDMS2000_1_1MS2000SysExExporter.html',1,'ABDMS2000']]],
+  ['ms2kchorusflanger_14',['MS2KChorusFlanger',['../classABDMS2000_1_1MS2KChorusFlanger.html',1,'ABDMS2000']]],
+  ['ms2kdelay_15',['MS2KDelay',['../classABDMS2000_1_1MS2KDelay.html',1,'ABDMS2000']]],
+  ['ms2kvocoder16band_16',['MS2KVocoder16Band',['../classABDMS2000_1_1MS2KVocoder16Band.html',1,'ABDMS2000']]],
+  ['multimodefilter_17',['MultiModeFilter',['../classABDMS2000_1_1MultiModeFilter.html',1,'ABDMS2000']]],
+  ['multimodefiltertests_18',['MultiModeFilterTests',['../classABDMS2000_1_1Tests_1_1MultiModeFilterTests.html',1,'ABDMS2000::Tests']]]
 ];

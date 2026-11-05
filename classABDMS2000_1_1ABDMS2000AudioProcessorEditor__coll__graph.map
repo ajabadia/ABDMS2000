@@ -1,54 +1,50 @@
 <map id="ABDMS2000::ABDMS2000AudioProcessorEditor" name="ABDMS2000::ABDMS2000AudioProcessorEditor">
-<area shape="rect" id="Node000001" title=" " alt="" coords="2017,196,2244,236"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="1648,129,1843,154"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1837,154,1994,183,2044,193,2043,199,1993,188,1836,159"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="1698,178,1793,203"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1807,192,2017,206,2017,211,1806,197"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="1658,227,1833,253"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="1846,231,2017,220,2017,226,1847,236"/>
-<area shape="rect" id="Node000005" href="$classABDMS2000_1_1ABDMS2000AudioProcessor.html" title=" " alt="" coords="1632,277,1859,317"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="1872,274,1993,249,2057,233,2059,239,1994,255,1873,279"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="1213,217,1371,242"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="1385,237,1608,268,1646,275,1645,280,1608,273,1384,242"/>
-<area shape="rect" id="Node000007" href="$classABDMS2000_1_1BridgeHost.html" title=" " alt="" coords="1201,266,1383,291"/>
-<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="1397,280,1632,290,1632,295,1397,286"/>
-<area shape="rect" id="Node000008" href="$classABDMS2000_1_1SynthEngine.html" title="Motor de sintetizador principal (abstracción de hardware MS2000/microKORG)." alt="" coords="1197,315,1387,341"/>
-<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="1401,321,1608,309,1632,307,1632,313,1608,315,1401,327"/>
-<area shape="rect" id="Node000009" href="$structABDMS2000_1_1VoiceParameters.html" title="Parámetros completos de un timbre del MS2000/microKORG." alt="" coords="344,111,563,137"/>
-<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="498,104,622,65,704,46,793,34,886,31,932,35,977,42,1021,54,1063,71,1103,93,1139,121,1156,142,1161,165,1159,188,1154,211,1148,235,1145,257,1149,279,1163,301,1179,313,1198,322,1195,326,1176,318,1159,304,1144,281,1140,257,1143,234,1149,210,1154,187,1156,165,1151,145,1135,125,1100,97,1061,76,1019,59,976,47,931,40,886,36,794,39,705,52,623,70,499,109"/>
-<area shape="rect" id="Node000014" href="$classABDMS2000_1_1VoiceManager.html" title="Administrador de voces de alto rendimiento." alt="" coords="771,142,973,167"/>
-<area shape="poly" id="edge14_Node000014_Node000009" title=" " alt="" coords="576,130,771,145,770,150,576,136"/>
-<area shape="rect" id="Node000010" title=" " alt="" coords="51,38,166,63"/>
-<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="180,61,310,87,403,109,401,114,309,92,179,66"/>
-<area shape="rect" id="Node000011" title=" " alt="" coords="35,87,182,113"/>
-<area shape="poly" id="edge10_Node000009_Node000011" title=" " alt="" coords="196,103,344,114,343,119,195,109"/>
-<area shape="rect" id="Node000012" href="$structABDMS2000_1_1SeqModulation.html" title="Modulación del Mod Sequence del timbre." alt="" coords="5,137,212,162"/>
-<area shape="poly" id="edge11_Node000009_Node000012" title=" " alt="" coords="226,138,309,132,344,129,344,135,310,137,226,144"/>
-<area shape="rect" id="Node000013" href="$structABDMS2000_1_1PatchSlot.html" title=" " alt="" coords="23,186,194,211"/>
-<area shape="poly" id="edge12_Node000009_Node000013" title=" " alt="" coords="194,181,309,157,403,134,405,139,310,163,195,186"/>
-<area shape="poly" id="edge13_Node000008_Node000014" title=" " alt="" coords="987,152,1077,161,1114,170,1139,183,1150,198,1155,213,1153,244,1150,273,1153,287,1163,301,1179,313,1198,321,1195,326,1176,317,1159,305,1149,289,1144,274,1147,243,1150,214,1146,200,1136,187,1112,175,1076,166,987,158"/>
-<area shape="rect" id="Node000015" href="$classABDMS2000_1_1ModSequencer.html" title="Mod sequencer de 6 pistas de 16 pasos." alt="" coords="769,191,975,217"/>
-<area shape="poly" id="edge15_Node000008_Node000015" title=" " alt="" coords="990,198,1028,203,1067,212,1105,226,1139,247,1149,261,1152,275,1154,289,1163,301,1197,318,1195,323,1160,305,1149,291,1147,276,1144,263,1136,251,1103,231,1066,217,1028,208,989,203"/>
-<area shape="rect" id="Node000016" href="$classABDMS2000_1_1Arpeggiator.html" title="Musical Arpeggiator with Tempo Sync, Octave Multi&#45;Range, and Swing." alt="" coords="779,241,965,266"/>
-<area shape="poly" id="edge16_Node000008_Node000016" title=" " alt="" coords="980,260,1058,271,1138,289,1162,300,1212,313,1210,318,1160,305,1136,295,1057,276,979,265"/>
-<area shape="rect" id="Node000017" href="$classABDMS2000_1_1ModFX.html" title="Modulation FX Block for MS2000." alt="" coords="795,290,949,315"/>
-<area shape="poly" id="edge17_Node000008_Node000017" title=" " alt="" coords="963,305,1197,320,1196,325,963,311"/>
-<area shape="rect" id="Node000018" href="$classABDMS2000_1_1MS2KChorusFlanger.html" title="MS2KChorusFlanger &#45; Efecto híbrido continuo Chorus/Flanger del Korg MS2000 (DSP56362)." alt="" coords="333,290,573,315"/>
-<area shape="poly" id="edge18_Node000017_Node000018" title=" " alt="" coords="587,300,794,300,794,305,587,305"/>
-<area shape="rect" id="Node000019" href="$classABDMS2000_1_1MS2KDelay.html" title="MS2KDelay &#45; Motor de retardo Motorola DSP56362 del Korg MS2000." alt="" coords="779,339,965,365"/>
-<area shape="poly" id="edge19_Node000008_Node000019" title=" " alt="" coords="978,350,1137,345,1207,338,1207,343,1138,351,979,356"/>
-<area shape="rect" id="Node000020" href="$classABDMS2000_1_1Equalizer.html" title="2&#45;Band Cascaded Shelving Equalizer based on reverse&#45;engineered Korg MS2000 DSP specs...." alt="" coords="787,389,957,414"/>
-<area shape="poly" id="edge20_Node000008_Node000020" title=" " alt="" coords="971,402,1054,395,1096,385,1136,371,1148,361,1160,350,1196,337,1197,342,1163,354,1151,365,1139,376,1097,390,1054,400,971,408"/>
-<area shape="rect" id="Node000021" href="$classABDMS2000_1_1MS2KVocoder16Band.html" title="MS2KVocoder16Band &#45; Motor de vocoder de 16 bandas del Korg MS2000." alt="" coords="748,438,996,463"/>
-<area shape="poly" id="edge21_Node000008_Node000021" title=" " alt="" coords="1010,460,1043,456,1076,448,1108,436,1135,418,1146,403,1147,386,1148,368,1159,350,1177,339,1195,331,1197,336,1179,343,1163,354,1153,369,1152,387,1151,405,1139,422,1110,441,1078,453,1044,461,1010,465"/>
-<area shape="rect" id="Node000022" href="$classABDMS2000_1_1EnvelopeFollower.html" title="High&#45;precision Envelope Follower with configurable release time (Gate Sense)." alt="" coords="341,413,566,438"/>
-<area shape="poly" id="edge22_Node000021_Node000022" title=" " alt="" coords="580,430,748,441,748,446,579,436"/>
-<area shape="rect" id="Node000023" href="$classABDMS2000_1_1NoiseGenerator.html" title="Real&#45;Time Safe White and Pink Noise Generator (LCG algorithm)." alt="" coords="347,462,559,487"/>
-<area shape="poly" id="edge23_Node000021_Node000023" title=" " alt="" coords="573,472,724,467,783,461,783,466,724,472,573,478"/>
-<area shape="rect" id="Node000024" href="$classABDMS2000_1_1MultiModeFilter.html" title="Zero&#45;Delay Feedback (ZDF/TPT) Multi&#45;Mode Resonant Filter. Accurately models the MS2000 / microKORG fi..." alt="" coords="766,487,978,513"/>
-<area shape="poly" id="edge24_Node000008_Node000024" title=" " alt="" coords="938,512,987,518,1039,517,1091,505,1114,493,1135,478,1147,464,1151,449,1147,417,1144,384,1148,367,1159,350,1176,337,1195,329,1197,334,1179,342,1163,354,1153,369,1149,384,1153,417,1156,450,1151,466,1139,482,1117,498,1093,510,1040,522,986,523,938,518"/>
-<area shape="rect" id="Node000025" title=" " alt="" coords="790,537,954,562"/>
-<area shape="poly" id="edge25_Node000008_Node000025" title=" " alt="" coords="927,563,977,572,1033,575,1061,572,1088,565,1113,554,1135,538,1151,517,1157,495,1154,472,1148,448,1142,424,1139,399,1144,374,1159,350,1176,337,1195,328,1198,333,1179,342,1163,354,1149,376,1145,399,1147,423,1154,447,1160,471,1162,495,1156,519,1139,542,1116,559,1090,570,1062,577,1033,580,976,577,926,568"/>
-<area shape="rect" id="Node000026" href="$classABDMS2000_1_1HardwareMidiTransport.html" title=" " alt="" coords="1161,365,1423,390"/>
-<area shape="poly" id="edge26_Node000005_Node000026" title=" " alt="" coords="1436,365,1521,355,1607,340,1692,315,1693,320,1609,345,1522,361,1437,371"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="2025,223,2251,268"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="1653,153,1847,180"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1849,181,2002,211,2045,222,2039,222,2000,216,1849,186"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="1703,205,1797,232"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1812,220,2027,237,2022,238,1813,226"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="1663,257,1836,284"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="1852,261,2027,252,2022,253,1852,267"/>
+<area shape="rect" id="Node000005" href="$classABDMS2000_1_1ABDMS2000AudioProcessor.html" title=" " alt="" coords="1637,308,1863,353"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="1878,313,2000,289,2074,269,2080,268,2002,294,1879,318"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="1216,241,1373,268"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="1388,263,1613,297,1654,308,1648,308,1612,303,1388,269"/>
+<area shape="rect" id="Node000007" href="$classABDMS2000_1_1BridgeHost.html" title=" " alt="" coords="1204,293,1385,320"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="1401,310,1639,324,1634,325,1401,315"/>
+<area shape="rect" id="Node000008" href="$classABDMS2000_1_1SynthEngine.html" title="Motor de sintetizador principal (abstracción de hardware MS2000/microKORG)." alt="" coords="1199,345,1390,372"/>
+<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="1405,358,1506,356,1612,350,1639,350,1634,351,1613,356,1506,362,1406,363"/>
+<area shape="rect" id="Node000009" href="$structABDMS2000_1_1VoiceParameters.html" title="Parámetros completos de un timbre del MS2000/microKORG." alt="" coords="346,130,564,158"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="505,122,561,103,631,82,713,65,801,53,892,51,938,54,982,62,1026,74,1067,90,1106,112,1142,139,1160,162,1166,186,1163,210,1157,235,1151,259,1148,284,1152,307,1166,330,1182,343,1202,354,1197,353,1179,347,1162,334,1147,309,1142,284,1146,258,1152,234,1158,209,1160,186,1155,164,1138,143,1103,116,1065,95,1024,79,981,67,937,60,892,56,802,58,714,70,633,88,562,108,507,127"/>
+<area shape="rect" id="Node000012" href="$classABDMS2000_1_1VoiceManager.html" title="Administrador de voces de alto rendimiento." alt="" coords="776,174,977,202"/>
+<area shape="poly" id="edge12_Node000012_Node000009" title=" " alt="" coords="556,158,599,164,778,181,773,183,599,169,558,163"/>
+<area shape="rect" id="Node000010" href="$structABDMS2000_1_1SeqModulation.html" title="Modulación del Mod Sequence del timbre." alt="" coords="5,102,212,130"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="226,123,348,134,344,137,228,128"/>
+<area shape="rect" id="Node000011" href="$structABDMS2000_1_1PatchSlot.html" title=" " alt="" coords="24,158,193,186"/>
+<area shape="poly" id="edge10_Node000009_Node000011" title=" " alt="" coords="207,166,311,160,351,157,347,160,312,165,210,171"/>
+<area shape="poly" id="edge11_Node000008_Node000012" title=" " alt="" coords="993,186,1082,196,1118,205,1142,218,1153,232,1158,247,1156,276,1153,304,1157,317,1166,330,1182,342,1201,353,1196,352,1179,346,1162,334,1152,319,1148,304,1150,275,1152,247,1148,234,1139,222,1116,210,1081,201,993,192"/>
+<area shape="rect" id="Node000013" href="$classABDMS2000_1_1ModSequencer.html" title="Mod sequencer de 6 pistas de 16 pasos." alt="" coords="774,233,979,260"/>
+<area shape="poly" id="edge13_Node000008_Node000013" title=" " alt="" coords="994,239,1032,244,1071,252,1108,265,1142,285,1152,296,1155,308,1158,320,1166,330,1202,350,1196,349,1163,334,1153,322,1150,310,1147,299,1139,289,1106,270,1069,257,1032,249,995,245"/>
+<area shape="rect" id="Node000014" href="$classABDMS2000_1_1Arpeggiator.html" title="Musical Arpeggiator with Tempo Sync, Octave Multi&#45;Range, and Swing." alt="" coords="784,289,969,316"/>
+<area shape="poly" id="edge14_Node000008_Node000014" title=" " alt="" coords="985,310,1141,329,1218,344,1213,344,1140,335,985,316"/>
+<area shape="rect" id="Node000015" href="$classABDMS2000_1_1ModFX.html" title="Modulation FX Block for MS2000 (DSP56362 P:$0F48–$10A7)." alt="" coords="800,345,954,372"/>
+<area shape="poly" id="edge15_Node000008_Node000015" title=" " alt="" coords="969,356,1202,358,1196,359,969,361"/>
+<area shape="rect" id="Node000016" href="$classABDMS2000_1_1MS2KChorusFlanger.html" title="MS2KChorusFlanger &#45; Envoltorio sobre abd::dsp::DspMS2000ChorusFlanger (DSP56362 P:$0F48–$0F95)." alt="" coords="336,345,575,372"/>
+<area shape="poly" id="edge16_Node000015_Node000016" title=" " alt="" coords="590,356,802,358,797,359,591,361"/>
+<area shape="rect" id="Node000017" href="$classABDMS2000_1_1MS2KDelay.html" title="MS2KDelay &#45; Motor de retardo Motorola DSP56362 del Korg MS2000 (P:$0FE9–$105C)." alt="" coords="784,401,969,428"/>
+<area shape="poly" id="edge17_Node000008_Node000017" title=" " alt="" coords="984,404,1140,386,1230,373,1225,374,1141,392,985,409"/>
+<area shape="rect" id="Node000018" href="$classABDMS2000_1_1Equalizer.html" title="2&#45;Band Cascaded Shelving Equalizer based on reverse&#45;engineered Korg MS2000 DSP specs...." alt="" coords="792,457,961,484"/>
+<area shape="poly" id="edge18_Node000008_Node000018" title=" " alt="" coords="977,475,1018,472,1060,465,1101,452,1139,431,1147,421,1150,409,1153,396,1163,383,1196,369,1201,367,1166,387,1158,398,1155,410,1152,423,1142,435,1104,456,1062,470,1019,477,977,480"/>
+<area shape="rect" id="Node000019" href="$classABDMS2000_1_1MS2KVocoder16Band.html" title="MS2KVocoder16Band &#45; Motor de vocoder de 16 bandas del Korg MS2000." alt="" coords="753,513,1000,540"/>
+<area shape="poly" id="edge19_Node000008_Node000019" title=" " alt="" coords="961,540,1006,543,1054,539,1099,526,1120,516,1138,502,1149,489,1153,475,1150,446,1148,415,1152,399,1162,383,1179,371,1197,365,1202,364,1182,375,1166,387,1156,401,1153,415,1156,445,1158,476,1154,491,1142,506,1123,520,1101,531,1055,544,1006,548,961,546"/>
+<area shape="rect" id="Node000020" href="$classABDMS2000_1_1EnvelopeFollower.html" title="High&#45;precision Envelope Follower with configurable release time (Gate Sense)." alt="" coords="343,457,568,484"/>
+<area shape="poly" id="edge20_Node000019_Node000020" title=" " alt="" coords="582,480,729,497,804,512,799,512,729,503,582,485"/>
+<area shape="rect" id="Node000021" href="$classABDMS2000_1_1NoiseGenerator.html" title="Real&#45;Time Safe White and Pink Noise Generator (LCG algorithm)." alt="" coords="350,513,561,540"/>
+<area shape="poly" id="edge21_Node000019_Node000021" title=" " alt="" coords="576,524,755,526,750,527,577,529"/>
+<area shape="rect" id="Node000022" href="$structABDMS2000_1_1BiquadBPF.html" title=" " alt="" coords="366,613,545,640"/>
+<area shape="poly" id="edge22_Node000019_Node000022" title=" " alt="" coords="560,637,602,636,646,631,689,619,727,600,736,590,739,579,742,567,751,555,780,542,785,540,755,559,747,569,744,581,740,593,731,604,691,624,647,636,603,641,560,642"/>
+<area shape="rect" id="Node000023" href="$classABDMS2000_1_1MultiModeFilter.html" title="Zero&#45;Delay Feedback (ZDF/TPT) Multi&#45;Mode Resonant Filter. Accurately models the MS2000 / microKORG fi..." alt="" coords="771,569,982,596"/>
+<area shape="poly" id="edge23_Node000008_Node000023" title=" " alt="" coords="938,598,987,607,1041,608,1094,599,1117,588,1138,572,1155,551,1160,529,1158,506,1152,482,1145,458,1142,433,1147,408,1162,384,1179,370,1197,365,1202,363,1182,375,1166,387,1152,410,1148,433,1151,457,1157,481,1163,505,1165,530,1159,554,1142,576,1120,592,1095,604,1041,614,987,612,938,603"/>
+<area shape="rect" id="Node000024" href="$classABDMS2000_1_1HardwareMidiTransport.html" title=" " alt="" coords="1164,397,1425,424"/>
+<area shape="poly" id="edge24_Node000005_Node000024" title=" " alt="" coords="1440,409,1526,403,1612,388,1661,371,1704,354,1710,353,1663,376,1613,393,1527,408,1441,415"/>
 </map>

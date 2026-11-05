@@ -1,0 +1,788 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Referencia de la clase ABDMS2000::HardwareEffects::HardwareTwoBandEQ</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.15.0 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Buscar',true);
+  $(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){initNavTree('classABDMS2000_1_1HardwareEffects_1_1HardwareTwoBandEQ.html','','classABDMS2000_1_1HardwareEffects_1_1HardwareTwoBandEQ-members'); });
+</script>
+<div id="container">
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">Referencia de la clase ABDMS2000::HardwareEffects::HardwareTwoBandEQ</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>Stereo cascaded 1st-order Low-Shelf + 1st-order High-Shelf <a class="el" href="classABDMS2000_1_1Equalizer.html" title="2-Band Cascaded Shelving Equalizer based on reverse-engineered Korg MS2000 DSP specs....">Equalizer</a> extracted from <span class="tt">P:$08B0 - $08E7</span> (<span class="tt">r3 = $0011</span>, <span class="tt">X:$0016..$001B</span>).  
+ <a href="#details">Más...</a></p>
+
+<p><code>#include &lt;<a class="el" href="MS2000HardwareEffects_8h_source.html">MS2000HardwareEffects.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Métodos públicos</h2></td></tr>
+<tr class="memitem:aa9cd45e9b5aed99c9e3b34a9b6a78808" id="r_aa9cd45e9b5aed99c9e3b34a9b6a78808"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa9cd45e9b5aed99c9e3b34a9b6a78808">prepare</a> (double sampleRate) noexcept</td></tr>
+<tr class="memitem:a6133d48a3bff4f131cb383491d45c872" id="r_a6133d48a3bff4f131cb383491d45c872"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6133d48a3bff4f131cb383491d45c872">reset</a> () noexcept</td></tr>
+<tr class="memitem:ad75935fe33a06d81d1a0c32cd3bf9e7f" id="r_ad75935fe33a06d81d1a0c32cd3bf9e7f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad75935fe33a06d81d1a0c32cd3bf9e7f">setLowBand</a> (float freqHz, float gainDb) noexcept</td></tr>
+<tr class="memitem:a8cf2332b0a69d73d6543ef244f94fb83" id="r_a8cf2332b0a69d73d6543ef244f94fb83"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8cf2332b0a69d73d6543ef244f94fb83">setHighBand</a> (float freqHz, float gainDb) noexcept</td></tr>
+<tr class="memitem:a4405f8d570a2c71c5033939740ba9f96" id="r_a4405f8d570a2c71c5033939740ba9f96"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4405f8d570a2c71c5033939740ba9f96">processStereo</a> (float &amp;left, float &amp;right) noexcept</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pri-methods" class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Métodos privados</h2></td></tr>
+<tr class="memitem:afe35ea448660b04e27d0d2979164edd0" id="r_afe35ea448660b04e27d0d2979164edd0"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afe35ea448660b04e27d0d2979164edd0">processChannel</a> (float x, float &amp;lx1, float &amp;ly1, float &amp;hx1, float &amp;hy1) const noexcept</td></tr>
+<tr class="memitem:a34aeb107a74f20dae77901fe8e2af38e" id="r_a34aeb107a74f20dae77901fe8e2af38e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a34aeb107a74f20dae77901fe8e2af38e">updateCoefficients</a> () noexcept</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pri-attribs" class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Atributos privados</h2></td></tr>
+<tr class="memitem:ae2a11a0feb0f97f939dda1b921af5931" id="r_ae2a11a0feb0f97f939dda1b921af5931"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae2a11a0feb0f97f939dda1b921af5931">sampleRate_</a> {48000.0}</td></tr>
+<tr class="memitem:a88fcb81f35bbdfe6c88c97381449fd72" id="r_a88fcb81f35bbdfe6c88c97381449fd72"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a88fcb81f35bbdfe6c88c97381449fd72">lowFreqHz_</a> {160.0f}</td></tr>
+<tr class="memitem:afd06117662a645f7d6273396ed393ed0" id="r_afd06117662a645f7d6273396ed393ed0"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afd06117662a645f7d6273396ed393ed0">lowGainDb_</a> {0.0f}</td></tr>
+<tr class="memitem:a494d9f16a07b16b63672fb9a217fdc3a" id="r_a494d9f16a07b16b63672fb9a217fdc3a"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a494d9f16a07b16b63672fb9a217fdc3a">highFreqHz_</a> {6000.0f}</td></tr>
+<tr class="memitem:a1211e41299098c53fc204e238a8d3e0e" id="r_a1211e41299098c53fc204e238a8d3e0e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1211e41299098c53fc204e238a8d3e0e">highGainDb_</a> {0.0f}</td></tr>
+<tr class="memitem:a311686a0606fa7cd1d94d65c317605fd" id="r_a311686a0606fa7cd1d94d65c317605fd"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a311686a0606fa7cd1d94d65c317605fd">b0Low_</a> {0.25f}</td></tr>
+<tr class="memitem:a0fe70ba216432b3f78ae9c4f166df2df" id="r_a0fe70ba216432b3f78ae9c4f166df2df"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0fe70ba216432b3f78ae9c4f166df2df">b1Low_</a> {-0.066987f}</td></tr>
+<tr class="memitem:a65be4c57913793502eabb314da3c3f64" id="r_a65be4c57913793502eabb314da3c3f64"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a65be4c57913793502eabb314da3c3f64">a1Low_</a> {+0.066987f}</td></tr>
+<tr class="memitem:acb8a5524dcff98424054da9e9c656771" id="r_acb8a5524dcff98424054da9e9c656771"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acb8a5524dcff98424054da9e9c656771">b0High_</a> {0.25f}</td></tr>
+<tr class="memitem:a20df3810639350c7e5c0324d85c1c5a1" id="r_a20df3810639350c7e5c0324d85c1c5a1"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a20df3810639350c7e5c0324d85c1c5a1">b1High_</a> {-0.23415f}</td></tr>
+<tr class="memitem:ae6ea668e7a408ce2ee089dddf6e5b702" id="r_ae6ea668e7a408ce2ee089dddf6e5b702"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae6ea668e7a408ce2ee089dddf6e5b702">a1High_</a> {+0.23415f}</td></tr>
+<tr class="memitem:a3c2fafdc1069166430f0200782649e05" id="r_a3c2fafdc1069166430f0200782649e05"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3c2fafdc1069166430f0200782649e05">lowX1L_</a> {0.0f}</td></tr>
+<tr class="memitem:aefbb27b35781c204abb2657b2334097c" id="r_aefbb27b35781c204abb2657b2334097c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aefbb27b35781c204abb2657b2334097c">lowY1L_</a> {0.0f}</td></tr>
+<tr class="memitem:a390ae374b86c7cd52c18a083a8af8c45" id="r_a390ae374b86c7cd52c18a083a8af8c45"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a390ae374b86c7cd52c18a083a8af8c45">highX1L_</a> {0.0f}</td></tr>
+<tr class="memitem:a43cc954bc75471b480bb673776348497" id="r_a43cc954bc75471b480bb673776348497"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a43cc954bc75471b480bb673776348497">highY1L_</a> {0.0f}</td></tr>
+<tr class="memitem:a82a90486504c37c6b5f051419d1629e2" id="r_a82a90486504c37c6b5f051419d1629e2"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a82a90486504c37c6b5f051419d1629e2">lowX1R_</a> {0.0f}</td></tr>
+<tr class="memitem:abb029c874ccb9dd86c5f3fcf35ad9f63" id="r_abb029c874ccb9dd86c5f3fcf35ad9f63"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abb029c874ccb9dd86c5f3fcf35ad9f63">lowY1R_</a> {0.0f}</td></tr>
+<tr class="memitem:a47b00cf6448f818c55ef8a8366bf386e" id="r_a47b00cf6448f818c55ef8a8366bf386e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a47b00cf6448f818c55ef8a8366bf386e">highX1R_</a> {0.0f}</td></tr>
+<tr class="memitem:a973c59147620518ef782ceebdc0d690c" id="r_a973c59147620518ef782ceebdc0d690c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a973c59147620518ef782ceebdc0d690c">highY1R_</a> {0.0f}</td></tr>
+</table>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Descripción detallada</h2>
+<div class="textblock"><p>Stereo cascaded 1st-order Low-Shelf + 1st-order High-Shelf <a class="el" href="classABDMS2000_1_1Equalizer.html" title="2-Band Cascaded Shelving Equalizer based on reverse-engineered Korg MS2000 DSP specs....">Equalizer</a> extracted from <span class="tt">P:$08B0 - $08E7</span> (<span class="tt">r3 = $0011</span>, <span class="tt">X:$0016..$001B</span>). </p>
+<p>Microcode Reference (<span class="tt">P:$08B0 - $08D7</span>):</p><ul>
+<li>Stage 1 (Low Shelf, <span class="tt">P:$08B7 - $08BD</span> Left, <span class="tt">P:$08C8 - $08CD</span> Right): <span class="tt">y1[n] = sat24(4.0 * (b0_low * x[n] + b1_low * x[n-1] + a1_low * y1[n-1]))</span> Default flat coefficients in <span class="tt">X:$0016..$0018</span>: <span class="tt">b0_low = $1FFFFE</span> (+0.25), <span class="tt">b1_low = $F76CF6</span> (-0.066987), <span class="tt">a1_low = $08930A</span> (+0.066987)</li>
+<li>Stage 2 (High Shelf, <span class="tt">P:$08BE - $08C7</span> Left, <span class="tt">P:$08CE - $08D7</span> Right): <span class="tt">y2[n] = sat24(4.0 * (b0_high * y1[n] + b1_high * y1[n-1] + a1_high * y2[n-1]))</span> Default flat coefficients in <span class="tt">X:$0019..$001B</span>: <span class="tt">b0_high = $400000</span> (+0.50), <span class="tt">b1_high = $C40EB5</span> (-0.468301), <span class="tt">a1_high = $3BF14B</span> (+0.468301) </li>
+</ul>
+</div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Documentación de funciones miembro</h2>
+<a id="aa9cd45e9b5aed99c9e3b34a9b6a78808" name="aa9cd45e9b5aed99c9e3b34a9b6a78808"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9cd45e9b5aed99c9e3b34a9b6a78808">&#9670;&#160;</a></span>prepare()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::HardwareEffects::HardwareTwoBandEQ::prepare </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>sampleRate</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afe35ea448660b04e27d0d2979164edd0" name="afe35ea448660b04e27d0d2979164edd0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe35ea448660b04e27d0d2979164edd0">&#9670;&#160;</a></span>processChannel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::HardwareEffects::HardwareTwoBandEQ::processChannel </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>x</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float &amp;</td>          <td class="paramname"><span class="paramname"><em>lx1</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float &amp;</td>          <td class="paramname"><span class="paramname"><em>ly1</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float &amp;</td>          <td class="paramname"><span class="paramname"><em>hx1</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float &amp;</td>          <td class="paramname"><span class="paramname"><em>hy1</em></span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel private">private</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4405f8d570a2c71c5033939740ba9f96" name="a4405f8d570a2c71c5033939740ba9f96"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4405f8d570a2c71c5033939740ba9f96">&#9670;&#160;</a></span>processStereo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::HardwareEffects::HardwareTwoBandEQ::processStereo </td>
+          <td>(</td>
+          <td class="paramtype">float &amp;</td>          <td class="paramname"><span class="paramname"><em>left</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float &amp;</td>          <td class="paramname"><span class="paramname"><em>right</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6133d48a3bff4f131cb383491d45c872" name="a6133d48a3bff4f131cb383491d45c872"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6133d48a3bff4f131cb383491d45c872">&#9670;&#160;</a></span>reset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::HardwareEffects::HardwareTwoBandEQ::reset </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8cf2332b0a69d73d6543ef244f94fb83" name="a8cf2332b0a69d73d6543ef244f94fb83"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8cf2332b0a69d73d6543ef244f94fb83">&#9670;&#160;</a></span>setHighBand()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::HardwareEffects::HardwareTwoBandEQ::setHighBand </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>freqHz</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>gainDb</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad75935fe33a06d81d1a0c32cd3bf9e7f" name="ad75935fe33a06d81d1a0c32cd3bf9e7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad75935fe33a06d81d1a0c32cd3bf9e7f">&#9670;&#160;</a></span>setLowBand()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::HardwareEffects::HardwareTwoBandEQ::setLowBand </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>freqHz</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>gainDb</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a34aeb107a74f20dae77901fe8e2af38e" name="a34aeb107a74f20dae77901fe8e2af38e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34aeb107a74f20dae77901fe8e2af38e">&#9670;&#160;</a></span>updateCoefficients()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::HardwareEffects::HardwareTwoBandEQ::updateCoefficients </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel private">private</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Documentación de datos miembro</h2>
+<a id="ae6ea668e7a408ce2ee089dddf6e5b702" name="ae6ea668e7a408ce2ee089dddf6e5b702"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6ea668e7a408ce2ee089dddf6e5b702">&#9670;&#160;</a></span>a1High_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::HardwareEffects::HardwareTwoBandEQ::a1High_ {+0.23415f}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a65be4c57913793502eabb314da3c3f64" name="a65be4c57913793502eabb314da3c3f64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65be4c57913793502eabb314da3c3f64">&#9670;&#160;</a></span>a1Low_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::HardwareEffects::HardwareTwoBandEQ::a1Low_ {+0.066987f}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acb8a5524dcff98424054da9e9c656771" name="acb8a5524dcff98424054da9e9c656771"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb8a5524dcff98424054da9e9c656771">&#9670;&#160;</a></span>b0High_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::HardwareEffects::HardwareTwoBandEQ::b0High_ {0.25f}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a311686a0606fa7cd1d94d65c317605fd" name="a311686a0606fa7cd1d94d65c317605fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a311686a0606fa7cd1d94d65c317605fd">&#9670;&#160;</a></span>b0Low_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::HardwareEffects::HardwareTwoBandEQ::b0Low_ {0.25f}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a20df3810639350c7e5c0324d85c1c5a1" name="a20df3810639350c7e5c0324d85c1c5a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20df3810639350c7e5c0324d85c1c5a1">&#9670;&#160;</a></span>b1High_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::HardwareEffects::HardwareTwoBandEQ::b1High_ {-0.23415f}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0fe70ba216432b3f78ae9c4f166df2df" name="a0fe70ba216432b3f78ae9c4f166df2df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fe70ba216432b3f78ae9c4f166df2df">&#9670;&#160;</a></span>b1Low_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::HardwareEffects::HardwareTwoBandEQ::b1Low_ {-0.066987f}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a494d9f16a07b16b63672fb9a217fdc3a" name="a494d9f16a07b16b63672fb9a217fdc3a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a494d9f16a07b16b63672fb9a217fdc3a">&#9670;&#160;</a></span>highFreqHz_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::HardwareEffects::HardwareTwoBandEQ::highFreqHz_ {6000.0f}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1211e41299098c53fc204e238a8d3e0e" name="a1211e41299098c53fc204e238a8d3e0e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1211e41299098c53fc204e238a8d3e0e">&#9670;&#160;</a></span>highGainDb_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::HardwareEffects::HardwareTwoBandEQ::highGainDb_ {0.0f}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a390ae374b86c7cd52c18a083a8af8c45" name="a390ae374b86c7cd52c18a083a8af8c45"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a390ae374b86c7cd52c18a083a8af8c45">&#9670;&#160;</a></span>highX1L_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::HardwareEffects::HardwareTwoBandEQ::highX1L_ {0.0f}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a47b00cf6448f818c55ef8a8366bf386e" name="a47b00cf6448f818c55ef8a8366bf386e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47b00cf6448f818c55ef8a8366bf386e">&#9670;&#160;</a></span>highX1R_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::HardwareEffects::HardwareTwoBandEQ::highX1R_ {0.0f}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a43cc954bc75471b480bb673776348497" name="a43cc954bc75471b480bb673776348497"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a43cc954bc75471b480bb673776348497">&#9670;&#160;</a></span>highY1L_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::HardwareEffects::HardwareTwoBandEQ::highY1L_ {0.0f}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a973c59147620518ef782ceebdc0d690c" name="a973c59147620518ef782ceebdc0d690c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a973c59147620518ef782ceebdc0d690c">&#9670;&#160;</a></span>highY1R_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::HardwareEffects::HardwareTwoBandEQ::highY1R_ {0.0f}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a88fcb81f35bbdfe6c88c97381449fd72" name="a88fcb81f35bbdfe6c88c97381449fd72"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88fcb81f35bbdfe6c88c97381449fd72">&#9670;&#160;</a></span>lowFreqHz_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::HardwareEffects::HardwareTwoBandEQ::lowFreqHz_ {160.0f}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afd06117662a645f7d6273396ed393ed0" name="afd06117662a645f7d6273396ed393ed0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd06117662a645f7d6273396ed393ed0">&#9670;&#160;</a></span>lowGainDb_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::HardwareEffects::HardwareTwoBandEQ::lowGainDb_ {0.0f}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3c2fafdc1069166430f0200782649e05" name="a3c2fafdc1069166430f0200782649e05"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c2fafdc1069166430f0200782649e05">&#9670;&#160;</a></span>lowX1L_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::HardwareEffects::HardwareTwoBandEQ::lowX1L_ {0.0f}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a82a90486504c37c6b5f051419d1629e2" name="a82a90486504c37c6b5f051419d1629e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82a90486504c37c6b5f051419d1629e2">&#9670;&#160;</a></span>lowX1R_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::HardwareEffects::HardwareTwoBandEQ::lowX1R_ {0.0f}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aefbb27b35781c204abb2657b2334097c" name="aefbb27b35781c204abb2657b2334097c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aefbb27b35781c204abb2657b2334097c">&#9670;&#160;</a></span>lowY1L_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::HardwareEffects::HardwareTwoBandEQ::lowY1L_ {0.0f}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abb029c874ccb9dd86c5f3fcf35ad9f63" name="abb029c874ccb9dd86c5f3fcf35ad9f63"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb029c874ccb9dd86c5f3fcf35ad9f63">&#9670;&#160;</a></span>lowY1R_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::HardwareEffects::HardwareTwoBandEQ::lowY1R_ {0.0f}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae2a11a0feb0f97f939dda1b921af5931" name="ae2a11a0feb0f97f939dda1b921af5931"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2a11a0feb0f97f939dda1b921af5931">&#9670;&#160;</a></span>sampleRate_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double ABDMS2000::HardwareEffects::HardwareTwoBandEQ::sampleRate_ {48000.0}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>La documentación de esta clase está generada del siguiente archivo:<ul>
+<li>Source/DSP/Effects/<a class="el" href="MS2000HardwareEffects_8h_source.html">MS2000HardwareEffects.h</a></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<div id="page-nav" class="page-nav-panel">
+<div id="page-nav-resize-handle"></div>
+<div id="page-nav-tree">
+<div id="page-nav-contents">
+</div><!-- page-nav-contents -->
+</div><!-- page-nav-tree -->
+</div><!-- page-nav -->
+</div><!-- container -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a href="namespaceABDMS2000.html">ABDMS2000</a></li><li class="navelem"><a href="namespaceABDMS2000_1_1HardwareEffects.html">HardwareEffects</a></li><li class="navelem"><a href="classABDMS2000_1_1HardwareEffects_1_1HardwareTwoBandEQ.html">HardwareTwoBandEQ</a></li>
+    <li class="footer">Generado por <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0 </li>
+  </ul>
+</div>
+</body>
+</html>

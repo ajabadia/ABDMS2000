@@ -1,7 +1,7 @@
 <map id="ABDMS2000::Tests::DummySynthFixture" name="ABDMS2000::Tests::DummySynthFixture">
-<area shape="rect" id="Node000001" title=" " alt="" coords="19,168,259,208"/>
-<area shape="rect" id="Node000002" href="$classABDMS2000_1_1Tests_1_1DummyProcessor.html" title=" " alt="" coords="5,80,272,105"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="141,119,141,168,136,168,136,119"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="60,5,217,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="141,45,141,80,136,80,136,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="18,183,258,228"/>
+<area shape="rect" id="Node000002" href="$classABDMS2000_1_1Tests_1_1DummyProcessor.html" title=" " alt="" coords="5,82,271,110"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="140,124,141,183,135,181,136,128"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="60,5,216,33"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="139,46,141,83,135,81,137,51"/>
 </map>

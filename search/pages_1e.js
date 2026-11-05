@@ -1,0 +1,25 @@
+var searchData=
+[
+  ['valores_20del_20korg_20ms2000_20árbol_20completo_0',['Mapa de Menús, Parámetros y Valores del Korg MS2000 (Árbol Completo)',['../md_DOCS_2korg__ms2000__menu__map.html',1,'']]],
+  ['vca_20amp_20sección_20de_20amplificación_20y_20distorsión_1',['7. VCA / AMP (Sección de Amplificación y Distorsión)',['../md_DOCS_2korg__ms2000__menu__map.html#autotoc_md11',1,'']]],
+  ['vcf_20filtro_20multimodo_2',['6. VCF (Filtro Multimodo)',['../md_DOCS_2korg__ms2000__menu__map.html#autotoc_md10',1,'']]],
+  ['viabilidad_3',['1. Visión General y Viabilidad',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md34',1,'']]],
+  ['virtual_20korg_20ms2000_20microkorg_20con_20modo_20avanzado_4',['ABDMS2000 — Virtual Korg MS2000 &amp;amp; microKORG (con Modo Avanzado)',['../index.html',1,'']]],
+  ['virtual_20patch_5',['Virtual Patch',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md123',1,'16. Frecuencias Exactas del EQ y Escalas del Virtual Patch'],['../index.html#autotoc_md283',1,'3. Matriz de Modulación Virtual (&lt;em&gt;Virtual Patch&lt;/em&gt;)']]],
+  ['virtual_20patch_204_20ranuras_20de_20modulación_20matricial_6',['Virtual Patch (4 Ranuras de Modulación Matricial)',['../md_DOCS_2korg__ms2000__menu__map.html#autotoc_md14',1,'']]],
+  ['virtual_20patch_20intensidad_7',['16.2 Escala Máxima del Virtual Patch (Intensidad)',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md125',1,'']]],
+  ['virtual_20patch_20matriz_20de_20modulación_8',['13. Virtual Patch (Matriz de Modulación)',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md105',1,'']]],
+  ['virtual_20virtual_20patch_9',['3. Matriz de Modulación Virtual (&lt;em&gt;Virtual Patch&lt;/em&gt;)',['../index.html#autotoc_md283',1,'']]],
+  ['visión_20general_20y_20viabilidad_10',['1. Visión General y Viabilidad',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md34',1,'']]],
+  ['voces_20y_20afinación_11',['1. Sistema de Control de Voces y Afinación',['../index.html#autotoc_md279',1,'']]],
+  ['vocoder_12',['PARTE 3: EFECTOS (FX), ECUALIZADOR (EQ) Y VOCODER',['../md_DOCS_2korg__ms2000__menu__map.html#autotoc_md16',1,'']]],
+  ['vocoder_2016_20bandas_13',['15.1 Vocoder (16 bandas)',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md116',1,'']]],
+  ['vocoder_20filtros_20y_20modos_20especiales_14',['13. VOCODER (Filtros y Modos Especiales)',['../md_DOCS_2korg__ms2000__menu__map.html#autotoc_md20',1,'']]],
+  ['vocoder_20polifónico_20multimodo_15',['2. Motor DSP del Vocoder Polifónico Multimodo',['../index.html#autotoc_md281',1,'']]],
+  ['voice_20assign_16',['15.5 Voice Assign',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md120',1,'']]],
+  ['voice_20configuración_20de_20la_20arquitectura_20de_20voz_17',['1. GLOBAL / VOICE (Configuración de la Arquitectura de Voz)',['../md_DOCS_2korg__ms2000__menu__map.html#autotoc_md3',1,'']]],
+  ['voz_18',['Voz',['../md_DOCS_2korg__ms2000__menu__map.html#autotoc_md3',1,'1. GLOBAL / VOICE (Configuración de la Arquitectura de Voz)'],['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md53',1,'4.1 Listado de Componentes (Módulos Internos por Voz)']]],
+  ['voz_19',['4.2 Componentes Globales (fuera de la voz)',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md54',1,'']]],
+  ['voz_20y_20sintetizador_20',['PARTE 1: VOZ Y SINTETIZADOR',['../md_DOCS_2korg__ms2000__menu__map.html#autotoc_md2',1,'']]],
+  ['vs_20deducido_21',['8.5 Origen de los datos (Documentado vs Deducido)',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md80',1,'']]]
+];

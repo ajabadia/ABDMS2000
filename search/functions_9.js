@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['korgchannelbyte_0',['korgChannelByte',['../structABDMS2000_1_1MS2000HardwareProgram.html#a5162aa05e4c3d9403a10d84370fc2a8d',1,'ABDMS2000::MS2000HardwareProgram']]]
+  ['joinworker_0',['joinWorker',['../classABDMS2000_1_1MS2000IplUpdater.html#a98734fa00c4eb7dc02c8744b74b2b01f',1,'ABDMS2000::MS2000IplUpdater']]]
 ];

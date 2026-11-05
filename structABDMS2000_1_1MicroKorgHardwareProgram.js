@@ -1,0 +1,28 @@
+var structABDMS2000_1_1MicroKorgHardwareProgram =
+[
+    [ "MicroKorgHardwareProgram", "structABDMS2000_1_1MicroKorgHardwareProgram.html#a9d87f21c1dd3a4f690f7c59aa9ae37c7", null ],
+    [ "MicroKorgHardwareProgram", "structABDMS2000_1_1MicroKorgHardwareProgram.html#a8cc0f5e032ff9ecb2844a68d1f572af3", null ],
+    [ "buildProgramDump", "structABDMS2000_1_1MicroKorgHardwareProgram.html#ae531fb4a3dd5f29fafbe7afdbf1bf767", null ],
+    [ "getLastStep", "structABDMS2000_1_1MicroKorgHardwareProgram.html#af0c8a4e4c7e3173a4b5b746d0176fec7", null ],
+    [ "getName", "structABDMS2000_1_1MicroKorgHardwareProgram.html#a73ad578fa9ff681b8d819fd193528718", null ],
+    [ "getStepMask", "structABDMS2000_1_1MicroKorgHardwareProgram.html#a9ff47010c354c16e5147dd82fec43a0a", null ],
+    [ "getStepMaskByte", "structABDMS2000_1_1MicroKorgHardwareProgram.html#ae672d83e74432e71d151dd11d202d454", null ],
+    [ "packToSysexPayload", "structABDMS2000_1_1MicroKorgHardwareProgram.html#a873ffce2e7b2745857ad60d90a372a9a", null ],
+    [ "setLastStep", "structABDMS2000_1_1MicroKorgHardwareProgram.html#ab5412ed99ec310a4f8f432d80b26682e", null ],
+    [ "setName", "structABDMS2000_1_1MicroKorgHardwareProgram.html#ad4f5b7e6662963e63e3f33f8c760eba2", null ],
+    [ "setStepMask", "structABDMS2000_1_1MicroKorgHardwareProgram.html#af6292322db13bfc6cdc986b260bdeea0", null ],
+    [ "setStepMaskByte", "structABDMS2000_1_1MicroKorgHardwareProgram.html#ad743c587ec8d5dc35e20888de8d0e87d", null ],
+    [ "unpackFromSysexPayload", "structABDMS2000_1_1MicroKorgHardwareProgram.html#aa10ddea8e9eb1b5adfae81aca4656758", null ],
+    [ "ARP_LAST_STEP", "structABDMS2000_1_1MicroKorgHardwareProgram.html#a8274607a7ac7c1c956ee346caed28b2e", null ],
+    [ "ARP_STEP_MASK", "structABDMS2000_1_1MicroKorgHardwareProgram.html#a8280439fa53d5915caf777dacfd75a6f", null ],
+    [ "CMD_ALL_DATA_DUMP", "structABDMS2000_1_1MicroKorgHardwareProgram.html#ae662c547fdf92548d575bc148ad9d384", null ],
+    [ "CMD_PROGRAM_DUMP", "structABDMS2000_1_1MicroKorgHardwareProgram.html#abb3e3c9b9e9caa1add1516562a5cbace", null ],
+    [ "CMD_WRITE_COMPLETED", "structABDMS2000_1_1MicroKorgHardwareProgram.html#a63c7395e86c2f59ea43d41f1c8d06c89", null ],
+    [ "CMD_WRITE_ERROR", "structABDMS2000_1_1MicroKorgHardwareProgram.html#a0c4dc96e400a2ba246c38d55d2ae34f1", null ],
+    [ "MODEL_ID_LEGACY", "structABDMS2000_1_1MicroKorgHardwareProgram.html#abbf95937f3ddbf56e3537660005bb7bf", null ],
+    [ "MODEL_ID_MICROKORG", "structABDMS2000_1_1MicroKorgHardwareProgram.html#a85c92aeeccda34434fce70431dbdabda", null ],
+    [ "NAME_LENGTH", "structABDMS2000_1_1MicroKorgHardwareProgram.html#ad25d2d26ca3eb58410dc0aa2f677e268", null ],
+    [ "NAME_OFFSET", "structABDMS2000_1_1MicroKorgHardwareProgram.html#acb06c12ccf3654c7b48d42ecca49b6cb", null ],
+    [ "PROGRAM_SIZE", "structABDMS2000_1_1MicroKorgHardwareProgram.html#af7ee716ddfa67a3e14e21e5633243d31", null ],
+    [ "raw", "structABDMS2000_1_1MicroKorgHardwareProgram.html#a7c193f2656c16ad03409dedb928f611f", null ]
+];

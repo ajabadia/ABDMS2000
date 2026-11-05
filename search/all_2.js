@@ -21,10 +21,11 @@ var searchData=
   ['3_20intensidad_18',['13.3 Intensidad',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md108',1,'']]],
   ['3_20interconexiones_20de_20control_20fijas_20ruteo_20por_20defecto_19',['4.3 Interconexiones de Control Fijas (Ruteo por Defecto)',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md55',1,'']]],
   ['3_20la_20resonancia_20y_20la_20pérdida_20de_20graves_20el_20secreto_20',['7.3 La Resonancia y la Pérdida de Graves (El Secreto)',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md72',1,'']]],
-  ['3_20mapa_20del_20programa_20real_20254_20b_20strong_20unpacked_20strong_21',['3. Mapa del programa real (254 B, &lt;strong&gt;unpacked&lt;/strong&gt;)',['../md_DOCS_2MS2000__SysEx__Spec.html#autotoc_md135',1,'']]],
-  ['3_20matriz_20de_20modulación_20virtual_20em_20virtual_20patch_20em_22',['3. Matriz de Modulación Virtual (&lt;em&gt;Virtual Patch&lt;/em&gt;)',['..//home/runner/work/ABDMS2000/ABDMS2000/README.md#autotoc_md283',1,'']]],
+  ['3_20mapa_20del_20programa_20real_20254_20b_20unpacked_21',['3. Mapa del programa real (254 B, &lt;b&gt;unpacked&lt;/b&gt;)',['../md_DOCS_2MS2000__SysEx__Spec.html#autotoc_md135',1,'']]],
+  ['3_20matriz_20de_20modulación_20virtual_20virtual_20patch_22',['3. Matriz de Modulación Virtual (&lt;em&gt;Virtual Patch&lt;/em&gt;)',['../index.html#autotoc_md283',1,'']]],
   ['3_20osc_201_20oscilador_20principal_23',['3. OSC 1 (Oscilador Principal)',['../md_DOCS_2korg__ms2000__menu__map.html#autotoc_md5',1,'']]],
   ['3_20portamento_20glide_24',['15.3 Portamento / Glide',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md118',1,'']]],
-  ['3_3a_20delay_20fx_25',['14.3 Bloque 3: Delay FX',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md113',1,'']]],
-  ['3_3a_20efectos_20fx_20ecualizador_20eq_20y_20vocoder_26',['PARTE 3: EFECTOS (FX), ECUALIZADOR (EQ) Y VOCODER',['../md_DOCS_2korg__ms2000__menu__map.html#autotoc_md16',1,'']]]
+  ['3_20protocolo_20de_20calibración_20de_20curvas_20sin_20osciloscopio_25',['3.3 Protocolo de calibración de curvas (sin osciloscopio)',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md49',1,'']]],
+  ['3_3a_20delay_20fx_26',['14.3 Bloque 3: Delay FX',['../md_DOCS_2MS2000__Research__Notes.html#autotoc_md113',1,'']]],
+  ['3_3a_20efectos_20fx_20ecualizador_20eq_20y_20vocoder_27',['PARTE 3: EFECTOS (FX), ECUALIZADOR (EQ) Y VOCODER',['../md_DOCS_2korg__ms2000__menu__map.html#autotoc_md16',1,'']]]
 ];

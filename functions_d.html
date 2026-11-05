@@ -3,12 +3,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
-<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Miembros de clases</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -29,24 +34,38 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- Generado por Doxygen 1.9.8 -->
+<!-- Generado por Doxygen 1.15.0 -->
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 var searchBox = new SearchBox("searchBox", "search/",'.html');
-/* @license-end */
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
 </script>
 <script type="text/javascript" src="menudata.js"></script>
 <script type="text/javascript" src="menu.js"></script>
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,false,'search.php','Buscar');
-  $(document).ready(function() { init_search(); });
+  initMenu('',true,false,'search.php','Buscar',true);
+  $(function() { init_search(); });
 });
-/* @license-end */
 </script>
 <div id="main-nav"></div>
 </div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){initNavTree('functions_d.html','',''); });
+</script>
+<div id="container">
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -71,21 +90,25 @@ $(function() {
 <div class="contents">
 <div class="textblock">Lista de todos los campos de clases con enlaces a las clases a las que pertenecen:</div>
 
-<h3><a id="index_d" name="index_d"></a>- d -</h3><ul>
-<li>dampingStateL_&#160;:&#160;<a class="el" href="classABDMS2000_1_1MS2KDelay.html#ab6d1a03faafcafe8d681449ef3d03d2b">ABDMS2000::MS2KDelay</a></li>
-<li>dampingStateR_&#160;:&#160;<a class="el" href="classABDMS2000_1_1MS2KDelay.html#aa0c9ece58e94bc298c0fb8f9504ebd53">ABDMS2000::MS2KDelay</a></li>
+<h3 class="doxsection"><a id="index_d" name="index_d"></a>- d -</h3><ul>
+<li>dampingR&#160;:&#160;<a class="el" href="structABDMS2000_1_1FirmwareTables_1_1HardwareFilterResonanceCoeffs.html#af2f8737db060fb7ba9a8d653c580a533">ABDMS2000::FirmwareTables::HardwareFilterResonanceCoeffs</a></li>
+<li>dampStateL_&#160;:&#160;<a class="el" href="classABDMS2000_1_1HardwareEffects_1_1HardwareDelay.html#a9fabb38c14d0c9f3cd3d3707647e7e5f">ABDMS2000::HardwareEffects::HardwareDelay</a></li>
+<li>dampStateR_&#160;:&#160;<a class="el" href="classABDMS2000_1_1HardwareEffects_1_1HardwareDelay.html#a5700abf8094d5c83ad2d15651ba7019e">ABDMS2000::HardwareEffects::HardwareDelay</a></li>
 <li>debugFilter_&#160;:&#160;<a class="el" href="classABDMS2000_1_1SynthEngine.html#a968da5e21571301ef5e5ffda90e0d874">ABDMS2000::SynthEngine</a></li>
-<li>defaultValue&#160;:&#160;<a class="el" href="structABDMS2000_1_1MIDICCInfo.html#a44d25bafc71ae8b1ba47348444638518">ABDMS2000::MIDICCInfo</a>, <a class="el" href="structABDMS2000_1_1ParameterMeta.html#a3bdf60eb8d974796b45dfe447a06b6f7">ABDMS2000::ParameterMeta</a></li>
+<li>decodeParameterChangePayload()&#160;:&#160;<a class="el" href="structABDMS2000_1_1MS2000HardwareProgram.html#a9106c076c11f42ecdef72d86441a6359">ABDMS2000::MS2000HardwareProgram</a></li>
+<li>defaultValue&#160;:&#160;<a class="el" href="structABDMS2000_1_1MIDICCInfo.html#a44d25bafc71ae8b1ba47348444638518">ABDMS2000::MIDICCInfo</a>, <a class="el" href="structABDMS2000_1_1ParameterMeta.html#a3bdf60eb8d974796b45dfe447a06b6f7">ABDMS2000::ParameterMeta</a>, <a class="el" href="structconversion_1_1ParameterMeta.html#a3bdf60eb8d974796b45dfe447a06b6f7">conversion::ParameterMeta</a></li>
 <li>DELAY_DEPTH&#160;:&#160;<a class="el" href="structABDMS2000_1_1MS2000HardwareProgram.html#aea2835813b4da446c8ece46662a90a87">ABDMS2000::MS2000HardwareProgram</a></li>
 <li>DELAY_FLAGS&#160;:&#160;<a class="el" href="structABDMS2000_1_1MS2000HardwareProgram.html#a70ea918fe64f6c044b2a622d304a1a11">ABDMS2000::MS2000HardwareProgram</a></li>
+<li>DELAY_SYNC_NOTE_OFFSET&#160;:&#160;<a class="el" href="structABDMS2000_1_1MS2000ProgramData.html#aa78a7b1c96a1284cb23a83803732177f">ABDMS2000::MS2000ProgramData</a></li>
+<li>DELAY_SYNC_OFFSET&#160;:&#160;<a class="el" href="structABDMS2000_1_1MS2000ProgramData.html#a27fe317a7bcea03a48c4d6f79e4b7156">ABDMS2000::MS2000ProgramData</a></li>
 <li>DELAY_TIME&#160;:&#160;<a class="el" href="structABDMS2000_1_1MS2000HardwareProgram.html#adde196ad7b3a8a70c3355005a29cd2c7">ABDMS2000::MS2000HardwareProgram</a></li>
 <li>DELAY_TYPE&#160;:&#160;<a class="el" href="structABDMS2000_1_1MS2000HardwareProgram.html#a76634f6fe4832a15b514a4ca9a63a289">ABDMS2000::MS2000HardwareProgram</a></li>
-<li>delayBufferL_&#160;:&#160;<a class="el" href="classABDMS2000_1_1MS2KDelay.html#aab7d1947effb25375eeadee0611f3e17">ABDMS2000::MS2KDelay</a></li>
-<li>delayBufferR_&#160;:&#160;<a class="el" href="classABDMS2000_1_1MS2KDelay.html#a2187a7a616d7bb8bdf9bad4d2c2bbfe7">ABDMS2000::MS2KDelay</a></li>
 <li>delayFX_&#160;:&#160;<a class="el" href="classABDMS2000_1_1SynthEngine.html#aa120398b7c53b05046db966cf765959c">ABDMS2000::SynthEngine</a>, <a class="el" href="classABDMS2000_1_1WasmEngineInstance.html#ac451a322d8d6b04d018492739365d187">ABDMS2000::WasmEngineInstance</a></li>
 <li>deliver()&#160;:&#160;<a class="el" href="structABDMS2000_1_1Tests_1_1BridgeTestHarness.html#a7c15b4decc43486a13a6cd3f5d61eb88">ABDMS2000::Tests::BridgeTestHarness</a></li>
 <li>deliverIncoming()&#160;:&#160;<a class="el" href="classABDMS2000_1_1HardwareMidiTransport.html#ac32b5443d92447184625e5a0bfc26453">ABDMS2000::HardwareMidiTransport</a></li>
-<li>depth_&#160;:&#160;<a class="el" href="classABDMS2000_1_1ModFX.html#aedf30e8d9ee42860daf9053e731bd33a">ABDMS2000::ModFX</a>, <a class="el" href="classABDMS2000_1_1MS2KChorusFlanger.html#a5e4e222286f36e426d04f8678db24d64">ABDMS2000::MS2KChorusFlanger</a></li>
+<li>deliverIncomingSysEx()&#160;:&#160;<a class="el" href="classABDMS2000_1_1HardwareMidiTransport.html#a67687735705cc57c57ede67ce01bb6a1">ABDMS2000::HardwareMidiTransport</a></li>
+<li>depth_&#160;:&#160;<a class="el" href="classABDMS2000_1_1HardwareEffects_1_1HardwareChorusFlanger.html#acc0e357fa76cb854888fc3fb29d8de9a">ABDMS2000::HardwareEffects::HardwareChorusFlanger</a>, <a class="el" href="classABDMS2000_1_1HardwareEffects_1_1HardwareEnsemble.html#a2666d1084161cbdcbc28b3f3c2233af1">ABDMS2000::HardwareEffects::HardwareEnsemble</a>, <a class="el" href="classABDMS2000_1_1HardwareEffects_1_1HardwarePhaser.html#a962e3cddfca0a28947380bb6ab12a730">ABDMS2000::HardwareEffects::HardwarePhaser</a>, <a class="el" href="classABDMS2000_1_1ModFX.html#aedf30e8d9ee42860daf9053e731bd33a">ABDMS2000::ModFX</a>, <a class="el" href="classABDMS2000_1_1MS2KChorusFlanger.html#a5e4e222286f36e426d04f8678db24d64">ABDMS2000::MS2KChorusFlanger</a></li>
+<li>dest&#160;:&#160;<a class="el" href="structABDMS2000_1_1SynthEngine_1_1SeqRowParamPtrs.html#a0f29a1b34c25c0c8681a4974289cd611">ABDMS2000::SynthEngine::SeqRowParamPtrs</a></li>
 <li>destId&#160;:&#160;<a class="el" href="structABDMS2000_1_1MS2000HardwareProgram_1_1SeqRow.html#a82b9c39481468006808b95398638cef8">ABDMS2000::MS2000HardwareProgram::SeqRow</a></li>
 <li>destination&#160;:&#160;<a class="el" href="structABDMS2000_1_1ModSeqTrack.html#a7b34c044ff55756b32b3f630a4d3b340">ABDMS2000::ModSeqTrack</a>, <a class="el" href="structABDMS2000_1_1PatchSlot.html#aaa055f10552ab95926a58982eb3a047f">ABDMS2000::PatchSlot</a></li>
 <li>destOffset&#160;:&#160;<a class="el" href="structABDMS2000_1_1MS2000HardwareProgram_1_1SeqRow.html#aaf2b726c932237a82ca8206df6ff3dc9">ABDMS2000::MS2000HardwareProgram::SeqRow</a></li>
@@ -105,17 +128,25 @@ $(function() {
 <li>diagnosticToneValue&#160;:&#160;<a class="el" href="structABDMS2000_1_1VoiceParameters.html#ae6c2b223312f62e709f890037da7310f">ABDMS2000::VoiceParameters</a></li>
 <li>diagTonePoint_&#160;:&#160;<a class="el" href="classABDMS2000_1_1SynthEngine.html#ae619d5f52ba19791bb543c0a93b396ac">ABDMS2000::SynthEngine</a></li>
 <li>directLevel_&#160;:&#160;<a class="el" href="classABDMS2000_1_1MS2KVocoder16Band.html#a30723cc22ac23e894510fa2849d912ac">ABDMS2000::MS2KVocoder16Band</a></li>
+<li>dispatchMidiMessage()&#160;:&#160;<a class="el" href="classABDMS2000_1_1SynthEngine.html#a4aa69999876a90d522fc3366fa2a1a2b">ABDMS2000::SynthEngine</a></li>
 <li>distortionOn&#160;:&#160;<a class="el" href="structABDMS2000_1_1VoiceParameters.html#a50b08857e692d78cb2b9983249c2cd71">ABDMS2000::VoiceParameters</a></li>
-<li>domainMax&#160;:&#160;<a class="el" href="structABDMS2000_1_1MidiActivityEvent.html#a43ebddef1da671c8fe513ea884dfd43f">ABDMS2000::MidiActivityEvent</a>, <a class="el" href="structABDMS2000_1_1ParameterMeta.html#ac695b921b2e1b8fdb4e20741ec2c32ce">ABDMS2000::ParameterMeta</a></li>
-<li>domainMin&#160;:&#160;<a class="el" href="structABDMS2000_1_1MidiActivityEvent.html#a8b5e0fb4f23f8afa011c42461a4e0ff6">ABDMS2000::MidiActivityEvent</a>, <a class="el" href="structABDMS2000_1_1ParameterMeta.html#a9161733f29fc714d3e658b2467fbab23">ABDMS2000::ParameterMeta</a></li>
+<li>domainMax&#160;:&#160;<a class="el" href="structABDMS2000_1_1MidiActivityEvent.html#a43ebddef1da671c8fe513ea884dfd43f">ABDMS2000::MidiActivityEvent</a>, <a class="el" href="structABDMS2000_1_1ParameterMeta.html#ac695b921b2e1b8fdb4e20741ec2c32ce">ABDMS2000::ParameterMeta</a>, <a class="el" href="structconversion_1_1ParameterMeta.html#ac695b921b2e1b8fdb4e20741ec2c32ce">conversion::ParameterMeta</a></li>
+<li>domainMin&#160;:&#160;<a class="el" href="structABDMS2000_1_1MidiActivityEvent.html#a8b5e0fb4f23f8afa011c42461a4e0ff6">ABDMS2000::MidiActivityEvent</a>, <a class="el" href="structABDMS2000_1_1ParameterMeta.html#a9161733f29fc714d3e658b2467fbab23">ABDMS2000::ParameterMeta</a>, <a class="el" href="structconversion_1_1ParameterMeta.html#a9161733f29fc714d3e658b2467fbab23">conversion::ParameterMeta</a></li>
+<li>done&#160;:&#160;<a class="el" href="structABDMS2000_1_1ms2kipl_1_1ProgressUpdate.html#a1d8b4009c386e5de6abd350c6c3c98b1">ABDMS2000::ms2kipl::ProgressUpdate</a></li>
+<li>drainUiMidiEvents()&#160;:&#160;<a class="el" href="classABDMS2000_1_1SynthEngine.html#a6fd6224b55e99a508e248280eb9e0e01">ABDMS2000::SynthEngine</a></li>
 <li>DummyProcessor()&#160;:&#160;<a class="el" href="classABDMS2000_1_1Tests_1_1DummyProcessor.html#a6e933d8732b31211f64be14ae8372080">ABDMS2000::Tests::DummyProcessor</a></li>
 <li>DummySynthFixture()&#160;:&#160;<a class="el" href="structABDMS2000_1_1Tests_1_1DummySynthFixture.html#ae13df3e8e31c08d0b2242773017580c5">ABDMS2000::Tests::DummySynthFixture</a></li>
+<li>dumpSysSha1_&#160;:&#160;<a class="el" href="classABDMS2000_1_1MS2000IplUpdater.html#a51d6d002ed2528224122f127911b236b">ABDMS2000::MS2000IplUpdater</a></li>
 <li>DWGSOscillator()&#160;:&#160;<a class="el" href="classABDMS2000_1_1DWGSOscillator.html#a75d8b74acd1b747dc242ce4bcbf9c100">ABDMS2000::DWGSOscillator</a></li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
+</div><!-- container -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generado por <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0 </li>
+  </ul>
+</div>
 </body>
 </html>

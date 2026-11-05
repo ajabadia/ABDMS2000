@@ -3,12 +3,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
-<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>ABDMS2000 — Korg MS2000 Hybrid Editor &amp; DSP Emulator: Referencia del archivo Source/Wasm/WasmBridge.cpp</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -29,23 +34,38 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- Generado por Doxygen 1.9.8 -->
+<!-- Generado por Doxygen 1.15.0 -->
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 var searchBox = new SearchBox("searchBox", "search/",'.html');
-/* @license-end */
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
 </script>
 <script type="text/javascript" src="menudata.js"></script>
 <script type="text/javascript" src="menu.js"></script>
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
-  initMenu('',true,false,'search.php','Buscar');
-  $(document).ready(function() { init_search(); });
+  initMenu('',true,false,'search.php','Buscar',true);
+  $(function() { init_search(); });
 });
-/* @license-end */
 </script>
 <div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){initNavTree('WasmBridge_8cpp.html','',''); });
+</script>
+<div id="container">
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -67,17 +87,7 @@ $(function() {
 </div>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a class="el" href="dir_e67e3228b8eaa80fbc78a8271c6cf620.html">Wasm</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
-  <div class="summary">
-<a href="#nested-classes">Clases</a> &#124;
-<a href="#namespaces">Espacios de nombres</a> &#124;
-<a href="#func-members">Funciones</a> &#124;
-<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">Referencia del archivo WasmBridge.cpp</div></div>
 </div><!--header-->
 <div class="contents">
@@ -88,6 +98,8 @@ $(function() {
 <code>#include &lt;memory&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &quot;<a class="el" href="AudioThreadSnapshot_8h_source.html">../Core/AudioThreadSnapshot.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="HardwareConstants_8h_source.html">../Core/HardwareConstants.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="MS2000FirmwareTables_8h_source.html">../Core/MS2000FirmwareTables.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="Voice_8h_source.html">../Core/Voice.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="VoiceManager_8h_source.html">../Core/VoiceManager.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="DelayFX_8h_source.html">../DSP/Effects/DelayFX.h</a>&quot;</code><br />
@@ -100,52 +112,37 @@ $(function() {
 </div><div class="textblock"><div class="dynheader">
 Gráfico de dependencias incluidas en WasmBridge.cpp:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="WasmBridge_8cpp__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="WasmBridge_8cpp__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+<tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Clases</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1WasmEngineInstance.html">ABDMS2000::WasmEngineInstance</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ABDMS2000_3A_3AWasmEngineInstance" id="r_ABDMS2000_3A_3AWasmEngineInstance"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classABDMS2000_1_1WasmEngineInstance.html">ABDMS2000::WasmEngineInstance</a></td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
+<tr class="heading"><td colspan="2"><h2 id="header-namespaces" class="groupheader"><a id="namespaces" name="namespaces"></a>
 Espacios de nombres</h2></td></tr>
-<tr class="memitem:namespaceABDMS2000" id="r_namespaceABDMS2000"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html">ABDMS2000</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ABDMS2000" id="r_ABDMS2000"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html">ABDMS2000</a></td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+<tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Funciones</h2></td></tr>
-<tr class="memitem:a3cc1768a8bf9f0460a692ff26dcb3fa5" id="r_a3cc1768a8bf9f0460a692ff26dcb3fa5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="WasmBridge_8cpp.html#a3cc1768a8bf9f0460a692ff26dcb3fa5">initEngine</a> (double sampleRate)</td></tr>
-<tr class="separator:a3cc1768a8bf9f0460a692ff26dcb3fa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43bc8fcabe8f405a8dac7fd0fa85040f" id="r_a43bc8fcabe8f405a8dac7fd0fa85040f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="WasmBridge_8cpp.html#a43bc8fcabe8f405a8dac7fd0fa85040f">processAudio</a> (float *outL, float *outR, int numSamples)</td></tr>
-<tr class="separator:a43bc8fcabe8f405a8dac7fd0fa85040f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab756560342e78e021f851de5034b853f" id="r_ab756560342e78e021f851de5034b853f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="WasmBridge_8cpp.html#ab756560342e78e021f851de5034b853f">noteOn</a> (int noteNumber, float velocity)</td></tr>
-<tr class="separator:ab756560342e78e021f851de5034b853f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa2a2b833c8b0701c3e882e9b383f9eab" id="r_aa2a2b833c8b0701c3e882e9b383f9eab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="WasmBridge_8cpp.html#aa2a2b833c8b0701c3e882e9b383f9eab">noteOff</a> (int noteNumber)</td></tr>
-<tr class="separator:aa2a2b833c8b0701c3e882e9b383f9eab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b92c1add9763effb18536f49430b368" id="r_a0b92c1add9763effb18536f49430b368"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="WasmBridge_8cpp.html#a0b92c1add9763effb18536f49430b368">allNotesOff</a> ()</td></tr>
-<tr class="separator:a0b92c1add9763effb18536f49430b368"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a217b0c78441c0b6d2754ce7800b1ca42" id="r_a217b0c78441c0b6d2754ce7800b1ca42"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="WasmBridge_8cpp.html#a217b0c78441c0b6d2754ce7800b1ca42">setTempoBPM</a> (float bpm)</td></tr>
-<tr class="separator:a217b0c78441c0b6d2754ce7800b1ca42"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3605b542cc3096babdea55741812918c" id="r_a3605b542cc3096babdea55741812918c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="WasmBridge_8cpp.html#a3605b542cc3096babdea55741812918c">setParamNormalized</a> (int paramIndex, float normValue)</td></tr>
-<tr class="separator:a3605b542cc3096babdea55741812918c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adbc5e7acf9381a764d89db7ba61f01cf" id="r_adbc5e7acf9381a764d89db7ba61f01cf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="WasmBridge_8cpp.html#adbc5e7acf9381a764d89db7ba61f01cf">setParamById</a> (const char *paramId, float rawValue)</td></tr>
-<tr class="separator:adbc5e7acf9381a764d89db7ba61f01cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c3b5c9c74b0081853c98c9a3e22cb71" id="r_a2c3b5c9c74b0081853c98c9a3e22cb71"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="WasmBridge_8cpp.html#a2c3b5c9c74b0081853c98c9a3e22cb71">getAudioSnapshot</a> (float *scopeOut512, float *vuL, float *vuR, int *activeVoices)</td></tr>
-<tr class="separator:a2c3b5c9c74b0081853c98c9a3e22cb71"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04c358f346a39d357165f4c1d80ff98d" id="r_a04c358f346a39d357165f4c1d80ff98d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="WasmBridge_8cpp.html#a04c358f346a39d357165f4c1d80ff98d">loadProgram</a> (int programIndex)</td></tr>
-<tr class="separator:a04c358f346a39d357165f4c1d80ff98d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1f7ef2cb69192aed7db2ef62756c579" id="r_ac1f7ef2cb69192aed7db2ef62756c579"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="WasmBridge_8cpp.html#ac1f7ef2cb69192aed7db2ef62756c579">initPatch</a> ()</td></tr>
-<tr class="separator:ac1f7ef2cb69192aed7db2ef62756c579"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad913fa3d915847e2c0f572ad9a4e1e24" id="r_ad913fa3d915847e2c0f572ad9a4e1e24"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="WasmBridge_8cpp.html#ad913fa3d915847e2c0f572ad9a4e1e24">randomizePatch</a> ()</td></tr>
-<tr class="separator:ad913fa3d915847e2c0f572ad9a4e1e24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cc1768a8bf9f0460a692ff26dcb3fa5" id="r_a3cc1768a8bf9f0460a692ff26dcb3fa5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3cc1768a8bf9f0460a692ff26dcb3fa5">initEngine</a> (double sampleRate)</td></tr>
+<tr class="memitem:a43bc8fcabe8f405a8dac7fd0fa85040f" id="r_a43bc8fcabe8f405a8dac7fd0fa85040f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a43bc8fcabe8f405a8dac7fd0fa85040f">processAudio</a> (float *outL, float *outR, int numSamples)</td></tr>
+<tr class="memitem:ab756560342e78e021f851de5034b853f" id="r_ab756560342e78e021f851de5034b853f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab756560342e78e021f851de5034b853f">noteOn</a> (int noteNumber, float velocity)</td></tr>
+<tr class="memitem:aa2a2b833c8b0701c3e882e9b383f9eab" id="r_aa2a2b833c8b0701c3e882e9b383f9eab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa2a2b833c8b0701c3e882e9b383f9eab">noteOff</a> (int noteNumber)</td></tr>
+<tr class="memitem:a0b92c1add9763effb18536f49430b368" id="r_a0b92c1add9763effb18536f49430b368"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0b92c1add9763effb18536f49430b368">allNotesOff</a> ()</td></tr>
+<tr class="memitem:a217b0c78441c0b6d2754ce7800b1ca42" id="r_a217b0c78441c0b6d2754ce7800b1ca42"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a217b0c78441c0b6d2754ce7800b1ca42">setTempoBPM</a> (float bpm)</td></tr>
+<tr class="memitem:a3605b542cc3096babdea55741812918c" id="r_a3605b542cc3096babdea55741812918c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3605b542cc3096babdea55741812918c">setParamNormalized</a> (int paramIndex, float normValue)</td></tr>
+<tr class="memitem:adbc5e7acf9381a764d89db7ba61f01cf" id="r_adbc5e7acf9381a764d89db7ba61f01cf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adbc5e7acf9381a764d89db7ba61f01cf">setParamById</a> (const char *paramId, float rawValue)</td></tr>
+<tr class="memitem:a2c3b5c9c74b0081853c98c9a3e22cb71" id="r_a2c3b5c9c74b0081853c98c9a3e22cb71"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2c3b5c9c74b0081853c98c9a3e22cb71">getAudioSnapshot</a> (float *scopeOut512, float *vuL, float *vuR, int *activeVoices)</td></tr>
+<tr class="memitem:a04c358f346a39d357165f4c1d80ff98d" id="r_a04c358f346a39d357165f4c1d80ff98d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a04c358f346a39d357165f4c1d80ff98d">loadProgram</a> (int programIndex)</td></tr>
+<tr class="memitem:ac1f7ef2cb69192aed7db2ef62756c579" id="r_ac1f7ef2cb69192aed7db2ef62756c579"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac1f7ef2cb69192aed7db2ef62756c579">initPatch</a> ()</td></tr>
+<tr class="memitem:ad913fa3d915847e2c0f572ad9a4e1e24" id="r_ad913fa3d915847e2c0f572ad9a4e1e24"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad913fa3d915847e2c0f572ad9a4e1e24">randomizePatch</a> ()</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+<tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a9528362b0f1b3151ad1dabf78767f0b1" id="r_a9528362b0f1b3151ad1dabf78767f0b1"><td class="memItemLeft" align="right" valign="top">static std::unique_ptr&lt; <a class="el" href="classABDMS2000_1_1WasmEngineInstance.html">WasmEngineInstance</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000.html#a9528362b0f1b3151ad1dabf78767f0b1">ABDMS2000::g_wasmEngine</a></td></tr>
-<tr class="separator:a9528362b0f1b3151ad1dabf78767f0b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Documentación de funciones</h2>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Documentación de funciones</h2>
 <a id="a0b92c1add9763effb18536f49430b368" name="a0b92c1add9763effb18536f49430b368"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0b92c1add9763effb18536f49430b368">&#9670;&#160;</a></span>allNotesOff()</h2>
 
@@ -155,7 +152,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void allNotesOff </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -173,31 +170,22 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void getAudioSnapshot </td>
           <td>(</td>
-          <td class="paramtype">float *&#160;</td>
-          <td class="paramname"><em>scopeOut512</em>, </td>
+          <td class="paramtype">float *</td>          <td class="paramname"><span class="paramname"><em>scopeOut512</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">float *&#160;</td>
-          <td class="paramname"><em>vuL</em>, </td>
+          <td class="paramtype">float *</td>          <td class="paramname"><span class="paramname"><em>vuL</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">float *&#160;</td>
-          <td class="paramname"><em>vuR</em>, </td>
+          <td class="paramtype">float *</td>          <td class="paramname"><span class="paramname"><em>vuR</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int *&#160;</td>
-          <td class="paramname"><em>activeVoices</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
+          <td class="paramtype">int *</td>          <td class="paramname"><span class="paramname"><em>activeVoices</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -214,8 +202,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void initEngine </td>
           <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>sampleRate</em></td><td>)</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>sampleRate</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -233,7 +220,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void initPatch </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -251,8 +238,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void loadProgram </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>programIndex</em></td><td>)</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>programIndex</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -270,8 +256,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void noteOff </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>noteNumber</em></td><td>)</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>noteNumber</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -289,19 +274,12 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void noteOn </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>noteNumber</em>, </td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>noteNumber</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>velocity</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>velocity</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -318,25 +296,17 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void processAudio </td>
           <td>(</td>
-          <td class="paramtype">float *&#160;</td>
-          <td class="paramname"><em>outL</em>, </td>
+          <td class="paramtype">float *</td>          <td class="paramname"><span class="paramname"><em>outL</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">float *&#160;</td>
-          <td class="paramname"><em>outR</em>, </td>
+          <td class="paramtype">float *</td>          <td class="paramname"><span class="paramname"><em>outR</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>numSamples</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>numSamples</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -353,7 +323,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void randomizePatch </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -371,19 +341,12 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void setParamById </td>
           <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>paramId</em>, </td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>paramId</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>rawValue</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>rawValue</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -400,19 +363,12 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void setParamNormalized </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>paramIndex</em>, </td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>paramIndex</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>normValue</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>normValue</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -429,19 +385,31 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="WasmBridge_8h.html#ab80fa049e17f19d3051ba78bcccdbbc9">WASM_EXPORT</a> void setTempoBPM </td>
           <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>bpm</em></td><td>)</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>bpm</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Sets master tempo in BPM for Arpeggiator, Mod Sequencer and synced FX. </p>
 
 </div>
 </div>
 </div><!-- contents -->
+</div><!-- doc-content -->
+<div id="page-nav" class="page-nav-panel">
+<div id="page-nav-resize-handle"></div>
+<div id="page-nav-tree">
+<div id="page-nav-contents">
+</div><!-- page-nav-contents -->
+</div><!-- page-nav-tree -->
+</div><!-- page-nav -->
+</div><!-- container -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a href="dir_74389ed8173ad57b461b9d623a1f3867.html">Source</a></li><li class="navelem"><a href="dir_e67e3228b8eaa80fbc78a8271c6cf620.html">Wasm</a></li><li class="navelem"><a href="WasmBridge_8cpp.html">WasmBridge.cpp</a></li>
+    <li class="footer">Generado por <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0 </li>
+  </ul>
+</div>
 </body>
 </html>

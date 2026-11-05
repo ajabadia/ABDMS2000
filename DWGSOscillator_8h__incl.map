@@ -1,15 +1,15 @@
 <map id="Source/DSP/Oscillators/DWGSOscillator.h" name="Source/DSP/Oscillators/DWGSOscillator.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="61,5,230,45"/>
-<area shape="rect" id="Node000002" href="$DWGSTables_8h.html" title=" " alt="" coords="88,93,204,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="148,46,148,79,143,79,143,46"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="7,240,74,265"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="89,120,46,138,28,151,13,168,8,182,10,197,24,227,20,230,5,199,3,182,9,165,24,147,44,133,87,115"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="104,240,163,265"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="183,116,212,129,239,146,255,168,257,180,252,193,237,211,218,226,178,244,175,239,216,221,233,208,247,191,252,180,250,169,236,150,210,134,181,121"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="174,167,237,192"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="158,117,189,154,185,158,154,121"/>
-<area shape="rect" id="Node000006" href="$WaveCategory_8h.html" title=" " alt="" coords="24,167,150,192"/>
-<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="138,121,107,158,103,155,134,117"/>
-<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="82,194,58,230,53,227,77,191"/>
-<area shape="poly" id="edge7_Node000006_Node000004" title=" " alt="" coords="97,191,121,227,116,230,93,194"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="61,5,229,50"/>
+<area shape="rect" id="Node000002" href="$DWGSTables_8h.html" title=" " alt="" coords="87,98,202,126"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="146,48,147,83,142,82,144,53"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="7,249,72,277"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="85,127,46,145,28,158,14,175,9,189,10,205,23,236,18,237,4,206,3,189,9,172,24,154,43,140,88,122"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="102,249,161,277"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="182,124,212,137,238,155,253,177,254,190,250,203,235,221,217,235,177,254,175,249,214,230,231,217,245,200,249,189,248,179,234,159,210,142,182,129"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="174,174,236,201"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="156,124,187,161,182,162,155,129"/>
+<area shape="rect" id="Node000006" href="$WaveCategory_8h.html" title=" " alt="" coords="23,174,149,201"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="136,124,108,163,104,160,132,128"/>
+<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="80,200,58,238,54,235,76,203"/>
+<area shape="poly" id="edge7_Node000006_Node000004" title=" " alt="" coords="95,200,118,236,113,236,93,204"/>
 </map>
