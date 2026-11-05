@@ -110,21 +110,21 @@ describe('helper compartido — veredicto de checkBridgeDirection', () => {
     expect(result.ok).toBe(false);
   });
 
-  it('exige declarar en `emitters` todo fichero que cree el componente web', () => {
+  it('exige declarar en `emitters` todo fichero que emita con la API correcta', () => {
     const root = fs.mkdtempSync(path.join(os.tmpdir(), 'abdbridge-'));
     fs.mkdirSync(path.join(root, 'Plugin'));
     fs.writeFileSync(
       path.join(root, 'Plugin', 'Host.cpp'),
-      'void f() { view = std::make_unique<juce::WebBrowserComponent>(options); }\n'
+      'void f() { view->emitEventIfBrowserIsVisible("state", obj); }\n'
     );
-    fs.writeFileSync(path.join(root, 'Plugin', 'NativeFunctions.cpp'), 'void addOptions(opts);\n');
+    fs.writeFileSync(path.join(root, 'Plugin', 'Otro.cpp'), 'void g() {}\n');
 
     const result = checkBridgeDirection({ sourceRoot: root, emitters: [] });
 
-    expect(result.webViewHosts).toEqual(['Plugin/Host.cpp']);
-    expect(result.undeclaredHosts).toEqual(['Plugin/Host.cpp']);
+    expect(result.undeclaredEmitters).toEqual(['Plugin/Host.cpp']);
     expect(result.ok).toBe(false);
     expect(formatFindings(result)).toContain('Plugin/Host.cpp');
+    expect(formatFindings(result)).toContain('emitEventIfBrowserIsVisible');
   });
   it('sin sourceRoot avisa en vez de aprobar por defecto', () => {
     expect(() => checkBridgeDirection({})).toThrow(/sourceRoot/);
