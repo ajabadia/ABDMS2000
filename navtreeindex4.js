@@ -1,5 +1,13 @@
 var NAVTREEINDEX4 =
 {
+"classABDMS2000_1_1MIDITelemetryManager.html#a2c056fe51909ecfdb77ab7966f6b964a":[6,0,0,43,24],
+"classABDMS2000_1_1MIDITelemetryManager.html#a3b51112cfcb747b1e7d25c05c3472ff1":[5,0,0,51,12],
+"classABDMS2000_1_1MIDITelemetryManager.html#a3b51112cfcb747b1e7d25c05c3472ff1":[6,0,0,43,12],
+"classABDMS2000_1_1MIDITelemetryManager.html#a3d18854b0bfc3e2b96c302c04e9d5753":[5,0,0,51,5],
+"classABDMS2000_1_1MIDITelemetryManager.html#a3d18854b0bfc3e2b96c302c04e9d5753":[6,0,0,43,5],
+"classABDMS2000_1_1MIDITelemetryManager.html#a3d5e6b183e33abceddd399597581bc4b":[5,0,0,51,26],
+"classABDMS2000_1_1MIDITelemetryManager.html#a3d5e6b183e33abceddd399597581bc4b":[6,0,0,43,26],
+"classABDMS2000_1_1MIDITelemetryManager.html#a463d89d58b8ba0f39e3ee19ed5ca3497":[5,0,0,51,14],
 "classABDMS2000_1_1MIDITelemetryManager.html#a463d89d58b8ba0f39e3ee19ed5ca3497":[6,0,0,43,14],
 "classABDMS2000_1_1MIDITelemetryManager.html#a50aabf00275de2ab0f3e4346fcc1639f":[5,0,0,51,10],
 "classABDMS2000_1_1MIDITelemetryManager.html#a50aabf00275de2ab0f3e4346fcc1639f":[6,0,0,43,10],
@@ -241,13 +249,5 @@ var NAVTREEINDEX4 =
 "classABDMS2000_1_1MS2KVocoder16Band.html#a4d8689770debf3582fc6bf3c809badfa":[6,0,0,37,12],
 "classABDMS2000_1_1MS2KVocoder16Band.html#a4dc6caed863c675bd963ea120c1ecd2a":[5,0,0,45,55],
 "classABDMS2000_1_1MS2KVocoder16Band.html#a4dc6caed863c675bd963ea120c1ecd2a":[6,0,0,37,55],
-"classABDMS2000_1_1MS2KVocoder16Band.html#a4fefdce62709fcc0a99970262dcdfc6b":[5,0,0,45,26],
-"classABDMS2000_1_1MS2KVocoder16Band.html#a4fefdce62709fcc0a99970262dcdfc6b":[6,0,0,37,26],
-"classABDMS2000_1_1MS2KVocoder16Band.html#a51d7a6775d47517d94aa22257c731759":[5,0,0,45,57],
-"classABDMS2000_1_1MS2KVocoder16Band.html#a51d7a6775d47517d94aa22257c731759":[6,0,0,37,57],
-"classABDMS2000_1_1MS2KVocoder16Band.html#a5418b7536a1dfe8272d8f6eb3c43695c":[5,0,0,45,67],
-"classABDMS2000_1_1MS2KVocoder16Band.html#a5418b7536a1dfe8272d8f6eb3c43695c":[6,0,0,37,67],
-"classABDMS2000_1_1MS2KVocoder16Band.html#a5548302686dd35321d7c2c940e381db4":[5,0,0,45,1],
-"classABDMS2000_1_1MS2KVocoder16Band.html#a5548302686dd35321d7c2c940e381db4":[6,0,0,37,1],
-"classABDMS2000_1_1MS2KVocoder16Band.html#a59047684c2e08beaad48765e086a2cb6":[5,0,0,45,50]
+"classABDMS2000_1_1MS2KVocoder16Band.html#a4fefdce62709fcc0a99970262dcdfc6b":[5,0,0,45,26]
 };

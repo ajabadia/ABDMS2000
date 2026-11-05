@@ -131,6 +131,7 @@ var namespaceABDMS2000 =
       [ "arpStep6", "namespaceABDMS2000_1_1ParamIDs.html#a5384b1747eee3bb2749077f429b765c4", null ],
       [ "arpStep7", "namespaceABDMS2000_1_1ParamIDs.html#a89448a6666e8d1c89c124618932e5adf", null ],
       [ "arpStep8", "namespaceABDMS2000_1_1ParamIDs.html#a02c8a44105a6108aaacdbcf802655492", null ],
+      [ "arpSwing", "namespaceABDMS2000_1_1ParamIDs.html#ab59cc2fff920d1a6d372e96c17f5ffdc", null ],
       [ "arpTarget", "namespaceABDMS2000_1_1ParamIDs.html#aa08b42fdd5addd9cfd02a8a3873a4391", null ],
       [ "arpType", "namespaceABDMS2000_1_1ParamIDs.html#aa05c8ac9b2cf121ab5a9468e900825aa", null ],
       [ "assignablePedal", "namespaceABDMS2000_1_1ParamIDs.html#a5c5ad564f9435bd93cd97a8aa14285e2", null ],

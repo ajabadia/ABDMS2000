@@ -30,6 +30,7 @@ var ParameterRegistry_8gen_8h =
     [ "ABDMS2000::ParamIDs::arpStep6", "namespaceABDMS2000_1_1ParamIDs.html#a5384b1747eee3bb2749077f429b765c4", null ],
     [ "ABDMS2000::ParamIDs::arpStep7", "namespaceABDMS2000_1_1ParamIDs.html#a89448a6666e8d1c89c124618932e5adf", null ],
     [ "ABDMS2000::ParamIDs::arpStep8", "namespaceABDMS2000_1_1ParamIDs.html#a02c8a44105a6108aaacdbcf802655492", null ],
+    [ "ABDMS2000::ParamIDs::arpSwing", "namespaceABDMS2000_1_1ParamIDs.html#ab59cc2fff920d1a6d372e96c17f5ffdc", null ],
     [ "ABDMS2000::ParamIDs::arpTarget", "namespaceABDMS2000_1_1ParamIDs.html#aa08b42fdd5addd9cfd02a8a3873a4391", null ],
     [ "ABDMS2000::ParamIDs::arpType", "namespaceABDMS2000_1_1ParamIDs.html#aa05c8ac9b2cf121ab5a9468e900825aa", null ],
     [ "ABDMS2000::ParamIDs::assignablePedal", "namespaceABDMS2000_1_1ParamIDs.html#a5c5ad564f9435bd93cd97a8aa14285e2", null ],

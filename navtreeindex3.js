@@ -1,5 +1,13 @@
 var NAVTREEINDEX3 =
 {
+"classABDMS2000_1_1HardwareEffects_1_1HardwareDelay.html#a9fabb38c14d0c9f3cd3d3707647e7e5f":[6,0,0,1,5,8],
+"classABDMS2000_1_1HardwareEffects_1_1HardwareDelay.html#aa7f67a6a441f4f5d9df7b3a5098cfcb3":[5,0,0,3,5,2],
+"classABDMS2000_1_1HardwareEffects_1_1HardwareDelay.html#aa7f67a6a441f4f5d9df7b3a5098cfcb3":[6,0,0,1,5,2],
+"classABDMS2000_1_1HardwareEffects_1_1HardwareDelay.html#aace9d6262c78a926bdf8bf8667eacad8":[5,0,0,3,5,11],
+"classABDMS2000_1_1HardwareEffects_1_1HardwareDelay.html#aace9d6262c78a926bdf8bf8667eacad8":[6,0,0,1,5,11],
+"classABDMS2000_1_1HardwareEffects_1_1HardwareDelay.html#abd9e5e7b3e30a8d4f81351635f5349ba":[5,0,0,3,5,20],
+"classABDMS2000_1_1HardwareEffects_1_1HardwareDelay.html#abd9e5e7b3e30a8d4f81351635f5349ba":[6,0,0,1,5,20],
+"classABDMS2000_1_1HardwareEffects_1_1HardwareDelay.html#adc1121ed7f5654ba118cbf7d1f4e0756":[5,0,0,3,5,15],
 "classABDMS2000_1_1HardwareEffects_1_1HardwareDelay.html#adc1121ed7f5654ba118cbf7d1f4e0756":[6,0,0,1,5,15],
 "classABDMS2000_1_1HardwareEffects_1_1HardwareDelay.html#ae206f77287a642f9444e6b4e58d23e7f":[5,0,0,3,5,7],
 "classABDMS2000_1_1HardwareEffects_1_1HardwareDelay.html#ae206f77287a642f9444e6b4e58d23e7f":[6,0,0,1,5,7],
@@ -241,13 +249,5 @@ var NAVTREEINDEX3 =
 "classABDMS2000_1_1MIDITelemetryManager.html#a15c08377146eb38fd0a26ffdc3de4615":[6,0,0,43,13],
 "classABDMS2000_1_1MIDITelemetryManager.html#a201f495142a53dd0e7a671efbed78e60":[5,0,0,51,4],
 "classABDMS2000_1_1MIDITelemetryManager.html#a201f495142a53dd0e7a671efbed78e60":[6,0,0,43,4],
-"classABDMS2000_1_1MIDITelemetryManager.html#a2c056fe51909ecfdb77ab7966f6b964a":[5,0,0,51,24],
-"classABDMS2000_1_1MIDITelemetryManager.html#a2c056fe51909ecfdb77ab7966f6b964a":[6,0,0,43,24],
-"classABDMS2000_1_1MIDITelemetryManager.html#a3b51112cfcb747b1e7d25c05c3472ff1":[5,0,0,51,12],
-"classABDMS2000_1_1MIDITelemetryManager.html#a3b51112cfcb747b1e7d25c05c3472ff1":[6,0,0,43,12],
-"classABDMS2000_1_1MIDITelemetryManager.html#a3d18854b0bfc3e2b96c302c04e9d5753":[5,0,0,51,5],
-"classABDMS2000_1_1MIDITelemetryManager.html#a3d18854b0bfc3e2b96c302c04e9d5753":[6,0,0,43,5],
-"classABDMS2000_1_1MIDITelemetryManager.html#a3d5e6b183e33abceddd399597581bc4b":[5,0,0,51,26],
-"classABDMS2000_1_1MIDITelemetryManager.html#a3d5e6b183e33abceddd399597581bc4b":[6,0,0,43,26],
-"classABDMS2000_1_1MIDITelemetryManager.html#a463d89d58b8ba0f39e3ee19ed5ca3497":[5,0,0,51,14]
+"classABDMS2000_1_1MIDITelemetryManager.html#a2c056fe51909ecfdb77ab7966f6b964a":[5,0,0,51,24]
 };

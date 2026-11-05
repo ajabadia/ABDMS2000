@@ -1,5 +1,13 @@
 var NAVTREEINDEX5 =
 {
+"classABDMS2000_1_1MS2KVocoder16Band.html#a4fefdce62709fcc0a99970262dcdfc6b":[6,0,0,37,26],
+"classABDMS2000_1_1MS2KVocoder16Band.html#a51d7a6775d47517d94aa22257c731759":[5,0,0,45,57],
+"classABDMS2000_1_1MS2KVocoder16Band.html#a51d7a6775d47517d94aa22257c731759":[6,0,0,37,57],
+"classABDMS2000_1_1MS2KVocoder16Band.html#a5418b7536a1dfe8272d8f6eb3c43695c":[5,0,0,45,67],
+"classABDMS2000_1_1MS2KVocoder16Band.html#a5418b7536a1dfe8272d8f6eb3c43695c":[6,0,0,37,67],
+"classABDMS2000_1_1MS2KVocoder16Band.html#a5548302686dd35321d7c2c940e381db4":[5,0,0,45,1],
+"classABDMS2000_1_1MS2KVocoder16Band.html#a5548302686dd35321d7c2c940e381db4":[6,0,0,37,1],
+"classABDMS2000_1_1MS2KVocoder16Band.html#a59047684c2e08beaad48765e086a2cb6":[5,0,0,45,50],
 "classABDMS2000_1_1MS2KVocoder16Band.html#a59047684c2e08beaad48765e086a2cb6":[6,0,0,37,50],
 "classABDMS2000_1_1MS2KVocoder16Band.html#a597630239c7f2e8b279264373347d6d7":[5,0,0,45,47],
 "classABDMS2000_1_1MS2KVocoder16Band.html#a597630239c7f2e8b279264373347d6d7":[6,0,0,37,47],
@@ -241,13 +249,5 @@ var NAVTREEINDEX5 =
 "classABDMS2000_1_1NoiseGenerator.html#a0faf552c6a23afbad413abe46102d5ed":[6,0,0,26,2],
 "classABDMS2000_1_1NoiseGenerator.html#a203930769860ef9e35b69dd98c0cb153":[5,0,0,34,10],
 "classABDMS2000_1_1NoiseGenerator.html#a203930769860ef9e35b69dd98c0cb153":[6,0,0,26,10],
-"classABDMS2000_1_1NoiseGenerator.html#a3c8a727a4f5cb86e4fc9b37c64407b26":[5,0,0,34,7],
-"classABDMS2000_1_1NoiseGenerator.html#a3c8a727a4f5cb86e4fc9b37c64407b26":[6,0,0,26,7],
-"classABDMS2000_1_1NoiseGenerator.html#a5da205480a009d2f1903b10dd9de692f":[5,0,0,34,11],
-"classABDMS2000_1_1NoiseGenerator.html#a5da205480a009d2f1903b10dd9de692f":[6,0,0,26,11],
-"classABDMS2000_1_1NoiseGenerator.html#a72e4c7b6f83834663bed360c1c806142":[5,0,0,34,8],
-"classABDMS2000_1_1NoiseGenerator.html#a72e4c7b6f83834663bed360c1c806142":[6,0,0,26,8],
-"classABDMS2000_1_1NoiseGenerator.html#a8abc9e048a2aab600657019b1bb46427":[5,0,0,34,1],
-"classABDMS2000_1_1NoiseGenerator.html#a8abc9e048a2aab600657019b1bb46427":[6,0,0,26,1],
-"classABDMS2000_1_1NoiseGenerator.html#a8e3eec001186a9a94d3536e94d09617c":[5,0,0,34,4]
+"classABDMS2000_1_1NoiseGenerator.html#a3c8a727a4f5cb86e4fc9b37c64407b26":[5,0,0,34,7]
 };

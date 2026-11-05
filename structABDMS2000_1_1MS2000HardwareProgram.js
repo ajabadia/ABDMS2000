@@ -12,6 +12,7 @@ var structABDMS2000_1_1MS2000HardwareProgram =
     [ "Xform", "structABDMS2000_1_1MS2000HardwareProgram.html#a60d8435af1014a4de6d3b80b5823aefe", [
       [ "Raw", "structABDMS2000_1_1MS2000HardwareProgram.html#a60d8435af1014a4de6d3b80b5823aefea65e65c8ab0d8609ce12fc68a03cb8e00", null ],
       [ "Signed", "structABDMS2000_1_1MS2000HardwareProgram.html#a60d8435af1014a4de6d3b80b5823aefea71fed0c3428bf1a2e19af257c4bac379", null ],
+      [ "Signed2sComplement", "structABDMS2000_1_1MS2000HardwareProgram.html#a60d8435af1014a4de6d3b80b5823aefea40b49e4248976351f17ffab550509f9d", null ],
       [ "Bit", "structABDMS2000_1_1MS2000HardwareProgram.html#a60d8435af1014a4de6d3b80b5823aefeaed98fd4f2d1aeadad43670b2d07d5b40", null ],
       [ "EqFreq", "structABDMS2000_1_1MS2000HardwareProgram.html#a60d8435af1014a4de6d3b80b5823aefeaa0685092b8e55b76bfb2c5e48d854116", null ],
       [ "EqGain", "structABDMS2000_1_1MS2000HardwareProgram.html#a60d8435af1014a4de6d3b80b5823aefead2cc7108b1ec0eca669eadb3351de1a4", null ],

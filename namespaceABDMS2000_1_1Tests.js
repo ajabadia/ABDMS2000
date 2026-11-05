@@ -39,6 +39,7 @@ var namespaceABDMS2000_1_1Tests =
     [ "selectWaveform", "namespaceABDMS2000_1_1Tests.html#a737783b1f2e8df34b73c2b23b68bccbd", null ],
     [ "selectWaveform", "namespaceABDMS2000_1_1Tests.html#a8060d7e948a5c547c10562e2a2738bc5", null ],
     [ "testAllDataDumpRequest", "namespaceABDMS2000_1_1Tests.html#a63e84cdb22e33ce8977c9b10c742070a", null ],
+    [ "testArpeggiatorSwing", "namespaceABDMS2000_1_1Tests.html#a830f3507e7a0ddbe5f73487fd886aaa6", null ],
     [ "testBridgeActionsDispatch", "namespaceABDMS2000_1_1Tests.html#a70e424fe6815e9f157c05a4cd1a1f38e", null ],
     [ "testCalibrationAndPresetValidation", "namespaceABDMS2000_1_1Tests.html#a0153571cf6e8c9b6cc511dd7cf6b00b5", null ],
     [ "testDspConversionsAndClamping", "namespaceABDMS2000_1_1Tests.html#aded0d2a7ecce30628fb57e2d7567b47e", null ],

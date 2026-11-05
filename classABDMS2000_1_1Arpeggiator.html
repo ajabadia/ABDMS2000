@@ -110,6 +110,8 @@ Métodos públicos</h2></td></tr>
 <tr class="memitem:a9cc10a4075566eb8105096dd26dde44d" id="r_a9cc10a4075566eb8105096dd26dde44d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9cc10a4075566eb8105096dd26dde44d">setTempoBPM</a> (float bpm) noexcept</td></tr>
 <tr class="memitem:a8080ccc0255e4688928dcad2e02c8e84" id="r_a8080ccc0255e4688928dcad2e02c8e84"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8080ccc0255e4688928dcad2e02c8e84">setSyncResolution</a> (int idx) noexcept</td></tr>
 <tr class="memitem:a537ee9ee843df10576dd15b8f8fc4c71" id="r_a537ee9ee843df10576dd15b8f8fc4c71"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a537ee9ee843df10576dd15b8f8fc4c71">setLatch</a> (bool latch) noexcept</td></tr>
+<tr class="memitem:a7657056d9d1371bf327a9f8b8cbd7fd6" id="r_a7657056d9d1371bf327a9f8b8cbd7fd6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7657056d9d1371bf327a9f8b8cbd7fd6">setSwing</a> (float swingPercent) noexcept</td></tr>
+<tr class="memitem:a05261753cefec4a32c3fbcf866329a00" id="r_a05261753cefec4a32c3fbcf866329a00"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a05261753cefec4a32c3fbcf866329a00">getSwing</a> () const noexcept</td></tr>
 <tr class="memitem:a7cc3ddd0326d0bebe66c7baa404a205d" id="r_a7cc3ddd0326d0bebe66c7baa404a205d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7cc3ddd0326d0bebe66c7baa404a205d">setKeySync</a> (bool keySync) noexcept</td></tr>
 <tr class="memitem:ac1c93be53c286481ca53f34c45652a09" id="r_ac1c93be53c286481ca53f34c45652a09"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac1c93be53c286481ca53f34c45652a09">setStepMask</a> (int stepIdx, bool active) noexcept</td></tr>
 <tr class="memitem:adbad53085487c9ea70ef753d348b5f8a" id="r_adbad53085487c9ea70ef753d348b5f8a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adbad53085487c9ea70ef753d348b5f8a">getStepMask</a> (int stepIdx) const noexcept</td></tr>
@@ -138,6 +140,7 @@ Atributos privados</h2></td></tr>
 <tr class="memitem:a59bd398ec56399865ee315e38bcf8931" id="r_a59bd398ec56399865ee315e38bcf8931"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a59bd398ec56399865ee315e38bcf8931">octaveRange_</a> {1}</td></tr>
 <tr class="memitem:aafa11f9cb712acddf2851bab241c090f" id="r_aafa11f9cb712acddf2851bab241c090f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aafa11f9cb712acddf2851bab241c090f">gateTime_</a> {0.8f}</td></tr>
 <tr class="memitem:a129905cac57e1d8548d9994189f00c83" id="r_a129905cac57e1d8548d9994189f00c83"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a129905cac57e1d8548d9994189f00c83">bpm_</a> {120.0f}</td></tr>
+<tr class="memitem:a1f41856db768b5bf82d5ce2d05e56adf" id="r_a1f41856db768b5bf82d5ce2d05e56adf"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1f41856db768b5bf82d5ce2d05e56adf">swingPercent_</a> {0.0f}</td></tr>
 <tr class="memitem:a9254e56799b0775e3e7a6c32a489f0df" id="r_a9254e56799b0775e3e7a6c32a489f0df"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9254e56799b0775e3e7a6c32a489f0df">latch_</a> {false}</td></tr>
 <tr class="memitem:a8f9757fa4432ac17df9d52fcb61335b8" id="r_a8f9757fa4432ac17df9d52fcb61335b8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8f9757fa4432ac17df9d52fcb61335b8">keySync_</a> {true}</td></tr>
 <tr class="memitem:abc3b73f521570f372168d6b85244f9a6" id="r_abc3b73f521570f372168d6b85244f9a6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abc3b73f521570f372168d6b85244f9a6">physicallyHeldCount_</a> {0}</td></tr>
@@ -148,6 +151,7 @@ Atributos privados</h2></td></tr>
 <tr class="memitem:ae0e9460e9ff41f293e2ee3715cf76d6e" id="r_ae0e9460e9ff41f293e2ee3715cf76d6e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae0e9460e9ff41f293e2ee3715cf76d6e">syncStepsPerBeat_</a> {16.0f}</td></tr>
 <tr class="memitem:a0a38ab149f05a8f4ef5fc5f46bb8b7a0" id="r_a0a38ab149f05a8f4ef5fc5f46bb8b7a0"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0a38ab149f05a8f4ef5fc5f46bb8b7a0">samplesPerStep_</a> {5512.5}</td></tr>
 <tr class="memitem:a82b0d19531736749f9c74cb1dd62c367" id="r_a82b0d19531736749f9c74cb1dd62c367"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a82b0d19531736749f9c74cb1dd62c367">stepSampleCounter_</a> {0.0}</td></tr>
+<tr class="memitem:afdf6762b3d371e9ab5b9801bbe480051" id="r_afdf6762b3d371e9ab5b9801bbe480051"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afdf6762b3d371e9ab5b9801bbe480051">totalStepsExecuted_</a> {0}</td></tr>
 <tr class="memitem:a6aa4a71112878a0d3e2c1ff6728c59c8" id="r_a6aa4a71112878a0d3e2c1ff6728c59c8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6aa4a71112878a0d3e2c1ff6728c59c8">currentNoteActive_</a> {false}</td></tr>
 <tr class="memitem:a80c65746e5673748bce453cd9744a19f" id="r_a80c65746e5673748bce453cd9744a19f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a80c65746e5673748bce453cd9744a19f">currentPlayingNote_</a> {-1}</td></tr>
 <tr class="memitem:a3b16eddf9b3599d64daf0508d173f5ba" id="r_a3b16eddf9b3599d64daf0508d173f5ba"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3b16eddf9b3599d64daf0508d173f5ba">heldNotes_</a></td></tr>
@@ -248,6 +252,31 @@ Atributos privados</h2></td></tr>
           <td class="memname">bool ABDMS2000::Arpeggiator::getStepMask </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>stepIdx</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a05261753cefec4a32c3fbcf866329a00" name="a05261753cefec4a32c3fbcf866329a00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05261753cefec4a32c3fbcf866329a00">&#9670;&#160;</a></span>getSwing()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::Arpeggiator::getSwing </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -666,6 +695,31 @@ Atributos privados</h2></td></tr>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7657056d9d1371bf327a9f8b8cbd7fd6" name="a7657056d9d1371bf327a9f8b8cbd7fd6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7657056d9d1371bf327a9f8b8cbd7fd6">&#9670;&#160;</a></span>setSwing()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::Arpeggiator::setSwing </td>
+          <td>(</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>swingPercent</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel noexcept">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1235,6 +1289,28 @@ Atributos privados</h2></td></tr>
 
 </div>
 </div>
+<a id="a1f41856db768b5bf82d5ce2d05e56adf" name="a1f41856db768b5bf82d5ce2d05e56adf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f41856db768b5bf82d5ce2d05e56adf">&#9670;&#160;</a></span>swingPercent_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::Arpeggiator::swingPercent_ {0.0f}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ae0e9460e9ff41f293e2ee3715cf76d6e" name="ae0e9460e9ff41f293e2ee3715cf76d6e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae0e9460e9ff41f293e2ee3715cf76d6e">&#9670;&#160;</a></span>syncStepsPerBeat_</h2>
 
@@ -1246,6 +1322,28 @@ Atributos privados</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">float ABDMS2000::Arpeggiator::syncStepsPerBeat_ {16.0f}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afdf6762b3d371e9ab5b9801bbe480051" name="afdf6762b3d371e9ab5b9801bbe480051"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afdf6762b3d371e9ab5b9801bbe480051">&#9670;&#160;</a></span>totalStepsExecuted_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t ABDMS2000::Arpeggiator::totalStepsExecuted_ {0}</td>
         </tr>
       </table>
   </td>

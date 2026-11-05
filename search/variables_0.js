@@ -59,12 +59,13 @@ var searchData=
   ['arpstep6_56',['arpStep6',['../namespaceABDMS2000_1_1ParamIDs.html#a5384b1747eee3bb2749077f429b765c4',1,'ABDMS2000::ParamIDs']]],
   ['arpstep7_57',['arpStep7',['../namespaceABDMS2000_1_1ParamIDs.html#a89448a6666e8d1c89c124618932e5adf',1,'ABDMS2000::ParamIDs']]],
   ['arpstep8_58',['arpStep8',['../namespaceABDMS2000_1_1ParamIDs.html#a02c8a44105a6108aaacdbcf802655492',1,'ABDMS2000::ParamIDs']]],
-  ['arptarget_59',['arpTarget',['../namespaceABDMS2000_1_1ParamIDs.html#aa08b42fdd5addd9cfd02a8a3873a4391',1,'ABDMS2000::ParamIDs']]],
-  ['arptarget_5f_60',['arpTarget_',['../classABDMS2000_1_1SynthEngine.html#aca9f1c2dc6ea7ad57eaf3c29e9f89f25',1,'ABDMS2000::SynthEngine']]],
-  ['arptype_61',['arpType',['../namespaceABDMS2000_1_1ParamIDs.html#aa05c8ac9b2cf121ab5a9468e900825aa',1,'ABDMS2000::ParamIDs']]],
-  ['assignablepedal_62',['assignablePedal',['../namespaceABDMS2000_1_1ParamIDs.html#a5c5ad564f9435bd93cd97a8aa14285e2',1,'ABDMS2000::ParamIDs']]],
-  ['assignableswitch_63',['assignableSwitch',['../namespaceABDMS2000_1_1ParamIDs.html#ab81fd184ca338eda4e45ed7de2a9df31',1,'ABDMS2000::ParamIDs']]],
-  ['assignmode_5f_64',['assignMode_',['../classABDMS2000_1_1VoiceManager.html#a92a7bbd0b1e4b5f08f8fd12d03ff3372',1,'ABDMS2000::VoiceManager']]],
-  ['audioprocessor_5f_65',['audioProcessor_',['../classABDMS2000_1_1ABDMS2000AudioProcessorEditor.html#a412a20ded3ead7297c21a829cdca4db4',1,'ABDMS2000::ABDMS2000AudioProcessorEditor']]],
-  ['autoupdater_5f_66',['autoUpdater_',['../classABDMS2000_1_1BridgeActions.html#a5ca4bad12be058680fc16a23e6c43efb',1,'ABDMS2000::BridgeActions']]]
+  ['arpswing_59',['arpSwing',['../namespaceABDMS2000_1_1ParamIDs.html#ab59cc2fff920d1a6d372e96c17f5ffdc',1,'ABDMS2000::ParamIDs']]],
+  ['arptarget_60',['arpTarget',['../namespaceABDMS2000_1_1ParamIDs.html#aa08b42fdd5addd9cfd02a8a3873a4391',1,'ABDMS2000::ParamIDs']]],
+  ['arptarget_5f_61',['arpTarget_',['../classABDMS2000_1_1SynthEngine.html#aca9f1c2dc6ea7ad57eaf3c29e9f89f25',1,'ABDMS2000::SynthEngine']]],
+  ['arptype_62',['arpType',['../namespaceABDMS2000_1_1ParamIDs.html#aa05c8ac9b2cf121ab5a9468e900825aa',1,'ABDMS2000::ParamIDs']]],
+  ['assignablepedal_63',['assignablePedal',['../namespaceABDMS2000_1_1ParamIDs.html#a5c5ad564f9435bd93cd97a8aa14285e2',1,'ABDMS2000::ParamIDs']]],
+  ['assignableswitch_64',['assignableSwitch',['../namespaceABDMS2000_1_1ParamIDs.html#ab81fd184ca338eda4e45ed7de2a9df31',1,'ABDMS2000::ParamIDs']]],
+  ['assignmode_5f_65',['assignMode_',['../classABDMS2000_1_1VoiceManager.html#a92a7bbd0b1e4b5f08f8fd12d03ff3372',1,'ABDMS2000::VoiceManager']]],
+  ['audioprocessor_5f_66',['audioProcessor_',['../classABDMS2000_1_1ABDMS2000AudioProcessorEditor.html#a412a20ded3ead7297c21a829cdca4db4',1,'ABDMS2000::ABDMS2000AudioProcessorEditor']]],
+  ['autoupdater_5f_67',['autoUpdater_',['../classABDMS2000_1_1BridgeActions.html#a5ca4bad12be058680fc16a23e6c43efb',1,'ABDMS2000::BridgeActions']]]
 ];

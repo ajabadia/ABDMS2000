@@ -4,6 +4,7 @@ var classABDMS2000_1_1Arpeggiator =
     [ "allNotesOff", "classABDMS2000_1_1Arpeggiator.html#a413354f48563fa5fdecae9e2d14bb674", null ],
     [ "getLastStep", "classABDMS2000_1_1Arpeggiator.html#a3a863aa938f61ebb59f95b16bdb55e77", null ],
     [ "getStepMask", "classABDMS2000_1_1Arpeggiator.html#adbad53085487c9ea70ef753d348b5f8a", null ],
+    [ "getSwing", "classABDMS2000_1_1Arpeggiator.html#a05261753cefec4a32c3fbcf866329a00", null ],
     [ "isEnabled", "classABDMS2000_1_1Arpeggiator.html#a6c324a2b475793d8babfa1ba67dc9291", null ],
     [ "isStepMaskEnabled", "classABDMS2000_1_1Arpeggiator.html#aa9db0e464443e4b5355b46e249c17310", null ],
     [ "noteOff", "classABDMS2000_1_1Arpeggiator.html#ac35e9afe172e1be3900cdfaee462bd64", null ],
@@ -20,6 +21,7 @@ var classABDMS2000_1_1Arpeggiator =
     [ "setOctaveRange", "classABDMS2000_1_1Arpeggiator.html#a02359c30021cc5f2c797cf7062db50ee", null ],
     [ "setStepMask", "classABDMS2000_1_1Arpeggiator.html#ac1c93be53c286481ca53f34c45652a09", null ],
     [ "setStepMaskEnabled", "classABDMS2000_1_1Arpeggiator.html#a9535724bbbb9fbb1281dc56de3d9efac", null ],
+    [ "setSwing", "classABDMS2000_1_1Arpeggiator.html#a7657056d9d1371bf327a9f8b8cbd7fd6", null ],
     [ "setSyncResolution", "classABDMS2000_1_1Arpeggiator.html#a8080ccc0255e4688928dcad2e02c8e84", null ],
     [ "setTempoBPM", "classABDMS2000_1_1Arpeggiator.html#a9cc10a4075566eb8105096dd26dde44d", null ],
     [ "setType", "classABDMS2000_1_1Arpeggiator.html#aa426a1e33ec896722a754c194215c22c", null ],
@@ -45,6 +47,8 @@ var classABDMS2000_1_1Arpeggiator =
     [ "stepMask_", "classABDMS2000_1_1Arpeggiator.html#a651881732fa4c720bd2ff8f5a45df186", null ],
     [ "stepMaskEnabled_", "classABDMS2000_1_1Arpeggiator.html#ad439ffa7f90573fa41749288032bbd1c", null ],
     [ "stepSampleCounter_", "classABDMS2000_1_1Arpeggiator.html#a82b0d19531736749f9c74cb1dd62c367", null ],
+    [ "swingPercent_", "classABDMS2000_1_1Arpeggiator.html#a1f41856db768b5bf82d5ce2d05e56adf", null ],
     [ "syncStepsPerBeat_", "classABDMS2000_1_1Arpeggiator.html#ae0e9460e9ff41f293e2ee3715cf76d6e", null ],
+    [ "totalStepsExecuted_", "classABDMS2000_1_1Arpeggiator.html#afdf6762b3d371e9ab5b9801bbe480051", null ],
     [ "type_", "classABDMS2000_1_1Arpeggiator.html#aebc559f999d9df1f83fa8d11265cd2e4", null ]
 ];

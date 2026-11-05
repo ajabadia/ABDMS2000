@@ -1,5 +1,15 @@
 var NAVTREEINDEX14 =
 {
+"namespaceABDMS2000_1_1WavetableLoader.html#aa0febd68fc3913738de3da68bb6f17d7":[5,0,0,6,1],
+"namespaceABDMS2000_1_1WavetableLoader.html#ab0494f2ab2ed734590d62aedeb81f477":[5,0,0,6,2],
+"namespaceABDMS2000_1_1WavetableLoader.html#ab575dbdb8a9fb1c93655cec104abad22":[5,0,0,6,4],
+"namespaceABDMS2000_1_1ms2kipl.html":[5,0,0,7],
+"namespaceABDMS2000_1_1ms2kipl.html#a061d5b6914885b1b04bdc57497e8b02a":[5,0,0,7,4],
+"namespaceABDMS2000_1_1ms2kipl.html#a09f615ee965d914a0c43454765da1f4c":[5,0,0,7,35],
+"namespaceABDMS2000_1_1ms2kipl.html#a0bbefe8bca73f158ccd962f67bb21cb0":[5,0,0,7,42],
+"namespaceABDMS2000_1_1ms2kipl.html#a0e9913ab0494da16f3fe9d65cb8203df":[5,0,0,7,23],
+"namespaceABDMS2000_1_1ms2kipl.html#a1321800ad5dbbcedd548c28163fd185b":[5,0,0,7,45],
+"namespaceABDMS2000_1_1ms2kipl.html#a182c2bf26a9d4198c97aa25b9c2baaa0":[5,0,0,7,9],
 "namespaceABDMS2000_1_1ms2kipl.html#a1ef2608de81c8d0f17d1844c3e4d260f":[5,0,0,7,26],
 "namespaceABDMS2000_1_1ms2kipl.html#a1f8916dfcf6bca08e42826cb7628573e":[5,0,0,7,27],
 "namespaceABDMS2000_1_1ms2kipl.html#a21c872c3772fe8b23c9fa486f78c3ad7":[5,0,0,7,20],
@@ -239,15 +249,5 @@ var NAVTREEINDEX14 =
 "structABDMS2000_1_1FirmwareTables_1_1HardwareVoiceOutputFilterCoeffs.html#a0a489808f9fd6e2c074af323fcef3632":[5,0,0,1,1,0],
 "structABDMS2000_1_1FirmwareTables_1_1HardwareVoiceOutputFilterCoeffs.html#a0a489808f9fd6e2c074af323fcef3632":[6,0,0,0,1,0],
 "structABDMS2000_1_1FirmwareTables_1_1HardwareVoiceOutputFilterCoeffs.html#a4c986284e34812381852e6967834a68a":[5,0,0,1,1,1],
-"structABDMS2000_1_1FirmwareTables_1_1HardwareVoiceOutputFilterCoeffs.html#a4c986284e34812381852e6967834a68a":[6,0,0,0,1,1],
-"structABDMS2000_1_1FirmwareTables_1_1HardwareVoiceOutputFilterCoeffs.html#a9e055becb73975bdba612bee49fa9803":[5,0,0,1,1,2],
-"structABDMS2000_1_1FirmwareTables_1_1HardwareVoiceOutputFilterCoeffs.html#a9e055becb73975bdba612bee49fa9803":[6,0,0,0,1,2],
-"structABDMS2000_1_1HardwareMidiTransport_1_1Outcome.html":[5,0,0,60,0],
-"structABDMS2000_1_1HardwareMidiTransport_1_1Outcome.html":[6,0,0,52,0],
-"structABDMS2000_1_1HardwareMidiTransport_1_1Outcome.html#a9e503a10303a68ba57508803d257471e":[5,0,0,60,0,0],
-"structABDMS2000_1_1HardwareMidiTransport_1_1Outcome.html#a9e503a10303a68ba57508803d257471e":[6,0,0,52,0,0],
-"structABDMS2000_1_1HardwareMidiTransport_1_1Outcome.html#ad04f9e62bc017cbb0ca5bd002f629dab":[5,0,0,60,0,1],
-"structABDMS2000_1_1HardwareMidiTransport_1_1Outcome.html#ad04f9e62bc017cbb0ca5bd002f629dab":[6,0,0,52,0,1],
-"structABDMS2000_1_1LCDScreenText.html":[5,0,0,65],
-"structABDMS2000_1_1LCDScreenText.html":[6,0,0,57]
+"structABDMS2000_1_1FirmwareTables_1_1HardwareVoiceOutputFilterCoeffs.html#a4c986284e34812381852e6967834a68a":[6,0,0,0,1,1]
 };
