@@ -76,7 +76,10 @@ env:
   # SHA fijo del hermano que trae el spec, igual que en build-pipeline.yml:
   # una rama se mueve sola y el check pasaria contra un contrato distinto del
   # que se commiteo.
-  SHA_SHARED_JS: '3548836167f16b4af29d53d0e5021a8b4b2c5ee6'
+  # Tiene que ser la revision de ABDShared con la que se generaron los .gen:
+  # subir el SHA sin regenerar (o al reves) hace saltar este job, que es
+  # justo lo que se le pide.
+  SHA_SHARED_JS: '9e73a193d5c2ff0ef3a2a6677e5d9dba41f12241'
 
 permissions:
   contents: read
