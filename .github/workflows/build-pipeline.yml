@@ -75,6 +75,7 @@ env:
   SHA_BANK: '31cd46fc9c5b59eee430f6532db773723a6db0c0'    # ABDBankManager main
   SHA_SHARED: '180cf7866fca43fdc5035ebab9d4cc7f9713ff80'  # ABDSharedCode master (con Scope)
   SHA_ASSETS: 'fd3f295e4f9a4b31a93d425bdfbea00c743894c3'  # ABDSharedAssets fix/contract-dest-73
+  SHA_SHARED_JS: '3548836167f16b4af29d53d0e5021a8b4b2c5ee6'  # ABDShared master (paquete @abdsynths/shared)
 
 jobs:
   # ---------------------------------------------------------------------------
@@ -568,9 +569,9 @@ jobs:
 
     - uses: actions/checkout@v7
       with:
-        repository: ajabadia/ABDSharedAssets
-        ref: ${{ env.SHA_ASSETS }}
-        path: ABDSharedAssets
+        repository: ajabadia/ABDShared
+        ref: ${{ env.SHA_SHARED_JS }}
+        path: ABDShared
         fetch-depth: 1
 
     - uses: actions/setup-node@v7
@@ -591,9 +592,14 @@ jobs:
         cd ..
         mkdir -p node_modules/@abdsynths
         ln -s ../.ci/node_modules/vitest node_modules/vitest
-        ln -s "$GITHUB_WORKSPACE/ABDSharedAssets" node_modules/@abdsynths/shared
+        ln -s "$GITHUB_WORKSPACE/ABDShared" node_modules/@abdsynths/shared
         ln -s "$GITHUB_WORKSPACE/ABDBankManager/packages/ui" node_modules/@abdsynths/bank-manager-ui
         ln -s "$GITHUB_WORKSPACE/ABDSharedCode/MidiKeyboard" node_modules/@abdsynths/midi-keyb
+
+    # WebUI/abdbank/ esta en .gitignore: es una copia vendoreada del BankManager.
+    # Sin este paso, media suite no resuelve sus imports en un clon limpio.
+    - name: Vendorear BankManager (WebUI/abdbank)
+      run: node Scripts/sync_bankmanager.js
 
     - name: Run vitest
       run: .ci/node_modules/.bin/vitest run
