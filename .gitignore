@@ -96,3 +96,7 @@ graphify-out/
 
 # Experimentos / scratch de diagnostico (no es fuente del proyecto)
 tmp_ph/
+
+# Python bytecode
+__pycache__/
+*.pyc
