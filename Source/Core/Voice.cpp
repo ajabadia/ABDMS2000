@@ -240,6 +240,9 @@ void Voice::applyBlockParams(const VoiceParameters &params) noexcept
     eg2_.setSustain(params.eg2Sustain);
     eg2_.setRelease(params.eg2Release);
 
+    eg1_.setResetToZero(params.eg1Reset);
+    eg2_.setResetToZero(params.eg2Reset);
+
     // Virtual Patch Matrix: 4 mod slot routings
     for (size_t s = 0; s < 4; ++s)
     {

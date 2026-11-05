@@ -940,6 +940,7 @@ function renderEg1Drawer(container) {
         <div id="drawer-ctrl-eg1d"></div>
         <div id="drawer-ctrl-eg1s"></div>
         <div id="drawer-ctrl-eg1r"></div>
+        <div id="drawer-sel-eg1-reset"></div>
       </div>
     </div>
   `;
@@ -955,6 +956,13 @@ function renderEg1Drawer(container) {
   new ABDKnob(container.querySelector('#drawer-ctrl-eg1r'), {
     paramId: tParam('eg1Release'), label: 'RELEASE', min: 0, max: 127, defaultValue: 40, size: 48
   });
+  new ABDSegmented(container.querySelector('#drawer-sel-eg1-reset'), {
+    paramId: tParam('eg1Reset'),
+    label: 'RESET',
+    options: [{ value: 0, label: 'CONTINUE' }, { value: 1, label: 'FROM ZERO' }],
+    variant: 'strip',
+    size: 'sm',
+  });
 }
 
 function renderEg2Drawer(container) {
@@ -966,6 +974,7 @@ function renderEg2Drawer(container) {
         <div id="drawer-ctrl-eg2d"></div>
         <div id="drawer-ctrl-eg2s"></div>
         <div id="drawer-ctrl-eg2r"></div>
+        <div id="drawer-sel-eg2-reset"></div>
       </div>
     </div>
   `;
@@ -980,6 +989,13 @@ function renderEg2Drawer(container) {
   });
   new ABDKnob(container.querySelector('#drawer-ctrl-eg2r'), {
     paramId: tParam('eg2Release'), label: 'RELEASE', min: 0, max: 127, defaultValue: 20, size: 48
+  });
+  new ABDSegmented(container.querySelector('#drawer-sel-eg2-reset'), {
+    paramId: tParam('eg2Reset'),
+    label: 'RESET',
+    options: [{ value: 0, label: 'CONTINUE' }, { value: 1, label: 'FROM ZERO' }],
+    variant: 'strip',
+    size: 'sm',
   });
 }
 

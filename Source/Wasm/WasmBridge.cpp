@@ -271,6 +271,10 @@ class WasmEngineInstance
             voiceParams_.eg2Decay = value / 127.0f;
         else if (id == "eg2Sustain")
             voiceParams_.eg2Sustain = value / 127.0f;
+        else if (id == "eg1Reset")
+            voiceParams_.eg1Reset = value > 0.5f;
+        else if (id == "eg2Reset")
+            voiceParams_.eg2Reset = value > 0.5f;
         else if (id == "eg2Release")
             voiceParams_.eg2Release = value / 127.0f;
         else if (id == "lfo1Wave")

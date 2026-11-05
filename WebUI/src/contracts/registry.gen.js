@@ -801,6 +801,26 @@ export const PARAMETERS_SPEC = {
       "sysexOffset": 26
     },
     {
+      "id": "eg1Reset",
+      "name": "EG1 Reset on Retrigger",
+      "group": "EG1",
+      "cc": null,
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "type": "boolean",
+      "binaryPacking": {
+        "byteOffset": 39,
+        "bitMask": 16,
+        "bitShift": 4,
+        "byteSize": 1,
+        "encoding": "Bit"
+      },
+      "scope": "part",
+      "semanticRole": "Eg1Reset",
+      "sysexOffset": null
+    },
+    {
       "id": "eg2Attack",
       "name": "EG2 Attack",
       "group": "EG2",
@@ -905,6 +925,26 @@ export const PARAMETERS_SPEC = {
       "semanticRole": "AmpEnvRelease",
       "scope": "part",
       "sysexOffset": 30
+    },
+    {
+      "id": "eg2Reset",
+      "name": "EG2 Reset on Retrigger",
+      "group": "EG2",
+      "cc": null,
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "type": "boolean",
+      "binaryPacking": {
+        "byteOffset": 39,
+        "bitMask": 32,
+        "bitShift": 5,
+        "byteSize": 1,
+        "encoding": "Bit"
+      },
+      "scope": "part",
+      "semanticRole": "Eg2Reset",
+      "sysexOffset": null
     },
     {
       "id": "lfo1Wave",
@@ -4343,6 +4383,26 @@ export const PARAMETERS_SPEC = {
       "sysexOffset": 168
     },
     {
+      "id": "t2Eg1Reset",
+      "name": "Timbre 2 EG1 Reset",
+      "group": "Timbre 2",
+      "cc": null,
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "type": "boolean",
+      "binaryPacking": {
+        "byteOffset": 147,
+        "bitMask": 16,
+        "bitShift": 4,
+        "byteSize": 1,
+        "encoding": "Bit"
+      },
+      "scope": "part",
+      "semanticRole": "Eg1Reset",
+      "sysexOffset": null
+    },
+    {
       "id": "t2Eg2Attack",
       "name": "T2 EG2 Attack",
       "group": "Timbre 2",
@@ -4447,6 +4507,26 @@ export const PARAMETERS_SPEC = {
       "semanticRole": "AmpEnvRelease",
       "scope": "part",
       "sysexOffset": 172
+    },
+    {
+      "id": "t2Eg2Reset",
+      "name": "Timbre 2 EG2 Reset",
+      "group": "Timbre 2",
+      "cc": null,
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "type": "boolean",
+      "binaryPacking": {
+        "byteOffset": 147,
+        "bitMask": 32,
+        "bitShift": 5,
+        "byteSize": 1,
+        "encoding": "Bit"
+      },
+      "scope": "part",
+      "semanticRole": "Eg2Reset",
+      "sysexOffset": null
     },
     {
       "id": "t2Lfo1Wave",

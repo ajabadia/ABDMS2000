@@ -107,6 +107,10 @@ struct VoiceParameters
     float eg2Sustain {0.8f};
     float eg2Release {0.3f};
 
+    // Reset de envolvente al re-disparar (ti::FLAGS bits 4 y 5; 1 = desde 0.0)
+    bool eg1Reset {false};
+    bool eg2Reset {false};
+
     // LFOs: LFO1 uses LFOWaveform, LFO2 uses LFOWaveformLFO2
     LFOWaveform lfo1Wave {LFOWaveform::Triangle};
     float lfo1FreqHz {5.0f};

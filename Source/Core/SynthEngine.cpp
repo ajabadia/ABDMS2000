@@ -304,6 +304,10 @@ void SynthEngine::readTimbreParams(bool second, VoiceParameters &vp) noexcept
     vp.eg2Sustain = conversion::normalizedToDomain("eg2Sustain", P(ParamIDs::eg2Sustain, 127.0f) / 127.0f);
     vp.eg2Release = conversion::normalizedToDomain("eg2Release", P(ParamIDs::eg2Release, 40.0f) / 127.0f);
 
+    // Reset de envolvente al re-disparar (FLAGS bits 4 y 5): 1 = desde 0.0.
+    vp.eg1Reset = P(ParamIDs::eg1Reset, 0.0f) > 0.5f;
+    vp.eg2Reset = P(ParamIDs::eg2Reset, 0.0f) > 0.5f;
+
     // LFO1: Saw=0, Square=1, Triangle=2, SampleHold=3
     int l1w = static_cast<int>(P(ParamIDs::lfo1Wave, 2.0f));
     vp.lfo1Wave = static_cast<LFOWaveform>(std::min(l1w, 3));

@@ -86,10 +86,12 @@ namespace ParamIDs {
     inline constexpr const char* eg1Decay = "eg1Decay";
     inline constexpr const char* eg1Sustain = "eg1Sustain";
     inline constexpr const char* eg1Release = "eg1Release";
+    inline constexpr const char* eg1Reset = "eg1Reset";
     inline constexpr const char* eg2Attack = "eg2Attack";
     inline constexpr const char* eg2Decay = "eg2Decay";
     inline constexpr const char* eg2Sustain = "eg2Sustain";
     inline constexpr const char* eg2Release = "eg2Release";
+    inline constexpr const char* eg2Reset = "eg2Reset";
     inline constexpr const char* lfo1Wave = "lfo1Wave";
     inline constexpr const char* lfo1Freq = "lfo1Freq";
     inline constexpr const char* lfo1KeySync = "lfo1KeySync";
@@ -267,10 +269,12 @@ namespace ParamIDs {
     inline constexpr const char* t2Eg1Decay = "t2Eg1Decay";
     inline constexpr const char* t2Eg1Sustain = "t2Eg1Sustain";
     inline constexpr const char* t2Eg1Release = "t2Eg1Release";
+    inline constexpr const char* t2Eg1Reset = "t2Eg1Reset";
     inline constexpr const char* t2Eg2Attack = "t2Eg2Attack";
     inline constexpr const char* t2Eg2Decay = "t2Eg2Decay";
     inline constexpr const char* t2Eg2Sustain = "t2Eg2Sustain";
     inline constexpr const char* t2Eg2Release = "t2Eg2Release";
+    inline constexpr const char* t2Eg2Reset = "t2Eg2Reset";
     inline constexpr const char* t2Lfo1Wave = "t2Lfo1Wave";
     inline constexpr const char* t2Lfo1Freq = "t2Lfo1Freq";
     inline constexpr const char* t2Lfo1KeySync = "t2Lfo1KeySync";
