@@ -67,9 +67,13 @@ export function validateAndProcess(rawParams) {
 
     // Validate curve (DSP.8: standard string or integer enum)
     if (p.curve !== undefined && p.curve !== null) {
-      const validCurves = ['Linear', 'Exp', 'Pow', 'Lut', 0, 1, 2, 3];
+      // CDD.2: el contrato canonico declara tambien SymBipolar (bipolar centrado en 64) y
+      // PiecewiseLinear. El generador las mapea sin cambiar la ley numerica generada.
+      const validCurves = ['Linear', 'Exp', 'Pow', 'SymBipolar', 'PiecewiseLinear', 'Lut', 0, 1, 2, 3];
       if (!validCurves.includes(p.curve)) {
-        errors.push(`[${p.id}] curve value "${p.curve}" invalid (valid: Linear, Exp, Pow, Lut, 0-3)`);
+        errors.push(
+          `[${p.id}] curve value "${p.curve}" invalid (valid: Linear, Exp, Pow, SymBipolar, PiecewiseLinear, Lut, 0-3)`
+        );
       }
     }
 
@@ -111,9 +115,10 @@ export function validateAndProcess(rawParams) {
 
     // Validate smoothing value (DSP.8)
     if (p.smoothing !== undefined && p.smoothing !== null) {
-      const validSmoothing = ['Linear', 'Log', 0, 1];
+      // CDD.2: el contrato canonico nombra 'Logarithmic'; 'Log' sigue aceptandose por compatibilidad.
+      const validSmoothing = ['Linear', 'Log', 'Logarithmic', 0, 1];
       if (!validSmoothing.includes(p.smoothing)) {
-        errors.push(`[${p.id}] smoothing value "${p.smoothing}" invalid (valid: Linear, Log)`);
+        errors.push(`[${p.id}] smoothing value "${p.smoothing}" invalid (valid: Linear, Log, Logarithmic)`);
       }
     }
 

@@ -285,8 +285,11 @@ withOffsets.forEach((p, idx) => {
   // Nuevos campos schema-driven (mapear strings a enteros de C++):
   const wireMap = { 'None': -1, 'CC': 0, 'SysEx': 1, 'Nrpn': 2 };
   const wireCodecMap = { 'Value': 0, 'Bipolar': 1, 'Enum': 2 };
-  const curveMap = { 'Linear': 0, 'Exp': 1, 'Pow': 2, 'Lut': 3 };
-  const smoothingMap = { 'Linear': 0, 'Log': 1 };
+  // SymBipolar se declara en el contrato (CDD.2) pero NO cambia la ley numerica: el sesgo
+  // de 64 vive en `wireZeroCenter`/`wireCodec` y el motor ya lo aplica por tramos. Se mapea
+  // a 0 (Linear) para que los artefactos generados sean identicos a los anteriores.
+  const curveMap = { 'Linear': 0, 'Exp': 1, 'Pow': 2, 'Lut': 3, 'SymBipolar': 0 };
+  const smoothingMap = { 'Linear': 0, 'Log': 1, 'Logarithmic': 1 };
 
   let wireVal = -1;
   if (typeof p.wire === 'number') wireVal = p.wire;
