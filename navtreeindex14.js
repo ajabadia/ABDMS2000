@@ -1,5 +1,9 @@
 var NAVTREEINDEX14 =
 {
+"namespaceABDMS2000_1_1ms2kipl.html#a1ef2608de81c8d0f17d1844c3e4d260f":[5,0,0,7,26],
+"namespaceABDMS2000_1_1ms2kipl.html#a1f8916dfcf6bca08e42826cb7628573e":[5,0,0,7,27],
+"namespaceABDMS2000_1_1ms2kipl.html#a21c872c3772fe8b23c9fa486f78c3ad7":[5,0,0,7,20],
+"namespaceABDMS2000_1_1ms2kipl.html#a21d281c45440ba48d31a0aa912869bd0":[5,0,0,7,16],
 "namespaceABDMS2000_1_1ms2kipl.html#a25cb3b6e0bb2b933b8b9bbd15dacec05":[5,0,0,7,36],
 "namespaceABDMS2000_1_1ms2kipl.html#a2c8d80bbf83aa158bfd179cfd37cfd4a":[5,0,0,7,10],
 "namespaceABDMS2000_1_1ms2kipl.html#a2d0050177f9606afa66898ed33ca92d3":[5,0,0,7,46],
@@ -245,9 +249,5 @@ var NAVTREEINDEX14 =
 "structABDMS2000_1_1HardwareMidiTransport_1_1Outcome.html#ad04f9e62bc017cbb0ca5bd002f629dab":[5,0,0,60,0,1],
 "structABDMS2000_1_1HardwareMidiTransport_1_1Outcome.html#ad04f9e62bc017cbb0ca5bd002f629dab":[6,0,0,52,0,1],
 "structABDMS2000_1_1LCDScreenText.html":[5,0,0,65],
-"structABDMS2000_1_1LCDScreenText.html":[6,0,0,57],
-"structABDMS2000_1_1LCDScreenText.html#a319b6b802807654bdae678544a02f28a":[5,0,0,65,1],
-"structABDMS2000_1_1LCDScreenText.html#a319b6b802807654bdae678544a02f28a":[6,0,0,57,1],
-"structABDMS2000_1_1LCDScreenText.html#af7604ccca727b51a4c547c3897b0bd45":[5,0,0,65,0],
-"structABDMS2000_1_1LCDScreenText.html#af7604ccca727b51a4c547c3897b0bd45":[6,0,0,57,0]
+"structABDMS2000_1_1LCDScreenText.html":[6,0,0,57]
 };

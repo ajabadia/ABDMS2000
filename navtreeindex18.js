@@ -1,5 +1,13 @@
 var NAVTREEINDEX18 =
 {
+"structABDMS2000_1_1VoiceParameters.html#ae308b874e24af2cddb64bf3f5349626e":[5,0,0,15,8],
+"structABDMS2000_1_1VoiceParameters.html#ae308b874e24af2cddb64bf3f5349626e":[6,0,0,7,8],
+"structABDMS2000_1_1VoiceParameters.html#ae6c2b223312f62e709f890037da7310f":[5,0,0,15,10],
+"structABDMS2000_1_1VoiceParameters.html#ae6c2b223312f62e709f890037da7310f":[6,0,0,7,10],
+"structABDMS2000_1_1VoiceParameters.html#aed9ba712b34fe5600466c6aa3260641b":[5,0,0,15,32],
+"structABDMS2000_1_1VoiceParameters.html#aed9ba712b34fe5600466c6aa3260641b":[6,0,0,7,32],
+"structABDMS2000_1_1VoiceParameters.html#af4879bc3ab7546791411158ed66b9d45":[5,0,0,15,28],
+"structABDMS2000_1_1VoiceParameters.html#af4879bc3ab7546791411158ed66b9d45":[6,0,0,7,28],
 "structABDMS2000_1_1VoiceSlotState.html":[5,0,0,17],
 "structABDMS2000_1_1VoiceSlotState.html":[6,0,0,9],
 "structABDMS2000_1_1VoiceSlotState.html#a3ae28446c15ae518535dd03f9ad0cf0b":[5,0,0,17,0],

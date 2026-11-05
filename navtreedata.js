@@ -279,12 +279,12 @@ var NAVTREEINDEX =
 "functions_t.html",
 "namespaceABDMS2000.html#a4253441c559af73b122124173d8f4aec",
 "namespaceABDMS2000_1_1FactoryPreload.html#a2c1a261f6bb2fd9b0a7d53cf17c2735e",
-"namespaceABDMS2000_1_1ParamIDs.html#a9e7b130e58b1379b70161d5a465a6a12",
-"namespaceABDMS2000_1_1ms2kipl.html#a25cb3b6e0bb2b933b8b9bbd15dacec05",
-"structABDMS2000_1_1M1FileEntry.html",
-"structABDMS2000_1_1MS2000HardwareProgram_1_1SeqRow.html#aaf2b726c932237a82ca8206df6ff3dc9",
-"structABDMS2000_1_1PatchSlot.html",
-"structABDMS2000_1_1VoiceSlotState.html"
+"namespaceABDMS2000_1_1ParamIDs.html#a9d8972085e9b35dadb9abee87955de6e",
+"namespaceABDMS2000_1_1ms2kipl.html#a1ef2608de81c8d0f17d1844c3e4d260f",
+"structABDMS2000_1_1LCDScreenText.html#a319b6b802807654bdae678544a02f28a",
+"structABDMS2000_1_1MS2000HardwareProgram_1_1SeqRow.html#a4b7732720e6c04479be291a2b9eb6fca",
+"structABDMS2000_1_1PatchModulationSources.html#af90505b6c9c2134836a38624c962042e",
+"structABDMS2000_1_1VoiceParameters.html#ae308b874e24af2cddb64bf3f5349626e"
 ];
 
 var SYNCONMSG = 'pulsar para deshabilitar sincronización';
