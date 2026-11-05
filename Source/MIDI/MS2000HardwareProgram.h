@@ -572,6 +572,7 @@ struct MS2000HardwareProgram
             // timbre 1 — voz y osciladores
             {TIMBRE1_START + ti::FLAGS, 6, 7, ParamIDs::voiceMode, Xform::Bit},
             {TIMBRE1_START + ti::FLAGS, 3, 3, ParamIDs::triggerMode, Xform::Bit},
+            {TIMBRE1_START + ti::FLAGS, 0, 1, ParamIDs::keyPriority, Xform::Bit},
             {TIMBRE1_START + ti::UNISON_DETUNE, 0, 0, ParamIDs::unisonDetune, Xform::Raw},
             {TIMBRE1_START + ti::TUNE, 0, 0, ParamIDs::pitchTune, Xform::Signed},
             {TIMBRE1_START + ti::BEND_RANGE, 0, 0, ParamIDs::pitchBendRange, Xform::Signed},

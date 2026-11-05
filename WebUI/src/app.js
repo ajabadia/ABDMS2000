@@ -2112,6 +2112,7 @@ function renderVoiceDrawer(container) {
         <div id="drawer-sel-voice-mode"></div>
         <div id="drawer-sel-synth-profile"></div>
         <div id="drawer-sel-trigger-mode"></div>
+  <div id="drawer-sel-key-priority" style="width: 100%;"></div>
       </div>
     </div>
     <div class="drawer-section-card">
@@ -2182,6 +2183,18 @@ function renderVoiceDrawer(container) {
     options: [
       { value: 0, label: 'SINGLE (LEGATO)' },
       { value: 1, label: 'MULTI (RETRIGGER)' }
+    ],
+    variant: 'strip',
+    size: 'sm',
+  });
+
+  new ABDSegmented(container.querySelector('#drawer-sel-key-priority'), {
+    paramId: tParam('keyPriority'),
+    label: 'KEY PRIORITY (MONO)',
+    options: [
+      { value: 0, label: 'LAST' },
+      { value: 1, label: 'LOW' },
+      { value: 2, label: 'HIGH' }
     ],
     variant: 'strip',
     size: 'sm',

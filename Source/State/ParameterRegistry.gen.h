@@ -57,6 +57,7 @@ namespace ParamIDs {
     inline constexpr const char* synthMode = "synthMode";
     inline constexpr const char* voiceMode = "voiceMode";
     inline constexpr const char* triggerMode = "triggerMode";
+    inline constexpr const char* keyPriority = "keyPriority";
     inline constexpr const char* unisonDetune = "unisonDetune";
     inline constexpr const char* unisonSpread = "unisonSpread";
     inline constexpr const char* portamentoTime = "portamentoTime";
@@ -237,6 +238,7 @@ namespace ParamIDs {
     inline constexpr const char* seq3Step16 = "seq3Step16";
     inline constexpr const char* t2VoiceMode = "t2VoiceMode";
     inline constexpr const char* t2TriggerMode = "t2TriggerMode";
+    inline constexpr const char* t2KeyPriority = "t2KeyPriority";
     inline constexpr const char* t2UnisonDetune = "t2UnisonDetune";
     inline constexpr const char* t2PortamentoTime = "t2PortamentoTime";
     inline constexpr const char* t2Osc1Wave = "t2Osc1Wave";

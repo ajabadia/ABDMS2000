@@ -219,15 +219,38 @@ def build_midi_script(note: int, vel: int, note_on: float, note_off: float) -> s
     return ";".join(f"{t:.3f}:{chunk.hex().upper()}" for t, chunk in events)
 
 
+def script_end(script: str) -> float:
+    """Instante del último evento del guion (para dimensionar `--duration`)."""
+    times = []
+    for ev in script.split(";"):
+        ev = ev.strip()
+        if not ev:
+            continue
+        head, sep, _ = ev.partition(":")
+        if not sep:
+            sys.exit(f"[ERROR] evento sin ':' en el guion MIDI: {ev!r}")
+        times.append(float(head))
+    return max(times) if times else 0.0
+
+
 # ----------------------------------------------------------------------------
 # Render en el emulador
 # ----------------------------------------------------------------------------
 def render(program: int, note: int, vel: int, hold: float, out_wav: str,
-           tail: float = 1.0, patches: dict[int, int] | None = None) -> str:
+           tail: float = 1.0, patches: dict[int, int] | None = None,
+           midi_script: str | None = None) -> str:
+    """Renderiza un preset con el estímulo MIDI indicado.
+
+    `midi_script` sustituye al par note-on/note-off único por cualquier secuencia
+    en el formato del emulador (`t:hex;t:hex;...`), p. ej. notas solapadas o
+    acordes. La duración del render se deduce del último evento del guion.
+    """
     os.makedirs(os.path.dirname(os.path.abspath(out_wav)) or ".", exist_ok=True)
     note_on = 3.0                     # tras el arranque (~2,5 s de MCU)
     note_off = note_on + hold
-    duration = note_off + tail
+    if midi_script is None:
+        midi_script = build_midi_script(note, vel, note_on, note_off)
+    duration = script_end(midi_script) + tail
 
     cmd = [
         emu_path(),
@@ -239,7 +262,7 @@ def render(program: int, note: int, vel: int, hold: float, out_wav: str,
         "--render-test", os.path.abspath(out_wav),
     ]
     env = dict(os.environ)
-    env["MS2K_MIDIIN"] = build_midi_script(note, vel, note_on, note_off)
+    env["MS2K_MIDIIN"] = midi_script
 
     os.makedirs(SCRATCH, exist_ok=True)
     proc = subprocess.run(cmd, cwd=SCRATCH, env=env, capture_output=True, text=True,
@@ -416,7 +439,8 @@ def cmd_render(args) -> int:
     patches = parse_patches(args.patch)
     extra = "" if not patches else " patch " + " ".join(f"[{o}]={v:02X}" for o, v in sorted(patches.items()))
     print(f"[P0.2] #{args.program:03d} \"{preset_name(args.program)}\"{extra}")
-    render(args.program, args.note, args.vel, args.hold, out, patches=patches)
+    render(args.program, args.note, args.vel, args.hold, out, patches=patches,
+           midi_script=args.midi_script)
     left, right, sr = read_wav_int32(out)
     m = measure(left, right, sr)
     print(f"  -> {out}")
@@ -474,6 +498,9 @@ def main() -> int:
     ap.add_argument("--out", help="WAV de salida")
     ap.add_argument("--patch", action="append", metavar="OFF=VAL",
                     help="modifica un byte del programa (p. ej. TI_CUTOFF=58: --patch 58=0x20)")
+    ap.add_argument("--midi-script", metavar="SCRIPT",
+                    help="secuencia MIDI cruda 't:hex;t:hex;...' en vez de una sola nota "
+                         "(p. ej. '3.000:903C64;3.400:904364;4.200:804300;4.800:803C00')")
     ap.add_argument("--bins", action="store_true", help="genera tests/emu_preset_*.bin")
     ap.add_argument("--indices", default=",".join(str(i) for i in DEFAULT_INDICES))
     ap.add_argument("--make-factory-flash", action="store_true")

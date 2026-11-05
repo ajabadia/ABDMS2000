@@ -163,16 +163,19 @@ void VoiceManager::noteOn(int midiNote, float velocity) noexcept
             heldNotesStack_.erase(dup);
         heldNotesStack_.push_back(midiNote);
 
+        // Prioridad de tecla: Last (por defecto), Low o High.
+        const int sounding = pickPriorityNote(midiNote);
+
         slotStates_[0].isKeyPressed = true;
         slotStates_[0].isHeldByLatch = isHoldActive_;
-        slotStates_[0].currentMidiNote = midiNote;
+        slotStates_[0].currentMidiNote = sounding;
         slotStates_[0].noteOnTime = globalTimeCounter_;
 
         bool glideOn = (glideTimeSec_ > 0.001f);
         bool isFirstTimbre = (heldNotesStack_.size() <= 1);
 
-        voices_[0].noteOn(midiNote, velocity, glideOn, isFirstTimbre, isLegato);
-        lastMonoNote_ = midiNote;
+        voices_[0].noteOn(sounding, velocity, glideOn, isFirstTimbre, isLegato);
+        lastMonoNote_ = sounding;
     }
     else if (assignMode_ == VoiceAssignMode::Unison)
     {
@@ -185,15 +188,16 @@ void VoiceManager::noteOn(int midiNote, float velocity) noexcept
         bool glideOn = (glideTimeSec_ > 0.001f);
         bool isFirstTimbre = (heldNotesStack_.size() <= 1);
 
+        const int sounding = pickPriorityNote(midiNote);
         for (size_t i = 0; i < activeVoiceCapacity_; ++i)
         {
             slotStates_[i].isKeyPressed = true;
             slotStates_[i].isHeldByLatch = isHoldActive_;
-            slotStates_[i].currentMidiNote = midiNote;
+            slotStates_[i].currentMidiNote = sounding;
             slotStates_[i].noteOnTime = globalTimeCounter_;
-            voices_[i].noteOn(midiNote, velocity, glideOn, isFirstTimbre, isLegato);
+            voices_[i].noteOn(sounding, velocity, glideOn, isFirstTimbre, isLegato);
         }
-        lastMonoNote_ = midiNote;
+        lastMonoNote_ = sounding;
     }
     else  // VoiceAssignMode::Poly
     {
@@ -245,7 +249,8 @@ void VoiceManager::noteOff(int midiNote) noexcept
                 else
                 {
                     // Fall back to previous held note in stack
-                    int prevNote = heldNotesStack_.back();
+                    // Al soltar: Last vuelve a la ultima tecla, Low/High al extremo.
+                    int prevNote = pickPriorityNote(heldNotesStack_.back());
                     slotStates_[0].isKeyPressed = true;
                     slotStates_[0].currentMidiNote = prevNote;
                     slotStates_[0].noteOnTime = ++globalTimeCounter_;
@@ -403,6 +408,24 @@ size_t VoiceManager::getActiveVoiceCount() const noexcept
             count++;
     }
     return count;
+}
+
+
+int VoiceManager::pickPriorityNote(int incoming) const noexcept
+{
+    if (heldNotesStack_.empty())
+        return incoming;
+
+    switch (keyPriority_)
+    {
+        case KeyPriority::Low:
+            return *std::min_element(heldNotesStack_.begin(), heldNotesStack_.end());
+        case KeyPriority::High:
+            return *std::max_element(heldNotesStack_.begin(), heldNotesStack_.end());
+        case KeyPriority::Last:
+        default:
+            return incoming;  // el stack ya empuja la nota nueva al final
+    }
 }
 
 }  // namespace ABDMS2000

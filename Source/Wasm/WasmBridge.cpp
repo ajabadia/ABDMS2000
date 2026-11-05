@@ -370,6 +370,12 @@ class WasmEngineInstance
             voiceManager_.setAssignMode(static_cast<VoiceAssignMode>(std::min(2, static_cast<int>(value))));
         else if (id == "triggerMode")
             voiceManager_.setTriggerMode(value > 0.5f ? TriggerMode::Multi : TriggerMode::Single);
+        else if (id == "keyPriority")
+        {
+            const int v = static_cast<int>(value + 0.5f);
+            voiceManager_.setKeyPriority(
+                v == 1 ? KeyPriority::Low : (v == 2 ? KeyPriority::High : KeyPriority::Last));
+        }
         else if (id == "synthMode")
         {
             synthMode_ = static_cast<int>(value);

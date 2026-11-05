@@ -174,7 +174,8 @@ describe('UX Master Plan & MS2000 Functional Parity (UX-1 .. UX-3)', () => {
     it('maps every t2* parameter in PARAM_LOOKUP from its Timbre 1 base ID', () => {
       const t2Ids = Object.keys(PARAM_LOOKUP).filter((k) => k.startsWith('t2') && k.length > 2);
       // 123 desde UX-4: t2TriggerMode se sumó al espejo del Timbre 2.
-      expect(t2Ids.length).toBe(123);
+      // 124: 123 de UX-4 (t2TriggerMode) + t2KeyPriority.
+      expect(t2Ids.length).toBe(124);
 
       t2Ids.forEach((t2Id) => {
         const baseId = t2Id.charAt(2).toLowerCase() + t2Id.slice(3);

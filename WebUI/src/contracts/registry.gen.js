@@ -105,6 +105,32 @@ export const PARAMETERS_SPEC = {
       "sysexOffset": null
     },
     {
+      "name": "Key Priority",
+      "group": "Voice",
+      "cc": null,
+      "min": 0,
+      "max": 3,
+      "default": 0,
+      "type": "choice",
+      "choices": [
+        "Last",
+        "Low",
+        "High",
+        "Last"
+      ],
+      "binaryPacking": {
+        "byteOffset": 39,
+        "bitMask": 3,
+        "bitShift": 0,
+        "byteSize": 1,
+        "encoding": "Bit"
+      },
+      "scope": "part",
+      "semanticRole": "KeyPriority",
+      "id": "keyPriority",
+      "sysexOffset": null
+    },
+    {
       "id": "unisonDetune",
       "name": "Unison Detune",
       "group": "Voice",
@@ -3592,6 +3618,32 @@ export const PARAMETERS_SPEC = {
         "encoding": "Bit"
       },
       "scope": "part",
+      "sysexOffset": null
+    },
+    {
+      "name": "Timbre 2 Key Priority",
+      "group": "Timbre 2",
+      "cc": null,
+      "min": 0,
+      "max": 3,
+      "default": 0,
+      "type": "choice",
+      "choices": [
+        "Last",
+        "Low",
+        "High",
+        "Last"
+      ],
+      "binaryPacking": {
+        "byteOffset": 147,
+        "bitMask": 3,
+        "bitShift": 0,
+        "byteSize": 1,
+        "encoding": "Bit"
+      },
+      "scope": "part",
+      "semanticRole": "KeyPriority",
+      "id": "t2KeyPriority",
       "sysexOffset": null
     },
     {

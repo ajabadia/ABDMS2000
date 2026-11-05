@@ -569,6 +569,19 @@ void SynthEngine::updateParametersFromAPVTS() noexcept
                                                                               : TriggerMode::Single);
     voiceManagerB_.setTriggerMode(paramValue(true, ParamIDs::triggerMode, 1.0f) > 0.5f ? TriggerMode::Multi
                                                                                       : TriggerMode::Single);
+    // Key Priority (FLAGS bits 0..1), medido en el oraculo: 0 = Last (sigue a la
+    // ultima tecla), 1 = Low (la mas grave), 2 = High (la mas aguda); 3 = Last.
+    const auto keyPriorityOf = [](float raw)
+    {
+        const int v = static_cast<int>(raw + 0.5f);
+        if (v == 1)
+            return KeyPriority::Low;
+        if (v == 2)
+            return KeyPriority::High;
+        return KeyPriority::Last;
+    };
+    voiceManagerA_.setKeyPriority(keyPriorityOf(getParam(ParamIDs::keyPriority, 0.0f)));
+    voiceManagerB_.setKeyPriority(keyPriorityOf(paramValue(true, ParamIDs::keyPriority, 0.0f)));
 
     // ── Timbre 1 y Timbre 2, cada uno con sus parámetros ──
     readTimbreParams(false, voiceParamsA_);

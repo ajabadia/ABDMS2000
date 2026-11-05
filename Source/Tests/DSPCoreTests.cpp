@@ -2289,7 +2289,8 @@ static void testEngineExtension()
             }
         }
         // 123 desde UX-4: se añadió t2TriggerMode (espejo del trigger mode del Timbre 1).
-        check(timbre2Params == 123, "the registry declares the Timbre 2 mirror (123 parameters)");
+        // 124: 123 de UX-4 (t2TriggerMode) + t2KeyPriority (bits 0..1 de FLAGS).
+        check(timbre2Params == 124, "the registry declares the Timbre 2 mirror (124 parameters)");
         check(seqStepParams == 96, "each timbre's 3 sequencer rows have their 16 real steps (96 parameters)");
         check(withSysex == 253 && maxOffset == 252,
               "every parameter the engine models has its own byte in the program");

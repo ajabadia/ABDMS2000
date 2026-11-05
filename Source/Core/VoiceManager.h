@@ -29,6 +29,24 @@ enum class TriggerMode
 };
 
 /**
+ * @brief Prioridad de tecla en Mono/Unison (byte FLAGS, bits 0..1).
+ *
+ * Medida en el oraculo sobre INIT Program con dos notas solapadas
+ * (`C4 -> G4` y `G4 -> C4`, ver `scratch/probe_partb.py`):
+ *   0 = Last: suena siempre la ultima tecla pulsada (comportamiento previo del
+ *       motor, por eso es el valor por defecto).
+ *   1 = Low:  suena siempre la nota mas grave de las pulsadas.
+ *   2 = High: suena siempre la mas aguda.
+ * El codigo 3 se comporta como Last en el hardware; aqui se mapea igual.
+ */
+enum class KeyPriority
+{
+    Last = 0,
+    Low,
+    High
+};
+
+/**
  * @brief Estado de una ranura de voz individual.
  */
 struct VoiceSlotState
@@ -77,6 +95,10 @@ class VoiceManager
     {
         triggerMode_ = mode;
     }
+    void setKeyPriority(KeyPriority mode) noexcept
+    {
+        keyPriority_ = mode;
+    }
     void setUnisonDetune(float detuneCents) noexcept
     {
         unisonDetune_ = detuneCents;
@@ -121,6 +143,7 @@ class VoiceManager
     size_t activeVoiceCapacity_ {NUM_HW_VOICES};
     VoiceAssignMode assignMode_ {VoiceAssignMode::Poly};
     TriggerMode triggerMode_ {TriggerMode::Multi};
+    KeyPriority keyPriority_ {KeyPriority::Last};  // FLAGS bits 0..1 (medido)
     float unisonDetune_ {10.0f};        // Cents
     float unisonSpread_ {0.5f};         // Stereo width (anulado a 0.0f en modo clásico MS2000)
 
@@ -141,6 +164,8 @@ class VoiceManager
     int findVoiceToSteal(int incomingNote) noexcept;
     [[nodiscard]] bool anyKeyPressed() const noexcept;
     void releaseVoiceSlot(size_t index) noexcept;
+    /** Nota que debe sonar entre las pulsadas, segun `keyPriority_`. */
+    [[nodiscard]] int pickPriorityNote(int incoming) const noexcept;
 };
 
 }  // namespace ABDMS2000
