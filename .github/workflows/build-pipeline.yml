@@ -575,12 +575,20 @@ jobs:
 
     - uses: actions/setup-node@v7
       with:
-        node-version: 22
+        node-version: 24
 
-    - name: Bootstrap vitest (scratch prefix + symlinks @abdsynths)
+    # `npm install --prefix` desde la raiz de este repo choca con su lockfile de
+    # `workspace:*` (npm 10 responde: Cannot read properties of null, reading
+    # edgesOut), y `npm init -y` rechaza nombres de directorio como `.ci`. Con un
+    # package.json propio y nombre valido, el arbol queda aislado del repo.
+    - name: Bootstrap vitest (proyecto npm aislado + symlinks @abdsynths)
       run: |
-        npm install --prefix .ci --no-audit --no-fund \
-          vitest@4.1.11 jszip@3.10.1 dexie@4.4.5 file-saver@2.0.5
+        mkdir -p .ci
+        printf '{"name":"vitest-bootstrap","private":true,"version":"0.0.0"}\n' > .ci/package.json
+        cd .ci
+        npm install --no-audit --no-fund \
+          vitest@4.1.11 jszip@3.10.1 dexie@4.4.5 file-saver@2.0.5 jsdom@24.1.3
+        cd ..
         mkdir -p node_modules/@abdsynths
         ln -s ../.ci/node_modules/vitest node_modules/vitest
         ln -s "$GITHUB_WORKSPACE/ABDSharedAssets" node_modules/@abdsynths/shared
