@@ -23,8 +23,10 @@ name: Registry Generation CI
 #     `WebUI/abdbank/` esta en `.gitignore`: no existe en un clon limpio, asi que su
 #     `--check` no tiene nada que leer. Estan en `sibling-sync-check.yml`, que si
 #     clona los hermanos y sincroniza antes de comprobar. Este workflow no puede
-#     hacerlo, porque no trae los repos HERMANOS (ABDSharedAssets, ABDBankManager,
+#     hacerlo, porque no trae esos hermanos (ABDSharedAssets, ABDBankManager,
 #     ABDScope) y clonar tres repos para comprobar dos headers no es su trabajo.
+#     ABDShared si se clona: es el unico hermano que hace falta aqui, porque de
+#     el sale el spec que el propio generador lee.
 #   · Los cuatro sincronizadores (`sync_assets.js`, `sync_bankmanager.js`,
 #     `sync_bankmanager_ui.js`, `sync_scope.js`). Por el mismo motivo: necesitan los
 #     hermanos en disco. Los comprueba `sibling-sync-check.yml`.
@@ -70,6 +72,12 @@ on:
       - main
       - develop
 
+env:
+  # SHA fijo del hermano que trae el spec, igual que en build-pipeline.yml:
+  # una rama se mueve sola y el check pasaria contra un contrato distinto del
+  # que se commiteo.
+  SHA_SHARED_JS: '3548836167f16b4af29d53d0e5021a8b4b2c5ee6'
+
 permissions:
   contents: read
 
@@ -88,8 +96,23 @@ jobs:
     timeout-minutes: 5
 
     steps:
-      - name: Checkout Code
+      # El layout es el del monorepo, igual que en build-pipeline.yml: este repo
+      # en `ABDMS2000/` y el hermano en `ABDShared/`, al mismo nivel. El generador
+      # resuelve el spec como `../ABDShared/Contracts/...`; si el repo queda en la
+      # raiz del workspace esa ruta no existe y el check muere con FUENTE_AUSENTE
+      # antes de llegar a comparar un solo artefacto.
+      - name: Checkout ABDMS2000
         uses: actions/checkout@v7
+        with:
+          path: ABDMS2000
+
+      - name: Checkout ABDShared (hermano, SHA fijo — spec del registro)
+        uses: actions/checkout@v7
+        with:
+          repository: ajabadia/ABDShared
+          ref: ${{ env.SHA_SHARED_JS }}
+          path: ABDShared
+          fetch-depth: 1
 
       # El generador es ESM y calcula sus rutas con `import.meta.dirname`, que
       # existe desde Node 20.11. Fijado, no `20` a secas: un flotante puede
@@ -111,6 +134,7 @@ jobs:
       # mismo que se cita es lo que hace que ese mensaje sirva para algo en vez
       # de ser una pista que hay que traducir.
       - name: Comprobar que los .gen commiteados estan al dia
+        working-directory: ABDMS2000
         run: |
           if ! npm run --silent check:registry; then
             echo "::error::Los .gen del registro estan DESFASADOS: o se ha cambiado el spec y no se ha regenerado, o se ha editado un .gen a mano. Arreglo: npm run generate, y commit de Source/State/ParameterRegistry.gen.h, Source/State/ParameterRegistry.gen.cpp y WebUI/src/contracts/registry.gen.js dentro de este repo."
@@ -139,6 +163,7 @@ jobs:
       # generador anade una salida, este paso no lo vera, y el fallo se vera como
       # «el .gen nuevo no lo vigila nadie», que es justo el nombre del problema.
       - name: "Guard: los .gen declarados existen y son de verdad generados"
+        working-directory: ABDMS2000
         run: |
           artifacts=(
             'Source/State/ParameterRegistry.gen.h'
@@ -164,6 +189,7 @@ jobs:
       # el flag para «hacerlo mas rapido», este paso lo dira en el propio pipeline
       # en vez de dejar un checkout modificado que no se nota hasta el siguiente.
       - name: "Guard: el check no ha modificado nada"
+        working-directory: ABDMS2000
         run: |
           if [ -n "$(git status --porcelain)" ]; then
             echo "::error::El check ha modificado el checkout. --check tiene que COMPARAR, no escribir:"
