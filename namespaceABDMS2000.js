@@ -160,6 +160,7 @@ var namespaceABDMS2000 =
       [ "filterResonance", "namespaceABDMS2000_1_1ParamIDs.html#ad9a6c235b89e15ee54e3cb02ffbf18ce", null ],
       [ "filterType", "namespaceABDMS2000_1_1ParamIDs.html#a38d432e23697c23323c183d209c11059", null ],
       [ "filterVelo", "namespaceABDMS2000_1_1ParamIDs.html#aabe88888d8b1f61d9d0a154440a3b3e5", null ],
+      [ "keyPriority", "namespaceABDMS2000_1_1ParamIDs.html#a0b86c519fe55bace87c0bae9aab9b63e", null ],
       [ "lfo1Freq", "namespaceABDMS2000_1_1ParamIDs.html#aa9c4f85eac106c48bca10165e09a8f53", null ],
       [ "lfo1KeySync", "namespaceABDMS2000_1_1ParamIDs.html#a71ec805b131aded3f9b8ecf9728d92b6", null ],
       [ "lfo1SyncNote", "namespaceABDMS2000_1_1ParamIDs.html#acf558b329d1b99de0a6e57b3c4655c3b", null ],
@@ -289,6 +290,7 @@ var namespaceABDMS2000 =
       [ "t2FilterResonance", "namespaceABDMS2000_1_1ParamIDs.html#afc9fc3710b1a75cb9ad342b890d19288", null ],
       [ "t2FilterType", "namespaceABDMS2000_1_1ParamIDs.html#a2c60ee3558403bc680c4ab0351910a2a", null ],
       [ "t2FilterVelo", "namespaceABDMS2000_1_1ParamIDs.html#a10549c9d4bde07b5f765dcd2576ba4ba", null ],
+      [ "t2KeyPriority", "namespaceABDMS2000_1_1ParamIDs.html#a70381d4f793c3ac239db2478db7d3afe", null ],
       [ "t2Lfo1Freq", "namespaceABDMS2000_1_1ParamIDs.html#a410792600736f111d74a4b8b4d05c883", null ],
       [ "t2Lfo1KeySync", "namespaceABDMS2000_1_1ParamIDs.html#aa99f86c457cee343cb5dc000001a7bfc", null ],
       [ "t2Lfo1SyncNote", "namespaceABDMS2000_1_1ParamIDs.html#ae43220543aa702aa3945e28cc09fc374", null ],
@@ -535,6 +537,11 @@ var namespaceABDMS2000 =
       [ "LPF12", "namespaceABDMS2000.html#aa2b1e8d220a1e4a73e04a079ac7bf1f0a4a46bff5a8645768bbf206205e4ac292", null ],
       [ "BPF12", "namespaceABDMS2000.html#aa2b1e8d220a1e4a73e04a079ac7bf1f0a98c6c0f34f585f86e57c002357c32689", null ],
       [ "HPF12", "namespaceABDMS2000.html#aa2b1e8d220a1e4a73e04a079ac7bf1f0af18e50f81881a130c3c48a9c85bcb21d", null ]
+    ] ],
+    [ "KeyPriority", "namespaceABDMS2000.html#a7993ead6b5450b3b5ab34a20591dd06f", [
+      [ "Last", "namespaceABDMS2000.html#a7993ead6b5450b3b5ab34a20591dd06fad55b30607c2a9a2616347d6edb789f6b", null ],
+      [ "Low", "namespaceABDMS2000.html#a7993ead6b5450b3b5ab34a20591dd06fa28d0edd045e05cf5af64e35ae0c4c6ef", null ],
+      [ "High", "namespaceABDMS2000.html#a7993ead6b5450b3b5ab34a20591dd06fa655d20c1ca69519ca647684edbb2db35", null ]
     ] ],
     [ "KeySyncMode", "namespaceABDMS2000.html#aeeb8952c9453dc41e0a762e9b21efcba", [
       [ "Off", "namespaceABDMS2000.html#aeeb8952c9453dc41e0a762e9b21efcbaad15305d7a4e34e02489c74a5ef542f36", null ],

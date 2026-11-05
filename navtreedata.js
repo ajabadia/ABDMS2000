@@ -275,16 +275,16 @@ var NAVTREEINDEX =
 "classABDMS2000_1_1NoiseGenerator.html#a8e3eec001186a9a94d3536e94d09617c",
 "classABDMS2000_1_1SynthEngine.html#af72aef55f612e1778d86c60586a34bc2",
 "classABDMS2000_1_1Tests_1_1TransferTests.html#a076271c55e43db8d46572d5578a4fa8a",
-"classABDMS2000_1_1VoiceManager.html#a4297f9cd743ea35858e078d155932d64",
-"functions_vars_b.html",
-"namespaceABDMS2000.html#a495c6af1070566573e5fb9f7628c8d46a390a01ec11d719c03627e4bc762026f1",
-"namespaceABDMS2000_1_1FirmwareTables.html#a2437f8c32e6f9ee2f391de1e9571333e",
-"namespaceABDMS2000_1_1ParamIDs.html#aa47e2c03550cfe817c2ccc2d10821b00",
-"namespaceABDMS2000_1_1ms2kipl.html#a62b4165c84406ff521193d97434d12c4",
-"structABDMS2000_1_1MIDICCInfo.html#a619ce108f21df31bb5c246493b1bab36",
-"structABDMS2000_1_1MS2000ProgramData.html#a0ceff980804a6fb70e9316748295a698",
-"structABDMS2000_1_1SeqModulation.html",
-"structABDMS2000_1_1Voice_1_1DiagnosticStats.html"
+"classABDMS2000_1_1VoiceManager.html#a3d869bc76d2fed92c62d7715aa4d3981",
+"functions_t.html",
+"namespaceABDMS2000.html#a4253441c559af73b122124173d8f4aec",
+"namespaceABDMS2000_1_1FactoryPreload.html#a2c1a261f6bb2fd9b0a7d53cf17c2735e",
+"namespaceABDMS2000_1_1ParamIDs.html#a9e7b130e58b1379b70161d5a465a6a12",
+"namespaceABDMS2000_1_1ms2kipl.html#a25cb3b6e0bb2b933b8b9bbd15dacec05",
+"structABDMS2000_1_1M1FileEntry.html",
+"structABDMS2000_1_1MS2000HardwareProgram_1_1SeqRow.html#aaf2b726c932237a82ca8206df6ff3dc9",
+"structABDMS2000_1_1PatchSlot.html",
+"structABDMS2000_1_1VoiceSlotState.html"
 ];
 
 var SYNCONMSG = 'pulsar para deshabilitar sincronización';

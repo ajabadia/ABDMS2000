@@ -1,5 +1,17 @@
 var NAVTREEINDEX17 =
 {
+"structABDMS2000_1_1PatchSlot.html":[5,0,0,25],
+"structABDMS2000_1_1PatchSlot.html":[6,0,0,17],
+"structABDMS2000_1_1PatchSlot.html#a06670e6f030ccd485c899ea96b827d85":[5,0,0,25,2],
+"structABDMS2000_1_1PatchSlot.html#a06670e6f030ccd485c899ea96b827d85":[6,0,0,17,2],
+"structABDMS2000_1_1PatchSlot.html#a5fed20885ad41e5a964da918f43da501":[5,0,0,25,1],
+"structABDMS2000_1_1PatchSlot.html#a5fed20885ad41e5a964da918f43da501":[6,0,0,17,1],
+"structABDMS2000_1_1PatchSlot.html#aaa055f10552ab95926a58982eb3a047f":[5,0,0,25,0],
+"structABDMS2000_1_1PatchSlot.html#aaa055f10552ab95926a58982eb3a047f":[6,0,0,17,0],
+"structABDMS2000_1_1PluginProcStaticInit.html":[5,0,0,62],
+"structABDMS2000_1_1PluginProcStaticInit.html":[6,0,0,54],
+"structABDMS2000_1_1PluginProcStaticInit.html#a3c1a3ee994efe6d34953e36c7015535b":[5,0,0,62,0],
+"structABDMS2000_1_1PluginProcStaticInit.html#a3c1a3ee994efe6d34953e36c7015535b":[6,0,0,54,0],
 "structABDMS2000_1_1SeqModulation.html":[5,0,0,14],
 "structABDMS2000_1_1SeqModulation.html":[6,0,0,6],
 "structABDMS2000_1_1SeqModulation.html#a062b3f6de616c363d9dea5b9c34ccc82":[5,0,0,14,9],
@@ -237,17 +249,5 @@ var NAVTREEINDEX17 =
 "structABDMS2000_1_1VoiceParameters.html#aed9ba712b34fe5600466c6aa3260641b":[5,0,0,15,30],
 "structABDMS2000_1_1VoiceParameters.html#aed9ba712b34fe5600466c6aa3260641b":[6,0,0,7,30],
 "structABDMS2000_1_1VoiceParameters.html#af4879bc3ab7546791411158ed66b9d45":[5,0,0,15,26],
-"structABDMS2000_1_1VoiceParameters.html#af4879bc3ab7546791411158ed66b9d45":[6,0,0,7,26],
-"structABDMS2000_1_1VoiceSlotState.html":[5,0,0,17],
-"structABDMS2000_1_1VoiceSlotState.html":[6,0,0,9],
-"structABDMS2000_1_1VoiceSlotState.html#a3ae28446c15ae518535dd03f9ad0cf0b":[5,0,0,17,0],
-"structABDMS2000_1_1VoiceSlotState.html#a3ae28446c15ae518535dd03f9ad0cf0b":[6,0,0,9,0],
-"structABDMS2000_1_1VoiceSlotState.html#ab629f337ded45c4b7a5ceac46ad883c5":[5,0,0,17,1],
-"structABDMS2000_1_1VoiceSlotState.html#ab629f337ded45c4b7a5ceac46ad883c5":[6,0,0,9,1],
-"structABDMS2000_1_1VoiceSlotState.html#ac728f7f720ab9d9cb1501481357b1aca":[5,0,0,17,4],
-"structABDMS2000_1_1VoiceSlotState.html#ac728f7f720ab9d9cb1501481357b1aca":[6,0,0,9,4],
-"structABDMS2000_1_1VoiceSlotState.html#adfbba0f420741a4e7a4b3b3cac842659":[5,0,0,17,3],
-"structABDMS2000_1_1VoiceSlotState.html#adfbba0f420741a4e7a4b3b3cac842659":[6,0,0,9,3],
-"structABDMS2000_1_1VoiceSlotState.html#af4bd1b699602de4b2a55e169470c258f":[5,0,0,17,2],
-"structABDMS2000_1_1VoiceSlotState.html#af4bd1b699602de4b2a55e169470c258f":[6,0,0,9,2]
+"structABDMS2000_1_1VoiceParameters.html#af4879bc3ab7546791411158ed66b9d45":[6,0,0,7,26]
 };

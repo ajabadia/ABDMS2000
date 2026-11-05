@@ -1,5 +1,17 @@
 var NAVTREEINDEX18 =
 {
+"structABDMS2000_1_1VoiceSlotState.html":[5,0,0,17],
+"structABDMS2000_1_1VoiceSlotState.html":[6,0,0,9],
+"structABDMS2000_1_1VoiceSlotState.html#a3ae28446c15ae518535dd03f9ad0cf0b":[5,0,0,17,0],
+"structABDMS2000_1_1VoiceSlotState.html#a3ae28446c15ae518535dd03f9ad0cf0b":[6,0,0,9,0],
+"structABDMS2000_1_1VoiceSlotState.html#ab629f337ded45c4b7a5ceac46ad883c5":[5,0,0,17,1],
+"structABDMS2000_1_1VoiceSlotState.html#ab629f337ded45c4b7a5ceac46ad883c5":[6,0,0,9,1],
+"structABDMS2000_1_1VoiceSlotState.html#ac728f7f720ab9d9cb1501481357b1aca":[5,0,0,17,4],
+"structABDMS2000_1_1VoiceSlotState.html#ac728f7f720ab9d9cb1501481357b1aca":[6,0,0,9,4],
+"structABDMS2000_1_1VoiceSlotState.html#adfbba0f420741a4e7a4b3b3cac842659":[5,0,0,17,3],
+"structABDMS2000_1_1VoiceSlotState.html#adfbba0f420741a4e7a4b3b3cac842659":[6,0,0,9,3],
+"structABDMS2000_1_1VoiceSlotState.html#af4bd1b699602de4b2a55e169470c258f":[5,0,0,17,2],
+"structABDMS2000_1_1VoiceSlotState.html#af4bd1b699602de4b2a55e169470c258f":[6,0,0,9,2],
 "structABDMS2000_1_1Voice_1_1DiagnosticStats.html":[5,0,0,16,0],
 "structABDMS2000_1_1Voice_1_1DiagnosticStats.html":[6,0,0,8,0],
 "structABDMS2000_1_1Voice_1_1DiagnosticStats.html#a302792218daaa2287ef141813023b271":[5,0,0,16,0,7],

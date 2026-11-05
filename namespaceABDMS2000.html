@@ -253,6 +253,11 @@ Enumeraciones</h2></td></tr>
 , <a class="el" href="#aea9565eccc7efbf2e814ffb602ba19a1ace7898536dd0e928d1640ee2ad531cc8">Multi</a>
  }</td></tr>
 <tr class="memdesc:aea9565eccc7efbf2e814ffb602ba19a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modos de gatillo de envolventes.  <a href="#aea9565eccc7efbf2e814ffb602ba19a1">Más...</a><br /></td></tr>
+<tr class="memitem:a7993ead6b5450b3b5ab34a20591dd06f" id="r_a7993ead6b5450b3b5ab34a20591dd06f"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7993ead6b5450b3b5ab34a20591dd06f">KeyPriority</a> { <a class="el" href="#a7993ead6b5450b3b5ab34a20591dd06fad55b30607c2a9a2616347d6edb789f6b">Last</a> = 0
+, <a class="el" href="#a7993ead6b5450b3b5ab34a20591dd06fa28d0edd045e05cf5af64e35ae0c4c6ef">Low</a>
+, <a class="el" href="#a7993ead6b5450b3b5ab34a20591dd06fa655d20c1ca69519ca647684edbb2db35">High</a>
+ }</td></tr>
+<tr class="memdesc:a7993ead6b5450b3b5ab34a20591dd06f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prioridad de tecla en Mono/Unison (byte FLAGS, bits 0..1).  <a href="#a7993ead6b5450b3b5ab34a20591dd06f">Más...</a><br /></td></tr>
 <tr class="memitem:ae684545985d7be9cd7d291bcd814f5c4" id="r_ae684545985d7be9cd7d291bcd814f5c4"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae684545985d7be9cd7d291bcd814f5c4">ModFXType</a> { <a class="el" href="#ae684545985d7be9cd7d291bcd814f5c4a0d22c92d153dd53d29450752c1cf0dfe">ChorusFlanger</a> = 0
 , <a class="el" href="#ae684545985d7be9cd7d291bcd814f5c4abe5dd267794f8f209543995a5461710f">Ensemble</a>
 , <a class="el" href="#ae684545985d7be9cd7d291bcd814f5c4ac7ffeb4f85999b84a15fcd0381db1537">Phaser</a>
@@ -643,6 +648,36 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="aa2b1e8d220a1e4a73e04a079ac7bf1f0a4a46bff5a8645768bbf206205e4ac292" name="aa2b1e8d220a1e4a73e04a079ac7bf1f0a4a46bff5a8645768bbf206205e4ac292"></a>LPF12&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="aa2b1e8d220a1e4a73e04a079ac7bf1f0a98c6c0f34f585f86e57c002357c32689" name="aa2b1e8d220a1e4a73e04a079ac7bf1f0a98c6c0f34f585f86e57c002357c32689"></a>BPF12&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="aa2b1e8d220a1e4a73e04a079ac7bf1f0af18e50f81881a130c3c48a9c85bcb21d" name="aa2b1e8d220a1e4a73e04a079ac7bf1f0af18e50f81881a130c3c48a9c85bcb21d"></a>HPF12&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="a7993ead6b5450b3b5ab34a20591dd06f" name="a7993ead6b5450b3b5ab34a20591dd06f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7993ead6b5450b3b5ab34a20591dd06f">&#9670;&#160;</a></span>KeyPriority</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#a7993ead6b5450b3b5ab34a20591dd06f">ABDMS2000::KeyPriority</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel strong">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Prioridad de tecla en Mono/Unison (byte FLAGS, bits 0..1). </p>
+<p>Medida en el oraculo sobre INIT Program con dos notas solapadas (<span class="tt">C4 -&gt; G4</span> y <span class="tt">G4 -&gt; C4</span>, ver <span class="tt">scratch/probe_partb.py</span>): 0 = Last: suena siempre la ultima tecla pulsada (comportamiento previo del motor, por eso es el valor por defecto). 1 = Low: suena siempre la nota mas grave de las pulsadas. 2 = High: suena siempre la mas aguda. El codigo 3 se comporta como Last en el hardware; aqui se mapea igual. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Valores de enumeraciones</th></tr><tr><td class="fieldname"><a id="a7993ead6b5450b3b5ab34a20591dd06fad55b30607c2a9a2616347d6edb789f6b" name="a7993ead6b5450b3b5ab34a20591dd06fad55b30607c2a9a2616347d6edb789f6b"></a>Last&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a7993ead6b5450b3b5ab34a20591dd06fa28d0edd045e05cf5af64e35ae0c4c6ef" name="a7993ead6b5450b3b5ab34a20591dd06fa28d0edd045e05cf5af64e35ae0c4c6ef"></a>Low&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a7993ead6b5450b3b5ab34a20591dd06fa655d20c1ca69519ca647684edbb2db35" name="a7993ead6b5450b3b5ab34a20591dd06fa655d20c1ca69519ca647684edbb2db35"></a>High&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
