@@ -10,6 +10,12 @@ const bridgeSource = fs.readFileSync(path.join(webUiRoot, 'src/bridge/bridgeWasm
 const workletSource = fs.readFileSync(path.join(webUiRoot, 'src/wasm/ms2000Worklet.js'), 'utf8');
 const diagnosticSource = fs.readFileSync(path.join(webUiRoot, 'src/ui/diagnosticModal.js'), 'utf8');
 
+// Las aserciones sobre el bundle de produccion necesitan WebUI/dist, que se
+// genera con `node Scripts/build_webui.js`. En un clon limpio no existe: el
+// test se declara omitido en vez de fingir que paso.
+const hasProductionDist = fs.existsSync(path.join(webUiRoot, 'dist/index.html')) &&
+  fs.existsSync(path.join(webUiRoot, 'dist/assets/index.js'));
+
 function installAudioFakes(messages) {
   const postedMessages = [];
 
@@ -159,7 +165,7 @@ describe('WASM raw AudioWorklet bootstrap', () => {
     expect(bridgeSource).toContain("data.type === 'WASM_RENDERING'");
   });
 
-  it('expone la utilidad TEST MODE (440 Hz + osciloscopio por etapas) y mantiene debug=false en el AudioWorklet de producción', () => {
+  it.skipIf(!hasProductionDist)('expone la utilidad TEST MODE (440 Hz + osciloscopio por etapas) y mantiene debug=false en el AudioWorklet de producción', () => {
     expect(diagnosticSource).toContain('const IS_DEV = import.meta.env?.DEV === true');
     expect(diagnosticSource).toContain('export const SHOW_DEV_TEST_MODE = true');
 

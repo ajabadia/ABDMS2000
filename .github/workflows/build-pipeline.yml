@@ -604,11 +604,6 @@ jobs:
     - name: Vendorear BankManager (WebUI/abdbank)
       run: node Scripts/sync_bankmanager.js
 
-    # Los tests de integracion de la WebUI leen WebUI/dist (salida de build):
-    # en un clon limpio no existe, y build_webui.js la reconstruye entera.
-    - name: Build WebUI (dist para los tests de integracion)
-      run: node Scripts/build_webui.js
-
     - name: Run vitest
       run: .ci/node_modules/.bin/vitest run
 
