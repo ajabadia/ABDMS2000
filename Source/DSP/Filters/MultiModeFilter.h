@@ -49,6 +49,9 @@ class MultiModeFilter
     float g_ {0.1f};
     float R_ {1.0f};
     float h_ {1.0f};
+    float w0_ {1.0f};
+    float w1_ {1.0f};
+    float passbandNorm_ {1.0f};
 
     void updateCoefficients() noexcept;
 };

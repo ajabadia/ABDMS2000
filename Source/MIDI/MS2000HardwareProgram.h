@@ -960,6 +960,8 @@ struct MS2000HardwareProgram
         native.setTempoBPM((hwBpm >= 20 && hwBpm <= 300) ? hwBpm : 120);
         native.setArpTarget(extractBits(raw[ARP_FLAGS], 4, 5));
         native.setArpKeySync(extractBits(raw[ARP_FLAGS], 0, 0) != 0);
+        native.setDelayTempoSync(extractBits(raw[DELAY_FLAGS], 7, 7) != 0);
+        native.setDelaySyncNote(extractBits(raw[DELAY_FLAGS], 0, 3));
 
         return native;
     }
@@ -1046,6 +1048,8 @@ struct MS2000HardwareProgram
             apvts.state.setProperty("presetTempoBPM", hwBpm, nullptr);
         apvts.state.setProperty("arpTarget", static_cast<int>(extractBits(raw[ARP_FLAGS], 4, 5)), nullptr);
         apvts.state.setProperty("arpKeySync", static_cast<int>(extractBits(raw[ARP_FLAGS], 0, 0)), nullptr);
+        apvts.state.setProperty("delayTempoSync", static_cast<int>(extractBits(raw[DELAY_FLAGS], 7, 7)), nullptr);
+        apvts.state.setProperty("delaySyncNote", static_cast<int>(extractBits(raw[DELAY_FLAGS], 0, 3)), nullptr);
 
         return applied;
     }
@@ -1139,7 +1143,26 @@ struct MS2000HardwareProgram
                 return p->load();
             return fallback;
         };
-        return captureModeledFields(getValueById, programName);
+        const int captured = captureModeledFields(getValueById, programName);
+        if (apvts.state.hasProperty("presetTempoBPM"))
+        {
+            const int bpm = std::clamp(static_cast<int>(apvts.state.getProperty("presetTempoBPM", 120)), 20, 300);
+            raw[ARP_TEMPO_MSB] = static_cast<uint8_t>((bpm >> 8) & 0xFF);
+            raw[ARP_TEMPO_LSB] = static_cast<uint8_t>(bpm & 0xFF);
+        }
+        if (apvts.state.hasProperty("arpTarget"))
+            insertBits(raw[ARP_FLAGS], 4, 5,
+                       static_cast<uint8_t>(std::clamp(static_cast<int>(apvts.state.getProperty("arpTarget", 0)), 0, 2)));
+        if (apvts.state.hasProperty("arpKeySync"))
+            insertBits(raw[ARP_FLAGS], 0, 0,
+                       static_cast<int>(apvts.state.getProperty("arpKeySync", 0)) != 0 ? 1 : 0);
+        if (apvts.state.hasProperty("delayTempoSync"))
+            insertBits(raw[DELAY_FLAGS], 7, 7,
+                       static_cast<int>(apvts.state.getProperty("delayTempoSync", 0)) != 0 ? 1 : 0);
+        if (apvts.state.hasProperty("delaySyncNote"))
+            insertBits(raw[DELAY_FLAGS], 0, 3,
+                       static_cast<uint8_t>(std::clamp(static_cast<int>(apvts.state.getProperty("delaySyncNote", 0)), 0, 14)));
+        return captured;
     }
 
     /**
@@ -1202,6 +1225,13 @@ struct MS2000HardwareProgram
         auto getValueById = [&native](const juce::String &id, float fallback) -> float
         { return nativeEngineValue(native, id, fallback); };
         program.captureModeledFields(getValueById, programName.empty() ? native.getName() : programName);
+        const int bpm = native.getTempoBPM();
+        program.raw[ARP_TEMPO_MSB] = static_cast<uint8_t>((bpm >> 8) & 0xFF);
+        program.raw[ARP_TEMPO_LSB] = static_cast<uint8_t>(bpm & 0xFF);
+        insertBits(program.raw[ARP_FLAGS], 4, 5, native.getArpTarget());
+        insertBits(program.raw[ARP_FLAGS], 0, 0, native.getArpKeySync() ? 1 : 0);
+        insertBits(program.raw[DELAY_FLAGS], 7, 7, native.getDelayTempoSync() ? 1 : 0);
+        insertBits(program.raw[DELAY_FLAGS], 0, 3, native.getDelaySyncNote());
         return program;
     }
 
@@ -1497,14 +1527,11 @@ struct MS2000HardwareProgram
      */
     static std::vector<const char *> unmodelled()
     {
-        return {"MIDI channel por timbre, Tune, Bend Range, Transpose y Vibrato",
+        return {"MIDI channel por timbre",
                 "EG1/EG2 Reset, Trigger Mode y Key Priority",
-                "Amp SW (EG2/Gate): el VCA sigue a EG2, no a la puerta de tecla",
-                "Swing del arpegiador, su Target (Both/T1/T2) y su Key Sync",
-                "Delay Tempo Sync / Time Base, Mod FX Feedback y los On/Off de Mod FX y Delay",
-                "Mod Seq: el modo de disparo del reloj (1Shot/Loop)",
-                "EQ: la frecuencia real tiene 30 pasos y el motor 4 (aproximado)",
-                "Escala: se conserva y vuelve al equipo, pero el motor no reafina (Equal Temp)"};
+                "Swing del arpegiador",
+                "Mod FX Feedback (el DSP lo fija por tipo de efecto)",
+                "EQ: la frecuencia real tiene 30 pasos y el motor 4 (aproximado)"};
     }
 };
 

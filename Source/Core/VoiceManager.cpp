@@ -12,6 +12,7 @@ void VoiceManager::prepare(double sampleRate) noexcept
     heldNotesStack_.reserve(64);
     for (size_t i = 0; i < voices_.size(); ++i)
     {
+        voices_[i].setNoiseSeed(0x12345678u + static_cast<uint32_t>(i) * 0x9E3779B9u);
         voices_[i].prepare(sampleRate_);
     }
     reset();
@@ -59,6 +60,11 @@ void VoiceManager::setHoldButtonState(bool active) noexcept
 void VoiceManager::setMaxPolyphony(size_t numVoices) noexcept
 {
     activeVoiceCapacity_ = std::max(size_t(1), std::min(MAX_EXPANDED_VOICES, numVoices));
+}
+
+void VoiceManager::setSynthMode(int synthMode) noexcept
+{
+    synthMode_ = synthMode;
 }
 
 bool VoiceManager::anyKeyPressed() const noexcept
@@ -301,12 +307,17 @@ void VoiceManager::applyBlockParams(const VoiceParameters &params) noexcept
     baseBlockParams_ = params;
     setPortamentoTime(params.portamentoTime);
 
+    // En modo clásico MS2000 (synthMode == 0) no existe el reparto estéreo Unison:
+    // las 4 voces comparten un único bus acumulador en fase, sin panning diferenciado.
+    // Sólo en Advanced mode (synthMode == 2) el reparto estéreo Unison está disponible.
+    const float unisonSpreadClamped = (synthMode_ == 2) ? unisonSpread_ : 0.0f;
+
     if (assignMode_ == VoiceAssignMode::Unison)
     {
         // Compute Unison Detune and Stereo Spread offsets per voice
         const size_t numUnison = std::min(activeVoiceCapacity_, size_t(4));
         const float detuneOffsets[4] = {-unisonDetune_, unisonDetune_ * 0.33f, -unisonDetune_ * 0.33f, unisonDetune_};
-        const float panOffsets[4] = {-unisonSpread_, unisonSpread_ * 0.5f, -unisonSpread_ * 0.5f, unisonSpread_};
+        const float panOffsets[4] = {-unisonSpreadClamped, unisonSpreadClamped * 0.5f, -unisonSpreadClamped * 0.5f, unisonSpreadClamped};
 
         for (size_t i = 0; i < activeVoiceCapacity_; ++i)
         {
@@ -367,10 +378,16 @@ void VoiceManager::process(float &leftOut, float &rightOut, int diagPoint, float
         }
     }
 
-    // Normalization scale factor for unison / poly stack
+    // Normalization scale factor for unison stack. En el hardware MS2000 (P:$0891..$08AF) las voces
+    // comparten un headroom fijo de 4 voces de bus, sea cual sea el numero que apile el timbre.
+    // Escalar por `activeVoiceCapacity_` daba +6 dB a un timbre Unison dentro de un Layer (2+2 voces),
+    // porque dividia solo entre 2. Medido con --compare-emu en B05 "Uni Synth" (Layer 2+2 + Unison):
+    // peak -1.88 dB -> -7.9 dB frente a -7.0 dB del oraculo y rms_err +10.86 dB -> +4.9 dB, sin
+    // afectar a ningun otro preset (B05 es el unico Layer del corpus).
     if (assignMode_ == VoiceAssignMode::Unison)
     {
-        float scale = 1.0f / std::sqrt(static_cast<float>(std::min(activeVoiceCapacity_, size_t(4))));
+        constexpr float kHardwareBusVoices = 4.0f;
+        const float scale = 1.0f / kHardwareBusVoices;
         leftOut *= scale;
         rightOut *= scale;
     }

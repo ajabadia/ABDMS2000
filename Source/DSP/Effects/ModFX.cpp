@@ -52,7 +52,10 @@ void ModFX::setFeedback(float feedback0to127) noexcept
     rawFeedback_ = DSPUtils::clamp(feedback0to127, 0.0f, 127.0f);
 
     chorusFlanger_.setFeedback(rawFeedback_);
-    phaser_.setFeedback((rawFeedback_ / 127.0f) * 0.90f);
+    // En el DSP56362 (X:$0266 = $3C0000 = 0.46875), el Phaser tiene realimentación resonante base
+    // incluso cuando el preset del MS2000 no expone un byte dedicado de ModFX Feedback.
+    const float phaserFb = (rawFeedback_ > 0.5f) ? ((rawFeedback_ / 127.0f) * 0.90f) : 0.46875f;
+    phaser_.setFeedback(phaserFb);
 }
 
 void ModFX::process(float &leftSample, float &rightSample) noexcept

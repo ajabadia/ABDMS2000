@@ -274,6 +274,18 @@ class Voice
     bool noteHeld_ {false};
     float gateEnv_ {0.0f};
     float gateSmoothCoeff_ {0.015f};
+    float postFilterX1_ {0.0f};  ///< Estado x[n-1] del filtro de salida de 1.er orden (P:$086D..$0890)
+    float postFilterY1_ {0.0f};  ///< Estado y[n-1] del filtro de salida de 1.er orden (P:$086D..$0890)
+    float osc1NoiseLp_ {0.0f};   ///< Estado LP del SVF de 2 polos dedicado para OSC1 = Noise (P:$0A5E..$0A92)
+    float osc1NoiseBp_ {0.0f};   ///< Estado BP del SVF de 2 polos dedicado para OSC1 = Noise (P:$0A5E..$0A92)
+    uint32_t noiseSeed_ {0x12345678u};
+
+  public:
+    void setNoiseSeed(uint32_t seed) noexcept
+    {
+        noiseSeed_ = (seed != 0u) ? seed : 0x12345678u;
+        noiseGen_.reset(noiseSeed_);
+    }
 };
 
 }  // namespace ABDMS2000

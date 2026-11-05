@@ -103,6 +103,8 @@ struct MS2000ProgramData
     static constexpr size_t TEMPO_LSB_OFFSET = 0x171;
     static constexpr size_t ARP_TARGET_OFFSET = 0x172;
     static constexpr size_t ARP_KEYSYNC_OFFSET = 0x173;
+    static constexpr size_t DELAY_SYNC_OFFSET = 0x174;
+    static constexpr size_t DELAY_SYNC_NOTE_OFFSET = 0x175;
 
     int getTempoBPM() const noexcept
     {
@@ -136,6 +138,26 @@ struct MS2000ProgramData
     void setArpKeySync(bool sync) noexcept
     {
         rawData[ARP_KEYSYNC_OFFSET] = sync ? 1 : 0;
+    }
+
+    bool getDelayTempoSync() const noexcept
+    {
+        return rawData[DELAY_SYNC_OFFSET] != 0;
+    }
+
+    void setDelayTempoSync(bool sync) noexcept
+    {
+        rawData[DELAY_SYNC_OFFSET] = sync ? 1 : 0;
+    }
+
+    uint8_t getDelaySyncNote() const noexcept
+    {
+        return std::min<uint8_t>(rawData[DELAY_SYNC_NOTE_OFFSET], 14);
+    }
+
+    void setDelaySyncNote(uint8_t noteIdx) noexcept
+    {
+        rawData[DELAY_SYNC_NOTE_OFFSET] = std::min<uint8_t>(noteIdx, 14);
     }
 
     static int getStorageOffsetById(const char *id) noexcept
@@ -320,6 +342,8 @@ struct MS2000ProgramData
             apvts.state.setProperty("presetTempoBPM", bpm, nullptr);
         apvts.state.setProperty("arpTarget", static_cast<int>(getArpTarget()), nullptr);
         apvts.state.setProperty("arpKeySync", static_cast<int>(getArpKeySync() ? 1 : 0), nullptr);
+        apvts.state.setProperty("delayTempoSync", static_cast<int>(getDelayTempoSync() ? 1 : 0), nullptr);
+        apvts.state.setProperty("delaySyncNote", static_cast<int>(getDelaySyncNote()), nullptr);
     }
 
     void extractFromAPVTS(const juce::AudioProcessorValueTreeState &apvts, const std::string &progName)
@@ -331,6 +355,10 @@ struct MS2000ProgramData
             setArpTarget(static_cast<uint8_t>(static_cast<int>(apvts.state.getProperty("arpTarget", 0))));
         if (apvts.state.hasProperty("arpKeySync"))
             setArpKeySync(static_cast<int>(apvts.state.getProperty("arpKeySync", 0)) != 0);
+        if (apvts.state.hasProperty("delayTempoSync"))
+            setDelayTempoSync(static_cast<int>(apvts.state.getProperty("delayTempoSync", 0)) != 0);
+        if (apvts.state.hasProperty("delaySyncNote"))
+            setDelaySyncNote(static_cast<uint8_t>(static_cast<int>(apvts.state.getProperty("delaySyncNote", 0))));
 
         // 1. Pack voice parameters into voiceByte
         auto getChoice = [&](const char *id) -> uint8_t

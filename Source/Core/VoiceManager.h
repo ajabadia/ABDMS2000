@@ -90,6 +90,7 @@ class VoiceManager
 
     // Advanced mode polyphony configuration (4..32)
     void setMaxPolyphony(size_t numVoices) noexcept;
+    void setSynthMode(int synthMode) noexcept;
     [[nodiscard]] size_t getMaxPolyphony() const noexcept
     {
         return activeVoiceCapacity_;
@@ -121,7 +122,9 @@ class VoiceManager
     VoiceAssignMode assignMode_ {VoiceAssignMode::Poly};
     TriggerMode triggerMode_ {TriggerMode::Multi};
     float unisonDetune_ {10.0f};        // Cents
-    float unisonSpread_ {0.5f};         // Stereo width
+    float unisonSpread_ {0.5f};         // Stereo width (anulado a 0.0f en modo clásico MS2000)
+
+    int synthMode_ {0};  // 0=MS2000, 1=microKORG, 2=Advanced (para anular parámetros exclusivos del modo extendido)
     float portamentoTimeParam_ {0.0f};  // 0..127
     float glideTimeSec_ {0.0f};
     bool isHoldActive_ {false};

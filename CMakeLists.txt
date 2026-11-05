@@ -426,6 +426,45 @@ if(WIN32)
     endif()
 endif()
 
+# --- P0.1 Renderizador de un preset (tests/RenderCLI.cpp) ---
+# Contraparte de Scripts/calibration/run_oracle.py: el mismo estimulo (preset, nota,
+# velocity, hold) sale del SynthEngine a .bin float + .wav int32, para comparar una
+# sola variable contra el oraculo sin pasar por la suite de tests.
+add_executable(ABDMS2000_Render
+    tests/RenderCLI.cpp
+    ${MS2000_DSP_SOURCES}
+    Source/MIDI/SysExManager.cpp
+)
+
+target_include_directories(ABDMS2000_Render PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/GITS/JUCE/modules
+    Source
+    Source/Core
+    Source/DSP
+    Source/DSP/Common
+    Source/DSP/Oscillators
+    Source/DSP/Envelopes
+    Source/DSP/Modulation
+    Source/DSP/Filters
+    Source/MIDI
+    Source/State
+)
+
+target_link_libraries(ABDMS2000_Render PRIVATE
+    juce::juce_audio_basics
+    juce::juce_audio_processors
+    juce::juce_data_structures
+    juce::juce_core
+    juce::juce_events
+    juce::juce_graphics
+    DWGSBinary
+    ABDShared::SynthCore
+    ABDShared::HardwareDrivers
+    ABDShared::ScopeCoreHeaders
+)
+
+target_compile_features(ABDMS2000_Render PRIVATE cxx_std_20)
+
 # --- C++ ProcessBlock Benchmarks & Zero-Allocation Audit ---
 add_executable(ABDMS2000_Benchmarks
     Source/Tools/Benchmarks/ProcessBlockBenchmark.cpp

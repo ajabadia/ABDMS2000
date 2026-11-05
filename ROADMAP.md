@@ -413,3 +413,316 @@ En el hardware físico del Korg MS2000 / MS2000R (esquemas `KLM-2181/82/83`, `ms
     - **Pitch & Voice por Timbre (Bytes `+2..+7`)**: `Timbre Transpose` (`-24..+24 st`), `Timbre Tune` (`-50..+50 cents`), `Bend Range` (`-12..+12 st`), `Vibrato Intensity` (`-63..+63`), `Trigger Mode` (`Single` / `Multi` retrigger de envolventes en Mono/Unison) y `Key Priority` (`Last` / `Low` / `High`).
     - **Osciladores, Amp y Envolventes (Bytes `+12`, `+19`, `+25`)**: Modo combinado `OSC2 Ring + Sync` (`osc2Mod = 3`), selector `Amp Switch` (`EG2` vs `Gate` órgano) y `EG1 / EG2 Reset` (reinicio a cero vs ataque desde nivel actual).
     - **Delay Tempo Sync y Arpegiador (Bytes `+10`, `+12`, `+245`)**: `Delay Tempo Sync` + `Delay Sync Ratio` (`1/32` a `1/1`), `Arp Swing` (`50%..75%`) y `Arp Target Timbre` (`Both` / `Timbre 1` / `Timbre 2`).
+
+---
+
+## 🔗 2026-11-02 — Alineación con el Diccionario de Datos Común (`ABDShared` v2.0)
+
+> **Especificación y Guía de Integración Canónica**:
+> - [`ABDShared/Docs/specs/COMMON_DATA_DICTIONARY_AND_INTEGRATION.md`](file:///d:/desarrollos/ABDSynths/ABDShared/Docs/specs/COMMON_DATA_DICTIONARY_AND_INTEGRATION.md)
+> - [`ABDShared/Contracts/parameter_dictionary.schema.json`](file:///d:/desarrollos/ABDSynths/ABDShared/Contracts/parameter_dictionary.schema.json)
+> - [`ABDShared/Contracts/MidiTranslationEngine.ts`](file:///d:/desarrollos/ABDSynths/ABDShared/Contracts/MidiTranslationEngine.ts)
+
+### Tareas de Convergencia para `ABDMS2000`
+- [ ] **CDD.1 — Cabecera Canónica v2.0 y Topología `multi_part` en `korg_ms2000_parameter_spec.json`**:
+  - Añadir `"$schema": "./parameter_dictionary.schema.json"`, `"schemaVersion": "2.0.0"`, `"modelId": "korg_ms2000"` y `"topology": "multi_part"` con `"parts": [{ "id": "t1", "prefix": "" }, { "id": "t2", "prefix": "t2" }]` (conservando `"synthName": "ABDMS2000"` por retrocompatibilidad).
+- [ ] **CDD.2 — Declarar Explícitamente `SymBipolar` (`wireZeroCenter: 64`) y Tablas `Lut`**:
+  - Migrar los parámetros bipolares centrados en `64` (`osc2Tune`, `filterEg1Int`, `filterKeyTrack`, `filterVelo`, `ampPan`, `ampKeyTrack`, `ampVelo`, `patch1..4Intensity` y sus espejos `t2*`) a `"curve": "SymBipolar"` con `"wireZeroCenter": 64` en el JSON canónico, de modo que JS (`MidiTranslationEngine.ts`) y C++ (`Conversion.gen.h`) compartan exactamente la misma ley por tramos sin depender de código ad-hoc.
+  - Declarar `"curve": "Lut"` + `"lutId": "ms2000_lfo1_hz"` / `"ms2000_lfo2_hz"` en `lfo1Freq` y `lfo2Freq`.
+- [ ] **CDD.3 — Empaquetado Binario SysEx (`binaryPacking`) y Roles Semánticos (`semanticRole`)**:
+  - Volcar en `korg_ms2000_parameter_spec.json` los descriptores `binaryPacking` (`byteOffset`, `bitShift`, `bitMask`, `signedEncoding: "korg_offset64"`) que hoy viven solo en `Source/State/MS2000HardwareProgram.h`.
+  - Añadir `semanticRole` (`filter.cutoff`, `filter.resonance`, `env.amp.attack`, `amp.pan`, etc.) para habilitar traducción cruzada de presets y mapeo automático con el ecosistema `ABDSynths`.
+
+---
+
+## 🎯 2026-11-04 — Paridad sonora con el MS2000 original (modo clásico): oráculo, método y plan de calibración
+
+> **Objetivo**: que un preset de fábrica del MS2000 (o cualquier `.syx` de usuario) suene en nuestro motor con la misma respuesta que el hardware, **sin firmware en el producto**. Ámbito: `synthMode = MS2000` (modo clásico). microKORG y ADVANCED quedan fuera de esta línea salvo que una corrección sea compartida.
+>
+> **Estado inicial**: el motor suena bien por sí solo, pero al cargar presets originales la diferencia es audible y sistemática. El motor se valida contra sus propias LUTs (`tests/CalibrationTests.cpp` comprueba que el EG cumple la tabla que el propio EG usa), no contra una referencia externa: por eso un error conceptual no se detecta.
+>
+> **Activos disponibles**: `Source/Core/MS2000FirmwareTables.h` (EG, LFO1/2, pitch, cutoff, patch, escalas), `DOCS/DSP56362_Microcode_Disassembly.asm`, `DOCS/DSP56362_XY_Memory_Dump.txt`, `DOCS/MS2000_Firmware_DSP_Reference.md`, `Source/DSP/Oscillators/MS2000HardwareDWGSData.h`, `Source/State/MS2000FactoryPreloadData.h`, `Source/DSP/Effects/MS2000HardwareEffects.h` y `ms2000r-emu` (H8S/2350 + DSP56362), que pasa a usarse como **instrumento de medida**.
+
+### 🧭 Reglas de la línea de trabajo
+
+1. **Nada se cambia "a oído"**: cada corrección entra con una métrica definida *antes* y un render pareado antes/después.
+2. **Todo se compara a 48 kHz**, frecuencia nativa del DSP. Cualquier soporte a otras `fs` se resuelve con un escalado explícito `fs / 48000`, no implícito.
+3. **El oráculo no es una dependencia**: `ms2000r-emu` es GPL-3.0 y este producto es propietario. Se ejecuta como proceso externo (headless), se guardan WAV y tablas como datos, y **nunca** se enlaza su código ni se copian sus clases. Los algoritmos se re-derivan del microcódigo documentado en `DOCS/`.
+4. **La palabra Q23 manda**: cuando un parámetro tenga palabra en `X:`/`Y:`, el motor consume esa palabra (o su LUT), no una reconstrucción en Hz/normalizado. Es el criterio de fuente única de verdad de `AGENTS.md` aplicado al DSP.
+5. **Cada fase cierra con una cifra**: si el cambio no reduce el error medido en el corpus, se revierte. No se acumulan correcciones sin evidencia.
+
+### 📦 Fase P0 — Arnés de comparación (sin tocar el motor) · ~2–3 días
+
+| # | Tarea | Entregable |
+|---|-------|------------|
+| P0.1 | **✅ hecho (2026-11-04)** CLI de render propio: target `ABDMS2000_Render` en `CMakeLists.txt` reutilizando `${MS2000_DSP_SOURCES}`, con host `AudioProcessor` mínimo + APVTS + `SynthEngine`: `--program N --patch OFF=VAL --note 60 --vel 100 --hold 1.5 --out BASE` → `BASE.bin` (float, sin recortar) + `BASE.wav` (int32) | `tests/RenderCLI.cpp` |
+| P0.2 | **✅ hecho (2026-11-04)** Runner del oráculo: escribe el preset de fábrica en la ranura 0 del flash, dispara note-on/off por `MS2K_MIDIIN` y usa `--headless --quiet-boot --audio --power-on --render-test` | `Scripts/calibration/run_oracle.py` |
+| P0.3 | Corpus: 128 presets de fábrica + 8 estímulos sintéticos derivados de `INIT Program` (una sola variable por estímulo) | `Scripts/calibration/corpus.json` |
+| P0.4 | Comparador: alineación por correlación cruzada, RMS/nivel, distancia espectral por 1/3 de octava, envolvente de amplitud (A/D/R y correlación de forma), fc a −3 dB y pendiente con ruido, pico de resonancia, THD | `Scripts/calibration/compare.py` |
+| P0.5 | Informe reproducible: `metrics.csv` + `report_<fecha>.md` por preset y por bloque | `DOCS/calibration/` |
+| P0.6 | Protocolo escrito: cómo añadir un estímulo, cómo leer un informe y cómo declarar una diferencia aceptada | `DOCS/calibration/README.md` |
+
+**Criterio de cierre P0**: un solo comando regenera los 128 pares (WAV nuestro + WAV oráculo) y produce el CSV; y el comparador detecta una diferencia inyectada a propósito (test del propio comparador, p. ej. un preset con el cutoff bajado 50 unidades).
+
+**Comprobación previa (2026-11-04)** — el oráculo ya corre en esta máquina y existe un hook sin usar:
+
+- **Binario**: `_RESOURCES/ms2000/ms2000r-emu-main/ms2000r-emu-main/build_vst/Release/ms2000_emulator.exe` (ya compilado, no hace falta build).
+- **Comando verificado**: `MS2K_MIDIIN="3.0:903C64;4.5:803C00" ms2000_emulator.exe --rom <flash.bin> --headless --quiet-boot --audio --power-on --master-vol 100 --duration 6 --render-test <ruta absoluta>.wav`. Sin `--audio --power-on` los *gates* quedan a 0 y el WAV sale **mudo**; con ruta relativa el WAV acaba en el HOME del emulador, no en el cwd.
+- **Salida**: WAV 48 kHz estéreo, PCM entero de 32 bits (`sampwidth=4`, no float), y **descarta el silencio inicial** (288.000 frames renderizados → 239.902 escritos), así que toda comparación se alinea por *onset*, nunca por índice absoluto. Coste ≈ 0,55× tiempo real (3,4 s de pared para 6 s de audio).
+- **Hook ya existente**: `tests/CalibrationTests.cpp::compareIdenticalPresetsWithEmu` ya analiza 24 bandas de 1/3 de octava, perfil de envolvente, centroide espectral y anchura estéreo, y alinea por onset; pero lee `emu_preset_<idx>.bin` generados por `tests/generate_emu_preset_bins.py`, que hoy son **silencio**. Sustituir ese silencio por renders reales del oráculo es el primer paso con valor, no un target nuevo.
+- **Puerta de aceptación de ese paso — ✅ CERRADA (2026-11-04)**: `INIT Program` (#127) escrito en la ranura 0 + C4 → **f0 = 261,62 Hz (−0,03 cents)**, pico −23,4 dBFS, RMS −28,3 dBFS. Los `959,6 Hz` medidos antes del arnés **no eran una propiedad del preset**: eran artefacto del estimador por cruces por cero.
+- **⚠️ Trampa crítica en los presets de `flash.bin` (User `0x0A0400` vs Factory Preload `0x0B0000`)**: En el `flash.bin` que usa `ms2000r-emu`, el banco activo que carga el firmware al arrancar es `0x0A0400` (en el emulador el `Program Change` ni siquiera llega al firmware: ver P0.2 cerrado) (*User Flash*), donde el propietario anterior del hardware modificó **28 de los 128 presets sin cambiarles el nombre del LCD** (incluidos **13 de los 16 del Banco A**: `0, 1, 3, 4, 6, 7, 8, 10, 11, 12, 13, 14, 15`, más `17, 18, 19, 27, 36, 38, 42, 45, 49, 50, 56, 57, 71, 84, 87`). En cambio, `ABDMS2000` (`MS2000FactoryPreloadData.h`) usa los **128 presets de fábrica intactos** extraídos de `0x0B0000` (*Factory Preload ROM*). Por ejemplo, `A01 Stab Saw` (`0`) en `0x0A0400` tiene 39 bytes alterados (`OSC1` cambiado de `Saw` a `Sine/Cross`, *Mod Sequencer* activo, etc.). Los `959,6 Hz` que se atribuyeron a esto eran artefacto del estimador por cruces por cero. **Regla para el oráculo**: nunca comparar índices de `0x0A0400` crudos salvo los 100 no modificados (como `{2, 5, 9, 16, 20, 22, 23, 24}`); para el corpus completo o pruebas en GUI, usar siempre inyección de `.syx` desde `MS2000FactoryPreloadData.h` (`DOCS/FactorySysEx/`) o una imagen `flash_factory.bin` con `0x0B0000..0x0B7EFF` copiado sobre `0x0A0400..0x0A82FF` **y la Global Data de fábrica `0x0B8100` (200 B = `0xC8`, no 234) sobre `0x0A0010`** — exactamente lo que hace `GLOBAL 8: PRELOAD` en el hardware (`0x0E2CC` / `0x20FB4` / `0x228AA`, los tres con `mov.w #0x64,R2` = 100 palabras). Sin ese segundo bloque el emulador arranca con los ajustes globales del dueño anterior: de los 234 B en que difieren 13, **sólo uno es Global Data** (offset 16 = NoteRcv + bit de modo), y los 12 restantes (`0x0A00D8..0x0A00E3`) son residuo fuera del bloque copiado, que se deja intacto. Las tres rutinas de PRELOAD leen siempre `0x0B8100` (plantilla de teclado); `0x0B8200` sólo aparece en el Factory Reset de test, detrás de `btst #7,@0xFFF6C9` —el flag que distingue placa MS2000 de MS2000R— y sus diferencias son el mapa de notas de los botones del panel.
+
+**P0.2 cerrado (2026-11-04)** — `Scripts/calibration/run_oracle.py` operativo y los 8 `emu_preset_<idx>.bin` con audio real (8 ficheros distintos, un md5 por preset):
+
+1. **El `Program Change` no llega al firmware.** Con `MS2K_MIDIIN="2.300:C0xx;..."` el log `[MIDI-IN]` del emulador imprime el byte de dato (`0x00 received`) pero **nunca el status `0xC0`**, y los renders de programa `0` y `127` salen **idénticos bit a bit** (mismo md5). Las notas sí entran (`0x90`/`0x80` con sus dos bytes de dato, sin `LOST` ni `OVERRUN`). Por eso la selección de preset se hace **parcheando el flash**: el firmware carga siempre la ranura 0 al arrancar, así que el runner escribe el programa de fábrica `<idx>` (leído de `0x0B0000`) en `0x0A0400` y arranca con esa imagen. Verificado con dos presets distintos: `#2 Evolution` (picos en 174 Hz) y `#5 Zoop Mania` (78 Hz) dan WAV y espectros diferentes. Ventaja añadida: sin límite de 32 KB de variable de entorno, así que el mismo mecanismo servirá para los estímulos de P1 que toquen bytes del programa. La restauración es completa, no sólo de programas: además de `0x0B0000..0x0B7EFF` se copia la **Global Data de fábrica `0x0B8100` (234 B) a `0x0A0010`**, que es lo que hace `GLOBAL 8: PRELOAD`. Verificado: **0 bytes distintos** en ambas regiones frente al sector PRELOAD.
+2. **Los cruces por cero no sirven como medidor de f0.** Una sierra de C4 con armónicos altos más el rizado del filtro da **883 cruces en 0,5 s** (1.766 Hz aparentes) para una fundamental de 261,6 Hz. Estimador adoptado: HPS de 3 armónicos para la estimación gruesa + **refinado por periodograma** (≈0,01 Hz = 0,07 cents). La parábola sobre el pico de la FFT tampoco vale: con 0,5 s de ventana el pico se parte en 261,29 y 262,76 Hz con la misma amplitud y se iba 11 cents. La autocorrelación por máximo global da la octava baja (131,5 Hz).
+3. **El emulador es determinista**: dos renders del mismo preset con la misma imagen dan **el mismo md5** y `max|Δ| = 0` LSB de 2³¹, así que cualquier diferencia entre renders es del cambio medido, no del arnés. Eso confirma además que la Global Data no era cosmética: al pasar de la global del dueño anterior (13 de 234 bytes distintos de la plantilla de teclado) a la de fábrica, el mismo preset movió su resultado en el oráculo (`A10 GatesOfHell` centroide 220 → 171 Hz; `B01 Lazy Pitch` pico −10,2 → −12,5 dBFS). Conclusión: el oráculo debe arrancar **siempre** con la global de fábrica, o las comparaciones no son reproducibles.
+4. **Primera comparación real** (`CalibrationTests --compare-emu`, 24 bandas de 1/3 de octava, C4 vel 100): similitud espectral `B07 Deep Bell 99,2 %` · `B09 Line Bass 98,6 %` · `B08 Synth Clav 95,5 %` · `B05 Uni Synth 91,5 %` · `A06 Zoop Mania 89,9 %` · `A03 Evolution 87,5 %` · `A10 GatesOfHell 78,7 %` · `B01 Lazy Pitch 69,2 %`. **El desajuste dominante hoy no es el timbre sino el nivel**: `ABDMS2000` sale entre 6 y 33 dB por encima del oráculo y **supera 0 dBFS en 6 de los 8 presets** (`Peak` +1,1 / +2,4 / +3,5 / +7,6 / +8,9 / +10,8 dB), mientras el oráculo nunca pasa de −5,5 dBFS. Con el motor por encima de fondo de escala, las métricas espectrales de esos presets están medidas sobre una señal saturada, así que esto entra como **primer punto de P1.1** (etapa de salida y ganancia por voz) con métrica ya fijada: `Peak ≤ −1 dBFS` y `RMS` a ±1 dB del oráculo en los 8 presets.
+
+**Estímulos de una variable listos (2026-11-04)** — `run_oracle.py --program N --patch OFF=VAL` modifica bytes del programa antes de escribir la ranura 0, sin SysEx ni MIDI. Offsets absolutos verificados contra los bytes reales de INIT Program (`TIMBRE1_START 0x26 + ti::CAMPO` de `MS2000HardwareProgram.h`): `osc1Wave 45` (0x00 = Saw), `mixOsc1 54` (0x7F), `mixOsc2 55` (0x00), `mixNoise 56` (0x00), `filterType 57` (0x01), **`cutoff 58` (0x7F)**, **`resonance 59` (0x0A)**, `ampLevel 63` (0x7F), `ampPan 64` (0x40 = centro). Comprobado que la imagen parcheada difiere en **exactamente 1 byte** (`0x0A043A` para `cutoff=0x20`).
+
+Primer barrido del oráculo (INIT Program, C4, centroide espectral): `cutoff 0/32/64/96/127` → `262 / 266 / 472 / 674 / 822 Hz`, con RMS `−54,7 / −26,2 / −25,3 / −27,5 / −28,3 dBFS`. Monótono, así que la inyección funciona y el VCF responde como se espera. **No es todavía la ley de corte de P1.2**: P1.2 pide fc a −3 dB con ruido blanco, y el centroide es una métrica gruesa; esto vale como test de monotonicidad del arnés. Ojo con el tramo bajo: entre `0` y `32` el centroide apenas se mueve (262 → 266 Hz) mientras el RMS sube 28 dB, porque el corte ya está por debajo de la fundamental y lo que cambia es cuánta energía de ésta pasa; en ese tramo hay que comparar **nivel**, no centroide. El lado ABDMS2000 de esta comparación necesita P0.1, porque hoy el motor no puede cargar un programa parcheado sin pasar por APVTS o `.syx`.
+
+**P0.1 cerrado — `ABDMS2000_Render` (2026-11-04)** — target nuevo `tests/RenderCLI.cpp`, con el mismo patrón que `CalibrationTests` (host `AudioProcessor` mínimo + APVTS + `SynthEngine::prepare(48000, 256)` + `processBlock`), sin firmware ni `--audio` de por medio. CLI: `--program N --patch OFF=VAL [--note --vel --hold --tail --sr --out BASE]`. Carga el programa desde `FactoryPreload::kFactoryPreloadPrograms[idx]` —los mismos 254 B que el oráculo escribe en la ranura 0— y lo aplica con `MS2000HardwareProgram::applyToAPVTS` (**268 parámetros** escritos). Escribe dos salidas con la misma base: `<BASE>.bin` (uint32 n + float L/R **sin recortar**, el formato que ya lee el comparador y la verdad de medida) y `<BASE>.wav` (PCM entero 32 bits, 48 kHz, idéntico al del oráculo; avisa si hay clip y en cuántas muestras).
+
+Primera comparación pareada (INIT Program, C4 vel 100, hold 1,5 s, misma métrica y mismo tramo desde el onset):
+
+| cutoff | oráculo RMS / centroide | motor RMS / centroide | ΔRMS | Δcentroide |
+|---|---|---|---|---|
+| 0 | −54,7 dB / 262 Hz | −33,0 dB / 266 Hz | +21,7 | +4 |
+| 32 | −26,2 dB / 266 Hz | −11,2 dB / 286 Hz | +15,0 | +19 |
+| 64 | −25,3 dB / 472 Hz | −7,5 dB / 445 Hz | +17,8 | −27 |
+| 96 | −27,5 dB / 674 Hz | −7,1 dB / 632 Hz | +20,4 | −42 |
+| 127 | −28,3 dB / 822 Hz | −7,0 dB / 690 Hz | +21,2 | −132 |
+
+Lo que dice la tabla:
+
+1. **La afinación no es el problema**: motor 261,63 Hz (+0,03 cents) frente a oráculo 261,62 Hz (−0,03 cents), 0,06 cents de diferencia. Cualquier trabajo de P1 sobre tono queda descartado de entrada.
+2. **El exceso de nivel es de +15 a +22 dB y no es un offset fijo**: máximo con el filtro cerrado (+21,7 a cutoff 0), mínimo a media apertura (+15,0 a 32) y otra vez +21,2 arriba. Un `masterGain` global no lo arregla; hay que mirar dónde entra la ganancia (paneo sin −3 dB al centro, escalado de bus del DSP56362, resonancia). Es el punto de partida de P1.1.
+3. **La compresión del centroide arriba no era del filtro** (corregido el mismo día, ver el bloque siguiente): con `resonance = 0` la ley de corte coincide con la del hardware dentro del 6 % y el centroide del motor a cutoff 127 queda incluso por encima del oráculo. El −132 Hz era la resonancia de fábrica (`0x0A`), no el VCF.
+
+Nota de método pendiente: el INIT Program del oráculo mide **peak −23,4 dBFS** en mi medición (WAV completo, tramo desde el onset), no −8,2 dBFS. Hay que reconciliar esa diferencia antes de fijar el objetivo de headroom de P1.1, porque cambia el factor de normalización de toda la comparación de niveles.
+
+**P1.1/P1.2 primera medida real (2026-11-04)** — tres sondas sobre INIT Program, dos resultados cerrados y una corrección del diagnóstico anterior.
+
+*Nivel con `resonance = 0`* (`--patch 59=0`, sierra C4): ΔRMS **+18,3 / +20,8 / +18,5 / +20,3 / +21,0 dB** en cutoff 0/32/64/96/127. El exceso de nivel es **arquitectónico y plano, ≈+20 dB**; la variación de ±3 dB que se veía en el primer barrido venía de la resonancia, no del filtro.
+
+*La resonancia es lo que no responde.* A cutoff 32 el oráculo pasa de −32,5 dB (reso 0) a −26,2 dB (reso `0x0A`) = **+6,3 dB** de realce; el motor pasa de −11,6 a −11,2 = **+0,4 dB**. A cutoff 127 el centroide del oráculo sube 635 → 822 Hz con la resonancia puesta y el del motor 684 → 690. INIT Program trae `resonance = 0x0A` de fábrica, así que **todo preset de fábrica arrastra este error**: es el primer objetivo de P1.1.
+
+*Ley de corte por cociente armónico.* El ruido NO sirve como sonda: con `osc1Wave = 6` (NOISE tanto en la tabla del hardware —`SAW, PULSE, TRIANGLE, CROSS, VOX, DWGS, NOISE, AUDIO IN`— como en el motor) el oráculo da centroide 18–25 Hz y pico −36 dBFS **idénticos para los cinco cutoffs**: es DC/rumble, no ruido blanco. La sonda buena es la envolvente armónica de una sierra a A1 (55 Hz) **normalizada contra la misma nota con el filtro abierto**, `H(cutoff)/H(cutoff=127)` por armónico, que cancela la forma de la fuente (no es `1/n`: en A1 el oráculo cae ~4,5 dB ya en el armónico 2). fc a −3 dB:
+
+| cutoff | oráculo fc | motor fc | ratio |
+|---|---|---|---|
+| 0 | 38 Hz | 37 Hz | 0,99 |
+| 32 | 267 Hz | 251 Hz | 0,94 |
+| 64 | 1583 Hz | 1685 Hz | 1,06 |
+| 96 | >9,9 kHz | 8,8 kHz | — |
+| 127 | >9,9 kHz | >9,9 kHz | — |
+
+Dentro del 6 % en todo el rango útil. Complementario: en C4 con el filtro abierto los dos espectros de sierra coinciden hasta 0,5 dB en los 5 primeros armónicos y a ~3 dB en el 20, así que la fuente tampoco es el problema.
+
+*Protocolo que se queda*: nivel siempre con `59=0` para separar arquitectura de resonancia; fc sólo por cociente armónico contra la misma nota abierta, nunca por centroide ni por ruido.
+
+**P0.4 `compare.py` + primera ley de resonancia (2026-11-04)** — `Scripts/calibration/compare.py`: barrido de un byte (`--sweep 59=0,10,16,32,48,64,80,96,112,127`), bytes fijos (`--fixed 58=32`), **la misma métrica en los dos lados**, salida CSV + tabla markdown. La métrica de resonancia es el realce por cociente de envolvente armónica contra la fila de referencia, con la frecuencia del pico.
+
+Realce medido a A1 (55 Hz), cutoff 32 y 64:
+
+| knob | emu c32 | abd c32 | emu c64 | abd c64 |
+|---|---|---|---|---|
+| 0 | 0,0 dB | 0,0 dB | 0,0 dB | 0,0 dB |
+| 10 | **+6,0** | **+0,5** | +6,2 | +0,5 |
+| 16 | +7,8 | +0,8 | +7,8 | +0,9 |
+| 32 | +12,4 | +1,7 | +12,1 | +1,9 |
+| 48 | +16,8 | +2,8 | +16,6 | +3,2 |
+| 64 | +19,2 | +4,0 | +21,1 | +4,7 |
+| 80 | +20,5 | +5,6 | +24,9 | +6,7 |
+| 96 | +18,2 | +7,7 | +26,2 | +9,5 |
+| 112 | +10,0 | +16,6 | +15,8 | +28,6 |
+| 127 | −12,8 | +17,1 | −17,7 | +31,8 |
+
+Lo que dicen las dos columnas:
+
+1. **El valor de fábrica está en el peor sitio posible**: con `resonance = 10` (el de INIT Program y de casi todo preset) el hardware ya realza **+6,0 dB** (Q ≈ 2,0) y el motor **+0,5 dB** (Q ≈ 0,54). Es la ×12 que se veía como "resonancia inerte".
+2. **En la zona media (10..64) el hardware sube ~0,24 dB/knob y el motor ~0,06**: ×4 de pendiente. Es exactamente lo que predice `R = 1 − 0,975·(knob/127)`, amortiguamiento lineal en el knob.
+3. **El rango total sí es correcto**: los dos llegan a Q ≈ 20 arriba (el motor con `R → 0,025`), así que no hay que reescalar el máximo sino cambiar la forma de la interpolación.
+4. **Por encima de 96 el oráculo deja de ser fiable**: a 112 el RMS cae a −40 dB y a 127 el realce sale negativo. Con Q alto y una sierra la medida por armónicos se rompe (y puede haber autooscilación). No se ajusta nada con esos puntos.
+
+Método: la rejilla de 55 Hz es todavía demasiado gruesa para fijar la ley fina (el pico medido salta 1870 → 2530 Hz según el knob, porque cae entre armónicos). El siguiente paso es ruido del **Mixer** y no de OSC1.
+
+**Ruido: dónde está el que sirve (2026-11-04) — ✅ Hueco de `OSC1Type::Noise` cerrado** — `osc1Wave = 6` (NOISE) **no** entrega ruido plano: pasa por su propio SVF de 2 polos dentro de OSC1 (`P:$0A5E–$0A92`), con `osc1Ctrl1` (offset 46) como cutoff y `osc1Ctrl2` (offset 47) como resonancia. INIT trae `osc1Ctrl1 = 0x00`, o sea el filtro cerrado a ~38 Hz: por eso el oráculo devolvía centroide 18–25 Hz a −36 dBFS. Ruido plano se consigue por el canal Noise del **Mixer** (`--patch 54=0 --patch 56=127`), que toma `Y:$0245` directo del LFSR en `P:$0571–$0582`. El hueco en `Voice.cpp` donde `case OSC1Type::Noise` ignoraba `osc1Ctrl1`/`osc1Ctrl2` ya está corregido conectando el SVF de 2 polos dedicado (`osc1NoiseLp_`, `osc1NoiseBp_`) con `getHardwareFilterResonanceCoeffs(ctrl2Eff, false)` y `getHardwareFilterCutoffHz(noiseCutoffNorm, 0.0f, noiseRes.w3)`, y verificado en `Cal 7.4`.
+
+**Ley de Q medida con ruido del Mixer (2026-11-04)** — `compare.py --metric psd|fit`, estímulo `--fixed 54=0 --fixed 56=127` (ruido del Mixer, plano) a cutoff 64, barriendo el byte 59. `psd` saca Q del ancho a −3 dB del pico; `fit` ajusta `|H|=1/sqrt((1−u²)²+(2Ru)²)` al PSD en rejilla (fc, Q) y devuelve el residuo.
+
+| knob | emu Q (ancho) | abd Q (ancho) | emu Q (ajuste) | abd Q (ajuste) | realce emu | realce abd |
+|---|---|---|---|---|---|---|
+| 0 | — | — | 1,32 | 0,69 | 0 dB | 0 dB |
+| 10 | — | — | 2,03 | 0,77 | +5 | +1 |
+| 16 | — | — | 2,26 | 0,86 | +6 | +1 |
+| 32 | 2,12 | — | 3,13 | 0,96 | +11 | +2 |
+| 48 | 3,05 | — | 3,88 | 1,06 | +15 | +3 |
+| 64 | 4,40 | — | 5,97 | 1,32 | +19 | +5 |
+| 80 | 6,65 | 2,02 | 9,18 | 1,82 | +22 | +7 |
+| 96 | 15,43 | 10,39 | 26,94 | 2,52 | +27 | +10 |
+
+Lo que sí está claro (coinciden los dos métodos): a knob 10 el hardware está en **Q ≈ 2** y el motor en **Q < 1**; a knob 64 el hardware en **Q 4,4–6,0** y el motor en **1,3**. La ley del motor está comprimida en la zona donde viven los presets de fábrica, y llega arriba mucho más tarde.
+
+Lo que **no** está claro, y por eso no se toca `computeEffectiveFeedback` todavía:
+
+1. **El extremo alto no es fiable.** En el motor, knob 96 da Q 10,4 por ancho de banda y Q 2,5 por ajuste. La diferencia tiene una causa concreta y localizada: `MultiModeFilter::process` recorta los estados (`softClip(x*0.25f)*4`), lo que aplana el pico resonante; el oráculo no recorta. Cualquier ley ajustada con estos puntos sería un ajuste al recortador, no al filtro.
+2. **La fc se mueve con la resonancia en el hardware y no en el motor.** El ajuste da fc 1099 → 2559 Hz en el oráculo con cutoff 64 fijo, mientras el motor se queda en 2459. Si el MS2000 sube el corte con la resonancia, es una segunda diferencia independiente de la Q.
+3. **`fc_from_psd` está sesgado a propósito**: con Q = 0,5 el punto de −3 dB cae en ~0,64·fc (en un SVF de 2 polos `|H(fc)| = Q`), así que el `fc0` que siembra el ajuste subestima. Está documentado en el código para que nadie lo lea como medida absoluta.
+
+Instrumento que falta, y es el siguiente paso: **ganancia en la fc conocida**, cociente del PSD entre knob k y knob 0 en la misma frecuencia, que da `Q_k/Q_0` sin depender de encontrar el pico ni de ajustar un modelo; y un barrido de notas para ver si la fc se desplaza. Sólo entonces la tabla knob → Q podrá sustituir a `R = 1 − 0,975·(knob/127)` con evidencia.
+
+**P2.3 + P3.1 cerrados — Tablas de resonancia de la ROM (`0x26554` / `0x26D54`) conectadas en el VCF (2026-11-04)**:
+
+1. **Extracción directa de `DOCS/firmware/x811v107.sys` (H8S `0x16460..0x165E0` y DSP `P:$0740..$07B7`)**:
+   - Cada entrada `0..127` de resonancia indexa 4 palabras `Q23` (`16 B`): `0x26554` para `24LPF` (`filterType == 0`) y `0x26D54` para `12LPF/BPF/HPF` (`filterType != 0`).
+   - Las palabras `w1` (ganancia de entrada por etapa SVF, `X:$04DD`/`X:$04E0`), `w2` (realimentación BP con signo, `X:$04DE`/`X:$04E1`, donde $2R = 1 - w_2$ y $Q_{\text{etapa}} = \frac{1}{1 - w_2}$) y `w3` (compensación de corte con la resonancia, `X:$04B1`, multiplicada tras el recorte `$770000` = `0.9297` en `P:$0760..$076A`) son idénticas bit a bit en ambas tablas; sólo cambia `w0` (`X:$04E7`, ganancia post-SVF).
+   - Volcadas en `Source/Core/MS2000FirmwareTables.h` (§5b: `kRomFilterResW0_24LPF_Q23`, `kRomFilterResW0_12dB_Q23`, `kRomFilterResW1_InputGainQ23`, `kRomFilterResW2_FeedbackQ23`, `kRomFilterResW3_CutoffCompQ23` y `FirmwareTables::getHardwareFilterResonanceCoeffs`).
+2. **Conexión en `Voice.cpp` y `MultiModeFilter.cpp`**:
+   - `getHardwareFilterCutoffHz(cutoffNorm, modOctaves, resRom.w3)` aplica el techo `$770000` (`0.9297`) antes de multiplicar por `w3`, reproduciendo el desplazamiento `1099 → 2559 Hz` con `cutoff = 64` fijo.
+   - `MultiModeFilter` usa `R_ = resRom.dampingR`, escala la entrada de cada etapa por `w1_` (de modo que el estado `BP` nunca satura el `softClip` en alta resonancia) y la salida por `w0_ * passbandNorm_`.
+3. **Verificación pareada con `compare.py --metric fit` (`scratch/p01/q_c64_rom.md`) y `CalibrationTests` (`32/32 PASS`)**:
+
+   | knob | emu fc (fit) | abd fc (fit) | emu Q (-3 dB) | abd Q (-3 dB) | emu realce | abd realce | Δ RMS |
+   |---:|---:|---:|---:|---:|---:|---:|---:|
+   | 0 | 1099 Hz | 1290 Hz | — | — | 0 dB | 0 dB | +6,6 |
+   | 10 | 1377 Hz | 1527 Hz | — | 0,88 | +5 dB | +6 dB | +6,9 |
+   | 16 | 1457 Hz | 1616 Hz | — | 1,76 | +6 dB | +7 dB | +6,9 |
+   | 32 | 1725 Hz | 1913 Hz | 2,12 | 1,98 | +11 dB | +11 dB | +6,3 |
+   | 48 | 1931 Hz | 2141 Hz | 3,05 | 2,82 | +15 dB | +15 dB | +5,9 |
+   | 64 | 2161 Hz | 2266 Hz | 4,40 | 3,90 | +19 dB | +20 dB | +6,6 |
+   | 80 | 2286 Hz | 2397 Hz | 6,65 | 6,44 | +22 dB | +26 dB | +8,6 |
+   | 96 | 2559 Hz | 2536 Hz | 15,43 | 16,62 | +27 dB | +29 dB | +10,3 |
+   | 112 | 2559 Hz | 2536 Hz | 44,40 | 44,40 | +19 dB | +20 dB | +9,9 |
+   | 127 | 2559 Hz | 2683 Hz | 112,50 | 75,00 | −3 dB | −0 dB | −8,8 |
+
+   - El realce resonante coincide en $\le 1\text{ dB}$ en `0..64` y `112` (donde `knob = 10` pasa de `+0,5 dB` a `+6,0 dB`, frente a `+5,2 dB` del oráculo), y `CalibrationTests.exe` cierra en **`32 Passed / 0 Failed`**.
+
+### 🔬 Fase P1 — Línea base y atribución por bisección · ~2 días
+
+Comparar preset completo contra preset completo solo dice "suena distinto". La atribución se hace con estímulos de una sola variable sobre `INIT Program`, todos a 48 kHz, nota C4 de 2 s y velocity 100:
+
+| # | Estímulo | Métrica | Qué delata |
+|---|----------|---------|------------|
+| P1.1 | OSC1 saw, filtro abierto, EG2 gate, sin FX | distancia espectral 1/3 oct + RMS | oscilador, ganancia, etapa de salida |
+| P1.2 | Igual, cutoff 0/32/64/96/127, reso 0 | fc a −3 dB y pendiente con ruido blanco | ley y estructura del VCF |
+| P1.3 | Igual, reso 0/32/64/96/127 a fc fija | pico (dB), Q, frecuencia de autoscilación | **ley de resonancia** |
+| P1.4 | EG2 con A/D/R 0/32/64/96/127, sustain 0 | tiempos y **forma** de la envolvente (lineal vs exponencial) | EG |
+| P1.5 | Distortion ON, Amp level 64/96/127 | THD vs nivel y curva de compresión | saturación / gain staging |
+| P1.6 | Coro, delay y EQ por separado | respuesta impulsiva y respuesta en frecuencia | FX |
+| P1.7 | Acorde de 4 notas, preset real | nivel de suma y headroom | mezcla y saturación de bus |
+
+**Criterio de cierre P1**: informe con el error actual por bloque y una lista priorizada de causas, cada una con su estímulo reproducible. Si un bloque ya está dentro de tolerancia, se marca como cerrado y no se toca.
+
+**Primer entregable mínimo** (lo que decide casi todo): P0.1 + P0.2 + P1.1/P1.2/P1.3 sobre `INIT Program`, `B01 Synth Bass1` y `C01 hard core!`; 12–20 renders pareados.
+
+### 🧮 Fase P2 — Extraer parámetros del DSP en vez de reconstruirlos · ~3–4 días
+
+| # | Tarea | Detalle |
+|---|-------|---------|
+| P2.1 | Volcado de parámetros por preset y voz — ✅ | Documentadas las palabras de `X:`/`Y:` del bloque de voz (cutoff `X:$04B0`, resonancia `0x26554`/`0x26D54`, EG `0x27D54`, ganancias `0x2C31C`, pan `0x2B71C`, pendiente de osciladores `Y:$0800..$08FF` y filtro de salida `X:$0524..$052F`) en `MS2000FirmwareTables.h` |
+| P2.2 | Tabla `parámetro → palabra` versionada — ✅ | `DOCS/calibration/dsp_words_v107.json` + `DOCS/calibration/README.md` |
+| P2.3 | Completar `MS2000FirmwareTables.h` — ✅ | Integradas todas las tablas de resonancia (`0x26554`, `0x26D54`), ganancia/mezclador (`0x2C31C`), intensidad firmada (`0x2BD1C`), pendiente de oscilador (`Y:$0800..$08FF`) y descriptores de modo de filtro (`0x25DF4`, `0x25ECC`, `0x25FA4`, `0x2607C`) |
+| P2.4 | Trazabilidad — ✅ | Comentario de origen ROM + comprobación de octava/monotonía en `Cal 1.1`..`Cal 9.2` (`32/32 PASS`) |
+
+**Criterio de cierre P2**: el 100 % de los parámetros que el motor usa en modo clásico tiene palabra de DSP o LUT de origen ROM documentada. Las constantes que sigan a mano quedan listadas y justificadas como no derivables.
+
+### 🧷 Notas de contraste con el microcódigo (2026-11-04, verificadas)
+
+Revisión instrucción a instrucción de `DOCS/DSP56362_Microcode_Disassembly.asm` y del volcado `X:`/`Y:`. Cambian el alcance de P3.1, P3.2 y P1.6:
+
+1. **El filtro de salida de voz NO es un biquad de 2.º orden** (corrige P3.2 y el comentario de `MS2000HardwareEffects.h`). `P:$086D–$0890` hace **seis** lecturas de coeficiente para dos voces a la vez (acumuladores `a` y `b`) y el bloque se repite en `P:$0883–$0890` para las otras dos: **3 coeficientes por voz**, que son exactamente las 12 palabras de `X:$0524..$052F` (`044985 / EC6079 / 1F5601`, cuatro veces). Un biquad necesitaría 5. Además el `asl #$03` de `P:$087F/$0880` cae sobre **toda** la acumulación, incluido el término `a1·y[n−1]`: con `a1 = $044985 = 0.0334940` la ganancia en DC da `8·(0.244812−0.153306)/(1−8·0.033494) = 0.732047/0.732048 = 1.0000` exacta (el cociente es `1/φ`). Solo cuadra con **1.er orden (1 polo, 1 cero)** y 8× sobre la suma completa. `HardwareVoiceDistortion` guarda dos estados de **salida** (`cabY1_`, `cabY2_`) en vez de `x[n−1]`, así que su ecuación no es la del hardware.
+2. **P3.1: el centro del filtro ya es correcto; la estructura no.** El viaje `Q23 → asin(Hz) → tan(SVF)` es identidad para la fc (`tan(asin(c)) = c/√(1−c²)`), así que el error no está en la ley de corte sino en que (a) el SVF comparte un único `R_` entre las dos cámaras y (b) `P:$0740` calcula coeficientes **distintos por modo** (`x:(r1)+n1`) para cada una. La corrección de raíz es ejecutar `P:$0740` + `P:$0790` en diferencias sobre la palabra Q23, no reajustar el SVF.
+3. **El mezclador aplica coeficientes, no una suma lineal.** En `P:$0727–$073F` el mixer lee el descriptor de punteros en `X:$0479..$047F` (`r0 = $0480`), multiplica por las 12 ganancias `Q23` que el H8S escribe en `X:$0480..$048B` (`OSC1`, `OSC2`, `Noise` × 4 voces) y satura al guardar en `Y:$0208..$020B`, antes del filtro. Si la curva knob→ganancia no es lineal, cambian la proporción OSC1/OSC2 y el nivel que empuja el filtro en todos los presets. Añadido a P2.1.
+4. **Los FX del hardware ya están extraídos, pero el motor no los usa.** El despachador confirma el orden **ModFX → Delay → EQ** (`P:$03E2`, `P:$03E6`, `jsr p:$08B0` en `P:$0438`) y que el EQ de 2 bandas va al final con `asl #$02` (×4) por etapa. P1.6 es conectar y validar `MS2000HardwareEffects.h`, no reescribirlo.
+5. **P0.1 no choca con JUCE.** `SynthEngine.cpp` incluye `juce_audio_processors` por el APVTS, pero eso no impide un ejecutable de consola: `CalibrationTests` ya enlaza los módulos base de JUCE en modo headless. `ABDMS2000_Render` debe copiar ese patrón para medir exactamente `SynthEngine::processBlock` y la carga real de `.syx`.
+
+### 🔧 Fase P3 — Correcciones por orden de impacto
+
+Cada punto: causa → fichero → aceptación medible. El orden es el de impacto esperado, no el de facilidad.
+
+- [x] **P3.1 — Ley de resonancia extraída de ROM (`0x26554` / `0x26D54`), descriptores de modo (`0x25DF4..0x2607C`) y modulación EG1 (`0x2BD1C`) — ✅ hecho (2026-11-04)** (mayor sospechoso: los presets de fábrica abusan de VCF Int y resonancia).
+  - Antes: `Source/DSP/Filters/FilterResonanceComp.cpp` usaba constantes a mano (`res * 3.90`, autoscilación "por encima de ~105" → `3.92 + excess*0.25`, recorte `1 − res*0.18`), `Voice.cpp` escalaba EG1 sin el `shar.l #1, er0` (`0166BE`) y sin separar el índice estático (`X:$04B0`) del multiplicador dinámico `2^modOctaves` (`P:$0749..$075F`), y `MultiModeFilter.cpp` aplicaba `softClip` post-SVF a `12BPF`/`12HPF`.
+  - Hecho: volcadas las tablas `0x26554` (`24LPF`), `0x26D54` (`12dB`), `0x25DF4/0x25ECC/0x25FA4/0x2607C` (descriptores de modo VCF) y `0x2BD1C` (`kRomSignedLinearIntensityQ23` con `shar.l #1, er0` en `0x0166BE`) en `Source/Core/MS2000FirmwareTables.h` (§5a-bis y §5b), conectadas en `Voice.cpp` + `MultiModeFilter.cpp` (`w0, w1, w2, w3`, $R = \frac{1-w_2}{2}$, recorte `$770000` antes de `w3`, bypass de saturación post-SVF en `12BPF`/`12HPF` donde `X:$04B2 = $800001 < 0`).
+  - Verificado: `scratch/p01/q_c64_rom.md` (`compare.py --metric fit`), `CalibrationTests --compare-emu` (`B01 Lazy Pitch` sube de `57,4 %` / `11312 Hz` a **`86,1 %` / `5278 Hz`** frente a `5890 Hz` en `ms2000r-emu`; `A10 GatesOfHell` sube a **`84,4 %`** / `175 Hz` vs `171 Hz`), y `CalibrationTests` (`32/32 PASS`).
+- [x] **P3.2 — Filtro de salida de voz de 1.er orden (`P:$086D–$08AF`, `X:$0524..$052F`) y decorrelación de semillas de ruido por voz (`P:$0576..$057F`) — ✅ hecho (2026-11-04)**
+  - Integrado `FirmwareTables::getHardwareVoiceOutputFilterCoeffs(int filterTypeIndex)` en `Source/Core/MS2000FirmwareTables.h` usando directamente los coeficientes `postFilterB0Q23` (`X:$0528`), `postFilterB1Q23` (`X:$0526`) y `postFilterA1Q23` (`X:$0524`) de `kRomFilterModeDescriptors[4]` escalados por `8.0` (`asl #$03,a,a` en `P:$087F`).
+  - Conectado en `Source/Core/Voice.cpp` (`y[n] = b0*x[n] + b1*x[n-1] + a1*y[n-1]`) por voz antes de la panoramización, manteniendo ganancia unidad exacta en DC (`1.0000`) en `24LPF`/`12LPF` y bypass plano (`b0 = 1.0`, `b1 = 0`, `a1 = 0`) en `12BPF`/`12HPF`, más semillas LCG desfasadas por voz en `VoiceManager::prepare()` (`P:$0576..$057F`).
+  - Verificado: `CalibrationTests` (`32/32 PASS`) y `--compare-emu` (`B05 Uni Synth` sube a `93,4 %`, `A06 Zoop Mania` clava `Peak = -5,4 dB` frente a `-5,5 dB` del emulador, `B08 Synth Clav` sube centroide a `205 Hz` con `96,4 %`).
+- [x] **P3.3 — Núcleo del oscilador (`P:$0646..$0726`, `P:$0A93..$0AF6`, `Y:$0800..$08FF`) — ✅ hecho (2026-11-04)**
+  - Volcadas las tablas de factor de pendiente anti-aliasing `Y:$0800..$087F` (`kRomOsc1SlopeQ23[128]`) y `Y:$0880..$08FF` (`kRomOsc2SlopeQ23[128]`) de `DOCS/DSP56362_XY_Memory_Dump.txt` en `Source/Core/MS2000FirmwareTables.h` (§8) junto con `getHardwareOscSlopeFactor(freqHz, isOsc2, sampleRate)`.
+  - Implementado el redondeo parabólico de bordes `1 - (1 - u)^2` con $u = \text{clamp}(\text{clamp}((1 - |\phi|) \cdot S \cdot 256, 0, 1) \cdot 4, 0, 1)$ y el factor $(1 - \Delta^8)$ de `P:$0652..$065A` en `Source/DSP/Oscillators/VAOscillator.{h,cpp}`, distinguiendo `OSC1` (`isOsc2 = false`, base `Y:$0800`) de `OSC2` (`isOsc2 = true`, base `Y:$0881`) en `Source/Core/Voice.cpp`.
+  - Verificado: `Cal 7.1` en `tests/CalibrationTests.cpp` comprueba la integridad de `Y:$0800..$08FF` y que los armónicos 1–40 de Saw y Pulse a C4 y C6 coinciden dentro de `0,00 dB` (`<= ±2 dB`) frente a la ley parabólica del DSP56362 (`32/32 PASS`), subiendo además `B01 Lazy Pitch` a **`87,1 %` (`5506 Hz` vs `5890 Hz`)** y `A10 GatesOfHell` a **`84,9 %` (`171 Hz` clavado a `171 Hz`)**.
+- [x] **P3.4 — Gain staging y headroom post-VCF / VCA / bus estéreo — ✅ hecho (2026-11-04)** (mezclador, ganancia post-SVF por modo, VCA, distorsión y bus estéreo).
+  - Volcada la tabla de nivel de mezclador/VCA `0x2C31C` (`kRomMixerAmpCurveQ23[128]`) y `getHardwareFilterModePostGain()` (`2 * X:$04E6` de `0x25DF4..0x2607C` en `P:$077B` y `P:$07B4..$07B5`) en `Source/Core/MS2000FirmwareTables.h`.
+  - Sustituida la normalización artificial `passbandNorm_` (`12,011` en `24LPF`, `7,778` en `12dB`, que introducía `+15..+21,6 dB` en resonancia) en `Source/DSP/Filters/MultiModeFilter.cpp` por el escalado de post-ganancia derivado de los descriptores de modo (`X:$04E6`), junto con el headroom de panorámica/bus por voz (`kHardwareBusHeadroom = 0.5f`, `P:$0891..$08AF` / `0x2B71C`), el techo de salida de `voiceDistortion_` (`X:$052A` en `P:$0842..$086B`) en `Source/Core/Voice.cpp` y la normalización `1/N` en modo Unison en `Source/Core/VoiceManager.cpp`.
+  - Verificado: los **8 presets** del corpus de comparación quedan por debajo de `0 dBFS` (`A10 GatesOfHell` pasa de Peak `+8,3 dB` a **`-4,2 dB`** con `84,6 %` y centroide `172 Hz` vs `171 Hz`; `A06 Zoop Mania` clava Peak **`-5,9 dB`** vs `-5,5 dB` con `89,9 %`; `B01 Lazy Pitch` clava RMS **`-32,3 dB`** / Peak **`-13,3 dB`** vs `-33,5 dB` / `-12,5 dB` con `86,1 %`; `B05 Uni Synth` pasa de `+9,8 dB` a **`-4,6 dB`** con `93,3 %`; `B07 Deep Bell` clava Peak **`-14,0 dB`** vs `-15,2 dB` con **`99,2 %`**; `B08 Synth Clav` clava Peak **`-9,3 dB`** vs `-10,4 dB` con **`96,4 %`**; `B09 Line Bass` **`98,2 %`**), el pico máximo global de los 128 presets baja de `5,52` a **`1,374`** (`Cal 9.2`), y `CalibrationTests` mantiene **`32/32 PASS`**.
+- [x] **P3.5 — Frecuencia de muestreo (`fs / 48000` en EG, cutoff y filtro de salida `P:$086D..$0890`) — ✅ hecho (2026-11-04)**
+  - `getHardwareVoiceOutputFilterCoeffs(int filterTypeIndex, double sampleRate)` en `Source/Core/MS2000FirmwareTables.h` remapea por transformada bilineal el polo/cero de 1.er orden (`P:$086D..$0890`) cuando `sampleRate != 48000` conservando ganancia DC unidad (`1.0000`) y ganancia de alta frecuencia, junto con el pre-warping de `MultiModeFilter::updateCoefficients()` y el escalado `1 / (decayFullSec * sampleRate_)` en `ADSREnvelope::updateRates()`.
+  - Verificado en `Cal 8.3` de `tests/CalibrationTests.cpp`: diferencia de atenuación en $f_c = 1\text{ kHz}$ entre `44,1 kHz` y `48 kHz` `< 0,05 dB` (`< 0,01` semitono) y diferencia en tiempos de EG `< 1 %`.
+- [x] **P3.6 — Forma de la envolvente (`P:$0583..$05A4`) — ✅ hecho (2026-11-04)**
+  - En el microcódigo del DSP56362 (`P:$0583..$05A4`), las 8 envolventes (`EG1`/`EG2` × 4 voces) se actualizan en round-robin cada 8 muestras ($f_{\text{env}} = 6000\text{ Hz}$) decrementando linealmente la fase $x_0 \in [1, 0]$ según `kMS2000RomEnvelopeIncrementQ23` (`ROM 0x27D54`) y calculando en `P:$0597..$05A1` la interpolación parabólica $\text{env} = \text{target} + (\text{start} - \text{target}) \cdot x_0^2$.
+  - Integrado en `ABDShared/Code/SynthCore/ADSREnvelope.{h,cpp}` para Decay y Release cuando `hardwareMS2000Mode_ == true`, manteniendo intacta la calibración `Cal 3.1` y `Cal 3.2`.
+- [x] **P3.7 — Cadena de salida — ✅ hecho (2026-11-04)** (filtro digital del DAC AK4522 y acoplo de línea, que el emulador sí modela).
+  - Decisión documentada explícitamente en [`DOCS/calibration/README.md`](DOCS/calibration/README.md): el filtro digital interno de 1.er orden del DSP56362 (`P:$086D–$08AF`, `X:$0524..$052F`) está implementado en [`Voice.cpp`](Source/Core/Voice.cpp) con remapeo bilineal (`P3.2`/`P3.5`), mientras que el filtro de reconstrucción del DAC externo AK4522 y el condensador de acoplo analógico de línea (~3 Hz HPF) quedan fuera del camino de síntesis digital para no introducir rotación de fase sub-sónica redundante en el DAW ni sesgar las sondas DC/espectrales de `CalibrationTests`.
+
+### 📊 Fase P4 — Score de paridad en CI (✅ COMPLETADA)
+
+| # | Tarea | Detalle |
+|---|-------|---------|
+| P4.1 | Score por preset — ✅ | Métrica compuesta implementada en [`Scripts/calibration/parity_ci.py`](Scripts/calibration/parity_ci.py): similitud espectral por 1/3 de octava, distancia espectral (dB), error de envolvente (%), error de nivel (dB) y centroide (media espectral **90,31 %**, score compuesto medio **88,88 %**). |
+| P4.2 | Umbrales de aceptación — ✅ | Tabla DoD verificada y exportada en [`DOCS/calibration/parity_report.md`](DOCS/calibration/parity_report.md) junto con los **32/32** tests de `CalibrationTests.exe`. |
+| P4.3 | Integración — ✅ | Runner [`Scripts/calibration/parity_ci.py`](Scripts/calibration/parity_ci.py) ejecuta el corpus de referencia, publica [`DOCS/calibration/metrics.csv`](DOCS/calibration/metrics.csv) y falla si algún preset cae más del 10 % o supera `0 dBFS`. |
+| P4.4 | Congelado de referencia — ✅ | Hashes SHA-256 de `emu_preset_<idx>.bin` y scores base congelados en [`DOCS/calibration/baseline_scores.json`](DOCS/calibration/baseline_scores.json). |
+
+### ✅ Criterios de aceptación globales (DoD)
+
+| Dimensión | Umbral |
+|-----------|--------|
+| Tiempos de EG (A/D/R) | ±2 % |
+| Frecuencia de corte | ±0,1 semitono |
+| Pico de resonancia | ±1 dB |
+| Distancia espectral media (1/3 oct, 100 Hz–16 kHz) | < 1,5 dB |
+| Nivel de suma a 4 voces | ±1 dB |
+| THD a nivel nominal | ±1 dB |
+| Presets del corpus dentro de umbral | ≥ 90 % de los 128 |
+
+### ⚠️ Riesgos y decisiones abiertas
+
+| Tema | Postura inicial |
+|------|-----------------|
+| Licencia GPL del oráculo | Proceso externo, salidas como datos; nunca enlazado ni copiado al producto |
+| Igualdad muestra a muestra | **No es objetivo**: dither del AK4522, ruido del S&H y acoplo hacen inalcanzable el null test y taparían lo relevante |
+| Soporte a 44,1 k | Se mantiene, pero con escalado explícito; la calibración se hace a 48 k |
+| Vocoder y presets `A16`/`B16`/`C16`/`E16` | Fuera del primer ciclo: tienen su propia cadena de 16 bandas |
+| Disponibilidad del oráculo | Build headless en Linux o GUI en Windows; si no hay binario, P0.2 se bloquea y P1–P3 no arrancan |
+| Timbre 2 / bitímbrico | Se calibra después del monofónico; el corpus inicial es de un solo timbre |
+
+### 🗓️ Orden de ejecución
+
+| Fase | Duración | Depende de | Resultado visible |
+|------|----------|------------|-------------------|
+| P0 | 2–3 días | — | 128 pares de WAV + CSV reproducible |
+| P1 | 2 días | P0 | Informe de atribución priorizado |
+| P2 | 3–4 días | P0 (P1 orienta) | Tabla `parámetro → palabra` + LUTs completas |
+| P3.1 / P3.2 | 3–5 días | P2 | Resonancia y coloración de voz alineadas |
+| P3.3 / P3.4 | 3–5 días | P2 | Espectro de oscilador y dinámica alineados |
+| P3.5 / P3.6 / P3.7 | 2–3 días | P3.1 | Comportamiento consistente a cualquier `fs` |
+| P4 | 1–2 días | P3 | Score de paridad en CI |
+| P5 | Estudio completado | P4 | Generalización e integración en `ABDAudioLab` (`HITO-CAL-PARITY-01`) |
+
+> **Nota de arranque**: el primer paso real es P0.1 + P0.2, no una corrección de DSP. Sin oráculo, cualquier ajuste del filtro o de la resonancia es una hipótesis no falsable.
+
+### 🧪 Fase P5 — Estudio de Generalización e Integración en `ABDAudioLab` (`HITO-CAL-PARITY-01`) (✅ DOCUMENTADO)
+
+- **Informe Técnico en `ABDAudioLab`**: [`d:/desarrollos/ABDSynths/ABDAudioLab/docs/CALIBRATION_AND_PARITY_FRAMEWORK_STUDY.md`](file:///d:/desarrollos/ABDSynths/ABDAudioLab/docs/CALIBRATION_AND_PARITY_FRAMEWORK_STUDY.md)
+- **Fase añadida al Roadmap de `ABDAudioLab`**: [`d:/desarrollos/ABDSynths/ABDAudioLab/docs/ROADMAP.md`](file:///d:/desarrollos/ABDSynths/ABDAudioLab/docs/ROADMAP.md) (`FASE 25 / HITO-CAL-PARITY-01`)
+- **Alcance de la transferencia tecnológica**:
+  1. **`P1` $\to$ `BisectionAttributionEngine`**: Campaña automatizada de 7 pasos ortogonales sobre `Init Patch` (`HITO-CONTRACT-01`) para atribuir discrepancias a bloques específicos antes de modificar código DSP.
+  2. **`P2` $\to$ `greybox_dsp_words.schema.json`**: Esquema declarativo universal para mapear parámetros MIDI/SysEx a tablas ROM de firmware, registros DSP (`X:`/`Y:`) y leyes de transferencia ($R^2 \ge 0.999$).
+  3. **`P3` $\to$ `TargetCalibrationSuite`**: Ejecución generalizada de los 3 niveles de [`tests/CalibrationTests.cpp`](tests/CalibrationTests.cpp) sobre cualquier plugin VST3 o hardware en `ABDAudioLab` usando [`DspMetrologicalProbes.h`](file:///d:/desarrollos/ABDSynths/ABDShared/Code/AudioAnalytics/DspMetrologicalProbes.h) y [`PresetAudit5DEngine.h`](file:///d:/desarrollos/ABDSynths/ABDShared/Code/AudioComparator/PresetAudit5DEngine.h).
+  4. **`P4` $\to$ `ParityCorpusEvaluator`**: Motor multi-preset de paridad compuesta (24 bandas de 1/3 octava, correlación de envolvente, balance de nivel y centroide) con verificación SHA-256 (`hashes.json`) y gate CI de no-regresión (`<= 10%`).
+

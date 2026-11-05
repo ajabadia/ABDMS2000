@@ -21,6 +21,8 @@ namespace ABDMS2000
 void Voice::prepare(double sampleRate) noexcept
 {
     sampleRate_ = (sampleRate > 1000.0) ? sampleRate : 44100.0;
+    osc1VA_.setIsOsc2(false);
+    osc2_.setIsOsc2(true);
     osc1VA_.prepare(sampleRate_);
     osc1DWGS_.prepare(sampleRate_);
     osc1VoxWave_.prepare(sampleRate_);
@@ -53,6 +55,7 @@ void Voice::reset() noexcept
     osc1DWGS_.reset();
     osc1VoxWave_.reset();
     osc2_.reset();
+    noiseGen_.reset(noiseSeed_);
     filter_.reset();
     eg1_.reset();
     eg2_.reset();
@@ -65,6 +68,10 @@ void Voice::reset() noexcept
     cutoffSmoothInitialized_ = false;
     noteHeld_ = false;
     gateEnv_ = 0.0f;
+    postFilterX1_ = 0.0f;
+    postFilterY1_ = 0.0f;
+    osc1NoiseLp_ = 0.0f;
+    osc1NoiseBp_ = 0.0f;
 }
 
 /**
@@ -100,6 +107,8 @@ void Voice::noteOn(int midiNote, float velocity, bool glideEnabled, bool isFirst
         if (wasIdle)
         {
             filter_.reset();
+            postFilterX1_ = 0.0f;
+            postFilterY1_ = 0.0f;
         }
 
         eg1_.noteOn(1.0f);
@@ -398,8 +407,30 @@ void Voice::renderNextSample(
     }
 
     case OSC1Type::Noise:
-        osc1Sig = noiseGen_.getWhiteNoise();
+    {
+        // Hardware Wave 6 (P:$0A5E–$0A92): White noise passed through a dedicated 2-pole LP SVF
+        // where Control 1 (offset 46 + Virtual Patch / ModSeq) sets Cutoff and Control 2 (offset 47) sets Resonance.
+        const float noiseWhite = noiseGen_.getWhiteNoise();
+        const float noiseCutoffNorm = DSPUtils::clamp(ctrl1Base, 0.0f, 1.0f);
+        const auto noiseRes = FirmwareTables::getHardwareFilterResonanceCoeffs(ctrl2Eff, false);
+        const float noiseFc = FirmwareTables::getHardwareFilterCutoffHz(noiseCutoffNorm, 0.0f, noiseRes.w3);
+        const float clampedFc =
+            DSPUtils::clamp(noiseFc, 10.0f, static_cast<float>(sampleRate_) * 0.485f);
+        const float g = std::tan(DSPUtils::PI * clampedFc / static_cast<float>(sampleRate_));
+        const float k = 2.0f * noiseRes.dampingR;
+        const float a1 = 1.0f / (1.0f + g * (g + k));
+        const float a2 = g * a1;
+        const float a3 = g * a2;
+        const float xIn = noiseWhite * noiseRes.w1;
+        const float v3 = xIn - osc1NoiseLp_;
+        const float v1 = a1 * osc1NoiseBp_ + a2 * v3;
+        const float v2 = osc1NoiseLp_ + a2 * osc1NoiseBp_ + a3 * v3;
+        osc1NoiseBp_ = DSPUtils::clamp(2.0f * v1 - osc1NoiseBp_, -4.0f, 4.0f);
+        osc1NoiseLp_ = DSPUtils::clamp(2.0f * v2 - osc1NoiseLp_, -4.0f, 4.0f);
+        // P:$0A8F–$0A91: mpy y0,x0,a (w0) + asl #$03,a,a (x8); since w1*w0 = 0.25 at res=0, * 4.0f gives unity passband
+        osc1Sig = DSPUtils::clamp(v2 * noiseRes.w0 * 4.0f, -1.5f, 1.5f);
         break;
+    }
 
     case OSC1Type::AudioIn:
         osc1Sig = audioInSample;
@@ -448,19 +479,21 @@ void Voice::renderNextSample(
         }
 
         constexpr float kRomFullCutoffSpanOctaves = 127.0f / 12.0f;  // 0..127 knob span in ROM 0x26154 (10.5833 oct)
-        // DSP P:$0749..$0751: el cutoff se suma en espacio de pitch lineal de 24 bits donde
-        // `asr #$13` extrae la octava ($080000 = 1 oct), así que EG1 Int a fondo recorre los
-        // 16 octavas completos ($800000). Validado contra ms2000r-emu (B01 33% -> 82%).
-        constexpr float kEg1FullSpanOctaves = 16.0f;
+        // H8S 0x0166B4..0x0166C4: Filter EG1 Intensity lee la tabla lineal 0x2BD1C (`shar.l #1` en 0x166BE
+        // se cancela con `<< 1` en 0x11576 -> X:$04AF en [-1.0, +1.0] Q23). En DSP P:$074B..$0751,
+        // `mac y0,x0,a #$40,x0` + `add x0,a` + clamp `[0, $7FFFFF]` recorta la suma de modulación a [-8.0, +8.0] octavas.
+        constexpr float kDspFullPitchSpaceOctaves = 16.0f;
+        const float eg1Coeff = FirmwareTables::getHardwareFilterEg1IntensityCoeff(p.eg1FilterIntensity);
         // FILTER VELO (byte 23): en el firmware (H8S 0x0163D0 -> 0x013466) la velocidad escala la
         // amplitud del EG1 que llega al filtro (descriptores X:$0049..$004C), no el cutoff estático.
         float eg1VeloFactor = std::max(0.0f, 1.0f + p.filterVeloSens * velocity_);
-        float egOctaves = eg1Raw * eg1VeloFactor * (p.eg1FilterIntensity * kEg1FullSpanOctaves);
+        float egOctaves = eg1Raw * eg1VeloFactor * (eg1Coeff * kDspFullPitchSpaceOctaves);
         float kbdOctaves =
             ((basePitch - Constants::kMidiMiddleC) / Constants::kSemitonesPerOctave) * (p.filterKbdTrack * 2.0f);
         float patchOctaves = (mod.cutoffMod + p.seq.cutoff) * kRomFullCutoffSpanOctaves;
-        float totalModOctaves = egOctaves + kbdOctaves + patchOctaves;
-        float cutoffHz = FirmwareTables::getHardwareFilterCutoffHz(smoothedCutoffNorm_, totalModOctaves);
+        float dynModOctaves = egOctaves + patchOctaves;
+        const auto resRom = FirmwareTables::getHardwareFilterResonanceCoeffs(p.filterResonance, p.filterType == FilterType::LPF24);
+        float cutoffHz = FirmwareTables::getHardwareFilterCutoffHz(smoothedCutoffNorm_, dynModOctaves, resRom.w3, kbdOctaves);
 
         filter_.setCutoff(cutoffHz);
         filtered = filter_.process(mixedAudio);
@@ -496,13 +529,53 @@ void Voice::renderNextSample(
 
     if (p.distortionOn && !p.diagBypassDistortion)
     {
-        vcaOut = voiceDistortion_.processSample(vcaOut, 0.75f);
+        // En DSP56362 P:$083D..$086B, la etapa de distorsión por voz aplica pre-énfasis alto (`asl #$08,a,b`
+        // en P:$083D) para saturar la señal (`>15% THD`), pero su techo de salida en X:$052A (`$1F5601..$300000`)
+        // queda acotado antes de entrar a la suma de voces P:$0891..$08AF.
+        //
+        // El drive interno (`gain = 1 + 0.85*6 = 6.1x`) seguido del makeup (`1/(0.55+0.45*drive) = 1.072x`)
+        // deja una ganancia de pequeña señal de 6.1 * 1.072 = 6.55x; con el techo de 0.5 quedaba 3.27x
+        // (+10.3 dB) sobre una señal ya escalada por AMP LEVEL. Medido con --compare-emu: A10
+        // (LPF12, RES 97, AMP_LEVEL 45, Distortion ON) salía +12.0 dB sobre el oráculo con peak -2.9 dB
+        // frente a -12.3 dB, y sin embargo cumplía Cal 6.1 (THD > 15%). Es decir: la etapa saturaba bien
+        // pero amplificaba de más. Compensando a ganancia unidad de pequeña señal (0.5 / 3.27 = 0.153) el
+        // THD se conserva y A10 pasa a +1.59 dB / peak -13.3 dB. Presets con Distortion OFF no cambian.
+        vcaOut = voiceDistortion_.processSample(vcaOut, 0.85f) * 0.153f;
+    }
+
+    // 13b. Filtro de salida de voz de 1.er orden (DSP56362 P:$086D..$0890, X:$0524..$0528 con asl #$03,a,a):
+    //   y[n] = b0 * x[n] + b1 * x[n-1] + a1 * y[n-1]
+    // En 24LPF/12LPF mantiene ganancia unidad exacta en DC (1.0000) y aporta realce de agudos post-VCA;
+    // en 12BPF/12HPF es bypass plano de ganancia unidad (b0 = 8 * $100000 = 1.0, b1 = 0, a1 = 0).
+    // P3.8 — Alcance real de este shelf (medido, no supuesto). Del desensamblado se deduce que los
+    // tres coeficientes son FIJOS por modo (P:$086F..$0873 los lee del descriptor y P:$087F/$0880 +
+    // P:$088D/$088E aplican `asl #$03` al acumulador completo, incluida la realimentación): un realce
+    // fijo no depende del cutoff.
+    // Se probó a desactivar esta etapa (A/B con --compare-emu sobre el corpus de 8 presets) con la
+    // hipótesis de que duplicara un realce que nuestro TPT ya no necesita. El resultado la descarta:
+    // B01 Lazy Pitch sigue en 77,5 % (banda 4..10 kHz clavada en 91,3 % frente a 62,8 % del oráculo),
+    // A10 sigue en 82,3 % y el centroide apenas se mueve; sólo bajan algunos picos (B05 -0,2 -> -2,1 dB).
+    // Como la etapa SÍ existe en el microcódigo y su retirada no mejora la paridad, se mantiene activa.
+    constexpr bool kApplyHardwareVoiceOutputFilter = true;
+    if (kApplyHardwareVoiceOutputFilter && !p.diagBypassFilter && !p.diagBypassVCA)
+    {
+        const auto outFlt =
+            FirmwareTables::getHardwareVoiceOutputFilterCoeffs(static_cast<int>(p.filterType), sampleRate_);
+        const float postY = outFlt.b0 * vcaOut + outFlt.b1 * postFilterX1_ + outFlt.a1 * postFilterY1_;
+        postFilterX1_ = vcaOut;
+        postFilterY1_ = postY;
+        vcaOut = postY;
     }
 
     // 14. Pan and stereo positioning (with Virtual Patch & Mod Seq Panpot modulation)
+    // En H8S 0x1686C + DSP56362 P:$0891..$08AF, el bus estéreo por voz aplica la ley de panorámica
+    // lineal centrada en 0.5 (`X:$0530 = $3FFFFF` en pan=64 -> -6 dB por canal) con el headroom de
+    // 4 voces del acumulador de bus (`P:$08AB`). El factor `kHardwareBusHeadroom = 0.5f` alinea el
+    // techo de salida por voz con el del hardware real sin alterar la ganancia de entrada a `voiceDistortion_`.
+    constexpr float kHardwareBusHeadroom = 0.5f;
     float effectivePan = DSPUtils::clamp(p.panpot + mod.panMod + p.seq.pan, -1.0f, 1.0f);
-    float panGainL = 1.0f - (effectivePan * Constants::kPanHalfWidth);
-    float panGainR = 1.0f + (effectivePan * Constants::kPanHalfWidth);
+    float panGainL = (1.0f - (effectivePan * Constants::kPanHalfWidth)) * kHardwareBusHeadroom;
+    float panGainR = (1.0f + (effectivePan * Constants::kPanHalfWidth)) * kHardwareBusHeadroom;
     float outL = vcaOut * panGainL;
     float outR = vcaOut * panGainR;
 

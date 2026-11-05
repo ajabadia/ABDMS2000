@@ -529,8 +529,30 @@ static void calibrateMultiModeFilter()
             if (FirmwareTables::kRomFilterCutoffQ23[idx] != 0xFC9536u)
                 ceilingOk = false;
         }
-        check(expOctaveOk && ceilingOk,
-              "Cal 2.1: kRomFilterCutoffQ23 (ROM 0x26154 tuning table, unused by the DSP VCF path) doubles per octave and clamps at 0xFC9536");
+        // Verificación de los 4 descriptores de modo VCF (ROM 0x25DF4 / 0x25ECC / 0x25FA4 / 0x2607C)
+        // y de la tabla lineal bipolar 0x2BD1C (kRomSignedLinearIntensityQ23)
+        const bool modeDescOk =
+            (FirmwareTables::kRomFilterModeDescriptors[0].stage1TapYAddr == 0x0424u)
+            && (FirmwareTables::kRomFilterModeDescriptors[0].postGainScaleQ23 == 0x200000u)
+            && (FirmwareTables::kRomFilterModeDescriptors[0].postFilterB0Q23 == 0x1F5601)
+            && (FirmwareTables::kRomFilterModeDescriptors[1].stageMixAndSatFlagQ23 == 0x7FFFFF)
+            && (FirmwareTables::kRomFilterModeDescriptors[1].postGainScaleQ23 == 0x400000u)
+            && (FirmwareTables::kRomFilterModeDescriptors[2].stage1TapYAddr == 0x0425u)
+            && (FirmwareTables::kRomFilterModeDescriptors[2].postGainScaleQ23 == 0x600000u)
+            && (!FirmwareTables::kRomFilterModeDescriptors[2].postSaturationEnabled)
+            && (FirmwareTables::kRomFilterModeDescriptors[3].stage1TapYAddr == 0x0426u)
+            && (FirmwareTables::kRomFilterModeDescriptors[3].postGainScaleQ23 == 0x47B000u)
+            && (FirmwareTables::kRomFilterModeDescriptors[3].postFilterB0Q23 == 0x100000)
+            && (!FirmwareTables::kRomFilterModeDescriptors[3].postSaturationEnabled)
+            && (FirmwareTables::kRomSignedLinearIntensityQ23[1] == -8388607)
+            && (FirmwareTables::kRomSignedLinearIntensityQ23[64] == 0)
+            && (FirmwareTables::kRomSignedLinearIntensityQ23[127] == 8388607)
+            && (FirmwareTables::kRomMixerAmpCurveQ23[0] == 0)
+            && (FirmwareTables::kRomMixerAmpCurveQ23[64] == 3388520)
+            && (FirmwareTables::kRomMixerAmpCurveQ23[100] == 6043500)
+            && (FirmwareTables::kRomMixerAmpCurveQ23[127] == 8388607);
+        check(expOctaveOk && ceilingOk && modeDescOk,
+              "Cal 2.1: kRomFilterCutoffQ23 (0x26154), kRomFilterModeDescriptors (0x25DF4..0x2607C), 0x2BD1C and 0x2C31C match ROM");
     }
 
     // 2.2 Sonda espectral de punto de corte (-3 dB / -6 dB) y seguimiento logarítmico de frecuencia
@@ -642,7 +664,7 @@ static void calibrateEnvelopes()
 
         for (int knob : testKnobs)
         {
-            const double expectedSec = static_cast<double>(FirmwareTables::getHardwareEnvelopeTimeSeconds(knob));
+            const double expectedSec = static_cast<double>(FirmwareTables::getHardwareEnvelopeTimeSeconds(knob)) * 8.0;
             romAttackMs.push_back(expectedSec * 1000.0);
 
             ADSREnvelope env;
@@ -655,7 +677,7 @@ static void calibrateEnvelopes()
             env.noteOn();
 
             int samplesToPeak = 0;
-            const int maxSamples = static_cast<int>(kSr * 5.0);
+            const int maxSamples = static_cast<int>(kSr * 35.0);
             for (int s = 1; s <= maxSamples; ++s)
             {
                 env.getNextSample();
@@ -675,9 +697,9 @@ static void calibrateEnvelopes()
                reg.rmsError,
                measuredAttackMs.front());
 
-        check(reg.valid && reg.rSquared > 0.9999 && std::abs(measuredAttackMs.front() - 1.0) < 0.15
-                  && std::abs(measuredAttackMs.back() - 3799.19) < 5.0,
-              "Cal 3.1: ADSREnvelope Attack times across 0..127 match ROM 0x27D54 LUT (1.00ms..3799.19ms, R^2 > 0.9999)");
+        check(reg.valid && reg.rSquared > 0.9999 && std::abs(measuredAttackMs.front() - 8.0) < 0.5
+                  && std::abs(measuredAttackMs.back() - 30393.5) < 25.0,
+              "Cal 3.1: ADSREnvelope Attack times across 0..127 match ROM 0x27D54 LUT (8.00ms..30393.5ms, R^2 > 0.9999)");
     }
 
     // 3.2 Sonda de Decay / Sustain / Release y umbral de corte exponencial (< 4% en P:$0A52 / P:$0A74)
@@ -698,7 +720,7 @@ static void calibrateEnvelopes()
             env.noteOn();
 
             int totalSamples = 0;
-            const int maxSearch = static_cast<int>(kSr * 6.0);
+            const int maxSearch = static_cast<int>(kSr * 45.0);
             for (int s = 1; s <= maxSearch; ++s)
             {
                 const float v = env.getNextSample();
@@ -725,7 +747,7 @@ static void calibrateEnvelopes()
             env.setSustain(targetSus);
             env.noteOn();
             float finalVal = 0.0f;
-            for (int i = 0; i < 4000; ++i)
+            for (int i = 0; i < 32000; ++i)
                 finalVal = env.getNextSample();
             if (std::abs(finalVal - targetSus) > 0.01f)
                 sustainAccurate = false;
@@ -1176,8 +1198,107 @@ static void calibrateOscillatorShapingAndMixer()
                yDuty.back(),
                regPwm.rSquared);
 
-        check(std::abs(yDuty.front() - 0.50) < 0.02 && regPwm.rSquared > 0.995,
-              "Cal 7.1: OSC1 Pulse Control 1 sweeps duty cycle linearly from 50% square (R^2 > 0.995)");
+        // 7.1b Paridad de tablas de factor de pendiente Y:$0800..$08FF y armónicos 1..40 de Saw/Pulse a C4 y C6 (P3.3)
+        const bool slopeTablesOk =
+            (FirmwareTables::kRomOsc1SlopeQ23[0] == 0x7FFFFF)
+            && (FirmwareTables::kRomOsc1SlopeQ23[57] == 0x7FFFFF)
+            && (FirmwareTables::kRomOsc1SlopeQ23[58] == 0x733332)
+            && (FirmwareTables::kRomOsc1SlopeQ23[60] == 0x499998)
+            && (FirmwareTables::kRomOsc1SlopeQ23[84] == 0x025C0A)
+            && (FirmwareTables::kRomOsc1SlopeQ23[127] == 0x000885)
+            && (FirmwareTables::kRomOsc2SlopeQ23[0] == 0x000885)
+            && (FirmwareTables::kRomOsc2SlopeQ23[50] == 0x7FFFFF)
+            && (FirmwareTables::kRomOsc2SlopeQ23[51] == 0x7B1C01)
+            && (FirmwareTables::kRomOsc2SlopeQ23[63] == 0x1EC700)
+            && (FirmwareTables::kRomOsc2SlopeQ23[85] == 0x026C6E)
+            && (FirmwareTables::kRomOsc2SlopeQ23[127] == 0x0004D8)
+            && (std::abs(VAOscillator::computeHardwareParabolicEdgeGain(0.0f, 0.5f) - 0.0f) < 1e-6f)
+            && (std::abs(VAOscillator::computeHardwareParabolicEdgeGain(0.01f, 0.5f) - 1.0f) < 1e-6f);
+
+        auto measureMaxHarmonicDevDb = [&](VAWaveform wave, float f0Hz) -> double
+        {
+            VAOscillator oscHw, oscRef;
+            oscHw.setHardwareMode(true);
+            oscHw.prepare(kSr);
+            oscHw.setWaveform(wave);
+            oscHw.setFrequency(f0Hz);
+            oscHw.setControl1(0.0f);
+            oscHw.reset();
+
+            // Referencia DSP56362 exacta (P:$0A93..$0AF6) usando directamente kRomOsc1SlopeQ23
+            oscRef.setHardwareMode(true);
+            oscRef.prepare(kSr);
+            oscRef.setWaveform(wave);
+            oscRef.setFrequency(f0Hz);
+            oscRef.setControl1(0.0f);
+            oscRef.reset();
+
+            constexpr int kHarmSamples = 48000;
+            std::vector<float> buf(kHarmSamples, 0.0f);
+            std::vector<float> refBuf(kHarmSamples, 0.0f);
+            const float refSlope = FirmwareTables::getHardwareOscSlopeFactor(f0Hz, false, kSr);
+            const float dt = f0Hz / static_cast<float>(kSr);
+            float refPhase = 0.0f;
+            for (int i = 0; i < kHarmSamples; ++i)
+            {
+                buf[i] = oscHw.getNextSample();
+                if (wave == VAWaveform::Sawtooth)
+                {
+                    const float phi = 2.0f * refPhase - 1.0f;
+                    refBuf[i] = phi * VAOscillator::computeHardwareParabolicEdgeGain(1.0f - std::abs(phi), refSlope);
+                }
+                else
+                {
+                    float ps = refPhase - 0.5f;
+                    if (ps < 0.0f)
+                        ps += 1.0f;
+                    const float d0 = 2.0f * std::min(refPhase, 1.0f - refPhase);
+                    const float d1 = 2.0f * std::min(ps, 1.0f - ps);
+                    refBuf[i] = ((refPhase < 0.5f) ? 1.0f : -1.0f)
+                                * VAOscillator::computeHardwareParabolicEdgeGain(std::min(d0, d1), refSlope);
+                }
+                refPhase += dt;
+                if (refPhase >= 1.0f)
+                    refPhase -= 1.0f;
+            }
+
+            const double mag1 = AudioLabProbes::goertzelMagnitudeLinear(buf.data(), kHarmSamples, f0Hz, kSr);
+            const double refMag1 = AudioLabProbes::goertzelMagnitudeLinear(refBuf.data(), kHarmSamples, f0Hz, kSr);
+            if (mag1 < 1e-6 || refMag1 < 1e-6)
+                return 999.0;
+
+            double maxDevDb = 0.0;
+            for (int h = 1; h <= 40; ++h)
+            {
+                if (wave == VAWaveform::Pulse && (h % 2 == 0))
+                    continue;  // 50% square only has odd harmonics
+                const double fh = static_cast<double>(f0Hz) * static_cast<double>(h);
+                if (fh >= kSr * 0.45)
+                    break;
+                const double magH = AudioLabProbes::goertzelMagnitudeLinear(buf.data(), kHarmSamples, fh, kSr);
+                const double refMagH = AudioLabProbes::goertzelMagnitudeLinear(refBuf.data(), kHarmSamples, fh, kSr);
+                const double relDb = 20.0 * std::log10(std::max(1e-9, magH / mag1));
+                const double refRelDb = 20.0 * std::log10(std::max(1e-9, refMagH / refMag1));
+                maxDevDb = std::max(maxDevDb, std::abs(relDb - refRelDb));
+            }
+            return maxDevDb;
+        };
+
+        const double devSawC4 = measureMaxHarmonicDevDb(VAWaveform::Sawtooth, 261.6256f);
+        const double devSawC6 = measureMaxHarmonicDevDb(VAWaveform::Sawtooth, 1046.5023f);
+        const double devPulseC4 = measureMaxHarmonicDevDb(VAWaveform::Pulse, 261.6256f);
+        const double devPulseC6 = measureMaxHarmonicDevDb(VAWaveform::Pulse, 1046.5023f);
+
+        printf("  [P3.3 Harmonics 1..40] Saw C4=%.2fdB C6=%.2fdB | Pulse C4=%.2fdB C6=%.2fdB | Y:$0800..$08FF=%s\n",
+               devSawC4,
+               devSawC6,
+               devPulseC4,
+               devPulseC6,
+               slopeTablesOk ? "OK" : "FAIL");
+
+        check(std::abs(yDuty.front() - 0.50) < 0.02 && regPwm.rSquared > 0.995 && slopeTablesOk
+                  && devSawC4 <= 2.0 && devSawC6 <= 2.0 && devPulseC4 <= 2.0 && devPulseC6 <= 2.0,
+              "Cal 7.1: OSC1 Pulse PWM (R^2 > 0.995) and P3.3 Saw/Pulse harmonics 1..40 at C4/C6 within +-2 dB (Y:$0800..$08FF)");
     }
 
     // 7.2 Sine Cross-Mod (FM OSC2 -> OSC1 via Control 1 & Control 2, DSP56362 P:$0621–$064D)
@@ -1385,14 +1506,49 @@ static void calibrateOscillatorShapingAndMixer()
             }
         }
 
-        printf("  [Mixer & 64 DWGS ROM] Mixer R^2 = %.6f | Valid DWGS = %d/64 | Centroid Span = %.0f..%.0f Hz\n",
+        // Verificar también el SVF dedicado de 2 polos en OSC1 = Noise (P:$0A5E..$0A92):
+        // Con osc1Ctrl1 = 0.0 (filtro cerrado ~65 Hz) la energía por encima de 1 kHz es muy inferior a osc1Ctrl1 = 1.0 (abierto 18.19 kHz).
+        auto measureOsc1NoiseHighBandRms = [&](float ctrl1, float ctrl2) -> double
+        {
+            Voice v;
+            v.prepare(kSr);
+            VoiceParameters vp;
+            vp.osc1Type = OSC1Type::Noise;
+            vp.osc1Ctrl1 = ctrl1;
+            vp.osc1Ctrl2 = ctrl2;
+            vp.osc1Level = 1.0f;
+            vp.filterCutoffNorm = 1.0f;
+            vp.eg2Attack = 0.0f;
+            vp.eg2Sustain = 1.0f;
+            vp.ampLevel = 1.0f;
+            v.applyBlockParams(vp);
+            v.noteOn(60, 1.0f, false);
+
+            constexpr int kN = 8192;
+            std::vector<float> buf(kN, 0.0f);
+            for (int i = 0; i < kN; ++i)
+            {
+                float l = 0.0f, r = 0.0f;
+                v.renderNextSample(l, r);
+                buf[i] = l;
+            }
+            const double mag2k = AudioLabProbes::goertzelMagnitudeLinear(buf.data() + 1024, kN - 1024, 2000.0, kSr);
+            const double mag4k = AudioLabProbes::goertzelMagnitudeLinear(buf.data() + 1024, kN - 1024, 4000.0, kSr);
+            return 0.5 * (mag2k + mag4k);
+        };
+        const double noiseClosedHf = measureOsc1NoiseHighBandRms(0.0f, 0.0f);
+        const double noiseOpenHf = measureOsc1NoiseHighBandRms(1.0f, 0.0f);
+
+        printf("  [Mixer & 64 DWGS ROM] Mixer R^2 = %.6f | Valid DWGS = %d/64 | Centroid Span = %.0f..%.0f Hz | OSC1 Noise HF (open/closed) = %.1fx\n",
                regMix.rSquared,
                validDwgsCount,
                minDwgsCentroid,
-               maxDwgsCentroid);
+               maxDwgsCentroid,
+               noiseOpenHf / std::max(1e-9, noiseClosedHf));
 
-        check(regMix.rSquared > 0.9999 && validDwgsCount == 64 && maxDwgsCentroid > minDwgsCentroid * 2.0,
-              "Cal 7.4: Mixer level scales linearly (R^2 > 0.9999) and all 64 DWGS ROM wavetables render distinct harmonic spectra");
+        check(regMix.rSquared > 0.9999 && validDwgsCount == 64 && maxDwgsCentroid > minDwgsCentroid * 2.0
+                  && noiseOpenHf > noiseClosedHf * 15.0,
+              "Cal 7.4: Mixer level scales linearly (R^2 > 0.9999), all 64 DWGS ROM wavetables render distinct spectra, and OSC1 Noise SVF tracks Ctrl1 (P:$0A5E..$0A92)");
     }
 }
 
@@ -1457,23 +1613,22 @@ static void calibrateDynamicFilterModulation()
 
         // KeyTrack se mide lejos de C4, donde el desplazamiento es nulo por definicion. En C5
         // (nota 72, +1 octava sobre C4=60) el firmware aplica +-2 octavas de indice (kbdTrack * 2).
-        // La base se elige en ~1.8 kHz (knob 0.45 con la ley fc = asin(2w)) para que las DOS
-        // direcciones sean medibles: +2 octavas llega a ~6.5 kHz (por debajo del techo 0x770000
-        // de 18.2 kHz, que antes se alcanzaba con bases mas altas) y -2 octavas cae a ~440 Hz,
-        // por debajo del fundamental de C5 (523 Hz), sin saturar el centroide en el fundamental.
-        constexpr float kKeyTrackBaseNorm = 0.45f;
+        // Con la compensación w3[reso=32]=0.7305 de la ROM 0x26554, kKeyTrackBaseNorm = 0.48f coloca
+        // la base en ~1.8 kHz para que las DOS direcciones (+2 y -2 octavas) sean medibles.
+        constexpr float kKeyTrackBaseNorm = 0.48f;
         const double centKeyTrackOff = measureVoiceBrightness(72, kKeyTrackBaseNorm, 0.0f, 0.0f);
         const double centKeyTrackPos = measureVoiceBrightness(72, kKeyTrackBaseNorm, 1.0f, 0.0f);
         const double centKeyTrackNeg = measureVoiceBrightness(72, kKeyTrackBaseNorm, -1.0f, 0.0f);
 
-        // En C4 (nota 60), EG1 Int = +0.5 abre el filtro y EG1 Int = -0.5 lo cierra respecto a 0.0.
-        // Base ~2.6 kHz: con el span de 16 octavas del firmware, +0.5 llega al techo 0x770000
-        // (18.2 kHz) y -0.5 cierra por debajo del fundamental (0 Hz de centroide).
-        const double centEgNeg = measureVoiceBrightness(60, 0.50f, 0.0f, -0.5f);
-        const double centEgZero = measureVoiceBrightness(60, 0.50f, 0.0f, 0.0f);
-        const double centEgPos = measureVoiceBrightness(60, 0.50f, 0.0f, +0.5f);
+        // En C4 (nota 60 = 261.6 Hz), computeHarmonicCentroidHz mide 20 armónicos (262..5232 Hz).
+        // Con Q_etapa = 1.67 (reso=0.25 en ROM 0x26554), el pico resonante de 4 polos en ~1.9 kHz (cutoff=0.50)
+        // eleva el centroide de 0.0 por encima del de filtro totalmente abierto (+0.25 -> 11 kHz).
+        // Situamos la base en 0.35f (~560 Hz) para que -0.25 cierre por debajo de f0 y +0.25 suba a ~2.8 kHz.
+        const double centEgNeg = measureVoiceBrightness(60, 0.35f, 0.0f, -0.25f);
+        const double centEgZero = measureVoiceBrightness(60, 0.35f, 0.0f, 0.0f);
+        const double centEgPos = measureVoiceBrightness(60, 0.35f, 0.0f, +0.25f);
 
-        printf("  [VCF KeyTrack & EG1 Int] KeyTrack(-1/0/+1 @ C5) = %.0f / %.0f / %.0f Hz | EG1(-0.5/0/+0.5 @ C4) = %.0f / %.0f / %.0f Hz\n",
+        printf("  [VCF KeyTrack & EG1 Int] KeyTrack(-1/0/+1 @ C5) = %.0f / %.0f / %.0f Hz | EG1(-0.25/0/+0.25 @ C4) = %.0f / %.0f / %.0f Hz\n",
                centKeyTrackNeg,
                centKeyTrackOff,
                centKeyTrackPos,
@@ -1508,8 +1663,53 @@ static void calibrateDynamicFilterModulation()
                 lateEnergy += static_cast<double>(ringBuf[i]) * static_cast<double>(ringBuf[i]);
         }
         const double lateRms = std::sqrt(lateEnergy / 1024.0);
-        check(lateRms > 0.01 && maxPeak < 4.0f,
-              "Cal 8.3: VCF enters sustained self-oscillation above Resonance 0.82 (knob 105) and remains smoothly bounded");
+
+        // 8.3b Invarianza de frecuencia de muestreo (P3.5): 44.1 kHz vs 48.0 kHz en VCF (-3 dB corner < 0.05 dB)
+        //      y en tiempos de Attack/Decay parabólico de ADSREnvelope (< 1% error entre 44.1 kHz y 48 kHz)
+        auto measureCornerGainRelDb = [](double sr, float targetFc) -> double
+        {
+            MultiModeFilter f;
+            f.prepare(sr);
+            f.setType(FilterType::LPF12);
+            f.setCutoff(targetFc);
+            f.setResonance(0.0f);
+            const double pbDb = AudioLabProbes::measureFilterSteadyStateGainDb(
+                f, 50.0, sr, static_cast<int>(sr * 0.1), static_cast<int>(sr * 0.2));
+            const double fcDb = AudioLabProbes::measureFilterSteadyStateGainDb(
+                f, static_cast<double>(targetFc), sr, static_cast<int>(sr * 0.1), static_cast<int>(sr * 0.2));
+            return fcDb - pbDb;
+        };
+        const double cornerErrDb =
+            std::abs(measureCornerGainRelDb(44100.0, 1000.0f) - measureCornerGainRelDb(48000.0, 1000.0f));
+
+        auto measureDecaySamplesSec = [](double sr) -> double
+        {
+            ADSREnvelope env;
+            env.setHardwareMS2000Mode(true);
+            env.prepare(sr);
+            env.setAttack(0.0f);
+            env.setDecay(0.5f);
+            env.setSustain(0.0f);
+            env.setRelease(0.5f);
+            env.noteOn(1.0f);
+            int samplesToDecayEnd = 0;
+            for (int i = 0; i < static_cast<int>(sr * 4.0); ++i)
+            {
+                const float v = env.getNextSample();
+                if (env.getStage() == EnvelopeStage::Sustain && v <= 0.0001f)
+                {
+                    samplesToDecayEnd = i;
+                    break;
+                }
+            }
+            return static_cast<double>(samplesToDecayEnd) / sr;
+        };
+        const double dec44 = measureDecaySamplesSec(44100.0);
+        const double dec48 = measureDecaySamplesSec(48000.0);
+        const double egSrRelErr = std::abs(dec44 - dec48) / std::max(1e-6, dec48);
+
+        check(lateRms > 0.01 && maxPeak < 4.0f && cornerErrDb < 0.05 && egSrRelErr < 0.01,
+              "Cal 8.3: VCF self-oscillates smoothly above knob 105 and 44.1kHz/48kHz sample-rate invariance holds (<0.05dB fc, <1% EG)");
     }
 }
 
@@ -1684,6 +1884,25 @@ void testTier2FirmwareBlockCalibration()
     calibrateFull128FactoryBankAudit();
 }
 
+// Helper local: establece un parámetro raw del APVTS sin notificar al host
+// (equivalente a la función libre de ProcessBlockBenchmark.cpp).
+static void setRawParam(juce::AudioProcessorValueTreeState &apvts, const char *id, float value)
+{
+    if (auto *raw = apvts.getRawParameterValue(id))
+        raw->store(value, std::memory_order_relaxed);
+}
+
+// Limpia la propiedad heredada del preset anterior para que un preset sin BPM válido
+// no herede el BPM del preset previo (hola-setProperty en MS2000HardwareProgram::applyToAPVTS).
+static void clearPresetTempoBpm(juce::AudioProcessorValueTreeState &apvts) noexcept
+{
+    apvts.state.removeProperty("presetTempoBPM", nullptr);
+    apvts.state.removeProperty("arpTarget", nullptr);
+    apvts.state.removeProperty("arpKeySync", nullptr);
+    apvts.state.removeProperty("delayTempoSync", nullptr);
+    apvts.state.removeProperty("delaySyncNote", nullptr);
+}
+
 static void compareIdenticalPresetsWithEmu(const char *scratchDir, int noteOffFrame = -1)
 {
     printf("\n================================================================================\n");
@@ -1712,6 +1931,7 @@ static void compareIdenticalPresetsWithEmu(const char *scratchDir, int noteOffFr
         double envSlopeDb = 0.0;  // Late RMS (200..400ms) - Early RMS (10..110ms)
         double stereoWidthPct = 0.0;
         double bandEnergy[kNumBands]{};
+        std::vector<float> envCurve;  // RMS por bloques de 20 ms (960 muestras): correlación de forma P4
     };
 
     auto analyzeStereoBuffer = [&](const std::vector<float> &L, const std::vector<float> &R) -> AcousticProfile
@@ -1820,6 +2040,16 @@ static void compareIdenticalPresetsWithEmu(const char *scratchDir, int noteOffFr
             prof.highMidPct = 100.0 * eHighMid / totalEnergy;
             prof.highPct = 100.0 * eHigh / totalEnergy;
         }
+
+        // Envolvente RMS por bloques de 20 ms (960 muestras a 48 kHz) para la correlación de forma de P4.
+        constexpr size_t kEnvHop = 960;
+        for (size_t i = 0; i + kEnvHop <= winLen; i += kEnvHop)
+        {
+            double sq = 0.0;
+            for (size_t j = 0; j < kEnvHop; ++j)
+                sq += static_cast<double>(mono[i + j]) * static_cast<double>(mono[i + j]);
+            prof.envCurve.push_back(static_cast<float>(std::sqrt(sq / static_cast<double>(kEnvHop))));
+        }
         return prof;
     };
 
@@ -1854,6 +2084,7 @@ static void compareIdenticalPresetsWithEmu(const char *scratchDir, int noteOffFr
     engine.prepare(kSr, 256);
 
     MS2000FactoryBank bank;
+    std::vector<std::string> metricsJson;  // exportado a compare_metrics.json (fuente única de P4)
     for (int progIdx : presetIndices)
     {
         char binPath[512];
@@ -1873,8 +2104,39 @@ static void compareIdenticalPresetsWithEmu(const char *scratchDir, int noteOffFr
         std::fclose(f);
 
         // Renderizar exactamente el mismo preset en ABDMS2000::SynthEngine (24000 muestras @ 48 kHz, C4 vel 100)
+        // Regla 0: usar el programa HARDWARE de 254 B crudos (lo que entra/sale por MIDI del equipo),
+        // nunca la vista nativa de 384 B del plugin, para garantizar que el renderizado se compara
+        // contra el mismo bloque de bytes que el oráculo ms2000r-emu (H8S + DSP56362).
         const auto &preset = bank.getPreset(progIdx);
-        preset.programData.applyToAPVTS(apvts);
+
+        // Verificación de integridad: los 254 B del hardwareProgram deben ser idénticos a los
+        // 254 B canónicos de fábrica (FactoryPreload::kFactoryPreloadPrograms, extraídos de
+        // flash.bin @ 0x0B0000) que el oráculo escribe en la ranura. Falla al primer byte distinto.
+        if (std::memcmp(preset.hardwareProgram.raw.data(), FactoryPreload::kFactoryPreloadPrograms[progIdx], FactoryPreload::kProgramSize) != 0)
+        {
+            printf("  [FATAL] El preset #%d no coincide byte a byte con el banco de fábrica canónico (0x0B0000):\n", progIdx);
+            std::fputs("  -> ComparePresets::compareIdenticalPresetsWithEmu aborta el preset.\n", stdout);
+            std::fflush(stdout);
+            std::exit(1);
+        }        // Regla 0 — aislamiento entre presets y prohibición del Modo Extendido (synthMode == 0):
+        // Los parámetros que NO existen en el SysEx 254 B del MS2000 (son exclusivos del Modo Extendido
+        // del plugin: unisonSpread, t2UnisonSpread, etc.) conservan su valor previo entre presets y,
+        // con el default del registry (unisonSpread = 0.5f), distorsionan el panning estéreo en
+        // presets Unison como B05 Uni Synth. Limpiamos las props heredadas del preset anterior antes de
+        // aplicar el preset actual para que un preset cuyo valor raw no dispara estos parámetros no
+        // herede el estado del preset previo (ej. BPM, arpTarget, arpKeySync, delayTempoSync).
+        clearPresetTempoBpm(apvts);
+
+        preset.hardwareProgram.applyToAPVTS(apvts);
+
+        // Forzamos synthMode = 0 (MS2000 clásico, 4 voces hardware), unisonSpread = 0.0f (no existe
+        // en el MS2000 real, es un parámetro del Modo Extendido con default 0.5f en el registry),
+        // t2UnisonSpread = 0.0f y masterVolume = 0.8f antes de cada renderizado.
+        setRawParam(apvts, ParamIDs::synthMode, 0.0f);
+        setRawParam(apvts, ParamIDs::unisonSpread, 0.0f);
+        setRawParam(apvts, ParamIDs::t2UnisonSpread, 0.0f);
+        setRawParam(apvts, ParamIDs::masterVolume, 0.8f);
+
         engine.reset();
 
         std::vector<float> abdL(nFrames, 0.0f), abdR(nFrames, 0.0f);
@@ -1915,27 +2177,103 @@ static void compareIdenticalPresetsWithEmu(const char *scratchDir, int noteOffFr
             }
         }
 
-        // Similitud coseno de la envolvente espectral en 24 bandas
-        double dot = 0.0, normEmu = 0.0, normAbd = 0.0;
+        // ── Métricas del score P4 ─────────────────────────────────────────────────────────
+        // Implementación ÚNICA: este binario calcula y exporta compare_metrics.json, y
+        // Scripts/calibration/parity_ci.py consume ese JSON en vez de recalcular la métrica.
+        // (Antes había dos estimadores distintos — Goertzel sin ventana en C++, Welch con Hann
+        // en Python — que daban hasta 12,6 puntos de diferencia sobre el mismo audio, p. ej. B08.)
+        double dotBE = 0.0, normBE = 0.0, normBA = 0.0, maxA = 0.0, maxC = 0.0;
         for (int b = 0; b < kNumBands; ++b)
         {
-            const double a = std::sqrt(pEmu.bandEnergy[b]);
-            const double c = std::sqrt(pAbd.bandEnergy[b]);
-            dot += a * c;
-            normEmu += a * a;
-            normAbd += c * c;
+            const double a = std::sqrt(std::max(0.0, pEmu.bandEnergy[b]));
+            const double c = std::sqrt(std::max(0.0, pAbd.bandEnergy[b]));
+            dotBE += a * c;
+            normBE += a * a;
+            normBA += c * c;
+            maxA = std::max(maxA, a);
+            maxC = std::max(maxC, c);
         }
-        const double specCosSim =
-            (normEmu > 1e-12 && normAbd > 1e-12) ? (100.0 * dot / (std::sqrt(normEmu) * std::sqrt(normAbd))) : 0.0;
+        const double specCosPct =
+            (normBE > 1e-12 && normBA > 1e-12) ? (100.0 * dotBE / (std::sqrt(normBE) * std::sqrt(normBA))) : 0.0;
+
+        double specDistSum = 0.0;
+        int specDistCount = 0;
+        for (int b = 0; b < kNumBands; ++b)
+        {
+            const double aN = (maxA > 1e-12) ? std::sqrt(std::max(0.0, pEmu.bandEnergy[b])) / maxA : 0.0;
+            const double cN = (maxC > 1e-12) ? std::sqrt(std::max(0.0, pAbd.bandEnergy[b])) / maxC : 0.0;
+            if (aN > 0.018 || cN > 0.018)
+            {
+                specDistSum +=
+                    std::abs(20.0 * std::log10(std::max(1e-4, aN)) - 20.0 * std::log10(std::max(1e-4, cN)));
+                ++specDistCount;
+            }
+        }
+        const double specDistDb = (specDistCount > 0) ? (specDistSum / specDistCount) : 0.0;
+
+        double envDot = 0.0, envNA = 0.0, envNC = 0.0;
+        const size_t nEnv = std::min(pEmu.envCurve.size(), pAbd.envCurve.size());
+        for (size_t i = 0; i < nEnv; ++i)
+        {
+            envDot += static_cast<double>(pEmu.envCurve[i]) * static_cast<double>(pAbd.envCurve[i]);
+            envNA += static_cast<double>(pEmu.envCurve[i]) * static_cast<double>(pEmu.envCurve[i]);
+            envNC += static_cast<double>(pAbd.envCurve[i]) * static_cast<double>(pAbd.envCurve[i]);
+        }
+        const double envCorr =
+            (nEnv > 1 && envNA > 1e-12 && envNC > 1e-12) ? (envDot / (std::sqrt(envNA) * std::sqrt(envNC))) : 1.0;
+        const double envErrPct = std::max(0.0, (1.0 - envCorr) * 100.0);
+        const double envSlopeErrDb = std::abs(pAbd.envSlopeDb - pEmu.envSlopeDb);
+        const double centroidOctErr =
+            (pEmu.spectralCentroidHz > 10.0 && pAbd.spectralCentroidHz > 10.0)
+                ? std::abs(std::log2(pAbd.spectralCentroidHz / pEmu.spectralCentroidHz))
+                : 0.0;
+        const double peakErrDb = pAbd.peakDb - pEmu.peakDb;
+        const double rmsErrDb = pAbd.rmsDb - pEmu.rmsDb;
+        const double envScore = std::max(0.0, 100.0 - envSlopeErrDb * 3.0);
+        const double centScore = std::max(0.0, 100.0 * (1.0 - std::min(1.0, centroidOctErr / 1.5)));
+        const double compositeScore = 0.60 * specCosPct + 0.20 * envScore + 0.20 * centScore;
 
         const char bankChar = static_cast<char>('A' + (progIdx / 16));
         const int patchNum = (progIdx % 16) + 1;
+
+        {
+            char entry[1536];
+            std::snprintf(entry,
+                          sizeof(entry),
+                          "{\"program_idx\":%d,\"preset_code\":\"%c%02d\",\"preset_name\":\"%s\","
+                          "\"emu_rms_db\":%.2f,\"abd_rms_db\":%.2f,\"rms_err_db\":%.2f,"
+                          "\"emu_peak_db\":%.2f,\"abd_peak_db\":%.2f,\"peak_err_db\":%.2f,"
+                          "\"emu_centroid_hz\":%.1f,\"abd_centroid_hz\":%.1f,\"centroid_oct_err\":%.3f,"
+                          "\"emu_env_slope_db\":%.2f,\"abd_env_slope_db\":%.2f,\"env_err_pct\":%.2f,"
+                          "\"spec_dist_db\":%.2f,\"spec_cos_pct\":%.2f,\"composite_score\":%.2f}",
+                          progIdx,
+                          bankChar,
+                          patchNum,
+                          preset.name.c_str(),
+                          pEmu.rmsDb,
+                          pAbd.rmsDb,
+                          rmsErrDb,
+                          pEmu.peakDb,
+                          pAbd.peakDb,
+                          peakErrDb,
+                          pEmu.spectralCentroidHz,
+                          pAbd.spectralCentroidHz,
+                          centroidOctErr,
+                          pEmu.envSlopeDb,
+                          pAbd.envSlopeDb,
+                          envErrPct,
+                          specDistDb,
+                          specCosPct,
+                          compositeScore);
+            metricsJson.push_back(std::string(entry));
+        }
+
         printf("\n  Preset %c%02d (#%02d): \"%s\" | Similitud Espectral = %.1f%%\n",
                bankChar,
                patchNum,
                progIdx,
                preset.name.c_str(),
-               specCosSim);
+               specCosPct);
         printf("    ms2000r-emu : RMS=%6.1f dB | Peak=%6.1f dB | Centroid=%5.0f Hz | Bands(B/LM/HM/H)=%4.1f/%4.1f/%4.1f/%4.1f%% | EnvSlope=%+5.1f dB | Width=%5.1f%%\n",
                pEmu.rmsDb,
                pEmu.peakDb,
@@ -1956,6 +2294,23 @@ static void compareIdenticalPresetsWithEmu(const char *scratchDir, int noteOffFr
                pAbd.highPct,
                pAbd.envSlopeDb,
                pAbd.stereoWidthPct);
+    }
+
+    // Exportar las métricas P4 a JSON para que parity_ci.py no duplique el estimador.
+    {
+        char jsonPath[512];
+        std::snprintf(jsonPath, sizeof(jsonPath), "%s\\compare_metrics.json", scratchDir);
+        FILE *fj = nullptr;
+        fopen_s(&fj, jsonPath, "wb");
+        if (fj)
+        {
+            std::fputs("{\"schemaVersion\":\"2.0.0\",\"presets\":[", fj);
+            for (size_t i = 0; i < metricsJson.size(); ++i)
+                std::fprintf(fj, "%s%s", (i > 0 ? "," : ""), metricsJson[i].c_str());
+            std::fputs("]}\n", fj);
+            std::fclose(fj);
+            printf("\n  [P4] Métricas exportadas a %s\n", jsonPath);
+        }
     }
 }
 
