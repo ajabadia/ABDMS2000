@@ -15,6 +15,7 @@
  * igual desde cualquier consumidor.
  */
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { describe, it, expect } from 'vitest';
@@ -109,6 +110,22 @@ describe('helper compartido — veredicto de checkBridgeDirection', () => {
     expect(result.ok).toBe(false);
   });
 
+  it('exige declarar en `emitters` todo fichero que cree el componente web', () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'abdbridge-'));
+    fs.mkdirSync(path.join(root, 'Plugin'));
+    fs.writeFileSync(
+      path.join(root, 'Plugin', 'Host.cpp'),
+      'void f() { view = std::make_unique<juce::WebBrowserComponent>(options); }\n'
+    );
+    fs.writeFileSync(path.join(root, 'Plugin', 'NativeFunctions.cpp'), 'void addOptions(opts);\n');
+
+    const result = checkBridgeDirection({ sourceRoot: root, emitters: [] });
+
+    expect(result.webViewHosts).toEqual(['Plugin/Host.cpp']);
+    expect(result.undeclaredHosts).toEqual(['Plugin/Host.cpp']);
+    expect(result.ok).toBe(false);
+    expect(formatFindings(result)).toContain('Plugin/Host.cpp');
+  });
   it('sin sourceRoot avisa en vez de aprobar por defecto', () => {
     expect(() => checkBridgeDirection({})).toThrow(/sourceRoot/);
   });
