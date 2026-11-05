@@ -700,3 +700,19 @@ jobs:
             exit 1
           fi
           echo "El hook detecto y nombro el archivo mal formateado."
+
+  bridge-guard:
+    name: Guard del puente WebView2
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Clonar ABDShared (guard compartido)
+        run: git clone --depth 1 https://github.com/ajabadia/ABDShared.git "$RUNNER_TEMP/ABDShared"
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Guard de direccion (nativo -> JS)
+        run: node "$RUNNER_TEMP/ABDShared/Code/WebView2Bridge/testing/runGuard.mjs" --source Source --emitters "Plugin/PluginEditor.cpp" --expect-host "Plugin/PluginEditor.cpp" --label ABDMS2000
