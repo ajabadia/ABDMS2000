@@ -344,6 +344,18 @@ struct MS2000ProgramData
         apvts.state.setProperty("arpKeySync", static_cast<int>(getArpKeySync() ? 1 : 0), nullptr);
         apvts.state.setProperty("delayTempoSync", static_cast<int>(getDelayTempoSync() ? 1 : 0), nullptr);
         apvts.state.setProperty("delaySyncNote", static_cast<int>(getDelaySyncNote()), nullptr);
+
+        // UX-4: los cuatro ya son parametros reales del APVTS; se escriben tambien para que
+        // la UI los refleje y el motor los lea del cache atomico (no del ValueTree).
+        auto setParamFromProgram = [&apvts](const char *id, float value)
+        {
+            if (auto *p = apvts.getParameter(id))
+                p->setValueNotifyingHost(p->convertTo0to1(value));
+        };
+        setParamFromProgram(ParamIDs::arpTarget, static_cast<float>(getArpTarget()));
+        setParamFromProgram(ParamIDs::arpKeySync, getArpKeySync() ? 1.0f : 0.0f);
+        setParamFromProgram(ParamIDs::delayTempoSync, getDelayTempoSync() ? 1.0f : 0.0f);
+        setParamFromProgram(ParamIDs::delaySyncNote, static_cast<float>(getDelaySyncNote()));
     }
 
     void extractFromAPVTS(const juce::AudioProcessorValueTreeState &apvts, const std::string &progName)
@@ -351,14 +363,19 @@ struct MS2000ProgramData
         setName(progName);
         if (apvts.state.hasProperty("presetTempoBPM"))
             setTempoBPM(static_cast<int>(apvts.state.getProperty("presetTempoBPM", 120)));
-        if (apvts.state.hasProperty("arpTarget"))
-            setArpTarget(static_cast<uint8_t>(static_cast<int>(apvts.state.getProperty("arpTarget", 0))));
-        if (apvts.state.hasProperty("arpKeySync"))
-            setArpKeySync(static_cast<int>(apvts.state.getProperty("arpKeySync", 0)) != 0);
-        if (apvts.state.hasProperty("delayTempoSync"))
-            setDelayTempoSync(static_cast<int>(apvts.state.getProperty("delayTempoSync", 0)) != 0);
-        if (apvts.state.hasProperty("delaySyncNote"))
-            setDelaySyncNote(static_cast<uint8_t>(static_cast<int>(apvts.state.getProperty("delaySyncNote", 0))));
+        // UX-4: lectura preferente del parametro real, con respaldo en la propiedad suelta.
+        auto paramOrProperty = [&apvts](const char *id, int fallback) -> int
+        {
+            if (auto *p = apvts.getRawParameterValue(id))
+                return static_cast<int>(std::lround(p->load()));
+            if (apvts.state.hasProperty(id))
+                return static_cast<int>(apvts.state.getProperty(id, fallback));
+            return fallback;
+        };
+        setArpTarget(static_cast<uint8_t>(paramOrProperty("arpTarget", 0)));
+        setArpKeySync(paramOrProperty("arpKeySync", 0) != 0);
+        setDelayTempoSync(paramOrProperty("delayTempoSync", 0) != 0);
+        setDelaySyncNote(static_cast<uint8_t>(paramOrProperty("delaySyncNote", 0)));
 
         // 1. Pack voice parameters into voiceByte
         auto getChoice = [&](const char *id) -> uint8_t

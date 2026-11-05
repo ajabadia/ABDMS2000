@@ -510,7 +510,7 @@ function renderOsc2Drawer(container) {
       { value: 0, label: 'OFF' },
       { value: 1, label: 'RING MOD' },
       { value: 2, label: 'SYNC' },
-      { value: 3, label: 'CROSS MOD' }
+      { value: 3, label: 'RING + SYNC' }
     ],
     variant: 'strip',
     size: 'md',
@@ -680,6 +680,13 @@ function renderVocoderConfigDrawer(container) {
   });
 }
 
+// Centros de banda del vocoder MS2000: 16 bandas repartidas geometricamente entre los
+// extremos documentados por Korg (75 Hz .. 5000 Hz). Solo es una etiqueta de lectura.
+const vocoderBandHz = (idx) => {
+  const hz = 75 * Math.pow(5000 / 75, (idx + 0.5) / 16);
+  return hz >= 1000 ? `${(hz / 1000).toFixed(1)}k` : `${Math.round(hz)}`;
+};
+
 let vocoderBandSliders = [];
 let vocoderBandsEditMode = 'levels'; // 'levels' | 'pans'
 
@@ -703,6 +710,10 @@ function renderVocoderBandsDrawer(container) {
           <button id="btn-vocoder-mode-levels" class="card-action-btn" style="padding: 4px 10px; opacity: ${!isPanMode ? '1' : '0.55'};">LEVELS (1-16)</button>
           <button id="btn-vocoder-mode-pans" class="card-action-btn" style="padding: 4px 10px; opacity: ${isPanMode ? '1' : '0.55'};">PANPOTS (1-16)</button>
           <button id="btn-vocoder-reset-bands" class="card-action-btn" style="padding: 4px 10px;">${resetLabel}</button>
+          ${isPanMode ? `
+          <button id="btn-vocoder-pan-center" class="card-action-btn" style="padding: 4px 10px;" title="Todas las bandas al centro">CENTER</button>
+          <button id="btn-vocoder-pan-alt" class="card-action-btn" style="padding: 4px 10px;" title="Alternancia izquierda/derecha">ALT L/R</button>
+          <button id="btn-vocoder-pan-lowhi" class="card-action-btn" style="padding: 4px 10px;" title="Graves centrados, agudos abriendose">LOW-C / HI-W</button>` : ''}
         </div>
       </div>
       <div class="vocoder-bands-grid" id="vocoder-bands-grid-el"></div>
@@ -754,7 +765,7 @@ function renderVocoderBandsDrawer(container) {
       const defVal = isPanMode ? ((i % 2 === 1) ? -22 : 22) : 127;
       const slider = new ABDVerticalSlider(cell, {
         paramId: `${paramPrefix}${i}`,
-        label: `B${i}`,
+        label: `B${i} · ${vocoderBandHz(i - 1)}`,
         min: minVal,
         max: maxVal,
         defaultValue: defVal,
@@ -777,6 +788,19 @@ function renderVocoderBandsDrawer(container) {
     vocoderBandsEditMode = 'pans';
     renderVocoderBandsDrawer(container);
   });
+
+  const applyPanMacro = (fn) => {
+    vocoderBandSliders.forEach((slider, idx) => slider.setValue(fn(idx), true));
+  };
+  container.querySelector('#btn-vocoder-pan-center')?.addEventListener('click', () => applyPanMacro(() => 0));
+  container.querySelector('#btn-vocoder-pan-alt')?.addEventListener('click',
+    () => applyPanMacro((i) => (i % 2 === 0 ? -48 : 48)));
+  container.querySelector('#btn-vocoder-pan-lowhi')?.addEventListener('click', () =>
+    applyPanMacro((i) => {
+      if (i < 8) return 0;                      // graves centrados
+      const t = (i - 8) / 7;                    // 0..1 hacia los agudos
+      return Math.round((i % 2 === 0 ? -1 : 1) * 48 * t);
+    }));
 
   container.querySelector('#btn-vocoder-reset-bands')?.addEventListener('click', () => {
     vocoderBandSliders.forEach((slider, idx) => {
@@ -863,6 +887,7 @@ function renderAmpMainDrawer(container) {
         <div id="drawer-ctrl-amplevel"></div>
         <div id="drawer-ctrl-amppan"></div>
         <div id="drawer-ctrl-ampdist" style="min-width: 110px; max-width: 140px;"></div>
+        <div id="drawer-ctrl-ampgate" style="min-width: 130px; max-width: 170px;"></div>
         <div id="drawer-ctrl-ampkeytrack"></div>
         <div id="drawer-ctrl-ampvelo"></div>
       </div>
@@ -882,6 +907,16 @@ function renderAmpMainDrawer(container) {
     options: [
       { value: 0, label: 'OFF' },
       { value: 1, label: 'ON' }
+    ],
+    variant: 'strip',
+    size: 'sm',
+  });
+  new ABDSegmented(container.querySelector('#drawer-ctrl-ampgate'), {
+    paramId: tParam('ampGate'),
+    label: 'AMP SWITCH',
+    options: [
+      { value: 0, label: 'EG2' },
+      { value: 1, label: 'GATE (ORGAN)' }
     ],
     variant: 'strip',
     size: 'sm',
@@ -1248,6 +1283,8 @@ function renderArpDrawer(container) {
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
           <div id="drawer-sel-arp-on"></div>
           <div id="drawer-sel-arp-latch"></div>
+          <div id="drawer-sel-arp-keysync"></div>
+          <div id="drawer-sel-arp-target"></div>
         </div>
         <div id="drawer-sel-arp-range" style="width: 100%;"></div>
         <div id="drawer-sel-arp-type" style="width: 100%;"></div>
@@ -1278,6 +1315,29 @@ function renderArpDrawer(container) {
     paramId: 'arpLatch',
     label: 'LATCH',
     options: [{ value: 0, label: 'OFF' }, { value: 1, label: 'ON' }],
+    variant: 'strip',
+    size: 'sm',
+  });
+
+  new ABDSegmented(container.querySelector('#drawer-sel-arp-keysync'), {
+    paramId: 'arpKeySync',
+    label: 'KEY SYNC',
+    options: [
+      { value: 0, label: 'OFF (FREE RUN)' },
+      { value: 1, label: 'ON (RESET ON KEY)' }
+    ],
+    variant: 'strip',
+    size: 'sm',
+  });
+
+  new ABDSegmented(container.querySelector('#drawer-sel-arp-target'), {
+    paramId: 'arpTarget',
+    label: 'TARGET TIMBRE',
+    options: [
+      { value: 0, label: 'BOTH' },
+      { value: 1, label: 'TIMBRE 1' },
+      { value: 2, label: 'TIMBRE 2' }
+    ],
     variant: 'strip',
     size: 'sm',
   });
@@ -1864,6 +1924,8 @@ function renderDelayFxDrawer(container) {
       <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px;">
         <div id="drawer-sel-delay-on"></div>
         <div id="drawer-sel-delay-type"></div>
+        <div id="drawer-sel-delay-sync"></div>
+        <div id="drawer-sel-delay-syncnote"></div>
       </div>
     </div>
     <div class="drawer-section-card">
@@ -1894,6 +1956,28 @@ function renderDelayFxDrawer(container) {
     ],
     variant: 'strip',
     size: 'md',
+  });
+
+  new ABDSegmented(container.querySelector('#drawer-sel-delay-sync'), {
+    paramId: 'delayTempoSync',
+    label: 'TEMPO SYNC',
+    options: [{ value: 0, label: 'FREE (ms)' }, { value: 1, label: 'SYNC TO BPM' }],
+    variant: 'strip',
+    size: 'sm',
+  });
+
+  new ABDSegmented(container.querySelector('#drawer-sel-delay-syncnote'), {
+    paramId: 'delaySyncNote',
+    label: 'SYNC NOTE (DELAY FLAGS 0..3)',
+    options: [
+      { value: 0, label: '1/32' }, { value: 1, label: '1/24' }, { value: 2, label: '1/16' },
+      { value: 3, label: '1/12' }, { value: 4, label: '3/32' }, { value: 5, label: '1/8' },
+      { value: 6, label: '1/6' }, { value: 7, label: '3/16' }, { value: 8, label: '1/4' },
+      { value: 9, label: '1/3' }, { value: 10, label: '3/8' }, { value: 11, label: '1/2' },
+      { value: 12, label: '2/3' }, { value: 13, label: '3/4' }, { value: 14, label: '1/1' }
+    ],
+    layout: 'grid-6',
+    size: 'sm',
   });
 
   new ABDKnob(container.querySelector('#drawer-ctrl-delaytime'), {
@@ -2027,6 +2111,7 @@ function renderVoiceDrawer(container) {
       <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px;">
         <div id="drawer-sel-voice-mode"></div>
         <div id="drawer-sel-synth-profile"></div>
+        <div id="drawer-sel-trigger-mode"></div>
       </div>
     </div>
     <div class="drawer-section-card">
@@ -2089,6 +2174,17 @@ function renderVoiceDrawer(container) {
         applyThemeEffects(targetTheme, Number(val));
       }
     }
+  });
+
+  new ABDSegmented(container.querySelector('#drawer-sel-trigger-mode'), {
+    paramId: tParam('triggerMode'),
+    label: 'TRIGGER MODE',
+    options: [
+      { value: 0, label: 'SINGLE (LEGATO)' },
+      { value: 1, label: 'MULTI (RETRIGGER)' }
+    ],
+    variant: 'strip',
+    size: 'sm',
   });
 
   new ABDKnob(container.querySelector('#drawer-ctrl-unisondetune'), {
@@ -2270,7 +2366,7 @@ function renderGlobalMasterDrawer(container) {
    ───────────────────────────────────────────────────────────── */
 const OSC1_WAVE_NAMES = ['Saw', 'Square', 'Triangle', 'Sine', 'VoxWave', 'DWGS', 'Noise', 'AudioIn'];
 const OSC2_WAVE_NAMES = ['Saw', 'Square', 'Triangle'];
-const OSC2_MOD_NAMES = ['Off', 'Ring', 'Sync', 'CrossMod'];
+const OSC2_MOD_NAMES = ['Off', 'Ring', 'Sync', 'Ring+Sync'];
 const FILTER_TYPE_NAMES = ['LPF 24dB', 'LPF 12dB', 'BPF 12dB', 'HPF 12dB'];
 const LFO1_WAVE_NAMES = ['Saw', 'Square', 'Triangle', 'S&H'];
 const LFO2_WAVE_NAMES = ['Saw', 'Sqr+', 'Sine', 'S&H'];

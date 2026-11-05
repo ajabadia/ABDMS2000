@@ -564,6 +564,11 @@ void SynthEngine::updateParametersFromAPVTS() noexcept
     voiceManagerB_.setUnisonSpread(paramValue(true, ParamIDs::unisonSpread, 0.5f));
     voiceManagerA_.setSynthMode(synthMode);
     voiceManagerB_.setSynthMode(synthMode);
+    // Trigger Mode (byte FLAGS bit 3): 0 = Single (legato, sin re-disparo), 1 = Multi.
+    voiceManagerA_.setTriggerMode(getParam(ParamIDs::triggerMode, 1.0f) > 0.5f ? TriggerMode::Multi
+                                                                              : TriggerMode::Single);
+    voiceManagerB_.setTriggerMode(paramValue(true, ParamIDs::triggerMode, 1.0f) > 0.5f ? TriggerMode::Multi
+                                                                                      : TriggerMode::Single);
 
     // ── Timbre 1 y Timbre 2, cada uno con sus parámetros ──
     readTimbreParams(false, voiceParamsA_);
@@ -607,10 +612,10 @@ void SynthEngine::updateParametersFromAPVTS() noexcept
         if (presetBpm >= 20.0f && presetBpm <= 300.0f)
             tempoBpm_.store(presetBpm, std::memory_order_relaxed);
     }
-    if (apvts_.state.hasProperty("arpTarget"))
-        arpTarget_ = std::clamp(static_cast<int>(apvts_.state.getProperty("arpTarget", 0)), 0, 2);
-    else
-        arpTarget_ = 0;
+    // UX-4: arpTarget/arpKeySync/delayTempoSync/delaySyncNote ya son parametros reales del
+    // APVTS (registrados en el spec), asi que se leen del cache atomico y no del ValueTree:
+    // getProperty() recorre el arbol y no es seguro en el hilo de audio.
+    arpTarget_ = std::clamp(static_cast<int>(getParam(ParamIDs::arpTarget, 0.0f)), 0, 2);
 
     float tempoBpm = tempoBpm_.load(std::memory_order_relaxed);
     if (tempoBpm < 20.0f || tempoBpm > 300.0f)
@@ -625,8 +630,7 @@ void SynthEngine::updateParametersFromAPVTS() noexcept
     arpeggiator_.setGateTime(conversion::normalizedToDomain("arpGate", arpGateNorm));
     arpeggiator_.setLatch(getParam(ParamIDs::arpLatch, 0.0f) > 0.5f);
     arpeggiator_.setSyncResolution(static_cast<int>(getParam(ParamIDs::arpResolution, 3.0f)));
-    if (apvts_.state.hasProperty("arpKeySync"))
-        arpeggiator_.setKeySync(static_cast<int>(apvts_.state.getProperty("arpKeySync", 0)) != 0);
+    arpeggiator_.setKeySync(getParam(ParamIDs::arpKeySync, 0.0f) > 0.5f);
 
     // microKORG / Advanced 8-step rhythm mask
     const bool allowStepMask = (synthMode != 0);  // Active in microKORG (1) & Advanced (2)
@@ -684,7 +688,7 @@ void SynthEngine::updateParametersFromAPVTS() noexcept
     delayFX_.setType(static_cast<DelayType>(std::min(dType, 2)));
     float dTimeNorm = getParam(ParamIDs::delayTime, 40.0f) / 127.0f;
     float dTimeSec = conversion::normalizedToDomain("delayTime", dTimeNorm);
-    if (static_cast<int>(apvts_.state.getProperty("delayTempoSync", 0)) != 0)
+    if (getParam(ParamIDs::delayTempoSync, 0.0f) > 0.5f)
     {
         // Korg MS2000 DELAY_FLAGS[0..3]: 0..14 = 1/32, 1/24, 1/16, 1/12, 3/32, 1/8, 1/6, 3/16,
         // 1/4, 1/3, 3/8, 1/2, 2/3, 3/4, 1/1 of a 4-beat whole note (240 / BPM seconds).
@@ -692,7 +696,7 @@ void SynthEngine::updateParametersFromAPVTS() noexcept
             1.0f / 32.0f, 1.0f / 24.0f, 1.0f / 16.0f, 1.0f / 12.0f, 3.0f / 32.0f,
             1.0f / 8.0f,  1.0f / 6.0f,  3.0f / 16.0f, 1.0f / 4.0f,  1.0f / 3.0f,
             3.0f / 8.0f,  1.0f / 2.0f,  2.0f / 3.0f,  3.0f / 4.0f,  1.0f};
-        const int syncIdx = std::clamp(static_cast<int>(apvts_.state.getProperty("delaySyncNote", 8)), 0, 14);
+        const int syncIdx = std::clamp(static_cast<int>(getParam(ParamIDs::delaySyncNote, 8.0f)), 0, 14);
         dTimeSec = DSPUtils::clamp((240.0f / std::max(tempoBpm, 20.0f)) * kDelaySyncWholeNoteFrac[syncIdx],
                                    0.0005f, 1.4f);
     }

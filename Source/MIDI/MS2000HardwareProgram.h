@@ -571,6 +571,7 @@ struct MS2000HardwareProgram
             {ARP_RES, 0, 0, ParamIDs::arpResolution, Xform::ArpRes},
             // timbre 1 — voz y osciladores
             {TIMBRE1_START + ti::FLAGS, 6, 7, ParamIDs::voiceMode, Xform::Bit},
+            {TIMBRE1_START + ti::FLAGS, 3, 3, ParamIDs::triggerMode, Xform::Bit},
             {TIMBRE1_START + ti::UNISON_DETUNE, 0, 0, ParamIDs::unisonDetune, Xform::Raw},
             {TIMBRE1_START + ti::TUNE, 0, 0, ParamIDs::pitchTune, Xform::Signed},
             {TIMBRE1_START + ti::BEND_RANGE, 0, 0, ParamIDs::pitchBendRange, Xform::Signed},
@@ -977,6 +978,21 @@ struct MS2000HardwareProgram
     }
 
     /**
+     * Lee un parametro que existe en el APVTS pero que historicamente tambien se
+     * volcaba como propiedad suelta del ValueTree. Se prefiere el parametro (es lo que
+     * mueve la UI y lo que guarda el host) y se cae a la propiedad cuando no hay
+     * parametro registrado, para no romper codigo o presets antiguos.
+     */
+    static int readParamOrProperty(const juce::AudioProcessorValueTreeState &apvts, const char *id, int fallback)
+    {
+        if (auto *p = apvts.getRawParameterValue(id))
+            return static_cast<int>(std::lround(p->load()));
+        if (apvts.state.hasProperty(id))
+            return static_cast<int>(apvts.state.getProperty(id, fallback));
+        return fallback;
+    }
+
+    /**
      * Aplica el programa real al motor: globales, **los dos timbres** y sus dos mod
      * sequences. Devuelve el nº de parámetros escritos.
      */
@@ -1050,6 +1066,13 @@ struct MS2000HardwareProgram
         apvts.state.setProperty("arpKeySync", static_cast<int>(extractBits(raw[ARP_FLAGS], 0, 0)), nullptr);
         apvts.state.setProperty("delayTempoSync", static_cast<int>(extractBits(raw[DELAY_FLAGS], 7, 7)), nullptr);
         apvts.state.setProperty("delaySyncNote", static_cast<int>(extractBits(raw[DELAY_FLAGS], 0, 3)), nullptr);
+
+        // UX-4: ademas de la propiedad (compatibilidad), se escribe el parametro real para
+        // que la UI lo muestre y el motor lo lea del cache atomico del APVTS.
+        setValueById(ParamIDs::arpTarget, static_cast<float>(extractBits(raw[ARP_FLAGS], 4, 5)));
+        setValueById(ParamIDs::arpKeySync, extractBits(raw[ARP_FLAGS], 0, 0) != 0 ? 1.0f : 0.0f);
+        setValueById(ParamIDs::delayTempoSync, extractBits(raw[DELAY_FLAGS], 7, 7) != 0 ? 1.0f : 0.0f);
+        setValueById(ParamIDs::delaySyncNote, static_cast<float>(extractBits(raw[DELAY_FLAGS], 0, 3)));
 
         return applied;
     }
@@ -1150,18 +1173,12 @@ struct MS2000HardwareProgram
             raw[ARP_TEMPO_MSB] = static_cast<uint8_t>((bpm >> 8) & 0xFF);
             raw[ARP_TEMPO_LSB] = static_cast<uint8_t>(bpm & 0xFF);
         }
-        if (apvts.state.hasProperty("arpTarget"))
-            insertBits(raw[ARP_FLAGS], 4, 5,
-                       static_cast<uint8_t>(std::clamp(static_cast<int>(apvts.state.getProperty("arpTarget", 0)), 0, 2)));
-        if (apvts.state.hasProperty("arpKeySync"))
-            insertBits(raw[ARP_FLAGS], 0, 0,
-                       static_cast<int>(apvts.state.getProperty("arpKeySync", 0)) != 0 ? 1 : 0);
-        if (apvts.state.hasProperty("delayTempoSync"))
-            insertBits(raw[DELAY_FLAGS], 7, 7,
-                       static_cast<int>(apvts.state.getProperty("delayTempoSync", 0)) != 0 ? 1 : 0);
-        if (apvts.state.hasProperty("delaySyncNote"))
-            insertBits(raw[DELAY_FLAGS], 0, 3,
-                       static_cast<uint8_t>(std::clamp(static_cast<int>(apvts.state.getProperty("delaySyncNote", 0)), 0, 14)));
+        insertBits(raw[ARP_FLAGS], 4, 5,
+                   static_cast<uint8_t>(std::clamp(readParamOrProperty(apvts, "arpTarget", 0), 0, 2)));
+        insertBits(raw[ARP_FLAGS], 0, 0, readParamOrProperty(apvts, "arpKeySync", 0) != 0 ? 1 : 0);
+        insertBits(raw[DELAY_FLAGS], 7, 7, readParamOrProperty(apvts, "delayTempoSync", 0) != 0 ? 1 : 0);
+        insertBits(raw[DELAY_FLAGS], 0, 3,
+                   static_cast<uint8_t>(std::clamp(readParamOrProperty(apvts, "delaySyncNote", 0), 0, 14)));
         return captured;
     }
 

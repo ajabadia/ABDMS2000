@@ -1713,8 +1713,13 @@ static void testHardwareProgramToEngine()
         voc.timbre(0)[Hw::ti::FILTER_EG1_INT] = 1;  // en vocoder = Filter Shift (+1)
         voc.timbre(0)[Hw::ti::CUTOFF] = 74;         // en vocoder = Fc Offset (+10 signed)
         voc.timbre(0)[Hw::ti::RESONANCE] = 88;      // en vocoder = Resonance (88)
-        voc.timbre(0)[Hw::ti::VOCODER_BAND_LEVELS] = 55;
-        voc.timbre(0)[Hw::ti::VOCODER_BAND_PANS] = 44;  // -20 signed (64 - 20)
+        // Las 16 bandas con 16 valores DISTINTOS: asi el round-trip demuestra que cada byte
+        // llega a su propia banda y que captureFromAPVTS lo devuelve al mismo offset.
+        for (int b = 0; b < 16; ++b)
+        {
+            voc.timbre(0)[Hw::ti::VOCODER_BAND_LEVELS + static_cast<size_t>(b)] = static_cast<uint8_t>(10 + b * 7);
+            voc.timbre(0)[Hw::ti::VOCODER_BAND_PANS + static_cast<size_t>(b)] = static_cast<uint8_t>(64 + (-60 + b * 8));
+        }
         voc.applyToAPVTS(hwApvts);
         check(raw(ParamIDs::synthVocoderMode) == 1.0f, "a vocoder program switches the engine to vocoder mode");
         check(raw(ParamIDs::vocoderHpfLevel) == 77.0f && raw(ParamIDs::vocoderGateSense) == 61.0f,
@@ -1723,8 +1728,50 @@ static void testHardwareProgramToEngine()
               "filter shift 0,+1,+2,-1,-2 is reordered to the engine's -2..+2 (real +1 -> engine +1)");
         check(raw(ParamIDs::vocoderCutoff) == 10.0f && raw(ParamIDs::vocoderResonance) == 88.0f,
               "the vocoder Fc Offset and Resonance reach the engine from the timbre block");
-        check(raw(ParamIDs::vocoderBandLevel1) == 55.0f && raw(ParamIDs::vocoderBandPan1) == -20.0f,
-              "the 16 vocoder band levels (46..61) and pans (62..77) come from the timbre block");
+        {
+            bool levelsMatch = true;
+            bool pansMatch = true;
+            for (int b = 0; b < 16; ++b)
+            {
+                static const char *const kLevels[16] = {ParamIDs::vocoderBandLevel1,  ParamIDs::vocoderBandLevel2,
+                                                        ParamIDs::vocoderBandLevel3,  ParamIDs::vocoderBandLevel4,
+                                                        ParamIDs::vocoderBandLevel5,  ParamIDs::vocoderBandLevel6,
+                                                        ParamIDs::vocoderBandLevel7,  ParamIDs::vocoderBandLevel8,
+                                                        ParamIDs::vocoderBandLevel9,  ParamIDs::vocoderBandLevel10,
+                                                        ParamIDs::vocoderBandLevel11, ParamIDs::vocoderBandLevel12,
+                                                        ParamIDs::vocoderBandLevel13, ParamIDs::vocoderBandLevel14,
+                                                        ParamIDs::vocoderBandLevel15, ParamIDs::vocoderBandLevel16};
+                static const char *const kPans[16] = {ParamIDs::vocoderBandPan1,  ParamIDs::vocoderBandPan2,
+                                                      ParamIDs::vocoderBandPan3,  ParamIDs::vocoderBandPan4,
+                                                      ParamIDs::vocoderBandPan5,  ParamIDs::vocoderBandPan6,
+                                                      ParamIDs::vocoderBandPan7,  ParamIDs::vocoderBandPan8,
+                                                      ParamIDs::vocoderBandPan9,  ParamIDs::vocoderBandPan10,
+                                                      ParamIDs::vocoderBandPan11, ParamIDs::vocoderBandPan12,
+                                                      ParamIDs::vocoderBandPan13, ParamIDs::vocoderBandPan14,
+                                                      ParamIDs::vocoderBandPan15, ParamIDs::vocoderBandPan16};
+                levelsMatch = levelsMatch && (raw(kLevels[b]) == static_cast<float>(10 + b * 7));
+                pansMatch = pansMatch && (raw(kPans[b]) == static_cast<float>(-60 + b * 8));
+            }
+            check(levelsMatch, "the 16 vocoder band levels (46..61) reach the engine band by band");
+            check(pansMatch, "the 16 vocoder band pans (62..77) reach the engine as signed 64-centred values");
+
+            // Y de vuelta al bloque real: cada banda se escribe en SU offset.
+            Hw vocBack;
+            vocBack.captureFromAPVTS(hwApvts, "VocRoundTrip");
+            bool levelsBack = true;
+            bool pansBack = true;
+            for (int b = 0; b < 16; ++b)
+            {
+                levelsBack = levelsBack
+                             && (vocBack.timbre(0)[Hw::ti::VOCODER_BAND_LEVELS + static_cast<size_t>(b)]
+                                 == static_cast<uint8_t>(10 + b * 7));
+                pansBack = pansBack
+                           && (vocBack.timbre(0)[Hw::ti::VOCODER_BAND_PANS + static_cast<size_t>(b)]
+                               == static_cast<uint8_t>(64 + (-60 + b * 8)));
+            }
+            check(levelsBack, "captureFromAPVTS writes the 16 band levels back to bytes 46..61");
+            check(pansBack, "captureFromAPVTS writes the 16 band pans back to bytes 62..77");
+        }
 
         // 5. De vuelta al hardware: los DOS timbres, escala/split y el mod sequence.
         setParam(ParamIDs::synthVocoderMode, 0.0f);  // el paso 4 dejó el motor en vocoder
@@ -2241,7 +2288,8 @@ static void testEngineExtension()
                 maxOffset = std::max(maxOffset, static_cast<int>(m.sysexOffset));
             }
         }
-        check(timbre2Params == 122, "the registry declares the Timbre 2 mirror (122 parameters)");
+        // 123 desde UX-4: se añadió t2TriggerMode (espejo del trigger mode del Timbre 1).
+        check(timbre2Params == 123, "the registry declares the Timbre 2 mirror (123 parameters)");
         check(seqStepParams == 96, "each timbre's 3 sequencer rows have their 16 real steps (96 parameters)");
         check(withSysex == 253 && maxOffset == 252,
               "every parameter the engine models has its own byte in the program");

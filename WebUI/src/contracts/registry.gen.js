@@ -51,6 +51,21 @@ export const PARAMETERS_SPEC = {
       "sysexOffset": 0
     },
     {
+      "id": "triggerMode",
+      "name": "Trigger Mode",
+      "group": "Voice",
+      "cc": null,
+      "min": 0,
+      "max": 1,
+      "default": 1,
+      "type": "choice",
+      "choices": [
+        "Single",
+        "Multi"
+      ],
+      "sysexOffset": null
+    },
+    {
       "id": "unisonDetune",
       "name": "Unison Detune",
       "group": "Voice",
@@ -194,7 +209,7 @@ export const PARAMETERS_SPEC = {
         "Off",
         "Ring",
         "Sync",
-        "CrossMod"
+        "Ring+Sync"
       ],
       "sysexOffset": 8
     },
@@ -990,6 +1005,45 @@ export const PARAMETERS_SPEC = {
       "sysexOffset": 54
     },
     {
+      "id": "delayTempoSync",
+      "name": "Delay Tempo Sync",
+      "group": "DelayFX",
+      "cc": null,
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "type": "boolean",
+      "sysexOffset": null
+    },
+    {
+      "id": "delaySyncNote",
+      "name": "Delay Sync Note",
+      "group": "DelayFX",
+      "cc": null,
+      "min": 0,
+      "max": 14,
+      "default": 8,
+      "type": "choice",
+      "choices": [
+        "1/32",
+        "1/24",
+        "1/16",
+        "1/12",
+        "3/32",
+        "1/8",
+        "1/6",
+        "3/16",
+        "1/4",
+        "1/3",
+        "3/8",
+        "1/2",
+        "2/3",
+        "3/4",
+        "1/1"
+      ],
+      "sysexOffset": null
+    },
+    {
       "id": "arpOn",
       "name": "Arpeggiator On/Off",
       "group": "Arp",
@@ -1085,6 +1139,33 @@ export const PARAMETERS_SPEC = {
         "4/1"
       ],
       "sysexOffset": 60
+    },
+    {
+      "id": "arpKeySync",
+      "name": "Arp Key Sync",
+      "group": "Arp",
+      "cc": null,
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "type": "boolean",
+      "sysexOffset": null
+    },
+    {
+      "id": "arpTarget",
+      "name": "Arp Target Timbre",
+      "group": "Arp",
+      "cc": null,
+      "min": 0,
+      "max": 2,
+      "default": 0,
+      "type": "choice",
+      "choices": [
+        "Both",
+        "Timbre 1",
+        "Timbre 2"
+      ],
+      "sysexOffset": null
     },
     {
       "id": "arpLastStep",
@@ -2634,6 +2715,21 @@ export const PARAMETERS_SPEC = {
         "Unison"
       ],
       "sysexOffset": 140
+    },
+    {
+      "id": "t2TriggerMode",
+      "name": "Timbre 2 Trigger Mode",
+      "group": "Timbre 2",
+      "cc": null,
+      "min": 0,
+      "max": 1,
+      "default": 1,
+      "type": "choice",
+      "choices": [
+        "Single",
+        "Multi"
+      ],
+      "sysexOffset": null
     },
     {
       "id": "t2UnisonDetune",

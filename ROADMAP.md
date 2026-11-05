@@ -401,18 +401,20 @@ En el hardware físico del Korg MS2000 / MS2000R (esquemas `KLM-2181/82/83`, `ms
 #### 🔵 Sprint UX-4: Paridad Profunda Hardware Korg MS2000 — Vocoder Estéreo/HPF y Parámetros SysEx Restantes (Categorías B.6 y D)
 *Riesgo: Medio | Impacto: Alcanza la paridad funcional 1:1 con el mapa SysEx de 254 bytes del Korg MS2000 original.*
 
-- [ ] **UX4.1 — Conectar Métodos DSP C++ Ya Escritos (Vocoder Pan 16 Bandas, HPF Gate y Arp Key Sync)**:
-  - Registrar en `parameters-spec.json` (`npm run gen:registry`) y conectar en `SynthEngine.cpp` / `WasmBridge.cpp`:
-    - **`vocoderBandPan1`..`vocoderBandPan16`**: Conectar a `vocoder_.setBandPan(b, pan)` (`Source/DSP/Vocoder/MS2KVocoder16Band.h:47`) y añadir el modo/fila de **Panorama Estéreo de 16 Bandas (`L63..CNT..R63`)** con macros de espacialización (`Center`, `Alternating L/R`, `Low-Center / High-Wide`) en `renderVocoderDrawer`, junto con las etiquetas de frecuencia reales (`75 Hz` a `5000 Hz`).
-    - **`vocoderHpfGate`** y **`vocoderHpfThreshold`**: Conectar a `vocoder_.setHPFGateEnabled(bool)` y desacoplar el umbral de gate respecto a `vocoderThreshold` en `SynthEngine.cpp:427-428`.
-    - **`arpKeySync`**: Conectar a `arpeggiator_.setKeySync(bool)` (`Source/DSP/Arpeggiator.h:59`) y exponer el toggle en `renderArpDrawer`.
-- [ ] **UX4.2 — Corrección de Offsets SysEx del Bloque Vocoder (`MS2000HardwareProgram.h`)**:
-  - Corregir los desplazamientos de bytes `+14..+45` en `MS2000HardwareProgram::vocoderFields()` (`Source/State/MS2000HardwareProgram.h:501-569`) para alinear exactamente niveles (`+22..+37`) y panoramas (`+38..+53`) con la especificación oficial Korg MS2000 MIDI Implementation y añadir test de round-trip SysEx en `DSPCoreTests.cpp`.
-- [ ] **UX4.3 — Paridad de Parámetros por Timbre Restantes del Mapa SysEx MS2000 (Categoría D)**:
-  - Incorporar al contrato de parámetros, motor DSP y sus respectivos Drawers (`Voice/Pitch`, `Osc2`, `Amp`, `Envelopes`, `Delay`, `Arp`):
-    - **Pitch & Voice por Timbre (Bytes `+2..+7`)**: `Timbre Transpose` (`-24..+24 st`), `Timbre Tune` (`-50..+50 cents`), `Bend Range` (`-12..+12 st`), `Vibrato Intensity` (`-63..+63`), `Trigger Mode` (`Single` / `Multi` retrigger de envolventes en Mono/Unison) y `Key Priority` (`Last` / `Low` / `High`).
-    - **Osciladores, Amp y Envolventes (Bytes `+12`, `+19`, `+25`)**: Modo combinado `OSC2 Ring + Sync` (`osc2Mod = 3`), selector `Amp Switch` (`EG2` vs `Gate` órgano) y `EG1 / EG2 Reset` (reinicio a cero vs ataque desde nivel actual).
-    - **Delay Tempo Sync y Arpegiador (Bytes `+10`, `+12`, `+245`)**: `Delay Tempo Sync` + `Delay Sync Ratio` (`1/32` a `1/1`), `Arp Swing` (`50%..75%`) y `Arp Target Timbre` (`Both` / `Timbre 1` / `Timbre 2`).
+- [x] **UX4.1 — Vocoder Pan 16 Bandas, HPF Gate y Arp Key Sync**: ✅ hecho (2026-11-05)
+  - **`vocoderBandPan1`..`vocoderBandPan16`**: registrados y conectados a `vocoder_.setBandPan(b, pan)` (`SynthEngine.cpp:760+`), con modo `PANPOTS (1-16)` en `renderVocoderBandsDrawer`.
+    - Macros `CENTER`, `ALT L/R` y `LOW-C / HI-W` añadidas al modo `PANPOTS`, y cada banda rotula su centro aproximado (`75 Hz`..`5.0 kHz`, reparto geométrico entre los extremos documentados por Korg).
+  - **`vocoderHpfGate`**: registrado, conectado a `vocoder_.setHPFGate()` y con toggle `HPF GATE (SIBILANCE)` en el drawer de Vocoder.
+    - *Pendiente*: **`vocoderHpfThreshold` no existe en el contrato** (el drawer usa `vocoderThreshold` y `vocoderGateSense`), así que el desacople del umbral de gate sigue fuera.
+  - **`arpKeySync`**: promovido a parámetro real (vive en `ARP_FLAGS` bit 0, por eso `sysex: false` para no desplazar el mapa de offsets), conectado a `arpeggiator_.setKeySync()` y con toggle `KEY SYNC` en `renderArpDrawer` y en `WasmBridge.cpp`.
+- [x] **UX4.2 — Round-trip SysEx del Bloque Vocoder (`MS2000HardwareProgram.h`)**: ✅ hecho (2026-11-05)
+  - La nota original sobre los offsets `+14..+45` era obsoleta: `vocoderFields()` mapea con `TIMBRE1_START + ti::*`, y las 16 bandas tienen su propio bucle (`forEachVocoderBand` / `forEachVocoderPan`) usado por `applyToAPVTS`, `toNativeProgram` y `captureModeledFields`.
+  - `DSPCoreTests.cpp` ya comprueba las 16 bandas con **16 valores distintos** en ambos sentidos: apply → parámetros, y capture → bytes 46..61 (niveles) y 62..77 (pans).
+- [x] **UX4.3 — Paridad de Parámetros por Timbre (Categoría D)**: ✅ cerrado el alcance posible (2026-11-05)
+  - **Completado**: `pitchTranspose`, `pitchTune`, `pitchBendRange`, `vibratoInt`, `ampGate`, `delayTempoSync`, `delaySyncNote`, `arpTarget` y `triggerMode` (bits 3 de `ti::FLAGS`, aplicado en `VoiceManager::noteOn` para Mono/Unison) son parámetros reales del APVTS, con control en sus drawers (`BEND RANGE` en Voice/Pitch, `AMP SWITCH` en Amp, `TEMPO SYNC` + `SYNC NOTE` en Delay, `KEY SYNC` + `TARGET TIMBRE` en Arp).
+  - Se eliminaron las **cuatro lecturas `apvts_.state.getProperty(...)` del hilo de audio** en `SynthEngine::updateParametersFromAPVTS()`: ahora usan `getParam(ParamIDs::…)` sobre el caché atómico `paramCache_`. La carga de presets escribe el parámetro real (además de la propiedad, por compatibilidad) en `MS2000HardwareProgram::applyToAPVTS` y `MS2000ProgramData::applyToAPVTS`.
+  - **Pendiente explícito**: `keyPriority` (bits 0..1 de `ti::FLAGS`), `eg1Reset`/`eg2Reset` (bits 4 y 5) y `arpSwing` (byte `0x24`). Los tres tienen valores **no neutros** en el corpus de fábrica medido (`FLAGS=0x5D` en los 8 presets → priority=1, trigger=1, EG1 reset=1, EG2 reset=0; `ARP_SWING` = 0/64/128/192/224), así que activarlos exige fijar antes la semántica exacta de cada valor y validarlos en A/B estricto.
+  - `osc2Mod = 3` **sí** estaba implementado: `OSC2Modulator::RingSync` es alias de `CrossMod`, que aplica Ring + HardSync (`Voice.cpp:356`). Solo se corrigió la etiqueta `CrossMod` → `Ring+Sync` en el contrato y en el drawer de OSC 2.
 
 ---
 
@@ -673,7 +675,7 @@ Cada punto: causa → fichero → aceptación medible. El orden es el de impacto
 
 | # | Tarea | Detalle |
 |---|-------|---------|
-| P4.1 | Score por preset — ✅ | Métrica compuesta implementada en [`Scripts/calibration/parity_ci.py`](Scripts/calibration/parity_ci.py): similitud espectral por 1/3 de octava, distancia espectral (dB), error de envolvente (%), error de nivel (dB) y centroide (media espectral **90,31 %**, score compuesto medio **88,88 %**). |
+| P4.1 | Score por preset — ✅ | Métrica compuesta implementada en [`Scripts/calibration/parity_ci.py`](Scripts/calibration/parity_ci.py): similitud espectral por 1/3 de octava, distancia espectral (dB), error de envolvente (%), error de nivel (dB) y centroide (media espectral **91,66 %**, score compuesto medio **90,85 %**). |
 | P4.2 | Umbrales de aceptación — ✅ | Tabla DoD verificada y exportada en [`DOCS/calibration/parity_report.md`](DOCS/calibration/parity_report.md) junto con los **32/32** tests de `CalibrationTests.exe`. |
 | P4.3 | Integración — ✅ | Runner [`Scripts/calibration/parity_ci.py`](Scripts/calibration/parity_ci.py) ejecuta el corpus de referencia, publica [`DOCS/calibration/metrics.csv`](DOCS/calibration/metrics.csv) y falla si algún preset cae más del 10 % o supera `0 dBFS`. |
 | P4.4 | Congelado de referencia — ✅ | Hashes SHA-256 de `emu_preset_<idx>.bin` y scores base congelados en [`DOCS/calibration/baseline_scores.json`](DOCS/calibration/baseline_scores.json). |

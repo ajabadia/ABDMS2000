@@ -137,6 +137,27 @@ class WasmEngineInstance
         voiceParams_.bpm = bpm;
         arpeggiator_.setTempoBPM(bpm);
         modSeq_.setTempoBPM(bpm);
+        // Si el delay esta en Tempo Sync, su tiempo depende del BPM (igual que SynthEngine).
+        refreshDelayTime();
+    }
+
+    /** Tiempo de delay resultante de `delayTime` o de `delaySyncNote` + BPM. Paridad con
+     *  SynthEngine::updateParametersFromAPVTS (misma tabla DELAY_FLAGS y mismos clamps). */
+    void refreshDelayTime() noexcept
+    {
+        if (!delayTempoSync_)
+        {
+            const float v = delayTimeRaw_ / 127.0f;
+            delayFX_.setTimeSeconds(0.005f + (1.395f * v * v));
+            return;
+        }
+        static constexpr float kWholeNoteFrac[15] = {1.0f / 32.0f, 1.0f / 24.0f, 1.0f / 16.0f, 1.0f / 12.0f,
+                                                     3.0f / 32.0f, 1.0f / 8.0f,  1.0f / 6.0f,  3.0f / 16.0f,
+                                                     1.0f / 4.0f,  1.0f / 3.0f,  3.0f / 8.0f,  1.0f / 2.0f,
+                                                     2.0f / 3.0f,  3.0f / 4.0f,  1.0f};
+        const int idx = std::clamp(delaySyncNote_, 0, 14);
+        const float bpm = (voiceParams_.bpm > 20.0f) ? voiceParams_.bpm : 120.0f;
+        delayFX_.setTimeSeconds(std::clamp((240.0f / bpm) * kWholeNoteFrac[idx], 0.0005f, 1.4f));
     }
 
     void noteOn(int noteNumber, float velocity)
@@ -281,31 +302,64 @@ class WasmEngineInstance
         else if (id == "patch1Source")
             voiceParams_.patchSlots[0].source = static_cast<PatchSource>(std::clamp(static_cast<int>(value), 0, 7));
         else if (id == "patch1Dest" || id == "patch1Destination")
+        {
             voiceParams_.patchSlots[0].destination =
                 static_cast<PatchDestination>(std::clamp(static_cast<int>(value), 0, 7));
+            voiceParams_.patchSlots[0].intensity = FirmwareTables::getHardwarePatchIntensityNorm(
+                static_cast<int>(voiceParams_.patchSlots[0].destination), patchRawIntensity_[0]);
+        }
         else if (id == "patch1Int" || id == "patch1Intensity")
-            voiceParams_.patchSlots[0].intensity = std::clamp(value / 63.0f, -1.0f, 1.0f);
+        {
+            // Ley exacta de la ROM 0x2BD1C/0x2C71C/0x2C11C segun destino (igual que SynthEngine)
+            patchRawIntensity_[0] = std::clamp(value, -63.0f, 63.0f);
+            voiceParams_.patchSlots[0].intensity = FirmwareTables::getHardwarePatchIntensityNorm(
+                static_cast<int>(voiceParams_.patchSlots[0].destination), patchRawIntensity_[0]);
+        }
         else if (id == "patch2Source")
             voiceParams_.patchSlots[1].source = static_cast<PatchSource>(std::clamp(static_cast<int>(value), 0, 7));
         else if (id == "patch2Dest" || id == "patch2Destination")
+        {
             voiceParams_.patchSlots[1].destination =
                 static_cast<PatchDestination>(std::clamp(static_cast<int>(value), 0, 7));
+            voiceParams_.patchSlots[1].intensity = FirmwareTables::getHardwarePatchIntensityNorm(
+                static_cast<int>(voiceParams_.patchSlots[1].destination), patchRawIntensity_[1]);
+        }
         else if (id == "patch2Int" || id == "patch2Intensity")
-            voiceParams_.patchSlots[1].intensity = std::clamp(value / 63.0f, -1.0f, 1.0f);
+        {
+            patchRawIntensity_[1] = std::clamp(value, -63.0f, 63.0f);
+            voiceParams_.patchSlots[1].intensity = FirmwareTables::getHardwarePatchIntensityNorm(
+                static_cast<int>(voiceParams_.patchSlots[1].destination), patchRawIntensity_[1]);
+        }
         else if (id == "patch3Source")
             voiceParams_.patchSlots[2].source = static_cast<PatchSource>(std::clamp(static_cast<int>(value), 0, 7));
         else if (id == "patch3Dest" || id == "patch3Destination")
+        {
             voiceParams_.patchSlots[2].destination =
                 static_cast<PatchDestination>(std::clamp(static_cast<int>(value), 0, 7));
+            voiceParams_.patchSlots[2].intensity = FirmwareTables::getHardwarePatchIntensityNorm(
+                static_cast<int>(voiceParams_.patchSlots[2].destination), patchRawIntensity_[2]);
+        }
         else if (id == "patch3Int" || id == "patch3Intensity")
-            voiceParams_.patchSlots[2].intensity = std::clamp(value / 63.0f, -1.0f, 1.0f);
+        {
+            patchRawIntensity_[2] = std::clamp(value, -63.0f, 63.0f);
+            voiceParams_.patchSlots[2].intensity = FirmwareTables::getHardwarePatchIntensityNorm(
+                static_cast<int>(voiceParams_.patchSlots[2].destination), patchRawIntensity_[2]);
+        }
         else if (id == "patch4Source")
             voiceParams_.patchSlots[3].source = static_cast<PatchSource>(std::clamp(static_cast<int>(value), 0, 7));
         else if (id == "patch4Dest" || id == "patch4Destination")
+        {
             voiceParams_.patchSlots[3].destination =
                 static_cast<PatchDestination>(std::clamp(static_cast<int>(value), 0, 7));
+            voiceParams_.patchSlots[3].intensity = FirmwareTables::getHardwarePatchIntensityNorm(
+                static_cast<int>(voiceParams_.patchSlots[3].destination), patchRawIntensity_[3]);
+        }
         else if (id == "patch4Int" || id == "patch4Intensity")
-            voiceParams_.patchSlots[3].intensity = std::clamp(value / 63.0f, -1.0f, 1.0f);
+        {
+            patchRawIntensity_[3] = std::clamp(value, -63.0f, 63.0f);
+            voiceParams_.patchSlots[3].intensity = FirmwareTables::getHardwarePatchIntensityNorm(
+                static_cast<int>(voiceParams_.patchSlots[3].destination), patchRawIntensity_[3]);
+        }
         else if (id == "portamentoTime")
             voiceParams_.portamentoTime = value;
         else if (id == "pitchBend")
@@ -314,11 +368,14 @@ class WasmEngineInstance
             voiceParams_.modWheelValue = std::clamp(value / 127.0f, 0.0f, 1.0f);
         else if (id == "voiceMode")
             voiceManager_.setAssignMode(static_cast<VoiceAssignMode>(std::min(2, static_cast<int>(value))));
+        else if (id == "triggerMode")
+            voiceManager_.setTriggerMode(value > 0.5f ? TriggerMode::Multi : TriggerMode::Single);
         else if (id == "synthMode")
         {
             synthMode_ = static_cast<int>(value);
             size_t poly = (synthMode_ == 2) ? VoiceManager::MAX_EXPANDED_VOICES : VoiceManager::NUM_HW_VOICES;
             voiceManager_.setMaxPolyphony(poly);
+            voiceManager_.setSynthMode(synthMode_);
             if (synthMode_ != 2 && voiceParams_.osc1DwgsIndex > 63)
             {
                 voiceParams_.osc1DwgsIndex = 63;
@@ -348,7 +405,20 @@ class WasmEngineInstance
         else if (id == "delayType")
             delayFX_.setType(static_cast<DelayType>(std::min(2, static_cast<int>(value))));
         else if (id == "delayTime")
-            delayFX_.setTimeSeconds(0.005f + (1.395f * (value / 127.0f) * (value / 127.0f)));
+        {
+            delayTimeRaw_ = value;
+            refreshDelayTime();
+        }
+        else if (id == "delayTempoSync")
+        {
+            delayTempoSync_ = value > 0.5f;
+            refreshDelayTime();
+        }
+        else if (id == "delaySyncNote")
+        {
+            delaySyncNote_ = std::clamp(static_cast<int>(value), 0, 14);
+            refreshDelayTime();
+        }
         else if (id == "delayDepth")
             delayFX_.setDepth(value / 127.0f);
         else if (id == "delayFeedback")
@@ -420,6 +490,8 @@ class WasmEngineInstance
             int idx = static_cast<int>(value);
             arpeggiator_.setSyncResolution(idx);
         }
+        else if (id == "arpKeySync")
+            arpeggiator_.setKeySync(value > 0.5f);
         else if (id == "arpLastStep")
             arpeggiator_.setLastStep(static_cast<int>(value));
         else if (id == "arpStep1")
@@ -479,7 +551,10 @@ class WasmEngineInstance
             const int step = std::atoi(id.c_str() + 8) - 1;
             if (row >= 0 && row < 3 && step >= 0 && step < 16)
             {
-                modSeq_.getTrack(row).steps[step] = std::clamp((value + 63.0f) / 126.0f, 0.0f, 1.0f);
+                // Normalizacion por rango del destino (igual que SynthEngine::configureTimbreSeq):
+                // +-24 st en Pitch/OSC2Semi, +-50 en OSC2Tune, +-63 en el resto.
+                const float stepRange = modSeqStepRange(modSeq_.getTrack(row).destination);
+                modSeq_.getTrack(row).steps[step] = std::clamp((value + stepRange) / (2.0f * stepRange), 0.0f, 1.0f);
             }
         }
         else if (id == "scaleType")
@@ -594,28 +669,28 @@ class WasmEngineInstance
                                            Constants::kLfoHardwareMaxFrequencyHz);
                 break;
             case ModSeqDest::EG1Attack:
-                vp.eg1Attack = std::clamp(vp.eg1Attack * (1.0f + value), 0.0f, 1.0f);
+                vp.eg1Attack = std::clamp(vp.eg1Attack + value, 0.0f, 1.0f);
                 break;
             case ModSeqDest::EG1Decay:
-                vp.eg1Decay = std::clamp(vp.eg1Decay * (1.0f + value), 0.0f, 1.0f);
+                vp.eg1Decay = std::clamp(vp.eg1Decay + value, 0.0f, 1.0f);
                 break;
             case ModSeqDest::EG1Sustain:
-                vp.eg1Sustain = std::clamp(vp.eg1Sustain * (1.0f + value), 0.0f, 1.0f);
+                vp.eg1Sustain = std::clamp(vp.eg1Sustain + value, 0.0f, 1.0f);
                 break;
             case ModSeqDest::EG1Release:
-                vp.eg1Release = std::clamp(vp.eg1Release * (1.0f + value), 0.0f, 1.0f);
+                vp.eg1Release = std::clamp(vp.eg1Release + value, 0.0f, 1.0f);
                 break;
             case ModSeqDest::EG2Attack:
-                vp.eg2Attack = std::clamp(vp.eg2Attack * (1.0f + value), 0.0f, 1.0f);
+                vp.eg2Attack = std::clamp(vp.eg2Attack + value, 0.0f, 1.0f);
                 break;
             case ModSeqDest::EG2Decay:
-                vp.eg2Decay = std::clamp(vp.eg2Decay * (1.0f + value), 0.0f, 1.0f);
+                vp.eg2Decay = std::clamp(vp.eg2Decay + value, 0.0f, 1.0f);
                 break;
             case ModSeqDest::EG2Sustain:
-                vp.eg2Sustain = std::clamp(vp.eg2Sustain * (1.0f + value), 0.0f, 1.0f);
+                vp.eg2Sustain = std::clamp(vp.eg2Sustain + value, 0.0f, 1.0f);
                 break;
             case ModSeqDest::EG2Release:
-                vp.eg2Release = std::clamp(vp.eg2Release * (1.0f + value), 0.0f, 1.0f);
+                vp.eg2Release = std::clamp(vp.eg2Release + value, 0.0f, 1.0f);
                 break;
             case ModSeqDest::Patch1Int:
                 vp.patchSlots[0].intensity = std::clamp(vp.patchSlots[0].intensity + value, -1.0f, 1.0f);
@@ -671,7 +746,14 @@ class WasmEngineInstance
 
   private:
     double sampleRate_ {44100.0};
+    // Delay Tempo Sync: se guarda el crudo de delayTime para poder volver al modo libre.
+    bool delayTempoSync_ {false};
+    int delaySyncNote_ {8};
+    float delayTimeRaw_ {40.0f};
     int synthMode_ {0};
+    // Valor crudo -63..+63 de cada slot de patch, para recalcular la ley de intensidad de la
+    // ROM (getHardwarePatchIntensityNorm) cuando cambia el destino sin perder el knob.
+    float patchRawIntensity_[4] {0.0f, 0.0f, 0.0f, 0.0f};
     int seqLastStep_ {16};
     int seqKeySync_ {0};
     VoiceManager voiceManager_;

@@ -156,7 +156,8 @@ void VoiceManager::noteOn(int midiNote, float velocity) noexcept
 
     if (assignMode_ == VoiceAssignMode::Mono)
     {
-        bool isLegato = (lastMonoNote_ != -1 && anyKeyPressed());
+        // Single = legato (no re-dispara mientras se mantenga otra tecla); Multi (fabrica) = siempre.
+        bool isLegato = (triggerMode_ == TriggerMode::Single) && (lastMonoNote_ != -1 && anyKeyPressed());
         auto dup = std::find(heldNotesStack_.begin(), heldNotesStack_.end(), midiNote);
         if (dup != heldNotesStack_.end())
             heldNotesStack_.erase(dup);
@@ -175,7 +176,7 @@ void VoiceManager::noteOn(int midiNote, float velocity) noexcept
     }
     else if (assignMode_ == VoiceAssignMode::Unison)
     {
-        bool isLegato = (lastMonoNote_ != -1 && anyKeyPressed());
+        bool isLegato = (triggerMode_ == TriggerMode::Single) && (lastMonoNote_ != -1 && anyKeyPressed());
         auto dup = std::find(heldNotesStack_.begin(), heldNotesStack_.end(), midiNote);
         if (dup != heldNotesStack_.end())
             heldNotesStack_.erase(dup);

@@ -170,10 +170,11 @@ describe('UX Master Plan & MS2000 Functional Parity (UX-1 .. UX-3)', () => {
     });
   });
 
-  describe('UX2.1: Timbre 1 / Timbre 2 Parameter Symmetry (122 params)', () => {
+  describe('UX2.1: Timbre 1 / Timbre 2 Parameter Symmetry (123 params)', () => {
     it('maps every t2* parameter in PARAM_LOOKUP from its Timbre 1 base ID', () => {
       const t2Ids = Object.keys(PARAM_LOOKUP).filter((k) => k.startsWith('t2') && k.length > 2);
-      expect(t2Ids.length).toBe(122);
+      // 123 desde UX-4: t2TriggerMode se sumó al espejo del Timbre 2.
+      expect(t2Ids.length).toBe(123);
 
       t2Ids.forEach((t2Id) => {
         const baseId = t2Id.charAt(2).toLowerCase() + t2Id.slice(3);
