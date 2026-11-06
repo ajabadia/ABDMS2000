@@ -985,10 +985,8 @@ export const PARAMETERS_SPEC = {
       "wire": "CC",
       "wireCodec": "Value",
       "curve": "Lut",
-      "curveP0": 0.035,
-      "curveP1": 7.5,
-      "domainMin": 0.01,
-      "domainMax": 20,
+      "domainMin": 0.0457763671875,
+      "domainMax": 36.609649658203125,
       "smoothing": "Logarithmic",
       "binaryPacking": {
         "byteOffset": 77,
@@ -1120,10 +1118,8 @@ export const PARAMETERS_SPEC = {
       "wire": "CC",
       "wireCodec": "Value",
       "curve": "Lut",
-      "curveP0": 0.035,
-      "curveP1": 7.5,
-      "domainMin": 0.01,
-      "domainMax": 20,
+      "domainMin": 0.0457763671875,
+      "domainMax": 194.90432739257812,
       "smoothing": "Logarithmic",
       "binaryPacking": {
         "byteOffset": 80,
@@ -4592,6 +4588,8 @@ export const PARAMETERS_SPEC = {
         "encoding": "Unsigned"
       },
       "curve": "Lut",
+      "domainMin": 0.0457763671875,
+      "domainMax": 36.609649658203125,
       "lutId": "ms2000_lfo1_hz",
       "semanticRole": "Lfo1RateHz",
       "scope": "part",
@@ -4720,6 +4718,8 @@ export const PARAMETERS_SPEC = {
         "encoding": "Unsigned"
       },
       "curve": "Lut",
+      "domainMin": 0.0457763671875,
+      "domainMax": 194.90432739257812,
       "lutId": "ms2000_lfo2_hz",
       "semanticRole": "Lfo2RateHz",
       "scope": "part",
