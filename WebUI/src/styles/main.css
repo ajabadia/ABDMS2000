@@ -216,6 +216,11 @@
   box-shadow: 0 0 8px rgba(230, 57, 70, 0.7) !important;
 }
 
+.lcd-nav-btn-debug {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
 /* 2. Wider Main LCD Display (16x2 Characters + Hardware ORIGINAL VALUE LED) */
 .lcd-container {
   background: var(--color-lcd-bg);
@@ -1841,12 +1846,14 @@
   display: flex;
   align-items: stretch;
   gap: 10px;
-  background: linear-gradient(180deg, rgba(10, 15, 24, 0.86) 0%, rgba(6, 9, 15, 0.94) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: linear-gradient(180deg, rgba(16, 33, 48, 0.9) 0%, rgba(8, 14, 22, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 8px;
   margin: 0 14px 6px 14px;
   padding: 6px 10px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   flex-shrink: 0;
   z-index: 24;
   user-select: none;
@@ -1864,11 +1871,11 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background: rgba(0, 0, 0, 0.42);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(5, 12, 20, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 6px;
   padding: 4px 7px;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.65);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.55);
 }
 
 .ms2k-module-header {
@@ -1909,24 +1916,35 @@
   box-shadow: 0 0 6px rgba(251, 113, 133, 0.45);
 }
 
+/* CH PARAM and its [LEVEL] / [PAN] sub-labels are the vocoder printing of the
+   SEQ EDIT module (MS2000R panel). In synth mode only SEQ EDIT / SEQ 1..3 apply. */
+.ms2k-bottom-strip:not(.is-vocoder-mode) .ms2k-seq-module .ms2k-hdr-inv {
+  display: none;
+}
+
+.ms2k-bottom-strip.is-vocoder-mode .ms2k-seq-module > .ms2k-module-header .ms2k-hdr-main {
+  display: none;
+}
+
 .ms2k-seq-body {
   display: flex;
   align-items: center;
   gap: 7px;
 }
 
+
 .ms2k-hw-btn {
-  background: linear-gradient(180deg, #283244 0%, #151c28 100%);
-  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: linear-gradient(180deg, var(--color-panel-surface, #172d42) 0%, var(--color-panel-bg, #102130) 100%);
+  border: 1px solid var(--color-panel-border, rgba(0, 195, 255, 0.2));
   border-radius: 4px;
-  color: #e2e8f0;
+  color: var(--color-text-main, #f0f7ff);
   font-family: var(--font-lcd);
   font-size: 8px;
   font-weight: 800;
   letter-spacing: 0.5px;
   padding: 5px 7px;
   cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
   transition: all 0.12s ease;
   display: inline-flex;
   align-items: center;
@@ -1949,6 +1967,24 @@
   border-color: #ff4d5a;
   color: #ffccd0;
   box-shadow: 0 0 8px rgba(255, 60, 75, 0.4), inset 0 0 6px rgba(255, 60, 75, 0.25);
+}
+
+.ms2k-hw-btn-mega {
+  border-color: var(--color-accent, #00d4ff);
+  color: var(--color-accent, #00d4ff);
+  box-shadow: 0 0 6px rgba(var(--color-accent-rgb), 0.3);
+}
+
+.ms2k-hw-btn-mega:hover {
+  border-color: var(--color-accent, #00d4ff);
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(var(--color-accent-rgb), 0.5);
+}
+
+.ms2k-hw-btn-mega.is-active {
+  border-color: #ff4d5a;
+  color: #ffccd0;
+  box-shadow: 0 0 10px rgba(255, 60, 75, 0.5), inset 0 0 8px rgba(255, 60, 75, 0.3);
 }
 
 .ms2k-seq-leds {
@@ -1994,16 +2030,18 @@
   border-color: #fde68a;
 }
 
-.ms2k-led-lbl {
-  font-family: var(--font-lcd);
-  font-size: 7px;
-  font-weight: 700;
-  color: #94a3b8;
-  min-width: 28px;
-}
-
 .ms2k-seq-led-row.is-active .ms2k-led-lbl {
   color: #f8fafc;
+}
+
+.ms2k-led-lbl {
+  font-family: var(--font-lcd);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-align: center;
+  color: #94a3b8;
+  min-width: 28px;
 }
 
 .ms2k-led-inv {
@@ -2020,6 +2058,11 @@
   border: 1px solid rgba(0, 212, 255, 0.3);
   border-radius: 3px;
   padding: 0.5px 4px;
+  /* "MODE · IDENTITY" readout: fixed width keeps the strip from resizing the pads
+     while the label changes between modes; the longest string is PROGRAM / EDIT · A.01. */
+  min-width: 105px;
+  text-align: center;
+  white-space: nowrap;
 }
 
 .ms2k-bank-btns {
@@ -2031,6 +2074,19 @@
 .ms2k-bank-btn {
   padding: 5px 6px;
   font-size: 7.5px;
+}
+
+/* ENGINE shortcut: SYNTH / 16-BAND VOCODER. Cyan marks the selected engine, so
+   it reads as a mode switch instead of a lit hardware LED. */
+.ms2k-voice-btn {
+  color: var(--color-text-muted, #7e9bb5);
+}
+
+.ms2k-voice-btn.is-active {
+  color: var(--color-accent, #00d4ff);
+  border-color: var(--color-accent, #00d4ff);
+  background: rgba(var(--color-accent-rgb), 0.14);
+  box-shadow: 0 0 7px rgba(var(--color-accent-rgb), 0.35), inset 0 0 6px rgba(var(--color-accent-rgb), 0.18);
 }
 
 /* 16-Pad Matrix Container */
@@ -2070,7 +2126,7 @@
   font-family: var(--font-lcd);
   font-size: 8px;
   font-weight: 800;
-  color: #94a3b8;
+  color: var(--color-text-muted, #7e9bb5);
 }
 
 .ms2k-pad-col.is-active .ms2k-pad-num {
@@ -2092,23 +2148,24 @@
   position: relative;
   width: 100%;
   height: 22px;
-  background: linear-gradient(180deg, #323946 0%, #1e2430 100%);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
+  background: linear-gradient(180deg, var(--color-panel-surface, #172d42) 0%, var(--color-panel-bg, #102130) 100%);
+  border: 1px solid var(--color-panel-border, rgba(0, 195, 255, 0.2));
+  border-radius: 5px;
   cursor: pointer;
   padding: 0;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.18);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.1);
   transition: background 0.1s ease, border-color 0.1s ease, box-shadow 0.1s ease, transform 0.06s ease;
   touch-action: none;
 }
 
 .ms2k-pad-btn:hover {
-  border-color: rgba(255, 255, 255, 0.45);
-  background: linear-gradient(180deg, #3b4454 0%, #252c3a 100%);
+  background: linear-gradient(180deg, #1d3a52 0%, #122335 100%);
+  border-color: rgba(var(--color-accent-rgb), 0.75);
+  box-shadow: 0 0 8px rgba(var(--color-accent-rgb), 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.14);
 }
 
 .ms2k-pad-btn:active {
@@ -2120,8 +2177,8 @@
   width: 14px;
   height: 5px;
   border-radius: 2px;
-  background: rgba(65, 22, 28, 0.85);
-  border: 1px solid rgba(0, 0, 0, 0.65);
+  background: rgba(58, 24, 30, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.6);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.7);
   z-index: 2;
   pointer-events: none;
@@ -2130,9 +2187,9 @@
 
 /* Lit Red Pad (Active Program 1..16, Active Edit Page, or Pressed Key) */
 .ms2k-pad-btn.is-active {
-  background: radial-gradient(circle at 50% 45%, #ff5a67 0%, #c81d2b 75%, #7f1019 100%);
-  border-color: #ff9aa2;
-  box-shadow: 0 0 10px rgba(255, 56, 72, 0.65), inset 0 1px 2px rgba(255, 255, 255, 0.45);
+  background: radial-gradient(circle at 50% 42%, #ff6b78 0%, #d4293a 70%, #8d1420 100%);
+  border-color: rgba(255, 154, 162, 0.85);
+  box-shadow: 0 0 10px rgba(255, 56, 72, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.35);
 }
 
 .ms2k-pad-btn.is-active .ms2k-pad-led {
@@ -2162,6 +2219,31 @@
 .ms2k-pad-btn.is-seq-step .ms2k-pad-led {
   background: #e0f2fe;
   box-shadow: 0 0 9px var(--color-accent, #00d4ff);
+}
+
+/* In SEQ EDIT every pad is already lit by its step value, so the playing step gets
+   its own cursor: accent ring on the pad, bright LED, accent value and a chip
+   caption. Not used in vocoder [CH LEVEL]/[CH PAN], where pads are channels. */
+.ms2k-bottom-strip.is-value-edit-mode:not(.is-vocoder-mode) .ms2k-pad-btn.is-seq-step {
+  outline: 2px solid var(--color-accent, #00d4ff);
+  outline-offset: 1px;
+}
+
+.ms2k-bottom-strip.is-value-edit-mode:not(.is-vocoder-mode) .ms2k-pad-col.is-seq-step .ms2k-pad-subval {
+  color: var(--color-accent, #00d4ff);
+  text-shadow: 0 0 6px rgba(var(--color-accent-rgb), 0.6);
+}
+
+.ms2k-bottom-strip.is-value-edit-mode:not(.is-vocoder-mode) .ms2k-pad-col.is-seq-step .ms2k-pad-label-btn {
+  background: var(--color-accent, #00d4ff);
+  border-color: var(--color-accent, #00d4ff);
+  box-shadow: 0 0 8px rgba(var(--color-accent-rgb), 0.65);
+}
+
+.ms2k-bottom-strip.is-value-edit-mode:not(.is-vocoder-mode) .ms2k-pad-col.is-seq-step .ms2k-legend-synth,
+.ms2k-bottom-strip.is-value-edit-mode:not(.is-vocoder-mode) .ms2k-pad-col.is-seq-step .ms2k-legend-voc {
+  color: #041018;
+  text-shadow: none;
 }
 
 .ms2k-pad-col.is-beyond-last {
@@ -2201,64 +2283,66 @@
   transition: width 0.05s linear;
 }
 
-/* Dual Synth / Vocoder Bottom Legend Button */
+/* Bottom Legend Button: one single caption, the one matching the current engine mode */
 .ms2k-pad-label-btn {
   width: 100%;
+  min-height: 12px;
   background: transparent;
   border: 1px solid transparent;
   border-radius: 3px;
-  padding: 1px 1px;
+  padding: 1px 2px;
   cursor: pointer;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 1px;
-  transition: all 0.12s ease;
+  justify-content: center;
+  transition: background 0.12s ease, border-color 0.12s ease;
 }
 
+/* In SEQ EDIT / CH PARAM / KBD the caption names the pad's current function, but
+   it still jumps to its hardware page (leaving that mode) on click. */
 .ms2k-pad-label-btn:hover {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(var(--color-accent-rgb), 0.35);
+  background: rgba(var(--color-accent-rgb), 0.12);
+  border-color: rgba(var(--color-accent-rgb), 0.4);
 }
 
-.ms2k-legend-synth {
-  font-family: var(--font-lcd);
-  font-size: 6.8px;
-  font-weight: 800;
-  letter-spacing: 0.2px;
-  color: #cbd5e1;
-  line-height: 1.1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-}
-
-.ms2k-pad-col.is-editing-section .ms2k-legend-synth {
-  color: var(--color-accent, #00d4ff);
-  text-shadow: 0 0 6px rgba(var(--color-accent-rgb), 0.55);
-}
-
+.ms2k-legend-synth,
 .ms2k-legend-voc {
   font-family: var(--font-lcd);
-  font-size: 5.8px;
-  font-weight: 800;
-  letter-spacing: 0.15px;
-  background: rgba(148, 163, 184, 0.22);
-  color: #94a3b8;
-  padding: 0.5px 2.5px;
-  border-radius: 2px;
-  line-height: 1.05;
+  font-size: 6.9px;
+  font-weight: 700;
+  letter-spacing: 0.35px;
+  line-height: 1.1;
+  color: var(--color-text-muted, #7e9bb5);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
+  transition: color 0.12s ease;
+}
+
+/* Only the caption of the active mode is displayed (Synth pages vs. Vocoder CH params) */
+.ms2k-legend-voc {
+  display: none;
+}
+
+.ms2k-bottom-strip.is-vocoder-mode .ms2k-legend-synth {
+  display: none;
 }
 
 .ms2k-bottom-strip.is-vocoder-mode .ms2k-legend-voc {
-  background: rgba(251, 113, 133, 0.24);
+  display: inline-block;
   color: #fda4af;
-  border: 1px solid rgba(251, 113, 133, 0.35);
+}
+
+.ms2k-pad-label-btn:hover .ms2k-legend-synth,
+.ms2k-pad-label-btn:hover .ms2k-legend-voc {
+  color: var(--color-accent, #00c3ff);
+}
+
+.ms2k-pad-col.is-editing-section .ms2k-legend-synth,
+.ms2k-pad-col.is-editing-section .ms2k-legend-voc {
+  color: var(--color-accent, #00c3ff);
+  text-shadow: 0 0 6px rgba(var(--color-accent-rgb), 0.55);
 }
 
 

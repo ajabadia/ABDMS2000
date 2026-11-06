@@ -658,7 +658,7 @@
           <div class="ms2k-strip-module ms2k-bank-module">
             <div class="ms2k-module-header">
               <span class="ms2k-hdr-main" id="ms2k-bank-oct-title">BANK / OCT</span>
-              <span class="ms2k-bank-readout" id="ms2k-strip-mode-badge">PROG A</span>
+              <span class="ms2k-bank-readout" id="ms2k-strip-mode-badge">PROGRAM / EDIT · A.01</span>
             </div>
             <div class="ms2k-bank-btns">
               <button type="button" class="ms2k-hw-btn ms2k-bank-btn" id="btn-ms2k-bank-down" title="Bank Down (A..H) / Octave Down in Pad Keyboard mode">
@@ -672,6 +672,23 @@
               <button type="button" class="ms2k-hw-btn ms2k-bank-btn" id="btn-ms2k-pad-kbd" title="Toggle 16-Pad Chromatic Keyboard (Shift+Click pad to Latch notes)">
                 <span class="ms2k-led-dot" id="led-ms2k-pad-kbd"></span>
                 <span>KBD</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- ENGINE: SYNTH / 16-BAND VOCODER shortcut (same switch as COMMON page 01) -->
+          <div class="ms2k-strip-module ms2k-voice-module">
+            <div class="ms2k-module-header">
+              <span class="ms2k-hdr-main">VOICE</span>
+            </div>
+            <div class="ms2k-bank-btns">
+              <button type="button" class="ms2k-hw-btn ms2k-bank-btn ms2k-voice-btn is-active" data-voice-mode="0" aria-pressed="true" title="Synthesizer engine (16-Band Vocoder off)">
+                <span class="ms2k-led-dot is-on"></span>
+                <span>SYNTH</span>
+              </button>
+              <button type="button" class="ms2k-hw-btn ms2k-bank-btn ms2k-voice-btn" data-voice-mode="1" aria-pressed="false" title="16-Band Vocoder engine (AUDIO IN 2 carrier)">
+                <span class="ms2k-led-dot"></span>
+                <span>VOCODER</span>
               </button>
             </div>
           </div>

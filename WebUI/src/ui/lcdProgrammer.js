@@ -8,6 +8,8 @@
 import { paramStore } from '../contracts/paramStore.js';
 import { PARAM_LOOKUP } from '../contracts/registry.gen.js';
 import { FACTORY_PROGRAMS, generateMS2000SysExHex, encodeHardwareProgram254 } from '../contracts/factoryPresets.js';
+import { buildEditTimbreNotice } from '../contracts/lcdNotices.js';
+import { buildWriteCompletedNotice } from '@abdsynths/shared/components';
 
 const BANK_LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 const VOICE_MODE_NAMES = ['SINGLE', 'SPLIT', 'LAYER', 'VOCODER'];
@@ -73,6 +75,7 @@ export class LcdProgrammer {
 
     // Temporary LCD readout timer
     this._flashTimer = null;
+    this._noticeLockUntil = 0;
 
     // 16 Hardware-Mapped Edit Pages (1: COMMON .. 16: UTILITY)
     this.menuPages = [
@@ -440,7 +443,8 @@ export class LcdProgrammer {
     if (this.isEditMode) {
       this.updateDisplay();
     } else {
-      this.flashMessage(`EDIT TIMBRE ${this.activeTimbre}`, this.activeTimbre === 2 ? 'Split / Layer Sub-Timbre' : 'Main Timbre 1 Active', 900);
+      const timbreNotice = buildEditTimbreNotice({ timbre: this.activeTimbre });
+      this.flashNotice(timbreNotice.line1, timbreNotice.line2, 900);
     }
   }
 
@@ -870,7 +874,8 @@ export class LcdProgrammer {
     this.exitCompareMode(false);
 
     if (window.__kbd) window.__kbd.sweep('left', 8);
-    this.flashMessage('WRITE COMPLETED', `SAVED TO ${p.id} (${p.name.trim()})`, 1600);
+    const writeNotice = buildWriteCompletedNotice({ programId: p.id, programName: p.name });
+    this.flashNotice(writeNotice.line1, writeNotice.line2, 1600);
     this.bridge.send('writeProgramToSlot', { index: safeIdx, name: p.name });
     this.bridge.send('exportSysexProgram', {});
     this.updateSysExDisplay(p);
@@ -918,6 +923,8 @@ export class LcdProgrammer {
    */
   showParameterFeedback(paramId, value, customDisplayValue = null) {
     if (this._suppressCompareExit) return;
+    // A notice owns the LCD for its duration: bulk operations echo many params.
+    if (Date.now() < this._noticeLockUntil) return;
     if (this.isComparing) {
       this.isComparing = false;
       document.getElementById('btn-compare')?.classList.remove('active');
@@ -960,6 +967,14 @@ export class LcdProgrammer {
     if (typeof window !== 'undefined' && typeof window.__onMS2000ParamMutated === 'function') {
       window.__onMS2000ParamMutated();
     }
+  }
+
+  /**
+   * Notice that wins over parameter echoes until it expires (bulk ops, mode switches).
+   */
+  flashNotice(line1, line2, duration = 1200) {
+    this._noticeLockUntil = Date.now() + duration;
+    this.flashMessage(line1, line2, duration);
   }
 
   flashMessage(line1, line2, duration = 1200) {
@@ -1093,6 +1108,9 @@ export class LcdProgrammer {
       this.onStateSync();
     }
     if (!this.line1Elem || !this.line2Elem) return;
+    // A transient notice owns the LCD text until its timer expires, so engine echoes
+    // (param refresh, program reload) cannot clobber it before the user reads it.
+    if (this._flashTimer) return;
 
     if (this.isGlobalMode) {
       // Hardware Global Mode

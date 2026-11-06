@@ -2,11 +2,32 @@ import { bridge, devLog } from './bridge/bridgeCore.js';
 import { BUILD_INFO } from './contracts/buildVersion.js';
 import { PARAM_LOOKUP } from './contracts/registry.gen.js';
 import { MS2000_THEMES, synthModeIndexOf, themeIdOfSynthMode } from './contracts/themes.js';
+import {
+  buildMs2kModeReadout,
+  buildMs2kModeNotice,
+  buildMs2kExitNotice,
+  buildMs2kPadLatchNotice,
+  buildMs2kOctaveNotice,
+  buildMs2kStepValueNotice,
+  buildMs2kBandLevelNotice,
+  buildMs2kBandPanNotice,
+  buildMs2kPadNoteNotice,
+  buildMs2kSeqLengthNotice,
+  formatPadMidiNote,
+  MS2K_LATCH_CLEARED_NOTICE,
+} from './contracts/ms2kModeReadout.js';
+import {
+  buildEditTimbreNotice,
+  buildEngineProfileNotice,
+  buildTimbreRoutingNotice,
+  buildVoiceAssignNotice,
+} from './contracts/lcdNotices.js';
 
 import { paramStore } from './contracts/paramStore.js';
 import { LcdProgrammer } from './ui/lcdProgrammer.js';
 import { createKeyboard } from '@abdsynths/midi-keyb';
 import { ThemeSwitcher, mountFitStage, createAboutDialog, createLiveSysExInspector } from '@abdsynths/shared/components';
+import { buildWriteCompletedNotice } from '@abdsynths/shared/components';
 import '@abdsynths/shared/styles/components/widgets.css';
 import '@abdsynths/shared/styles/components/skins-junio.css';
 import '@abdsynths/shared/styles/components/about-dialog.css';
@@ -58,12 +79,37 @@ let activeModSeqTrack = 1; // 1 = SEQ 1, 2 = SEQ 2, 3 = SEQ 3
 // ms2kStripSeqMode: 0 = Program/Edit, 1 = SEQ 1 / [CH LEVEL], 2 = SEQ 2 / [CH PAN], 3 = SEQ 3
 let ms2kStripSeqMode = 0;
 let ms2kPadKbdMode = false;
+// Live snapshot of the strip mode state, fed to the shared readout / notice builders
+// in contracts/ms2kModeReadout.js.
+function getMs2kModeState() {
+  const pageNumber = (lcdProgrammer?.isEditMode || slideDrawer?.isOpenState)
+    ? getActiveSectionPadNumber()
+    : null;
+  return {
+    isVocoder: (paramStore.get('synthVocoderMode') || 0) > 0.5,
+    padKbdMode: ms2kPadKbdMode,
+    latchedCount: ms2kLatchedPadNotes.size,
+    stripSeqMode: ms2kStripSeqMode,
+    octaveShift: ms2kPadOctaveShift,
+    activeTimbre,
+    pageNumber,
+    bankIndex: lcdProgrammer ? lcdProgrammer.getCurrentBankIndex() : 0,
+    progSlot: lcdProgrammer ? (((lcdProgrammer.currentProgramIndex - 1) % 16) + 1) : 1,
+  };
+}
+
+// "MODE · IDENTITY" readout: the strip badge and the LCD notices both print this
+// exact string.
+function getMs2kModeReadout() {
+  return buildMs2kModeReadout(getMs2kModeState());
+}
 let ms2kPadOctaveShift = 0; // -3 .. +3 (0 = C4..D#5, MIDI 60..75)
 const ms2kLatchedPadNotes = new Set();
 const ms2kActivePadNotes = new Map();
 const ms2kVocoderBandPans = new Float32Array(16); // -63 .. +63 (0 = CNT)
 const ms2kVocoderSavedLevels = new Float32Array(16).fill(127);
 let ms2kStepChaserIdx = 0;
+let ms2kStepChaserRunning = false;
 let ms2kStepChaserTimer = null;
 
 /**
@@ -90,7 +136,7 @@ function setActiveTimbre(timbreNum, silent = false) {
     lcdProgrammer.activeTimbre = activeTimbre;
   }
 
-  slideDrawer.setTimbre(activeTimbre);
+  slideDrawer.setActiveTimbre(activeTimbre);
   refreshAllDashboardCards();
   refreshMs2kBottomStrip();
 
@@ -98,10 +144,8 @@ function setActiveTimbre(timbreNum, silent = false) {
     slideDrawer.refresh();
   }
   if (!silent && lcdProgrammer) {
-    lcdProgrammer.flashMessage(
-      `EDIT TIMBRE ${activeTimbre}`,
-      activeTimbre === 2 ? 'SPLIT/LAYER T2' : 'MAIN TIMBRE 1'
-    );
+    const timbreNotice = buildEditTimbreNotice({ timbre: activeTimbre });
+    lcdProgrammer.flashNotice(timbreNotice.line1, timbreNotice.line2);
   }
 }
 
@@ -2090,7 +2134,10 @@ function copyTimbre1To2() {
     }
   });
   bridge.send('copyTimbre1To2', {});
-  if (lcdProgrammer) lcdProgrammer.flashMessage('TIMBRE 1 -> 2', 'COPY COMPLETED');
+  if (lcdProgrammer) {
+    const notice = buildTimbreRoutingNotice({ from: 1, to: 2 });
+    lcdProgrammer.flashNotice(notice.line1, notice.line2);
+  }
   devLog('[Timbre 1 Copied to Timbre 2 (115 params)]');
 }
 
@@ -2102,7 +2149,10 @@ function copyTimbre2To1() {
     }
   });
   bridge.send('copyTimbre2To1', {});
-  if (lcdProgrammer) lcdProgrammer.flashMessage('TIMBRE 2 -> 1', 'COPY COMPLETED');
+  if (lcdProgrammer) {
+    const notice = buildTimbreRoutingNotice({ from: 2, to: 1 });
+    lcdProgrammer.flashNotice(notice.line1, notice.line2);
+  }
   devLog('[Timbre 2 Copied to Timbre 1 (115 params)]');
 }
 
@@ -2116,7 +2166,10 @@ function swapTimbres1And2() {
     }
   });
   bridge.send('swapTimbres', {});
-  if (lcdProgrammer) lcdProgrammer.flashMessage('TIMBRE 1 <-> 2', 'SWAP COMPLETED');
+  if (lcdProgrammer) {
+    const notice = buildTimbreRoutingNotice({ from: 1, to: 2, op: 'swap' });
+    lcdProgrammer.flashNotice(notice.line1, notice.line2);
+  }
   devLog('[Timbre 1 & Timbre 2 Swapped (115 params)]');
 }
 
@@ -2409,6 +2462,11 @@ const VPATCH_SRC_NAMES = ['EG1', 'EG2', 'LFO1', 'LFO2', 'VEL', 'KBD', 'BEND', 'M
 const VPATCH_DST_NAMES = ['Pitch', 'OSC2', 'Ctrl1', 'Noise', 'Cutoff', 'Amp', 'Pan', 'LFO2'];
 const VOICE_ASSIGN_NAMES = ['Mono', 'Poly (4V)', 'Unison (4V)'];
 const TIMBRE_MODE_NAMES = ['SINGLE', 'SPLIT', 'LAYER'];
+
+// Voices available in the active hardware profile: ADVANCED = 16 V, MS2000/microKORG = 4 V.
+function engineVoiceCount() {
+  return Math.round(paramStore.get('synthMode') || 0) === 2 ? 16 : 4;
+}
 
 function updateArpCard() {
   const txt = document.getElementById('val-arp-status');
@@ -2908,13 +2966,8 @@ function applyThemeEffects(mode, modeIdx = synthModeIndexOf(mode)) {
   refreshAllDashboardCards();
 
   if (lcdProgrammer) {
-    if (modeIdx === 0) {
-      lcdProgrammer.flashMessage('MODE: KORG MS2000', '4V 16B-VOC MSEQ');
-    } else if (modeIdx === 1) {
-      lcdProgrammer.flashMessage('MODE: microKORG', '4V 8CH-VOC 8ARP');
-    } else {
-      lcdProgrammer.flashMessage('MODE: ADVANCED', '16V 512-DWGS ALL');
-    }
+    const notice = buildEngineProfileNotice({ modeIndex: modeIdx });
+    lcdProgrammer.flashNotice(notice.line1, notice.line2);
   }
 }
 
@@ -3021,7 +3074,10 @@ function handleMenuAction(action) {
       paramStore.set(tParam('voiceMode'), 0);
       bridge.setParam(tParam('voiceMode'), 0);
       refreshAllDashboardCards();
-      if (lcdProgrammer) lcdProgrammer.flashMessage('VOICE ASSIGN', 'SINGLE / MONO');
+      if (lcdProgrammer) {
+        const notice = buildVoiceAssignNotice({ mode: 0 });
+        lcdProgrammer.flashNotice(notice.line1, notice.line2);
+      }
       devLog('[Voice Mode]: Single / Mono');
       break;
     case 'voice-mode-poly':
@@ -3029,8 +3085,8 @@ function handleMenuAction(action) {
       bridge.setParam(tParam('voiceMode'), 1);
       refreshAllDashboardCards();
       if (lcdProgrammer) {
-        const vCnt = Math.round(paramStore.get('synthMode') || 0) === 2 ? '16 VOICES' : '4 VOICES';
-        lcdProgrammer.flashMessage('VOICE ASSIGN', `POLY (${vCnt})`);
+        const notice = buildVoiceAssignNotice({ mode: 1, voiceCount: engineVoiceCount() });
+        lcdProgrammer.flashNotice(notice.line1, notice.line2);
       }
       devLog('[Voice Mode]: Poly');
       break;
@@ -3039,8 +3095,8 @@ function handleMenuAction(action) {
       bridge.setParam(tParam('voiceMode'), 2);
       refreshAllDashboardCards();
       if (lcdProgrammer) {
-        const vCnt = Math.round(paramStore.get('synthMode') || 0) === 2 ? '16 VOICES' : '4 VOICES';
-        lcdProgrammer.flashMessage('VOICE ASSIGN', `UNISON (${vCnt})`);
+        const notice = buildVoiceAssignNotice({ mode: 2, voiceCount: engineVoiceCount() });
+        lcdProgrammer.flashNotice(notice.line1, notice.line2);
       }
       devLog('[Voice Mode]: Unison');
       break;
@@ -3183,7 +3239,10 @@ function saveCurrentPatch() {
   // Save the current patch: confirm on the LCD (like the WRITE button) and
   // produce a .syx dump via the bridge, which the sysexProgramExported
   // listener downloads as ms2000_patch.syx.
-  if (lcdProgrammer) lcdProgrammer.flashMessage('WRITE COMPLETED', 'PATCH SAVED');
+  if (lcdProgrammer) {
+    const notice = buildWriteCompletedNotice();
+    lcdProgrammer.flashNotice(notice.line1, notice.line2);
+  }
   bridge.send('exportSysexProgram', {});
   devLog('[Menu Action]: Save Patch - exporting current patch as .syx');
 }
@@ -3994,15 +4053,6 @@ function openMs2kHardwarePage(padNum) {
   refreshMs2kBottomStrip();
 }
 
-const MS2K_NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-
-function formatPadMidiNote(midiNote) {
-  const m = Math.max(0, Math.min(127, Math.round(midiNote)));
-  const name = MS2K_NOTE_NAMES[m % 12];
-  const oct = Math.floor(m / 12) - 1;
-  return `${name}${oct}`;
-}
-
 function getActiveSectionPadNumber() {
   if (!slideDrawer?.isOpenState || !slideDrawer.activeSection) {
     if (lcdProgrammer?.isEditMode) {
@@ -4038,6 +4088,15 @@ function getActiveSectionPadNumber() {
   return map[slideDrawer.activeSection] || 0;
 }
 
+function cacheMs2kLabelBase(lblBtn) {
+  if (!lblBtn || lblBtn.dataset.legendBaseReady === '1') return;
+  lblBtn.querySelectorAll('.ms2k-legend-synth, .ms2k-legend-voc').forEach((span) => {
+    span.dataset.baseLegend = span.textContent.trim();
+  });
+  lblBtn.dataset.baseTitle = lblBtn.getAttribute('title') || '';
+  lblBtn.dataset.legendBaseReady = '1';
+}
+
 function refreshMs2kBottomStrip() {
   const stripEl = document.getElementById('ms2k-bottom-strip');
   if (!stripEl) return;
@@ -4069,10 +4128,20 @@ function refreshMs2kBottomStrip() {
   const modeBadge = document.getElementById('ms2k-strip-mode-badge');
 
   if (kbdBtn) kbdBtn.classList.toggle('is-active', ms2kPadKbdMode);
+
+  // ENGINE shortcut buttons reflect the same parameter as COMMON page 01
+  document.querySelectorAll('#ms2k-bottom-strip .ms2k-voice-btn').forEach((btn) => {
+    const selected = (btn.dataset.voiceMode === '1') === isVocoder;
+    btn.classList.toggle('is-active', selected);
+    btn.setAttribute('aria-pressed', selected ? 'true' : 'false');
+    btn.querySelector('.ms2k-led-dot')?.classList.toggle('is-on', selected);
+  });
   if (kbdLed) {
     kbdLed.classList.toggle('is-on', ms2kPadKbdMode && ms2kLatchedPadNotes.size === 0);
     kbdLed.classList.toggle('is-amber', ms2kPadKbdMode && ms2kLatchedPadNotes.size > 0);
   }
+
+  const bankIdx = lcdProgrammer ? lcdProgrammer.getCurrentBankIndex() : 0;
 
   if (ms2kPadKbdMode) {
     if (downLed) {
@@ -4083,16 +4152,7 @@ function refreshMs2kBottomStrip() {
       upLed.classList.toggle('is-on', ms2kPadOctaveShift === 1);
       upLed.classList.toggle('is-amber', ms2kPadOctaveShift >= 2);
     }
-    if (modeBadge) {
-      const baseNote = 60 + ms2kPadOctaveShift * 12;
-      modeBadge.textContent = ms2kLatchedPadNotes.size > 0
-        ? `HOLD (${ms2kLatchedPadNotes.size})`
-        : `KBD ${formatPadMidiNote(baseNote)}`;
-    }
   } else {
-    const bankIdx = lcdProgrammer ? lcdProgrammer.getCurrentBankIndex() : 0;
-    const bankLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
-    const bankChar = bankLetters[bankIdx] || 'A';
     if (downLed) {
       downLed.classList.toggle('is-on', bankIdx < 4);
       downLed.classList.remove('is-amber');
@@ -4101,21 +4161,12 @@ function refreshMs2kBottomStrip() {
       upLed.classList.toggle('is-on', bankIdx >= 4);
       upLed.classList.remove('is-amber');
     }
-    if (modeBadge) {
-      if (ms2kStripSeqMode > 0) {
-        if (isVocoder) {
-          modeBadge.textContent = ms2kStripSeqMode === 1 ? 'CH LEVEL' : 'CH PAN';
-        } else {
-          modeBadge.textContent = `SEQ ${ms2kStripSeqMode} [T${activeTimbre}]`;
-        }
-      } else if (lcdProgrammer?.isEditMode || slideDrawer?.isOpenState) {
-        const secPad = getActiveSectionPadNumber();
-        modeBadge.textContent = secPad ? `EDIT P${String(secPad).padStart(2, '0')}` : 'EDIT MODE';
-      } else {
-        const progSlot = lcdProgrammer ? (((lcdProgrammer.currentProgramIndex - 1) % 16) + 1) : 1;
-        modeBadge.textContent = `BANK ${bankChar}.${String(progSlot).padStart(2, '0')}`;
-      }
-    }
+  }
+
+  // Mode badge: same "MODE · IDENTITY" string the LCD notices print.
+  if (modeBadge) {
+    const nextBadge = getMs2kModeReadout().label;
+    if (modeBadge.textContent !== nextBadge) modeBadge.textContent = nextBadge;
   }
 
   // 3. Update all 16 Pads
@@ -4183,6 +4234,7 @@ function refreshMs2kBottomStrip() {
     colEl.classList.toggle('is-active', isLit);
     colEl.classList.toggle('is-editing-section', activeSectionPad === k);
     colEl.classList.toggle('is-beyond-last', isBeyondLast);
+    colEl.classList.toggle('is-seq-step', isChaserStep);
 
     btnEl.classList.toggle('is-active', isLit);
     btnEl.classList.toggle('is-latched', isLatched);
@@ -4190,6 +4242,50 @@ function refreshMs2kBottomStrip() {
 
     if (subValEl) subValEl.textContent = subText;
     if (barFillEl) barFillEl.style.width = `${Math.max(0, Math.min(100, barWidthPct))}%`;
+
+    // Bottom caption: in Program/Edit it keeps the printed page legend; in SEQ EDIT,
+    // CH PARAM and KBD it names the function the pad performs right now (step,
+    // channel or note) and stops behaving as a page jump.
+    const lblBtn = colEl.querySelector('.ms2k-pad-label-btn');
+    if (lblBtn) {
+      cacheMs2kLabelBase(lblBtn);
+      const synthLegendEl = lblBtn.querySelector('.ms2k-legend-synth');
+      const vocLegendEl = lblBtn.querySelector('.ms2k-legend-voc');
+      const activeLegendEl = isVocoder ? vocLegendEl : synthLegendEl;
+
+      let modeLegend = '';
+      if (ms2kPadKbdMode) {
+        modeLegend = formatPadMidiNote(60 + ms2kPadOctaveShift * 12 + (k - 1));
+      } else if (ms2kStripSeqMode > 0) {
+        modeLegend = isVocoder
+          ? `${ms2kStripSeqMode === 1 ? 'LEVEL' : 'PAN'} ${String(k).padStart(2, '0')}`
+          : `STEP ${String(k).padStart(2, '0')}`;
+      }
+
+      [synthLegendEl, vocLegendEl].forEach((span) => {
+        if (!span) return;
+        const nextText = (span === activeLegendEl && modeLegend)
+          ? modeLegend
+          : (span.dataset.baseLegend ?? span.textContent);
+        if (span.textContent !== nextText) span.textContent = nextText;
+      });
+
+      // The caption stays clickable in every mode: pressing it jumps to that
+      // hardware page, leaving SEQ EDIT / CH PARAM / KBD if one is active. A
+      // disabled caption would silently swallow the click ("COMMON does nothing").
+      const isModeLegend = modeLegend !== '';
+      if (lblBtn.disabled) lblBtn.disabled = false;
+      lblBtn.classList.toggle('is-mode-legend', isModeLegend);
+      const modeHint = ms2kPadKbdMode
+        ? `KBD: pad plays ${modeLegend}`
+        : (isVocoder
+          ? `Vocoder ${ms2kStripSeqMode === 1 ? 'CH LEVEL' : 'CH PAN'}: channel ${k}`
+          : `SEQ ${ms2kStripSeqMode}: step ${k}`);
+      const nextTitle = isModeLegend
+        ? `${modeHint} — click to open Page ${String(k).padStart(2, '0')}`
+        : (lblBtn.dataset.baseTitle || '');
+      if (lblBtn.getAttribute('title') !== nextTitle) lblBtn.setAttribute('title', nextTitle);
+    }
   }
 }
 
@@ -4208,16 +4304,21 @@ function setupMs2000BottomStrip() {
     refreshMs2kBottomStrip();
   };
 
+  // LCD notice for whatever the 16 pads do right now: entering (and cycling out of)
+  // SEQ EDIT / CH LEVEL / CH PAN / KBD always says which role the pads take.
+  // The LCD notice prints the same "MODE · IDENTITY" readout as the strip badge.
+  const flashStripModeNotice = () => {
+    const notice = buildMs2kModeNotice(getMs2kModeState());
+    const duration = (ms2kPadKbdMode || ms2kStripSeqMode > 0) ? 1600 : 1200;
+    lcdProgrammer?.flashMessage(notice.line1, notice.line2, duration);
+  };
+
   // 1. SEQ EDIT [CH PARAM] SELECT button
   document.getElementById('btn-ms2k-seq-edit')?.addEventListener('click', () => {
     ms2kPadKbdMode = false;
     const isVocoder = (paramStore.get('synthVocoderMode') || 0) > 0.5;
     if (isVocoder) {
       ms2kStripSeqMode = (ms2kStripSeqMode + 1) % 3; // 0 -> 1 (CH LEVEL) -> 2 (CH PAN) -> 0
-      if (lcdProgrammer) {
-        const names = ['PROGRAM / EDIT MODE', 'VOCODER [CH LEVEL] 1-16', 'VOCODER [CH PAN] 1-16'];
-        lcdProgrammer.flashMessage('CH PARAM SELECT', names[ms2kStripSeqMode]);
-      }
     } else {
       ms2kStripSeqMode = (ms2kStripSeqMode + 1) % 4; // 0 -> 1 (SEQ 1) -> 2 (SEQ 2) -> 3 (SEQ 3) -> 0
       if (ms2kStripSeqMode > 0) {
@@ -4226,12 +4327,9 @@ function setupMs2000BottomStrip() {
           renderModSeqDrawer(slideDrawer.contentElem);
         }
       }
-      if (lcdProgrammer) {
-        const names = ['PROGRAM / EDIT MODE', `SEQ 1 EDIT (T${activeTimbre})`, `SEQ 2 EDIT (T${activeTimbre})`, `SEQ 3 EDIT (T${activeTimbre})`];
-        lcdProgrammer.flashMessage('SEQ EDIT SELECT', names[ms2kStripSeqMode]);
-      }
     }
     refreshMs2kBottomStrip();
+    flashStripModeNotice();
   });
 
   // Direct click on LED rows 1..3
@@ -4248,15 +4346,32 @@ function setupMs2000BottomStrip() {
         }
       }
       refreshMs2kBottomStrip();
+      flashStripModeNotice();
     });
   }
+
+  // 1b. ENGINE: SYNTH / 16-BAND VOCODER shortcut (mirrors COMMON page 01)
+  document.querySelectorAll('#ms2k-bottom-strip .ms2k-voice-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const want = btn.dataset.voiceMode === '1' ? 1 : 0;
+      const current = (paramStore.get('synthVocoderMode') || 0) > 0.5 ? 1 : 0;
+      if (want === current) return;
+      paramStore.set('synthVocoderMode', want);
+      bridge.setParam('synthVocoderMode', want);
+      // SEQ 3 has no vocoder printing: fall back to Program/Edit when entering vocoder.
+      if (want === 1 && ms2kStripSeqMode === 3) ms2kStripSeqMode = 0;
+      lcdProgrammer?.updateSysExDisplay();
+      lcdProgrammer?.flashMessage('VOICE MODE', want === 1 ? '16-BAND VOCODER' : 'SYNTHESIZER');
+      refreshAllDashboardCards();
+    });
+  });
 
   // 2. BANK / OCTAVE DOWN & UP buttons
   document.getElementById('btn-ms2k-bank-down')?.addEventListener('click', () => {
     if (ms2kPadKbdMode) {
       ms2kPadOctaveShift = Math.max(-3, ms2kPadOctaveShift - 1);
-      const baseNote = 60 + ms2kPadOctaveShift * 12;
-      lcdProgrammer?.flashMessage('PAD KBD OCTAVE', `${formatPadMidiNote(baseNote)} .. ${formatPadMidiNote(baseNote + 15)}`);
+      const notice = buildMs2kOctaveNotice({ octaveShift: ms2kPadOctaveShift });
+      lcdProgrammer?.flashMessage(notice.line1, notice.line2);
     } else if (lcdProgrammer) {
       const nextBank = (lcdProgrammer.getCurrentBankIndex() + 7) % 8;
       lcdProgrammer.selectBank(nextBank);
@@ -4267,8 +4382,8 @@ function setupMs2000BottomStrip() {
   document.getElementById('btn-ms2k-bank-up')?.addEventListener('click', () => {
     if (ms2kPadKbdMode) {
       ms2kPadOctaveShift = Math.min(3, ms2kPadOctaveShift + 1);
-      const baseNote = 60 + ms2kPadOctaveShift * 12;
-      lcdProgrammer?.flashMessage('PAD KBD OCTAVE', `${formatPadMidiNote(baseNote)} .. ${formatPadMidiNote(baseNote + 15)}`);
+      const notice = buildMs2kOctaveNotice({ octaveShift: ms2kPadOctaveShift });
+      lcdProgrammer?.flashMessage(notice.line1, notice.line2);
     } else if (lcdProgrammer) {
       const nextBank = (lcdProgrammer.getCurrentBankIndex() + 1) % 8;
       lcdProgrammer.selectBank(nextBank);
@@ -4283,7 +4398,7 @@ function setupMs2000BottomStrip() {
         bridge.noteOff(note, 0.0);
       }
       ms2kLatchedPadNotes.clear();
-      lcdProgrammer?.flashMessage('16-PAD KEYBOARD', 'LATCH CLEARED');
+      lcdProgrammer?.flashMessage(MS2K_LATCH_CLEARED_NOTICE.line1, MS2K_LATCH_CLEARED_NOTICE.line2);
       refreshMs2kBottomStrip();
       return;
     }
@@ -4296,20 +4411,43 @@ function setupMs2000BottomStrip() {
       }
       ms2kActivePadNotes.clear();
     }
-    lcdProgrammer?.flashMessage(
-      '16-PAD KEYBOARD',
-      ms2kPadKbdMode ? 'ACTIVE (SHIFT=LATCH)' : 'PROGRAM / EDIT PADS'
-    );
     refreshMs2kBottomStrip();
+    flashStripModeNotice();
   });
 
   // 4. Bottom Section Labels (1: COMMON .. 16: UTILITY) -> Instant Page Jump + Drawer Open
+  //    Always active: it also leaves SEQ EDIT / CH PARAM / KBD, so a caption never
+  //    eats the click while the 16 pads keep their step / channel / note role.
   stripEl.querySelectorAll('.ms2k-pad-label-btn[data-pad-jump]').forEach((lblBtn) => {
+    cacheMs2kLabelBase(lblBtn);
     lblBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       const padNum = Number(lblBtn.dataset.padJump) || 1;
-      ms2kPadKbdMode = false;
+      const wasKbdMode = ms2kPadKbdMode;
+      const leftSeqMode = ms2kStripSeqMode;
+      const isVocoder = (paramStore.get('synthVocoderMode') || 0) > 0.5;
+      if (wasKbdMode) {
+        for (const [, note] of ms2kActivePadNotes) {
+          if (!ms2kLatchedPadNotes.has(note)) bridge.noteOff(note, 0.0);
+        }
+        ms2kActivePadNotes.clear();
+        ms2kPadKbdMode = false;
+      }
+      ms2kStripSeqMode = 0;
       openMs2kHardwarePage(padNum);
+      refreshMs2kBottomStrip();
+      // Announce the mode the caption released, since the labels silently switch
+      // back to the printed page names. The flash expires into the page view.
+      if (wasKbdMode || leftSeqMode > 0) {
+        const exitNotice = buildMs2kExitNotice({
+          padKbdMode: wasKbdMode,
+          stripSeqMode: leftSeqMode,
+          isVocoder,
+          pageNumber: padNum,
+          pageName: lblBtn.querySelector('.ms2k-legend-synth')?.dataset.baseLegend || '',
+        });
+        lcdProgrammer?.flashMessage(exitNotice.line1, exitNotice.line2, 1600);
+      }
     });
   });
 
@@ -4326,15 +4464,16 @@ function setupMs2000BottomStrip() {
         if (slideDrawer.isOpenState && slideDrawer.activeSection === 'vocoder-bands') {
           renderVocoderBandsDrawer(slideDrawer.contentElem);
         }
-        lcdProgrammer?.flashMessage(`VOCODER CH ${String(k).padStart(2, '0')}`, `Level: ${clamped}`, 900);
+        const levelNotice = buildMs2kBandLevelNotice({ padNumber: k, level: clamped });
+        lcdProgrammer?.flashMessage(levelNotice.line1, levelNotice.line2, 900);
       } else if (ms2kStripSeqMode === 2) {
         const clamped = Math.max(-63, Math.min(63, Math.round(newVal)));
         ms2kVocoderBandPans[k - 1] = clamped;
         const pid = `vocoderBandPan${k}`;
         paramStore.set(pid, clamped);
         bridge.setParam(pid, clamped);
-        const panStr = clamped === 0 ? 'CNT' : (clamped > 0 ? `R${clamped}` : `L${Math.abs(clamped)}`);
-        lcdProgrammer?.flashMessage(`VOCODER CH ${String(k).padStart(2, '0')}`, `Panpot: ${panStr}`, 900);
+        const panNotice = buildMs2kBandPanNotice({ padNumber: k, pan: clamped });
+        lcdProgrammer?.flashMessage(panNotice.line1, panNotice.line2, 900);
       }
     } else {
       const clamped = Math.max(-63, Math.min(63, Math.round(newVal)));
@@ -4344,11 +4483,12 @@ function setupMs2000BottomStrip() {
       if (slideDrawer.isOpenState && slideDrawer.activeSection === 'modseq') {
         renderModSeqDrawer(slideDrawer.contentElem);
       }
-      lcdProgrammer?.flashMessage(
-        `SEQ ${ms2kStripSeqMode} STEP ${String(k).padStart(2, '0')}`,
-        `Value: ${clamped > 0 ? '+' + clamped : clamped}`,
-        900
-      );
+      const stepNotice = buildMs2kStepValueNotice({
+        stripSeqMode: ms2kStripSeqMode,
+        padNumber: k,
+        value: clamped,
+      });
+      lcdProgrammer?.flashMessage(stepNotice.line1, stepNotice.line2, 900);
     }
     refreshMs2kBottomStrip();
   };
@@ -4369,11 +4509,21 @@ function setupMs2000BottomStrip() {
           if (ms2kLatchedPadNotes.has(midiNote)) {
             ms2kLatchedPadNotes.delete(midiNote);
             bridge.noteOff(midiNote, 0.0);
-            lcdProgrammer?.flashMessage(`PAD ${k} (${formatPadMidiNote(midiNote)})`, 'UNLATCHED', 800);
+            const latchNotice = buildMs2kPadLatchNotice({
+              padNumber: k,
+              noteName: formatPadMidiNote(midiNote),
+              latched: false,
+            });
+            lcdProgrammer?.flashMessage(latchNotice.line1, latchNotice.line2, 800);
           } else {
             ms2kLatchedPadNotes.add(midiNote);
             bridge.noteOn(midiNote, 0.85);
-            lcdProgrammer?.flashMessage(`PAD ${k} (${formatPadMidiNote(midiNote)})`, 'LATCHED (HOLD)', 800);
+            const latchNotice = buildMs2kPadLatchNotice({
+              padNumber: k,
+              noteName: formatPadMidiNote(midiNote),
+              latched: true,
+            });
+            lcdProgrammer?.flashMessage(latchNotice.line1, latchNotice.line2, 800);
           }
           refreshMs2kBottomStrip();
           return;
@@ -4381,7 +4531,8 @@ function setupMs2000BottomStrip() {
 
         ms2kActivePadNotes.set(k, midiNote);
         bridge.noteOn(midiNote, 0.85);
-        lcdProgrammer?.flashMessage(`PAD KEYBOARD`, `Note: ${formatPadMidiNote(midiNote)} (MIDI ${midiNote})`, 700);
+        const noteNotice = buildMs2kPadNoteNotice({ noteName: formatPadMidiNote(midiNote), midiNote });
+        lcdProgrammer?.flashMessage(noteNotice.line1, noteNotice.line2, 700);
         refreshMs2kBottomStrip();
 
         const releasePadNote = () => {
@@ -4413,7 +4564,8 @@ function setupMs2000BottomStrip() {
             if (slideDrawer.isOpenState && slideDrawer.activeSection === 'modseq') {
               renderModSeqDrawer(slideDrawer.contentElem);
             }
-            lcdProgrammer?.flashMessage('SEQ LAST STEP', `LENGTH: ${k} STEPS`, 1000);
+            const lengthNotice = buildMs2kSeqLengthNotice({ steps: k });
+            lcdProgrammer?.flashMessage(lengthNotice.line1, lengthNotice.line2, 1000);
             refreshMs2kBottomStrip();
           }
           return;
@@ -4491,7 +4643,17 @@ function setupMs2000BottomStrip() {
   ms2kStepChaserTimer = setInterval(() => {
     const seqOn = (paramStore.get('modSeqOn') || 0) > 0.5;
     const arpOn = (paramStore.get('arpOn') || 0) > 0.5;
-    if (!seqOn && !arpOn) return;
+    if (!seqOn && !arpOn) {
+      // Clear the step cursor once nothing is running, so it stops glowing on the
+      // last step that played.
+      if (ms2kStepChaserRunning) {
+        ms2kStepChaserRunning = false;
+        ms2kStepChaserIdx = 0;
+        refreshMs2kBottomStrip();
+      }
+      return;
+    }
+    ms2kStepChaserRunning = true;
     const lastStep = Math.max(1, Math.min(16, Math.round(paramStore.get(tParam('seqLastStep')) || 16)));
     const dir = Math.round(paramStore.get('modSeqType') || 0);
     if (dir === 1) {
