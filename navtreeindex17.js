@@ -1,5 +1,11 @@
 var NAVTREEINDEX17 =
 {
+"structABDMS2000_1_1PatchModulationOutputs.html#a3cef0faef1409a1655eb8fd16463f058":[5,0,0,27,2],
+"structABDMS2000_1_1PatchModulationOutputs.html#a3cef0faef1409a1655eb8fd16463f058":[6,0,0,19,2],
+"structABDMS2000_1_1PatchModulationOutputs.html#a67c0fe51153f76fd47ab8e0707a02a1d":[5,0,0,27,7],
+"structABDMS2000_1_1PatchModulationOutputs.html#a67c0fe51153f76fd47ab8e0707a02a1d":[6,0,0,19,7],
+"structABDMS2000_1_1PatchModulationOutputs.html#a6af641b546d407e994da718afdf0e462":[5,0,0,27,0],
+"structABDMS2000_1_1PatchModulationOutputs.html#a6af641b546d407e994da718afdf0e462":[6,0,0,19,0],
 "structABDMS2000_1_1PatchModulationOutputs.html#a6e3b4cabfb9520dd8f8c3ed69a8a5082":[5,0,0,27,6],
 "structABDMS2000_1_1PatchModulationOutputs.html#a6e3b4cabfb9520dd8f8c3ed69a8a5082":[6,0,0,19,6],
 "structABDMS2000_1_1PatchModulationOutputs.html#a8d4c23b11b09fc8b69102b320d35a397":[5,0,0,27,1],
@@ -243,11 +249,5 @@ var NAVTREEINDEX17 =
 "structABDMS2000_1_1VoiceParameters.html#a9d23815e7437f30abc427b5168c1b379":[5,0,0,15,6],
 "structABDMS2000_1_1VoiceParameters.html#a9d23815e7437f30abc427b5168c1b379":[6,0,0,7,6],
 "structABDMS2000_1_1VoiceParameters.html#aa5ad946ddcd7740656ceeada0cd65dc6":[5,0,0,15,30],
-"structABDMS2000_1_1VoiceParameters.html#aa5ad946ddcd7740656ceeada0cd65dc6":[6,0,0,7,30],
-"structABDMS2000_1_1VoiceParameters.html#aa87b0898d3a8d3c7ce222950449d34d9":[5,0,0,15,49],
-"structABDMS2000_1_1VoiceParameters.html#aa87b0898d3a8d3c7ce222950449d34d9":[6,0,0,7,49],
-"structABDMS2000_1_1VoiceParameters.html#ab144ef703647dfcc14704b21374629f4":[5,0,0,15,26],
-"structABDMS2000_1_1VoiceParameters.html#ab144ef703647dfcc14704b21374629f4":[6,0,0,7,26],
-"structABDMS2000_1_1VoiceParameters.html#ab242b6d59dda01b344cc848eb221973d":[5,0,0,15,24],
-"structABDMS2000_1_1VoiceParameters.html#ab242b6d59dda01b344cc848eb221973d":[6,0,0,7,24]
+"structABDMS2000_1_1VoiceParameters.html#aa5ad946ddcd7740656ceeada0cd65dc6":[6,0,0,7,30]
 };

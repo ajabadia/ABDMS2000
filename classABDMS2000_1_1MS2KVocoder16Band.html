@@ -109,6 +109,8 @@ Métodos públicos</h2></td></tr>
 <tr class="memitem:ab108e6b8c1339bb07a4aa1d2b013086b" id="r_ab108e6b8c1339bb07a4aa1d2b013086b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab108e6b8c1339bb07a4aa1d2b013086b">reset</a> () noexcept</td></tr>
 <tr class="memitem:aec0f4107829cd27c91a1c855337fd0e5" id="r_aec0f4107829cd27c91a1c855337fd0e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aec0f4107829cd27c91a1c855337fd0e5">setEnabled</a> (bool enabled) noexcept</td></tr>
 <tr class="memitem:a4871e2efe04731be70992de5bf05b367" id="r_a4871e2efe04731be70992de5bf05b367"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4871e2efe04731be70992de5bf05b367">isEnabled</a> () const noexcept</td></tr>
+<tr class="memitem:a809fab604b22f08e50c14dabb62b6008" id="r_a809fab604b22f08e50c14dabb62b6008"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a809fab604b22f08e50c14dabb62b6008">set8BandMode</a> (bool enabled) noexcept</td></tr>
+<tr class="memitem:a2067debf7038374a2a52bd06670a83f6" id="r_a2067debf7038374a2a52bd06670a83f6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2067debf7038374a2a52bd06670a83f6">is8BandMode</a> () const noexcept</td></tr>
 <tr class="memitem:a77a30da35658900ca6c93277bc8610d2" id="r_a77a30da35658900ca6c93277bc8610d2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a77a30da35658900ca6c93277bc8610d2">setFormantShift</a> (int shiftValue) noexcept</td></tr>
 <tr class="memitem:a4d8689770debf3582fc6bf3c809badfa" id="r_a4d8689770debf3582fc6bf3c809badfa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4d8689770debf3582fc6bf3c809badfa">setCutoffOffset</a> (float offsetMinus1to1) noexcept</td></tr>
 <tr class="memitem:a9ca85ef0ad493a69a900f564dbfffdbf" id="r_a9ca85ef0ad493a69a900f564dbfffdbf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9ca85ef0ad493a69a900f564dbfffdbf">setResonance</a> (float res0to1) noexcept</td></tr>
@@ -160,6 +162,7 @@ Atributos privados</h2></td></tr>
 <tr class="memitem:a6fbed4df6ecd37922a72fe3ad76cef42" id="r_a6fbed4df6ecd37922a72fe3ad76cef42"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6fbed4df6ecd37922a72fe3ad76cef42">hpfGate_</a> {true}</td></tr>
 <tr class="memitem:a44c7e85e0a37bfb1ff051810c0995592" id="r_a44c7e85e0a37bfb1ff051810c0995592"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a44c7e85e0a37bfb1ff051810c0995592">hpfThreshold_</a> {0.1f}</td></tr>
 <tr class="memitem:a30723cc22ac23e894510fa2849d912ac" id="r_a30723cc22ac23e894510fa2849d912ac"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a30723cc22ac23e894510fa2849d912ac">directLevel_</a> {0.0f}</td></tr>
+<tr class="memitem:a5860540f7d2ed331ffac608567a1b55a" id="r_a5860540f7d2ed331ffac608567a1b55a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5860540f7d2ed331ffac608567a1b55a">is8BandMode_</a> {false}</td></tr>
 <tr class="memitem:a0105f40dc2ed5941fe28e4440a485d30" id="r_a0105f40dc2ed5941fe28e4440a485d30"><td class="memItemLeft" align="right" valign="top">std::array&lt; <a class="el" href="structABDMS2000_1_1BiquadBPF.html">BiquadBPF</a>, <a class="el" href="#a4362cb4d9fe787a08b72146399374ca6">NUM_BANDS</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0105f40dc2ed5941fe28e4440a485d30">analysisFilters_</a> {}</td></tr>
 <tr class="memitem:a654518251b056df04831c0c942f7d831" id="r_a654518251b056df04831c0c942f7d831"><td class="memItemLeft" align="right" valign="top">std::array&lt; <a class="el" href="structABDMS2000_1_1BiquadBPF.html">BiquadBPF</a>, <a class="el" href="#a4362cb4d9fe787a08b72146399374ca6">NUM_BANDS</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a654518251b056df04831c0c942f7d831">analysisFilters2_</a> {}</td></tr>
 <tr class="memitem:a3b7e2c8dfa7e46279a57faf6ca1c6ee7" id="r_a3b7e2c8dfa7e46279a57faf6ca1c6ee7"><td class="memItemLeft" align="right" valign="top">std::array&lt; <a class="el" href="structABDMS2000_1_1BiquadBPF.html">BiquadBPF</a>, <a class="el" href="#a4362cb4d9fe787a08b72146399374ca6">NUM_BANDS</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3b7e2c8dfa7e46279a57faf6ca1c6ee7">synthesisFilters_</a> {}</td></tr>
@@ -320,6 +323,31 @@ Atributos privados</h2></td></tr>
 
 </div>
 </div>
+<a id="a2067debf7038374a2a52bd06670a83f6" name="a2067debf7038374a2a52bd06670a83f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2067debf7038374a2a52bd06670a83f6">&#9670;&#160;</a></span>is8BandMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ABDMS2000::MS2KVocoder16Band::is8BandMode </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a4871e2efe04731be70992de5bf05b367" name="a4871e2efe04731be70992de5bf05b367"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4871e2efe04731be70992de5bf05b367">&#9670;&#160;</a></span>isEnabled()</h2>
 
@@ -453,6 +481,31 @@ Atributos privados</h2></td></tr>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a809fab604b22f08e50c14dabb62b6008" name="a809fab604b22f08e50c14dabb62b6008"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a809fab604b22f08e50c14dabb62b6008">&#9670;&#160;</a></span>set8BandMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ABDMS2000::MS2KVocoder16Band::set8BandMode </td>
+          <td>(</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>enabled</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1592,6 +1645,28 @@ Atributos privados</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">float ABDMS2000::MS2KVocoder16Band::intVowelPhase_ {0.0f}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5860540f7d2ed331ffac608567a1b55a" name="a5860540f7d2ed331ffac608567a1b55a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5860540f7d2ed331ffac608567a1b55a">&#9670;&#160;</a></span>is8BandMode_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ABDMS2000::MS2KVocoder16Band::is8BandMode_ {false}</td>
         </tr>
       </table>
   </td>

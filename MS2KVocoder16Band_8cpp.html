@@ -146,7 +146,7 @@ Variables</h2></td></tr>
 <div class="line">                frozenEnvs_[idx] = vEnv;                                                                               \</div>
 <div class="line">        }                                                                                                              \</div>
 <div class="line">        <span class="keywordtype">float</span> fCar = synthesisFilters2_[idx].process(synthesisFilters_[idx].process(carrierSample));                   \</div>
-<div class="line">        <span class="keywordtype">float</span> bAudio = fCar * vEnv * bandLevels_[idx] * 4.0f;                                                          \</div>
+<div class="line">        <span class="keywordtype">float</span> bAudio = fCar * vEnv * bandLevels_[idx] * bandGainMult;                                                  \</div>
 <div class="line">        <span class="keywordtype">float</span> pNorm = bandPans_[idx];                                                                                  \</div>
 <div class="line">        leftAcc += bAudio * (1.0f - pNorm);                                                                            \</div>
 <div class="line">        rightAcc += bAudio * pNorm;                                                                                    \</div>

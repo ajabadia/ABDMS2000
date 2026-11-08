@@ -1,5 +1,11 @@
 var NAVTREEINDEX15 =
 {
+"structABDMS2000_1_1FirmwareTables_1_1HardwareFilterResonanceCoeffs.html#aa6c7261840d3a4aad28212784e177ec4":[5,0,0,1,3,1],
+"structABDMS2000_1_1FirmwareTables_1_1HardwareFilterResonanceCoeffs.html#aa6c7261840d3a4aad28212784e177ec4":[6,0,0,0,2,1],
+"structABDMS2000_1_1FirmwareTables_1_1HardwareFilterResonanceCoeffs.html#aa8467da6b9fe534b7e70545e63f806a5":[5,0,0,1,3,3],
+"structABDMS2000_1_1FirmwareTables_1_1HardwareFilterResonanceCoeffs.html#aa8467da6b9fe534b7e70545e63f806a5":[6,0,0,0,2,3],
+"structABDMS2000_1_1FirmwareTables_1_1HardwareFilterResonanceCoeffs.html#af2f8737db060fb7ba9a8d653c580a533":[5,0,0,1,3,0],
+"structABDMS2000_1_1FirmwareTables_1_1HardwareFilterResonanceCoeffs.html#af2f8737db060fb7ba9a8d653c580a533":[6,0,0,0,2,0],
 "structABDMS2000_1_1FirmwareTables_1_1HardwareVoiceOutputFilterCoeffs.html":[5,0,0,1,2],
 "structABDMS2000_1_1FirmwareTables_1_1HardwareVoiceOutputFilterCoeffs.html":[6,0,0,0,1],
 "structABDMS2000_1_1FirmwareTables_1_1HardwareVoiceOutputFilterCoeffs.html#a0a489808f9fd6e2c074af323fcef3632":[5,0,0,1,2,0],
@@ -243,11 +249,5 @@ var NAVTREEINDEX15 =
 "structABDMS2000_1_1MS2000HardwareProgram.html#ae8767719bb34761ccf3f403b3523ff84":[5,0,0,52,49],
 "structABDMS2000_1_1MS2000HardwareProgram.html#ae8767719bb34761ccf3f403b3523ff84":[6,0,0,44,49],
 "structABDMS2000_1_1MS2000HardwareProgram.html#aea2835813b4da446c8ece46662a90a87":[5,0,0,52,61],
-"structABDMS2000_1_1MS2000HardwareProgram.html#aea2835813b4da446c8ece46662a90a87":[6,0,0,44,61],
-"structABDMS2000_1_1MS2000HardwareProgram.html#aea8d5353a95c1b1a31b9aa9a13ca8a4a":[5,0,0,52,21],
-"structABDMS2000_1_1MS2000HardwareProgram.html#aea8d5353a95c1b1a31b9aa9a13ca8a4a":[6,0,0,44,21],
-"structABDMS2000_1_1MS2000HardwareProgram.html#aeb1a2a0c609df783a77a3303415874ac":[5,0,0,52,37],
-"structABDMS2000_1_1MS2000HardwareProgram.html#aeb1a2a0c609df783a77a3303415874ac":[6,0,0,44,37],
-"structABDMS2000_1_1MS2000HardwareProgram.html#af36f195eca0523b7f4e99bf796552b57":[5,0,0,52,60],
-"structABDMS2000_1_1MS2000HardwareProgram.html#af36f195eca0523b7f4e99bf796552b57":[6,0,0,44,60]
+"structABDMS2000_1_1MS2000HardwareProgram.html#aea2835813b4da446c8ece46662a90a87":[6,0,0,44,61]
 };
