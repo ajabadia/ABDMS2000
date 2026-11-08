@@ -2857,11 +2857,20 @@ static ABD_TEST_NOINLINE void testFirmwareHardwareParity()
 
     const auto *lfo1Meta = ParameterRegistry::getParameter("lfo1Freq");
     const auto *lfo2Meta = ParameterRegistry::getParameter("lfo2Freq");
-    check(lfo1Meta != nullptr && lfo2Meta != nullptr
-              && std::abs(conversion::normalizedToDomain(*lfo1Meta, 64.0f / 127.0f) - FirmwareTables::getHardwareLfo1FreqHz(64.0f)) < 1e-4f
-              && std::abs(conversion::normalizedToDomain(*lfo1Meta, 1.0f) - FirmwareTables::getHardwareLfo1FreqHz(127.0f)) < 1e-3f
-              && std::abs(conversion::normalizedToDomain(*lfo2Meta, 1.0f) - FirmwareTables::getHardwareLfo2FreqHz(127.0f)) < 1e-3f,
-          "Lut anchors: LFO1 knob 64 = 2.4033 Hz, LFO1 max = 36.61 Hz, LFO2 max = 194.90 Hz (neither 20 nor 63 Hz)");
+    {
+        const float lfo1Knob64Hz = FirmwareTables::getHardwareLfo1FreqHz(64.0f);
+        const float lfo1MaxHz = FirmwareTables::getHardwareLfo1FreqHz(127.0f);
+        const float lfo2MaxHz = FirmwareTables::getHardwareLfo2FreqHz(127.0f);
+        char msg[256];
+        snprintf(msg, sizeof(msg),
+                 "Lut anchors: LFO1 knob 64 = %.4f Hz, LFO1 max = %.4f Hz, LFO2 max = %.4f Hz (neither 20 nor 63 Hz)",
+                 lfo1Knob64Hz, lfo1MaxHz, lfo2MaxHz);
+        check(lfo1Meta != nullptr && lfo2Meta != nullptr
+                  && std::abs(conversion::normalizedToDomain(*lfo1Meta, 64.0f / 127.0f) - lfo1Knob64Hz) < 1e-4f
+                  && std::abs(conversion::normalizedToDomain(*lfo1Meta, 1.0f) - lfo1MaxHz) < 1e-3f
+                  && std::abs(conversion::normalizedToDomain(*lfo2Meta, 1.0f) - lfo2MaxHz) < 1e-3f,
+              msg);
+    }
 
     // 3. ROM Master Pitch table (0x240F0) 12-TET octave doubling in linear region
     uint32_t p60 = FirmwareTables::kRomMasterPitchQ23[60];
