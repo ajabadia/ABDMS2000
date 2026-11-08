@@ -6,6 +6,8 @@
 #pragma once
 
 #include "ParameterRegistry.gen.h"
+#include "../Core/MS2000FirmwareTables.h"
+#include <cassert>
 #include <cmath>
 #include <string_view>
 
@@ -75,16 +77,15 @@ inline float normalizedToDomain (const ParameterMeta& entry, float t) noexcept
             break;
         }
 
-        case 3: // Lut: tabla ROM identificada por `lutId` (CDD.2).
-                // Mientras el parametro traiga los coeficientes calibrados de su tabla
-                // (ms2000_lfo1_hz / ms2000_lfo2_hz), se resuelve con la MISMA ley
-                // exponencial ya verificada contra la ROM, asi que declararlo como Lut no
-                // cambia ni un Hz respecto a la curva Exp que venia usando.
+        case 3: // Lut: tabla de firmware del contrato comun, resuelta por `lutId` (CDD 4.5)
         {
-            if (entry.curveP0 > 0.0f && entry.curveP1 > 0.0f)
-                result = entry.curveP0 * std::exp(entry.curveP1 * tClamped);
-            else
+            result = ABDMS2000::FirmwareTables::getLutValueHz(entry.lutId, tClamped);
+            if (std::isnan(result))
+            {
+                // Inalcanzable: registry_generator.js rechaza un curve="Lut" sin `lutId`.
+                assert(false && "conversion: curve Lut sin un lutId resoluble");
                 result = tClamped;
+            }
             break;
         }
         default:
@@ -156,12 +157,15 @@ inline float domainToNormalized (const ParameterMeta& entry, float domain) noexc
             break;
         }
 
-        case 3: // Lut: inversa de la tabla calibrada (misma ley exponencial)
+        case 3: // Lut inverse: tabla de firmware del contrato comun (CDD 4.5)
         {
-            if (entry.curveP0 > 0.0f && entry.curveP1 > 0.0f && domain > 0.0f)
-                norm = (1.0f / entry.curveP1) * std::log(domain / entry.curveP0);
-            else
+            norm = ABDMS2000::FirmwareTables::getLutNormalizedForHz(entry.lutId, domain);
+            if (std::isnan(norm))
+            {
+                // Inalcanzable: registry_generator.js rechaza un curve="Lut" sin `lutId`.
+                assert(false && "conversion: curve Lut sin un lutId resoluble");
                 norm = domain;
+            }
             break;
         }
         default:

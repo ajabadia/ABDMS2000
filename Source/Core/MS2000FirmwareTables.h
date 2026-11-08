@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
+#include <cstring>
+#include <limits>
 
 namespace ABDMS2000
 {
@@ -190,6 +192,26 @@ inline float getHardwareLfo2SpeedRatio(float midiKnob0to127) noexcept
     return r0 + frac * (r1 - r0);
 }
 
+namespace detail
+{
+/**
+ * @brief Frecuencia en Hz para un knob 0..127 sobre una tabla ROM de incrementos Q23.
+ *        f_Hz = (inc / 2^24) * fs, interpolando el incremento entre entradas contiguas.
+ */
+inline float lfoFreqHzFromIncrements(const uint32_t* table, float midiKnob0to127) noexcept
+{
+    const float clamped = std::clamp(midiKnob0to127, 0.0f, 127.0f);
+    const int i0 = static_cast<int>(clamped);
+    const int i1 = std::min(127, i0 + 1);
+    const float frac = clamped - static_cast<float>(i0);
+
+    const double inc0 = static_cast<double>(table[i0]);
+    const double inc1 = static_cast<double>(table[i1]);
+    const double inc = inc0 + static_cast<double>(frac) * (inc1 - inc0);
+    return static_cast<float>((inc / 16777216.0) * kHardwareSampleRate);
+}
+} // namespace detail
+
 /**
  * @brief Frecuencia exacta en Hz de LFO1 según la tabla ROM 0x295E8 (DSP56362 P:$0500).
  *        El acumulador de fase de 24 bits con signo recorre 2 * 2^23 muestras por ciclo
@@ -197,15 +219,7 @@ inline float getHardwareLfo2SpeedRatio(float midiKnob0to127) noexcept
  */
 inline float getHardwareLfo1FreqHz(float midiKnob0to127) noexcept
 {
-    const float clamped = std::clamp(midiKnob0to127, 0.0f, 127.0f);
-    const int i0 = static_cast<int>(clamped);
-    const int i1 = std::min(127, i0 + 1);
-    const float frac = clamped - static_cast<float>(i0);
-
-    const double inc0 = static_cast<double>(kRomLfo1IncrementQ23[i0]);
-    const double inc1 = static_cast<double>(kRomLfo1IncrementQ23[i1]);
-    const double inc = inc0 + static_cast<double>(frac) * (inc1 - inc0);
-    return static_cast<float>((inc / 16777216.0) * kHardwareSampleRate);
+    return detail::lfoFreqHzFromIncrements(kRomLfo1IncrementQ23, midiKnob0to127);
 }
 
 /**
@@ -216,15 +230,76 @@ inline float getHardwareLfo1FreqHz(float midiKnob0to127) noexcept
  */
 inline float getHardwareLfo2FreqHz(float midiKnob0to127) noexcept
 {
-    const float clamped = std::clamp(midiKnob0to127, 0.0f, 127.0f);
-    const int i0 = static_cast<int>(clamped);
-    const int i1 = std::min(127, i0 + 1);
-    const float frac = clamped - static_cast<float>(i0);
+    return detail::lfoFreqHzFromIncrements(kRomLfo2IncrementQ23, midiKnob0to127);
+}
 
-    const double inc0 = static_cast<double>(kRomLfo2IncrementQ23[i0]);
-    const double inc1 = static_cast<double>(kRomLfo2IncrementQ23[i1]);
-    const double inc = inc0 + static_cast<double>(frac) * (inc1 - inc0);
-    return static_cast<float>((inc / 16777216.0) * kHardwareSampleRate);
+// ============================================================================
+// Resolucion de LUTs por `lutId` (contrato comun: ABDShared/Contracts/lut_tables.json)
+//    El contrato declara las tablas de firmware y los parametros que las usan con
+//    `curve: "Lut"` + `lutId` (CDD 4.5). `conversion::normalizedToDomain` y
+//    `conversion::domainToNormalized` resuelven aqui la tabla en vez de aproximarla
+//    con una formula: la entrada `i` de 128 corresponde al normalizado `i/127`, que
+//    es exactamente el raw MIDI 0..127 del knob.
+// ============================================================================
+inline constexpr int kLutLength = 128;
+
+/** @brief Tabla de incrementos Q23 del `lutId`, o nullptr si el id no existe. */
+inline const uint32_t* getLutIncrementsQ23(const char* lutId) noexcept
+{
+    if (lutId == nullptr)
+        return nullptr;
+    if (std::strcmp(lutId, "ms2000_lfo1_hz") == 0)
+        return kRomLfo1IncrementQ23;
+    if (std::strcmp(lutId, "ms2000_lfo2_hz") == 0)
+        return kRomLfo2IncrementQ23;
+    return nullptr;
+}
+
+/**
+ * @brief Normalizado 0..1 -> valor de la tabla en Hz, interpolando entre entradas.
+ *        Devuelve NaN si el `lutId` no existe: nunca degrada a lineal en silencio.
+ */
+inline float getLutValueHz(const char* lutId, float normalized) noexcept
+{
+    const uint32_t* table = getLutIncrementsQ23(lutId);
+    if (table == nullptr)
+        return std::numeric_limits<float>::quiet_NaN();
+    const float knob = std::clamp(normalized, 0.0f, 1.0f) * static_cast<float>(kLutLength - 1);
+    return detail::lfoFreqHzFromIncrements(table, knob);
+}
+
+/**
+ * @brief Inversa Hz -> normalizado 0..1. En una meseta (entradas contiguas con el
+ *        mismo valor) devuelve el inicio de la meseta, igual que
+ *        `lutNormalizedForValue` del registro compartido.
+ */
+inline float getLutNormalizedForHz(const char* lutId, float valueHz) noexcept
+{
+    const uint32_t* table = getLutIncrementsQ23(lutId);
+    if (table == nullptr)
+        return std::numeric_limits<float>::quiet_NaN();
+
+    const float first = detail::lfoFreqHzFromIncrements(table, 0.0f);
+    const float last = detail::lfoFreqHzFromIncrements(table, static_cast<float>(kLutLength - 1));
+    if (valueHz <= first)
+        return 0.0f;
+    if (valueHz >= last)
+        return 1.0f;
+
+    float previous = first;
+    for (int index = 1; index < kLutLength; ++index)
+    {
+        const float current = detail::lfoFreqHzFromIncrements(table, static_cast<float>(index));
+        if (valueHz <= current)
+        {
+            if (current <= previous) // meseta: el valor ya existia en la entrada anterior
+                return static_cast<float>(index - 1) / static_cast<float>(kLutLength - 1);
+            const float fraction = (valueHz - previous) / (current - previous);
+            return (static_cast<float>(index - 1) + fraction) / static_cast<float>(kLutLength - 1);
+        }
+        previous = current;
+    }
+    return 1.0f;
 }
 
 // 1.0 en el espacio de coeficientes del DSP (Q23 fraccional, 2^23 = 0x800000).

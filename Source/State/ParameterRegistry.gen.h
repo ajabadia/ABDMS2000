@@ -37,6 +37,9 @@ struct ParameterMeta {
     int curve = 0;          // 0=Linear, 1=Exp, 2=Pow, 3=Lut
     float curveP0 = 0.0f;   // parametro P0 de la curva (ej. escala para Exp)
     float curveP1 = 0.0f;   // parametro P1 de la curva (ej. exponente para Pow)
+    // Tabla de firmware para curve=Lut (CDD 4.5). FirmwareTables la resuelve por este id
+    // contra las mismas palabras de la ROM (ms2000_lfo1_hz / ms2000_lfo2_hz).
+    const char* lutId = nullptr;
     float domainMin = 0.0f; // minimo fisico (ej. 20.0 Hz)
     float domainMax = 0.0f; // maximo fisico (ej. 20000.0 Hz)
     int smoothing = 0;      // 0=Linear, 1=Log

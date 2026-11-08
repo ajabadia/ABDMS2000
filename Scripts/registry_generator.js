@@ -242,6 +242,9 @@ struct ParameterMeta {
     int curve = 0;          // 0=Linear, 1=Exp, 2=Pow, 3=Lut
     float curveP0 = 0.0f;   // parametro P0 de la curva (ej. escala para Exp)
     float curveP1 = 0.0f;   // parametro P1 de la curva (ej. exponente para Pow)
+    // Tabla de firmware para curve=Lut (CDD 4.5). FirmwareTables la resuelve por este id
+    // contra las mismas palabras de la ROM (ms2000_lfo1_hz / ms2000_lfo2_hz).
+    const char* lutId = nullptr;
     float domainMin = 0.0f; // minimo fisico (ej. 20.0 Hz)
     float domainMax = 0.0f; // maximo fisico (ej. 20000.0 Hz)
     int smoothing = 0;      // 0=Linear, 1=Log
@@ -303,6 +306,11 @@ withOffsets.forEach((p, idx) => {
   if (typeof p.curve === 'number') curveVal = p.curve;
   else if (typeof p.curve === 'string' && curveMap[p.curve] !== undefined) curveVal = curveMap[p.curve];
 
+  // CDD 4.5: una curva Lut sin tabla declarada no se puede resolver y degradaria en silencio.
+  if (curveVal === 3 && (typeof p.lutId !== 'string' || p.lutId.length === 0))
+    throw new Error(`registry_generator: "${p.id}" declara curve "Lut" sin lutId (ver ABDShared/Contracts/lut_tables.json)`);
+  const lutIdVal = (typeof p.lutId === 'string' && p.lutId.length > 0) ? `"${p.lutId}"` : 'nullptr';
+
   const curveP0Val = p.curveP0 !== null && p.curveP0 !== undefined ? formatFloat(p.curveP0) : 0.0;
   const curveP1Val = p.curveP1 !== null && p.curveP1 !== undefined ? formatFloat(p.curveP1) : 0.0;
   const domainMinVal = p.domainMin !== null && p.domainMin !== undefined ? formatFloat(p.domainMin) : 0.0;
@@ -328,7 +336,7 @@ withOffsets.forEach((p, idx) => {
     choicesInit = `{ ${p.choices.map(c => `"${c}"`).join(', ')} }`;
   }
 
-  cppContent += `    { "${p.id}", "${p.name}", "${p.group}", ${ccVal}, ${minVal}, ${maxVal}, ${defVal}, ${skewVal}, ${typeEnum}, ${unitVal}, ${sysexVal}, ${wireVal}, ${wireCodecVal}, ${curveVal}, ${curveP0Val}, ${curveP1Val}, ${domainMinVal}, ${domainMaxVal}, ${smoothingVal}, ${choicesInit} }`;
+  cppContent += `    { "${p.id}", "${p.name}", "${p.group}", ${ccVal}, ${minVal}, ${maxVal}, ${defVal}, ${skewVal}, ${typeEnum}, ${unitVal}, ${sysexVal}, ${wireVal}, ${wireCodecVal}, ${curveVal}, ${curveP0Val}, ${curveP1Val}, ${lutIdVal}, ${domainMinVal}, ${domainMaxVal}, ${smoothingVal}, ${choicesInit} }`;
   if (idx < params.length - 1) cppContent += ',';
   cppContent += '\n';
 });
