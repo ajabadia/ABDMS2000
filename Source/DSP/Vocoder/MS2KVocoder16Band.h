@@ -48,6 +48,15 @@ class MS2KVocoder16Band
         return enabled_;
     }
 
+    void set8BandMode(bool enabled) noexcept
+    {
+        is8BandMode_ = enabled;
+    }
+    [[nodiscard]] bool is8BandMode() const noexcept
+    {
+        return is8BandMode_;
+    }
+
     void setFormantShift(int shiftValue) noexcept;         // -2, -1, 0, +1, +2
     void setCutoffOffset(float offsetMinus1to1) noexcept;  // -1.0 .. +1.0 (-63..+63)
     void setResonance(float res0to1) noexcept;             // 0.0 .. 1.0 (0..127)
@@ -111,6 +120,7 @@ class MS2KVocoder16Band
     bool hpfGate_ {true};
     float hpfThreshold_ {0.1f};
     float directLevel_ {0.0f};
+    bool is8BandMode_ {false};
 
     std::array<BiquadBPF, NUM_BANDS> analysisFilters_ {};
     std::array<BiquadBPF, NUM_BANDS> analysisFilters2_ {};

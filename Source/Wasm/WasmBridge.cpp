@@ -386,6 +386,7 @@ class WasmEngineInstance
             size_t poly = (synthMode_ == 2) ? VoiceManager::MAX_EXPANDED_VOICES : VoiceManager::NUM_HW_VOICES;
             voiceManager_.setMaxPolyphony(poly);
             voiceManager_.setSynthMode(synthMode_);
+            vocoder_.set8BandMode(synthMode_ == 1);
             if (synthMode_ != 2 && voiceParams_.osc1DwgsIndex > 63)
             {
                 voiceParams_.osc1DwgsIndex = 63;

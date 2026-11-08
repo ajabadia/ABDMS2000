@@ -3,45 +3,52 @@
 #include "../Core/BuildVersion.h"
 #include "../MIDI/MIDITelemetryManager.h"
 
+#if JUCE_WINDOWS
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+#include <windows.h>
+#endif
+
 namespace ABDMS2000
 {
 
 namespace
 {
-// Returns an isolated per-build WebView2 user-data folder (and best-effort cleans
-// older build folders). Using a build-stamped subdirectory prevents a force-killed
-// previous instance's lingering msedgewebview2.exe broker from locking or corrupting
-// the new build's EBWebView folder (which otherwise causes a white screen and
-// infinite renderer restart loop).
+// Returns an isolated per-process WebView2 user-data folder.
+// Using a build-stamped and PID-isolated subdirectory prevents multi-instance
+// collisions in the DAW and locks on msedgewebview2.exe broker folders.
 juce::File getAndPrepareWebView2UserDataFolder()
 {
-    juce::File exeFile = juce::File::getSpecialLocation(juce::File::currentExecutableFile);
-    juce::File baseDir = exeFile.getFileName().startsWithIgnoreCase("ABDMS2000")
-                             ? exeFile.getParentDirectory().getChildFile(exeFile.getFileName() + ".WebView2")
-                             : juce::File::getSpecialLocation(juce::File::userApplicationDataDirectory)
-                                   .getChildFile("ABDSynths")
-                                   .getChildFile("ABDMS2000")
-                                   .getChildFile("WebView2");
+#if JUCE_WINDOWS
+    const auto pid = static_cast<uint32_t>(::GetCurrentProcessId());
+#else
+    const auto pid = static_cast<uint32_t>(juce::Time::getMillisecondCounter());
+#endif
+
+    juce::File baseDir;
+    juce::String envFolder = juce::SystemStats::getEnvironmentVariable("WEBVIEW2_USER_DATA_FOLDER", "").trim();
+    if (envFolder.isNotEmpty())
+    {
+        baseDir = juce::File(envFolder);
+    }
+    else
+    {
+        juce::File exeFile = juce::File::getSpecialLocation(juce::File::currentExecutableFile);
+        baseDir = exeFile.getFileName().startsWithIgnoreCase("ABDMS2000")
+                     ? exeFile.getParentDirectory().getChildFile(exeFile.getFileName() + ".WebView2")
+                     : juce::File::getSpecialLocation(juce::File::userApplicationDataDirectory)
+                           .getChildFile("ABDSynths")
+                           .getChildFile("ABDMS2000")
+                           .getChildFile("WebView2");
+    }
 
     const juce::String buildFolderName =
         juce::String(ABDMS2000::kBuildNumber).replaceCharacters("\\/:*?\"<>| ", "__________");
-    juce::File currentFolder = baseDir.getChildFile(buildFolderName);
-
-    if (baseDir.isDirectory())
-    {
-        for (const auto &entry :
-             juce::RangedDirectoryIterator(baseDir, false, "*", juce::File::findFilesAndDirectories))
-        {
-            const juce::File child = entry.getFile();
-            if (child != currentFolder)
-            {
-                child.deleteRecursively();
-            }
-        }
-    }
-
-    currentFolder.createDirectory();
-    return currentFolder;
+    juce::File buildFolder = baseDir.getChildFile(buildFolderName);
+    juce::File instanceFolder = buildFolder.getChildFile(juce::String(pid));
+    instanceFolder.createDirectory();
+    return instanceFolder;
 }
 }  // namespace
 

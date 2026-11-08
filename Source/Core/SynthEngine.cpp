@@ -568,6 +568,7 @@ void SynthEngine::updateParametersFromAPVTS() noexcept
     voiceManagerB_.setUnisonSpread(paramValue(true, ParamIDs::unisonSpread, 0.5f));
     voiceManagerA_.setSynthMode(synthMode);
     voiceManagerB_.setSynthMode(synthMode);
+    vocoder_.set8BandMode(synthMode == 1);
     // Trigger Mode (byte FLAGS bit 3): 0 = Single (legato, sin re-disparo), 1 = Multi.
     voiceManagerA_.setTriggerMode(getParam(ParamIDs::triggerMode, 1.0f) > 0.5f ? TriggerMode::Multi
                                                                               : TriggerMode::Single);

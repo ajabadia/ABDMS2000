@@ -1,3 +1,20 @@
+# ABDMS2000 — Hoja de Ruta y Plan de Evolución
+
+## 🛡️ Plan de Modernización y Cumplimiento Normativo 2026 (Auditoría 2026-11)
+> **Estado:** 🟡 En Progreso  
+> **Objetivo:** Alinear ABDMS2000 con los estándares consolidados de 2026 (ADR-001 a ADR-005, juce-audio-hybrid-plugin y SECURITY_STANDARDS).
+
+### 📋 Fases del Plan de Adaptación
+
+| Fase | Tarea / Subsistema | Estado | Descripción Técnica y Criterio de Aceptación |
+| :--- | :--- | :---: | :--- |
+| **MS2K.1** | **Aislamiento UDF por PID en WebView2** | ✅ Completado | Incorporado Process ID (::GetCurrentProcessId()) y soporte de WEBVIEW2_USER_DATA_FOLDER en getAndPrepareWebView2UserDataFolder(). Permite instancias múltiples simultáneas sin interferencia en DAWs multipista. |
+| **MS2K.2** | **Sanitización en Frontera Nativa IPC** | ✅ Completado | Blindado BridgeActions::handleJsEvent con validaciones std::isfinite y acotación segura en setParam, setTempoBPM y notas MIDI entrantes. Protege al APVTS y motor DSP contra inyecciones maliciosas de NaN/Infinity. |
+| **MS2K.3** | **Reducción de Vocoder a 8 Bandas (microKORG)** | ✅ Completado | Añadido set8BandMode() a MS2KVocoder16Band con asignación alternada de bandas e incremento de ganancia compensatoria (+6 dB). Cableado dinámicamente según synthMode == 1 tanto en C++ nativo (SynthEngine.cpp) como en WebAssembly (WasmBridge.cpp). Verificado en DSPCoreTests (591/591 tests pasando). |
+| **MS2K.4** | **Canal de Telemetría Optimizado (Scope Taps)** | ✅ Conforme ADR-003 P8 | Auditado según ADR-003 §2.5: el pipeline opera 100% lock-free en el hilo de audio vía ScopeTap SPSC y colecta tramas solo con panel activo; la migración a binario crudo queda sujeta a métricas de profiling para evitar sobre-ingeniería especulativa. |
+
+---
+
 ## 2026-10-11 — Arpegiador microKORG: Máscara Rítmica de 8 Pasos y Motor Extendido
 
 Implementación completa de la característica distintiva del hardware **microKORG** (máscara rítmica de 8 pasos del arpegiador) y su extensión al perfil **ADVANCED**:

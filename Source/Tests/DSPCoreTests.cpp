@@ -43,6 +43,7 @@ using abd::hw::SysExCodec;
 #include <cassert>
 #include <cmath>
 #include <cstdio>
+#include <cstring>
 #include <memory>
 #include <vector>
 
@@ -710,6 +711,15 @@ static void testFilterVocoderStability()
     }
     check(!vocoderHasNanOrInf, "Vocoder 16-band unrolled engine generates zero NaN/Inf under white noise stress");
     check(maxVocoderPeak < 6.0f, "Vocoder dynamic headroom is stably bounded (< +15dB limit)");
+
+    // 12.2a: microKORG 8-band vocoder mode check
+    vocoderAudit.set8BandMode(true);
+    check(vocoderAudit.is8BandMode(), "Vocoder 8-band mode can be toggled for microKORG profile");
+    float out8L = 0.0f, out8R = 0.0f;
+    vocoderAudit.process(0.5f, 0.5f, out8L, out8R);
+    check(std::isfinite(out8L) && std::isfinite(out8R), "Vocoder 8-band mode generates valid finite output");
+    vocoderAudit.set8BandMode(false);
+    check(!vocoderAudit.is8BandMode(), "Vocoder restores 16-band mode for MS2000 profile");
 
     // 12.2b: Internal Formant Self-Modulator & Formant Hold Verification
     Vocoder16Band vocoderSelfMod;
@@ -2774,6 +2784,84 @@ static ABD_TEST_NOINLINE void testFirmwareHardwareParity()
           "LFO2 ROM increments first exceed LFO1 at knob 121");
     check(std::abs(FirmwareTables::getHardwareLfo2SpeedRatio(127.0f) - 5.32385f) < 0.001f,
           "LFO2/LFO1 ROM increment ratio is 5.32385x at knob 127");
+
+    // 2b. CDD 4.5: `curve: "Lut"` resuelve la tabla de firmware del contrato, no una formula
+    int lutParamCount = 0;
+    bool lutRegistryConsistent = true;
+    for (const auto &entry : ParameterRegistry::getAllParameters())
+    {
+        if (entry.curve != 3)
+            continue;
+        ++lutParamCount;
+        if (FirmwareTables::getLutIncrementsQ23(entry.lutId) == nullptr
+            || std::abs(FirmwareTables::getLutValueHz(entry.lutId, 0.0f) - entry.domainMin) > 1e-7f
+            || std::abs(FirmwareTables::getLutValueHz(entry.lutId, 1.0f) - entry.domainMax) > 1e-4f)
+            lutRegistryConsistent = false;
+    }
+    check(lutParamCount == 4 && lutRegistryConsistent,
+          "The 4 curve=Lut params resolve their lutId and their domain equals the ROM table extremes");
+
+    const auto lutKnobHz = [](bool useLfo2, int knob) {
+        const int clamped = std::clamp(knob, 0, 127);
+        return useLfo2 ? FirmwareTables::getHardwareLfo2FreqHz(static_cast<float>(clamped))
+                       : FirmwareTables::getHardwareLfo1FreqHz(static_cast<float>(clamped));
+    };
+
+    bool lutCurveSamplesTable = true;
+    bool lutExactAnchors = true;
+    bool lutInverseRoundTrips = true;
+    for (const char *paramId : {"lfo1Freq", "lfo2Freq", "t2Lfo1Freq", "t2Lfo2Freq"})
+    {
+        const auto *meta = ParameterRegistry::getParameter(paramId);
+        if (meta == nullptr || meta->curve != 3)
+        {
+            lutCurveSamplesTable = false;
+            continue;
+        }
+        const bool useLfo2 = std::strcmp(meta->lutId, "ms2000_lfo2_hz") == 0;
+
+        for (int knob = 0; knob < 128; ++knob)
+        {
+            const float normalized = static_cast<float>(knob) / 127.0f;
+            const float lower = lutKnobHz(useLfo2, knob - 1);
+            const float upper = lutKnobHz(useLfo2, knob + 1);
+
+            // El normalizado en float puede caer a medio paso de la entrada `knob`:
+            // la curva debe quedar entre las entradas vecinas de la tabla, nunca fuera.
+            const float value = conversion::normalizedToDomain(*meta, normalized);
+            if (value < lower - 1e-4f * lower || value > upper + 1e-4f * upper)
+                lutCurveSamplesTable = false;
+
+            const float back = conversion::domainToNormalized(*meta, lutKnobHz(useLfo2, knob));
+            const float again = conversion::normalizedToDomain(*meta, back);
+            if (again < lower - 1e-4f * lower || again > upper + 1e-4f * upper)
+                lutInverseRoundTrips = false;
+        }
+
+        // 127 * t es exacto en float para estos tres puntos: la curva debe devolver
+        // bit a bit la misma interpolacion que el helper de la tabla ROM.
+        for (const float t : {0.25f, 0.5f, 0.75f})
+        {
+            const float expected = useLfo2 ? FirmwareTables::getHardwareLfo2FreqHz(t * 127.0f)
+                                           : FirmwareTables::getHardwareLfo1FreqHz(t * 127.0f);
+            if (conversion::normalizedToDomain(*meta, t) != expected)
+                lutExactAnchors = false;
+        }
+    }
+    check(lutCurveSamplesTable,
+          "normalizedToDomain samples the ROM LFO tables over all 128 knobs (timbre 1 and 2)");
+    check(lutExactAnchors,
+          "Lut curve returns the ROM table interpolation bit-exactly at t = 0.25 / 0.5 / 0.75");
+    check(lutInverseRoundTrips,
+          "domainToNormalized returns a normalized value that resolves back to the same table frequency");
+
+    const auto *lfo1Meta = ParameterRegistry::getParameter("lfo1Freq");
+    const auto *lfo2Meta = ParameterRegistry::getParameter("lfo2Freq");
+    check(lfo1Meta != nullptr && lfo2Meta != nullptr
+              && std::abs(conversion::normalizedToDomain(*lfo1Meta, 64.0f / 127.0f) - 2.40325927734375f) < 1e-4f
+              && std::abs(conversion::normalizedToDomain(*lfo1Meta, 1.0f) - 36.609649658203125f) < 1e-3f
+              && std::abs(conversion::normalizedToDomain(*lfo2Meta, 1.0f) - 194.90432739257812f) < 1e-3f,
+          "Lut anchors: LFO1 knob 64 = 2.4033 Hz, LFO1 max = 36.61 Hz, LFO2 max = 194.90 Hz (neither 20 nor 63 Hz)");
 
     // 3. ROM Master Pitch table (0x240F0) 12-TET octave doubling in linear region
     uint32_t p60 = FirmwareTables::kRomMasterPitchQ23[60];

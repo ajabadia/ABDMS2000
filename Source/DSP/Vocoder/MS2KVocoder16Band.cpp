@@ -363,7 +363,8 @@ void MS2KVocoder16Band::process(float modSample, float carrierSample, float &out
     const bool holdActive = isFormantHold();
     const float gateFloor = hpfThreshold_ * 0.015f;
 
-    // 2. Procesamiento de las 16 bandas (cascada de 4º orden + ganancia de compensación)
+    // 2. Procesamiento de las bandas (cascada de 4º orden + ganancia de compensación)
+    const float bandGainMult = is8BandMode_ ? 8.0f : 4.0f;
 #define PROCESS_VOCODER_BAND(idx)                                                                                      \
     do                                                                                                                 \
     {                                                                                                                  \
@@ -382,28 +383,44 @@ void MS2KVocoder16Band::process(float modSample, float carrierSample, float &out
                 frozenEnvs_[idx] = vEnv;                                                                               \
         }                                                                                                              \
         float fCar = synthesisFilters2_[idx].process(synthesisFilters_[idx].process(carrierSample));                   \
-        float bAudio = fCar * vEnv * bandLevels_[idx] * 4.0f;                                                          \
+        float bAudio = fCar * vEnv * bandLevels_[idx] * bandGainMult;                                                  \
         float pNorm = bandPans_[idx];                                                                                  \
         leftAcc += bAudio * (1.0f - pNorm);                                                                            \
         rightAcc += bAudio * pNorm;                                                                                    \
     } while (0)
 
-    PROCESS_VOCODER_BAND(0);
-    PROCESS_VOCODER_BAND(1);
-    PROCESS_VOCODER_BAND(2);
-    PROCESS_VOCODER_BAND(3);
-    PROCESS_VOCODER_BAND(4);
-    PROCESS_VOCODER_BAND(5);
-    PROCESS_VOCODER_BAND(6);
-    PROCESS_VOCODER_BAND(7);
-    PROCESS_VOCODER_BAND(8);
-    PROCESS_VOCODER_BAND(9);
-    PROCESS_VOCODER_BAND(10);
-    PROCESS_VOCODER_BAND(11);
-    PROCESS_VOCODER_BAND(12);
-    PROCESS_VOCODER_BAND(13);
-    PROCESS_VOCODER_BAND(14);
-    PROCESS_VOCODER_BAND(15);
+    if (is8BandMode_)
+    {
+        // En perfil microKORG: 8 bandas activas (canales alternos 0, 2, 4, 6, 8, 10, 12, 14)
+        PROCESS_VOCODER_BAND(0);
+        PROCESS_VOCODER_BAND(2);
+        PROCESS_VOCODER_BAND(4);
+        PROCESS_VOCODER_BAND(6);
+        PROCESS_VOCODER_BAND(8);
+        PROCESS_VOCODER_BAND(10);
+        PROCESS_VOCODER_BAND(12);
+        PROCESS_VOCODER_BAND(14);
+    }
+    else
+    {
+        // En perfil MS2000 / Advanced: 16 bandas completas
+        PROCESS_VOCODER_BAND(0);
+        PROCESS_VOCODER_BAND(1);
+        PROCESS_VOCODER_BAND(2);
+        PROCESS_VOCODER_BAND(3);
+        PROCESS_VOCODER_BAND(4);
+        PROCESS_VOCODER_BAND(5);
+        PROCESS_VOCODER_BAND(6);
+        PROCESS_VOCODER_BAND(7);
+        PROCESS_VOCODER_BAND(8);
+        PROCESS_VOCODER_BAND(9);
+        PROCESS_VOCODER_BAND(10);
+        PROCESS_VOCODER_BAND(11);
+        PROCESS_VOCODER_BAND(12);
+        PROCESS_VOCODER_BAND(13);
+        PROCESS_VOCODER_BAND(14);
+        PROCESS_VOCODER_BAND(15);
+    }
 
 #undef PROCESS_VOCODER_BAND
 

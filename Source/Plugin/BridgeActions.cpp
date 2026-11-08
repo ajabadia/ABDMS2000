@@ -67,15 +67,24 @@ void BridgeActions::handleJsEvent(const juce::var &message)
     if (action == "setParam")
     {
         auto paramId = message.getProperty("paramId", "").toString();
-        float rawValue = static_cast<float>(message.getProperty("value", 0.0));
+        const auto valVar = message.getProperty("value", 0.0);
+        if (!valVar.isDouble() && !valVar.isInt())
+            return;
+
+        float rawValue = static_cast<float>(valVar);
+        if (!std::isfinite(rawValue))
+        {
+            ABD_LOG("[BRIDGE SECURITY] Rejected non-finite value for parameter: " + paramId);
+            return;
+        }
 
         if (paramId == "arpTempo")
         {
-            host_.getEngine().setTempoBPM(rawValue);
+            host_.getEngine().setTempoBPM(std::clamp(rawValue, 20.0f, 300.0f));
         }
         else if (auto *param = host_.getAPVTS().getParameter(paramId))
         {
-            float normValue = param->convertTo0to1(rawValue);
+            float normValue = std::clamp(param->convertTo0to1(rawValue), 0.0f, 1.0f);
             param->setValueNotifyingHost(normValue);
         }
     }
@@ -98,12 +107,16 @@ void BridgeActions::handleJsEvent(const juce::var &message)
     else if (action == "setTempoBPM")
     {
         float bpm = static_cast<float>(message.getProperty("bpm", 120.0));
-        host_.getEngine().setTempoBPM(bpm);
+        if (std::isfinite(bpm))
+            host_.getEngine().setTempoBPM(std::clamp(bpm, 20.0f, 300.0f));
     }
     else if (action == "noteOn")
     {
-        int note = static_cast<int>(message.getProperty("note", 60));
+        int note = std::clamp(static_cast<int>(message.getProperty("note", 60)), 0, 127);
         float vel = static_cast<float>(message.getProperty("velocity", 0.8));
+        if (!std::isfinite(vel))
+            vel = 0.8f;
+        vel = std::clamp(vel, 0.0f, 1.0f);
         ABD_LOG(juce::String("[BRIDGE] noteOn: ") + juce::String(note) + " vel: " + juce::String(vel));
         host_.getEngine().enqueueNoteOn(1, note, vel);
     }
