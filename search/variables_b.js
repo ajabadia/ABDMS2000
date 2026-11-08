@@ -41,5 +41,6 @@ var searchData=
   ['lowx1l_5f_38',['lowX1L_',['../classABDMS2000_1_1HardwareEffects_1_1HardwareTwoBandEQ.html#a3c2fafdc1069166430f0200782649e05',1,'ABDMS2000::HardwareEffects::HardwareTwoBandEQ']]],
   ['lowx1r_5f_39',['lowX1R_',['../classABDMS2000_1_1HardwareEffects_1_1HardwareTwoBandEQ.html#a82a90486504c37c6b5f051419d1629e2',1,'ABDMS2000::HardwareEffects::HardwareTwoBandEQ']]],
   ['lowy1l_5f_40',['lowY1L_',['../classABDMS2000_1_1HardwareEffects_1_1HardwareTwoBandEQ.html#aefbb27b35781c204abb2657b2334097c',1,'ABDMS2000::HardwareEffects::HardwareTwoBandEQ']]],
-  ['lowy1r_5f_41',['lowY1R_',['../classABDMS2000_1_1HardwareEffects_1_1HardwareTwoBandEQ.html#abb029c874ccb9dd86c5f3fcf35ad9f63',1,'ABDMS2000::HardwareEffects::HardwareTwoBandEQ']]]
+  ['lowy1r_5f_41',['lowY1R_',['../classABDMS2000_1_1HardwareEffects_1_1HardwareTwoBandEQ.html#abb029c874ccb9dd86c5f3fcf35ad9f63',1,'ABDMS2000::HardwareEffects::HardwareTwoBandEQ']]],
+  ['lutid_42',['lutId',['../structABDMS2000_1_1ParameterMeta.html#a92204278d7470ef6a8704e2a713820fd',1,'ABDMS2000::ParameterMeta::lutId'],['../structconversion_1_1ParameterMeta.html#a92204278d7470ef6a8704e2a713820fd',1,'conversion::ParameterMeta::lutId']]]
 ];

@@ -1,27 +1,31 @@
 <map id="Source/Tests/LfoFirmwareParityTests.cpp" name="Source/Tests/LfoFirmwareParityTests.cpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="558,5,745,50"/>
-<area shape="rect" id="Node000002" href="$HardwareConstants_8h.html" title=" " alt="" coords="25,98,233,126"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="557,46,229,98,228,92,558,41"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="96,174,162,201"/>
-<area shape="poly" id="edge14_Node000001_Node000003" title=" " alt="" coords="555,33,407,43,236,56,90,75,41,87,15,100,9,110,9,119,14,129,23,138,50,155,84,170,80,173,48,160,19,142,9,132,4,121,4,108,11,96,39,82,89,69,235,50,407,37,561,32"/>
-<area shape="rect" id="Node000005" href="$MS2000FirmwareTables_8h.html" title=" " alt="" coords="458,98,691,126"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="634,49,599,89,596,84,629,52"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="669,174,731,201"/>
-<area shape="poly" id="edge12_Node000001_Node000007" title=" " alt="" coords="675,48,693,71,706,97,711,129,708,160,704,156,706,129,701,99,688,74,673,53"/>
-<area shape="rect" id="Node000008" href="$LFO_8h.html" title=" " alt="" coords="256,98,434,126"/>
-<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="568,51,409,96,408,91,573,50"/>
-<area shape="rect" id="Node000009" title=" " alt="" coords="767,98,881,126"/>
-<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="698,48,785,91,780,91,697,53"/>
-<area shape="rect" id="Node000010" href="$LfoFirmwareParityTests_8h.html" title=" " alt="" coords="905,98,1089,126"/>
-<area shape="poly" id="edge11_Node000001_Node000010" title=" " alt="" coords="744,48,930,94,924,94,743,53"/>
-<area shape="rect" id="Node000011" title=" " alt="" coords="1113,98,1182,126"/>
-<area shape="poly" id="edge13_Node000001_Node000011" title=" " alt="" coords="746,38,907,61,1100,97,1095,98,906,66,746,43"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="131,124,131,159,127,157,127,128"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="234,174,363,201"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="160,124,257,166,252,168,159,129"/>
-<area shape="poly" id="edge7_Node000005_Node000003" title=" " alt="" coords="495,129,178,181,177,176,494,124"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="532,174,617,201"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="576,124,576,160,572,156,573,128"/>
-<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="597,124,667,166,662,165,596,129"/>
-<area shape="poly" id="edge9_Node000008_Node000004" title=" " alt="" coords="339,125,316,163,313,159,334,128"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="542,5,729,50"/>
+<area shape="rect" id="Node000002" href="$HardwareConstants_8h.html" title=" " alt="" coords="424,98,631,126"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="609,49,558,91,556,86,604,51"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="372,174,437,201"/>
+<area shape="poly" id="edge16_Node000001_Node000003" title=" " alt="" coords="539,35,507,44,472,57,440,75,413,100,406,113,402,128,401,160,397,157,397,127,401,111,409,96,437,70,470,52,505,39,544,33"/>
+<area shape="rect" id="Node000005" href="$MS2000FirmwareTables_8h.html" title=" " alt="" coords="64,98,297,126"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="540,48,269,97,268,92,543,44"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="286,174,348,201"/>
+<area shape="poly" id="edge14_Node000001_Node000007" title=" " alt="" coords="539,44,468,67,431,82,397,100,362,130,335,163,332,159,358,126,394,96,429,77,467,62,544,43"/>
+<area shape="rect" id="Node000010" href="$LFO_8h.html" title=" " alt="" coords="655,98,832,126"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="664,48,716,89,711,88,663,53"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="856,98,970,126"/>
+<area shape="poly" id="edge12_Node000001_Node000011" title=" " alt="" coords="709,48,857,93,851,93,709,53"/>
+<area shape="rect" id="Node000012" href="$LfoFirmwareParityTests_8h.html" title=" " alt="" coords="994,98,1178,126"/>
+<area shape="poly" id="edge13_Node000001_Node000012" title=" " alt="" coords="729,43,1001,94,996,95,729,49"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="1202,98,1271,126"/>
+<area shape="poly" id="edge15_Node000001_Node000013" title=" " alt="" coords="729,34,936,56,1060,73,1190,98,1184,98,1059,79,935,61,729,39"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="508,126,440,168,438,163,503,127"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="560,174,689,201"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="546,124,598,165,593,164,544,129"/>
+<area shape="poly" id="edge7_Node000005_Node000003" title=" " alt="" coords="221,124,360,170,355,172,220,129"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="177,174,262,201"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="189,124,208,161,203,159,186,129"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="206,124,282,166,276,166,204,129"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="5,174,71,201"/>
+<area shape="poly" id="edge8_Node000005_Node000008" title=" " alt="" coords="157,128,78,169,75,164,154,124"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="94,174,152,201"/>
+<area shape="poly" id="edge9_Node000005_Node000009" title=" " alt="" coords="173,125,145,163,141,159,168,127"/>
+<area shape="poly" id="edge11_Node000010_Node000004" title=" " alt="" coords="725,125,659,168,657,163,720,127"/>
 </map>

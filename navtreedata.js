@@ -279,12 +279,12 @@ var NAVTREEINDEX =
 "functions_l.html",
 "namespaceABDMS2000.html#a28040a5818d8f8b96a3a4c36b1c4b988",
 "namespaceABDMS2000_1_1DSPUtils.html#a811ef7806eb2bb6d1dd6c1625b8f1d18",
-"namespaceABDMS2000_1_1ParamIDs.html#a981fa3d3c1aae6d0af6b42fc330ba7cc",
-"namespaceABDMS2000_1_1WavetableLoader.html#aa0febd68fc3913738de3da68bb6f17d7",
-"structABDMS2000_1_1FirmwareTables_1_1HardwareVoiceOutputFilterCoeffs.html#a9e055becb73975bdba612bee49fa9803",
-"structABDMS2000_1_1MS2000HardwareProgram_1_1Field.html#a1d820b29d63cc8002f49025e2ea5909c",
-"structABDMS2000_1_1PatchModulationSources.html#a37337034d256f947c477334fded90d7f",
-"structABDMS2000_1_1VoiceParameters.html#ac7aaea22cb9f4c6532e348119cb4c170"
+"namespaceABDMS2000_1_1ParamIDs.html#a945e2e5b245c08aa4e97c9c9e1bbba33",
+"namespaceABDMS2000_1_1Tests.html#af76ae6eb3da7df842fd14feb8b06549b",
+"structABDMS2000_1_1FirmwareTables_1_1HardwareVoiceOutputFilterCoeffs.html",
+"structABDMS2000_1_1MS2000HardwareProgram.html#af47c8e2184912f2afcbbe70ac5f56f0a",
+"structABDMS2000_1_1PatchModulationOutputs.html#a6e3b4cabfb9520dd8f8c3ed69a8a5082",
+"structABDMS2000_1_1VoiceParameters.html#ab47e01de2dc6aeb95f6d2d99a9df603d"
 ];
 
 var SYNCONMSG = 'pulsar para deshabilitar sincronización';

@@ -1,5 +1,13 @@
 var NAVTREEINDEX17 =
 {
+"structABDMS2000_1_1PatchModulationOutputs.html#a6e3b4cabfb9520dd8f8c3ed69a8a5082":[5,0,0,27,6],
+"structABDMS2000_1_1PatchModulationOutputs.html#a6e3b4cabfb9520dd8f8c3ed69a8a5082":[6,0,0,19,6],
+"structABDMS2000_1_1PatchModulationOutputs.html#a8d4c23b11b09fc8b69102b320d35a397":[5,0,0,27,1],
+"structABDMS2000_1_1PatchModulationOutputs.html#a8d4c23b11b09fc8b69102b320d35a397":[6,0,0,19,1],
+"structABDMS2000_1_1PatchModulationOutputs.html#ac76fe21396da839ea18729f698892856":[5,0,0,27,5],
+"structABDMS2000_1_1PatchModulationOutputs.html#ac76fe21396da839ea18729f698892856":[6,0,0,19,5],
+"structABDMS2000_1_1PatchModulationSources.html":[5,0,0,26],
+"structABDMS2000_1_1PatchModulationSources.html":[6,0,0,18],
 "structABDMS2000_1_1PatchModulationSources.html#a37337034d256f947c477334fded90d7f":[5,0,0,26,7],
 "structABDMS2000_1_1PatchModulationSources.html#a37337034d256f947c477334fded90d7f":[6,0,0,18,7],
 "structABDMS2000_1_1PatchModulationSources.html#a4810faa3ca8a729256432412684ed78c":[5,0,0,26,3],
@@ -241,13 +249,5 @@ var NAVTREEINDEX17 =
 "structABDMS2000_1_1VoiceParameters.html#ab144ef703647dfcc14704b21374629f4":[5,0,0,15,26],
 "structABDMS2000_1_1VoiceParameters.html#ab144ef703647dfcc14704b21374629f4":[6,0,0,7,26],
 "structABDMS2000_1_1VoiceParameters.html#ab242b6d59dda01b344cc848eb221973d":[5,0,0,15,24],
-"structABDMS2000_1_1VoiceParameters.html#ab242b6d59dda01b344cc848eb221973d":[6,0,0,7,24],
-"structABDMS2000_1_1VoiceParameters.html#ab47e01de2dc6aeb95f6d2d99a9df603d":[5,0,0,15,16],
-"structABDMS2000_1_1VoiceParameters.html#ab47e01de2dc6aeb95f6d2d99a9df603d":[6,0,0,7,16],
-"structABDMS2000_1_1VoiceParameters.html#abcd73d9ec67a2f153b1dafade0d10481":[5,0,0,15,0],
-"structABDMS2000_1_1VoiceParameters.html#abcd73d9ec67a2f153b1dafade0d10481":[6,0,0,7,0],
-"structABDMS2000_1_1VoiceParameters.html#abd330e4bf36217eb15702cc85fc49475":[5,0,0,15,31],
-"structABDMS2000_1_1VoiceParameters.html#abd330e4bf36217eb15702cc85fc49475":[6,0,0,7,31],
-"structABDMS2000_1_1VoiceParameters.html#ac014bbd3034bc45e97ac0e8ee231da00":[5,0,0,15,56],
-"structABDMS2000_1_1VoiceParameters.html#ac014bbd3034bc45e97ac0e8ee231da00":[6,0,0,7,56]
+"structABDMS2000_1_1VoiceParameters.html#ab242b6d59dda01b344cc848eb221973d":[6,0,0,7,24]
 };

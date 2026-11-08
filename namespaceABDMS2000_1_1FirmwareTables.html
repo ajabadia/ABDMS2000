@@ -95,6 +95,10 @@ $(function(){initNavTree('namespaceABDMS2000_1_1FirmwareTables.html','',''); });
 <p>Tablas de conversión numérica exactas extraídas del firmware oficial Korg MS2000 v1.07 (<span class="tt">x811v107.sys</span>, Hitachi H8S/2350 -&gt; Motorola DSP56362).  
 <a href="#details">Más...</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-namespaces" class="groupheader"><a id="namespaces" name="namespaces"></a>
+Espacios de nombres</h2></td></tr>
+<tr class="memitem:detail" id="r_detail"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceABDMS2000_1_1FirmwareTables_1_1detail.html">detail</a></td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Clases</h2></td></tr>
 <tr class="memitem:HardwareFilterModeCoeffs" id="r_HardwareFilterModeCoeffs"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structABDMS2000_1_1FirmwareTables_1_1HardwareFilterModeCoeffs.html">HardwareFilterModeCoeffs</a></td></tr>
@@ -112,6 +116,12 @@ Funciones</h2></td></tr>
 <tr class="memdesc:a8962bb6b3e7511e3fc3eb683bff03955"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frecuencia exacta en Hz de LFO1 según la tabla ROM 0x295E8 (DSP56362 P:$0500). El acumulador de fase de 24 bits con signo recorre 2 * 2^23 muestras por ciclo a fs = 48.000 kHz: f_Hz = (incQ23 / 2^24) * 48000.0 (0.0458 Hz .. 36.61 Hz).  <br /></td></tr>
 <tr class="memitem:a2155848df5ebab0de0654192dc6e2841" id="r_a2155848df5ebab0de0654192dc6e2841"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2155848df5ebab0de0654192dc6e2841">getHardwareLfo2FreqHz</a> (float midiKnob0to127) noexcept</td></tr>
 <tr class="memdesc:a2155848df5ebab0de0654192dc6e2841"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frecuencia exacta en Hz de LFO2 según la tabla ROM 0x29BE8 (DSP56362 P:$052A). Idéntica a LFO1 entre knob 0..114 (0.0458 Hz .. 23.7865 Hz; última palabra común 0x00207A en 114); difiere primero en 115 y alcanza 194.9043 Hz en 127 (5.3239x LFO1 en ese índice).  <br /></td></tr>
+<tr class="memitem:a54633dff015f74df9564b5676cc5bd9f" id="r_a54633dff015f74df9564b5676cc5bd9f"><td class="memItemLeft" align="right" valign="top">const uint32_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a54633dff015f74df9564b5676cc5bd9f">getLutIncrementsQ23</a> (const char *lutId) noexcept</td></tr>
+<tr class="memdesc:a54633dff015f74df9564b5676cc5bd9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tabla de incrementos Q23 del <span class="tt">lutId</span>, o nullptr si el id no existe.  <br /></td></tr>
+<tr class="memitem:a2665702b2813d45eb6357f24d3749e90" id="r_a2665702b2813d45eb6357f24d3749e90"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2665702b2813d45eb6357f24d3749e90">getLutValueHz</a> (const char *lutId, float normalized) noexcept</td></tr>
+<tr class="memdesc:a2665702b2813d45eb6357f24d3749e90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Normalizado 0..1 -&gt; valor de la tabla en Hz, interpolando entre entradas. Devuelve NaN si el <span class="tt">lutId</span> no existe: nunca degrada a lineal en silencio.  <br /></td></tr>
+<tr class="memitem:a06e9b38e0889e852678fa743a2a9308c" id="r_a06e9b38e0889e852678fa743a2a9308c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a06e9b38e0889e852678fa743a2a9308c">getLutNormalizedForHz</a> (const char *lutId, float valueHz) noexcept</td></tr>
+<tr class="memdesc:a06e9b38e0889e852678fa743a2a9308c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inversa Hz -&gt; normalizado 0..1. En una meseta (entradas contiguas con el mismo valor) devuelve el inicio de la meseta, igual que <span class="tt">lutNormalizedForValue</span> del registro compartido.  <br /></td></tr>
 <tr class="memitem:a266846ca05e2706e10a909595e38396b" id="r_a266846ca05e2706e10a909595e38396b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a266846ca05e2706e10a909595e38396b">getHardwareFilterCutoffHz</a> (float cutoffNorm0to1, float modOctaves=0.0f, float w3Scale=1.0f, float kbdOctaves=0.0f) noexcept</td></tr>
 <tr class="memdesc:a266846ca05e2706e10a909595e38396b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frecuencia de corte exacta en Hz del VCF tal como la implementa el hardware.  <br /></td></tr>
 <tr class="memitem:a9137ab7ae3237974ec3e376a08ce371f" id="r_a9137ab7ae3237974ec3e376a08ce371f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9137ab7ae3237974ec3e376a08ce371f">getHardwareFilterEg1IntensityCoeff</a> (float normMinus1To1) noexcept</td></tr>
@@ -139,6 +149,7 @@ Variables</h2></td></tr>
 <tr class="memitem:aab0541b4f1fcf6f17cc882d1bcfcc0db" id="r_aab0541b4f1fcf6f17cc882d1bcfcc0db"><td class="memItemLeft" align="right" valign="top">constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aab0541b4f1fcf6f17cc882d1bcfcc0db">kRomLfo2IncrementQ23</a> [128]</td></tr>
 <tr class="memitem:a7321ae26c7fba20274ded282fb7487e8" id="r_a7321ae26c7fba20274ded282fb7487e8"><td class="memItemLeft" align="right" valign="top">constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7321ae26c7fba20274ded282fb7487e8">kRomMasterPitchQ23</a> [256]</td></tr>
 <tr class="memitem:a8ad8992640fe0101ce74f185cbb6c292" id="r_a8ad8992640fe0101ce74f185cbb6c292"><td class="memItemLeft" align="right" valign="top">constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8ad8992640fe0101ce74f185cbb6c292">kRomFilterCutoffQ23</a> [256]</td></tr>
+<tr class="memitem:aa41900eacee3b4a2a1f6fc0cb220bfb8" id="r_aa41900eacee3b4a2a1f6fc0cb220bfb8"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa41900eacee3b4a2a1f6fc0cb220bfb8">kLutLength</a> = 128</td></tr>
 <tr class="memitem:ae5ad9085be72fbfdd4b896bcaf704337" id="r_ae5ad9085be72fbfdd4b896bcaf704337"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae5ad9085be72fbfdd4b896bcaf704337">kQ23FractionOne</a> = 8388608.0</td></tr>
 <tr class="memitem:a329b8d01b9288ac7e6f5a6828f2ed391" id="r_a329b8d01b9288ac7e6f5a6828f2ed391"><td class="memItemLeft" align="right" valign="top">constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a329b8d01b9288ac7e6f5a6828f2ed391">kHardwareFilterMaxCoefficient</a> = static_cast&lt;double&gt;(0x770000u) / <a class="el" href="#ae5ad9085be72fbfdd4b896bcaf704337">kQ23FractionOne</a></td></tr>
 <tr class="memdesc:a329b8d01b9288ac7e6f5a6828f2ed391"><td class="mdescLeft">&#160;</td><td class="mdescRight">Techo del coeficiente de corte del VCF en el DSP56362: <span class="tt">$770000</span> (<span class="tt">0.9297</span>), el límite que el microcódigo aplica en P:$0760..$0766 (<span class="tt">#&gt;$77</span> en Q7).  <br /></td></tr>
@@ -583,6 +594,95 @@ c = sin(pi * fc / fs)       =&gt;  fc = (fs / pi) * asin(c)
 
 </div>
 </div>
+<a id="a54633dff015f74df9564b5676cc5bd9f" name="a54633dff015f74df9564b5676cc5bd9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54633dff015f74df9564b5676cc5bd9f">&#9670;&#160;</a></span>getLutIncrementsQ23()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const uint32_t * ABDMS2000::FirmwareTables::getLutIncrementsQ23 </td>
+          <td>(</td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>lutId</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Tabla de incrementos Q23 del <span class="tt">lutId</span>, o nullptr si el id no existe. </p>
+
+</div>
+</div>
+<a id="a06e9b38e0889e852678fa743a2a9308c" name="a06e9b38e0889e852678fa743a2a9308c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06e9b38e0889e852678fa743a2a9308c">&#9670;&#160;</a></span>getLutNormalizedForHz()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::FirmwareTables::getLutNormalizedForHz </td>
+          <td>(</td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>lutId</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>valueHz</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Inversa Hz -&gt; normalizado 0..1. En una meseta (entradas contiguas con el mismo valor) devuelve el inicio de la meseta, igual que <span class="tt">lutNormalizedForValue</span> del registro compartido. </p>
+
+</div>
+</div>
+<a id="a2665702b2813d45eb6357f24d3749e90" name="a2665702b2813d45eb6357f24d3749e90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2665702b2813d45eb6357f24d3749e90">&#9670;&#160;</a></span>getLutValueHz()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ABDMS2000::FirmwareTables::getLutValueHz </td>
+          <td>(</td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>lutId</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>normalized</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Normalizado 0..1 -&gt; valor de la tabla en Hz, interpolando entre entradas. Devuelve NaN si el <span class="tt">lutId</span> no existe: nunca degrada a lineal en silencio. </p>
+
+</div>
+</div>
 <a name="doc-var-members" id="doc-var-members"></a><h2 id="header-doc-var-members" class="groupheader">Documentación de variables</h2>
 <a id="a329b8d01b9288ac7e6f5a6828f2ed391" name="a329b8d01b9288ac7e6f5a6828f2ed391"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a329b8d01b9288ac7e6f5a6828f2ed391">&#9670;&#160;</a></span>kHardwareFilterMaxCoefficient</h2>
@@ -619,6 +719,28 @@ c = sin(pi * fc / fs)       =&gt;  fc = (fs / pi) * asin(c)
       <table class="memname">
         <tr>
           <td class="memname">double ABDMS2000::FirmwareTables::kHardwareSampleRate = 48000.0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa41900eacee3b4a2a1f6fc0cb220bfb8" name="aa41900eacee3b4a2a1f6fc0cb220bfb8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa41900eacee3b4a2a1f6fc0cb220bfb8">&#9670;&#160;</a></span>kLutLength</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int ABDMS2000::FirmwareTables::kLutLength = 128</td>
         </tr>
       </table>
   </td>

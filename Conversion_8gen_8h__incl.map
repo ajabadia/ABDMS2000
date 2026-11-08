@@ -1,15 +1,28 @@
 <map id="Source/State/Conversion.gen.h" name="Source/State/Conversion.gen.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="154,5,374,33"/>
-<area shape="rect" id="Node000002" href="$ParameterRegistry_8gen_8h.html" title=" " alt="" coords="28,81,209,109"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="236,35,159,76,157,71,240,32"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="233,81,295,109"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="265,31,266,67,261,64,262,36"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="320,81,416,109"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="283,31,340,72,335,72,282,36"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="398,5,618,33"/>
+<area shape="rect" id="Node000002" href="$ParameterRegistry_8gen_8h.html" title=" " alt="" coords="82,81,262,109"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="445,35,248,80,247,75,450,32"/>
+<area shape="rect" id="Node000006" href="$MS2000FirmwareTables_8h.html" title=" " alt="" coords="391,81,624,109"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="510,32,510,67,506,64,506,36"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="322,157,384,184"/>
+<area shape="poly" id="edge12_Node000001_Node000008" title=" " alt="" coords="460,33,417,54,398,67,382,83,366,111,358,143,354,140,361,109,378,79,395,63,415,50,455,34"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="648,81,717,109"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="539,31,640,75,635,75,539,36"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="741,81,837,109"/>
+<area shape="poly" id="edge13_Node000001_Node000013" title=" " alt="" coords="558,31,729,77,724,77,558,36"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="5,157,64,184"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="106,108,63,148,59,144,101,110"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="149,112,73,152,71,147,146,107"/>
 <area shape="rect" id="Node000004" title=" " alt="" coords="87,157,150,184"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="120,107,121,142,116,140,117,111"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="165,108,139,146,135,142,160,110"/>
 <area shape="rect" id="Node000005" title=" " alt="" coords="174,157,298,184"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="140,107,205,148,200,149,139,112"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="184,107,217,145,212,145,182,112"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="408,157,493,184"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="500,108,471,147,469,142,495,110"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="483,109,395,152,394,147,478,110"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="516,157,582,184"/>
+<area shape="poly" id="edge8_Node000006_Node000009" title=" " alt="" coords="517,107,537,144,532,142,514,112"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="606,157,671,184"/>
+<area shape="poly" id="edge9_Node000006_Node000010" title=" " alt="" coords="532,107,605,149,599,148,531,112"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="695,157,753,184"/>
+<area shape="poly" id="edge10_Node000006_Node000011" title=" " alt="" coords="547,107,683,155,678,154,546,112"/>
 </map>

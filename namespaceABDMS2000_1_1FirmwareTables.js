@@ -1,5 +1,8 @@
 var namespaceABDMS2000_1_1FirmwareTables =
 [
+    [ "detail", "namespaceABDMS2000_1_1FirmwareTables_1_1detail.html", [
+      [ "lfoFreqHzFromIncrements", "namespaceABDMS2000_1_1FirmwareTables_1_1detail.html#a2a21399a5b6e7a3bbe5b450a884efa72", null ]
+    ] ],
     [ "HardwareFilterModeCoeffs", "structABDMS2000_1_1FirmwareTables_1_1HardwareFilterModeCoeffs.html", "structABDMS2000_1_1FirmwareTables_1_1HardwareFilterModeCoeffs" ],
     [ "HardwareVoiceOutputFilterCoeffs", "structABDMS2000_1_1FirmwareTables_1_1HardwareVoiceOutputFilterCoeffs.html", "structABDMS2000_1_1FirmwareTables_1_1HardwareVoiceOutputFilterCoeffs" ],
     [ "HardwareFilterResonanceCoeffs", "structABDMS2000_1_1FirmwareTables_1_1HardwareFilterResonanceCoeffs.html", "structABDMS2000_1_1FirmwareTables_1_1HardwareFilterResonanceCoeffs" ],
@@ -16,8 +19,12 @@ var namespaceABDMS2000_1_1FirmwareTables =
     [ "getHardwarePatchIntensityNorm", "namespaceABDMS2000_1_1FirmwareTables.html#a2efbc7f76cca3c544aeaec9b20ff65b6", null ],
     [ "getHardwareScaleDetuneSemitones", "namespaceABDMS2000_1_1FirmwareTables.html#a126b44051451d72708eda1336debd71b", null ],
     [ "getHardwareVoiceOutputFilterCoeffs", "namespaceABDMS2000_1_1FirmwareTables.html#a33c64817266fb0c126f85b19244ae582", null ],
+    [ "getLutIncrementsQ23", "namespaceABDMS2000_1_1FirmwareTables.html#a54633dff015f74df9564b5676cc5bd9f", null ],
+    [ "getLutNormalizedForHz", "namespaceABDMS2000_1_1FirmwareTables.html#a06e9b38e0889e852678fa743a2a9308c", null ],
+    [ "getLutValueHz", "namespaceABDMS2000_1_1FirmwareTables.html#a2665702b2813d45eb6357f24d3749e90", null ],
     [ "kHardwareFilterMaxCoefficient", "namespaceABDMS2000_1_1FirmwareTables.html#a329b8d01b9288ac7e6f5a6828f2ed391", null ],
     [ "kHardwareSampleRate", "namespaceABDMS2000_1_1FirmwareTables.html#af21bbafa7eade654be63a017471c02d1", null ],
+    [ "kLutLength", "namespaceABDMS2000_1_1FirmwareTables.html#aa41900eacee3b4a2a1f6fc0cb220bfb8", null ],
     [ "kQ23FractionOne", "namespaceABDMS2000_1_1FirmwareTables.html#ae5ad9085be72fbfdd4b896bcaf704337", null ],
     [ "kQ23One", "namespaceABDMS2000_1_1FirmwareTables.html#a4800d1b8d423b3b948800b0d996e9823", null ],
     [ "kRomEnvelopeIncrementQ23", "namespaceABDMS2000_1_1FirmwareTables.html#ab3335825c34e506b98a60b23f4b90aba", null ],
